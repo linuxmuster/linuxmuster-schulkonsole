@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Benutzer</gettext> - <gettext>&Auml;nderungen durchf&uuml;hren</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-user.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Benutzerverwaltung</gettext> :: <gettext>Teach-In</gettext></h2>
+
+<form method="post">
+
+<p><label for="max"><gettext>Benutzer pro Seite:</gettext></label>
+<select name="max" id="max">
+<option value="10" selected>10</option>
+<option value="20">20</option>
+<option value="50">50</option>
+<option value="100">100</option>
+<option value="500">500</option>
+</select>
+<input type="submit" name="changemax" value="&auml;ndern"></p>
+
+</form>
+
+<p><gettext>Seite</gettext>
+<!--#echo var="currentpage" -->/<!--#echo var="maxpage" --></p>
+
+<form method="post">
+<p>
+<!--#if expr="$firstpage" -->
+<input type="submit" name="prev" value="zur&uuml;ck" disabled>
+<!--#else -->
+<input type="submit" name="prev" value="zur&uuml;ck">
+<!--#endif -->
+<!--#if expr="$loop_pages" -->
+<input type="submit" name="${pages}_page" value="$pages">
+<!--#endif -->
+<!--#if expr="$lastpage" -->
+<input type="submit" name="next" value="weiter" disabled>
+<!--#else -->
+<input type="submit" name="next" value="weiter">
+<!--#endif -->
+</p>
+
+
+<table>
+<col width="25%">
+<col width="10%">
+<col width="15%">
+<col width="30%">
+
+<tr>
+<th><gettext>Benutzername</gettext></th>
+<th><gettext>verkn&uuml;pfen mit</gettext></th>
+<th><gettext>Klasse</gettext></th>
+<th><gettext>Bezeichner</gettext></th>
+</tr>
+<!--#if expr="$loop_users" -->
+<tr class="sameuser">
+<td><!--#echo var="users{login}" --></td>
+<td><!--#if expr="$users{delete}" -->
+<input type="radio" name="${users{login}}_user" id="${users{login}};${users{id}}" value="::" checked>
+<!--#else -->
+<input type="radio" name="${users{login}}_user" id="${users{login}};${users{id}}" value="">
+<!--#endif --></td>
+<td><!--#echo var="users{class}" --></td>
+<td><label for="${users{login}};${users{id}}"><!--#echo var="users{id}" --></label></td>
+</tr>
+<!--#set var="odd" value="0" -->
+<!--#if expr="$loop_users{alt}" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td></td>
+<td><!--#if expr="$users{alt}{selected}" -->
+<input type="radio" name="${users{login}}_user" id="${users{login}};${users{alt}{id}}" value="$users{alt}{id}" checked>
+<!--#else -->
+<input type="radio" name="${users{login}}_user" id="${users{login}};${users{alt}{id}}" value="$users{alt}{id}">
+<!--#endif --></td>
+<td><!--#echo var="users{alt}{class}" --></td>
+<td><label for="${users{login}};${users{alt}{id}}"><!--#echo var="users{alt}{id}" --></label></td>
+</tr>
+<!--#endif -->
+<!--#endif -->
+</table>
+
+<p>
+<!--#if expr="$firstpage" -->
+<input type="submit" name="prev" value="zur&uuml;ck" disabled>
+<!--#else -->
+<input type="submit" name="prev" value="zur&uuml;ck">
+<!--#endif -->
+<!--#if expr="$loop_pages" -->
+<input type="submit" name="${pages}_page" value="$pages">
+<!--#endif -->
+<!--#if expr="$lastpage" -->
+<input type="submit" name="next" value="weiter" disabled>
+<!--#else -->
+<input type="submit" name="next" value="weiter">
+<!--#endif -->
+</p>
+
+
+<p><input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+<hr>
+
+<p><input type="submit" name="write" value="Beenden"></p>
+
+</form>
+
+
+
+</div>
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

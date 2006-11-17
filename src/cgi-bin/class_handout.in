@@ -1,0 +1,126 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::Sophomorix;
+
+my $this_file = 'class_handout';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies only over secure connections
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $class = $sk_session->param('class');
+my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+if (   not $class
+    or not $$classs{$class}) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/class/g;
+	$sk_session->redirect($url);
+}
+
+
+my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
+
+
+if ($q->param('handout')) {
+	eval {
+	Schulkonsole::Sophomorix::handout_class($sk_session->userdata('id'),
+		$sk_session->get_password(),
+		$class);
+
+	$sk_session->set_status(
+		$sk_session->d()->get('Vorlagen bereitgestellt'), 0);
+	};
+	if ($@) {
+		if (ref $@) {
+			if ($@->{internal}) {
+				$sk_session->set_status(
+					$sk_session->d()->get('Interner Fehler'), 1);
+
+				print STDERR "$@\n";
+			} else {
+				$sk_session->set_status($sk_session->d()->get($@), 1);
+			}
+		} else {
+			die $@;
+		}
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+eval {
+my $teacher_share_files = Schulkonsole::Sophomorix::ls_handout_class(
+	$sk_session->userdata('id'),
+	$sk_session->get_password(),
+	$class);
+$sk_session->set_var('teacher_share_files',
+	Schulkonsole::Sophomorix::create_file_list($teacher_share_files));
+};
+if ($@) {
+	if (ref $@) {
+		if ($@->{internal}) {
+			SWITCHCODE: {
+			$@->{code} == Schulkonsole::Error::WRAPPER_SOPHOMORIX_NO_SUCH_DIRECTORY
+				and do {
+				$sk_session->set_status(
+					$sk_session->d()->get(
+						'Verzeichnis zum Bereitstellen nicht gefunden'),
+						1);
+				last SWITCHCODE;
+			};
+			$sk_session->set_status(
+				$sk_session->d()->get('Interner Fehler'), 1);
+			}
+
+			print STDERR "$@\n";
+		} else {
+			$sk_session->set_status($sk_session->d()->get($@), 1);
+		}
+	} else {
+		die $@;
+	}
+}
+
+
+
+my @students;
+foreach my $user (sort {
+	$$class_userdatas{$a}{surname} cmp $$class_userdatas{$b}{surname} }
+	keys %$class_userdatas) {
+
+	my $student = {
+		login => $user,
+		firstname => $$class_userdatas{$user}{firstname},
+		surname => $$class_userdatas{$user}{surname},
+	};
+	push @students, $student;
+}
+$sk_session->set_var('students', \@students);
+
+
+$sk_session->set_var('class', $$classs{$class}{displayname});
+
+$sk_session->print_page("$this_file.shtml", $this_file);

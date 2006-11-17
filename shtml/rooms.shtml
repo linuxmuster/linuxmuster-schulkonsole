@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>R&auml;ume</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+</div>
+
+<div id="content">
+
+<h2><gettext>R&auml;ume</gettext></h2>
+
+<form method="post">
+
+
+<table id="rooms">
+<col width="80%">
+<col width="20%">
+<tr>
+<th><gettext>Raum</gettext></th>
+<th><gettext>Klassenzimmer</gettext></th>
+</tr>
+<!--#if expr="$loop_rooms" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><label for="${rooms{name}}_classroom"><!--#echo var="rooms{name}" --></label></td>
+<!--#if expr="$rooms{selected}" -->
+<td><input type="checkbox" id="${rooms{name}}_classroom" name="${rooms{name}}_classroom" checked></td>
+<!--#else -->
+<td><input type="checkbox" id="${rooms{name}}_classroom" name="${rooms{name}}_classroom"></td>
+<!--#endif -->
+</tr>
+<!--#endif -->
+</table>
+
+
+
+<p>
+<input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
+</p>
+
+</form>
+
+
+</div>
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

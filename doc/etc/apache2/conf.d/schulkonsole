@@ -1,0 +1,16 @@
+Alias /schulkonsole/schulkonsole.css /usr/share/schulkonsole/css/schulkonsole.css
+Alias /schulkonsole/schulkonsole.js /usr/share/schulkonsole/shtml/schulkonsole.js
+Alias /schulkonsole/img/ /usr/share/schulkonsole/img/
+
+RedirectMatch permanent ^/schulkonsole$ /schulkonsole/
+ScriptAlias /schulkonsole/ /usr/lib/schulkonsole/cgi-bin/
+
+<Directory "/usr/lib/schulkonsole/cgi-bin/">
+	SSLRequireSSL
+	AllowOverride None
+	Options ExecCGI -MultiViews
+	RedirectMatch permanent ^/schulkonsole/$ /schulkonsole/start
+	Order allow,deny
+	Allow from all
+</Directory>
+

@@ -1,0 +1,120 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Room;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::Session;
+
+my $this_file = 'room_test_handout';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+my $q = $sk_session->query();
+
+my $room_session = new Schulkonsole::Room($sk_session);
+
+
+if (not $room_session->info('is_editing')) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room/g;
+	$sk_session->redirect($url);
+}
+
+
+
+if ($q->param('handouttest')) {
+	Schulkonsole::Sophomorix::handout_from_room(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		$room_session->info('name'));
+
+	$sk_session->set_status_redirect($sk_session->d()->get('Ausgeteilt'), 0);
+
+	$room_session->param('test_step', Schulkonsole::Config::TEST_PASSWORD)
+		if (  $room_session->param('test_step')
+		    < Schulkonsole::Config::TEST_PASSWORD);
+
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room_test_password/g;
+	$sk_session->redirect($url);
+
+} elsif ($q->param('continue')) {
+	$room_session->param('test_step', Schulkonsole::Config::TEST_PASSWORD)
+		if (  $room_session->param('test_step')
+		    < Schulkonsole::Config::TEST_PASSWORD);
+
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room_test_password/g;
+	$sk_session->redirect($url);
+}
+
+
+
+
+eval {
+my $teacher_share_files
+	= Schulkonsole::Sophomorix::ls_handout_exam(
+		$sk_session->userdata('id'),
+		$sk_session->get_password());
+$sk_session->set_var('teacher_share_files',
+	Schulkonsole::Sophomorix::create_file_list($teacher_share_files));
+};
+if ($@) {
+	if (ref $@) {
+		if ($@->{internal}) {
+			SWITCHCODE: {
+			$@->{code} == Schulkonsole::Error::WRAPPER_SOPHOMORIX_NO_SUCH_DIRECTORY
+				and do {
+				$sk_session->set_status(
+					$sk_session->d()->get(
+						'Verzeichnis zum Bereitstellen nicht gefunden'),
+						1);
+				last SWITCHCODE;
+			};
+			$sk_session->set_status(
+				$sk_session->d()->get('Interner Fehler'), 1);
+			}
+
+			print STDERR "$@\n";
+		} else {
+			$sk_session->set_status($sk_session->d()->get($@), 1);
+		}
+	} else {
+		die $@;
+	}
+}
+
+
+
+
+my $workstations
+	= Schulkonsole::Config::workstations_room($room_session->info('name'));
+my $workstation_users = $room_session->workstation_users();
+
+
+my @array_overview_workstations;
+foreach my $workstation (sort keys %$workstations) {
+	my $first_login = 1;
+	if (    $$workstation_users{$workstation}
+	    and @{ $$workstation_users{$workstation} }) {
+		foreach my $userdata (sort { $$a{uid} cmp $$b{uid} }
+		                           @{ $$workstation_users{$workstation} }) {
+			my $overview_workstation = {
+				name => $workstation,
+				login => $$userdata{uid},
+				first => $first_login,
+			};
+			push @array_overview_workstations, $overview_workstation;
+
+			$first_login = 0;
+		}
+	}
+}
+$sk_session->set_var('overview_workstations', \@array_overview_workstations);
+
+
+$room_session->set_vars($sk_session);
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+

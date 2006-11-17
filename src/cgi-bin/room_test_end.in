@@ -1,0 +1,61 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Room;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::Session;
+
+my $this_file = 'room_test_end';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+my $q = $sk_session->query();
+
+my $room_session = new Schulkonsole::Room($sk_session);
+
+
+if (not $room_session->info('is_editing')) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room/g;
+	$sk_session->redirect($url);
+}
+
+
+
+
+if ($q->param('collectmove')) {
+	my $id = $sk_session->userdata('id');
+	my $password = $sk_session->get_password();
+
+	Schulkonsole::Sophomorix::collect_exam($id, $password,
+	                                       $room_session->info('name'));
+	Schulkonsole::Sophomorix::reset_room($id, $password,
+	                                     $room_session->info('name'));
+	$room_session->clear('test_step');
+
+	if (not $room_session->param('end_time')) {
+		$room_session->end_lesson_now($id, $password);
+	}
+
+	$sk_session->set_status_redirect($sk_session->d()->get('Eingesammelt'),
+		0);
+
+	$room_session->change_workstation_passwords(
+		Schulkonsole::Room::random_password(12));
+
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room/g;
+	$sk_session->redirect($url);
+
+}
+
+
+
+$sk_session->set_status($sk_session->d()->get('Bitte best&auml;tigen'), 1);
+
+
+$room_session->set_vars($sk_session);
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+

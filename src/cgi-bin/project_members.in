@@ -1,0 +1,423 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::Cyrus;
+
+my $this_file = 'project_members';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $projects = Schulkonsole::Info::groups_projects($sk_session->groups());
+my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+
+my $project = $q->param('projects');
+if (    $project
+    and $$projects{$project}) {
+	$sk_session->param('project', $project);
+}
+$project = $sk_session->param('project');
+
+if (   not $project
+    or not $$projects{$project}) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/project/g;
+	$sk_session->redirect($url);
+}
+
+
+
+eval {
+COMMANDS: {
+
+foreach my $param ($q->param) {
+	if (my ($member, $action, $scope, @rest) = $param
+	    	=~ /^(.+)_(goto|remove)(class|project|user)$/) {
+		if ($action =~ /^g/) {	# goto
+			if ($scope =~ /^c/) {	# class
+				if ($$classs{$member}) {
+					$sk_session->param('class', $member);
+
+					my $url = $q->url( -absolute => 1 );
+					$url =~ s/$this_file$/class_list/g;
+					$sk_session->redirect($url);
+				} else {
+					$sk_session->set_status($sk_session->d()->get(
+							'Sie sind kein Mitglied dieser Klasse'),
+						1);
+				}
+			} elsif ($scope =~ /^p/) {	# project
+				if ($$projects{$member}) {
+					$sk_session->param('project', $member);
+					$project = $member;
+				} else {
+					$sk_session->set_status($sk_session->d()->get(
+							'Sie sind kein Mitglied dieses Projekts'),
+						1);
+				}
+			}
+		} else {	# remove
+			my $is_admin = Schulkonsole::DB::is_project_admin(
+			    	$$projects{$project}{id},
+					$sk_session->userdata('uidnumber'));
+
+			my $id = $sk_session->userdata('id');
+			my $password = $sk_session->get_password();
+
+			if ($is_admin) {
+				SCOPE: {
+				$scope =~ /^u/ and do {	# user
+					my $member_userdata
+						= Schulkonsole::DB::get_userdata($member);
+					my $is_member_admin = Schulkonsole::DB::is_project_admin(
+						$$projects{$project}{id},
+						$$member_userdata{uidnumber});
+
+					if ($is_member_admin) {
+						if ($is_member_admin == -1) {
+							$sk_session->set_status(
+								sprintf($sk_session->d()->get(
+									'Sie sind der letzte Projektleiter von %s'),
+									$$projects{$project}{displayname}),
+								1);
+
+							last COMMANDS;
+						}
+
+						Schulkonsole::Sophomorix::remove_admin_from_project(
+							$id, $password,
+							$project,
+							$member);
+					}
+
+					Schulkonsole::Sophomorix::remove_from_project(
+						$id, $password,
+						$project,
+						$member);
+
+					if ($member eq $sk_session->userdata('uid')) {
+						$sk_session->set_status_redirect(
+							sprintf($sk_session->d()->get(
+								'%s aus Projekt %s ausgetragen'),
+								$member, $$projects{$project}{displayname}),
+							0);
+
+						my $url = $q->url( -absolute => 1 );
+						$url =~ s/$this_file$/project/g;
+						$sk_session->redirect($url);
+					}
+
+					$sk_session->set_status(
+						sprintf($sk_session->d()->get(
+							'%s aus Projekt %s ausgetragen'),
+							$member, $$projects{$project}{displayname}),
+						0);
+
+
+					last SCOPE;
+				};
+				$scope =~ /^c/ and do {	# class
+					Schulkonsole::Sophomorix::remove_class_from_project(
+						$id, $password,
+						$project,
+						$member);
+
+					$sk_session->set_status(
+						sprintf($sk_session->d()->get(
+							'%s aus Projekt %s ausgetragen'),
+							$member,
+							$$projects{$project}{displayname}),
+						0);
+
+					last SCOPE;
+				};
+				$scope =~ /^p/ and do {	# project
+					Schulkonsole::Sophomorix::remove_project_from_project(
+						$id, $password,
+						$project,
+						$member);
+
+					$sk_session->set_status(
+						sprintf($sk_session->d()->get(
+							'%s aus Projekt %s ausgetragen'),
+							$member,
+							$$projects{$project}{displayname}),
+						0);
+
+					last SCOPE;
+				};
+				}
+			} else {
+				$sk_session->set_status(
+					sprintf($sk_session->d()->get(
+						'Sie sind kein Projektleiter von %s'),
+						$$projects{$project}{displayname}),
+					1);
+
+				last COMMANDS;
+			}
+		}
+
+		last COMMANDS;
+	}
+}
+
+} # end COMMANDS
+};
+if ($@) {
+	if (ref $@) {
+		if ($@->{internal}) {
+			$sk_session->set_status(
+				$sk_session->d()->get('Interner Fehler'), 1);
+			print STDERR $@;
+		} else {
+			$sk_session->set_status($sk_session->d()->get($@->what()), 1);
+		}
+	} else {
+		die $@;
+	}
+}
+
+
+
+
+
+my $admins = Schulkonsole::DB::project_admins($$projects{$project}{id});
+my $member_userdatas
+	= Schulkonsole::DB::project_user_members($$projects{$project}{gidnumber});
+my $member_classdatas
+	= Schulkonsole::DB::project_class_members($$projects{$project}{id});
+my $member_projectdatas
+	= Schulkonsole::DB::project_project_members($$projects{$project}{id});
+
+
+my $member_quotaroots = Schulkonsole::Cyrus::quota(keys %$member_userdatas);
+
+
+
+$sk_session->set_var('isadmin', $$admins{$sk_session->userdata('uidnumber')});
+
+
+my @student_members;
+my @teacher_members;
+foreach my $user (sort {
+	$$member_userdatas{$a}{surname} cmp $$member_userdatas{$b}{surname} }
+	keys %$member_userdatas) {
+
+	my $groups = Schulkonsole::DB::user_groups(
+		$$member_userdatas{$user}{uidnumber},
+		$$member_userdatas{$user}{gidnumber},
+		$$member_userdatas{$user}{gid});
+
+	if ($$groups{teachers}) {
+		my $member = {
+			login => $user,
+			firstname => $$member_userdatas{$user}{firstname},
+			surname => $$member_userdatas{$user}{surname},
+			isadmin => $$admins{$$member_userdatas{$user}{uidnumber}},
+		};
+
+		push @teacher_members, $member;
+	} else {
+		my $quotaemail_usage;
+		my $quotaemail_limit;
+		my $quotaemail_percent;
+		if ($$member_quotaroots{$user}) {
+			$quotaemail_usage
+				= $$member_quotaroots{$user}{"user.$user"}{quota}{STORAGE}{usage};
+			$quotaemail_limit
+				= $$member_quotaroots{$user}{"user.$user"}{quota}{STORAGE}{limit};
+			$quotaemail_percent = sprintf("%.1f", 100 *
+			                              $quotaemail_usage / $quotaemail_limit);
+		} else {
+			$quotaemail_percent = '0.0';
+		}
+	
+		my $disk_quotas =
+			Schulkonsole::Info::disk_quotas($$member_userdatas{$user}{uidnumber});
+	
+		my @array_diskquotas;
+		foreach my $disk_quota (@$disk_quotas) {
+		    my ($filesystem, $path,
+			    $blocks_usage, $blocks_soft, $blocks_hard,
+			    $blocks_grace,
+			    $files_usage, $files_soft, $files_hard,
+			    $files_grace) = @$disk_quota;
+			next unless (defined $files_hard and ($blocks_hard or $files_hard));
+	
+			my $blocks_percent = $blocks_soft ?
+				  sprintf('%.1f', 100 * $blocks_usage / $blocks_soft)
+				: 0;
+			my $files_percent = $files_soft ?
+				  sprintf('%.1f', 100 * $files_usage / $files_soft)
+				: 0;
+	
+			my $blocks_grace_str;
+			if ($blocks_grace) {
+				$blocks_grace -= $^T;
+				if ($blocks_grace > 86400) {
+					$blocks_grace_str = sprintf($sk_session->d()->get('%d Tage'),
+						$blocks_grace / 86400 + 0.5);
+				} elsif ($blocks_grace > 7200) {
+					$blocks_grace_str = sprintf($sk_session->d()->get('%d Stunden'),
+						$blocks_grace / 3600 + 0.5);
+				} elsif ($blocks_grace > 0) {
+					$blocks_grace_str = sprintf($sk_session->d()->get('%d Minuten'),
+						$blocks_grace / 60 + 0.5);
+				} else {
+					$blocks_grace_str = $sk_session->d()->get('abgelaufen');
+				}
+			} else {
+				$blocks_grace_str = '-';
+			}
+		
+			my $files_grace_str;
+			if ($files_grace) {
+				$files_grace -= $^T;
+				if ($files_grace > 86400) {
+					$files_grace_str = sprintf($sk_session->d()->get('%d Tage'),
+						$files_grace / 86400 + 0.5);
+				} elsif ($files_grace > 7200) {
+					$files_grace_str = sprintf($sk_session->d()->get('%d Stunden'),
+						$files_grace / 3600 + 0.5);
+				} elsif ($files_grace > 0) {
+					$files_grace_str = sprintf($sk_session->d()->get('%d Minuten'),
+						$files_grace / 60 + 0.5);
+				} else {
+					$files_grace_str = $sk_session->d()->get('abgelaufen');
+				}
+			} else {
+				$files_grace_str = '-';
+			}
+	
+			my $diskquota = {
+				'warn' => $blocks_grace || $files_grace,
+				path => $path,
+				blocks_usage => $blocks_usage,
+				blocks_soft => $blocks_soft,
+				blocks_hard => $blocks_hard,
+				blocks_percent => $blocks_percent,
+				blocks_percent_rounded => ($blocks_percent < 100.0 ?
+				                             int($blocks_percent + 0.5)
+				                           : 100),
+				blocks_grace => $blocks_grace_str,
+				files_usage => $files_usage,
+				files_soft => $files_soft,
+				files_hard => $files_hard,
+				files_percent => $files_percent,
+				files_percent_rounded => ($files_percent < 100.0 ?
+				                            int($files_percent + 0.5)
+				                          : 100),
+				files_grace => $files_grace_str,
+			};
+	
+			push @array_diskquotas, $diskquota;
+		}
+	
+		my $mailquotas =  { usage => $quotaemail_usage,
+		                    limit => $quotaemail_limit,
+		                    percent => $quotaemail_percent,
+							percent_rounded => ($quotaemail_percent ?
+							                      int($quotaemail_percent + 0.5)
+							                    : 100),
+		                    'warn' => ($quotaemail_usage > $quotaemail_limit) };
+
+		my @classs;
+		my $classs = Schulkonsole::Info::groups_classes($groups);
+		foreach my $class (values %$classs) {
+			push @classs, $$class{displayname};
+		}
+		my $var_classes_str = join ', ', @classs;
+
+		my $member = {
+			login => $user,
+			firstname => $$member_userdatas{$user}{firstname},
+			surname => $$member_userdatas{$user}{surname},
+			mailquotas => $mailquotas,
+			diskquotas => \@array_diskquotas,
+			class => $var_classes_str,
+		};
+
+		push @student_members, $member;
+	}
+
+
+}
+$sk_session->set_var('membersstudents', \@student_members);
+$sk_session->set_var('membersteachers', \@teacher_members);
+
+
+
+my @class_members;
+foreach my $class (sort {
+	    $$member_classdatas{$a}{displayname}
+	cmp $$member_classdatas{$b}{displayname} }
+	keys %$member_classdatas) {
+	my $member = {
+		gid => $$member_classdatas{$class}{gid},
+		name => $$member_classdatas{$class}{displayname},
+		ismember => defined $$classs{$class},
+	};
+	push @class_members, $member;
+}
+$sk_session->set_var('membersclasses', \@class_members);
+
+
+
+my @project_members;
+foreach my $project (sort {
+	    $$member_projectdatas{$a}{displayname}
+	cmp $$member_projectdatas{$b}{displayname} }
+	keys %$member_projectdatas) {
+	my $member = {
+		gid => $$member_projectdatas{$project}{gid},
+		name => $$member_projectdatas{$project}{displayname},
+		longname => $$member_projectdatas{$project}{longname},
+		ismember => defined $$projects{$project},
+	};
+	push @project_members, $member;
+}
+$sk_session->set_var('membersprojects', \@project_members);
+
+
+
+
+
+
+
+my @projects;
+foreach my $project (sort {
+	$$projects{$a}{displayname} cmp $$projects{$b}{displayname} }
+	                 keys %$projects) {
+	push @projects, { gid => $project,
+	                  name => $$projects{$project}{displayname},
+	                  longname => $$projects{$project}{longname},
+	                };
+}
+$sk_session->set_var('projects', \@projects);
+
+
+if ($project) {
+	$sk_session->set_var('project_gid', $project);
+	$sk_session->set_var('project', $$projects{$project}{displayname});
+	$sk_session->set_var('projectlongname', $$projects{$project}{longname});
+}
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+

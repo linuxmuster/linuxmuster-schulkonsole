@@ -1,0 +1,54 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Net::CUPS::Printer;
+use Schulkonsole::Session;
+use Schulkonsole::Files;
+
+
+my $this_file = 'printers';
+
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+my @printers = Net::CUPS::Printer::cupsGetPrinters();      # existing printers
+my $printers = eval { Schulkonsole::Config::printers(); }; # configured printers
+$printers = {} if $@;
+
+
+
+
+my @printers_array;
+foreach my $printer (sort @printers) {
+	if (exists $$printers{$printer}) {
+		push @printers_array, {
+				name => $printer,
+				rooms => join(', ', sort keys %{ $$printers{$printer}{rooms} }),
+				hosts => join(', ', sort keys %{ $$printers{$printer}{hosts} }),
+			};
+	} else {
+		push @printers_array, {
+				name => $printer,
+			};
+	}
+}
+$sk_session->set_var('printers', \@printers_array);
+
+
+
+$sk_session->print_page("$this_file.shtml", $this_file);

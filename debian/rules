@@ -1,0 +1,123 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# Sample debian/rules that uses debhelper.
+# This file was originally written by Joey Hess and Craig Small.
+# As a special exception, when this file is copied by dh-make into a
+# dh-make output file, you may use that output file without restriction.
+# This special exception was added by Craig Small in version 0.37 of dh-make.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+
+# These are used for cross-compiling and for saving the configure script
+# from having to guess our platform (since we know it already)
+DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+
+CFLAGS = -Wall -g
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+# constants used in src/bin/wrapper-user.c and src/bin/wrapper-firewall.c
+# src/bin/wrapper-printer.c, src/bin/wrapper-sophomorix.c,
+# src/bin/wrapper-cyrus.c, src/bin/wrapper-collab.c, src/bin/wrapper-files.c
+CFLAGS += -DWWWUID=33	# uid of www-data
+CFLAGS += -DMINUID=500	# uid of nwberater
+
+
+config.status: configure
+	dh_testdir
+	# Add here commands to configure the package.
+	./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --libexecdir=\$${prefix}/lib --sysconfdir=/etc/linuxmuster CFLAGS="$(CFLAGS)"
+
+
+build: build-stamp
+
+build-stamp:  config.status
+	dh_testdir
+
+	# Add here commands to compile the package.
+	$(MAKE)
+	#docbook-to-man debian/schulkonsole.sgml > schulkonsole.1
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp 
+
+	# Add here commands to clean up after the build process.
+	[ ! -f Makefile ] || $(MAKE) distclean
+ifneq "$(wildcard /usr/share/misc/config.sub)" ""
+	cp -f /usr/share/misc/config.sub config/config.sub
+endif
+ifneq "$(wildcard /usr/share/misc/config.guess)" ""
+	cp -f /usr/share/misc/config.guess config/config.guess
+endif
+
+
+	dh_clean 
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k 
+	dh_installdirs -a var/run
+
+	# Add here commands to install the package into debian/tmp
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
+	install -d -o root -g root -m 755 $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole
+	install -p -o root -g root -m 644 $(CURDIR)/doc/etc/apache2/conf.d/schulkonsole $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/apache2.conf
+	install -p -o root -g root -m 644 $(CURDIR)/doc/etc/schulkonsole/permissions.conf $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/permissions.conf
+
+	install -D -p -o root -g root -m 0644 debian/linuxmuster-schulkonsole.lintian debian/tmp/usr/share/lintian/overrides/linuxmuster-schulkonsole
+	install -D -p -o root -g root -m 0644 debian/linuxmuster-schulkonsole-wrapper.lintian debian/tmp/usr/share/lintian/overrides/linuxmuster-schulkonsole-wrapper
+
+
+
+# Build architecture-independent files here.
+binary-indep: build install
+	dh_testdir -i
+	dh_testroot -i
+	dh_installchangelogs ChangeLog -i
+	dh_installdocs -i
+#	dh_installman
+	dh_install -i
+	dh_link -i
+	dh_compress -i
+	dh_fixperms -i -X/var/run/schulkonsole -X/usr/lib/schulkonsole/bin/wrapper-user -X/usr/lib/schulkonsole/bin/wrapper-firewall -X/usr/lib/schulkonsole/bin/wrapper-printer -X/usr/lib/schulkonsole/bin/wrapper-sophomorix -X/usr/lib/schulkonsole/bin/wrapper-collab -X/usr/lib/schulkonsole/bin/wrapper-files
+	dh_perl -i /usr/share/schulkonsole /usr/lib/schulkonsole
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir -a
+	dh_testroot -a
+	dh_installchangelogs ChangeLog -a
+	dh_installdocs -a
+#	dh_installman -a
+	dh_install -a
+	dh_link -a
+	dh_strip -a
+	dh_compress -a
+	dh_fixperms -i -X/var/run/schulkonsole -X/usr/lib/schulkonsole/bin/wrapper-user -X/usr/lib/schulkonsole/bin/wrapper-firewall -X/usr/lib/schulkonsole/bin/wrapper-printer -X/usr/lib/schulkonsole/bin/wrapper-sophomorix -X/usr/lib/schulkonsole/bin/wrapper-collab -X/usr/lib/schulkonsole/bin/wrapper-files
+	dh_installdeb -a
+	dh_shlibdeps -a
+	dh_gencontrol -a
+	dh_md5sums -a
+	dh_builddeb -a
+
+# We have nothing to do by default.
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install 

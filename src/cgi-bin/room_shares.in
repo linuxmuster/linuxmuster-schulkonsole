@@ -1,0 +1,119 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Room;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::Session;
+
+my $this_file = 'room_shares';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+my $q = $sk_session->query();
+
+my $room_session = new Schulkonsole::Room($sk_session);
+
+
+if (not $room_session->info('is_editing')) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room/g;
+	$sk_session->redirect($url);
+}
+
+
+my $editing_userdata = $room_session->info('editing_userdata');
+my $editing_user = $$editing_userdata{uid};
+
+my $workstations
+	= Schulkonsole::Config::workstations_room($room_session->info('name'));
+my $workstation_users = $room_session->workstation_users();
+
+my @login_ids;
+foreach my $host (keys %$workstation_users) {
+	foreach my $userdata (@{ $$workstation_users{$host} }) {
+		push @login_ids, $$userdata{id};
+	}
+}
+
+
+
+if ($q->param('acceptshares')) {
+	my $share_states = Schulkonsole::Sophomorix::share_states(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		@login_ids);
+	my $oldsettings = $room_session->param('oldsettings');
+
+	my @activate_shares;
+	my @deactivate_shares;
+	foreach my $host (keys %$workstations) {
+		foreach my $userdata (@{ $$workstation_users{$host} }) {
+			my $user = $$userdata{uid};
+			my $user_id = $$userdata{id};
+			my $is_editing_user = ($user eq $editing_user);
+			if (not exists $$oldsettings{share_states}{$user_id}) {
+				$$oldsettings{share_states}{$user_id}
+					= $$share_states{$user_id};
+			}
+			if ($q->param("$user;shares")) {
+				push @activate_shares, $user unless $$share_states{$user_id};
+			} elsif (not $is_editing_user) {
+				push @deactivate_shares, $user if $$share_states{$user_id};
+			}
+		}
+	}
+
+	if (   @activate_shares
+	    or @deactivate_shares) {
+		my $id = $sk_session->userdata('id');
+		my $password = $sk_session->get_password();
+		Schulkonsole::Sophomorix::shares_on($id, $password, @activate_shares)
+			if @activate_shares;
+		Schulkonsole::Sophomorix::shares_off($id, $password, @deactivate_shares)
+			if @deactivate_shares;
+
+		$sk_session->set_status(
+			$sk_session->d()->get("&Auml;nderungen &uuml;bernommen."), 0);
+	} else {
+		$sk_session->set_status(
+			$sk_session->d()->get("Keine &Auml;nderungen."), 1);
+	}
+}
+
+
+
+
+my $share_states = Schulkonsole::Sophomorix::share_states(
+	$sk_session->userdata('id'),
+	$sk_session->get_password(),
+	@login_ids);
+
+
+my @array_overview_workstations;
+foreach my $workstation (sort keys %$workstations) {
+	my $first_login = 1;
+	if (    $$workstation_users{$workstation}
+	    and @{ $$workstation_users{$workstation} }) {
+		foreach my $userdata (sort { $$a{uid} cmp $$b{uid} }
+		                           @{ $$workstation_users{$workstation} }) {
+			my $overview_workstation = {
+				name => $workstation,
+				editing => ($$userdata{uid} eq $editing_user),
+				login => $$userdata{uid},
+				first => $first_login,
+				shares => $$share_states{$$userdata{id}},
+			};
+			push @array_overview_workstations, $overview_workstation;
+
+			$first_login = 0;
+		}
+	}
+}
+$sk_session->set_var('overview_workstations', \@array_overview_workstations);
+
+
+$room_session->set_vars($sk_session);
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+

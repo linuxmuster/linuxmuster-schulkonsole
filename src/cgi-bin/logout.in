@@ -1,0 +1,19 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+
+my $this_file = 'logout';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+
+
+$sk_session->end_session();
+
+$sk_session->set_status($sk_session->d()->get('Abgemeldet'), 0);
+
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+

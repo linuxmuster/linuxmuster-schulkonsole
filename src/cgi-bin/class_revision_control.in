@@ -1,0 +1,87 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::Collab;
+
+my $this_file = 'class_revision_control';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+my $class = $sk_session->param('class');
+my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+if (   not $class
+    or not $$classs{$class}) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/class/g;
+	$sk_session->redirect($url);
+}
+
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+
+
+eval {
+if ($q->param('create')) {
+	Schulkonsole::Collab::create_repository($id, $password, $class);
+
+	$sk_session->set_status(
+		sprintf($sk_session->d()->get('Repository f&uuml;r %s erstellt'),
+		        $class),
+		0);
+} elsif ($q->param('drop')) {
+	Schulkonsole::Collab::drop_repository($id, $password, $class);
+
+	$sk_session->set_status(
+		sprintf($sk_session->d()->get('Repository f&uuml;r %s gel&ouml;scht'),
+		        $class),
+		0);
+}
+};
+if ($@) {
+	if (ref $@) {
+		if ($@->{internal}) {
+			$sk_session->set_status(
+				$sk_session->d()->get('Interner Fehler'), 1);
+			print STDERR $@;
+		} else {
+			$sk_session->set_status(
+				$sk_session->d()->get($@->what()), 1);
+		}
+	} else {
+		die $@;
+	}
+}
+
+
+
+my $repositories
+	= Schulkonsole::Collab::list_repository($id, $password);
+foreach my $repository (@$repositories) {
+	if ($repository eq $class) {
+		$sk_session->set_var('class_repository', $class);
+		last;
+	}
+}
+
+$sk_session->set_var('class', $$classs{$class}{displayname});
+
+$sk_session->print_page("$this_file.shtml", $this_file);

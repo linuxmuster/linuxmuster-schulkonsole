@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Quota</gettext> - <gettext>Projekte</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-quotas.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Quota</gettext> :: <gettext>Projekte (Zusatzquota)</gettext></h2>
+
+<hr>
+
+<!--#if expr="$projects" -->
+
+<form method="post">
+
+<!--#set var="odd" value="0" -->
+<table>
+<tr>
+<th><gettext>Projekt</gettext></th>
+<th colspan="$mountpoints_cnt"><gettext>Diskquota</gettext></th>
+<th><gettext>Mailquota</gettext></th>
+</tr>
+<tr>
+<th></th>
+<!--#if expr="$loop_mountpoints" -->
+<th><!--#echo var="mountpoints" --></th>
+<!--#endif -->
+<th></th>
+</tr>
+<!--#if expr="$loop_projects" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><!--#echo var="projects{name}" --></td>
+<!--#if expr="$loop_projects{adddiskquotas}" -->
+<td><input size="6" maxlength="5" name="${projects{gid}}_project${projects{adddiskquotas}{mountpoint}}-diskquota" value="$projects{adddiskquotas}{quota}"></td>
+<!--#endif -->
+<td><input size="6" maxlength="5" name="${projects{gid}}_projectmailquota" value="$projects{addmailquota}"></td>
+</tr>
+<!--#endif -->
+</table>
+
+<p><input type="submit" name="acceptprojects" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+<!--#else -->
+<p><gettext>Es gibt keine Projekte.</gettext></p>
+<!--#endif -->
+
+
+</div>
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

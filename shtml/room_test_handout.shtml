@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>aktueller Raum</gettext>: <!--#echo var="room" --> - <gettext>Klassenarbeitsmodus</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-room.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<!--#include file="subsubmenu-room_test.shtml.inc" -->
+
+<h2><gettext>Aktueller Raum</gettext>: <!--#echo var="room" -->
+::  <gettext>Klassenarbeitsmodus</gettext></h2>
+
+<p>
+<gettext>Nutzung:</gettext>
+
+<!--#if expr="$editinguser" -->
+<!--#echo var="editinguser" -->
+<gettext>unterrichtet in Raum</gettext>
+<!--#echo var="room" -->.
+<!--#if expr="$endedittime" -->
+<gettext>Unterrichtsende um</gettext> <!--#echo var="endedittime" -->.
+<!--#endif -->
+</p>
+
+<p><gettext>Klassenarbeitsmodus ist <strong>aktiv</strong>.</gettext></p>
+
+<hr>
+
+<form method="post">
+
+
+<table>
+<tr>
+<th><gettext>Hostname</gettext></th>
+<th><gettext>Login</gettext></th>
+</tr>
+<!--#if expr="$loop_overview_workstations" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+	<td><!--#if expr="$overview_workstations{first}" -->
+	    <!--#echo var="overview_workstations{name}" -->
+	    <!--#endif --></td>
+	<td><!--#if expr="$overview_workstations{login}" -->
+	    <!--#echo var="overview_workstations{login}" -->
+	    <!--#else -->-<!--#endif -->
+	</td>
+</tr>
+<!--#endif -->
+</table>
+
+<p><input type="submit" value="Anmeldestatus &uuml;berpr&uuml;fen"></p>
+
+
+<h3><gettext>Auszuteilende Dateien</gettext></h3>
+
+<!--#if expr="$teacher_share_files" -->
+<ul>
+<!--#if expr="$loop_teacher_share_files" -->
+	<li><!--#if expr="$teacher_share_files{isdir}" -->
+	*<!--#endif --><!--#echo var="teacher_share_files{name}" --></li>
+<!--#endif -->
+</ul>
+<p><gettext>Allen</gettext> <input type="submit" name="handouttest" value="bereitstellen">
+</p>
+<!--#else -->
+<p><gettext>Keine Dateien</gettext><p>
+<p><input type="submit" name="continue" value="weiter">
+</p>
+<!--#endif -->
+
+</form>
+
+
+
+</div>
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

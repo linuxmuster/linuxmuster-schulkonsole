@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Benutzer</gettext> - <gettext>Lehrerliste pflegen</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-user.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Benutzerverwaltung</gettext> :: <gettext>Lehrerliste pflegen</gettext></h2>
+
+<hr>
+
+<!--#if expr="$teachers" -->
+
+<form method="post">
+
+<h4><gettext>Editieren</gettext></h4>
+
+<table>
+<tr>
+<th><gettext>Nachname</gettext></th>
+<th><gettext>Vorname</gettext></th>
+<th><gettext>Geburtsdatum</gettext></th>
+<th><gettext>K&uuml;rzel</gettext></th>
+</tr>
+<!--#if expr="$loop_teachers" -->
+<tr>
+<td><input name="${teachers{login}}_surname" value="$teachers{surname}"></td>
+<td><input name="${teachers{login}}_firstname" value="$teachers{firstname}"></td>
+<td><input name="${teachers{login}}_birthdate" value="$teachers{birthdate}"></td>
+<td><!--#echo var="teachers{short}" --></td>
+</tr>
+<!--#endif -->
+</table>
+
+<p><input type="submit" name="acceptteachers" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+<!--#else -->
+
+<form method="post" enctype="multipart/form-data">
+<h4><label for="teachersfilename"><gettext>Datei importieren</gettext></label></h4>
+<p>
+<input type="file" id="teachersfilename" name="teachersfilename">
+<input type="submit" name="teachersupload" value="Hochladen">
+</p>
+</form>
+
+<!--#endif -->
+
+<hr>
+
+<form method="post">
+<h4><gettext>Lehrer hinzuf&uuml;gen</gettext></h4>
+
+<table>
+<tr>
+<th><label for="newsurname"><gettext>Nachname</gettext></label></th>
+<th><label for="newfirstname"><gettext>Vorname</gettext></label></th>
+<th><label for="newbirthdate"><gettext>Geburtsdatum</gettext></label></th>
+<th><label for="newlogin"><gettext>Login</gettext></label></th>
+</tr>
+<tr>
+<td><input id="newsurname" name="newsurname"></td>
+<td><input id="newfirstname" name="newfirstname"></td>
+<td><input id="newbirthdate" name="newbirthdate"></td>
+<td><input id="newlogin" name="newlogin"></td>
+</tr>
+</table>
+
+<p><input type="submit" name="newteacher" value="&Auml;nderungen &uuml;bernehmen"></p>
+</form>
+
+
+<hr>
+
+<form method="post">
+<h4><gettext>Lehrer entfernen</gettext></h4>
+
+<table>
+<tr>
+<th></th>
+<th><gettext>Nachname</gettext></th>
+<th><gettext>Vorname</gettext></th>
+</tr>
+<!--#if expr="$loop_teachers" -->
+<tr>
+<td><input type="checkbox" name="${teachers{login}}_delete"></td>
+<td><!--#echo var="teachers{surname}" --></td>
+<td><!--#echo var="teachers{firstname}" --></td>
+</tr>
+<!--#endif -->
+</table>
+
+<p><input type="submit" name="acceptteachers" value="&Auml;nderungen &uuml;bernehmen"></p>
+</form>
+
+<hr>
+
+<form method="post">
+<h4><gettext>Passw&ouml;rter f&uuml;r Lehrer</gettext></h4>
+
+<table>
+<tr>
+<th><gettext>Login</gettext></th>
+<th><gettext>Name</gettext></th>
+<th></th>
+<th></th>
+</tr>
+<!--#if expr="$loop_teachers" -->
+<tr>
+<td><!--#echo var="teachers{login}" --></td>
+<td><!--#echo var="teachers{firstname}" --> <!--#echo var="teachers{surname}" --></td>
+<td><input type="checkbox" name="${teachers{login}};select"></td>
+<td><input type="submit" name="${teachers{login}}_showpassword" value="Erstpasswort anzeigen"></td>
+</tr>
+<!--#endif -->
+<tr class="quickselection">
+<td colspan="2"><gettext>Schnellauswahl</gettext></td>
+<td colspan="2"><input type="button" value="An" name="select" onClick="check_uncheck(this)"></td>
+</tr>
+<tr>
+<th><gettext>Name</gettext></th>
+<th></th>
+<th></th>
+</tr>
+</table>
+
+<ul>
+<li><input type="submit" name="passwords_reset" value="Zur&uuml;cksetzen auf Erstpasswort"></li>
+<li><input type="submit" name="passwords_random" value="Zufallspasswort setzen"></li>
+<li><input type="submit" name="passwords_set" value="Passwort setzen">:
+<input type="password" name="userpassword"></li>
+</ul>
+
+</form>
+
+</div>
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

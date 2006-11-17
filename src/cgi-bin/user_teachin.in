@@ -1,0 +1,189 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Proc::ProcessTable;
+use Schulkonsole::Session;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::TeachIn;
+
+
+my $this_file = 'user_teachin';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+
+
+my $teachin = new Schulkonsole::TeachIn;
+if (not $teachin->is_read()) {
+	$teachin->read($id, $password);
+}
+my $users = $teachin->users();
+
+
+my $offset = $sk_session->param('showusersoffset');
+my $max = $sk_session->param('showusersmax') || 10;
+
+eval {
+COMMANDS: {
+$q->param('changemax') and do {
+	$max = $q->param('max') || 10;
+	$sk_session->param('showusersmax', $max);
+
+	last COMMANDS;
+};
+$q->param('prev') and do {
+	$offset -= $max;
+	$offset = 0 if $offset < 0;
+	$sk_session->param('showusersoffset', $offset);
+
+	# not last COMMANDS;
+};
+
+$q->param('next') and do {
+	my $end = keys %$users;
+	$offset += $max if $offset + $max < $end;
+	$sk_session->param('showusersoffset', $offset);
+
+	# not last COMMANDS
+};
+
+for my $param ($q->param) {
+	if (    my ($user) = $param =~ /^(.+)_user$/
+	    and $$users{$1}) {
+		my $alt = $q->param($param);
+		if (    $alt
+		    and $$users{$user}{alt}{$alt}) {
+			$$users{$user}{selected} = $alt;
+		} else {
+			delete $$users{$user}{selected};
+		}
+	} elsif (my ($page) = $param =~ /^(\d+)_page$/) {
+		my $end = keys %$users;
+		$offset = $max * ($page - 1);
+
+		if ($offset < 0) {
+			$offset = 0;
+		} elsif ($offset > $end) {
+			$offset = $end - $max;
+		}
+		$sk_session->param('showusersoffset', $offset);
+
+		# not last COMMANDS;
+	}
+}
+
+$q->param('write') and do {
+	Schulkonsole::Sophomorix::teachin_set($id, $password, $users);
+
+	if (Schulkonsole::Sophomorix::teachin_check($id, $password)) {
+		$sk_session->set_status($sk_session->d()->get(
+			'Es sind noch nicht alle Verkn&uuml;pfungen eindeutig festgelegt'),
+			 1);
+
+		$teachin->read($id, $password);
+		$users = $teachin->users();
+
+		$offset = 0;
+		$sk_session->param('showusersoffset', $offset);
+
+	} else {
+		$teachin->delete();
+
+		$sk_session->set_status_redirect($sk_session->d()->get(
+			'Sie k&ouml;nnen die Benutzerdaten jetzt &uuml;bernehmen'),
+			 0);
+
+		my $url = $q->url( -absolute => 1 );
+		$url =~ s/$this_file$/user_commit/g;
+
+		$sk_session->redirect($url);
+	}
+}
+
+}
+};
+if ($@) {
+    if (ref $@) {
+		if ($@->{internal}) {
+			$sk_session->set_status(
+				$sk_session->d()->get('Interner Fehler'), 1);
+			print STDERR "$@\n";
+		} else {
+			$sk_session->set_status($sk_session->d()->get($@->what()), 1);
+		}
+	} else {
+		die $@;
+	}
+}
+
+
+
+
+my @users;
+if ($users) {
+
+	my @keys = sort keys %$users;
+	my $end = $offset + $max;
+
+	$end = @keys if @keys < $end;
+	for (my $i = $offset; $i < $end; $i++) {
+		my $user = $keys[$i];
+		my $selected = $$users{$user}{selected};
+	
+		my @alts;
+		if ($$users{$user}{alt}) {
+			foreach my $alt (sort keys %{ $$users{$user}{alt} }) {
+				my $alt_info = {
+					id => $alt,
+					class => $$users{$user}{alt}{$alt}{class},
+					selected => $alt eq $selected,
+				};
+				push @alts, $alt_info;
+			}
+		}
+	
+		my $user_info = {
+			login => $user,
+			id => $$users{$user}{id},
+			class => $$users{$user}{class},
+			alt => \@alts,
+			'delete' => (not $selected),
+		};
+		push @users, $user_info;
+	}
+
+	my @pages = 1..int($#keys / $max + 1);
+	$sk_session->set_var('pages', \@pages);
+
+	$sk_session->set_var('firstpage', 1) if $offset == 0;
+	$sk_session->set_var('lastpage', 1) if ($offset > $#keys - $max);
+
+	$sk_session->set_var('currentpage', int($offset / $max) + 1);
+	$sk_session->set_var('maxpage', int($#keys / $max) + 1);
+}
+
+$q->param('max', $sk_session->param('showusersmax'))
+	if $sk_session->param('showusersmax');
+$sk_session->set_var('users', \@users);
+
+
+
+
+$sk_session->print_page("$this_file.shtml", $this_file);

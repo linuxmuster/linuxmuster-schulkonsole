@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Projekte</gettext>: <!--#echo var="project" --> - <gettext>Austeilen</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-project.shtml.inc" -->
+</div>
+
+<div id="content">
+<h2><gettext>Projekte</gettext> :: <gettext>Austeilen</gettext></h2>
+
+<h3><gettext>Ausgew&auml;hltes Projekt:</gettext> <!--#echo var="project" --></h3>
+
+
+<form method="post">
+
+
+<h3><gettext>Auszuteilende Dateien</gettext></h3>
+
+<!--#if expr="$admin_share_files" -->
+<ul>
+<!--#if expr="$loop_admin_share_files" -->
+	<li><!--#if expr="$admin_share_files{isdir}" -->
+	*<!--#endif --><!--#echo var="admin_share_files{name}" --></li>
+<!--#endif -->
+</ul>
+<!--#else -->
+<p><gettext>Keine Dateien</gettext><p>
+<!--#endif -->
+<p><input type="submit" value="Ansicht aktualisieren"></p>
+
+
+<table id="handout">
+<tr>
+<th><gettext>Login</gettext></th>
+<th><gettext>Name</gettext></th>
+<th><gettext>Auswahl</gettext></th>
+</tr>
+<!--#if expr="$loop_members" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr project="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr project="even"><!--#endif -->
+<td><!--#echo var="members{login}" --></td>
+<td><!--#echo var="members{firstname}" --> <!--#echo var="members{surname}" --></td>
+<td><input type="checkbox" name="${members{login}};handout" checked></td>
+</tr>
+<!--#endif -->
+<tr>
+<td colspan="2"></td>
+<td>|</td>
+</tr>
+<tr>
+<td colspan="2"><gettext>Schnellauswahl</gettext></td>
+<td><input type="button" value="Aus" name="handout" onClick="check_uncheck(this)" checked></td>
+</tr>
+</table>
+
+<p><input type="submit" name="handoutcopy" value="Austeilen"></p>
+</form>
+
+
+
+
+</div>
+
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p><gettext>W&auml;hlen Sie die Mitglieder, an die Sie austeilen wollen,
+oder das ganze Projekt aus.</gettext> <gettext>Beachten Sie, dass beim
+Austeilen Ihre Materialen in das Homeverzeichnis der Mitglieder
+in den Ordner <q>_austeilen</q> kopiert werden.</gettext></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

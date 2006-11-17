@@ -1,0 +1,173 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::WWW;
+
+my $this_file = 'class_www';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies only over secure connections
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $class = $sk_session->param('class');
+my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+if (   not $class
+    or not $$classs{$class}) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/class/g;
+	$sk_session->redirect($url);
+}
+
+
+
+my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
+
+my $class_permissions = Schulkonsole::WWW::class_permissions($class);
+my $student_permissions =
+	Schulkonsole::WWW::student_permissions(keys %$class_userdatas);
+
+
+if ($q->param('accept')) {
+	eval {
+	my $id = $sk_session->userdata('id');
+	my $password = $sk_session->get_password();
+
+	my $group_public = ($q->param('grouppublic') ? 1 : 0);
+	my $group_upload = ($q->param('groupupload') ? 1 : 0);
+	my $is_group_changed = 0;
+	if ($$class_permissions{$class}{public}) {
+		if (not $group_public) {
+			$is_group_changed = 1;
+		}
+	} elsif ($group_public) {
+		$is_group_changed = 1;
+	}
+	if (not $is_group_changed) {
+		if ($$class_permissions{$class}{upload}) {
+			if (not $group_upload) {
+				$is_group_changed = 1;
+			}
+		} elsif ($group_upload) {
+			$is_group_changed = 1;
+		}
+	}
+
+	if ($is_group_changed) {
+		Schulkonsole::WWW::set_group_permissions($id, $password,
+			$group_public, $group_upload, $class);
+
+		$class_permissions = Schulkonsole::WWW::class_permissions($class);
+	}
+
+
+	my @public_upload_users;
+	my @public_noupload_users;
+	my @private_upload_users;
+	my @private_noupload_users;
+
+	foreach my $user (keys %$class_userdatas) {
+		my $public = ($q->param("$user;public") ? 1 : 0);
+		my $upload = ($q->param("$user;upload") ? 1 : 0);
+	
+		if (   $public != $$student_permissions{$user}{public}
+		    or $upload != $$student_permissions{$user}{upload}) {
+			if ($public) {
+				if ($upload) {
+					push @public_upload_users, $user;
+				} else {
+					push @public_noupload_users, $user;
+				}
+			} else {
+				if ($upload) {
+					push @private_upload_users, $user;
+				} else {
+					push @private_noupload_users, $user;
+				}
+			}
+		}
+	}
+
+
+	if (   @public_upload_users
+	    or @public_noupload_users
+	    or @private_upload_users
+	    or @private_noupload_users) {
+		Schulkonsole::WWW::set_user_permissions($id, $password,
+			1, 1, @public_upload_users) if @public_upload_users;
+		Schulkonsole::WWW::set_user_permissions($id, $password,
+			1, 0, @public_noupload_users) if @public_noupload_users;
+		Schulkonsole::WWW::set_user_permissions($id, $password,
+			0, 1, @private_upload_users) if @private_upload_users;
+		Schulkonsole::WWW::set_user_permissions($id, $password,
+			0, 0, @private_noupload_users) if @private_noupload_users;
+
+		$student_permissions =
+			Schulkonsole::WWW::student_permissions(keys %$class_userdatas);
+	}
+
+	if (   $is_group_changed
+	    or @public_upload_users
+	    or @public_noupload_users
+	    or @private_upload_users
+	    or @private_noupload_users) {
+		$sk_session->set_status(
+			$sk_session->d()->get("&Auml;nderungen &uuml;bernommen."), 0);
+	} else {
+		$sk_session->set_status(
+			$sk_session->d()->get("Keine &Auml;nderungen."), 1);
+	}
+	};
+	if ($@) {
+		if (ref $@) {
+			if ($@->{internal}) {
+				$sk_session->set_status(
+					$sk_session->d()->get('Interner Fehler'), 1);
+				print STDERR $@;
+			} else {
+				$sk_session->set_status(
+					$sk_session->d()->get($@->what()), 1);
+			}
+		} else {
+			die $@;
+		}
+	}
+}
+
+
+
+my @students;
+foreach my $user (sort {
+    $$class_userdatas{$a}{surname} cmp $$class_userdatas{$b}{surname} }
+	    keys %$class_userdatas) {
+
+	my $student = {
+		login => $user,
+		firstname => $$class_userdatas{$user}{firstname},
+		surname => $$class_userdatas{$user}{surname},
+		www => $$student_permissions{$user},
+	};
+	push @students, $student;
+}
+$sk_session->set_var('students', \@students);
+$sk_session->set_var('groupwww', $$class_permissions{$class});
+
+
+
+
+$sk_session->set_var('class', $$classs{$class}{displayname});
+
+$sk_session->print_page("$this_file.shtml", $this_file);

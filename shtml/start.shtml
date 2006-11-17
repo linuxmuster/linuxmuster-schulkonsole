@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Startseite</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu"> </div>
+
+<div id="content">
+
+<h2>Status</h2>
+
+
+<h3><gettext>Druckauftr&auml;ge</gettext></h3>
+
+<!--#if expr="$printjobs" -->
+<form method="post">
+<p>
+<select name="printjobs" multiple>
+<!--#if expr="$loop_printjobs" -->
+	<option value="$printjobs{id}">
+		<!--#echo var="printjobs{id}" --> <!--#echo var="printjobs{title}" -->
+	</option>
+<!--#endif -->
+</select>
+</p>
+<p><input type="submit" value="Druckauftr&auml;ge l&ouml;schen"></p>
+</form>
+<!--#else -->
+<p><gettext>Keine Druckauftr&auml;ge</gettext></p>
+<!--#endif -->
+
+
+<h3><gettext>Passwort&auml;nderung</gettext></h3>
+<form method="post">
+<table>
+<tr>
+<td><label for="oldpassword"><gettext>Altes Passwort</gettext></label>: </td>
+<td><input id="oldpassword" name="oldpassword" type="password"></td>
+</tr>
+<tr>
+<td><label for="newpassword"><gettext>Neues Passwort</gettext></label>: </td>
+<td><input id="newpassword" name="newpassword" type="password"></td>
+<tr>
+<td><label for="newpasswordagain"><gettext>nochmal</gettext></label>: </td>
+<td><input id="newpasswordagain" name="newpasswordagain" type="password"></td>
+</tr>
+</table>
+<p><input type="submit" value="Passwort &auml;ndern"></p>
+</form>
+
+
+
+<h3><gettext>Info</gettext></h3>
+
+<h4><gettext>Quota</gettext></h4>
+
+<p><gettext>Festplattenquota:</gettext></p></p>
+<!--#if expr="$diskquotas" -->
+<table id="diskquota">
+<tr>
+	<th rowspan="2"><gettext>Pfad</gettext></th>
+	<th colspan="5"><gettext>Speicherplatz</gettext></th>
+	<th colspan="5"><gettext>Dateien</gettext></th>
+</tr>
+<tr>
+	<th><gettext>ben.</gettext></th>
+	<th><gettext>Lim.</gettext></th>
+	<th><gettext>Max</gettext></th>
+	<th><gettext>%</gettext></th>
+	<th><gettext>Zeit</gettext></th>
+	<th><gettext>ben.</gettext></th>
+	<th><gettext>Lim.</gettext></th>
+	<th><gettext>Max</gettext></th>
+	<th><gettext>%</gettext></th>
+	<th><gettext>Zeit</gettext></th>
+</tr>
+<!--#if expr="$loop_diskquotas" -->
+<!--#if expr="$diskquotas{warn}" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" -->
+<!--#else --><!--#set var="odd" value="1" --><!--#endif -->
+<tr class="warn">
+<!--#else -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="bgeins">
+<!--#else --><!--#set var="odd" value="1" --><tr class="bgzwei"><!--#endif -->
+<!--#endif -->
+	<td><!--#echo var="diskquotas{path}" --></td>
+	<td><!--#echo var="diskquotas{blocks_usage}" --></td>
+	<td><!--#echo var="diskquotas{blocks_soft}" --></td>
+	<td><!--#echo var="diskquotas{blocks_hard}" --></td>
+	<td><!--#echo var="diskquotas{blocks_percent}" --></td>
+	<td><!--#echo var="diskquotas{blocks_grace}" --></td>
+	<td><!--#echo var="diskquotas{files_usage}" --></td>
+	<td><!--#echo var="diskquotas{files_soft}" --></td>
+	<td><!--#echo var="diskquotas{files_hard}" --></td>
+	<td><!--#echo var="diskquotas{files_percent}" --></td>
+	<td><!--#echo var="diskquotas{files_grace}" --></td>
+</tr>
+<!--#endif -->
+</table>
+<!--#else -->
+<p><gettext>Keine Quota</gettext></p>
+<!--#endif -->
+
+<p><gettext>Mailquota:</gettext></p>
+<!--#if expr="$mailquotas" -->
+<table id="mailquota">
+<tr>
+	<th><gettext>Postfach</gettext></th>
+	<th><gettext>Typ</gettext></th>
+	<th><gettext>benutzt</gettext></th>
+	<th><gettext>Max</gettext></th>
+	<th><gettext>%</gettext></th>
+</tr>
+<!--#if expr="$loop_mailquotas" -->
+<!--#if expr="$mailquotas{warn}" -->
+<tr class="warn">
+<!--#else -->
+<tr>
+<!--#endif -->
+<td><!--#echo var="mailquotas{mbox}" --></td>
+<td><!--#echo var="mailquotas{type}" --></td>
+<td><!--#echo var="mailquotas{usage}" --></td>
+<td><!--#echo var="mailquotas{limit}" --></td>
+<td><!--#echo var="mailquotas{usage_percent}" --></td>
+</tr>
+<!--#endif -->
+</table>
+<!--#else -->
+<p>Keine Mailquota</p>
+<!--#endif -->
+
+
+
+<!--#if expr="$projects" -->
+<hr>
+
+<p>
+<gettext>Projekte</gettext>: <!--#echo var="projects" -->
+</p>
+<!--#endif -->
+
+</div>
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p><gettext>Um Druckauftr&auml;ge zu l&ouml;schen, die Auftr&auml;ge aus
+der Liste ausw&auml;hlen und mit <q>Druckauftr&auml;ge l&ouml;schen</q>
+best&auml;tigen. Es k&ouml;nnen mehrere Auftr&auml;ge aus der Liste
+gew&auml;hlt werden, je nach Browser z.B. durch Halten der Strg-Taste.
+</gettext></p>
+<p><gettext>Um das Passwort zu &auml;ndern, das alte Passwort eingeben,
+das neue Passwort (um Tippfehler zu vermeiden) zweimal in die daf&uuml;r
+vorgesehenen Felder eintragen und mit <q>Passwort &auml;ndern</q>
+best&auml;tigen.</q></gettext></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

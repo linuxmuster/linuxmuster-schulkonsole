@@ -1,0 +1,193 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+wrapper-files.pl - wrapper for writing files
+
+=head1 SYNOPSIS
+
+ my $id = $userdata{id};
+ my $password = 'secret';
+ my $app_id = Schulkonsole::Config::WRITEFILEAPP;
+
+ open SCRIPT, "| $Schulkonsole::Config::_wrapper_files";
+ print SCRIPT <<INPUT;
+ $id
+ $password
+ $app_id
+ 1
+ line1
+ line2
+
+ INPUT
+
+=head1 DESCRIPTION
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Config;
+use Schulkonsole::DB;
+
+
+
+my $id = <>;
+$id = int($id);
+my $password = <>;
+chomp $password;
+
+my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
+exit -32 unless $userdata;
+
+my $app_id = <>;
+($app_id) = $app_id =~ /^(\d+)$/;
+exit -33
+	unless defined $app_id && $Schulkonsole::Config::_root_apps[$app_id];
+
+
+
+my $permissions = Schulkonsole::Config::permissions_apps();
+my $groups = Schulkonsole::DB::user_groups(
+	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
+
+my $app;
+foreach my $group (('ALL', keys %$groups)) {
+	foreach my $name (keys %{ $$permissions{$group} }) {
+		if ($Schulkonsole::Config::_root_app_name_ids{$name} == $app_id) {
+			$app = $Schulkonsole::Config::_root_apps[$app_id];
+			last;
+		}
+	}
+}
+exit -34 unless $app;
+
+
+my $opts;
+SWITCH: {
+
+=head3 write_file
+
+numeric constant: C<Schulkonsole::Config::WRITEFILEAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item file
+
+0 = classrooms, 1 = printers, 2 = workstations
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::WRITEFILEAPP and do {
+	my $file = <>;
+	($file) = $file =~ /^(\d+)$/;
+	exit -120 unless defined $file;
+
+	my $filename;
+	SWITCHWRITEFILE: {
+	$file == 0 and do {
+		$filename = $Schulkonsole::Config::_classrooms_file;
+		last SWITCHWRITEFILE;
+	};
+	$file == 1 and do {
+		$filename = $Schulkonsole::Config::_printers_file;
+		last SWITCHWRITEFILE;
+	};
+	$file == 2 and do {
+		$filename = $Schulkonsole::Config::_workstations_file;
+		last SWITCHWRITEFILE;
+	};
+	}
+
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+
+	open FILE, ">$filename" or exit -121;
+	flock FILE, 2;
+	seek FILE, 0, 0;
+
+	while (<>) {
+		print FILE;
+	}
+
+	close FILE or exit -123;
+
+	exit 0;
+};
+
+=head3 import_workstations
+
+numeric constant: C<Schulkonsole::Config::IMPORTWORKSTATIONSAPP>
+
+=cut
+
+$app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
+	my $pid = fork;
+	exit -44 unless defined $pid;
+
+	if (not $pid) {
+		close STDIN;
+		close STDOUT;
+		close STDERR;
+
+		my $lockfile = Schulkonsole::Config::lockfile('import_workstations');
+		open LOCK, ">>$lockfile" or exit -121;
+		flock LOCK, 2;
+		seek LOCK, 0, 0;
+		truncate LOCK, 0;
+		print LOCK "$$\n";
+
+		$< = $>;
+		$) = 0;
+		$( = $);
+		umask(022);
+		exec "$app" or last SWITCH;
+	} else {
+		exit 0;
+	}
+};
+
+=head3 import_workstations
+
+numeric constant: C<Schulkonsole::Config::IMPORTPRINTERSAPP>
+
+=cut
+
+$app_id == Schulkonsole::Config::IMPORTPRINTERSAPP and do {
+	my $pid = fork;
+	exit -44 unless defined $pid;
+
+	if (not $pid) {
+		close STDIN;
+		close STDOUT;
+		close STDERR;
+
+		my $lockfile = Schulkonsole::Config::lockfile('import_printers');
+		open LOCK, ">>$lockfile" or exit -121;
+		flock LOCK, 2;
+		seek LOCK, 0, 0;
+		truncate LOCK, 0;
+		print LOCK "$$\n";
+
+		$< = $>;
+		$) = 0;
+		$( = $);
+		umask(022);
+		exec "$app" or last SWITCH;
+	} else {
+		exit 0;
+	}
+};
+
+}
+
+
+
+exit -2;	# program error
+

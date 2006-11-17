@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Klassen</gettext>: <!--#echo var="class" --> - <gettext>Webfreigabe</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-class.shtml.inc" -->
+</div>
+
+<div id="content">
+<h2><gettext>Klassen</gettext> :: <gettext>Webfreigabe</gettext></h2>
+
+<h3><gettext>Ausgew&auml;hlte Klasse:</gettext> <!--#echo var="class" --></h3>
+
+<form method="post">
+
+<table id="classlist">
+<tr>
+<th><gettext>Login</gettext></th>
+<th><gettext>Name</gettext></th>
+<th><gettext>&ouml;ffentlich</gettext></th>
+<th><gettext>hochladen</gettext></th>
+</tr>
+<tr class="even">
+<td colspan="2"><gettext>gemeinsames Klassenweb</gettext></td>
+<!--#if expr="$groupwww{public}" -->
+<td><input type="checkbox" name="grouppublic" checked></td>
+<!--#else -->
+<td><input type="checkbox" name="grouppublic"></td>
+<!--#endif -->
+<!--#if expr="$groupwww{upload}" -->
+<td><input type="checkbox" name="groupupload" checked></td>
+<!--#else -->
+<td><input type="checkbox" name="groupupload"></td>
+<!--#endif -->
+</tr>
+<tr class="odd"><td colspan="4">&nbsp;</td></tr>
+<!--#if expr="$loop_students" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><!--#echo var="students{login}" --></td>
+<td><!--#echo var="students{firstname}" --> <!--#echo var="students{surname}" --></td>
+<!--#if expr="$students{www}{public}" -->
+<td><input type="checkbox" name="${students{login}};public" checked></td>
+<!--#else -->
+<td><input type="checkbox" name="${students{login}};public"></td>
+<!--#endif -->
+<!--#if expr="$students{www}{upload}" -->
+<td><input type="checkbox" name="${students{login}};upload" checked></td>
+<!--#else -->
+<td><input type="checkbox" name="${students{login}};upload"></td>
+<!--#endif -->
+</tr>
+<!--#endif -->
+<tr>
+<th><gettext>Login</gettext></th>
+<th><gettext>Name</gettext></th>
+<th><gettext>&ouml;ffentlich</gettext></th>
+<th><gettext>hochladen</gettext></th>
+</tr>
+</table>
+
+<p><input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+
+
+</div>
+
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p><gettext>Hier k&ouml;nnen Sie den Zugriff auf die Webordner der einzelnen
+Sch&uuml;ler/innen oder den gemeinsamen Webordner der Klasse steuern.</gettext>
+<gettext>Sie k&ouml;nnen festlegen, ob der jeweilige Webordner
+&ouml;ffentlich zug&auml;nglich sein soll und ob die Sch&uuml;ler/innen das
+Recht haben, Dateien in den Webordner hochzuladen.</gettext></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

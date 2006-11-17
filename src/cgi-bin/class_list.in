@@ -1,0 +1,178 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::DB;
+use Schulkonsole::Info;
+use Schulkonsole::Cyrus;
+
+my $this_file = 'class_list';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $class = $sk_session->param('class');
+my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+if (   not $class
+    or not $$classs{$class}) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/class/g;
+	$sk_session->redirect($url);
+}
+
+
+my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
+my $user_quotaroots = Schulkonsole::Cyrus::quota(keys %$class_userdatas);
+
+my @students;
+foreach my $user (sort {
+	$$class_userdatas{$a}{surname} cmp $$class_userdatas{$b}{surname} }
+	keys %$class_userdatas) {
+
+	my $quotaemail_usage;
+	my $quotaemail_limit;
+	my $quotaemail_percent;
+	if ($$user_quotaroots{$user}) {
+		$quotaemail_usage
+			= $$user_quotaroots{$user}{"user.$user"}{quota}{STORAGE}{usage};
+		$quotaemail_limit
+			= $$user_quotaroots{$user}{"user.$user"}{quota}{STORAGE}{limit};
+		$quotaemail_percent = sprintf("%.1f", 100 *
+		                              $quotaemail_usage / $quotaemail_limit);
+	} else {
+		$quotaemail_percent = '0.0';
+	}
+
+	my $disk_quotas =
+		Schulkonsole::Info::disk_quotas($$class_userdatas{$user}{uidnumber});
+
+	my @array_diskquotas;
+	foreach my $disk_quota (@$disk_quotas) {
+	    my ($filesystem, $path,
+		    $blocks_usage, $blocks_soft, $blocks_hard,
+		    $blocks_grace,
+		    $files_usage, $files_soft, $files_hard,
+		    $files_grace) = @$disk_quota;
+		next unless (defined $files_hard and ($blocks_hard or $files_hard));
+
+		my $blocks_percent = $blocks_soft ?
+			  sprintf('%.1f', 100 * $blocks_usage / $blocks_soft)
+			: 0;
+		my $files_percent = $files_soft ?
+			  sprintf('%.1f', 100 * $files_usage / $files_soft)
+			: 0;
+
+		my $blocks_grace_str;
+		if ($blocks_grace) {
+			$blocks_grace -= $^T;
+			if ($blocks_grace > 86400) {
+				$blocks_grace_str = sprintf($sk_session->d()->get('%d Tage'),
+					$blocks_grace / 86400 + 0.5);
+			} elsif ($blocks_grace > 7200) {
+				$blocks_grace_str = sprintf($sk_session->d()->get('%d Stunden'),
+					$blocks_grace / 3600 + 0.5);
+			} elsif ($blocks_grace > 0) {
+				$blocks_grace_str = sprintf($sk_session->d()->get('%d Minuten'),
+					$blocks_grace / 60 + 0.5);
+			} else {
+				$blocks_grace_str = $sk_session->d()->get('abgelaufen');
+			}
+		} else {
+			$blocks_grace_str = '-';
+		}
+	
+		my $files_grace_str;
+		if ($files_grace) {
+			$files_grace -= $^T;
+			if ($files_grace > 86400) {
+				$files_grace_str = sprintf($sk_session->d()->get('%d Tage'),
+					$files_grace / 86400 + 0.5);
+			} elsif ($files_grace > 7200) {
+				$files_grace_str = sprintf($sk_session->d()->get('%d Stunden'),
+					$files_grace / 3600 + 0.5);
+			} elsif ($files_grace > 0) {
+				$files_grace_str = sprintf($sk_session->d()->get('%d Minuten'),
+					$files_grace / 60 + 0.5);
+			} else {
+				$files_grace_str = $sk_session->d()->get('abgelaufen');
+			}
+		} else {
+			$files_grace_str = '-';
+		}
+
+		my $diskquota = {
+			'warn' => $blocks_grace || $files_grace,
+			path => $path,
+			blocks_usage => $blocks_usage,
+			blocks_soft => $blocks_soft,
+			blocks_hard => $blocks_hard,
+			blocks_percent => $blocks_percent,
+			blocks_percent_rounded => ($blocks_percent < 100.0 ?
+			                             int($blocks_percent + 0.5)
+			                           : 100),
+			blocks_grace => $blocks_grace_str,
+			files_usage => $files_usage,
+			files_soft => $files_soft,
+			files_hard => $files_hard,
+			files_percent => $files_percent,
+			files_percent_rounded => ($files_percent < 100.0 ?
+			                            int($files_percent + 0.5)
+			                          : 100),
+			files_grace => $files_grace_str,
+		};
+
+		push @array_diskquotas, $diskquota;
+	}
+
+	my $mailquotas =  { usage => $quotaemail_usage,
+	                    limit => $quotaemail_limit,
+	                    percent => $quotaemail_percent,
+						percent_rounded => ($quotaemail_percent ?
+						                      int($quotaemail_percent + 0.5)
+						                    : 100),
+	                    'warn' => ($quotaemail_usage > $quotaemail_limit) };
+
+
+	my $groups = Schulkonsole::DB::user_groups(
+		$$class_userdatas{$user}{uidnumber},
+		$$class_userdatas{$user}{gidnumber},
+		$$class_userdatas{$user}{gid});
+	my @projects;
+	my $projects = Schulkonsole::Info::groups_projects($groups);
+	foreach my $project (values %$projects) {
+		push @projects, $$project{longname};
+	}
+	my $projects_str = join ', ', @projects;
+
+
+	my $student = {
+		login => $user,
+		firstname => $$class_userdatas{$user}{firstname},
+		surname => $$class_userdatas{$user}{surname},
+		mailquotas => $mailquotas,
+		diskquotas => \@array_diskquotas,
+		subclass => $$class_userdatas{$user}{subclass},
+		projects_str => $projects_str,
+	};
+	push @students, $student;
+}
+$sk_session->set_var('students', \@students);
+
+
+
+$sk_session->set_var('class', $$classs{$class}{displayname});
+
+$sk_session->print_page("$this_file.shtml", $this_file);

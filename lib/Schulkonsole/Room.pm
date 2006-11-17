@@ -1,0 +1,333 @@
+use strict;
+use POSIX qw(strftime);
+use Schulkonsole::Config;
+use Schulkonsole::DB;
+use Schulkonsole::Firewall;
+use Schulkonsole::RoomSession;
+
+package Schulkonsole::Room;
+require Exporter;
+use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
+$VERSION = 0.06;
+@ISA = qw(Exporter Schulkonsole::RoomSession);
+@EXPORT_OK = qw(
+);
+
+
+
+
+=head1 DESCRIPTION
+
+=head2 Public Methods
+
+=head3 C<new Room($session)>
+
+=cut
+
+sub new {
+	my $class = shift;
+	my $session = shift;
+
+	my $room;
+	my $id;
+
+	my $q = $session->query();
+	my $remote_room = $session->{template_vars}{remote_room};
+
+
+	my $classrooms = Schulkonsole::Config::classrooms();
+	$room = $q->param('rooms');
+	if ($room) {
+		foreach my $classroom (@$classrooms) {
+			if ($classroom eq $room) {
+				$session->param('room', $room);
+				last;
+			}
+		}
+	}
+
+	$room = $session->param('room');
+	$room = $remote_room unless $room;
+
+	$id = $session->userdata('id');
+
+	my $this = new Schulkonsole::RoomSession($room);
+
+	$this->param('unprivileged', 1);
+
+
+	my $editing_userdata = {};
+	my $is_editing = 0;
+	my $is_allowed_stopedit = 0;
+	if ($this->param('edit')) {
+		$editing_userdata
+			= Schulkonsole::DB::get_userdata_by_id(
+				$this->param('user_id'));
+		if ($$editing_userdata{id} == $id) {
+			$is_editing = 1;
+			$is_allowed_stopedit = 1;
+		} elsif ($this->param('name') eq $remote_room) {
+			$is_allowed_stopedit = 2;
+		}
+	}
+
+	$this->{_ROOMDATA} = {
+		name => $room,
+		id => $id,
+		editing_userdata => $editing_userdata,
+		is_editing => $is_editing,
+		is_allowed_stopedit => $is_allowed_stopedit,
+	};
+
+
+
+	bless $this, $class;
+}
+
+
+
+
+=head3 C<info()>
+
+=cut
+
+sub info {
+	my $this = shift;
+	my $key = shift;
+
+	return $this->{_ROOMDATA}{$key};
+}
+
+
+
+
+=head3 C<start_lesson()>
+
+=cut
+
+sub start_lesson {
+	my $this = shift;
+	my $id = shift;
+	my $password = shift;
+
+	if (not $this->{_ROOMDATA}{name}) {
+		die new Schulkonsole::Error(Schulkonsole::Error::UNKNOWN_ROOM);
+	}
+
+
+	$this->{_ROOMDATA}{editing_userdata}
+		= Schulkonsole::DB::get_userdata_by_id($this->{_ROOMDATA}{id});
+
+	$this->{_ROOMDATA}{is_editing} = 1;
+	$this->{_ROOMDATA}{is_allowed_stopedit} = 1;
+
+	$this->param('name', $this->{_ROOMDATA}{name});
+	$this->param('user_id', $this->{_ROOMDATA}{id});
+	$this->param('edit', 1);
+
+
+	my $blocked_hosts_internet
+		= Schulkonsole::Firewall::blocked_hosts_internet();
+	my $blocked_hosts_intranet
+		= Schulkonsole::Firewall::blocked_hosts_intranet();
+	my $unfiltered_hosts = Schulkonsole::Firewall::unfiltered_hosts();
+
+	my $printers
+		= Schulkonsole::Config::printers_room($this->{_ROOMDATA}{name});
+	my $printer_info = Schulkonsole::Printer::printer_info($id, $password);
+	my %printers_accept;
+	foreach my $printer (@$printers) {
+		$printers_accept{$printer} =
+			$$printer_info{$printer}{Accepting} eq 'Yes';
+	}
+
+
+	$this->param('oldsettings', {
+		blocked_hosts_internet => $blocked_hosts_internet,
+		blocked_hosts_intranet => $blocked_hosts_intranet,
+		unfiltered_hosts => $unfiltered_hosts,
+		printers_accept => \%printers_accept,
+	});
+
+
+	$this->end_lesson_at($id, $password, int($^T / 300) * 300 + 2700);
+}
+
+
+
+
+=head3 C<end_lesson_now($id, $password)>
+
+=cut
+
+sub end_lesson_now {
+	my $this = shift;
+	my $id = shift;
+	my $password = shift;
+
+	$this->unlock();
+	Schulkonsole::Firewall::all_on($id, $password, $this->{_ROOMDATA}{name});
+	$this->lock();
+
+	$this->delete();
+}
+
+
+
+
+=head3 C<end_lesson_at($id, $password, $end_time)>
+
+=cut
+
+sub end_lesson_at {
+	my $this = shift;
+	my $id = shift;
+	my $password = shift;
+	my $end_time = shift;
+
+	$this->unlock();
+	Schulkonsole::Firewall::all_on_at($id, $password,
+		$this->{_ROOMDATA}{name},
+		$end_time);
+	$this->lock();
+}
+
+
+
+
+=head3 C<change_workstation_passwords($password)>
+
+=cut
+
+sub change_workstation_passwords {
+	my $this = shift;
+	my $password = shift;
+
+	return Schulkonsole::DB::change_workstation_passwords(
+		$this->{_ROOMDATA}{name}, $password);
+}
+
+
+
+
+=head3 C<workstation_users()>
+
+=cut
+
+my %workstation_users;
+sub workstation_users {
+	my $this = shift;
+
+	return \%workstation_users if %workstation_users;
+
+
+	my $workstations = Schulkonsole::Config::workstations_room(
+		$this->{_ROOMDATA}{name});
+
+	foreach my $workstation (keys %$workstations) {
+		my $filename = Schulkonsole::Config::workstation_file($workstation);
+		if (-e $filename) {
+			open WORKSTATION, "<$filename"
+				or die "$0: Cannot open $filename: $!\n";
+
+			my @users;
+			while (<WORKSTATION>) {
+				chomp;
+				push @users, $_;
+			};
+			close WORKSTATION;
+
+			$workstation_users{$workstation} = [];
+			foreach my $uid (@users) {
+				my $userdata = Schulkonsole::DB::get_userdata($uid);
+				if ($userdata) {
+					push @{ $workstation_users{$workstation} }, $userdata;
+				}
+			}
+		}
+	}
+
+
+	return \%workstation_users;
+}
+
+
+
+=head3 C<set_vars($session)>
+
+=cut
+
+sub set_vars {
+	my $this = shift;
+	my $session = shift;
+
+	$session->set_var('room', $this->info('name'));
+	if ($this->param('edit')) {
+		my $editing_userdata = $this->info('editing_userdata');
+		$session->set_var('editinguser',
+			"$$editing_userdata{firstname} $$editing_userdata{surname}");
+
+		$session->set_var('edit', $this->info('is_editing'));
+		$session->set_var('stopedit', $this->info('is_allowed_stopedit'));
+
+		my $end_time = $this->param('end_time');
+		$session->set_var('endedittime',
+			POSIX::strftime('%H:%M', localtime($end_time))) if $end_time;
+	} else {
+		my $permissions = Schulkonsole::Config::permissions_pages();
+		my $users = $this->workstation_users();
+
+		my @privileged_users;
+		foreach my $workstation (keys %$users) {
+			foreach my $userdata (@{ $$users{$workstation} }) {
+				my $groups = Schulkonsole::DB::user_groups(
+					$$userdata{uidnumber},
+					$$userdata{gidnumber},
+					$$userdata{gid});
+				my @groupnames = keys %$groups;
+				foreach my $group (('ALL', @groupnames)) {
+					if ($$permissions{$group}{room}) {
+						push @privileged_users,
+						     "$$userdata{firstname} $$userdata{surname}";
+						last;
+					}
+				}
+			}
+		}
+		$session->set_var('privilegeduser', join(', ', @privileged_users));
+	}
+
+	my $test_step = $this->param('test_step');
+	$session->set_var('exammode', $test_step);
+
+	    $test_step > 0
+	and $session->set_var('done_test_start', 1)
+	and $test_step > 1
+	and $session->set_var('done_test_handout', 1)
+	and $test_step > 2
+	and $session->set_var('done_test_password', 1);
+
+}
+
+
+
+
+sub random_password {
+	my $len = shift;
+	my $re;
+
+	my @chrs = ('a' .. 'z', 'A' .. 'Z', '0' .. '9', '-', '.', '/');
+
+	for (my $i = 0; $i < $len; $i++) {
+		$re .= $chrs[int(rand $#chrs + 1)];
+	}
+
+	return $re;
+}
+
+
+
+
+
+
+1;

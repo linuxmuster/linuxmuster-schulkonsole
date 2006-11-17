@@ -1,0 +1,128 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::Collab;
+
+my $this_file = 'project_revision_control';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+my $projects = Schulkonsole::Info::groups_projects($sk_session->groups());
+
+
+
+my $project = $q->param('projects');
+if (    $project
+    and $$projects{$project}) {
+	$sk_session->param('project', $project);
+}
+$project = $sk_session->param('project');
+
+if (   not $project
+    or not $$projects{$project}) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/project/g;
+	$sk_session->redirect($url);
+}
+
+if (not Schulkonsole::DB::is_project_admin($$projects{$project}{id},
+        	$sk_session->userdata('uidnumber'))) {
+	$sk_session->set_status_redirect($sk_session->d()->get(
+		'Sie sind kein Projektleiter'),
+		1);
+
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/project_members/g;
+	$sk_session->redirect($url);
+}
+
+
+
+
+
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+
+
+eval {
+if ($q->param('create')) {
+	Schulkonsole::Collab::create_repository($id, $password, $project);
+
+	$sk_session->set_status(
+		sprintf($sk_session->d()->get('Repository f&uuml;r %s erstellt'),
+		        $$projects{$project}{longname}),
+		0);
+} elsif ($q->param('drop')) {
+	Schulkonsole::Collab::drop_repository($id, $password, $project);
+
+	$sk_session->set_status(
+		sprintf($sk_session->d()->get('Repository f&uuml;r %s gel&ouml;scht'),
+		        $$projects{$project}{longname}),
+		0);
+}
+};
+if ($@) {
+	if (ref $@) {
+		if ($@->{internal}) {
+			$sk_session->set_status(
+				$sk_session->d()->get('Interner Fehler'), 1);
+			print STDERR $@;
+		} else {
+			$sk_session->set_status(
+				$sk_session->d()->get($@->what()), 1);
+		}
+	} else {
+		die $@;
+	}
+}
+
+
+
+my $repositories
+	= Schulkonsole::Collab::list_repository($id, $password);
+foreach my $repository (@$repositories) {
+	if ($repository eq $project) {
+		$sk_session->set_var('project_repository', $project);
+		last;
+	}
+}
+
+my @projects;
+foreach my $project (sort {
+	$$projects{$a}{displayname} cmp $$projects{$b}{displayname} }
+	keys %$projects) {
+	push @projects, { gid => $project,
+	                  name => $$projects{$project}{displayname},
+	                  longname => $$projects{$project}{longname},
+	                };
+}
+$sk_session->set_var('projects', \@projects);
+
+
+$sk_session->set_var('isadmin', 1);
+$sk_session->set_var('project_gid', $project);
+$sk_session->set_var('project', $$projects{$project}{displayname});
+$sk_session->set_var('projectlongname', $$projects{$project}{longname});
+
+
+$sk_session->print_page("$this_file.shtml", $this_file);

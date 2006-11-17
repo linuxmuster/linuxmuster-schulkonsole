@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Projekte</gettext>: <!--#echo var="project" --> - <gettext>Datenbanken</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-project.shtml.inc" -->
+</div>
+
+<div id="content">
+<h2><gettext>Projekte</gettext> :: <gettext>Datenbanken</gettext></h2>
+
+<h3><gettext>Ausgew&auml;hltes Projekt:</gettext> <!--#echo var="project" --></h3>
+
+<form method="post">
+<!--#if expr="$project_db" -->
+<p><gettext>F&uuml;r dieses Projekt wurden Datenbanken eingerichtet.</gettext></p>
+<p><input type="submit" name="drop" value="L&ouml;schen">
+<input type="submit" name="create" value="Aktualisieren"></p>
+<!--#else -->
+<p><gettext>F&uuml;r das Projekt gibt es keine Datenbanken.</gettext></p>
+<p><input type="submit" name="create" value="Anlegen"></p>
+<!--#endif -->
+</form>
+
+</div>
+
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p><gettext>Hier k&ouml;nnen Sie MySQL-Datenbanken f&uuml;r alle
+Mitglied des Projekts anlegen oder wieder l&ouml;schen.</gettext>
+<gettext>Kommen neue Mitglieder zum Projekt hinzu,
+so k&ouml;nnen Sie &uuml;ber die Schaltfl&auml;che
+<q>Datenbanken anlegen/aktualisieren</q> die fehlenden Datenbanken anlegen
+lassen.</gettext>
+<gettext>Die Zugangsdaten zur Datenbank werden an alle Projektmitglieder per
+E-Mail verschickt.</gettext></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

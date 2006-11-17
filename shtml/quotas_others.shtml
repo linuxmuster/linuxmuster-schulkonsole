@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Quota</gettext> - <gettext>Sonderquota</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-quotas.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Quota</gettext> :: <gettext>Sonderquota</gettext></h2>
+
+
+<h3><gettext>Neu anlegen</gettext></h3>
+
+<form method="post">
+
+<table>
+<tr>
+<th><label for="newlogin"><gettext>Login</gettext></label></th>
+<th colspan="$mountpoints_cnt"><gettext>Diskquota</gettext></th>
+<th><gettext>Mailquota</gettext></th>
+</tr>
+<tr>
+<th></th>
+<!--#if expr="$loop_mountpoints" -->
+<th><!--#echo var="mountpoints" --></th>
+<!--#endif -->
+<th></th>
+</tr>
+<tr class="even">
+<td><input id="newlogin" name="newlogin"></td>
+<!--#if expr="$loop_standarddiskquotas" -->
+<td><input size="6" maxlength="5" name="${standarddiskquotas{mountpoint}}-newdiskquota" value="${standarddiskquotas{diskquota}}"></td>
+<!--#endif -->
+<td><input size="6" maxlength="5" name="newmailquota" value="$standardmailquota"></td>
+</tr>
+</table>
+
+<p><input type="submit" name="acceptusers" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+
+
+<!--#if expr="$www" -->
+
+<h3><gettext>Webspace</gettext></h3>
+
+<form method="post">
+
+<!--#set var="odd" value="0" -->
+<table>
+<tr>
+<th><gettext>Login</gettext></th>
+<th colspan="$mountpoints_cnt"><gettext>Diskquota</gettext></th>
+<th><gettext>Mailquota</gettext></th>
+</tr>
+<tr>
+<th></th>
+<!--#if expr="$loop_mountpoints" -->
+<th><!--#echo var="mountpoints" --></th>
+<!--#endif -->
+<th></th>
+</tr>
+<tr class="even">
+<td><!--#echo var="www{login}" --></td>
+<!--#if expr="$loop_www{diskquotas}" -->
+<td><input size="6" maxlength="5" name="${www{login}}_user${www{diskquotas}{mountpoint}}-diskquota" value="$www{diskquotas}{quota}"></td>
+<!--#endif -->
+<td><input size="6" maxlength="5" name="${www{login}}_usermailquota" value="$www{mailquota}"></td>
+</tr>
+</table>
+
+<p><input type="submit" name="acceptusers" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+<!--#endif -->
+
+
+
+
+<!--#if expr="$admins" -->
+
+<h3><gettext>Administratoren</gettext></h3>
+
+<form method="post">
+
+<!--#set var="odd" value="0" -->
+<table>
+<tr>
+<th><gettext>Login</gettext></th>
+<th><gettext>Name</gettext></th>
+<th colspan="$mountpoints_cnt"><gettext>Diskquota</gettext></th>
+<th><gettext>Mailquota</gettext></th>
+</tr>
+<tr>
+<th colspan="2"></th>
+<!--#if expr="$loop_mountpoints" -->
+<th><!--#echo var="mountpoints" --></th>
+<!--#endif -->
+<th></th>
+</tr>
+<!--#if expr="$loop_admins" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><!--#echo var="admins{login}" --></td>
+<td><!--#echo var="admins{firstname}" --> <!--#echo var="admins{surname}" --></td>
+<!--#if expr="$loop_admins{diskquotas}" -->
+<td><input size="6" maxlength="5" name="${admins{login}}_user${admins{diskquotas}{mountpoint}}-diskquota" value="$admins{diskquotas}{quota}"></td>
+<!--#endif -->
+<td><input size="6" maxlength="5" name="${admins{login}}_usermailquota" value="$admins{mailquota}"></td>
+</tr>
+<!--#endif -->
+</table>
+
+<p><input type="submit" name="acceptusers" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+<!--#endif -->
+
+
+
+<!--#if expr="$users" -->
+
+<h3><gettext>Sch&uuml;ler</gettext></h3>
+
+<form method="post">
+
+<!--#set var="odd" value="0" -->
+<table>
+<tr>
+<th><gettext>Login</gettext></th>
+<th><gettext>Name</gettext></th>
+<th colspan="$mountpoints_cnt"><gettext>Diskquota</gettext></th>
+<th><gettext>Mailquota</gettext></th>
+</tr>
+<tr>
+<th colspan="2"></th>
+<!--#if expr="$loop_mountpoints" -->
+<th><!--#echo var="mountpoints" --></th>
+<!--#endif -->
+<th></th>
+</tr>
+<!--#if expr="$loop_users" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><!--#echo var="users{login}" --></td>
+<td><!--#echo var="users{firstname}" --> <!--#echo var="users{surname}" --></td>
+<!--#if expr="$loop_users{diskquotas}" -->
+<td><input size="6" maxlength="5" name="${users{login}}_user${users{diskquotas}{mountpoint}}-diskquota" value="$users{diskquotas}{quota}"></td>
+<!--#endif -->
+<td><input size="6" maxlength="5" name="${users{login}}_usermailquota" value="$users{mailquota}"></td>
+</tr>
+<!--#endif -->
+</table>
+
+<p><input type="submit" name="acceptusers" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+<!--#endif -->
+
+
+
+
+<!--#if expr="$workstations" -->
+
+<h3><gettext>Workstationaccounts</gettext></h3>
+
+<form method="post">
+
+<!--#set var="odd" value="0" -->
+<table>
+<tr>
+<th><gettext>Login</gettext></th>
+<th colspan="$mountpoints_cnt"><gettext>Diskquota</gettext></th>
+<th><gettext>Mailquota</gettext></th>
+</tr>
+<tr>
+<th></th>
+<!--#if expr="$loop_mountpoints" -->
+<th><!--#echo var="mountpoints" --></th>
+<!--#endif -->
+<th></th>
+</tr>
+<!--#if expr="$loop_workstations" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><!--#echo var="workstations{login}" --></td>
+<!--#if expr="$loop_workstations{diskquotas}" -->
+<td><input size="6" maxlength="5" name="${workstations{login}}_userstation${workstations{diskquotas}{mountpoint}}-diskquota" value="$workstations{diskquotas}{quota}"></td>
+<!--#endif -->
+<td><input size="6" maxlength="5" name="${workstations{login}}_usermailquota" value="$workstations{mailquota}"></td>
+</tr>
+<!--#endif -->
+
+<p><input type="submit" name="acceptusers" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+<!--#endif -->
+
+
+
+<!--#if expr="$systems" -->
+
+<h3><gettext>Systembenutzer</gettext></h3>
+
+<form method="post">
+
+<!--#set var="odd" value="0" -->
+<table>
+<tr>
+<th><gettext>Login</gettext></th>
+<th colspan="$mountpoints_cnt"><gettext>Diskquota</gettext></th>
+<th><gettext>Mailquota</gettext></th>
+</tr>
+<tr>
+<th colspan="2"></th>
+<!--#if expr="$loop_mountpoints" -->
+<th><!--#echo var="mountpoints" --></th>
+<!--#endif -->
+<th></th>
+</tr>
+<!--#if expr="$loop_systems" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><!--#echo var="systems{login}" --></td>
+<!--#if expr="$loop_systems{diskquotas}" -->
+<td><input size="6" maxlength="5" name="${systems{login}}_user${systems{diskquotas}{mountpoint}}-diskquota" value="$systems{diskquotas}{quota}"></td>
+<!--#endif -->
+<td><input size="6" maxlength="5" name="${systems{login}}_usermailquota" value="$systems{mailquota}"></td>
+</tr>
+<!--#endif -->
+</table>
+
+<p><input type="submit" name="acceptusers" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+<!--#endif -->
+
+
+
+
+</div>
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

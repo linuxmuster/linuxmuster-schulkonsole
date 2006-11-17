@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>aktueller Raum</gettext>: <!--#echo var="room" --> - <gettext>Klassenarbeitsmodus</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-room.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<!--#include file="subsubmenu-room_test.shtml.inc" -->
+
+<h2><gettext>Aktueller Raum</gettext>: <!--#echo var="room" -->
+::  <gettext>Klassenarbeitsmodus</gettext></h2>
+
+<p>
+<gettext>Nutzung:</gettext>
+
+<!--#if expr="$editinguser" -->
+<!--#echo var="editinguser" -->
+<gettext>unterrichtet in Raum</gettext>
+<!--#echo var="room" -->.
+<!--#if expr="$endedittime" -->
+<gettext>Unterrichtsende um</gettext> <!--#echo var="endedittime" -->.
+<!--#endif -->
+</p>
+
+<p><gettext>Klassenarbeitsmodus ist <strong>aktiv</strong>.</gettext></p>
+
+<form method="post">
+
+<h3><gettext>Bitte best&auml;tigen</getttext></h3>
+
+<p><gettext>Mit dem Einsammeln der Dateien wird die Klassenarbeit
+beendet.</gettext>
+
+<p><input type="submit" name="collectmove" value="Best&auml;tigen"></p>
+
+</form>
+
+
+
+</div>
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

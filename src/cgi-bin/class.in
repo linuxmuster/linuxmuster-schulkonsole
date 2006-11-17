@@ -1,0 +1,138 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::Sophomorix;
+
+my $this_file = 'class';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+foreach my $class (keys %$classs) {
+	if ($q->param("${class}_list")) {
+		$sk_session->param('class', $class);
+
+		my $url = $q->url( -absolute => 1 );
+		$url =~ s/$this_file$/class_list/g;
+		$sk_session->redirect($url);
+	}
+}
+
+my $class = $q->param('classes');
+if (    $class
+    and $$classs{$class}) {
+	$sk_session->param('class', $class);
+
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/class_list/g;
+	$sk_session->redirect($url);
+}
+
+$class = $sk_session->param('class');
+
+
+
+eval {
+COMMANDS: {
+if (my ($new_class) = $q->param('class_add')) {
+	Schulkonsole::Sophomorix::add_to_class(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		$new_class);
+	$sk_session->set_status(
+		sprintf($sk_session->d()->get('In Klasse %s eingetragen'), $new_class),
+		0);
+
+	$sk_session->read_groups_from_db();
+	$classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+	$class = $new_class;
+	$sk_session->param('class', $class);
+
+} else {
+	foreach my $old_class (keys %$classs) {
+		if ($q->param("${old_class}_remove")) {
+			Schulkonsole::Sophomorix::remove_from_class(
+				$sk_session->userdata('id'),
+				$sk_session->get_password(),
+				$old_class);
+			$sk_session->set_status(
+				sprintf($sk_session->d()->get('Aus Klasse %s ausgetragen'),
+					$$classs{$old_class}{displayname}),
+				0);
+
+			$sk_session->read_groups_from_db();
+			$classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+			if ($old_class eq $class) {
+				undef $class;
+				$sk_session->{session}->clear('class');
+			}
+
+			last;	# template uses submit buttons
+		}
+	}
+}
+} # end COMMANDS
+};
+if ($@) {
+	if (ref $@) {
+		if ($@->{internal}) {
+			$sk_session->set_status(
+				$sk_session->d()->get('Interner Fehler'), 1);
+			print STDERR $@;
+		} else {
+			$sk_session->set_status(
+				$sk_session->d()->get($@->what()), 1);
+		}
+	} else {
+		die $@;
+	}
+}
+
+
+
+
+
+my $all_classs = Schulkonsole::DB::classes();
+
+my @classs;
+my @other_classs;
+foreach my $class (sort {
+	$$all_classs{$a}{displayname} cmp $$all_classs{$b}{displayname} }
+                   keys %$all_classs) {
+	if ($$classs{$class}) {
+		push @classs, { gid => $class,
+		                name => $$all_classs{$class}{displayname} };
+	} else {
+		push @other_classs, { gid => $class,
+		                      name => $$all_classs{$class}{displayname} };
+	}
+}
+$sk_session->set_var('classes', \@classs);
+$sk_session->set_var('other_classes', \@other_classs);
+
+
+if ($class) {
+	$sk_session->set_var('class_gid', $class);
+	$sk_session->set_var('class', $$classs{$class}{displayname});
+}
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+

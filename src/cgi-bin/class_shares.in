@@ -1,0 +1,107 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::Sophomorix;
+
+my $this_file = 'class_shares';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies only over secure connections
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $class = $sk_session->param('class');
+my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+if (   not $class
+    or not $$classs{$class}) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/class/g;
+	$sk_session->redirect($url);
+}
+
+
+
+my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
+my @login_ids;
+foreach my $user (keys %$class_userdatas) {
+	push @login_ids, $$class_userdatas{$user}{id};
+}
+
+
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+if ($q->param('acceptshares')) {
+	my $share_states = Schulkonsole::Sophomorix::share_states(
+		$id, $password, @login_ids);
+
+	my @activate_shares;
+	my @deactivate_shares;
+	foreach my $user (keys %$class_userdatas) {
+		my $user_id = $$class_userdatas{$user}{id};
+
+		if ($q->param("$user;shares")) {
+			push @activate_shares, $user unless $$share_states{$user_id};
+		} else {
+			push @deactivate_shares, $user if $$share_states{$user_id};
+		}
+	}
+
+	if (   @activate_shares
+	    or @deactivate_shares) {
+		Schulkonsole::Sophomorix::shares_on($id, $password, @activate_shares)
+			if @activate_shares;
+		Schulkonsole::Sophomorix::shares_off($id, $password, @deactivate_shares)
+			if @deactivate_shares;
+
+		$sk_session->set_status(
+			$sk_session->d()->get("&Auml;nderungen &uuml;bernommen."), 0);
+	} else {
+		$sk_session->set_status(
+			$sk_session->d()->get("Keine &Auml;nderungen."), 1);
+	}
+}
+
+
+
+
+my $share_states = Schulkonsole::Sophomorix::share_states(
+	$id, $password, @login_ids);
+
+
+my @students;
+foreach my $user (sort {
+	$$class_userdatas{$a}{surname} cmp $$class_userdatas{$b}{surname} }
+	keys %$class_userdatas) {
+
+	my $student = {
+		login => $user,
+		firstname => $$class_userdatas{$user}{firstname},
+		surname => $$class_userdatas{$user}{surname},
+		shares => $$share_states{$$class_userdatas{$user}{id}},
+	};
+	push @students, $student;
+
+}
+$sk_session->set_var('students', \@students);
+
+
+
+$sk_session->set_var('class', $$classs{$class}{displayname});
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+

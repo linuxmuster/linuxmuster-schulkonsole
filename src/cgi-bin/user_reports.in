@@ -1,0 +1,68 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Sophomorix;
+
+my $this_file = 'user_reports';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+
+my $lines;
+eval {
+
+
+COMMANDS: {
+$q->param('showadmin') and do {
+	$lines = Schulkonsole::Sophomorix::read_admin_report_file($id, $password);
+
+	last COMMANDS;
+};
+
+$q->param('showoffice') and do {
+	$lines = Schulkonsole::Sophomorix::read_office_report_file($id, $password);
+
+	last COMMANDS;
+};
+
+} # end COMMANDS
+};
+if ($@) {
+	if (ref $@) {
+		if ($@->{internal}) {
+			$sk_session->set_status(
+				$sk_session->d()->get('Interner Fehler'), 1);
+			print STDERR "$@\n";
+		} else {
+			$sk_session->set_status($sk_session->d()->get($@->what()), 1);
+		}
+	} else {
+		die $@;
+	}
+}
+
+
+
+$sk_session->set_var('content', join('', @$lines)) if $lines;
+
+
+
+$sk_session->print_page("$this_file.shtml", $this_file);

@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Benutzer</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-user.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Benutzerverwaltung</gettext></h2>
+
+<!--#if expr="$link_user_students" -->
+<p>
+<!--#if expr="$link_user_teachers" -->
+<gettext>Bearbeiten Sie zun&auml;chst die
+<a href="user_students">Sch&uuml;ler-</a>
+und <a href="user_teachers">Lehrerlisten</a>.</gettext>
+<!--#else -->
+<gettext>Bearbeiten Sie zun&auml;chst die
+<a href="user_students">Sch&uuml;lerlisten</a>.</gettext>
+<!--#endif -->
+</p>
+<!--#endif -->
+
+<!--#if expr="$link_user_check" -->
+<p><gettext>Mit der <a href="user_check">&Uuml;berpr&uuml;fung der Benutzerlisten</a> werden die Daten zur &Uuml;bertragung ins System vorbereitet.</gettext></p>
+<!--#endif -->
+
+<!--#if expr="$link_user_commit" -->
+<p><gettext>Auf der Seite zur
+<a href="user_commit">&Uuml;bernahme der Benutzerdaten</a> k&ouml;nnen Sie
+die &Uuml;bertragung ins System starten und sich Informationen zum Prozess
+anzeigen lassen.</gettext></p>
+<!--#endif -->
+
+
+</div>
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

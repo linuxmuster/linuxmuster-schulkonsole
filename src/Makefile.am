@@ -1,0 +1,1 @@
+SUBDIRS=cgi-bin util

@@ -1,0 +1,126 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Room;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::Session;
+
+my $this_file = 'room_collect';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+my $q = $sk_session->query();
+
+my $room_session = new Schulkonsole::Room($sk_session);
+
+
+if (not $room_session->info('is_editing')) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room/g;
+	$sk_session->redirect($url);
+}
+
+
+my $editing_userdata = $room_session->info('editing_userdata');
+my $editing_user = $$editing_userdata{uid};
+
+my $workstations
+	= Schulkonsole::Config::workstations_room($room_session->info('name'));
+my $workstation_users = $room_session->workstation_users();
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+if (   $q->param('collectcopy')
+    or $q->param('collectmove')) {
+	my @users;
+	my $is_all_users = 1;
+	foreach my $host (keys %$workstation_users) {
+		foreach my $userdata (@{ $$workstation_users{$host} }) {
+			my $user = $$userdata{uid};
+			next if $user eq $editing_user;
+
+			if ($q->param("$user;collect")) {
+				push @users, $user;
+			} elsif ($is_all_users) {
+				$is_all_users = 0;
+			}
+		}
+	}
+
+	if (@users) {
+		if ($q->param('collectcopy')) {
+			Schulkonsole::Sophomorix::collectcopy_from_room_users(
+				$id, $password,
+				$room_session->info('name'), @users);
+	
+			if ($is_all_users) {
+				$sk_session->set_status($sk_session->d()->get('Kopiert'), 0);
+			} else {
+				$sk_session->set_status($sk_session->d()->get('Kopiert von')
+					. ' ' . join(', ', @users),
+					0);
+			}
+	
+		} else {
+			Schulkonsole::Sophomorix::collect_from_room_users($id, $password,
+				$room_session->info('name'), @users);
+	
+			if ($is_all_users) {
+				$sk_session->set_status($sk_session->d()->get('Eingesammelt'),
+					0);
+			} else {
+				$sk_session->set_status(
+					$sk_session->d()->get('Eingesammelt von')
+					. ' ' . join(', ', @users),
+					0);
+			}
+		}
+	} else {
+		$sk_session->set_status($sk_session->d()->get(
+			'Keine Benutzer ausgew&auml;hlt'), 1);
+	}
+}
+
+
+
+my @login_ids;
+foreach my $host (keys %$workstation_users) {
+	foreach my $userdata (@{ $$workstation_users{$host} }) {
+		push @login_ids, $$userdata{id};
+	}
+}
+my $user_share_files = Schulkonsole::Sophomorix::ls_collect(
+	$sk_session->userdata('id'),
+	$sk_session->get_password(),
+	@login_ids);
+
+
+my @array_overview_workstations;
+foreach my $workstation (sort keys %$workstations) {
+	my $first_login = 1;
+	if (    $$workstation_users{$workstation}
+	    and @{ $$workstation_users{$workstation} }) {
+		foreach my $userdata (sort { $$a{uid} cmp $$b{uid} }
+		                           @{ $$workstation_users{$workstation} }) {
+			my $overview_workstation = {
+				name => $workstation,
+				editing => ($$userdata{uid} eq $editing_user),
+				login => $$userdata{uid},
+				first => $first_login,
+				files => Schulkonsole::Sophomorix::create_file_list(
+				         	$$user_share_files{$$userdata{id}}),
+			};
+			push @array_overview_workstations, $overview_workstation;
+
+			$first_login = 0;
+		}
+	}
+}
+$sk_session->set_var('overview_workstations', \@array_overview_workstations);
+
+
+$room_session->set_vars($sk_session);
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+

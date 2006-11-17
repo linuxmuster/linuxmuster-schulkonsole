@@ -1,0 +1,293 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Projekte</gettext>: <!--#echo var="project" --> - <gettext>Mitglieder</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-project.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<!--#if expr="$projects" -->
+<form method="post"> <p style="float: right;">
+<select name="projects">
+<optgroup label="Projekte">
+<!--#if expr="$loop_projects" --> <option value="$projects{gid}"><!--#echo var="projects{name}" --></option>
+<!--#endif -->
+</optgroup>
+<optgroup label="aktuelles Projekt">
+<option value="$project_gid" selected><!--#echo var="project" --></option>
+</optgroup>
+</select>
+<input type="submit" value="Wechseln">
+</p>
+</form>
+<!--#endif -->
+
+
+<h2><gettext>Projekte</gettext> :: <gettext>Mitglieder</gettext></h2>
+
+<h3><gettext>Ausgew&auml;hltes Projekt:</gettext> <!--#echo var="project" --></h3>
+
+
+<!--#if expr="$isadmin" -->
+<h3><gettext>Mitglieder hinzuf&uuml;gen</gettext></h3>
+
+<form method="post" action="project_addmembers">
+<p>
+<label for="query"><gettext>Suche:</gettext></label>
+<input id="query" name="query">
+<input type="submit" name="search" value="Suche"></p>
+<p><input type="radio" name="scope" id="radiostudent" value="student" checked>
+   <label for="radiostudent"><gettext>Sch&uuml;ler</gettext></label>
+   <input type="radio" name="scope" id="radioteacher" value="teacher">
+   <label for="radioteacher"><gettext>Lehrer</gettext></label>
+   <input type="radio" name="scope" id="radioclass" value="class">
+   <label for="radioclass"><gettext>Klasse</gettext></label>
+   <input type="radio" name="scope" id="radioproject" value="project">
+   <label for="radioproject"><gettext>Projekt</gettext></label></p>
+</form>
+<!--#endif -->
+
+
+<form method="post">
+
+<h3><gettext>Mitglieder im Projekt</gettext></h3>
+
+<!--#if expr="$membersclasses" -->
+
+<table id="membersclasses">
+<tr>
+<th><gettext>Klassenname</gettext></th>
+<!--#if expr="$isadmin" -->
+<th><gettext>Mitgliedschaft beenden</gettext></th>
+<!--#endif -->
+</tr>
+<!--#if expr="$loop_membersclasses" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<!--#if expr="$membersclasses{ismember}" -->
+<td><input type="submit" name="${membersclasses{gid}}_gotoclass" value="$membersclasses{name}"></td>
+<!--#else -->
+<td><!--#echo var="membersclasses{name}" --></td>
+<!--#endif -->
+<!--#if expr="$isadmin" -->
+<td><input type="submit" name="${membersclasses{gid}}_removeclass" value="Mitgliedschaft beenden"></td>
+</tr>
+<!--#endif -->
+<!--#endif -->
+<tr>
+<th><gettext>Klassenname</gettext></th>
+<!--#if expr="$isadmin" -->
+<th><gettext>Mitgliedschaft beenden</gettext></th>
+<!--#endif -->
+</tr>
+</table>
+
+<hr>
+<!--#endif -->
+
+
+
+<!--#if expr="$membersprojects" -->
+<!--#set var="odd" value="0" -->
+
+<table id="membersprojects">
+<tr>
+<th><gettext>Projektname</gettext></th>
+<!--#if expr="$isadmin" -->
+<th><gettext>Mitgliedschaft beenden</gettext></th>
+<!--#endif -->
+</tr>
+<!--#if expr="$loop_membersprojects" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<!--#if expr="$membersprojects{ismember}" -->
+<td><input type="submit" name="${membersprojects{gid}}_gotoproject" value="$membersprojects{name}"></td>
+<!--#else -->
+<td><!--#echo var="membersprojects{name}" --></td>
+<!--#endif -->
+<!--#if expr="$isadmin" -->
+<td><input type="submit" name="${membersprojects{gid}}_removeproject" value="Mitgliedschaft beenden"></td>
+</tr>
+<!--#endif -->
+<!--#endif -->
+<tr>
+<th colspan="2"><gettext>Projektname</gettext></th>
+<!--#if expr="$isadmin" -->
+<th><gettext>Mitgliedschaft beenden</gettext></th>
+<!--#endif -->
+</tr>
+</table>
+
+<hr>
+<!--#endif -->
+
+
+
+<!--#if expr="$membersteachers" -->
+<!--#set var="odd" value="0" -->
+
+<table id="membersteachers">
+<tr>
+<th><gettext>Login</gettext></th>
+<th><gettext>Name</gettext></th>
+<th><gettext>Projektleitung</gettext></th>
+<!--#if expr="$isadmin" -->
+<th><gettext>Mitgliedschaft beenden</gettext></th>
+<!--#endif -->
+</tr>
+<!--#if expr="$loop_membersteachers" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><!--#echo var="membersteachers{login}" --></td>
+<td><!--#echo var="membersteachers{firstname}" --> <!--#echo var="membersteachers{surname}" --></td>
+<!--#if expr="$membersteachers{isadmin}" -->
+<td><input type="checkbox" disabled checked></td>
+<!--#else -->
+<td><input type="checkbox" disabled></td>
+<!--#endif -->
+<!--#if expr="$isadmin" -->
+<td><input type="submit" name="${membersteachers{login}}_removeuser" value="Mitgliedschaft beenden"></td>
+<!--#endif -->
+</tr>
+<!--#endif -->
+<tr>
+<th><gettext>Login</gettext></th>
+<th><gettext>Name</gettext></th>
+<th><gettext>Projektleitung</gettext></th>
+<!--#if expr="$isadmin" -->
+<th><gettext>Mitgliedschaft beenden</gettext></th>
+<!--#endif -->
+</tr>
+</table>
+
+<hr>
+<!--#endif -->
+
+
+
+<!--#if expr="$membersstudents" -->
+<!--#set var="odd" value="0" -->
+
+<table id="membersstudents">
+<tr>
+<th><gettext>Login</gettext></th>
+<th><gettext>Name</gettext></th>
+<th><gettext>Festplattenquota</gettext></th>
+<th><gettext>E-Mailquota</gettext></th>
+<th><gettext>Klasse</gettext></th>
+<!--#if expr="$isadmin" -->
+<th><gettext>Mitgliedschaft beenden</gettext></th>
+<!--#endif -->
+</tr>
+<!--#if expr="$loop_membersstudents" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><!--#echo var="membersstudents{login}" --></td>
+<td><!--#echo var="membersstudents{firstname}" --> <!--#echo var="membersstudents{surname}" --></td>
+<td>
+<!--#if expr="$membersstudents{diskquotas}" -->
+
+<p>
+
+<!--#if expr="$loop_membersstudents{diskquotas}" -->
+
+<!--#echo var="membersstudents{diskquotas}{path}" -->:<br>
+	<gettext>Speicherplatz/KB:</gettext>
+	<!--#echo var="membersstudents{diskquotas}{blocks_usage}" -->/<!--#echo var="membersstudents{diskquotas}{blocks_soft}" -->
+	- max: <!--#echo var="membersstudents{diskquotas}{blocks_hard}" -->
+	- <!--#echo var="membersstudents{diskquotas}{blocks_percent}" -->%<br>
+	<!--#if expr="$membersstudents{diskquotas}{blocks_grace}" -->
+	<gettext>verbleibende Zeit:</gettext> <!--#echo var="membersstudents{diskquotas}{blocks_grace}" --><br><!--#endif -->
+	<gettext>Dateien:</gettext>
+	<!--#echo var="membersstudents{diskquotas}{files_usage}" -->/<!--#echo var="membersstudents{diskquotas}{files_soft}" -->
+	- max: <!--#echo var="membersstudents{diskquotas}{files_hard}" -->
+	- <!--#echo var="membersstudents{diskquotas}{files_percent}" -->%<br>
+	<!--#if expr="$membersstudents{diskquotas}{files_grace}" -->
+	<gettext>verbleibende Zeit:</gettext> <!--#echo var="membersstudents{diskquotas}{files_grace}" --><br><!--#endif --><br>
+
+<!--#endif -->
+</p>
+
+
+<ul>
+<!--#if expr="$loop_membersstudents{diskquotas}" -->
+<!--#if expr="$membersstudents{diskquotas}{warn}" -->
+<li class="warn">
+<!--#else -->
+<li>
+<!--#endif -->
+<span title="${membersstudents{diskquotas}{path}}: ${membersstudents{diskquotas}{blocks_percent}}%" style="width: ${membersstudents{diskquotas}{blocks_percent_rounded}}%;">&nbsp;</span>
+</li>
+<!--#endif -->
+</ul>
+<!--#else -->-<!--#endif --></td>
+<td><!--#if expr="$membersstudents{mailquotas}{limit}" -->
+
+
+<p>
+	<gettext>E-Mail-Speicher/KB:</gettext>
+	<!--#echo var="membersstudents{mailquotas}{usage}" -->/<!--#echo var="membersstudents{mailquotas}{limit}" -->
+	- <!--#echo var="membersstudents{mailquotas}{percent}" -->%
+</p>
+
+
+<ul>
+<!--#if expr="$membersstudents{mailquotas}{warn}" -->
+<li class="warn">
+<!--#else -->
+<li>
+<!--#endif -->
+<span title="E-Mail: ${membersstudents{mailquotas}{usage}}/${membersstudents{mailquotas}{limit}} ${membersstudents{mailquotas}{percent}}%" style="width: ${membersstudents{mailquotas}{percent_rounded}}%;">&nbsp;</span>
+</li>
+</ul>
+<!--#else -->-<!--#endif --></td>
+<td><!--#echo var="membersstudents{class}" --></td>
+<!--#if expr="$isadmin" -->
+<td><input type="submit" name="${membersstudents{login}}_removeuser" value="Mitgliedschaft beenden"></td>
+<!--#endif -->
+</tr>
+<!--#endif -->
+<tr>
+<th><gettext>Login</gettext></th>
+<th><gettext>Name</gettext></th>
+<th><gettext>Festplattenquota</gettext></th>
+<th><gettext>E-Mailquota</gettext></th>
+<th><gettext>Klasse</gettext></th>
+<!--#if expr="$isadmin" -->
+<th><gettext>Mitgliedschaft beenden</gettext></th>
+<!--#endif -->
+</tr>
+</table>
+
+<!--#endif -->
+
+</form>
+
+
+</div>
+
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p><gettext>Hier sehen Sie Informationen zum Projekt</gettext>
+<!--#echo var="project" --></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

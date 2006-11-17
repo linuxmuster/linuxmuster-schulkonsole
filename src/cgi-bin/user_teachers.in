@@ -1,0 +1,365 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Sophomorix;
+
+my $this_file = 'user_teachers';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+
+my $q = $sk_session->query();
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+
+sub get_teachers {
+	my %teachers;
+
+	eval {
+	my $teachers_lines
+		= Schulkonsole::Sophomorix::read_teachers_file($id, $password);
+
+	foreach my $line (@$teachers_lines) {
+		my ($group, $surname, $firstname, $birthdate, $login,
+		    $firstpassword, $short,
+		    $diskquota, $mailquota) = split /\s*;/, $line;
+
+		my ($key) = $login =~ /^\s*(.+?)\s*$/;
+
+		if ($key) {
+			$teachers{$key} = {
+				group => $group,
+				surname => $surname,
+				firstname => $firstname,
+				birthdate => $birthdate,
+				login => $login,
+				firstpassword => $firstpassword,
+				short => $short,
+				diskquota => $diskquota,
+				mailquota => $mailquota,
+			};
+		}
+	}
+	};
+
+	return \%teachers;
+}
+
+
+
+sub put_teachers {
+	my $teachers = shift;
+
+	my @lines;
+	foreach my $teacher (sort {
+			   $$teachers{$a}{surname} cmp $$teachers{$b}{surname}
+			or $$teachers{$a}{firstname} cmp $$teachers{$b}{firstname}
+		} keys %$teachers) {
+		next if $$teachers{$teacher}{delete};
+
+		my $line = $$teachers{$teacher}{group} . ';'
+			. $$teachers{$teacher}{surname} . ';'
+			. $$teachers{$teacher}{firstname} . ';'
+			. $$teachers{$teacher}{birthdate} . ';'
+			. $$teachers{$teacher}{login} . ';'
+			. $$teachers{$teacher}{firstpassword} . ';'
+			. $$teachers{$teacher}{short} . ';'
+			. $$teachers{$teacher}{diskquota} . ';'
+			. $$teachers{$teacher}{mailquota} . ';'
+			. "\n";
+		push @lines, $line;
+
+	}
+
+	Schulkonsole::Sophomorix::write_teachers_file($id, $password, \@lines);
+}
+
+
+
+
+
+eval {
+COMMANDS: {
+$q->param('teachersupload') and do {
+	my $old_teachers_lines;
+	eval {
+	$old_teachers_lines
+		= Schulkonsole::Sophomorix::read_teachers_file($id, $password);
+	};
+
+	if (    $old_teachers_lines
+	    and @$old_teachers_lines) {
+		$sk_session->set_status($sk_session->d()->get(
+			'lehrer.txt existiert bereits'), 1);
+	} else {
+		my $filename = $q->param('teachersfilename');
+		if ($filename) {
+			my @lines;
+			while (<$filename>) {
+				push @lines, $_;
+			}
+
+			Schulkonsole::Sophomorix::write_teachers_file($id, $password,
+			                                              \@lines);
+
+			$sk_session->set_status($sk_session->d()->get(
+				'Datei hochgeladen'), 0);
+
+		} else {
+			$sk_session->set_status($sk_session->d()->get(
+				'Datei kann nicht gelesen werden'), 1);
+		}
+	}
+	last COMMANDS;
+};
+$q->param('acceptteachers') and do {
+	my $teachers = get_teachers();
+
+	my @errors;
+	foreach my $param ($q->param) {
+		if (my ($login, $action) = $param =~ /^(.+)_(surname|firstname|birthdate|delete)$/) {
+			my $value = $q->param($param);
+			if ($$teachers{$login}) {
+				if (   not $$teachers{$login}{$action}
+				    or $$teachers{$login}{$action} !~ /^$value\s*$/) {
+
+					if (    $action =~ /^b/
+					    and $value !~ /^\s*\d{1,2}\.\d{1,2}\.\d{4}\s*$/) {
+						push @errors, sprintf($sk_session->d()->get(
+							'ung&uuml;tiges Geburtsdatum f&uuml;r %s'), $login);
+
+						$sk_session->mark_input_error("${login}_birthdate");
+					} else {
+						$$teachers{$login}{$action} = $value;
+					}
+				}
+			} else {
+				push @errors, sprintf($sk_session->d()->get(
+					'Lehrer %s unbekannt'), $login);
+			}
+		}
+	}
+
+	if (@errors) {
+		$sk_session->set_status(join(', ', @errors), 1);
+	} else {
+		put_teachers($teachers);
+
+		$sk_session->set_status($sk_session->d()->get(
+			'&Auml;nderungen &uuml;bernommen'), 0);
+	}
+
+
+	last COMMANDS;
+};
+$q->param('newteacher') and do {
+	my $teachers = get_teachers();
+
+	my $login = $q->param('newlogin');
+	my $surname = $q->param('newsurname');
+	my $firstname = $q->param('newfirstname');
+	my $birthdate = $q->param('newbirthdate');
+
+
+	my @errors;
+	if ($login !~ /^[a-z]{2,16}$/) {
+		push @errors, $sk_session->d()->get(
+			'Der Loginname muss aus 2 bis 16 Kleinbuchstaben bestehen');
+
+		$sk_session->mark_input_error('newlogin');
+	} elsif ($$teachers{$login}) {
+		push @errors, $sk_session->d()->get('Loginname ist schon belegt');
+
+		$sk_session->mark_input_error('newlogin');
+	}
+
+	if (not $surname) {
+		push @errors, $sk_session->d()->get('Nachname ist leer');
+
+		$sk_session->mark_input_error('newsurname');
+	}
+
+	if (not $firstname) {
+		push @errors, $sk_session->d()->get('Vorname ist leer');
+
+		$sk_session->mark_input_error('newfirstname');
+	}
+
+	if ($birthdate !~ /^\s*\d{1,2}\.\d{1,2}\.\d{4}\s*$/) {
+		push @errors, $sk_session->d()->get(
+			'verwenden Sie f&uuml;r das Geburtsdatum das Format TT.MM.JJJJ');
+
+		$sk_session->mark_input_error('newbirthdate');
+	}
+
+
+	if (@errors) {
+		$sk_session->set_status(join(', ', @errors), 1);
+	} else {
+		$$teachers{$login} = {
+			group => 'lehrer ',
+			surname => $surname,
+			firstname => $firstname,
+			birthdate => $birthdate,
+			login => $login,
+			firstpassword => '---     ',
+			short => 'kurz ',
+			diskquota => 'quota ',
+			mailquota => 'mailquota ',
+		};
+
+
+		put_teachers($teachers);
+
+		$sk_session->set_status($sk_session->d()->get(
+			'Lehrer hinzugefuegt'), 0);
+
+		$q->delete('newlogin', 'newsurname', 'newfirstname', 'newbirthdate');
+	}
+
+
+	last COMMANDS;
+};
+
+(   $q->param('passwords_reset')
+ or $q->param('passwords_random')
+ or $q->param('passwords_set')) and do {
+
+ 	my $is_selected = 0;
+	my @user_selects;
+	foreach my $param ($q->param) {
+		if (my ($user) = $param =~ /^(.+);select$/) {
+			my $userdata = Schulkonsole::DB::get_userdata($user);
+
+			if ($$userdata{gid} eq 'teachers') {
+				push @user_selects, $user;
+				$is_selected = 1;
+			}
+		}
+	}
+
+	if (not @user_selects) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Keine Benutzer ausgew&auml;hlt'), 1);
+
+		last COMMANDS;
+	}
+
+	PASSWORDACTION: {
+	$q->param('passwords_reset') and do {
+		Schulkonsole::Sophomorix::passwords_reset(
+			$id, $password, @user_selects);
+
+		$sk_session->set_status(
+			$sk_session->d()->get('Passw&ouml;rter zur&uuml;ckgesetzt'), 0);
+
+		last PASSWORDACTION;
+	};
+	$q->param('passwords_random') and do {
+		Schulkonsole::Sophomorix::passwords_random(
+			$id, $password, @user_selects);
+
+		$sk_session->set_status(
+			$sk_session->d()->get('Zufallspassw&ouml;rter gesetzt'), 0);
+
+		last PASSWORDACTION;
+	};
+	$q->param('passwords_set') and do {
+		if (my $user_password = $q->param('userpassword')) {
+			Schulkonsole::Sophomorix::passwords_set(
+				$id, $password, $user_password, @user_selects);
+
+			$sk_session->set_status(
+				$sk_session->d()->get('Passw&ouml;rter gesetzt'), 0);
+		} else {
+			$sk_session->set_status(
+				$sk_session->d()->get('Kein Passwort eingegeben'), 1);
+		}
+
+		last PASSWORDACTION;
+	};
+
+	}
+
+
+	last COMMANDS;
+};
+
+
+foreach my $param ($q->param) {
+	if (my ($user) = $param =~ /^(.+)_showpassword$/) {
+		my $userdata = Schulkonsole::DB::get_userdata($user);
+
+		if ($$userdata{gid} eq 'teachers') {
+			$sk_session->set_var('showfirstname', $$userdata{firstname});
+			$sk_session->set_var('showsurname', $$userdata{surname});
+			$sk_session->set_var('showusername', $user);
+			$sk_session->set_var('showpassword', $$userdata{firstpassword});
+
+			$sk_session->set_var('isteachers', 1);
+
+			$sk_session->print_page("showpassword.shtml", $this_file);
+			exit;
+		} else {
+			$sk_session->set_status(sprintf(
+					$sk_session->d()->get('%s ist kein Lehrer'),
+					$user),
+				1);
+		}
+	}
+}
+
+}
+};
+if ($@) {
+	if (ref $@) {
+		if ($@->{internal}) {
+			$sk_session->set_status(
+				$sk_session->d()->get('Interner Fehler'), 1);
+			print STDERR "$@\n";
+		} else {
+			$sk_session->set_status($sk_session->d()->get($@->what()), 1);
+		}
+	} else {
+		die $@;
+	}
+}
+
+
+
+
+
+
+my $teachers = get_teachers();
+my @teachers;
+foreach my $teacher (sort keys %$teachers) {
+		push @teachers, {
+				login => $$teachers{$teacher}{login},
+				surname => $$teachers{$teacher}{surname},
+				firstname => $$teachers{$teacher}{firstname},
+				birthdate => $$teachers{$teacher}{birthdate},
+				short => ($$teachers{$teacher}{short} ne 'kurz' ?
+					  $$teachers{$teacher}{short}
+					: $$teachers{$teacher}{login}),
+			};
+	}
+$sk_session->set_var('teachers', \@teachers);
+
+
+
+$sk_session->print_page("$this_file.shtml", $this_file);

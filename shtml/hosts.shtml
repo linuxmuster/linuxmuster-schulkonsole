@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Hosts</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+</div>
+
+<div id="content">
+
+<h2><gettext>Hosts</gettext></h2>
+
+<form method="post">
+
+
+<table id="rooms">
+<tr>
+<th><gettext>Raum</gettext></th>
+<th><gettext>Hostname</gettext></th>
+<th><gettext>Gruppen</gettext></th>
+<th><gettext>MAC</gettext></th>
+<th><gettext>IP</gettext></th>
+<th><gettext>PXE</gettext></th>
+<th><gettext>Optionen</gettext></th>
+<th title="l&ouml;schen"><gettext>X</gettext></th>
+</tr>
+<!--#if expr="$loop_workstations" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><input name="${workstations}_room" size="10"></td>
+<td><input name="${workstations}_name" size="12"></td>
+<td><input name="${workstations}_groups" size="8"></td>
+<td><input name="${workstations}_mac" size="18" maxlength="17"></td>
+<td><input name="${workstations}_ip" size="17" maxlength="15"></td>
+<td><select name="${workstations}_pxe">
+<option value="1"><gettext>An</gettext></option>
+<option value="0"><gettext>Aus</gettext></option>
+</select></td>
+<td><select name="${workstations}_opts">
+<option value="">-</option>
+<option value="noudma">noudma</option>
+<option value="unicast">unicast</option>
+<option value="noudma,unicast">noudma+unicast</option>
+</select></td>
+<td><input title="l&ouml;schen" type="checkbox" name="${workstations}_delete"></td>
+</tr>
+<!--#endif -->
+<!--#if expr="$loop_add" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><input name="${add}_addroom" size="10"></td>
+<td><input name="${add}_addname" size="12"></td>
+<td><input name="${add}_addgroups" size="8"></td>
+<td><input name="${add}_addmac" size="18" maxlength="17"></td>
+<td><input name="${add}_addip" size="17" maxlength="15"></td>
+<td><select name="${add}_addpxe">
+<option value="1"><gettext>An</gettext></option>
+<option value="0"><gettext>Aus</gettext></option>
+</select></td>
+<td><select name="${add}_addopts">
+<option value="">-</option>
+<option value="noudma">noudma</option>
+<option value="unicast">unicast</option>
+<option value="noudma,unicast">noudma+unicast</option>
+</select></td>
+<td><input title="ignorieren" type="checkbox" name="${add}_addignore"></td>
+</tr>
+<!--#endif -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><select name="addcnt">
+<option value="1">1</option>
+<option value="5" selected>5</option>
+<option value="10">10</option>
+<option value="30">30</option>
+</select></td>
+<td colspan="7"><input type="submit" name="addrows" value="Zeilen hinzuf&uuml;gen"></td>
+</tr>
+</table>
+
+
+
+<p>
+<input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
+<input type="reset" value="Zur&uuml;cksetzen">
+</p>
+
+</form>
+
+
+</div>
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

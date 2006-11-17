@@ -1,0 +1,134 @@
+#! /usr/bin/perl
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Sophomorix::SophomorixAPI;
+use Sophomorix::SophomorixConfig;
+use Proc::ProcessTable;
+use Schulkonsole::Session;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::TeachIn;
+
+
+my $this_file = 'user_check';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+
+
+my $process_table = new Proc::ProcessTable;
+my $app_add
+	= $Schulkonsole::Config::_root_apps[Schulkonsole::Config::USERSADDAPP];
+$app_add =~ s:.*/::;
+my $app_move
+	= $Schulkonsole::Config::_root_apps[Schulkonsole::Config::USERSMOVEAPP];
+$app_move =~ s:.*/::;
+my $app_kill
+	= $Schulkonsole::Config::_root_apps[Schulkonsole::Config::USERSKILLAPP];
+$app_kill =~ s:.*/::;
+
+my %running;
+foreach my $process (@{ $process_table->table }) {
+	if ($process->fname =~ /^soph/) {
+		CMND: {
+		$process->cmndline =~ /$app_add/ and do {
+			$running{add} = $process->pid;
+			last CMND;
+		};
+		$process->cmndline =~ /$app_move/ and do {
+			$running{move} = $process->pid;
+			last CMND;
+		};
+		$process->cmndline =~ /$app_kill/ and do {
+			$running{kill} = $process->pid;
+			last CMND;
+		};
+		}
+	}
+}
+
+
+
+my $teachin = new Schulkonsole::TeachIn;
+
+
+eval {
+COMMANDS: {
+$q->param('check') and do {
+	my $log = Schulkonsole::Sophomorix::users_check($id, $password);
+
+	if (Schulkonsole::Sophomorix::teachin_check($id, $password)) {
+		$sk_session->set_status($sk_session->d()->get(
+			'Teach-In ist notwendig'), 1);
+
+		$teachin->read($id, $password);
+	} else {
+		$sk_session->set_status($sk_session->d()->get(
+			'Sie k&ouml;nnen die Benutzerdaten jetzt &uuml;bernehmen'), 0);
+
+		$teachin->delete();
+	}
+
+	$sk_session->set_var('checklog', $log);
+
+
+	last COMMANDS;
+};
+}
+};
+if ($@) {
+    if (ref $@) {
+		if ($@->{internal}) {
+			$sk_session->set_status(
+				$sk_session->d()->get('Interner Fehler'), 1);
+			print STDERR "$@\n";
+		} else {
+			$sk_session->set_status($sk_session->d()->get($@->what()), 1);
+		}
+	} else {
+		die $@;
+	}
+}
+
+
+if ($teachin->is_read()) {
+	$sk_session->set_var('teachin', 1);
+
+	my $users = $teachin->users();
+	if ($users) {
+		my @users;
+		foreach my $user (sort keys %$users) {
+			if (   not $$users{$user}{alt}
+			    or not %{ $$users{$user}{alt} }) {
+				push @users, {
+						id => $$users{$user}{id},
+						login => $user,
+						class => $$users{$user}{class},
+					};
+			}
+		}
+
+		$sk_session->set_var('usersdelete', \@users);
+	}
+}
+
+
+
+
+$sk_session->print_page("$this_file.shtml", $this_file);

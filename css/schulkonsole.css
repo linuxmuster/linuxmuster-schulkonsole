@@ -1,0 +1,567 @@
+body {
+	padding: 0;
+	margin: 0;
+
+	background: white none;
+	color: black;
+	font-family: Verdana, sans-serif;
+}
+
+
+h1 {
+	font-size: 110%;
+}
+
+
+h2 {
+	font-size: 105%;
+}
+
+h3 {
+	font-size: 100%;
+	padding-top: 1em;
+	border-top: thin dotted black;
+}
+
+h4 {
+	font-size: 100%;
+}
+
+
+hr {
+    border-top: thin dotted black;
+	border-bottom: none;
+}
+
+
+label.error {
+	background-color: white;
+	color: #cc3333;
+}
+
+
+.warn {
+	background-color: white;
+	color: #cc3333;
+}
+
+
+table {
+	font-size: 90%;
+}
+
+td {
+	vertical-align: top;
+}
+
+
+td li span {
+	display: block;
+	background-color: #6c71b3;
+}
+
+td li.warn span {
+	background-color: #cc3333;
+}
+
+
+td ul {
+	list-style-type: none;
+	margin: 1px;
+	padding: 0;
+}
+
+td ul li {
+	margin: 0;
+	margin-top: 2ex;
+	padding: 0;
+	border: thin solid black;
+	width: 100%;
+	font-size: 25%;
+	background-color: white;
+}
+
+
+td p {
+	display: none;
+}
+
+
+td:hover p {
+	display: block;
+	position: absolute;
+	border: 1px black solid;
+	background: #ffffee;
+	padding: .4ex;
+	z-index: 1000;
+}
+
+
+#diskquota th[colspan="5"] {
+	text-align: left;
+}
+
+#mailquota td, #diskquota td {
+	text-align: right;
+}
+
+#overview_workstations {
+	font-size: 80%;
+}
+
+#overview_workstations th {
+	font-size: 90%;
+}
+
+#overview_workstations input,
+#overview_printers input,
+#overview_shares input,
+#handout input,
+#collect input,
+#classes td:first-child input,
+#projects td input[type="submit"],
+.quickselection input {
+	margin: 0;
+	padding: 0;
+	font-size: inherit;
+	background: none;
+	border: none;
+
+	font-weight: bold;
+	color: #999999;
+}
+
+#overview_workstations input[type="submit"]:hover,
+#classes td:first-child input[type="submit"]:hover {
+	color: #cc3333;
+}
+
+#overview_workstations td {
+	text-align: center;
+}
+
+#mailquota tr > td:first-child, #diskquota tr > td:first-child,
+#overview_workstations tr > td:first-child {
+	text-align: left;
+}
+
+
+td select {
+	width: 100%;
+}
+
+#action td {
+	text-align: center;
+	vertical-align: center;
+}
+
+
+:lang(de) {
+	quotes: "\00BB" "\00AB" "\203A" "\2039";
+}
+
+
+
+#head {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 99.3%;
+	height: 4.5em;
+
+	padding: 0;
+	padding-top: .5em;
+	margin: 1px;
+	margin-bottom: 0px;
+
+	border-width: 0px 0px 1px 0px;
+	border-style: dotted;
+	border-color: black;
+
+	background-color: #fefae8;
+	color: #666666;
+}
+
+#head h1 {
+	padding-left: 20px;
+}
+
+#head img {
+	position: absolute;
+	bottom: .2ex;
+	right: .2ex;
+}
+
+
+#menu {
+	position: absolute;
+	top: 5em;
+	left: 20%;
+	width: 60%;
+	height: 4.5em;
+
+	padding: .0em 0ex .0em .5ex ;
+	margin: 0;
+	margin-top: 2px;
+
+	border-width: 0px 0px 1px 1px;
+	border-style: dotted;
+	border-color: black;
+
+	background-color: #fefae8;
+	color: black;
+}
+
+#menu a {
+	float:left;
+	width: 16.5ex;
+
+	padding: 0;
+	padding-left: .5ex;
+	margin: 0px 1px 1px 0px;
+
+	border-width: 2px;
+	border-left: 0;
+	border-style: solid;
+	border-top-color: #f0f0f0;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+
+	background-color: #ffffcc;
+	color: #999999;
+	text-decoration: none;
+	font-size: 90%;
+}
+
+#menu a[href="logout"] {
+	width: 15.5ex;
+	margin-left: 1ex;
+}
+
+#menu a:hover {
+	border-top-color: white;
+
+	background-color: #ffff66;
+	color: #666666;
+}
+
+
+#submenu {
+	position: absolute;
+	top: 9.5em;
+	left: 0;
+	width: 20%;
+	overflow: hidden;
+
+	padding: 0;
+
+	margin: 0;
+	margin-top: 2px;
+
+	border-width: 1px 0px 0px 0px;
+	border-color: black;
+	border-style: solid;
+
+}
+
+#submenu ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+#submenu li {
+	padding: 1px;
+	margin: 0;
+
+	background-color: #fefae8;
+	color: black;
+}
+
+#submenu a {
+	display: block;
+
+	padding: .2ex;
+	padding-left: 22px;
+	margin: 1px 1px 0px 1px;
+
+	border-width: 0px 0px 1px 0px;
+	border-style: dotted;
+	border-color: black;
+
+	background: #ffffcc url(img/menunohover.jpg) no-repeat;
+
+	color: #999999;
+	text-decoration: none;
+	font-size: 90%;
+}
+
+#submenu a:hover {
+	background: #ffff66 url(img/menuhover.jpg) no-repeat;
+	color: #666666;
+}
+
+#menu a.current, #menu a.currentparent, #submenu a.current, a.current {
+	color: black;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+
+#submenu li.disabled {
+	display: block;
+
+	padding: .2ex;
+	padding-left: 22px;
+	margin: 1px 1px 0px 1px;
+
+	border-width: 0px 0px 1px 0px;
+	border-style: dotted;
+	border-color: black;
+
+	background: #f8f8f8 url(img/menunohover.jpg) no-repeat;
+
+	color: #999999;
+	text-decoration: none;
+	font-size: 90%;
+}
+
+
+#status {
+	min-height: 3.5em;
+
+	margin: 0;
+
+	padding-top: 12px;
+	padding-left: 12px;
+	padding-bottom: 1ex;
+
+	border-width: 0px 0px 1px 0px;
+	border-color: black;
+	border-style: dotted;
+
+	font-size: 80%;
+	background: white url(img/info.jpg) no-repeat;
+	color: black;
+}
+
+#status h2 {
+	display: none;
+}
+
+#status.error {
+	background: #cc3333 url(img/info-rot.jpg) no-repeat;
+	color: white;
+}
+
+#status.ok {
+	background: #69b46c url(img/info-gruen.jpg) no-repeat;
+	color: white;
+}
+
+#status.ok p.info, #status.error p.info {
+	display: none;
+}
+
+
+
+#help {
+	position: absolute;
+	top: 9.5em;
+	left: 80%;
+	width: 19%;
+
+	padding: 0;
+	margin: 0;
+	margin-top: 2px;
+	margin-left: 1px;
+
+	border-width: 1px 0px 0px 0px;
+	border-style: dotted;
+	border-color: black;
+
+	background: white;
+	z-index: 10;
+}
+
+
+#help h2 {
+	padding: 0;
+	margin: 0;
+}
+
+#help img {
+	margin: 0;
+	padding: 0;
+	float: left;
+}
+
+#help p {
+	padding-top: 12px;
+	padding-left: 12px;
+	margin: 0;
+}
+
+
+#content {
+	padding: 1em;
+	padding-bottom: 7em;
+
+	margin-top: 8.5em;
+	margin-right: 20%;
+	margin-left: 20%;
+	margin-bottom: 0;
+
+	border-width: 0px 1px 1px 1px;
+	border-style: dotted;
+	border-color: black;
+
+	min-height: 50%;
+}
+
+#content p {
+	max-width: 80ex;
+}
+
+
+#status h2 {
+	padding: 0;
+	margin: 0;
+
+	font-size: 70%;
+}
+
+#status p {
+	margin: 0;
+	padding: 0;
+
+	font-size: 70%;
+}
+
+
+#help h2 {
+	padding: 0;
+	margin: 0;
+}
+
+#help p {
+	margin-top: .5ex;
+
+	font-size: 90%;
+}
+
+#help li {
+	margin-top: .5ex;
+
+	font-size: 90%;
+}
+
+
+.even {
+	background-color: #ffffee;
+	color: black;
+}
+
+
+.odd {
+	background-color: #ffffcc;
+	color: black;
+}
+
+.editing, .sameuser {
+	background-color: #eeeeff;
+	color: black;
+}
+
+
+
+
+#supportnetz {
+	position: absolute;
+	top: 5em;
+	left: 0;
+	width: 20%;
+	height: 4.5em;
+
+	padding: 0;
+
+	margin: 0;
+	margin-top: 2px;
+
+	border-width: 1px;
+	border-style: solid;
+	border-color: white;
+
+	background: #69b46c url(img/support-netz.jpg) no-repeat;
+	color: white;
+}
+
+
+#supportnetz a {
+	position: absolute;
+	bottom: 0;
+
+	padding-left: 20px;
+	padding-bottom: .5ex;
+
+	background-color: #69b46c;
+	color: white;
+	text-decoration: none;
+	font-size: 78%;
+}
+
+
+#footer {
+	height: 50px;
+
+	border-width: 0px 0px 1px 0px;
+	border-style: dotted;
+	border-color: black;
+
+	text-align: center;
+	font-size: 80%;
+}
+
+
+#special {
+	position: absolute;
+	top: 5em;
+	left: 80%;
+	width: 19%;
+	height: 4.5em;
+
+	margin: 0;
+	margin-top: 2px;
+	margin-bottom: 1px;
+
+	border-width: 0px 0px 0px 1px;
+	border-color: black;
+	border-style: dotted;
+
+	background-color: white;
+	color: black;
+}
+
+
+#bwlogo {
+	float: left;
+	width: 20%;
+	height: 50px;
+
+	border-width: 0px 1px 0px 0px;
+	border-style: dotted;
+	border-color: black;
+}
+
+
+#lmzlogo {
+	float: right;
+	width: 20%;
+	height: 50px;
+
+	border-width: 0px 0px 0px 1px;
+	border-style: dotted;
+	border-color: black;
+}
+
+

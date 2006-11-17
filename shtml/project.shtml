@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Projekte</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-project.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<!--#if expr="$projects" -->
+<form method="post">
+<p style="float: right;">
+<select name="projects">
+<optgroup label="Projekte">
+<!--#if expr="$loop_projects" --> <option value="$projects{gid}"><!--#echo var="projects{name}" --></option>
+<!--#endif -->
+</optgroup>
+<optgroup label="aktuelles Projekt">
+<option value="$project_gid" selected><!--#echo var="project" --></option>
+</optgroup>
+</select>
+<input type="submit" value="Wechseln">
+</p>
+</form>
+<!--#endif -->
+
+
+<h2><gettext>Projekte</gettext></h2>
+
+<!--#if expr="$project" -->
+<h3><gettext>Ausgew&auml;hltes Projekt</gettext>: <!--#echo var="project" --></h3>
+<!--#else -->
+<h3><gettext>Bitte ein Projekt ausw&auml;hlen</gettext></h3>
+<!--#endif -->
+
+
+<!--#if expr="$projects" -->
+<form method="post">
+
+<h4><gettext>&Uuml;bersicht der Projekte</gettext></h4>
+
+<table id="projects">
+<tr>
+<th><gettext>Projektename</gettext></th>
+<th><gettext>Zusatzquota</gettext></th>
+<th></th>
+<th></th>
+</tr>
+<!--#if expr="$loop_projects" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><input type="submit" name="${projects{gid}}_members" value="$projects{name}"></td>
+<td><!--#if expr="$projects{addquota}" -->
+<!--#echo var="projects{addquota}" -->&nbsp;MB<!--#else -->-<!--#endif --></td>
+<!--#if expr="$projects{islastadmin}" -->
+<td></td>
+<!--#else -->
+<td><input type="submit" name="${projects{gid}}_remove" value="Austragen"></td>
+<!--#endif -->
+<!--#if expr="$projects{isadmin}" -->
+<td><input type="submit" name="${projects{gid}}_drop" value="L&ouml;schen"></td>
+<!--#else -->
+<td></td>
+</tr>
+<!--#endif -->
+<!--#endif -->
+</table>
+
+</form>
+<!--#endif -->
+
+
+<!--#if expr="$other_projects" -->
+<form method="post">
+
+<h4><gettext>Eintragen in Projekte</gettext></h4>
+
+<p>
+<select name="project_add">
+<!--#if expr="$loop_other_projects" -->
+<option value="$other_projects{gid}"><!--#echo var="other_projects{name}" --></option>
+<!--#endif -->
+</select>
+<input type="submit" value="Eintragen">
+</p>
+</form>
+<!--#endif -->
+
+
+<hr>
+
+<form method="post">
+
+<h4><gettext>Neues Projekt anlegen</gettext></h4>
+
+<p>
+<label for="projectname">Kurzname</label>:
+<input id="projectname" name="projectname">
+
+<input type="submit" name="createproject" value="Anlegen">
+</p>
+
+
+</div>
+
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p><gettext>W&auml;hlen Sie ein Projekt aus dem Pull-Down-Men&uuml; oder aus
+der Liste, um damit arbeiten zu k&ouml;nnen.</gettext></p>
+<p><gettext>Tragen Sie sich aus einem Projekt aus, wenn Sie Bock dazu
+haben.</gettext></p>
+<p><gettext>Tragen Sie sich in ein Projekt ein,
+damit Sie damit arbeiten k&ouml;nnen.</gettext></p>
+
+<p><gettext>Erlaubte Zeichen f&uuml;r den Kurznamen eines neuen Projekts sind
+a-z und 0-9. Der Name muss zwischen 3 und 14 Zeichen lang sein.</gettext></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

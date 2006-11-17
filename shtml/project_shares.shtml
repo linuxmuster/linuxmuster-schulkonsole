@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Projekte</gettext>: <!--#echo var="project" --> - <gettext>Tauschen</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-project.shtml.inc" -->
+</div>
+
+<div id="content">
+<h2><gettext>Projekte</gettext> :: <gettext>Tauschen</gettext></h2>
+
+<h3><gettext>Ausgew&auml;hltes Projekt:</gettext> <!--#echo var="project" --></h3>
+
+
+<form method="post">
+<table id="overview_shares">
+<tr>
+<th><gettext>Login</gettext></th>
+<th><gettext>Name</gettext></th>
+<th><gettext>Tauschen<br>global</gettext></th>
+</tr>
+<!--#if expr="$loop_students" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr project="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr project="even"><!--#endif -->
+	<td><!--#echo var="students{login}" --></td>
+	<td><!--#echo var="students{firstname}" --> <!--#echo var="students{surname}" --></td>
+	<td>
+<!--#if expr="$students{shares}" -->
+	<input type="checkbox" name="${students{login}};shares" checked>
+<!--#else -->
+	<input type="checkbox" name="${students{login}};shares">
+<!--#endif -->
+	</td>
+
+	</tr>
+<!--#endif -->
+<tr>
+<td colspan="2"></td>
+<td>|</td>
+</tr>
+<tr>
+<td colspan="2"><gettext>Schnellauswahl</gettext></td>
+<td><input type="button" value="Aus" name="shares" onClick="check_uncheck(this)"></td>
+</tr>
+</table>
+<p><input type="submit" name="acceptshares" value="&Auml;nderungen &uuml;bernehmen"></p>
+</form>
+
+
+
+</div>
+
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p><gettext>Hier k&ouml;nnen Sie festlegen, ob die Sch&uuml;ler/innen des
+Projekts Zugriff auf die Tauschordner in ihrem Homeverzeichnis
+haben.</gettext></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

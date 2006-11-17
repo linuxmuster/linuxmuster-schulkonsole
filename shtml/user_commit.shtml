@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Benutzer</gettext> - <gettext>&Auml;nderungen durchf&uuml;hren</gettext></title>
+<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body onload="timer_step()">
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-user.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Benutzerverwaltung</gettext> :: <gettext>&Auml;nderungen durchf&uuml;hren</gettext></h2>
+
+<form method="post">
+
+<!--#if expr="$isalling" -->
+<p>
+<gettext>Alles l&auml;uft.</gettext>
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="all" value="Benutzer anlegen/versetzen/l&ouml;schen">
+</p>
+<!--#endif -->
+
+
+<hr>
+
+
+<!--#if expr="$isadding" -->
+<p>
+<gettext>Anlegen l&auml;uft.</gettext>
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="add" value="Benutzer anlegen">
+</p>
+<!--#endif -->
+
+<!--#if expr="$logadd" -->
+<pre>
+<!--#echo var="logadd" -->
+</pre>
+<p>
+<input type="submit" name="showlogadd" value="Aktualisieren">
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="showlogadd" value="Letzte Logdatei ansehen">
+</p>
+<!--#endif -->
+
+<!--#if expr="$addlist" -->
+<table>
+<tr>
+<th><gettext>Bezeichner</gettext></th>
+<th><gettext>Gruppe</gettext></th>
+</tr>
+<!--#if expr="$loop_addlist" -->
+<tr>
+<td><!--#echo var="addlist{identifier}" --></td>
+<td><!--#echo var="addlist{group}" --></td>
+</tr>
+<!--#endif -->
+</table>
+<!--#endif -->
+
+
+<hr>
+
+<!--#if expr="$ismoving" -->
+<p>
+<gettext>Versetzen l&auml;uft.</gettext>
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="move" value="Benutzer versetzen">
+</p>
+<!--#endif -->
+
+<!--#if expr="$logmove" -->
+<pre>
+<!--#echo var="logmove" -->
+</pre>
+<p>
+<input type="submit" name="showlogmove" value="Aktualisieren">
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="showlogmove" value="Letzte Logdatei ansehen">
+</p>
+<!--#endif -->
+
+<!--#if expr="$movelist" -->
+<table>
+<tr>
+<th><gettext>Benutzer</gettext></th>
+<th><gettext>von</gettext></th>
+<th><gettext>nach</gettext></th>
+<th><gettext>Status</gettext></th>
+</tr>
+<!--#if expr="$loop_movelist" -->
+<tr>
+<td><!--#echo var="movelist{login}" --></td>
+<td><!--#echo var="movelist{from}" --></td>
+<td><!--#echo var="movelist{to}" --></td>
+<td><!--#echo var="movelist{status}" --></td>
+</tr>
+<!--#endif -->
+</table>
+<!--#endif -->
+
+
+<hr>
+
+<!--#if expr="$iskilling" -->
+<p>
+<gettext>L&ouml;schen l&auml;uft.</gettext>
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="kill" value="Benutzer l&ouml;schen">
+</p>
+<!--#endif -->
+
+<!--#if expr="$logkill" -->
+<pre>
+<!--#echo var="logkill" -->
+</pre>
+<p>
+<input type="submit" name="showlogkill" value="Aktualisieren">
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="showlogkill" value="Letzte Logdatei ansehen">
+</p>
+<!--#endif -->
+
+<!--#if expr="$killlist" -->
+<table>
+<tr>
+<th><gettext>Benutzer</gettext></th>
+<th><gettext>Bezeichner</gettext></th>
+</tr>
+<!--#if expr="$loop_killlist" -->
+<tr>
+<td><!--#echo var="killlist{login}" --></td>
+<td><!--#echo var="killlist{identifier}" --></td>
+</tr>
+<!--#endif -->
+</table>
+<!--#endif -->
+
+
+
+</form>
+
+
+</div>
+
+<div id="help">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p></p>
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>
