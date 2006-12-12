@@ -77,10 +77,12 @@
 <!--#include file="status.shtml.inc" -->
 
 <h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p><gettext>Legen Sie die auszuteilenden Dateien in Ihrem Heimatverzeichnis
+unter <q>_auszuteilen -> auszuteilen-</gettext><!--#echo var="project" --></q> ab.</p>
 <p><gettext>W&auml;hlen Sie die Mitglieder, an die Sie austeilen wollen,
-oder das ganze Projekt aus.</gettext> <gettext>Beachten Sie, dass beim
-Austeilen Ihre Materialen in das Homeverzeichnis der Mitglieder
-in den Ordner <q>_austeilen</q> kopiert werden.</gettext></p>
+oder das ganze Projekt aus.</gettext></p>
+<p><gettext>Nach dem Austeilen finden die Projektmitglieder Ihre Materialen in ihrem
+Heimatverzeichnis unter <q>__austeilen -> austeilen-</gettext><!--#echo var="project" --></q>.</p>
 </div>
 
 <!--#include file="footer.shtml.inc" -->

@@ -53,10 +53,11 @@
 <!--#include file="status.shtml.inc" -->
 
 <h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
-<p><gettext>Die Vorlagen werden dem aktuellen Projekt bereitgestellt.</gettext>
-<gettext>Beachten Sie, dass beim Bereitstellen die Mitglieder Ihre
-Materialen in ihrem Homeverzeichnis im Ordner <q>__vorlagen</q>
-vorfinden.</gettext></p>
+<p><gettext>Legen Sie Ihre bereitzustellenden Vorlagen in Ihrem Heimatverzeichnis
+unter <q>_bereitstellen -> bereitstellen-</gettext><!--#echo var="project" --></q> ab.</p>
+<p><gettext>Nach Bet&auml;tigen der Schaltfl&auml;che <q>Bereitstellen</q> finden die
+Projektmitglieder Ihre Vorlagen in ihrem Homeverzeichnis unter <q>__vorlagen ->
+vorlagen-</gettext><!--#echo var="project" --></q>.</p>
 </div>
 
 <!--#include file="footer.shtml.inc" -->
