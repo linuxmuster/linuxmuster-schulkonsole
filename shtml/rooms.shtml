@@ -25,8 +25,8 @@
 <col width="80%">
 <col width="20%">
 <tr>
-<th><gettext>Raum</gettext></th>
-<th><gettext>Klassenzimmer</gettext></th>
+<th><gettext>Raumbezeichnung</gettext></th>
+<th><gettext>Computerraum</gettext></th>
 </tr>
 <!--#if expr="$loop_rooms" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
@@ -57,7 +57,8 @@
 <!--#include file="status.shtml.inc" -->
 
 <h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
-<p></p>
+<p><gettext>Legen Sie hier fest, welche R&auml;ume von der Schulkonsole als Computerraum
+unter <q>aktueller Raum</q> verwaltbar sein sollen.</gettext></p>
 </div>
 
 <!--#include file="footer.shtml.inc" -->

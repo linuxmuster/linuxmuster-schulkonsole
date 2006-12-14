@@ -222,8 +222,17 @@
 <!--#include file="status.shtml.inc" -->
 
 <h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<p><gettext>Bearbeiten Sie hier die globalen Einstellungen der Musterl&ouml;sung.</gettext></p>
+<p><gettext>Die Einstellungen f&uuml;r die Quotierung h&auml;ngen von der Partitionierung ab.</gettext></p>
 <p><gettext>Beachten Sie, dass es einige Zeit dauern kann, bis
 Quota-&Auml;nderungen ins System &uuml;bertragen wurden.</gettext></p>
+<p><gettext>Der <q>Zugriff auf Webordner</q> muss aktiviert sein, damit Lehrer/innen die
+Seite <q>Webfreigabe</q> unter <q>Klassen</q> bzw. <q>Projekte</q> nutzen k&ouml;nnen.</gettext></p>
+<p><gettext>Wenn Sie unter <q>Login</q> die <q>Shell</q> deaktivieren, k&ouml;nen Sich danach neu
+angelegte Benutzer nicht mehr an Linux-Clients anmelden.</gettext></p>
+<p><gettext>Ist <q>Sambapasswort bei Erstanmeldung &auml;ndern</q> aktiviert, werden danach neu
+angelegte Benutzer gezwungen, bei der ersten Anmeldung am Windows-Client ihr Passwort zu
+&auml;ndern. Auf Linux-Clients hat dies keine Auswirkung.</gettext></p>
 </div>
 
 <!--#include file="footer.shtml.inc" -->
