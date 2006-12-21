@@ -2,6 +2,8 @@
 <!--#if expr="$link_start" -->
    <a href="start"><gettext>Startseite</gettext></a>
 <!--#endif -->
+<!--#if expr="$link_settings" -->
+<!--#else -->
 <!--#if expr="$link_room" -->
    <a href="room"><gettext>aktueller Raum</gettext></a>
 <!--#endif -->
@@ -10,6 +12,7 @@
 <!--#endif -->
 <!--#if expr="$link_project" -->
    <a href="project"><gettext>Projekte</gettext></a>
+<!--#endif -->
 <!--#endif -->
 <!--#if expr="$link_settings" -->
    <a href="settings"><gettext>Einstellungen</gettext></a>

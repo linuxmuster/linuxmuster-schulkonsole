@@ -21,6 +21,7 @@ install-am: all-am
 
 do_subst = sed \
   -e 's,\@PACKAGE\@,$(PACKAGE),g' \
+  -e 's,\@VERSION\@,$(VERSION),g' \
   -e 's,\@sysconfdir\@,$(sysconfdir),g' \
   -e 's,\@datadir\@,$(datadir),g' \
   -e 's,\@pkgruntimedir\@,$(pkgruntimedir),g' \

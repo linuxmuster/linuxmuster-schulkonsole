@@ -1,17 +1,18 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Startseite</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
 
 <!--#include file="header.shtml.inc" -->
 
-<div id="submenu"> </div>
+<div id="submenu">
+<img src="img/bw.jpg" alt="Baden-W&uuml;rttemberg - Ministerium f&uuml;r Kultur-, Jugend und Sport">
+</div>
 
 <div id="content">
 
@@ -64,7 +65,7 @@
 
 <p><gettext>Festplattenquota:</gettext></p></p>
 <!--#if expr="$diskquotas" -->
-<table id="diskquota">
+<table width="100%" class="liste">
 <tr>
 	<th rowspan="2"><gettext>Pfad</gettext></th>
 	<th colspan="5"><gettext>Speicherplatz</gettext></th>
@@ -111,7 +112,7 @@
 
 <p><gettext>Mailquota:</gettext></p>
 <!--#if expr="$mailquotas" -->
-<table id="mailquota">
+<table width="100%" class="liste">
 <tr>
 	<th><gettext>Postfach</gettext></th>
 	<th><gettext>Typ</gettext></th>
@@ -149,12 +150,13 @@
 
 </div>
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Um Druckauftr&auml;ge zu l&ouml;schen, die Auftr&auml;ge aus
 der Liste ausw&auml;hlen und mit <q>Druckauftr&auml;ge l&ouml;schen</q>
 best&auml;tigen. Es k&ouml;nnen mehrere Auftr&auml;ge aus der Liste
@@ -167,6 +169,8 @@ best&auml;tigen.</gettext></p>
 <p><gettext>Im Info-Bereich sehen Sie wieviel Speicherplatz Ihre Dateien
 auf dem Server belegen und wie voll Ihr Postfach ist. Alle Werte sind
 in Kilobyte angegeben.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

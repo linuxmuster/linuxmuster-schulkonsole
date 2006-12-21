@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Projekte</gettext>: <!--#echo var="project" --> - <gettext>Webfreigabe</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -22,7 +21,7 @@
 
 <form method="post">
 
-<table id="projectlist">
+<table id="projectwww" class="liste">
 <tr>
 <th><gettext>Login</gettext></th>
 <th><gettext>Name</gettext></th>
@@ -98,16 +97,19 @@
 </div>
 
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Hier k&ouml;nnen Sie den Zugriff auf die Webordner der einzelnen
 Mitglieder oder den gemeinsamen Webordner des Projekts steuern.</gettext></p>
 <p><gettext>Sie k&ouml;nnen festlegen, ob der jeweilige Webordner
 &ouml;ffentlich zug&auml;nglich sein soll und ob die Sch&uuml;ler/innen das
 Recht haben, Dateien in den Webordner hochzuladen.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

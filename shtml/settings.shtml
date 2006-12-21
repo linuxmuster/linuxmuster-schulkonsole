@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Einstellungen</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -12,6 +11,7 @@
 <!--#include file="header.shtml.inc" -->
 
 <div id="submenu">
+<img src="img/bw.jpg" alt="Baden-W&uuml;rttemberg - Ministerium f&uuml;r Kultur-, Jugend und Sport">
 </div>
 
 <div id="content">
@@ -22,7 +22,7 @@
 
 <h3><gettext>Global</gettext></h3>
 
-<table>
+<table id="settings" class="liste">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
@@ -51,7 +51,7 @@
 <td><gettext>Standardquota Lehrer</gettext></td>
 <td>
 
-<table>
+<table width="100%" class="liste">
 <!--#if expr="$loop_mountpoints" -->
 <th><label for="${mountpoints}_quotateacher"><!--#echo var="mountpoints" --></label></th>
 <!--#endif -->
@@ -69,7 +69,7 @@
 <td><gettext>Standardquota Sch&uuml;ler</gettext></td>
 <td>
 
-<table>
+<table width="100%" class="liste">
 <!--#if expr="$loop_mountpoints" -->
 <th><label for="${mountpoints}_quotastudent"><!--#echo var="mountpoints" --></label></th>
 <!--#endif -->
@@ -106,7 +106,7 @@
 
 <h3><gettext>Login</gettext> <gettext>(Lehrer)</gettext></h3>
 
-<table>
+<table width="100%" class="liste">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
@@ -142,7 +142,7 @@
 
 <h3><gettext>Login</gettext> <gettext>(Sch&uuml;ler)</gettext></h3>
 
-<table>
+<table width="100%" class="liste">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
@@ -178,7 +178,7 @@
 
 <h3><gettext>L&ouml;schen</gettext> <gettext>(Lehrer)</gettext></h3>
 
-<table>
+<table width="100%" class="liste">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
@@ -194,7 +194,7 @@
 
 <h3><gettext>L&ouml;schen</gettext> <gettext>(Sch&uuml;ler)</gettext></h3>
 
-<table>
+<table width="100%" class="liste">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
@@ -217,11 +217,12 @@
 
 </div>
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Bearbeiten Sie hier die globalen Einstellungen der Musterl&ouml;sung.</gettext></p>
 <p><gettext>Die Einstellungen f&uuml;r die Quotierung h&auml;ngen von der Partitionierung ab.</gettext></p>
 <p><gettext>Beachten Sie, dass es einige Zeit dauern kann, bis
@@ -233,6 +234,8 @@ angelegte Benutzer nicht mehr an Linux-Clients anmelden.</gettext></p>
 <p><gettext>Ist <q>Sambapasswort bei Erstanmeldung &auml;ndern</q> aktiviert, werden danach neu
 angelegte Benutzer gezwungen, bei der ersten Anmeldung am Windows-Client ihr Passwort zu
 &auml;ndern. Auf Linux-Clients hat dies keine Auswirkung.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

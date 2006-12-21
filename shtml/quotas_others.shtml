@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Quota</gettext> - <gettext>Sonderquota</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -24,12 +23,15 @@
 
 <form method="post">
 
-<table>
+<table id="quotasothersnew" class="liste">
 <tr>
 <th><label for="newlogin"><gettext>Login</gettext></label></th>
+<!--#if expr="$mountpoints" -->
 <th colspan="$mountpoints_cnt"><gettext>Diskquota</gettext></th>
+<!--#endif -->
 <th><gettext>Mailquota</gettext></th>
 </tr>
+<!--#if expr="$mountpoints" -->
 <tr>
 <th></th>
 <!--#if expr="$loop_mountpoints" -->
@@ -37,6 +39,7 @@
 <!--#endif -->
 <th></th>
 </tr>
+<!--#endif -->
 <tr class="even">
 <td><input id="newlogin" name="newlogin"></td>
 <!--#if expr="$loop_standarddiskquotas" -->
@@ -59,12 +62,20 @@
 <form method="post">
 
 <!--#set var="odd" value="0" -->
-<table>
+<table id="quotaswww" class="liste">
+<colgroup span="1" width="70%"></colgroup>
+<colgroup>
+	<!--#if expr="$mountpoints" --><col span="$mountpoints_cnt"><!--#endif -->
+	<col>
+</colgroup>
 <tr>
 <th><gettext>Login</gettext></th>
+<!--#if expr="$mountpoints" -->
 <th colspan="$mountpoints_cnt"><gettext>Diskquota</gettext></th>
+<!--#endif -->
 <th><gettext>Mailquota</gettext></th>
 </tr>
+<!--#if expr="$mountpoints" -->
 <tr>
 <th></th>
 <!--#if expr="$loop_mountpoints" -->
@@ -72,6 +83,7 @@
 <!--#endif -->
 <th></th>
 </tr>
+<!--#endif -->
 <tr class="even">
 <td><!--#echo var="www{login}" --></td>
 <!--#if expr="$loop_www{diskquotas}" -->
@@ -97,13 +109,21 @@
 <form method="post">
 
 <!--#set var="odd" value="0" -->
-<table>
+<table id="quotasadmins" class="liste">
+<colgroup span="2" width="35%"></colgroup>
+<colgroup>
+	<!--#if expr="$mountpoints" --><col span="$mountpoints_cnt"><!--#endif -->
+	<col>
+</colgroup>
 <tr>
 <th><gettext>Login</gettext></th>
 <th><gettext>Name</gettext></th>
+<!--#if expr="$mountpoints" -->
 <th colspan="$mountpoints_cnt"><gettext>Diskquota</gettext></th>
+<!--#endif -->
 <th><gettext>Mailquota</gettext></th>
 </tr>
+<!--#if expr="$mountpoints" -->
 <tr>
 <th colspan="2"></th>
 <!--#if expr="$loop_mountpoints" -->
@@ -111,6 +131,7 @@
 <!--#endif -->
 <th></th>
 </tr>
+<!--#endif -->
 <!--#if expr="$loop_admins" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
 <!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
@@ -139,13 +160,21 @@
 <form method="post">
 
 <!--#set var="odd" value="0" -->
-<table>
+<table id="quotasstudents" class="liste">
+<colgroup span="2" width="35%"></colgroup>
+<colgroup>
+	<!--#if expr="$mountpoints" --><col span="$mountpoints_cnt"><!--#endif -->
+	<col>
+</colgroup>
 <tr>
 <th><gettext>Login</gettext></th>
 <th><gettext>Name</gettext></th>
+<!--#if expr="$mountpoints" -->
 <th colspan="$mountpoints_cnt"><gettext>Diskquota</gettext></th>
+<!--#endif -->
 <th><gettext>Mailquota</gettext></th>
 </tr>
+<!--#if expr="$mountpoints" -->
 <tr>
 <th colspan="2"></th>
 <!--#if expr="$loop_mountpoints" -->
@@ -153,6 +182,7 @@
 <!--#endif -->
 <th></th>
 </tr>
+<!--#endif -->
 <!--#if expr="$loop_users" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
 <!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
@@ -182,12 +212,20 @@
 <form method="post">
 
 <!--#set var="odd" value="0" -->
-<table>
+<table id="quotasworkstations" class="liste">
+<colgroup span="1" width="70%"></colgroup>
+<colgroup>
+	<!--#if expr="$mountpoints" --><col span="$mountpoints_cnt"><!--#endif -->
+	<col>
+</colgroup>
 <tr>
 <th><gettext>Login</gettext></th>
+<!--#if expr="$mountpoints" -->
 <th colspan="$mountpoints_cnt"><gettext>Diskquota</gettext></th>
+<!--#endif -->
 <th><gettext>Mailquota</gettext></th>
 </tr>
+<!--#if expr="$mountpoints" -->
 <tr>
 <th></th>
 <!--#if expr="$loop_mountpoints" -->
@@ -195,6 +233,7 @@
 <!--#endif -->
 <th></th>
 </tr>
+<!--#endif -->
 <!--#if expr="$loop_workstations" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
 <!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
@@ -221,12 +260,20 @@
 <form method="post">
 
 <!--#set var="odd" value="0" -->
-<table>
+<table id="quotassystem" class="liste">
+<colgroup span="1" width="70%"></colgroup>
+<colgroup>
+	<!--#if expr="$mountpoints" --><col span="$mountpoints_cnt"><!--#endif -->
+	<col>
+</colgroup>
 <tr>
 <th><gettext>Login</gettext></th>
+<!--#if expr="$mountpoints" -->
 <th colspan="$mountpoints_cnt"><gettext>Diskquota</gettext></th>
+<!--#endif -->
 <th><gettext>Mailquota</gettext></th>
 </tr>
+<!--#if expr="$mountpoints" -->
 <tr>
 <th colspan="2"></th>
 <!--#if expr="$loop_mountpoints" -->
@@ -234,6 +281,7 @@
 <!--#endif -->
 <th></th>
 </tr>
+<!--#endif -->
 <!--#if expr="$loop_systems" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
 <!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
@@ -257,11 +305,12 @@
 
 </div>
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Hier &auml;ndern Sie die Quotawerte spezieller Benutzer und einzelner Sch&uuml;ler/innen.</gettext></p>
 <p><gettext>Unter <q>Neu anlegen</q> k&ouml;nnen Sie einem bisher hier nicht aufgef&uuml;hrten Benutzer
 Sonderquota zuweisen. Geben Sie dazu den Login ein und passen Sie die Quotawerte entsprechend an.</gettext></p>
@@ -269,6 +318,8 @@ Sonderquota zuweisen. Geben Sie dazu den Login ein und passen Sie die Quotawerte
 insgesamt belegen d&uuml;rfen. &Auml;ndern Sie hierzu den Quotawert f&uuml;r <q>www-data</q> auf
 <q>/var</q>.</gettext></p>
 <p><gettext>Alle Werte sind in Megabyte (MB) einzugeben.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

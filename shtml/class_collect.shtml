@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Klassen</gettext>: <!--#echo var="class" --> - <gettext>Einsammeln</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -40,7 +39,9 @@
 </table>
 <p><input type="submit" name="collecttop" value="Einsammeln"></p>
 
-<table id="collect">
+<table id="classcollect" class="liste">
+<colgroup span="3"></colgroup>
+<colgroup width="50%"></colgroup>
 <tr>
 <th><gettext>Login</gettext></th>
 <th><gettext>Name</gettext></th>
@@ -65,9 +66,9 @@
 <td>|</td>
 <td></td>
 </tr>
-<tr>
+<tr class="quickselection">
 <td colspan="2"><gettext>Schnellauswahl</gettext></td>
-<td><input type="button" value="Aus" name="collect" onClick="check_uncheck(this)" checked></td>
+<td><input class="button" type="button" value="Aus" name="collect" onClick="check_uncheck(this)" checked></td>
 <td></td>
 </tr>
 </table>
@@ -89,11 +90,12 @@
 </div>
 
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Einzusammelnde Dateien m&uuml;ssen von den Sch&uuml;ler/innen in ihrem Heimatverzeichnis im
 Ordner <q>__einsammeln</q> abgelegt werden.</gettext></p>
 <p><gettext>W&auml;hlen Sie aus, ob die einzusammelnden Dateien erhalten bleiben oder gel&ouml;scht
@@ -103,6 +105,8 @@ oder die ganze Klasse aus. In der Spalte <q>Dateien</q> k&ouml;nnen Sie sehen, w
 zur Verf&uuml;gung stehen.</gettext></p>
 <p><gettext>Sie finden die eingesammelten Arbeiten in Ihrem Heimatverzeichnis unter
 <q>_eingesammelt -&gt; eingesammelt-Klasse</q>.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

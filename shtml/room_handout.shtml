@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>aktueller Raum</gettext>: <!--#echo var="room" --> - <gettext>Austeilen</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -45,8 +44,8 @@
 <!--#if expr="$teacher_share_files" -->
 <ul>
 <!--#if expr="$loop_teacher_share_files" -->
-	<li><!--#if expr="$teacher_share_files{isdir}" -->
-	*<!--#endif --><!--#echo var="teacher_share_files{name}" --></li>
+	<li><!--#if expr="$teacher_share_files{isdir}" --><img src="img/folder.gif" alt="*"><!--#else --><img src="img/file.gif" alt=""><!--#endif -->
+	    <!--#echo var="teacher_share_files{name}" --></li>
 <!--#endif -->
 </ul>
 <!--#else -->
@@ -55,7 +54,7 @@
 <p><input type="submit" value="Ansicht aktualisieren"></p>
 
 
-<table id="handout">
+<table id="roomhandoutcopy" class="liste">
 <tr>
 <th><gettext>Hostname</gettext></th>
 <th><gettext>Login</gettext></th>
@@ -91,9 +90,9 @@
 <td colspan="2"></td>
 <td>|</td>
 </tr>
-<tr>
+<tr class="quickselection">
 <td colspan="2"><gettext>Schnellauswahl</gettext></td>
-<td><input type="button" value="Aus" name="handout" onClick="check_uncheck(this)" checked></td>
+<td><input class="button" type="button" value="Aus" name="handout" onClick="check_uncheck(this)" checked></td>
 </tr>
 </table>
 
@@ -102,11 +101,12 @@
 
 </div>
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Auszuteilende Dateien m&uuml;ssen in Ihrem Heimatverzeichnis unter
 <q>_auszuteilen -&gt; auszuteilen-aktueller_raum</q> abgelegt sein. Der Inhalt dieses Ordners wird hier
 aufgelistet.<br>
@@ -118,6 +118,8 @@ sichtbar machen.</gettext></p>
 ausgew&auml;hlten Sch&uuml;lerarbeitspl&auml;tze aus.</gettext></p>
 <p><gettext>Die Sch&uuml;ler/innen finden die ausgeteilten Dateien in ihrem Heimatverzeichnis unter
 <q>__austeilen -&gt; austeilen-aktueller_raum.</q></gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

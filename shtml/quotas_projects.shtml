@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Quota</gettext> - <gettext>Projekte</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -26,12 +25,15 @@
 <form method="post">
 
 <!--#set var="odd" value="0" -->
-<table>
+<table id="quotasprojects" class="liste">
 <tr>
 <th><gettext>Projekt</gettext></th>
+<!--#if expr="$mountpoints" -->
 <th colspan="$mountpoints_cnt"><gettext>Diskquota</gettext></th>
+<!--#endif -->
 <th><gettext>Mailquota</gettext></th>
 </tr>
+<!--#if expr="$mountpoints" -->
 <tr>
 <th></th>
 <!--#if expr="$loop_mountpoints" -->
@@ -39,6 +41,7 @@
 <!--#endif -->
 <th></th>
 </tr>
+<!--#endif -->
 <!--#if expr="$loop_projects" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
 <!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
@@ -62,14 +65,17 @@
 
 </div>
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Hier k&ouml;nnen Sie den Mitgliedern eines Projekts zus&auml;tzliche Quota zuweisen.</gettext></p>
 <p><gettext>Leere Felder bedeuten, dass f&uuml;r dieses Projekt bisher keine Zusatzquota vergeben wurden.</gettext></p>
 <p><gettext>Alle Werte sind in Megabyte (MB) einzugeben.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

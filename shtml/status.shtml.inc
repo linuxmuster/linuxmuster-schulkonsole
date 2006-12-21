@@ -1,20 +1,23 @@
 <div id="status">
-<h2><gettext>Status</gettext></h2>
+<div></div>
+<!--#if expr="$status" -->
 <p><!--#echo var="status" --></p>
+<!--#endif -->
 <!--#if expr="$REMOTE_ADDR" -->
-<p class="info"><gettext>Sie sind:</gettext>
+<p class="info">
+<gettext>Sitzungsdauer:</gettext> <!--#echo var="session_time" --><br>
+<gettext>verbleibend:</gettext> <span id="timer"><gettext>unbekannt</gettext></span></p>
+<p class="info"><gettext>Benutzer:</gettext>
 <strong><!--#echo var="firstname" --> <!--#echo var="surname" --></strong><br>
-<gettext>in Raum:</gettext>
+<gettext>Raum:</gettext>
 <!--#if expr="$remote_room" -->
 <strong><!--#echo var="remote_room" --></strong><br>
 <!--#else -->
 <strong><gettext>unbekannt</gettext></strong><br>
 <!--#endif -->
-<gettext>an Platz:</gettext>
+<gettext>Workstation:</gettext>
 <strong><!--#echo var="remote_workstation" --></strong><br>
-<gettext>mit IP:</gettext> <strong><!--#echo var="REMOTE_ADDR" --></strong><br>
-<gettext>Sitzungsdauer:</gettext> <!--#echo var="session_time" --><br>
-<gettext>verbleibend:</gettext> <span id="timer"><gettext>unbekannt</gettext></span></p>
+<gettext>IP:</gettext> <strong><!--#echo var="REMOTE_ADDR" --></strong><br>
 <!--#if expr="$class" -->
 <p class="info"><gettext>aktive Klasse:</gettext>
 <strong><!--#echo var="class" --></strong></p>

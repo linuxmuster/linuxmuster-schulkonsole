@@ -1,68 +1,68 @@
-<ul>
 <!--#if expr="$link_class" -->
-	<li><a href="class"><gettext>Start</gettext></a></li>
+	<a class="separator" href="class"><gettext>Start</gettext></a>
 <!--#endif -->
 <!--#if expr="$class" -->
 <!--#if expr="$link_class_list" -->
-	<li><a href="class_list"><gettext>Klassenliste</gettext></a></li>
+	<a href="class_list"><gettext>Klassenliste</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_class_passwords" -->
-	<li><a href="class_passwords"><gettext>Passw&ouml;rter</gettext></a></li>
+	<a class="separator" href="class_passwords"><gettext>Passw&ouml;rter</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_class_handoutcopy" -->
-	<li><a href="class_handoutcopy"><gettext>Austeilen</gettext></a></li>
+	<a href="class_handoutcopy"><gettext>Austeilen</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_class_handout" -->
-	<li><a href="class_handout"><gettext>Bereitstellen</gettext></a></li>
+	<a href="class_handout"><gettext>Bereitstellen</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_class_collect" -->
-	<li><a href="class_collect"><gettext>Einsammeln</gettext></a></li>
+	<a class="separator" href="class_collect"><gettext>Einsammeln</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_class_db" -->
-	<li><a href="class_db"><gettext>Datenbanken</gettext></a></li>
+	<a href="class_db"><gettext>Datenbanken</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_class_revision_control" -->
-	<li><a href="class_revision_control"><gettext>Versionskontrolle</gettext></a></li>
+	<a href="class_revision_control"><gettext>Versionskontrolle</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_class_www" -->
-	<li><a href="class_www"><gettext>Webfreigabe</gettext></a></li>
+	<a href="class_www"><gettext>Webfreigabe</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_class_shares" -->
-	<li><a href="class_shares"><gettext>Tauschen</gettext></a></li>
+	<a class="separator" href="class_shares"><gettext>Tauschen</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_room_test" -->
-	<li><a href="room_test"><gettext>Klassenarbeit</gettext></a></li>
+	<a class="end" href="room_test"><gettext>Klassenarbeit</gettext></a>
 <!--#endif -->
 <!--#else -->
 <!--#if expr="$link_class_list" -->
-	<li class="disabled"><gettext>Klassenliste</gettext></li>
+	<span class="disabled"><gettext>Klassenliste</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_class_passwords" -->
-	<li class="disabled"><gettext>Passw&ouml;rter</gettext></li>
+	<span class="disabledseparator"><gettext>Passw&ouml;rter</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_class_handoutcopy" -->
-	<li class="disabled"><gettext>Austeilen</gettext></li>
+	<span class="disabled"><gettext>Austeilen</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_class_handout" -->
-	<li class="disabled"><gettext>Bereitstellen</gettext></li>
+	<span class="disabled"><gettext>Bereitstellen</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_class_collect" -->
-	<li class="disabled"><gettext>Einsammeln</gettext></li>
+	<span class="disabledseparator"><gettext>Einsammeln</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_class_db" -->
-	<li class="disabled"><gettext>Datenbanken</gettext></li>
+	<span class="disabled"><gettext>Datenbanken</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_class_revision_control" -->
-	<li class="disabled"><gettext>Versionskontrolle</gettext></li>
+	<span class="disabled"><gettext>Versionskontrolle</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_class_www" -->
-	<li class="disabled"><gettext>Webfreigabe</gettext></li>
+	<span class="disabled"><gettext>Webfreigabe</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_class_shares" -->
-	<li class="disabled"><gettext>Tauschen</gettext></li>
+	<span class="disabledseparator"><gettext>Tauschen</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_room_test" -->
-	<li class="disabled"><gettext>Klassenarbeit</gettext></li>
+	<span class="disabledend"><gettext>Klassenarbeit</gettext></span>
 <!--#endif -->
 <!--#endif -->
-</ul>
+
+<img src="img/bw.jpg" alt="Baden-W&uuml;rttemberg - Ministerium f&uuml;r Kultur-, Jugend und Sport">

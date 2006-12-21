@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>aktueller Raum</gettext>: <!--#echo var="room" --></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -113,7 +112,7 @@
 <h3><gettext>&Uuml;bersicht PCs</gettext></h3>
 
 <form method="post">
-<table id="overview_workstations">
+<table id="roomoverview" class="liste">
 <tr>
 <th><gettext>Hostname</gettext></th>
 <th><gettext>Login</gettext></th>
@@ -221,30 +220,30 @@
 <!--#endif -->
 <td>|</td>
 </tr>
-<tr>
+<tr class="quickselection">
 <td colspan="2"><gettext>Schnellauswahl</gettext></td>
 <!--#if expr="$quickinternetoff" -->
-<td><input type="button" value="Aus" name="internet" checked onClick="check_uncheck(this)"></td>
+<td><input class="button" type="button" value="Aus" name="internet" checked onClick="check_uncheck(this)"></td>
 <!--#else -->
-<td><input type="button" value="An" name="internet" checked onClick="check_uncheck(this)"></td>
+<td><input class="button" type="button" value="An" name="internet" checked onClick="check_uncheck(this)"></td>
 <!--#endif -->
 <!--#if expr="$quickintranetoff" -->
-<td><input type="button" value="Aus" name="intranet" checked onClick="check_uncheck(this)"></td>
+<td><input class="button" type="button" value="Aus" name="intranet" checked onClick="check_uncheck(this)"></td>
 <!--#else -->
-<td><input type="button" value="An" name="intranet" checked onClick="check_uncheck(this)"></td>
+<td><input class="button" type="button" value="An" name="intranet" checked onClick="check_uncheck(this)"></td>
 <!--#endif -->
 <!--#if expr="$quickwebfilteroff" -->
-<td><input type="button" value="Aus" name="webfilter" onClick="check_uncheck(this)"></td>
+<td><input class="button" type="button" value="Aus" name="webfilter" onClick="check_uncheck(this)"></td>
 <!--#else -->
-<td><input type="button" value="An" name="webfilter" onClick="check_uncheck(this)"></td>
+<td><input class="button" type="button" value="An" name="webfilter" onClick="check_uncheck(this)"></td>
 <!--#endif -->
 <!--#if expr="$loop_printers" -->
-<td><input type="button" value="Aus" name="${printers};printer" checked onClick="check_uncheck(this)"></td>
+<td><input class="button" type="button" value="Aus" name="${printers};printer" checked onClick="check_uncheck(this)"></td>
 <!--#endif -->
 <!--#if expr="$quicksharesoff" -->
-<td><input type="button" value="Aus" name="shares" onClick="check_uncheck(this)"></td>
+<td><input class="button" type="button" value="Aus" name="shares" onClick="check_uncheck(this)"></td>
 <!--#else -->
-<td><input type="button" value="An" name="shares" onClick="check_uncheck(this)"></td>
+<td><input class="button" type="button" value="An" name="shares" onClick="check_uncheck(this)"></td>
 <!--#endif -->
 </tr>
 </table>
@@ -254,9 +253,9 @@
 <h3><gettext>&Uuml;bersicht Drucker</gettext></h3>
 
 <form method="post">
-<table id="overview_printers">
+<table id="printersoverview" class="liste">
+<colgroup span="2" width="40%"></colgroup>
 <tr>
-<!--<th><gettext>Art</gettext></th>-->
 <th><gettext>Name</gettext></th>
 <th><gettext>Status</gettext></th>
 <th><gettext>freigeschaltet</gettext></th>
@@ -264,7 +263,6 @@
 <!--#if expr="$loop_overview_devices" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
 <!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
-<!--<td><-#echo var="overview_devices{type}" -></td>-->
 <td><!--#echo var="overview_devices{name}" --></td>
 <td><!--#if expr="$overview_devices{statemessage}" -->
 <!--#echo var="overview_devices{statemessage}" -->
@@ -287,9 +285,9 @@
 <td><gettext>F&uuml;r alle</gettext></td>
 <td></td>
 <!--#if expr="$quickprinteroff" -->
-<td><input type="button" value="Aus" name="printer" checked onClick="check_uncheck(this)"></td>
+<td><input class="button" type="button" value="Aus" name="printer" checked onClick="check_uncheck(this)"></td>
 <!--#else -->
-<td><input type="button" value="An" name="printer" checked onClick="check_uncheck(this)"></td>
+<td><input class="button" type="button" value="An" name="printer" checked onClick="check_uncheck(this)"></td>
 <!--#endif -->
 </tr>
 </table>
@@ -301,7 +299,7 @@
 <h3><gettext>&Uuml;bersicht PCs</gettext></h3>
 
 <form method="post">
-<table id="overview_workstations">
+<table id="roomoverview" class="liste">
 <tr>
 <th><gettext>Hostname</gettext></th>
 <th><gettext>Login</gettext></th>
@@ -374,9 +372,9 @@
 
 <h3><gettext>&Uuml;bersicht Drucker</gettext></h3>
 
-<!--#set var="odd" value="0" --><table id="devices">
+<!--#set var="odd" value="0" --><table id="printersoverview" class="liste">
+<colgroup span="2" width="40%"></colgroup>
 <tr>
-<!--<th><gettext>Art</gettext></th>-->
 <th><gettext>Name</gettext></th>
 <th><gettext>Status</gettext></th>
 <th><gettext>freigeschaltet</gettext></th>
@@ -384,7 +382,6 @@
 <!--#if expr="$loop_overview_devices" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
 <!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
-<!--<td><-#echo var="overview_devices{type}" -></td>-->
 <td><!--#echo var="overview_devices{name}" --></td>
 <td><!--#if expr="$overview_devices{statemessage}" -->
 <!--#echo var="overview_devices{statemessage}" -->
@@ -406,11 +403,12 @@
 <!--#endif -->
 </div>
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Wechseln Sie in einen anderen Raum &uuml;ber das Dropdown-Men&uuml; und die
 Schaltfl&auml;che <q>Wechseln</q>.</gettext></p>
 <p><gettext>Sie m&uuml;ssen den <q>Unterricht beginnen</q>, damit Sie
@@ -422,6 +420,8 @@ es mit <q>beenden lassen</q>.</gettext></p>
 Webfilter, Drucker und das globale Tauschverzeichnis &uuml;ber Checkboxen steuern.</gettext></p>
 <p><gettext>Im Bereich <q>&Uuml;bersicht Drucker</q> k&ouml;nnen Sie den Zugriff auf die Raumdrucker
 f&uuml;r alle Benutzer, nicht nur die des Raumes, freigeben oder sperren.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

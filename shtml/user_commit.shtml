@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Benutzer</gettext> - <gettext>&Auml;nderungen durchf&uuml;hren</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -59,7 +58,7 @@
 <!--#endif -->
 
 <!--#if expr="$addlist" -->
-<table>
+<table width="100%" class="liste">
 <tr>
 <th><gettext>Bezeichner</gettext></th>
 <th><gettext>Gruppe</gettext></th>
@@ -100,7 +99,7 @@
 <!--#endif -->
 
 <!--#if expr="$movelist" -->
-<table>
+<table width="100%" class="liste">
 <tr>
 <th><gettext>Benutzer</gettext></th>
 <th><gettext>von</gettext></th>
@@ -145,7 +144,7 @@
 <!--#endif -->
 
 <!--#if expr="$killlist" -->
-<table>
+<table width="100%" class="liste">
 <tr>
 <th><gettext>Benutzer</gettext></th>
 <th><gettext>Bezeichner</gettext></th>
@@ -166,11 +165,12 @@
 
 </div>
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Auf dieser Seite bekommen Sie zun&auml;chst einen &Uuml;berblick &uuml;ber die
 durchzuf&uuml;hrenden &Auml;nderungen.</gettext></p>
 <p><gettext>Sie k&ouml;nnen die anstehenden Aktionen entweder in einem Durchgang oder nacheinander
@@ -179,6 +179,8 @@ ausf&uuml;hren lassen.</gettext></p>
 wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen
 Prozesses k&ouml;nnen Sie sich &uuml;ber die Schaltfl&auml;che <q>Letze Logdatei ansehen</q>
 anzeigen lassen.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

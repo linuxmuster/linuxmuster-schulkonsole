@@ -876,6 +876,8 @@ sub init {
 
 
 	# set standard variables
+	$this->set_var('version', $Schulkonsole::Config::_version);
+
 	$this->set_var('username', ${ $this->{userdata} }{uid});
 	$this->set_var('firstname', ${ $this->{userdata} }{firstname});
 	$this->set_var('surname', ${ $this->{userdata} }{surname});

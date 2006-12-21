@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Projekte</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -49,7 +48,7 @@
 
 <h4><gettext>&Uuml;bersicht der Projekte</gettext></h4>
 
-<table id="projects">
+<table id="projectsoverview" class="liste">
 <tr>
 <th><gettext>Projektename</gettext></th>
 <th><gettext>Zusatzquota</gettext></th>
@@ -114,11 +113,12 @@
 </div>
 
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>W&auml;hlen Sie ein Projekt aus dem Pull-Down-Men&uuml; oben rechts
 oder aus der Liste, um damit arbeiten zu k&ouml;nnen.</gettext></p>
 <p><gettext>Tragen Sie sich aus einem Projekt aus, wenn Sie darin nicht mehr mitarbeiten.</gettext></p>
@@ -126,6 +126,8 @@ oder aus der Liste, um damit arbeiten zu k&ouml;nnen.</gettext></p>
 und dann die Schaltfl&auml;che <q>Eintragen</q> bet&auml;tigen.</gettext></p>
 <p><gettext>Erlaubte Zeichen f&uuml;r den Kurznamen eines neuen Projekts sind
 a-z und 0-9. Der Name muss zwischen 3 und 14 Zeichen lang sein.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

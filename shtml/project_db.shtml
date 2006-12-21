@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Projekte</gettext>: <!--#echo var="project" --> - <gettext>Datenbanken</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -34,11 +33,12 @@
 </div>
 
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Hier k&ouml;nnen Sie MySQL-Datenbanken f&uuml;r alle
 Mitglied des Projekts anlegen oder wieder l&ouml;schen.</gettext></p>
 <p><gettext>Kommen neue Mitglieder zum Projekt hinzu,
@@ -47,6 +47,8 @@ so k&ouml;nnen Sie &uuml;ber die Schaltfl&auml;che
 lassen.</gettext></p>
 <p><gettext>Die Zugangsdaten zur Datenbank werden an alle Projektmitglieder per
 E-Mail verschickt.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

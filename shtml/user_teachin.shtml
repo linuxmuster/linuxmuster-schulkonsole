@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Benutzer</gettext> - <gettext>&Auml;nderungen durchf&uuml;hren</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -54,7 +53,7 @@
 </p>
 
 
-<table>
+<table width="100%" class="liste">
 <col width="25%">
 <col width="10%">
 <col width="15%">
@@ -123,17 +122,20 @@
 
 </div>
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>W&auml;hrend der Teach-In-Sitzung m&uuml;ssen Sie nicht eindeutig
 zuordenbare Benutzerdaten mit den richtigen Benutzernamen verkn&uuml;pfen.</gettext></p>
 <p><gettext>Best&auml;tigen Sie alle &Auml;nderungen einer Seite jedes Mal &uuml;ber
 die Schaltfl&auml;che <q>&Auml;nderungen &uuml;bernehmen</q>.</gettext></p>
 <p><gettext>Beenden Sie die Teach-In-Sitzung erst, wenn Sie alle Seiten
 gepr&uuml;ft haben.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>aktueller Raum</gettext>: <!--#echo var="room" --> - <gettext>Klassenarbeitsmodus</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -49,16 +48,19 @@
 
 </div>
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>&Uuml;bernehmen Sie entweder das vorgegebene Zufallspasswort oder geben Sie ein
 eigenes Passwort ein.</gettext></p>
 <p><gettext>Mit Bet&auml;tigung der Schaltfl&auml;che <q>Klassenarbeit starten</q> wird das neue
 Passwort an alle Arbeitsstationen im Raum verteilt, und die Sch&uuml;ler/innen k&ouml;nnen sich
 mit dem Namen der Arbeitsstation und dem eben vergebenen Passwort anmelden.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

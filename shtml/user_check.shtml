@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Benutzer</gettext> - <gettext>&Auml;nderungen durchf&uuml;hren</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -30,7 +29,7 @@
 
 <p><gettext>Folgende Benutzer werden automatisch entfernt:</gettext></p>
 
-<table>
+<table width="100%" class="liste">
 <col width="25%">
 <col width="10%">
 <col width="50%">
@@ -79,11 +78,12 @@ ausgegeben:</gettext></p>
 
 </div>
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Hier &uuml;berpr&uuml;fen Sie die zuvor eingepflegten Benutzerdaten auf
 Konsistenz.</gettext></p>
 <p><gettext>Nach Ende der &Uuml;berpr&uuml;fung sehen Sie die Konsolenausgabe von
@@ -94,6 +94,8 @@ Konsistenz.</gettext></p>
 &Uuml;berpr&uuml;fung notwendig machen, wird ein <q>Teach-In</q> vorgeschlagen.
 &Uuml;ber die angebotenen Links <q>Verkn&uuml;pfungen</q> bzw. <q>Teach-In</q> gelangen
 Sie in dem Fall zum n&auml;chsten Schritt.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

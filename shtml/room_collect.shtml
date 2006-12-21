@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>aktueller Raum</gettext>: <!--#echo var="room" --> - <gettext>Einsammeln</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -44,7 +43,9 @@
 <p><input type="submit" value="Ansicht aktualisieren"></p>
 
 
-<table id="collect">
+<table id="roomcollect" class="liste">
+<colgroup span="3"></colgroup>
+<colgroup width="50%"></colgroup>
 <tr>
 <th><gettext>Hostname</gettext></th>
 <th><gettext>Login</gettext></th>
@@ -88,9 +89,9 @@
 <td>|</td>
 <td></td>
 </tr>
-<tr>
+<tr class="quickselection">
 <td colspan="2"><gettext>Schnellauswahl</gettext></td>
-<td><input type="button" value="Aus" name="collect" onClick="check_uncheck(this)" checked></td>
+<td><input class="button" type="button" value="Aus" name="collect" onClick="check_uncheck(this)" checked></td>
 <td></td>
 </tr>
 </table>
@@ -101,11 +102,12 @@
 
 </div>
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Einzusammelnde Dateien m&uuml;ssen im Heimatverzeichnis der Sch&uuml;ler/innen im Ordner
 <q>__einsammeln</q> abgelegt sein, damit sie hier aufgelistet werden.</gettext></p>
 <p><gettext>Nachtr&auml;glich von den Sch&uuml;ler/innen dorthin abgelegte Dateien k&ouml;nnen Sie &uuml;ber
@@ -116,6 +118,8 @@ von denen Sie einsammeln wollen, oder bet&auml;tigen Sie die <q>Schnellauswahl</
 <p><gettext><q>Einsammeln</q> l&ouml;scht den Inhalt des Ordners <q>__einsammeln</q> auf
 Sch&uuml;lerseite.</gettext></p>
 <p><gettext>Sie finden die eingesammelten Dateien in Ihrem Heimatverzeichnis unter <q>_eingesammelt -&gt; eingesammelt-aktueller_raum</q>.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

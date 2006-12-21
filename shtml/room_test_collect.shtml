@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>aktueller Raum</gettext>: <!--#echo var="room" --> - <gettext>Klassenarbeitsmodus</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -43,7 +42,7 @@
 <p><input type="submit" name="collectcopy" value="Kopien einsammeln">
    <input type="submit" name="collectmove" value="Einsammeln und beenden"></p>
 
-<table>
+<table width="100%" class="liste">
 <tr>
 <th><gettext>Hostname</gettext></th>
 <th><gettext>Login</gettext></th>
@@ -79,11 +78,12 @@
 
 </div>
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Die Sch&uuml;ler/innen m&uuml;ssen ihre Ergebnisse im Heimatverzeichnis der
 Arbeitsstation im Ordner <q>__einsammeln</q> ablegen, damit sie hier aufgelistet werden und
 eingesammelt werden k&ouml;nnen. Laden Sie die Seite eventuell neu, um den aktuellen
@@ -91,6 +91,8 @@ Status zu sehen.</gettext></p>
 <p><gettext><q>Kopien einsammeln</q> sammelt den aktuellen Stand der Ergebnisse ein.</gettext></p>
 <p><gettext><q>Einsammeln und beenden</q> sammelt alle Ergebnisse ein, l&ouml;scht den Inhalt des
 Ordners <q>__einsammeln</q> der Arbeitsstation und beendet die Klassenarbeit.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

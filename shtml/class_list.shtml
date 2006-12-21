@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Klassen</gettext>: <!--#echo var="class" --> - <gettext>Klassenliste</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -20,7 +19,7 @@
 
 <h3><gettext>Ausgew&auml;hlte Klasse:</gettext> <!--#echo var="class" --></h3>
 
-<table id="classlist">
+<table id="classoverview" class="liste">
 <tr>
 <th><gettext>Login</gettext></th>
 <th><gettext>Name</gettext></th>
@@ -111,13 +110,16 @@
 </div>
 
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Hier sehen Sie Informationen zu den Sch&uuml;ler/innen der aktuell ausgew&auml;hlten Klasse.</gettext>
-<!--#echo var="class --></p>
+<!--#echo var="class" --></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

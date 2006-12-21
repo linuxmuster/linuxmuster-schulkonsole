@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Drucker</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -12,6 +11,7 @@
 <!--#include file="header.shtml.inc" -->
 
 <div id="submenu">
+<img src="img/bw.jpg" alt="Baden-W&uuml;rttemberg - Ministerium f&uuml;r Kultur-, Jugend und Sport">
 </div>
 
 <div id="content">
@@ -22,7 +22,7 @@
 <!--#if expr="$editrooms" -->
 <form method="post">
 
-<table>
+<table width="100%" class="liste">
 <col id="selected" width="40%">
 <col id="action" width="20%">
 <col id="deselected" width="40%">
@@ -61,7 +61,7 @@
 <!--#else -->
 <form method="post">
 
-<table>
+<table width="100%" class="liste">
 <col id="selected" width="40%">
 <col id="action" width="20%">
 <col id="deselected" width="40%">
@@ -104,17 +104,20 @@
 
 </div>
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>W&auml;hlen Sie unter <q>abgew&auml;hlt</q> die R&auml;ume oder Rechner aus,
 die Zugriff auf diesen Drucker bekommen sollen.</gettext></p>
 <p><gettext>&Uuml;bernehmen Sie die Auswahl durch Bet&auml;tigen der Schaltfl&auml;che
 <q>&lt;&lt;</q>.</gettext></p>
 <p><gettext>Mehrfachauswahl mit gedr&uuml;ckter Strg-Taste ist m&ouml;glich.</gettext></p>
 <p><gettext>Schliessen Sie die Aktion mit <q>&Auml;nderungen &uuml;bernehmen</q>  ab.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

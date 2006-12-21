@@ -24,6 +24,7 @@ dist_shtml_DATA = login.shtml logout.shtml start.shtml \
 	submenu-project.shtml.inc submenu-user.shtml.inc \
 	submenu-quotas.shtml.inc \
 	subsubmenu-room_test.shtml.inc \
+	css.shtml.inc \
 	schulkonsole.js
 
 CLEANFILES = messages.pl

@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Projekte</gettext>: <!--#echo var="project" --> - <gettext>Mitglieder</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -65,7 +64,7 @@
 
 <!--#if expr="$membersclasses" -->
 
-<table id="membersclasses">
+<table id="projectmemberclasses" class="liste">
 <tr>
 <th><gettext>Klassenname</gettext></th>
 <!--#if expr="$isadmin" -->
@@ -101,7 +100,7 @@
 <!--#if expr="$membersprojects" -->
 <!--#set var="odd" value="0" -->
 
-<table id="membersprojects">
+<table id="projectmemberprojects" class="liste">
 <tr>
 <th><gettext>Projektname</gettext></th>
 <!--#if expr="$isadmin" -->
@@ -137,7 +136,7 @@
 <!--#if expr="$membersteachers" -->
 <!--#set var="odd" value="0" -->
 
-<table id="membersteachers">
+<table id="projectmemberteachers" class="liste">
 <tr>
 <th><gettext>Login</gettext></th>
 <th><gettext>Name</gettext></th>
@@ -179,7 +178,7 @@
 <!--#if expr="$membersstudents" -->
 <!--#set var="odd" value="0" -->
 
-<table id="membersstudents">
+<table id="projectmemberstudents" class="liste">
 <tr>
 <th><gettext>Login</gettext></th>
 <th><gettext>Name</gettext></th>
@@ -278,11 +277,12 @@
 </div>
 
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Als Projektmitglied sehen Sie hier Informationen zum aktiven Projekt</gettext>
 <!--#echo var="project" -->.</p>
 <p><gettext>Als Projektleiter k&ouml;nnen Sie hier Mitglieder zum aktiven Projekt</gettext>
@@ -291,6 +291,8 @@
 Sch&uuml;ler/innen, Lehrer/innen, alle Mitglieder einer Klasse oder eines Projekts
 hinzuf&uuml;gen wollen. Geben Sie dann einen Suchbegriff ein und bet&auml;tigen die
 Schaltfl&auml;che <q>Suche</q>. Ein * im Suchbegriff als Wildcard ist erlaubt.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

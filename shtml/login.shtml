@@ -1,16 +1,17 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Login</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
 
-<div id="head">
+<div id="header">
 <h1><gettext>Schulkonsole</gettext></h1>
+<gettext>Version</gettext> <!--#echo var="version" -->
+<gettext>f&uuml;r Linux Musterl&ouml;sung 3.0</gettext>
 </div>
 <div id="supportnetz">
 <a href="http://www.support-netz.de/">[www.support-netz.de]</a>
@@ -20,6 +21,7 @@
 <div id="special"> </div>
 
 <div id="submenu">
+<img src="img/bw.jpg" alt="Baden-W&uuml;rttemberg - Ministerium f&uuml;r Kultur-, Jugend und Sport">
 </div>
 
 <div id="content">
@@ -41,12 +43,15 @@
 
 </div>
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Bitte melden Sie sich mit Benutzername und Passwort an.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

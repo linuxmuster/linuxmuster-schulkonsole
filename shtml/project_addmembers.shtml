@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Projekte</gettext>: <!--#echo var="project" --> - <gettext>Mitglieder hinzuf&uuml;gen</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -24,7 +23,7 @@
 <form method="post">
 
 <!--#if expr="$students" -->
-<table id="studentslist">
+<table id="searchstudents" class="liste">
 <tr>
 <th><gettext>Login</gettext></th>
 <th><gettext>Name</gettext></th>
@@ -54,7 +53,7 @@
 
 
 <!--#if expr="$teachers" -->
-<table id="teacherslist">
+<table id="searchteachers" class="liste">
 <tr>
 <th><gettext>Login</gettext></th>
 <th><gettext>Name</gettext></th>
@@ -85,7 +84,7 @@
 
 
 <!--#if expr="$classes" -->
-<table id="classeslist">
+<table id="searchclasses" class="liste">
 <tr>
 <th><gettext>Name</gettext></th>
 <th><gettext>Mitgliedschaft</gettext></th>
@@ -110,7 +109,7 @@
 
 
 <!--#if expr="$projects" -->
-<table id="projectslist">
+<table id="searchprojects" class="liste">
 <tr>
 <th><gettext>Name</gettext></th>
 <th><gettext>Mitgliedschaft</gettext></th>
@@ -158,16 +157,18 @@
 </div>
 
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>W&auml;hlen Sie die Mitglieder aus, die Sie neu ins Projekt aufnehmen
 wollen und klicken Sie dann auf die Schaltfl&auml;che <q>Aufnehmen</q>.</gettext></p>
 <p><gettext>Falls das Suchergebnis nicht Ihren Erwartungen entspricht, k&ouml;nnen Sie
 unten eine neue Suche starten.</gettext></p>
 
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

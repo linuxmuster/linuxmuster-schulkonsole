@@ -1,10 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Benutzer</gettext> - <gettext>Lehrerliste pflegen</gettext></title>
-<link rel="stylesheet" title="Schulkonsole" href="schulkonsole.css" type="text/css">
+<!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body onload="timer_step()">
@@ -27,7 +26,7 @@
 
 <h4><gettext>Editieren</gettext></h4>
 
-<table>
+<table width="100%" class="liste">
 <tr>
 <th><gettext>Nachname</gettext></th>
 <th><gettext>Vorname</gettext></th>
@@ -65,7 +64,7 @@
 <form method="post">
 <h4><gettext>Lehrer hinzuf&uuml;gen</gettext></h4>
 
-<table>
+<table width="100%" class="liste">
 <tr>
 <th><label for="newsurname"><gettext>Nachname</gettext></label></th>
 <th><label for="newfirstname"><gettext>Vorname</gettext></label></th>
@@ -89,7 +88,7 @@
 <form method="post">
 <h4><gettext>Lehrer entfernen</gettext></h4>
 
-<table>
+<table width="100%" class="liste">
 <tr>
 <th></th>
 <th><gettext>Nachname</gettext></th>
@@ -112,7 +111,7 @@
 <form method="post">
 <h4><gettext>Passw&ouml;rter f&uuml;r Lehrer</gettext></h4>
 
-<table>
+<table width="100%" class="liste">
 <tr>
 <th><gettext>Login</gettext></th>
 <th><gettext>Name</gettext></th>
@@ -149,16 +148,19 @@
 
 </div>
 
-<div id="help">
+<div id="info">
 
 <!--#include file="status.shtml.inc" -->
 
-<h2><gettext><img src="img/info.jpg" alt="Hilfe:"></gettext></h2>
+<h2><gettext>Info</gettext></h2>
+
 <p><gettext>Hier k&ouml;nnen Sie, falls noch nicht geschehen, die Datei mit den Lehrerdaten
 <q>lehrer.txt</q> ins System hochladen. Beachten Sie, dass diese Option nur vorhanden ist,
 solange keine <q>lehrer.txt</q> im System vorliegt.</gettext></p>
 <p><gettext>Die weitere Datenpflege sowie Passwort&auml;nderungen nehmen Sie dann &uuml;ber diese
 Seite vor.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
 
 <!--#include file="footer.shtml.inc" -->

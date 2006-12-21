@@ -1,32 +1,32 @@
-<ul>
 <!--#if expr="$link_quotas" -->
-	<li><a href="quotas"><gettext>Start</gettext></a></li>
+	<a class="separator" href="quotas"><gettext>Start</gettext></a>
 <!--#endif -->
 <!--#if expr="$quotaactivated" -->
 <!--#if expr="$link_quotas_teachers" -->
-	<li><a href="quotas_teachers"><gettext>Lehrer</gettext></a></li>
+	<a href="quotas_teachers"><gettext>Lehrer</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_quotas_classes" -->
-	<li><a href="quotas_classes"><gettext>Klassen</gettext></a></li>
+	<a href="quotas_classes"><gettext>Klassen</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_quotas_projects" -->
-	<li><a href="quotas_projects"><gettext>Projekte</gettext></a></li>
+	<a href="quotas_projects"><gettext>Projekte</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_quotas_others" -->
-	<li><a href="quotas_others"><gettext>Sonderquota</gettext></a></li>
+	<a class="end" href="quotas_others"><gettext>Sonderquota</gettext></a>
 <!--#endif -->
 <!--#else -->
 <!--#if expr="$link_quotas_teachers" -->
-	<li class="disabled"><gettext>Lehrer</gettext></li>
+	<span class="disabled"><gettext>Lehrer</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_quotas_classes" -->
-	<li class="disabled"><gettext>Klassen</gettext></li>
+	<span class="disabled"><gettext>Klassen</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_quotas_projects" -->
-	<li class="disabled"><gettext>Projekte</gettext></li>
+	<span class="disabled"><gettext>Projekte</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_quotas_others" -->
-	<li class="disabled"><gettext>Sonderquota</gettext></li>
+	<span class="disabledend"><gettext>Sonderquota</gettext></span>
 <!--#endif -->
 <!--#endif -->
-</ul>
+
+<img src="img/bw.jpg" alt="Baden-W&uuml;rttemberg - Ministerium f&uuml;r Kultur-, Jugend und Sport">
