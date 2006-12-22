@@ -1,4 +1,4 @@
-AC_INIT([schulkonsole], [0.7.0])
+AC_INIT([schulkonsole], [0.8.0])
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE
 
