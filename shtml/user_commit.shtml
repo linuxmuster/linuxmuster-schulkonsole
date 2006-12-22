@@ -22,7 +22,7 @@
 
 <!--#if expr="$isalling" -->
 <p>
-<gettext>Alles l&auml;uft.</gettext>
+<gettext>Benutzer anlegen/versetzen/l&ouml;schen l&auml;uft.</gettext>
 </p>
 <!--#else -->
 <p>
@@ -58,7 +58,7 @@
 <!--#endif -->
 
 <!--#if expr="$addlist" -->
-<table width="100%" class="liste">
+<table id="commitadd" class="liste">
 <tr>
 <th><gettext>Bezeichner</gettext></th>
 <th><gettext>Gruppe</gettext></th>
@@ -99,7 +99,7 @@
 <!--#endif -->
 
 <!--#if expr="$movelist" -->
-<table width="100%" class="liste">
+<table id="commitmove" class="liste">
 <tr>
 <th><gettext>Benutzer</gettext></th>
 <th><gettext>von</gettext></th>
@@ -144,7 +144,7 @@
 <!--#endif -->
 
 <!--#if expr="$killlist" -->
-<table width="100%" class="liste">
+<table id="commitkill" class="liste">
 <tr>
 <th><gettext>Benutzer</gettext></th>
 <th><gettext>Bezeichner</gettext></th>

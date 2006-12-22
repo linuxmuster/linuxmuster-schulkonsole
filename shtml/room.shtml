@@ -223,27 +223,27 @@
 <tr class="quickselection">
 <td colspan="2"><gettext>Schnellauswahl</gettext></td>
 <!--#if expr="$quickinternetoff" -->
-<td><input class="button" type="button" value="Aus" name="internet" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="Aus" name="internet" checked onClick="check_uncheck(this)"></td>
 <!--#else -->
-<td><input class="button" type="button" value="An" name="internet" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="An" name="internet" checked onClick="check_uncheck(this)"></td>
 <!--#endif -->
 <!--#if expr="$quickintranetoff" -->
-<td><input class="button" type="button" value="Aus" name="intranet" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="Aus" name="intranet" checked onClick="check_uncheck(this)"></td>
 <!--#else -->
-<td><input class="button" type="button" value="An" name="intranet" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="An" name="intranet" checked onClick="check_uncheck(this)"></td>
 <!--#endif -->
 <!--#if expr="$quickwebfilteroff" -->
-<td><input class="button" type="button" value="Aus" name="webfilter" onClick="check_uncheck(this)"></td>
+<td><input type="button" value="Aus" name="webfilter" onClick="check_uncheck(this)"></td>
 <!--#else -->
-<td><input class="button" type="button" value="An" name="webfilter" onClick="check_uncheck(this)"></td>
+<td><input type="button" value="An" name="webfilter" onClick="check_uncheck(this)"></td>
 <!--#endif -->
 <!--#if expr="$loop_printers" -->
-<td><input class="button" type="button" value="Aus" name="${printers};printer" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="Aus" name="${printers};printer" checked onClick="check_uncheck(this)"></td>
 <!--#endif -->
 <!--#if expr="$quicksharesoff" -->
-<td><input class="button" type="button" value="Aus" name="shares" onClick="check_uncheck(this)"></td>
+<td><input type="button" value="Aus" name="shares" onClick="check_uncheck(this)"></td>
 <!--#else -->
-<td><input class="button" type="button" value="An" name="shares" onClick="check_uncheck(this)"></td>
+<td><input type="button" value="An" name="shares" onClick="check_uncheck(this)"></td>
 <!--#endif -->
 </tr>
 </table>
@@ -281,13 +281,13 @@
 <td colspan=2></td>
 <td>|</td>
 </tr>
-<tr>
-<td><gettext>F&uuml;r alle</gettext></td>
+<tr class="quickselection">
+<td><gettext>Schnellauswahl</gettext></td>
 <td></td>
 <!--#if expr="$quickprinteroff" -->
-<td><input class="button" type="button" value="Aus" name="printer" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="Aus" name="printer" checked onClick="check_uncheck(this)"></td>
 <!--#else -->
-<td><input class="button" type="button" value="An" name="printer" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="An" name="printer" checked onClick="check_uncheck(this)"></td>
 <!--#endif -->
 </tr>
 </table>

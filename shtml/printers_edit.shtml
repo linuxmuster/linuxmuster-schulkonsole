@@ -22,7 +22,7 @@
 <!--#if expr="$editrooms" -->
 <form method="post">
 
-<table width="100%" class="liste">
+<table id="printersedit" class="liste">
 <col id="selected" width="40%">
 <col id="action" width="20%">
 <col id="deselected" width="40%">
@@ -61,7 +61,7 @@
 <!--#else -->
 <form method="post">
 
-<table width="100%" class="liste">
+<table id="printersedit" class="liste">
 <col id="selected" width="40%">
 <col id="action" width="20%">
 <col id="deselected" width="40%">

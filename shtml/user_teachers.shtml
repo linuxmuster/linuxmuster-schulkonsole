@@ -18,7 +18,6 @@
 
 <h2><gettext>Benutzerverwaltung</gettext> :: <gettext>Lehrerliste pflegen</gettext></h2>
 
-<hr>
 
 <!--#if expr="$teachers" -->
 
@@ -26,7 +25,7 @@
 
 <h4><gettext>Editieren</gettext></h4>
 
-<table width="100%" class="liste">
+<table id="teachersedit" class="liste">
 <tr>
 <th><gettext>Nachname</gettext></th>
 <th><gettext>Vorname</gettext></th>
@@ -64,7 +63,7 @@
 <form method="post">
 <h4><gettext>Lehrer hinzuf&uuml;gen</gettext></h4>
 
-<table width="100%" class="liste">
+<table id="teachersadd" class="liste">
 <tr>
 <th><label for="newsurname"><gettext>Nachname</gettext></label></th>
 <th><label for="newfirstname"><gettext>Vorname</gettext></label></th>
@@ -88,7 +87,7 @@
 <form method="post">
 <h4><gettext>Lehrer entfernen</gettext></h4>
 
-<table width="100%" class="liste">
+<table id="teachersdelete" class="liste">
 <tr>
 <th></th>
 <th><gettext>Nachname</gettext></th>
@@ -111,7 +110,7 @@
 <form method="post">
 <h4><gettext>Passw&ouml;rter f&uuml;r Lehrer</gettext></h4>
 
-<table width="100%" class="liste">
+<table id="teacherspasswords" class="liste">
 <tr>
 <th><gettext>Login</gettext></th>
 <th><gettext>Name</gettext></th>

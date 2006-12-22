@@ -22,7 +22,7 @@
 
 <h3><gettext>Global</gettext></h3>
 
-<table id="settings" class="liste">
+<table class="settings">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
@@ -51,7 +51,7 @@
 <td><gettext>Standardquota Lehrer</gettext></td>
 <td>
 
-<table width="100%" class="liste">
+<table class="tabletable">
 <!--#if expr="$loop_mountpoints" -->
 <th><label for="${mountpoints}_quotateacher"><!--#echo var="mountpoints" --></label></th>
 <!--#endif -->
@@ -69,7 +69,7 @@
 <td><gettext>Standardquota Sch&uuml;ler</gettext></td>
 <td>
 
-<table width="100%" class="liste">
+<table class="tabletable">
 <!--#if expr="$loop_mountpoints" -->
 <th><label for="${mountpoints}_quotastudent"><!--#echo var="mountpoints" --></label></th>
 <!--#endif -->
@@ -106,7 +106,7 @@
 
 <h3><gettext>Login</gettext> <gettext>(Lehrer)</gettext></h3>
 
-<table width="100%" class="liste">
+<table class="settings">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
@@ -142,7 +142,7 @@
 
 <h3><gettext>Login</gettext> <gettext>(Sch&uuml;ler)</gettext></h3>
 
-<table width="100%" class="liste">
+<table class="settings">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
@@ -178,7 +178,7 @@
 
 <h3><gettext>L&ouml;schen</gettext> <gettext>(Lehrer)</gettext></h3>
 
-<table width="100%" class="liste">
+<table class="settings">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
@@ -194,7 +194,7 @@
 
 <h3><gettext>L&ouml;schen</gettext> <gettext>(Sch&uuml;ler)</gettext></h3>
 
-<table width="100%" class="liste">
+<table class="settings">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">

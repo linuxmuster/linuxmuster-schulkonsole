@@ -65,7 +65,7 @@
 
 <p><gettext>Festplattenquota:</gettext></p></p>
 <!--#if expr="$diskquotas" -->
-<table width="100%" class="liste">
+<table id="#diskquotas" class="liste">
 <tr>
 	<th rowspan="2"><gettext>Pfad</gettext></th>
 	<th colspan="5"><gettext>Speicherplatz</gettext></th>
@@ -112,7 +112,7 @@
 
 <p><gettext>Mailquota:</gettext></p>
 <!--#if expr="$mailquotas" -->
-<table width="100%" class="liste">
+<table id="mailquotas" class="liste">
 <tr>
 	<th><gettext>Postfach</gettext></th>
 	<th><gettext>Typ</gettext></th>

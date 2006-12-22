@@ -42,7 +42,7 @@
 <p><input type="submit" name="collectcopy" value="Kopien einsammeln">
    <input type="submit" name="collectmove" value="Einsammeln und beenden"></p>
 
-<table width="100%" class="liste">
+<table id="roomcollect" class="liste">
 <tr>
 <th><gettext>Hostname</gettext></th>
 <th><gettext>Login</gettext></th>

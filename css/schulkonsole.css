@@ -386,7 +386,12 @@ body {
 }
 
 #content select {
-	height: 22px;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	border-width: 2px;
+	min-height: 16px;
 }
 
 #content p {
@@ -573,7 +578,7 @@ table.liste td {
 	vertical-align: top;
 }
 
-#settings td {
+.settings td {
 	vertical-align: middle;
 }
 
@@ -595,12 +600,14 @@ table.liste tr {
 	border-bottom-color: #999999;
 }
 
-table.liste tr.even {
+table.liste tr.even,
+table.settings tr.even {
 	background-color: #ffffdd;
 }
 
 
-table.liste tr.odd {
+table.liste tr.odd,
+table.settings tr.odd {
 	background-color: #ffffff;
 }
 
@@ -609,19 +616,21 @@ table.liste tr.editing {
 }
 
 
-#roomoverview {
-	width: 100%;
-}
 
 #roomoverview tr > td:first-child + td + td,
 #roomoverview tr > td:first-child + td + td + td,
 #roomoverview tr > td:first-child + td + td + td + td,
 #roomoverview tr > td:first-child + td + td + td + td + td,
+#roomoverview tr > td:first-child + td + td + td + td + td + td,
+#roomoverview tr > td:first-child + td + td + td + td + td + td + td,
 #roomoverview tr > td:first-child[colspan="2"] + td,
 #roomoverview tr > th:first-child + th + th,
 #roomoverview tr > th:first-child + th + th + th,
 #roomoverview tr > th:first-child + th + th + th + th,
 #roomoverview tr > th:first-child + th + th + th + th + th,
+#printersoverview tr > th:first-child + th + th,
+#printersoverview tr > td:first-child + td + td,
+#printersoverview tr > td:first-child[colspan="2"] + td,
 #roomshares tr > th:first-child + th + th,
 #roomshares tr > td:first-child + td + td,
 #roomshares tr > td:first-child[colspan="2"] + td,
@@ -650,8 +659,13 @@ table.liste tr.editing {
 #projectcollect tr > td:first-child[colspan="2"] + td,
 #projectshares tr > th:first-child + th + th,
 #projectshares tr > td:first-child + td + td,
-#projectshares tr > td:first-child[colspan="2"] + td {
+#projectshares tr > td:first-child[colspan="2"] + td,
+#printersedit tr > td:first-child + td {
 	text-align: center;
+}
+
+#printersedit tr > td:first-child + td {
+	vertical-align: middle;
 }
 
 .quickselection input,
@@ -676,14 +690,12 @@ table.liste tr.editing {
 }
 
 
-#printersoverview tr > td:first-child + td + td {
-	text-align: center;
-}
 
 
 
 #roomshares,
 #roomhandoutcopy,
+#roomhandout,
 #classesoverview,
 #classshares,
 #classhandout,
@@ -697,9 +709,13 @@ table.liste tr.editing {
 #quotasclasses,
 #quotasprojects,
 #rooms {
-	width: 65%;
+	width: 62%;
 }
 
+#diskquotas,
+#mailquotas,
+#roomoverview,
+#printersoverview,
 #roomcollect,
 #classoverview,
 #classpasswords,
@@ -713,17 +729,30 @@ table.liste tr.editing {
 #projectmemberprojects,
 #projectmemberteachers,
 #projectmemberstudents,
-#settings,
+.settings,
 #quotaswww,
 #quotasadmins,
 #quotasstudents,
 #quotasworkstations,
 #quotassystem,
 #printers,
-#hosts {
+#printersedit,
+#teachersedit,
+#teachersadd,
+#teachersdelete,
+#teacherspasswords,
+#teachin,
+#usersdelete,
+#commitadd,
+#commitmove,
+#commitkill,
+.tabletable {
 	width: 100%;
 }
 
+#printersedit select {
+	max-height: 230px;
+}
 
 #hosts tr > th:first-child + th + th + th + th + th + th + th {
 	text-align: center;
@@ -734,6 +763,7 @@ table.liste tr.editing {
 }
 
 #hosts select {
+	min-height: 2px;
 	height: 16px;
 }
 
@@ -748,6 +778,18 @@ table.liste tr.editing {
 #hosts select[name="addcnt"], #hosts input[type="submit"] {
 	font-size: 11px;
 }
+
+
+td select {
+    width: 100%;
+	}
+
+#action td {
+	text-align: center;
+	vertical-align: center;
+	background: red;
+}
+
 
 
 
