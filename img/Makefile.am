@@ -1,6 +1,7 @@
 imgdir = $(pkgdatadir)/img
-dist_img_DATA = bw.jpg lmz.jpg MOII.png support-netz2.jpg \
-	punkt-h.png punkt-v.png \
+dist_img_DATA = bw.jpg lmz.jpg MOII.png \
+	support-netz2.jpg support-netz2_restricted.jpg\
+	punkt-v.png punkt-h.png punkt-h2.png \
 	info.png info-rot.png info-gruen.png \
 	file.gif folder.gif \
 	nava.png navaend.png navasep.png \
