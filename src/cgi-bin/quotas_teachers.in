@@ -113,17 +113,7 @@ $q->param('acceptteachers') and do {
 } # end COMMANDS
 };
 if ($@) {
-	if (ref $@) {
-		if ($@->{internal}) {
-			$sk_session->set_status(
-				$sk_session->d()->get('Interner Fehler'), 1);
-			print STDERR "$@\n";
-		} else {
-			$sk_session->set_status($sk_session->d()->get($@->what()), 1);
-		}
-	} else {
-		die $@;
-	}
+	$sk_session->standard_error_handling($this_file, $@);
 }
 
 

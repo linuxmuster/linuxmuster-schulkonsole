@@ -103,18 +103,7 @@ if (   $q->param('collecttop')
 			}
 		};
 		if ($@) {
-			if (ref $@) {
-				if ($@->{internal}) {
-					$sk_session->set_status(
-						$sk_session->d()->get('Interner Fehler'), 1);
-
-					print STDERR "$@\n";
-				} else {
-					$sk_session->set_status($sk_session->d()->get($@), 1);
-				}
-			} else {
-				die $@;
-			}
+			$sk_session->standard_error_handling($this_file, $@);
 		}
 	} else {
 		$sk_session->set_status($sk_session->d()->get(
@@ -126,6 +115,7 @@ if (   $q->param('collecttop')
 
 
 
+eval {
 my @login_ids;
 foreach my $user (keys %$member_userdatas) {
 	push @login_ids, $$member_userdatas{$user}{id};
@@ -149,6 +139,10 @@ foreach my $user (sort {
 	push @members, $member;
 }
 $sk_session->set_var('members', \@members);
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
 
 
 

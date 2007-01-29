@@ -45,6 +45,7 @@ foreach my $user (keys %$class_userdatas) {
 my $id = $sk_session->userdata('id');
 my $password = $sk_session->get_password();
 if ($q->param('acceptshares')) {
+	eval {
 	my $share_states = Schulkonsole::Sophomorix::share_states(
 		$id, $password, @login_ids);
 
@@ -73,11 +74,16 @@ if ($q->param('acceptshares')) {
 		$sk_session->set_status(
 			$sk_session->d()->get("Keine &Auml;nderungen."), 1);
 	}
+	};
+	if ($@) {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
 }
 
 
 
 
+eval {
 my $share_states = Schulkonsole::Sophomorix::share_states(
 	$id, $password, @login_ids);
 
@@ -97,7 +103,10 @@ foreach my $user (sort {
 
 }
 $sk_session->set_var('students', \@students);
-
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
 
 
 $sk_session->set_var('class', $$classs{$class}{displayname});

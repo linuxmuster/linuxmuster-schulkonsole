@@ -41,15 +41,20 @@ if ($q->param('collectmove')) {
 	$sk_session->redirect($url);
 
 } elsif ($q->param('collectcopy')) {
+	eval {
 	Schulkonsole::Sophomorix::collectcopy_exam($sk_session->userdata('id'),
 		$sk_session->get_password(),
 		$room_session->info('name'));
 
 	$sk_session->set_status($sk_session->d()->get('Kopiert'), 0);
+	};
+	if ($@) {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
 }
 
 
-
+eval {
 my $user_share_files = Schulkonsole::Sophomorix::ls_collect(
 	$sk_session->userdata('id'),
 	$sk_session->get_password(),
@@ -77,6 +82,10 @@ foreach my $workstation (sort keys %$workstations) {
 	}
 }
 $sk_session->set_var('overview_workstations', \@array_overview_workstations);
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
 
 
 $room_session->set_vars($sk_session);

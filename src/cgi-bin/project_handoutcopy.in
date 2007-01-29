@@ -93,18 +93,7 @@ if ($q->param('handoutcopy')) {
 			}
 		};
 		if ($@) {
-			if (ref $@) {
-				if ($@->{internal}) {
-					$sk_session->set_status(
-						$sk_session->d()->get('Interner Fehler'), 1);
-
-					print STDERR "$@\n";
-				} else {
-					$sk_session->set_status($sk_session->d()->get($@), 1);
-				}
-			} else {
-				die $@;
-			}
+			$sk_session->standard_error_handling($this_file, $@);
 		}
 	} else {
 		$sk_session->set_status($sk_session->d()->get(
@@ -128,27 +117,13 @@ $sk_session->set_var('admin_share_files',
 	Schulkonsole::Sophomorix::create_file_list($admin_share_files));
 };
 if ($@) {
-	if (ref $@) {
-		if ($@->{internal}) {
-			SWITCHCODE: {
-			$@->{code} == Schulkonsole::Error::WRAPPER_SOPHOMORIX_NO_SUCH_DIRECTORY
-				and do {
-				$sk_session->set_status(
-					$sk_session->d()->get(
-						'Verzeichnis zum Austeilen nicht gefunden'),
-						1);
-				last SWITCHCODE;
-			};
-			$sk_session->set_status(
-				$sk_session->d()->get('Interner Fehler'), 1);
-			}
-
-			print STDERR "$@\n";
-		} else {
-			$sk_session->set_status($sk_session->d()->get($@), 1);
-		}
+	if (    ref $@
+	    and $@->{code} == Schulkonsole::Error::WRAPPER_SOPHOMORIX_NO_SUCH_DIRECTORY) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Verzeichnis zum Austeilen nicht gefunden'),
+				1);
 	} else {
-		die $@;
+		$sk_session->standard_error_handling($this_file, $@);
 	}
 }
 

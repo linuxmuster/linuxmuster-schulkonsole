@@ -67,24 +67,19 @@ $q->param('studentsedit') and do {
 }
 };
 if ($@) {
-	if (ref $@) {
-		if ($@->{internal}) {
-			$sk_session->set_status(
-				$sk_session->d()->get('Interner Fehler'), 1);
-			print STDERR "$@\n";
-		} else {
-			$sk_session->set_status($sk_session->d()->get($@->what()), 1);
-		}
-	} else {
-		die $@;
-	}
+	$sk_session->standard_error_handling($this_file, $@);
 }
 
 
 
+eval {
 my $students_lines
 	= Schulkonsole::Sophomorix::read_students_file($id, $password);
 $q->param('students', join('', @$students_lines)) unless $q->param('students');
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
 
 
 

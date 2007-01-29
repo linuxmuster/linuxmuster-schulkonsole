@@ -84,28 +84,22 @@ if ($q->param('create')) {
 }
 };
 if ($@) {
-	if (ref $@) {
-		if ($@->{internal}) {
-			$sk_session->set_status(
-				$sk_session->d()->get('Interner Fehler'), 1);
-			print STDERR $@;
-		} else {
-			$sk_session->set_status(
-				$sk_session->d()->get($@->what()), 1);
-		}
-	} else {
-		die $@;
-	}
+	$sk_session->standard_error_handling($this_file, $@);
 }
 
 
 
+eval {
 my $dbs = Schulkonsole::Collab::list_db($id, $password);
 foreach my $db (@$dbs) {
 	if ($db eq $project) {
 		$sk_session->set_var('project_db', $project);
 		last;
 	}
+}
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
 }
 
 

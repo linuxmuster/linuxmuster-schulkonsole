@@ -106,7 +106,6 @@ $q->param('acceptprojects') and do {
 	if (@errors) {
 		$sk_session->set_status(join(', ', @errors), 1);
 	} elsif ($is_changed) {
-		eval {
 		my @queue;
 		# check values
 		foreach my $gid (keys %new_projects) {
@@ -130,21 +129,6 @@ $q->param('acceptprojects') and do {
 
 		$sk_session->set_status($sk_session->d()->get(
 			'&Auml;nderungen &uuml;bernommen.'), 0);
-		};
-		if ($@) {
-			if (ref $@) {
-				if ($@->{internal}) {
-					$sk_session->set_status(
-						$sk_session->d()->get('Interner Fehler'), 1);
-					print STDERR "$@\n";
-				} else {
-					$sk_session->set_status($sk_session->d()->get($@->what()),
-					                        1);
-				}
-			} else {
-				die $@;
-			}
-		}
 	} else {
 		$sk_session->set_status($sk_session->d()->get(
 			'Keine &Auml;nderungen.'), 1);
@@ -284,23 +268,14 @@ $q->param('acceptusers') and do {
 } # end COMMANDS
 };
 if ($@) {
-	if (ref $@) {
-		if ($@->{internal}) {
-			$sk_session->set_status(
-				$sk_session->d()->get('Interner Fehler'), 1);
-			print STDERR "$@\n";
-		} else {
-			$sk_session->set_status($sk_session->d()->get($@->what()), 1);
-		}
-	} else {
-		die $@;
-	}
+	$sk_session->standard_error_handling($this_file, $@);
 }
 
 
 
 
 
+eval {
 my $projects = Schulkonsole::DB::projects();
 my @projects_array;
 foreach my $project (sort {
@@ -330,6 +305,10 @@ foreach my $project (sort {
 		};
 }
 $sk_session->set_var('projects', \@projects_array);
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
 
 
 

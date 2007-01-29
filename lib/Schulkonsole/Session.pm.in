@@ -836,6 +836,61 @@ sub read_groups_from_db {
 
 
 
+=head3 C<standard_error_handling($@)>
+
+Do common error handling
+
+=head4 Parameters
+
+=over
+
+=item C<$@>
+
+A Schulkonsole::Error object
+
+=back
+
+=head4 Description
+
+Does standard error handling with a Schulkonsole::Error object
+
+=cut
+
+sub standard_error_handling {
+	my $this = shift;
+	my $page = shift;
+	my $error = shift;
+
+	if (ref $error) {
+		if ($error->{internal}) {
+			$this->set_status(
+				$this->d()->get('Interner Fehler'), 1);
+			print STDERR $error;
+		} else {
+			$this->set_status($this->d()->get($@->what()), 1);
+		}
+
+		# password changed -> re-authenticate
+		if (   $error->{code}
+		       	== Schulkonsole::Error::WRAPPER_FIREWALL_UNAUTHENTICATED_ID
+		    or $error->{code}
+		       	== Schulkonsole::Error::WRAPPER_PRINTER_UNAUTHENTICATED_ID
+		    or $error->{code}
+		       	== Schulkonsole::Error::WRAPPER_SOPHOMORIX_UNAUTHENTICATED_ID
+		    or $error->{code}
+		       	== Schulkonsole::Error::WRAPPER_COLLAB_UNAUTHENTICATED_ID
+		    or $error->{code}
+		       	== Schulkonsole::Error::WRAPPER_FILES_UNAUTHENTICATED_ID) {
+			$this->exit_with_login_page($page);
+		}
+	} else {
+		die $@;
+	}
+}
+
+
+
+
 
 
 #=head2 Private methods

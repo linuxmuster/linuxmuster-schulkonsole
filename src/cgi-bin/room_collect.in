@@ -48,6 +48,7 @@ if (   $q->param('collectcopy')
 	}
 
 	if (@users) {
+		eval {
 		if ($q->param('collectcopy')) {
 			Schulkonsole::Sophomorix::collectcopy_from_room_users(
 				$id, $password,
@@ -75,6 +76,10 @@ if (   $q->param('collectcopy')
 					0);
 			}
 		}
+		};
+		if ($@) {
+			$sk_session->standard_error_handling($this_file, $@);
+		}
 	} else {
 		$sk_session->set_status($sk_session->d()->get(
 			'Keine Benutzer ausgew&auml;hlt'), 1);
@@ -83,6 +88,7 @@ if (   $q->param('collectcopy')
 
 
 
+eval {
 my @login_ids;
 foreach my $host (keys %$workstation_users) {
 	foreach my $userdata (@{ $$workstation_users{$host} }) {
@@ -117,6 +123,10 @@ foreach my $workstation (sort keys %$workstations) {
 	}
 }
 $sk_session->set_var('overview_workstations', \@array_overview_workstations);
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
 
 
 $room_session->set_vars($sk_session);

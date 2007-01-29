@@ -338,24 +338,14 @@ if ($q->param('acceptfirewall')) {
 
 }; } # end COMMANDS
 if ($@) {
-	if (ref $@) {
-		if ($@->{internal}) {
-			$sk_session->set_status(
-				$sk_session->d()->get('Interner Fehler'), 1);
-			print STDERR $@;
-		} else {
-			$sk_session->set_status(
-				$sk_session->d()->get($@->what()), 1);
-		}
-	} else {
-		die $@;
-	}
+	$sk_session->standard_error_handling($this_file, $@);
 }
 
 
 
 # collect data for output
 
+eval {
 my $blocked_hosts_internet = Schulkonsole::Firewall::blocked_hosts_internet();
 my $blocked_hosts_intranet = Schulkonsole::Firewall::blocked_hosts_intranet();
 my $unfiltered_hosts = Schulkonsole::Firewall::unfiltered_hosts();
@@ -427,6 +417,11 @@ $sk_session->set_var('overview_devices', \@array_overview_devices);
 
 $sk_session->set_var('rooms', $classrooms);
 $sk_session->set_var('printers', $printers);
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
 
 $room_session->set_vars($sk_session);
 

@@ -105,7 +105,6 @@ $q->param('acceptclasses') and do {
 	if (@errors) {
 		$sk_session->set_status(join(', ', @errors), 1);
 	} elsif ($is_changed) {
-		eval {
 		my @queue;
 		# check values
 		foreach my $gid (keys %new_classs) {
@@ -129,21 +128,6 @@ $q->param('acceptclasses') and do {
 
 		$sk_session->set_status($sk_session->d()->get(
 			'&Auml;nderungen &uuml;bernommen.'), 0);
-		};
-		if ($@) {
-			if (ref $@) {
-				if ($@->{internal}) {
-					$sk_session->set_status(
-						$sk_session->d()->get('Interner Fehler'), 1);
-					print STDERR "$@\n";
-				} else {
-					$sk_session->set_status($sk_session->d()->get($@->what()),
-					                        1);
-				}
-			} else {
-				die $@;
-			}
-		}
 	} else {
 		$sk_session->set_status($sk_session->d()->get(
 			'Keine &Auml;nderungen.'), 1);
@@ -156,17 +140,7 @@ $q->param('acceptclasses') and do {
 } # end COMMANDS
 };
 if ($@) {
-	if (ref $@) {
-		if ($@->{internal}) {
-			$sk_session->set_status(
-				$sk_session->d()->get('Interner Fehler'), 1);
-			print STDERR "$@\n";
-		} else {
-			$sk_session->set_status($sk_session->d()->get($@->what()), 1);
-		}
-	} else {
-		die $@;
-	}
+	$sk_session->standard_error_handling($this_file, $@);
 }
 
 
@@ -174,6 +148,7 @@ if ($@) {
 
 
 
+eval {
 my $classs = Schulkonsole::DB::classes();
 my @classs_array;
 foreach my $class (sort {
@@ -203,6 +178,10 @@ foreach my $class (sort {
 		};
 }
 $sk_session->set_var('classes', \@classs_array);
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
 
 
 $sk_session->set_var('mountpoints', \@mountpoints);

@@ -264,17 +264,7 @@ if (   defined $q->param('oldpassword')
 				$sk_session->{d}->get('Passwort&auml;nderung erfolgreich'), 0);
 		};
 		if ($@) {
-			if (ref $@) {
-				if ($@->{internal}) {
-					$sk_session->set_status(
-						$sk_session->d()->get('Interner Fehler'), 1);
-				} else {
-					$sk_session->set_status(
-						$sk_session->d()->get($@->what()), 1);
-				}
-			} else {
-				die $@;
-			}
+			$sk_session->standard_error_handling($this_file, $@);
 		}
 	}
 
@@ -410,7 +400,8 @@ $sk_session->set_var('diskquotas', \@array_diskquotas);
 
 if (my $var_mailquotas = $sk_session->temp_param('var_mailquotas')) {
 	$sk_session->set_var('mailquotas', $var_mailquotas);
-} elsif (not $sk_session->param('nomailquota')) { eval {
+} elsif (not $sk_session->param('nomailquota')) {
+	eval {
 	my $quotaroots = Schulkonsole::Info::mail_quotas(
 		$sk_session->userdata('uid'), $sk_session->get_password());
 

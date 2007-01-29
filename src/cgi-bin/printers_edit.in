@@ -33,6 +33,7 @@ $printers = {} if $@;
 
 
 my $edit_printer;
+eval {
 foreach my $printer (@printers) {
 	if ($q->param("${printer}_rooms")) {	# init rooms
 		$edit_printer = $printer;
@@ -204,6 +205,10 @@ foreach my $printer (@printers) {
 		$sk_session->set_status_redirect(join(', ', @warnings,
 			$sk_session->d()->get('&Auml;nderungen &uuml;bernommen')), 0);
 	}
+}
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
 }
 
 

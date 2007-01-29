@@ -179,17 +179,7 @@ $q->param('acceptusers') and do {
 } # end COMMANDS
 };
 if ($@) {
-	if (ref $@) {
-		if ($@->{internal}) {
-			$sk_session->set_status(
-				$sk_session->d()->get('Interner Fehler'), 1);
-			print STDERR "$@\n";
-		} else {
-			$sk_session->set_status($sk_session->d()->get($@->what()), 1);
-		}
-	} else {
-		die $@;
-	}
+	$sk_session->standard_error_handling($this_file, $@);
 }
 
 
@@ -246,6 +236,7 @@ $sk_session->set_var('systems', \@systemquotas_array);
 $sk_session->set_var('www', $wwwquota);
 
 
+eval {
 my $standard_quota = Schulkonsole::SophomorixQuotas::standard_quota('schueler');
 my @standardquota_array;
 foreach my $mountpoint (@mountpoints) {
@@ -257,6 +248,10 @@ foreach my $mountpoint (@mountpoints) {
 $sk_session->set_var("standarddiskquotas", \@standardquota_array);
 $sk_session->set_var('standardmailquota',
 	Schulkonsole::SophomorixQuotas::standard_mailquota('schueler'));
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
 
 
 

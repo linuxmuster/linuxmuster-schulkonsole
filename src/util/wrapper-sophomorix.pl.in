@@ -691,7 +691,7 @@ $app_id == Schulkonsole::Config::PROJECTMEMBERSAPP and do {
 
 	$opts .= join(',', @users) . " --project \Q$project_gid";
 
-	# sophomorix-teacher cannot be invoked with taint checks enabled
+	# sophomorix-project cannot be invoked with taint checks enabled
 	$< = $>;
 	$) = 0;
 	$( = $);

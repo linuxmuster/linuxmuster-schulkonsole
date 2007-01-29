@@ -38,6 +38,7 @@ foreach my $host (keys %$workstation_users) {
 
 
 if ($q->param('acceptshares')) {
+	eval {
 	my $share_states = Schulkonsole::Sophomorix::share_states(
 		$sk_session->userdata('id'),
 		$sk_session->get_password(),
@@ -78,11 +79,16 @@ if ($q->param('acceptshares')) {
 		$sk_session->set_status(
 			$sk_session->d()->get("Keine &Auml;nderungen."), 1);
 	}
+	};
+	if ($@) {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
 }
 
 
 
 
+eval {
 my $share_states = Schulkonsole::Sophomorix::share_states(
 	$sk_session->userdata('id'),
 	$sk_session->get_password(),
@@ -110,6 +116,10 @@ foreach my $workstation (sort keys %$workstations) {
 	}
 }
 $sk_session->set_var('overview_workstations', \@array_overview_workstations);
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
 
 
 $room_session->set_vars($sk_session);
