@@ -5,6 +5,12 @@ use Data::Dumper;
 use Safe;
 use FileHandle;
 
+=head1 NAME
+
+Schulkonsole::TeachIn - store data for teach-in
+
+=cut
+
 package Schulkonsole::TeachIn;
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);

@@ -1,4 +1,27 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+class_collect - collect files from a class
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/class_collect
+
+=head1 DESCRIPTION
+
+C<class_collect> lets you copy or move files of members of a selected class
+to your directory. The HTML template is class_collect.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<class_collect>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -109,6 +132,34 @@ foreach my $user (sort {
 	};
 	push @students, $student;
 }
+
+=item C<students>
+
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=item C<files>
+
+A list of the user's collectable files as returned from
+C<Schulkonsole::Sophomorix::create_file_list()>
+
+=back
+
+=cut
+
 $sk_session->set_var('students', \@students);
 };
 if ($@) {
@@ -116,6 +167,38 @@ if ($@) {
 }
 
 
+=item C<class>
+
+The name of the class
+
+=cut
+
 $sk_session->set_var('class', $$classs{$class}{displayname});
 
 $sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<collecttop>
+
+A submit button indicating that C<deletetop> is to be evaluated
+
+=item C<collectbottom>
+
+A submit button indicating that C<deletebottom> is to be evaluated
+
+=item C<deletetop>/C<deletebottom>
+
+If true the files are moved, copied otherwise
+
+=item C<${students{login}};collect>
+
+Checkboxes created in loop over template variable C<students>. Collecting
+is performed with the selected logins.
+
+=back

@@ -12,7 +12,7 @@ package Schulkonsole::SophomorixQuotas;
 
 =head1 NAME
 
- Schulkonsole::SophomorixQuotas - interface to Sophomorix quota settings
+Schulkonsole::SophomorixQuotas - interface to Sophomorix quota settings
 
 =head1 SYNOPSIS
 
@@ -51,6 +51,8 @@ our $mailquota_undefined = 'mailquota';
 
 my @mountpoints;
 
+
+=head2 Functions
 
 =head3 C<mountpoints()>
 

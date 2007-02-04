@@ -1,4 +1,27 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+user_commit - commit the changes to the user lists into the DB
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/user_commit
+
+=head1 DESCRIPTION
+
+C<user_commit> lets you commit the changes to the user lists into the DB.
+The HTML template is user_commit.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<user_commit>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Sophomorix::SophomorixAPI;
@@ -103,6 +126,12 @@ $q->param('showlogadd') and do {
 		local $/ = undef;
 		my $log = <LOG>;
 
+=item C<logadd>
+
+Output of C<sophomorix-add>
+
+=cut
+
 		$sk_session->set_var('logadd', $log);
 	} else {
 		$sk_session->set_status(
@@ -136,6 +165,12 @@ $q->param('showlogmove') and do {
 	    and open LOG, "<$logfile") {
 		local $/ = undef;
 		my $log = <LOG>;
+
+=item C<logmove>
+
+Output of C<sophomorix-move>
+
+=cut
 
 		$sk_session->set_var('logmove', $log);
 	} else {
@@ -171,6 +206,12 @@ $q->param('showlogkill') and do {
 		local $/ = undef;
 		my $log = <LOG>;
 
+=item C<logkill>
+
+Output of C<sophomorix-kill>
+
+=cut
+
 		$sk_session->set_var('logkill', $log);
 	} else {
 		$sk_session->set_status(
@@ -201,17 +242,106 @@ $list_kill = Schulkonsole::Sophomorix::list_kill($id, $password);
 
 
 my $teachin = new Schulkonsole::TeachIn;
+
+=item C<teachin>
+
+True if data is prepared for add/move/kill
+
+=cut
+
 $sk_session->set_var('teachin', 1) if $teachin->is_read();
 
 
+=item C<isadding>
+
+True if C<sophomorix-add> is running
+
+=cut
+
 $sk_session->set_var('isadding', $running{add});
+
+=item C<ismoving>
+
+True if C<sophomorix-move> is running
+
+=cut
+
 $sk_session->set_var('ismoving', $running{move});
+
+=item C<iskilling>
+
+True if C<sophomorix-kill> is running
+
+=cut
+
 $sk_session->set_var('iskilling', $running{kill});
 
+
+=item C<addlist>
+
+An array with the users to be added as returned from
+C<Schulkonsole::Sophomorix::list_add()>
+
+=cut
+
 $sk_session->set_var('addlist', $list_add);
+
+=item C<movelist>
+
+An array with the users to be moved as returned from
+C<Schulkonsole::Sophomorix::list_move()>
+
+=cut
+
 $sk_session->set_var('movelist', $list_move);
+
+=item C<killlist>
+
+An array with the users to be killed as returned from
+C<Schulkonsole::Sophomorix::list_kill()>
+
+=cut
+
 $sk_session->set_var('killlist', $list_kill);
 
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<all>
+
+Add, move and kill users
+
+=item C<add>
+
+Add users
+
+=item C<move>
+
+Move users
+
+=item C<kill>
+
+Kill users
+
+=item C<showlogadd>
+
+Show output of C<sophomorix-add> (in template variable C<$logadd>)
+
+=item C<showlogmove>
+
+Show output of C<sophomorix-move> (in template variable C<$logmove>)
+
+=item C<showlogkill>
+
+Show output of C<sophomorix-kill> (in template variable C<$logkill>)
+
+=back
+

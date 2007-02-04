@@ -1,4 +1,27 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+class_revision_control - create/drop repository of a class
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/class_revision_control
+
+=head1 DESCRIPTION
+
+C<class_db> lets you create or drop a repository of a class.
+The HTML template is class_revision_control.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<class_revision_control>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -67,6 +90,13 @@ my $repositories
 	= Schulkonsole::Collab::list_repository($id, $password);
 foreach my $repository (@$repositories) {
 	if ($repository eq $class) {
+
+=item C<class_repository>
+
+The name of the repository (if existent)
+
+=cut
+
 		$sk_session->set_var('class_repository', $class);
 		last;
 	}
@@ -77,6 +107,30 @@ if ($@) {
 }
 
 
+=item C<class>
+
+The name of the class
+
+=cut
+
 $sk_session->set_var('class', $$classs{$class}{displayname});
 
 $sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<create>
+
+Create the repository if true
+
+=item C<drop>
+
+Drop the repository if true
+
+=back
+

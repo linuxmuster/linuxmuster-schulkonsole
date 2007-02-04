@@ -9,7 +9,7 @@ package Schulkonsole::Firewall;
 
 =head1 NAME
 
- Schulkonsole::Firewall - interface to Linuxmusterloesung Firewall commands
+Schulkonsole::Firewall - interface to Linuxmusterloesung Firewall commands
 
 =head1 SYNOPSIS
 

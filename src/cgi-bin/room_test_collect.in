@@ -1,4 +1,29 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+room_test_collect - collect files from users in a room in exam
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/room_test_collect
+
+=head1 DESCRIPTION
+
+C<room_test_collect> lets you copy of users in a selected room
+to your directory during an exam, or move the files and end the exam.
+The HTML template is room_test_collect.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session and
+Schulkonsole::Room::set_vars()
+C<room_test_collect> provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Room;
@@ -81,6 +106,43 @@ foreach my $workstation (sort keys %$workstations) {
 		}
 	}
 }
+
+=item C<overview_workstations>
+
+Users logged in on workstations in room as an array of hashes with
+the keys
+
+=over
+
+=item C<name>
+
+Name of a workstation
+
+=item C<editing>
+
+True if the logged in user is giving a lesson in the room
+
+=item C<login>
+
+Login of the user
+
+=item C<workstationaccount>
+
+True if the user is logged in via a workstation account
+
+=item C<first>
+
+True if the user is the first of all users on the workstation
+
+=item C<files>
+
+A list of the user's collectable files as returned from
+C<Schulkonsole::Sophomorix::create_file_list()>
+
+=back
+
+=cut
+
 $sk_session->set_var('overview_workstations', \@array_overview_workstations);
 };
 if ($@) {
@@ -92,4 +154,20 @@ $room_session->set_vars($sk_session);
 
 $sk_session->print_page("$this_file.shtml", $this_file);
 
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<collectcopy>
+
+The files of the workstation users are copied to the current users directory
+
+=item C<collectmove>
+
+Redirect to https://server/schulkonsole/room_test_end
+
+=back
 

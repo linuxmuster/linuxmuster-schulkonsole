@@ -1,4 +1,28 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+class_www - control access to web directories of class
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/class_www
+
+=head1 DESCRIPTION
+
+C<class_www> lets you control access to web directories of members of a class
+and the common class web directory.
+The HTML template is class_www.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<class_www>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -13,7 +37,7 @@ if (not $sk_session->get_password()) {
 	my $q = new CGI;
 	my $url = $q->url( -full => 1 );
 
-	# we send cookies only over secure connections
+	# we send cookies over secure connections only
 	if ($url =~ s/^http:/https:/g) {
 		$sk_session->redirect($url);
 	} else {
@@ -151,12 +175,105 @@ foreach my $user (sort {
 	};
 	push @students, $student;
 }
+
+=item C<students>
+
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=item C<www>
+
+Access to the user's web directory as a hash with the keys
+
+=over
+
+=item C<public>
+
+True if public access, private otherwise
+
+=item C<upload>
+
+True if upload possible
+
+=back
+
+=back
+
+=cut
+
+
 $sk_session->set_var('students', \@students);
+
+=item C<groupwww>
+
+Access to the class' web directory as a hash with the keys
+
+=over
+
+=item C<public>
+
+True if public access, private otherwise
+
+=item C<upload>
+
+True if upload possible
+
+=back
+
+=cut
+
 $sk_session->set_var('groupwww', $$class_permissions{$class});
 
 
 
+=item C<class>
+
+The name of the class
+
+=cut
 
 $sk_session->set_var('class', $$classs{$class}{displayname});
 
 $sk_session->print_page("$this_file.shtml", $this_file);
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<${students{login}};public>
+
+Checkboxes created in loop over template variable C<students>. If true
+the access to a user's web directory is set to public. Otherwise it is set
+to private.
+
+=item C<${students{login}};upload>
+
+Checkboxes created in loop over template variable C<students>. If true
+the upload to a user's web directory is allowed. Otherwise it is not allowed.
+
+=item C<grouppublic>
+
+If true the access to a class' web directory is set to public. Otherwise it
+is set to private.
+
+=item C<groupupload>
+
+If true the upload to a class' web directory is allowed. Otherwise it is not
+allowed.
+
+=back

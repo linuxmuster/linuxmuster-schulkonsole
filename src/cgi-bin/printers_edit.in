@@ -1,4 +1,28 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+printers_edit - edit a printers access list
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/printers_edit
+
+=head1 DESCRIPTION
+
+C<printers_edit> provides a possibility to edit a printers access list
+-- the room or the hosts list. It is usually invoked from C<printers>.
+The HTML template is printers_edit.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<printers_edit>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Net::CUPS::Printer;
@@ -50,8 +74,29 @@ foreach my $printer (@printers) {
 				push @rooms_deselected_array, $room;
 			}
 		}
+
+=item C<editrooms>
+
+True if the rooms list is edited
+
+=cut
+
 		$sk_session->set_var('editrooms', 1);
+
+=item C<roomsselected>
+
+An array with the rooms selected for the printer
+
+=cut
+
 		$sk_session->set_var('roomsselected', \@rooms_selected_array);
+
+=item C<roomsdeselected>
+
+An array with the rooms not selected for the printer
+
+=cut
+
 		$sk_session->set_var('roomsdeselected', \@rooms_deselected_array);
 
 		last;
@@ -71,7 +116,21 @@ foreach my $printer (@printers) {
 					unless $$printers{$printer}{rooms}{$$hosts{$host}};
 			}
 		}
+
+=item C<hostsselected>
+
+An array with the hosts selected for the printer
+
+=cut
+
 		$sk_session->set_var('hostsselected', \@hosts_selected_array);
+
+=item C<hostsdeselected>
+
+An array with the hosts not selected for the printer
+
+=cut
+
 		$sk_session->set_var('hostsdeselected', \@hosts_deselected_array);
 
 		last;
@@ -221,6 +280,12 @@ if (not $edit_printer) {
 }
 
 
+=item C<printer>
+
+The name of the printer
+
+=cut
+
 $sk_session->set_var('printer', $edit_printer);
 
 
@@ -300,4 +365,62 @@ sub new_printer_lines_host {
 
 	return \@lines;
 }
+
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<${printer}_roomselect>
+
+Move marked rooms from deselected to selected
+
+=item C<${printer}_roomdeselect>
+
+Move marked rooms from selected to deselected
+
+=item C<roomselect>
+
+List of marked selected rooms
+
+=item C<roomdeselect>
+
+List of marked deselected rooms
+
+=item C<roomsselected>
+
+List of all selected rooms
+
+=item C<${printer}_acceptrooms>
+
+Accept changes to list
+
+=item C<${printer}_hostselect>
+
+Move marked hosts from deselected to selected
+
+=item C<${printer}_hostdeselect>
+
+Move marked hosts from selected to deselected
+
+=item C<hostselect>
+
+List of marked selected hosts
+
+=item C<hostdeselect>
+
+List of marked deselected hosts
+
+=item C<hostsselected>
+
+List of all selected hosts
+
+=item C<${printer}_accepthosts>
+
+Accept changes to list
+
+=back
 

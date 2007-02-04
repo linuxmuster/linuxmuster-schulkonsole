@@ -1,4 +1,28 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+rooms - add rooms to list of available rooms
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/rooms
+
+=head1 DESCRIPTION
+
+C<rooms> lets you add rooms to the list of available rooms in
+https://server/schulkonsole/room
+The HTML template is rooms.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<rooms>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -77,6 +101,25 @@ foreach my $room (sort keys %$rooms) {
 			selected => (exists $classrooms{$room}),
 		};
 }
+
+=item C<rooms>
+
+An array with all rooms as an array of hashes with the keys
+
+=over
+
+=item C<name>
+
+Name of the room
+
+=item C<selected>
+
+True if the room is available
+
+=back
+
+=cut
+
 $sk_session->set_var('rooms', \@rooms_array);
 
 
@@ -118,3 +161,21 @@ sub new_classrooms_lines {
 
 	return \@lines;
 }
+
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<accept>
+
+Accept the changes
+
+=item C<${rooms{name}}_classroom>
+
+True if the room shall be available
+
+=back

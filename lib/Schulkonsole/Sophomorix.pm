@@ -10,7 +10,7 @@ package Schulkonsole::Sophomorix;
 
 =head1 NAME
 
- Schulkonsole::Sophomorix - interface to Sophomorix commands
+Schulkonsole::Sophomorix - interface to Sophomorix commands
 
 =head1 SYNOPSIS
 
@@ -437,6 +437,8 @@ The ID (not UID) of the teacher invoking the command
 
 The password of the admin invoking the command
 
+=back
+
 =head4 Description
 
 This activates the global shares
@@ -477,6 +479,8 @@ The ID (not UID) of the teacher invoking the command
 =item C<$password>
 
 The password of the admin invoking the command
+
+=back
 
 =head4 Description
 
@@ -2260,6 +2264,8 @@ The password of the admin invoking the command
 
 1 to allow access, 0 otherwise
 
+=back
+
 =head4 Description
 
 This sets the permissions of the WWW-directory
@@ -3904,6 +3910,8 @@ A reference to a hash with usernames as keys and as value a reference to a hash
 { selected => $identifier}, where C<$identifier> is the identifier of the
 new user associated with this username
 
+=back
+
 =head4 Description
 
 This wraps the command
@@ -3961,6 +3969,7 @@ bitwise or: 1 = set quota,
 2 = set quota for teachers,
 4 = set quota for students
 
+=back
 
 =head4 Description
 
@@ -4020,7 +4029,7 @@ diskquotas separated with '+' or undef
 
 mailquota or undef
 
-
+=back
 
 =head4 Description
 
@@ -4081,7 +4090,7 @@ diskquotas separated with '+' or undef
 
 mailquota or undef
 
-
+=back
 
 =head4 Description
 

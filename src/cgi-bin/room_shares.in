@@ -1,4 +1,29 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+room_shares - activate/deactivate shares
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/room_shares
+
+=head1 DESCRIPTION
+
+C<room_shares> lets you activate and deactivate the shares of the users
+in a room.
+The HTML template is room_shares.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session and
+Schulkonsole::Room::set_vars()
+C<room_shares> provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Room;
@@ -115,6 +140,38 @@ foreach my $workstation (sort keys %$workstations) {
 		}
 	}
 }
+
+=item C<overview_workstations>
+
+Users logged in on workstations in room as an array of hashes with
+the keys
+
+=over
+
+=item C<name>
+
+Name of a workstation
+
+=item C<editing>
+
+True if the logged in user is giving a lesson in the room
+
+=item C<login>
+
+Login of the user
+
+=item C<first>
+
+True if the user is the first of all users on the workstation
+
+=item C<shares>
+
+True if the user's shares are activated
+
+=back
+
+=cut
+
 $sk_session->set_var('overview_workstations', \@array_overview_workstations);
 };
 if ($@) {
@@ -126,4 +183,21 @@ $room_session->set_vars($sk_session);
 
 $sk_session->print_page("$this_file.shtml", $this_file);
 
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<acceptshares>
+
+Accept new shares settings
+
+=item C<${overview_workstations{login}};shares>
+
+Checkboxes created in loop over template variable C<overview_workstations>.
+If true the share of the user is activated
+
+=back
 

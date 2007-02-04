@@ -9,7 +9,7 @@ package Schulkonsole::Collab;
 
 =head1 NAME
 
- Schulkonsole::Collab - interface to Linuxmusterloesung DB and SVN commands
+Schulkonsole::Collab - interface to Linuxmusterloesung DB and SVN commands
 
 =head1 SYNOPSIS
 

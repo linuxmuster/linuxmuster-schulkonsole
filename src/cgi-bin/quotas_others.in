@@ -1,4 +1,28 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+quotas_others - quota settings for others than classes, projects or teachers
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/quotas_others
+
+=head1 DESCRIPTION
+
+C<quotas_others> lets you edit the quotas of other users than classes,
+projects or teachers, like students and system users.
+The HTML template is quotas_others.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<quotas_others>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -32,6 +56,13 @@ if ($Conf::use_quota ne $Schulkonsole::Config::_sophomorix_conf_true) {
 	$url =~ s/$this_file$/quotas/g;
 	$sk_session->redirect($url);
 }
+
+=item C<quotaactivated>
+
+True if quotas are activated
+
+=cut
+
 $sk_session->set_var('quotaactivated', 1);
 
 
@@ -229,10 +260,94 @@ foreach my $user (sort keys %$userquotas) {
 	}
 }
 
+=item C<users>, C<workstations>, C<admins>, C<systems>
+
+Quotas for students, workstation accounts, administrators and system
+users respectively as an array of hashes with the keys
+
+=over
+
+=item C<login>
+
+Login name of the user
+
+=item C<diskquotas>
+
+Disk quotas of the user as an array of hashes with the keys
+
+=over
+
+=item C<mountpoint>
+
+A mountpoint
+
+=item C<quota>
+
+Quota for this mountpoint in MB
+
+=back
+
+=item C<mailquota>
+
+Mail quota in MB
+
+=back
+
+Additionally for all but the workstation accounts these keys exist:
+
+=over
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=back
+
+=cut
+
 $sk_session->set_var('users', \@userquotas_array);
 $sk_session->set_var('workstations', \@workstationquotas_array);
 $sk_session->set_var('admins', \@adminquotas_array);
 $sk_session->set_var('systems', \@systemquotas_array);
+
+=item C<www>
+
+Quotas for WWW user as a hash with the keys
+
+=over
+
+=item C<login>
+
+Login name of the WWW user
+
+=item C<diskquotas>
+
+Disk quotas of the user as an array of hashes with the keys
+
+=over
+
+=item C<mountpoint>
+
+A mountpoint
+
+=item C<quota>
+
+Quota for this mountpoint in MB
+
+=back
+
+=item C<mailquota>
+
+Mail quota in MB
+
+=back
+
+=cut
+
 $sk_session->set_var('www', $wwwquota);
 
 
@@ -245,7 +360,33 @@ foreach my $mountpoint (@mountpoints) {
 			diskquota => $$standard_quota{$mountpoint},
 		};
 }
+
+=item C<standarddiskquotas>
+
+standard disk quotas as an array of hashes with the keys
+
+=over
+
+=item C<mountpoint>
+
+A mountpoint
+
+=item C<quota>
+
+Quota for this mountpoint in MB
+
+=back
+
+=cut
+
 $sk_session->set_var("standarddiskquotas", \@standardquota_array);
+
+=item C<standardmailquota>
+
+standard mail quota in MB
+
+=cut
+
 $sk_session->set_var('standardmailquota',
 	Schulkonsole::SophomorixQuotas::standard_mailquota('schueler'));
 };
@@ -254,8 +395,20 @@ if ($@) {
 }
 
 
+=item C<mountpoints>
+
+An array with the mountpoints
+
+=cut
 
 $sk_session->set_var('mountpoints', \@mountpoints);
+
+=item C<mountpoints_cnt>
+
+The number of mountpoints
+
+=cut
+
 $sk_session->set_var('mountpoints_cnt', scalar(@mountpoints));
 
 
@@ -429,3 +582,49 @@ sub is_passwd_user {
 
 	return 0;
 }
+
+
+
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<acceptusers>
+
+Accept changes to form
+
+=item C<newlogin>
+
+Account name for new non-standard quota
+
+=item C<${standarddiskquotas{mountpoint}}-newdiskquota>
+
+Disk quota for mountpoint C<$standarddiskquotas{mountpoint}> for the new
+account.
+Created in loop over template variable C<standarddiskquotas>
+
+=item C<newmailquota>
+
+Mail quota for the new account.
+
+=item C<${login}_user${diskquotas{mountpoint}}-diskquota>
+
+Disk quota for an existing account C<$login> on the mountpoint
+C<$diskquotas{mountpoint}>.
+C<$login> and C<$diskquotas{mountpoint}> are from the template
+variable C<www> or created in a loop over the template variables
+C<admins>, C<users>, C<workstations>, or C<systems>
+
+=item C<${login}_usermailquota>
+
+Mail quota for an existing account C<$login>.
+C<$login> and is the template variable C<www{login}> or created in a loop
+over the template variables C<admins>, C<users>, C<workstations>,
+or C<systems>
+
+=back
+

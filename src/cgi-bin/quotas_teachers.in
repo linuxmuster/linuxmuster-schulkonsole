@@ -1,4 +1,27 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+quotas_teachers - quota settings for teachers
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/quotas_teachers
+
+=head1 DESCRIPTION
+
+C<quotas_teachers> lets you edit the quotas of teachers.
+The HTML template is quotas_teachers.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<quotas_teachers>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -32,6 +55,13 @@ if ($Conf::use_quota ne $Schulkonsole::Config::_sophomorix_conf_true) {
 	$url =~ s/$this_file$/quotas/g;
 	$sk_session->redirect($url);
 }
+
+=item C<quotaactivated>
+
+True if quotas are activated
+
+=cut
+
 $sk_session->set_var('quotaactivated', 1);
 
 
@@ -140,10 +170,66 @@ foreach my $teacher (sort keys %$teachers) {
 			mailquota => $$teachers{$teacher}{mailquota},
 		};
 }
+
+=item C<teachers>
+
+Quotas for teachers as an array of hashes with the keys
+
+=over
+
+=item C<login>
+
+Login name of the user
+
+=item C<diskquotas>
+
+Disk quotas of the user as an array of hashes with the keys
+
+=over
+
+=item C<mountpoint>
+
+A mountpoint
+
+=item C<quota>
+
+Quota for this mountpoint in MB
+
+=back
+
+=item C<mailquota>
+
+Mail quota in MB
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=back
+
+=cut
+
 $sk_session->set_var('teachers', \@teachers_array);
 
 
+=item C<mountpoints>
+
+An array with the mountpoints
+
+=cut
+
 $sk_session->set_var('mountpoints', \@mountpoints);
+
+=item C<mountpoints_cnt>
+
+The number of mountpoints
+
+=cut
+
 $sk_session->set_var('mountpoints_cnt', scalar(@mountpoints));
 
 
@@ -223,4 +309,29 @@ sub put_teachers {
 
 	Schulkonsole::Sophomorix::write_teachers_file($id, $password, \@lines);
 }
+
+
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<acceptteachers>
+
+Accept changes to form
+
+=item C<${teachers{login}}_teacher${teachers{diskquotas}{mountpoint}}-diskquota>
+
+Disk quota for user C<$teachers{login}>
+created in a loop over the template variable C<teachers>
+
+=item C<${teachers{login}}_teachermailquota>
+
+Mail quota for user C<$teachers{login}> created in a loop
+over the template variable C<teachers>
+
+=back
 

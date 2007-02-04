@@ -1,4 +1,27 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+quotas_classes - quota settings for classes
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/quotas_classes
+
+=head1 DESCRIPTION
+
+C<quotas_classes> lets you edit the quotas of classes.
+The HTML template is quotas_classes.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<quotas_classes>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -33,6 +56,13 @@ if ($Conf::use_quota ne $Schulkonsole::Config::_sophomorix_conf_true) {
 	$url =~ s/$this_file$/quotas/g;
 	$sk_session->redirect($url);
 }
+
+=item C<quotaactivated>
+
+True if quotas are activated
+
+=cut
+
 $sk_session->set_var('quotaactivated', 1);
 
 
@@ -177,6 +207,45 @@ foreach my $class (sort {
 			mailquota => $mailquota,
 		};
 }
+
+=item C<classes>
+
+The quotas of the classes as an array of hashes with the keys
+
+=over
+
+=item C<gid>
+
+GID of a class
+
+=item C<name>
+
+Name of the class
+
+=item C<diskquotas>
+
+Disk quotas of the class as an array of hashes with the keys
+
+=over
+
+=item C<mountpoint>
+
+A mountpoint
+
+=item C<quota>
+
+Quota for this mountpoint in MB
+
+=back
+
+=item C<mailquota>
+
+Mail quota in MB
+
+=back
+
+=cut
+
 $sk_session->set_var('classes', \@classs_array);
 };
 if ($@) {
@@ -184,9 +253,48 @@ if ($@) {
 }
 
 
+
+=item C<mountpoints>
+
+An array with the mountpoints
+
+=cut
+
 $sk_session->set_var('mountpoints', \@mountpoints);
+
+=item C<mountpoints_cnt>
+
+The number of mountpoints
+
+=cut
+
 $sk_session->set_var('mountpoints_cnt', scalar(@mountpoints));
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<acceptclasses>
+
+Accept the changes of the form
+
+=item C<${classes{gid}}_class${classes{diskquotas}{mountpoint}}-diskquota>
+
+Disk quota for class C<$classes{gid}> for mountpoint
+C<$classes{diskquotas}{mountpoint}>.
+Created in loop over template variable C<classes{diskquotas}> in loop over
+template variable C<classes>
+
+=item C<${classes{gid}}_classmailquota>
+
+Mail quota for class C<$classes{gid}>.
+Created in loop over template variable C<classes>
+
+=back
 

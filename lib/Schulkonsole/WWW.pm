@@ -12,7 +12,7 @@ package Schulkonsole::WWW;
 
 =head1 NAME
 
- Schulkonsole::WWW - interface to Linuxmusterloesung WWW commands
+Schulkonsole::WWW - interface to Linuxmusterloesung WWW commands
 
 =head1 SYNOPSIS
 

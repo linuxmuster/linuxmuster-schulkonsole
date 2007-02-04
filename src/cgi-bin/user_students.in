@@ -1,4 +1,25 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+user_students - administration of student accounts
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/user_students
+
+=head1 DESCRIPTION
+
+C<user_students> lets you edit the user lists for students.
+The HTML template is user_students.shtml.
+
+=head2 Template variables
+
+There are no other template variables but the variables of
+Schulkonsole::Session.
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -86,3 +107,26 @@ if ($@) {
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=head2 Form fields
+
+=over
+
+=item C<studentsupload>
+
+Upload file C<studentsfilename>
+
+=item C<studentsfilename>
+
+Filename of a user list to upload
+
+=item C<studentsedit>
+
+Write C<students> to user list
+
+=item C<students>
+
+Content of the user list
+
+=back

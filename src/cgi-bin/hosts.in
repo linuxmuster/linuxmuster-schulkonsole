@@ -1,4 +1,27 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+hosts - edit list of hosts
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/hosts
+
+=head1 DESCRIPTION
+
+C<hosts> lets you add new hosts to and edit the list of hosts in the network.
+The HTML templates is hosts.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<hosts>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -212,7 +235,21 @@ foreach my $workstation (sort {
 		unless defined $q->param("${workstation}_opts");
 
 }
+
+=item C<workstations>
+
+An array with the names of the hosts in the network
+
+=cut
+
 $sk_session->set_var('workstations', \@workstations_array);
+
+=item C<add>
+
+An array to produce additional empty lines
+
+=cut
+
 $sk_session->set_var('add', [ 1 .. $additional_lines_cnt ]);
 
 
@@ -324,3 +361,108 @@ sub new_workstations_lines {
 
 	return \@lines;
 }
+
+
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<addrows>
+
+Add C<addcnt> rows to enter new workstations
+
+=item C<addcnt>
+
+The number of additional rows
+
+=item C<accept>
+
+Accept the changes in the form
+
+=back
+
+The following fields are created in a loop over the template variable
+C<workstations>:
+
+=over
+
+=item C<${workstations}_room>
+
+Room of the workstation
+
+=item C<${workstations}_name>
+
+Name of the workstations
+
+=item C<${workstations}_groups>
+
+Groups of the workstation in a comma separated list
+
+=item C<${workstations}_mac>
+
+MAC of the workstation
+
+=item C<${workstations}_ip>
+
+IP of the workstation
+
+=item C<${workstations}_pxe>
+
+True if PXE is activated for the workstation
+
+=item C<${workstations}_opts>
+
+Option for the workstation. Either no options or
+C<noudma>, C<unicast>, or C<noudma,unicast>.
+
+=item C<${workstations}_delete>
+
+If true, delete the workstation from the list
+
+=back
+
+
+The following fields are created in a loop over the template variable
+C<add>:
+
+=over
+
+=item C<${add}_addroom>
+
+Room of the workstation
+
+=item C<${add}_addname>
+
+Name of the workstations
+
+=item C<${add}_addgroups>
+
+Groups of the workstation in a comma separated list
+
+=item C<${add}_addmac>
+
+MAC of the workstation
+
+=item C<${add}_addip>
+
+IP of the workstation
+
+=item C<${add}_addpxe>
+
+True if PXE is activated for the workstation
+
+=item C<${add}_addopts>
+
+Option for the workstation. Either no options or
+C<noudma>, C<unicast>, or C<noudma,unicast>.
+
+=item C<${add}_addignore>
+
+If true, ignore this entry
+
+=back
+

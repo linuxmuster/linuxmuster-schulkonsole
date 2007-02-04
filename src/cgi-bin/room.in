@@ -1,4 +1,29 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+room - overview of a room's workstations and devices
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/room
+
+=head1 DESCRIPTION
+
+C<room> lets select a room, start a lesson in this room, and then edit
+network access and availability of shares of the users and access to
+devices (printers).
+The HTML template is room.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session and
+Schulkonsole::Room::set_vars() C<room> provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Time::Local;
@@ -17,7 +42,7 @@ if (not $sk_session->get_password()) {
 	my $q = new CGI;
 	my $url = $q->url( -full => 1 );
 
-	# we send cookies only over secure connections
+	# we send cookies over secure connections only
 	if ($url =~ s/^http:/https:/g) {
 		$sk_session->redirect($url);
 	} else {
@@ -399,6 +424,69 @@ foreach my $workstation (sort keys %$workstations) {
 		push @array_overview_workstations, $overview_workstation;
 	}
 }
+
+=item C<overview_workstations>
+
+Users logged in on workstations in room as an array of hashes. If no user
+is logged in the workstation is in the array anyway.
+
+The hashes' keys are
+
+=over
+
+=item C<name>
+
+Name of a workstation
+
+=item C<editing>
+
+True if the logged in user is giving a lesson in the room
+
+=item C<login>
+
+Login of the user (if user is logged in)
+
+=item C<first>
+
+True if the user is the first of all users on the workstation or no user
+is logged in
+
+=item C<internet>
+
+True if the workstation can access the internet
+
+=item C<intranet>
+
+True if the workstation can access the intranet
+
+=item C<webfilter>
+
+True if the webfilter is activated for the workstation
+
+=item C<shares>
+
+True if the user's share is activated
+
+=item C<printers>
+
+User's access to the room's printers as an array of hashes with the keys
+
+=over
+
+=item C<name>
+
+Name of the printer
+
+=item C<off>
+
+True if the user cannot access the printer
+
+=back
+
+=back
+
+=cut
+
 $sk_session->set_var('overview_workstations', \@array_overview_workstations);
 
 
@@ -412,10 +500,54 @@ foreach my $printer (@$printers) {
 		accepting => ($$printer_info{$printer}{Accepting} eq 'Yes' ? 1 : 0),
 	};
 }
+
+=item C<overview_devices>
+
+The devices in the room as an array of hashes with the keys
+
+=over
+
+=item C<type>
+
+Type of the device
+
+=item C<name>
+
+Name of the device
+
+=item C<state>
+
+State of the device
+
+=item C<statemessage>
+
+State message of the device
+
+=item C<accepting>
+
+True if the device is accessible from this room
+
+=back
+
+=cut
+
 $sk_session->set_var('overview_devices', \@array_overview_devices);
 
 
+=item C<rooms>
+
+An array with the available rooms
+
+=cut
+
 $sk_session->set_var('rooms', $classrooms);
+
+=item C<printers>
+
+An array with the printers assigned to this room
+
+=cut
+
 $sk_session->set_var('printers', $printers);
 };
 if ($@) {
@@ -427,4 +559,75 @@ $room_session->set_vars($sk_session);
 
 $sk_session->print_page("$this_file.shtml", $this_file);
 
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<rooms>
+
+Select this room.
+Possible values read in loop over template variable C<rooms>.
+
+=item C<end_lesson_now>
+
+End lesson at once (reset network and share settings)
+
+=item C<end_lesson_at>
+
+Set a time to end the lesson (reset network and share settings)
+
+=item C<start_lesson>
+
+Start a lesson in the room (and allow changes to network and share settings)
+
+=item C<acceptfirewall>
+
+Accept new firewall and shares setting and users' access to printers:
+
+=over
+
+=item C<${overview_workstations{name}};internet>
+
+Checkboxes created in loop over template variable C<overview_workstations>.
+True if the workstation shall access the internet
+
+=item C<${overview_workstations{name}};intranet>
+
+Checkboxes created in loop over template variable C<overview_workstations>.
+True if the workstation shall access the intranet
+
+=item C<${overview_workstations{name}};webfilter>
+
+Checkboxes created in loop over template variable C<overview_workstations>.
+True if the webfilter shall be activated for the workstation
+
+=item C<${overview_workstations{login}};${overview_workstations{printer}{name}};printer>
+
+Checkboxes created in loop over template variable
+C<overview_workstations{printer}> in loop over template variable
+C<overview_workstations>.
+True if a user shall have access to a printer
+
+=item C<${overview_workstations{login}};shares>
+
+True if a user's shares shall be activated
+
+=back
+
+=item C<acceptprinter>
+
+Accept new printer settings:
+
+=over
+
+=item C<${overview_devices{name}};printer>
+
+True if the printer shall be accessible from this room
+
+=back
+
+=back
 

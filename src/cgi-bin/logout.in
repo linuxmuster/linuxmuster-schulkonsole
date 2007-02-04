@@ -1,4 +1,25 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+logout - logoutpage of schulkonsole
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/logout
+
+=head1 DESCRIPTION
+
+C<logout> produces the logoutpage of schulkonsole. The HTML template
+is logout.shtml.
+
+=head2 Template variables
+
+There are no other template variables but the variables of
+Schulkonsole::Session.
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -16,4 +37,8 @@ $sk_session->set_status($sk_session->d()->get('Abgemeldet'), 0);
 
 $sk_session->print_page("$this_file.shtml", $this_file);
 
+
+=head2 Form fields
+
+none
 

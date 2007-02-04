@@ -1,4 +1,28 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+user_teachin - resolve name conflicts in user lists
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/user_teachin
+
+=head1 DESCRIPTION
+
+C<user_teachin> lets you resolve naming conflicts and uncertainty in user
+lists.
+The HTML templates are user_teachin.shtml and showpassword.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<user_teachin>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Proc::ProcessTable;
@@ -160,20 +184,141 @@ if ($users) {
 	}
 
 	my @pages = 1..int($#keys / $max + 1);
+
+=item C<pages>
+
+An array with all page numbers
+
+=cut
+
 	$sk_session->set_var('pages', \@pages);
 
+=item C<firstpage>
+
+True if the current page is the first page
+
+=cut
+
 	$sk_session->set_var('firstpage', 1) if $offset == 0;
+
+=item C<lastpage>
+
+True if the current page is the last page
+
+=cut
+
 	$sk_session->set_var('lastpage', 1) if ($offset > $#keys - $max);
 
+
+=item C<currentpage>
+
+The number of the current page
+
+=cut
+
 	$sk_session->set_var('currentpage', int($offset / $max) + 1);
+
+=item C<maxpage>
+
+The number of pages
+
+=cut
+
 	$sk_session->set_var('maxpage', int($#keys / $max) + 1);
 }
 
 $q->param('max', $sk_session->param('showusersmax'))
 	if $sk_session->param('showusersmax');
+
+=item C<users>
+
+The conflicting accounts as an array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The account name
+
+=item C<id>
+
+Identifier of user
+
+=item C<class>
+
+User's class
+
+=item C<alt>
+
+Possible alternatives as an array of hashes with the keys
+
+=over
+
+=item C<id>
+
+Identifier of alternative user
+
+=item C<class>
+
+Alternative user's class
+
+=item C<selected>
+
+True if this alternative is selected
+
+=back
+
+=item C<delete>
+
+True if the account is to be deleted
+
+=back
+
+=cut
+
 $sk_session->set_var('users', \@users);
 
 
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<changemax>
+
+Set new maximal number of users displayed to C<max>
+
+=item C<max>
+
+Maximal number of users displayed on one page
+
+=item C<prev>
+
+Decrement index of first user on page by maximal number of users displayed
+
+=item C<next>
+
+Increment index of first user on page by maximal number of users displayed
+
+=item C<${pages}_page>
+
+Set index of first user on page to be on this page.
+Created in loop over template variable C<pages>
+
+=item C<${users{login}}_user>
+
+Select this alternative for the login C<$users{login}>.
+Delete login if empty.
+
+=item C<write>
+
+Commit changes with C<sophomorix-teach-in>
+
+=back
+

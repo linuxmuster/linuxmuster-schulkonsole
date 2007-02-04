@@ -1,4 +1,27 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+user_check - check the edited users
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/user_check
+
+=head1 DESCRIPTION
+
+C<user_check> lets you performs a consistency check of the user lists.
+The HTML template is user_check.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<user_check>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Sophomorix::SophomorixAPI;
@@ -85,6 +108,12 @@ $q->param('check') and do {
 		$teachin->delete();
 	}
 
+=item C<checklog>
+
+Output of the consistency check
+
+=cut
+
 	$sk_session->set_var('checklog', $log);
 
 
@@ -98,6 +127,13 @@ if ($@) {
 
 
 if ($teachin->is_read()) {
+
+=item C<teachin>
+
+true if teachin is necessary
+
+=cut
+
 	$sk_session->set_var('teachin', 1);
 
 	my $users = $teachin->users();
@@ -114,6 +150,28 @@ if ($teachin->is_read()) {
 			}
 		}
 
+=item C<usersdelete>
+
+Users that will be deleted as an array of hashes with the keys
+
+=over
+
+=item C<id>
+
+The user's id in the DB
+
+=item C<login>
+
+The user's login
+
+=item C<class>
+
+The user's class
+
+=back
+
+=cut
+
 		$sk_session->set_var('usersdelete', \@users);
 	}
 }
@@ -122,3 +180,17 @@ if ($teachin->is_read()) {
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<check>
+
+Perform the consistency check
+
+=back
+

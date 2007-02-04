@@ -6,6 +6,12 @@ use Data::Dumper;
 use Safe;
 use FileHandle;
 
+=head1 NAME
+
+Schulkonsole::RoomSession - Store session information of a room
+
+=cut
+
 package Schulkonsole::RoomSession;
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);

@@ -9,7 +9,7 @@ package Schulkonsole::Files;
 
 =head1 NAME
 
- Schulkonsole::Files - interface to Files commands
+Schulkonsole::Files - interface to read and write files
 
 =head1 SYNOPSIS
 

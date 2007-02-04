@@ -1,4 +1,25 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+user_teachers - administration of teacher accounts
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/user_teachers
+
+=head1 DESCRIPTION
+
+C<user_teachers> lets you edit the user lists for teachers.
+The HTML templates are user_teachers.shtml and showpassword.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<user_teachers>
+provides the following variables:
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -306,10 +327,51 @@ foreach my $param ($q->param) {
 		my $userdata = Schulkonsole::DB::get_userdata($user);
 
 		if ($$userdata{gid} eq 'teachers') {
+
+=head3 Template variables specific to showpassword.shtml
+
+=over
+
+=item C<showfirstname>
+
+Displayed user's first name
+
+=cut
+
 			$sk_session->set_var('showfirstname', $$userdata{firstname});
+
+=item C<showsurname>
+
+Displayed user's surname
+
+=cut
+
 			$sk_session->set_var('showsurname', $$userdata{surname});
+
+=item C<showusername>
+
+Displayed user's login
+
+=cut
+
 			$sk_session->set_var('showusername', $user);
+
+=item C<showpassword>
+
+Displayed user's password
+
+=cut
+
 			$sk_session->set_var('showpassword', $$userdata{firstpassword});
+
+
+=item C<isteachers>
+
+Indicates that the user is displayed by user_teachers
+
+=back
+
+=cut
 
 			$sk_session->set_var('isteachers', 1);
 
@@ -338,18 +400,139 @@ if ($@) {
 my $teachers = get_teachers();
 my @teachers;
 foreach my $teacher (sort keys %$teachers) {
-		push @teachers, {
-				login => $$teachers{$teacher}{login},
-				surname => $$teachers{$teacher}{surname},
-				firstname => $$teachers{$teacher}{firstname},
-				birthdate => $$teachers{$teacher}{birthdate},
-				short => ($$teachers{$teacher}{short} ne 'kurz' ?
-					  $$teachers{$teacher}{short}
-					: $$teachers{$teacher}{login}),
-			};
-	}
+	push @teachers, {
+			login => $$teachers{$teacher}{login},
+			surname => $$teachers{$teacher}{surname},
+			firstname => $$teachers{$teacher}{firstname},
+			birthdate => $$teachers{$teacher}{birthdate},
+			short => ($$teachers{$teacher}{short} ne 'kurz' ?
+			          $$teachers{$teacher}{short}
+			        : $$teachers{$teacher}{login}),
+		};
+}
+
+=head3 Template variables specific to user_teachers.shtml
+
+=over
+
+=item C<teachers>
+
+The teacher account as an array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The user's login
+
+=item C<firstname>
+
+User's firstname
+
+=item C<surname>
+
+User's surname
+
+=item C<birthdate>
+
+User's birthdate
+
+=item C<short>
+
+User's sign
+
+=back
+
+=cut
+
 $sk_session->set_var('teachers', \@teachers);
 
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<teachersupload>
+
+Upload file C<teachersfile>
+
+=item C<teachersfile>
+
+Filename of a user list to upload
+
+=item C<acceptteachers>
+
+Write changes to user list:
+
+=over
+
+=item C<${teachers{login}}_firstname>
+
+User's first name
+Created in loop over template variable C<teachers>
+
+=item C<${teachers{login}}_surname>
+
+User's surname
+Created in loop over template variable C<teachers>
+
+=item C<${teachers{login}}_birthdate>
+
+User's birthdate.
+Created in loop over template variable C<teachers>
+
+=back
+
+=item C<newteacher>
+
+Add new user to user list:
+
+=over
+
+=item C<newfirstname>
+
+User's first name
+
+=item C<newsurname>
+
+User's surname
+
+=item C<${newbirthdate>
+
+User's birthdate
+
+=back
+
+=item C<${teachers{login}};select>
+
+True if the user is selected for password change.
+Created in loop over template variable C<teachers>
+
+=item C<passwords_reset>
+
+Reset passwords of selected users
+
+=item C<passwords_random>
+
+Set password of selected users to random password
+
+=item C<passwords_set>
+
+Set password of selected users to C<userpassword>
+
+=item C<userpassword>
+
+New password to set for selected users
+
+=item C<${teachers{login}}_showpassword>
+
+Show password of teacher.
+Created in loop over template variable C<teachers>
+
+=back

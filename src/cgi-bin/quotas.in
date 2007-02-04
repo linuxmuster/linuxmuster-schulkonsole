@@ -1,4 +1,27 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+quotas - produces startpage for quota settings
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/quotas
+
+=head1 DESCRIPTION
+
+C<quotas> produces the startpage of schulkonsole quota settings.
+The HTML template is quotas.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<quotas>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -25,9 +48,21 @@ if (not $sk_session->get_password()) {
 }
 
 
+=item C<quotaactivated>
+
+True if quotas are activated
+
+=cut
+
 $sk_session->set_var('quotaactivated',
 	$Conf::use_quota eq $Schulkonsole::Config::_sophomorix_conf_true);
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);
 
+
+=back
+
+=head2 Form fields
+
+none

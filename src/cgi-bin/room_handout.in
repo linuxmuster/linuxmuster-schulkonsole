@@ -1,4 +1,28 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+room_handout - hand out copies of files to room
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/room_handout
+
+=head1 DESCRIPTION
+
+C<room_handout> lets you copy files to members of a selected room
+from your directory. The HTML template is room_handout.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session and
+Schulkonsole::Room::set_vars()
+C<room_handout> provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Room;
@@ -72,6 +96,13 @@ if ($q->param('handoutcopy')) {
 eval {
 my $teacher_share_files = Schulkonsole::Sophomorix::ls_handoutcopy_current_room(
 	$id, $password);
+
+=item C<teacher_share_files>
+
+Available files as returned by C<Schulkonsole::Sophomorix::create_file_list()>
+
+=cut
+
 $sk_session->set_var('teacher_share_files',
 	Schulkonsole::Sophomorix::create_file_list($teacher_share_files));
 };
@@ -106,6 +137,34 @@ foreach my $workstation (sort keys %$workstations) {
 		}
 	}
 }
+
+=item C<overview_workstations>
+
+Users logged in on workstations in room as an array of hashes with
+the keys
+
+=over
+
+=item C<name>
+
+Name of a workstation
+
+=item C<editing>
+
+True if the logged in user is giving a lesson in the room
+
+=item C<login>
+
+Login of the user
+
+=item C<first>
+
+True if the user is the first of all users on the workstation
+
+=back
+
+=cut
+
 $sk_session->set_var('overview_workstations', \@array_overview_workstations);
 
 
@@ -113,4 +172,21 @@ $room_session->set_vars($sk_session);
 
 $sk_session->print_page("$this_file.shtml", $this_file);
 
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<handoutcopy>
+
+Hand out copies to selected users
+
+=item C<${overview_workstations{login}};handout>
+
+Checkboxes created in loop over template variable C<overview_workstations>.
+Copying is performed with the selected logins.
+
+=back
 

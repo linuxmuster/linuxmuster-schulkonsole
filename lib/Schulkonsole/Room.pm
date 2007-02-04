@@ -5,6 +5,12 @@ use Schulkonsole::DB;
 use Schulkonsole::Firewall;
 use Schulkonsole::RoomSession;
 
+=head1 NAME
+
+Schulkonsole::Room - Store information about room
+
+=cut
+
 package Schulkonsole::Room;
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
@@ -254,6 +260,67 @@ sub workstation_users {
 
 
 =head3 C<set_vars($session)>
+
+Set template variables
+
+=head4 Parameters
+
+=over
+
+=item C<$session>
+
+The session to set the template variables
+
+=back
+
+=head4 Description
+
+Sets template variables for this room:
+
+=over
+
+=item C<room>
+
+Name of the room
+
+=item C<editinguser>
+
+Name of user holding a lesson
+
+=item C<edit>
+
+True if someone is holding a lesson
+
+=item C<stopedit>
+
+True if the current user is allowed to stop the lesson
+
+=item C<endedittime>
+
+Time of lesson to end
+
+=item C<privilegeduser>
+
+Comma separated list of all user's that can start a lesson and are logged
+in in the room
+
+=item C<exammode>
+
+True if someone holds an exam
+
+=item C<done_test_start>
+
+True if an exam is started
+
+=item C<done_test_handout>
+
+True if files in the exam have been handed out
+
+=item C<done_test_password>
+
+True if the passwords of the workstations have been changed for the exam
+
+=back
 
 =cut
 

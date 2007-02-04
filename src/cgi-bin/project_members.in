@@ -1,4 +1,28 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+project_members - lists of project members
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/project_list
+
+=head1 DESCRIPTION
+
+C<project_list> displays lists of all members in a selected project and
+allows to perform a query for possible new members.
+The HTML template is project_members.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<project_members>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -201,6 +225,13 @@ my $member_quotaroots = Schulkonsole::Cyrus::quota(keys %$member_userdatas);
 
 
 
+=item C<isadmin>
+
+Indicates that the current user is an administrator of the selected project
+(and adding new members is possible)
+
+=cut
+
 $sk_session->set_var('isadmin', $$admins{$sk_session->userdata('uidnumber')});
 
 
@@ -339,8 +370,8 @@ foreach my $user (sort {
 			login => $user,
 			firstname => $$member_userdatas{$user}{firstname},
 			surname => $$member_userdatas{$user}{surname},
-			mailquotas => $mailquotas,
 			diskquotas => \@array_diskquotas,
+			mailquotas => $mailquotas,
 			class => $var_classes_str,
 		};
 
@@ -349,7 +380,155 @@ foreach my $user (sort {
 
 
 }
+
+=item C<membersstudents>
+
+The student members of the selected project as an array of hashes with
+the keys:
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=item C<diskquotas>
+
+The user's disk quotas in an array of hashes with the keys
+
+=over
+
+=item C<path>
+
+A file path
+
+=item C<blocks_usage>
+
+The user's blocks usage in this path
+
+=item C<blocks_soft>
+
+The user's soft blocks limit for this path
+
+=item C<blocks_hard>
+
+The user's hard blocks limit for this path
+
+=item C<blocks_percent>
+
+The user's blocks usage in percent in this path
+
+=item C<blocks_percent_rounded>
+
+The user's blocks usage in percent in this path rounded to an integer
+
+=item C<blocks_grace>
+
+Time for this user to get below soft blocks limit
+
+=item C<files_usage>
+
+The user's file usage in this path
+
+=item C<files_soft>
+
+The user's soft files limit for this path
+
+=item C<files_hard>
+
+The user's hard files limit for this path
+
+=item C<files_percent>
+
+The user's files usage in percent in this path
+
+=item C<files_percent_rounded>
+
+The user's files usage in percent in this path rounded to an integer
+
+=item C<files_grace>
+
+Time for this user to get below soft files limit
+
+=item C<warn>
+
+True if over blocks or files quota
+
+=back
+
+=item C<mailquotas>
+
+The user's INBOX mail quota in a hash with the keys
+
+=over
+
+=item C<usage>
+
+The user's INBOX usage
+
+=item C<limit>
+
+The user's INBOX limit
+
+=item C<percent>
+
+The user's INBOX usage in percent
+
+=item C<percent_rounded>
+
+The user's INBOX usage in percent rounded to an integer
+
+=item C<warn>
+
+True if user is over quota
+
+=back
+
+=item C<class>
+
+The user's class
+
+=back
+
+=cut
+
 $sk_session->set_var('membersstudents', \@student_members);
+
+=item C<membersteachers>
+
+The teacher members of the selected project as an array of hashes with
+the keys:
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=item C<isadmin>
+
+True if the teacher is an administrator of the selected project
+
+=back
+
+=cut
+
 $sk_session->set_var('membersteachers', \@teacher_members);
 
 
@@ -366,6 +545,30 @@ foreach my $class (sort {
 	};
 	push @class_members, $member;
 }
+
+=item C<membersclasses>
+
+The class members of the selected project as an array of hashes with
+the keys:
+
+=over
+
+=item C<gid>
+
+GID of a class
+
+=item C<name>
+
+The class' name
+
+=item C<ismember>
+
+True if the current user is a member of the class
+
+=back
+
+=cut
+
 $sk_session->set_var('membersclasses', \@class_members);
 
 
@@ -383,6 +586,34 @@ foreach my $project (sort {
 	};
 	push @project_members, $member;
 }
+
+=item C<membersprojects>
+
+The project members of the selected project as an array of hashes with
+the keys:
+
+=over
+
+=item C<gid>
+
+GID of a project
+
+=item C<name>
+
+The project's name
+
+=item C<longname>
+
+The project's long name
+
+=item C<ismember>
+
+True if the current user is a member of the project
+
+=back
+
+=cut
+
 $sk_session->set_var('membersprojects', \@project_members);
 
 
@@ -400,14 +631,116 @@ foreach my $project (sort {
 	                  longname => $$projects{$project}{longname},
 	                };
 }
+
+=item C<projects>
+
+Projects of the current user as an array of hashes with the keys
+
+=over
+
+=item C<gid>
+
+GID of the project
+
+=item C<name>
+
+Name of the project
+
+=item C<addquota>
+
+Additional quota for members of this project
+
+=item C<isadmin>
+
+True if the current user is an administrator of the project
+
+=item C<islastadmin>
+
+True if there are no other administrators of the project but the current
+user
+
+=back
+
+=cut
+
 $sk_session->set_var('projects', \@projects);
 
 
 if ($project) {
+
+=item C<project_gid>
+
+GID of the selected project
+
+=cut
+
 	$sk_session->set_var('project_gid', $project);
+
+=item C<project>
+
+Name of the selected project
+
+=cut
+
 	$sk_session->set_var('project', $$projects{$project}{displayname});
+
+=item C<projectlongname>
+
+Long name of the selected project
+
+=cut
+
 	$sk_session->set_var('projectlongname', $$projects{$project}{longname});
 }
 
 $sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<projects>
+
+Select the project with this GID.
+Possible values read in loop over template variable C<projects>.
+
+=item C<query>
+
+Query to search for possible new members
+
+=item C<scope>
+
+Scope of query. Possible values are C<student>, C<teacher>, C<class>,
+and C<project>
+
+=item C<${membersclasses{gid}}_gotoclass>
+
+Select class with GID C<$membersclasses{gid}> and show class page.
+Usually created in loop over template variable C<membersclasses>
+
+=item C<${membersclasses{gid}}_removeclass>
+
+Remove class with GID C<$membersclasses{gid}> from project.
+Created in loop over template variable C<membersclasses>
+
+=item C<${membersprojects{gid}}_gotoproject>
+
+Select project with GID C<$membersprojects{gid}> and show project page.
+Usually created in loop over template variable C<membersprojects>
+
+=item C<${membersprojects{gid}}_removeproject>
+
+Remove project with GID C<$membersprojects{gid}> from project.
+Created in loop over template variable C<membersprojects>
+
+=item C<${membersteachers{login}}_removeuser>/C<${membersstudents{login}}_removeuser>
+
+Remove user from project.
+Created in loops over template variables C<membersteachers> and
+C<membersstudents>
+
+=back
 

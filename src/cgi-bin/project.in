@@ -1,4 +1,26 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+project - overview of available projects
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/project
+
+=head1 DESCRIPTION
+
+C<project> lets you enter/leave/drop a project and select one of the
+projects to work with.
+The HTML templates are project.shtml and project_drop_verify
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<project>
+provides the following variables:
+
+=cut
+
 use strict;
 use lib '/usr/share/schulkonsole';
 use Schulkonsole::Session;
@@ -184,6 +206,15 @@ if ($q->param('createproject')) {
 				$sk_session->set_status(
 					$sk_session->d()->get('Bitte best&auml;tigen'));
 
+=pod
+
+(Only C<project_gid> and C<project> are available in
+project_drop_verify.shtml)
+
+=over
+
+=cut
+
 				$sk_session->set_var('project_gid', $old_project);
 				$sk_session->set_var('project',
 				                     $$projects{$old_project}{displayname});
@@ -259,17 +290,132 @@ foreach my $project (sort {
 	                          };
 	}
 }
+
+=item C<projects>
+
+Projects of the current user as an array of hashes with the keys
+
+=over
+
+=item C<gid>
+
+GID of the project
+
+=item C<name>
+
+Name of the project
+
+=item C<addquota>
+
+Additional quota for members of this project
+
+=item C<isadmin>
+
+True if the current user is an administrator of the project
+
+=item C<islastadmin>
+
+True if there are no other administrators of the project but the current
+user
+
+=back
+
+=cut
+
 $sk_session->set_var('projects', \@projects);
+
+=item C<other_projects>
+
+An array of hashes of the projects of which the current user is not a member
+with the keys
+
+=over
+
+=item C<gid>
+
+GID of the project
+
+=item C<name>
+
+Name of the project
+
+=back
+
+=cut
+
 $sk_session->set_var('other_projects', \@other_projects);
 
 
 if ($project) {
+
+=item C<isadmin>
+
+Indicates that the current user is an administrator of the selected project
+
+=cut
+
 	$sk_session->set_var('isadmin',
 		Schulkonsole::DB::is_project_admin($$projects{$project}{id},
 			$sk_session->userdata('uidnumber')));
+
+=item C<project_gid>
+
+GID of the selected project
+
+=cut
+
 	$sk_session->set_var('project_gid', $project);
+
+=item C<project>
+
+Name of the selected project
+
+=cut
+
 	$sk_session->set_var('project', $$projects{$project}{displayname});
 }
 
 $sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<projects>
+
+Select the project with this GID.
+Possible values read in loop over template variable C<projects>.
+
+=item C<${projects{gid}}_members>
+
+Select project with GID and show members.
+Created in loop over template variable C<projects>.
+
+=item C<${projects{gid}}_remove>
+
+Leave project with GID.
+Created in loop over template variable C<projects>.
+
+=item C<${projects{gid}}_drop>
+
+Drop project.
+Created in loop over template variable C<projects>.
+
+=item C<project_add>
+
+Enter project with this GID.
+Possible values read in loop over template variable C<other_projects>.
+
+=item C<createproject>
+
+Create a new project with name C<projectname>
+
+=item C<projectname>
+
+Name of new project
+
+=back
 

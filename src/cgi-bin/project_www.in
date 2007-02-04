@@ -1,4 +1,28 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+project_www - control access to web directories of project
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/project_www
+
+=head1 DESCRIPTION
+
+C<project_www> lets you control access to web directories of members of a
+project and the common project web directory.
+The HTML template is project_www.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<project_www>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -221,9 +245,65 @@ foreach my $user (sort {
 	push @teachers, $member;
 }
 
+=item C<students>/C<teachers>
+
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=item C<www>
+
+Access to the user's web directory as a hash with the keys
+
+=over
+
+=item C<public>
+
+True if public access, private otherwise
+
+=item C<upload>
+
+True if upload possible
+
+=back
+
+=back
+
+=cut
 
 $sk_session->set_var('students', \@students);
 $sk_session->set_var('teachers', \@teachers);
+
+=item C<projectwww>
+
+Access to the project's web directory as a hash with the keys
+
+=over
+
+=item C<public>
+
+True if public access, private otherwise
+
+=item C<upload>
+
+True if upload possible
+
+=back
+
+=cut
+
 $sk_session->set_var('projectwww', $$project_permissions{$project});
 
 
@@ -238,13 +318,118 @@ foreach my $project (sort {
 	                  longname => $$projects{$project}{longname},
 	                };
 }
+
+=item C<projects>
+
+Projects of the current user as an array of hashes with the keys
+
+=over
+
+=item C<gid>
+
+GID of the project
+
+=item C<name>
+
+Name of the project
+
+=item C<longname>
+
+Long name of the project
+
+=back
+
+=cut
+
 $sk_session->set_var('projects', \@projects);
 
 
+=item C<isadmin>
+
+Indicates that the current user is an administrator of the selected project
+
+=cut
+
 $sk_session->set_var('isadmin', 1);
+
+=item C<project_gid>
+
+GID of the selected project
+
+=cut
+
 $sk_session->set_var('project_gid', $project);
+
+=item C<project>
+
+Name of the selected project
+
+=cut
+
 $sk_session->set_var('project', $$projects{$project}{displayname});
+
+=item C<projectlongname>
+
+Long name of the selected project
+
+=cut
+
 $sk_session->set_var('projectlongname', $$projects{$project}{longname});
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<projects>
+
+Select the project with this GID.
+Possible values read in loop over template variable C<projects>.
+
+=item C<${students{login}};public>/C<${teachers{login}};public>
+
+Checkboxes created in loops over template variables C<students> and
+C<teachers>.
+If true the access to a user's web directory is set to public. Otherwise it
+is set to private.
+
+=item C<${students{login}};upload>/C<${teachers{login}};upload>
+
+Checkboxes created in loops over template variables C<students> and
+C<teachers>.
+If true the upload to a user's web directory is allowed. Otherwise it is
+not allowed.
+
+=item C<grouppublic>
+
+If true the access to a class' web directory is set to public. Otherwise it
+is set to private.
+
+=item C<groupupload>
+
+If true the upload to a project's web directory is allowed. Otherwise it is not
+allowed.
+
+=item C<grouppublic>
+
+If true the access to a project's web directory is set to public. Otherwise it
+is set to private.
+
+=item C<groupupload>
+
+If true the upload to a class' web directory is allowed. Otherwise it is not
+allowed.
+
+
+
+=item C<accept>
+
+Accept the changes
+
+=back
+

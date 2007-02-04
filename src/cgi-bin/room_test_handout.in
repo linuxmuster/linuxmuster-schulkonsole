@@ -1,4 +1,29 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+room_test_handout - hand out files in room during exam
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/room_test_handout
+
+=head1 DESCRIPTION
+
+C<room_test_handout> lets you hand out files in a selected room during an
+exam.
+The HTML template is room_test_handout.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session
+and Schulkonsole::Room::set_vars() C<room_handout>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Room;
@@ -60,6 +85,13 @@ my $teacher_share_files
 	= Schulkonsole::Sophomorix::ls_handout_exam(
 		$sk_session->userdata('id'),
 		$sk_session->get_password());
+
+=item C<teacher_share_files>
+
+Available files as returned by C<Schulkonsole::Sophomorix::create_file_list()>
+
+=cut
+
 $sk_session->set_var('teacher_share_files',
 	Schulkonsole::Sophomorix::create_file_list($teacher_share_files));
 };
@@ -101,6 +133,30 @@ foreach my $workstation (sort keys %$workstations) {
 		}
 	}
 }
+
+=item C<overview_workstations>
+
+Users logged in on workstations in room as an array of hashes with
+the keys
+
+=over
+
+=item C<name>
+
+Name of a workstation
+
+=item C<login>
+
+Login of the user
+
+=item C<first>
+
+True if the user is the first of all users on the workstation
+
+=back
+
+=cut
+
 $sk_session->set_var('overview_workstations', \@array_overview_workstations);
 
 
@@ -108,4 +164,20 @@ $room_session->set_vars($sk_session);
 
 $sk_session->print_page("$this_file.shtml", $this_file);
 
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<handouttest>
+
+Hand out files
+
+=item C<continue>
+
+Continue without handing out files
+
+=back
 

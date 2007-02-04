@@ -10,7 +10,7 @@ package Schulkonsole::Cyrus;
 
 =head1 NAME
 
- Schulkonsole::Cyrus - interface to Cyrus commands
+Schulkonsole::Cyrus - interface to Cyrus commands
 
 =head1 SYNOPSIS
 

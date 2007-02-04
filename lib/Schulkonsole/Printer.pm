@@ -4,6 +4,11 @@ use POSIX 'sys_wait_h';
 use Schulkonsole::Error;
 use Schulkonsole::Config;
 
+=head1 NAME
+
+Schulkonsole::Printer - access printing system
+
+=cut
 
 package Schulkonsole::Printer;
 require Exporter;
@@ -113,11 +118,11 @@ sub stop_wrapper {
 
 
 
-=head2 C<printer_info($id, $password)
+=head2 C<printer_info($id, $password)>
 
 Return information about configured printers
 
-=head3 Paramters
+=head3 Parameters
 
 =over
 
@@ -168,11 +173,11 @@ sub printer_info {
 
 
 
-=head2 C<printer_on($id, $password, $printers)
+=head2 C<printer_on($id, $password, $printers)>
 
 Turn accepting of print jobs on
 
-=head3 Paramters
+=head3 Parameters
 
 =over
 
@@ -190,7 +195,7 @@ A reference to an array of printers
 
 =back
 
-=Description
+=head3 Description
 
 This wraps the command C</usr/sbin/accept printer1 printer2,...>
 where C<printer1>, C<printer2> are the printers in C<$printers>.
@@ -217,11 +222,11 @@ sub printer_on {
 
 
 
-=head2 C<printer_on($id, $password, $printers)
+=head2 C<printer_off($id, $password, $printers)>
 
 Turn accepting of print jobs off
 
-=head3 Paramters
+=head3 Parameters
 
 =over
 
@@ -239,7 +244,7 @@ A reference to an array of printers
 
 =back
 
-=Description
+=head3 Description
 
 This wraps the command C</usr/sbin/reject printer1 printer2,...>
 where C<printer1>, C<printer2> are the printers in C<$printers>.
@@ -267,11 +272,11 @@ sub printer_off {
 
 
 
-=head2 C<printer_deny($id, $password, $printer_users)
+=head2 C<printer_deny($id, $password, $printer_users)>
 
 Deny users access to printers
 
-=head3 Paramters
+=head3 Parameters
 
 =over
 
@@ -290,7 +295,7 @@ of users to be denied access to this printer as value
 
 =back
 
-=Description
+=head3 Description
 
 This wraps commands C</usr/sbin/lpadmin -pprinter -u deny:user1,user2,...>
 for each printer in C<keys %$printer_users> and C<user1>, C<user2> the

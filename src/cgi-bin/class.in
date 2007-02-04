@@ -1,4 +1,27 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+class - overview of available classes
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/class
+
+=head1 DESCRIPTION
+
+C<class> lets you enter/leave a class and select one of the classes to work
+with. The HTML template is class.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<class>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -113,15 +136,97 @@ foreach my $class (sort {
 		                      name => $$all_classs{$class}{displayname} };
 	}
 }
+
+=item C<classes>
+
+An array of hashes of the classes of which the current user is a member
+with the keys
+
+=over
+
+=item C<gid>
+
+The GID of the class
+
+=item C<name>
+
+The name of the class
+
+=back
+
+=cut
+
 $sk_session->set_var('classes', \@classs);
+
+=item C<classes>
+
+An array of hashes of the classes of which the current user is not a member
+with the keys
+
+=over
+
+=item C<gid>
+
+The GID of the class
+
+=item C<name>
+
+The name of the class
+
+=back
+
+=cut
+
 $sk_session->set_var('other_classes', \@other_classs);
 
 
 if ($class) {
+
+=item C<class_gid>
+
+The GID of the selected class (if a class is selected)
+
+=cut
+
 	$sk_session->set_var('class_gid', $class);
+
+=item C<class>
+
+The name of the selected class (if a class is selected)
+
+=cut
+
 	$sk_session->set_var('class', $$classs{$class}{displayname});
 }
 
 $sk_session->print_page("$this_file.shtml", $this_file);
 
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<classes>
+
+Select the class with this GID.
+Possible values read in loop over template variable C<classes>.
+
+=item C<${classes{gid}}_list>
+
+Select class with GID and list class.
+Created in loop over template variable C<classes>.
+
+=item C<${classes{gid}}_remove>
+
+Leave class with GID
+Created in loop over template variable C<classes>.
+
+=item C<class_add>
+
+Enter class with this GID.
+Possible values read in loop over template variable C<other_classes>.
+
+=back
 

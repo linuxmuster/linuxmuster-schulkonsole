@@ -1,4 +1,28 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+project_addmembers - add members to project
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/project_addmembers
+
+=head1 DESCRIPTION
+
+C<project_addmembers> lets you search users, classes and projects and add
+them to a project.
+The HTML template is project_addmembers.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<project_addmembers>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -310,6 +334,35 @@ COMMANDS: {
 
 
 			if (@students_result) {
+
+=item C<students>
+
+Set on query with scope teachers
+and on command showclass.
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=item C<class>
+
+The user's class
+
+=back
+
+=cut
+
 				$sk_session->set_var('students', \@students_result);
 			} else {
 				$sk_session->set_status($sk_session->d()->get(
@@ -360,7 +413,34 @@ if (not $sk_session->{template_vars}{students}) {
 					};
 					push @teachers_result, $result;
 				}
-	
+
+=item C<teachers>
+
+Set on query with scope teachers.
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=item C<class>
+
+The user's class
+
+=back
+
+=cut
+
 				$sk_session->set_var('teachers', \@teachers_result);
 			} else {
 				$sk_session->set_status(
@@ -392,7 +472,26 @@ if (not $sk_session->{template_vars}{students}) {
 					};
 					push @classs_result, $result;
 				}
-	
+
+=item C<classes>
+
+Set on query with scope class.
+An array of hashes with the keys
+
+=over
+
+=item C<gid>
+
+The GID of a class
+
+=item C<displayname>
+
+The name of the class
+
+=back
+
+=cut
+
 				$sk_session->set_var('classes', \@classs_result);
 			} else {
 				$sk_session->set_status(
@@ -429,7 +528,31 @@ if (not $sk_session->{template_vars}{students}) {
 					};
 					push @projects_result, $result;
 				}
-	
+
+
+=item C<projects>
+
+Set on query with scope project.
+An array of hashes with the keys
+
+=over
+
+=item C<gid>
+
+The GID of a project
+
+=item C<displayname>
+
+The name of the project
+
+=item C<longname>
+
+The long name of the project
+
+=back
+
+=cut
+
 				$sk_session->set_var('projects', \@projects_result);
 			} else {
 				$sk_session->set_status(
@@ -498,11 +621,85 @@ if (not $sk_session->{template_vars}{students}) {
 my $all_projects = Schulkonsole::DB::projects();
 
 
+=item C<isadmin>
+
+Indicates that the current user is an administrator of the selected project
+
+=cut
+
 $sk_session->set_var('isadmin', 1);
+
+=item C<project_gid>
+
+The GID of the selected project
+
+=cut
+
 $sk_session->set_var('project_gid', $project);
+
+=item C<project>
+
+The name of the selected project
+
+=cut
+
 $sk_session->set_var('project', $$projects{$project}{displayname});
+
+=item C<projectlongname>
+
+The long name of the selected project
+
+=cut
+
 $sk_session->set_var('projectlongname', $$projects{$project}{longname});
 
 $sk_session->print_page("$this_file.shtml", $this_file);
 
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<query>
+
+A substring to search in scope
+
+=item C<scope>
+
+The scope of the query. Possible values are C<student>, C<teacher>,
+C<class>, and C<project>
+
+=item C<${classes{gid}}_showclass>
+
+If true, show list of students of C<$classes{gid}>
+
+=item C<add>
+
+If true add the selected users, classes, projects:
+
+=over
+
+=item C<${students{login}}_member>/C<${teachers{login}}_member>
+
+Checkboxes created in loops over template variables C<students> and
+C<teachers>
+
+=item C<${teachers{login}}_admin>
+
+Checkboxes created in loop over template variable C<teachers>. If true
+add the user as an admin to the project
+
+=item C<${classes{gid}}_class>
+
+Checkboxes created in loop over template variable C<classes>
+
+=item C<${projects{gid}}_project>
+
+Checkboxes created in loop over template variable C<projects>
+
+=back
+
+=back
 

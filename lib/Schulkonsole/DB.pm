@@ -278,8 +278,7 @@ sub salt {
 
 
 
-=head3 C<change_password($username, $oldpassword, $newpassword,
-                         $newpasswordagain)>
+=head3 C<change_password($username, $oldpassword, $newpassword, $newpasswordagain)>
 
 Changes a user's password
 
@@ -312,11 +311,11 @@ C<$newpassword> if
 
 =over
 
-=item
+=item 1.
 
 C<$oldpassword> matches the password currently stored in the database
 
-=item
+=item 2.
 
 C<$newpassword> is the same as C<$newpasswordagain>
 
@@ -609,8 +608,7 @@ sub reset_workstation_passwords {
 
 
 
-=head3 C<user_groups($uidnumber,
-                     $initial_login_gidnumber, $initial_login_gid)>
+=head3 C<user_groups($uidnumber, $initial_login_gidnumber, $initial_login_gid)>
 
 Returns a user's groups
 
@@ -813,9 +811,13 @@ Returns classdata
 
 =head4 Parameters
 
+=over
+
 =item C<$class>
 
 The GID of the class
+
+=back
 
 =head4 Description
 
@@ -854,9 +856,13 @@ Returns userdatas of members of class
 
 =head4 Parameters
 
+=over
+
 =item C<$gid>
 
 The GID of the class
+
+=back
 
 =head4 Return value
 
@@ -931,9 +937,13 @@ Returns projectdata
 
 =head4 Parameters
 
+=over
+
 =item C<$project>
 
 The GID of the project
+
+=back
 
 =head4 Description
 

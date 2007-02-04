@@ -146,9 +146,6 @@ C<< <gettext> >>.
 Other strings that are translated and need not be marked with C<< <gettext> >>
 are the values of C<< <input> >> fields.
 
-
-=back
-
 =cut
 
 require Exporter;

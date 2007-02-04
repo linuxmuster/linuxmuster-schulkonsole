@@ -5,6 +5,12 @@ use Net::IMAP::Simple;
 use Schulkonsole::Config;
 use Schulkonsole::Error;
 
+=head1 NAME
+
+Schulkonsole::Info - get info about users
+
+=cut
+
 package Schulkonsole::Info;
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);

@@ -1,4 +1,28 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+printers - overview of printers
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/printers
+
+=head1 DESCRIPTION
+
+C<printers> displays an overview of all printers and serves as a starting
+point to select a printer for C<printers_edit>.
+The HTML template is printers.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<printers>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Net::CUPS::Printer;
@@ -47,8 +71,38 @@ foreach my $printer (sort @printers) {
 			};
 	}
 }
+
+=item C<printers>
+
+The printers as an array of hashes with the keys
+
+=over
+
+=item C<name>
+
+Name of the printer
+
+=item C<rooms>
+
+A comma separated list of rooms from where the printer can be accessed
+
+=item C<hosts>
+
+A comma separated list of hosts that can access the printer
+
+=back
+
+=cut
+
 $sk_session->set_var('printers', \@printers_array);
 
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 From fields
+
+none

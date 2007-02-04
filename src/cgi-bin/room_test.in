@@ -1,4 +1,25 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+room_test - start an exam
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/room_test
+
+=head1 DESCRIPTION
+
+C<room_test> lets you start an exam or redirects if there already is an exam
+The HTML template is room_test.shtml.
+
+=head2 Template variables
+
+There are no other template variables but the variables of
+Schulkonsole::Session and Schulkonsole::Room::set_vars().
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Room;
@@ -121,4 +142,18 @@ $room_session->set_vars($sk_session);
 
 $sk_session->print_page("$this_file.shtml", $this_file);
 
+
+=head2 Form fields
+
+=over
+
+=item C<starttest>
+
+Start an exam
+
+=item C<workstationpassword>
+
+The password to be set for the workstation accounts
+
+=back
 

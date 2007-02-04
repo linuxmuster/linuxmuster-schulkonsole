@@ -1,4 +1,28 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+project_shares - activate/deactivate shares
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/project_shares
+
+=head1 DESCRIPTION
+
+C<project_shares> lets you activate and deactivate the shares of the members
+of a project.
+The HTML template is project_shares.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<project_shares>
+provides the following variables:
+
+=over
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -131,6 +155,33 @@ foreach my $user (sort {
 	push @students, $student;
 
 }
+
+=item C<students>
+
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=item C<shares>
+
+True if the user's share is activated
+
+=back
+
+=cut
+
 $sk_session->set_var('students', \@students);
 };
 if ($@) {
@@ -148,13 +199,87 @@ foreach my $project (sort {
 	                  longname => $$projects{$project}{longname},
 	                };
 }
+
+=item C<projects>
+
+Projects of the current user as an array of hashes with the keys
+
+=over
+
+=item C<gid>
+
+GID of the project
+
+=item C<name>
+
+Name of the project
+
+=item C<longname>
+
+Long name of the project
+
+=back
+
+=cut
+
 $sk_session->set_var('projects', \@projects);
 
 
+=item C<isadmin>
+
+Indicates that the current user is an administrator of the selected project
+
+=cut
+
 $sk_session->set_var('isadmin', 1);
+
+=item C<project_gid>
+
+GID of the selected project
+
+=cut
+
 $sk_session->set_var('project_gid', $project);
+
+=item C<project>
+
+Name of the selected project
+
+=cut
+
 $sk_session->set_var('project', $$projects{$project}{displayname});
+
+=item C<projectlongname>
+
+Long name of the selected project
+
+=cut
+
 $sk_session->set_var('projectlongname', $$projects{$project}{longname});
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<projects>
+
+Select the project with this GID.
+Possible values read in loop over template variable C<projects>.
+
+=item C<acceptshares>
+
+Accept new shares settings
+
+=item C<${students{login}};shares>
+
+Checkboxes created in loop over template variable C<students>. If true
+the share of the user is activated
+
+=back
+

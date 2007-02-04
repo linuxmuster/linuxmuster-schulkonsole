@@ -1,4 +1,20 @@
 #! /usr/bin/perl
+
+=head1 NAME
+
+class_list - list of class members
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/class_list
+
+=head1 DESCRIPTION
+
+C<class_list> displays a list of all members in a selected class.
+The HTML template is class_list.shtml.
+
+=cut
+
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
@@ -32,6 +48,22 @@ if (   not $class
 	$url =~ s/$this_file$/class/g;
 	$sk_session->redirect($url);
 }
+
+
+=head2 Form fields
+
+none
+
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<class_list>
+provides the following variables:
+
+=over
+
+=cut
+
 
 
 my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
@@ -162,17 +194,149 @@ foreach my $user (sort {
 		login => $user,
 		firstname => $$class_userdatas{$user}{firstname},
 		surname => $$class_userdatas{$user}{surname},
-		mailquotas => $mailquotas,
 		diskquotas => \@array_diskquotas,
+		mailquotas => $mailquotas,
 		subclass => $$class_userdatas{$user}{subclass},
 		projects_str => $projects_str,
 	};
 	push @students, $student;
 }
+
+=item C<students>
+
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=item C<diskquotas>
+
+The user's disk quotas in an array of hashes with the keys
+
+=over
+
+=item C<path>
+
+A file path
+
+=item C<blocks_usage>
+
+The user's blocks usage in this path
+
+=item C<blocks_soft>
+
+The user's soft blocks limit for this path
+
+=item C<blocks_hard>
+
+The user's hard blocks limit for this path
+
+=item C<blocks_percent>
+
+The user's blocks usage in percent in this path
+
+=item C<blocks_percent_rounded>
+
+The user's blocks usage in percent in this path rounded to an integer
+
+=item C<blocks_grace>
+
+Time for this user to get below soft blocks limit
+
+=item C<files_usage>
+
+The user's file usage in this path
+
+=item C<files_soft>
+
+The user's soft files limit for this path
+
+=item C<files_hard>
+
+The user's hard files limit for this path
+
+=item C<files_percent>
+
+The user's files usage in percent in this path
+
+=item C<files_percent_rounded>
+
+The user's files usage in percent in this path rounded to an integer
+
+=item C<files_grace>
+
+Time for this user to get below soft files limit
+
+=item C<warn>
+
+True if over blocks or files quota
+
+=back
+
+=item C<mailquotas>
+
+The user's INBOX mail quota in a hash with the keys
+
+=over
+
+=item C<usage>
+
+The user's INBOX usage
+
+=item C<limit>
+
+The user's INBOX limit
+
+=item C<percent>
+
+The user's INBOX usage in percent
+
+=item C<percent_rounded>
+
+The user's INBOX usage in percent rounded to an integer
+
+=item C<warn>
+
+True if user is over quota
+
+=back
+
+=item C<subclass>
+
+The subclass to which the user is assigned
+
+=item C<projects_str>
+
+The user's projects in a comma separated list
+
+=back
+
+=cut
+
 $sk_session->set_var('students', \@students);
 
 
 
+=item C<class>
+
+The name of the class
+
+=cut
+
 $sk_session->set_var('class', $$classs{$class}{displayname});
 
 $sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
