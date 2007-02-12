@@ -32,7 +32,7 @@
 <!--#endif -->
 <th><gettext>Mailquota</gettext></th>
 </tr>
-<!--#if expr="mountpoints" -->
+<!--#if expr="$mountpoints" -->
 <tr>
 <th colspan="2"></th>
 <!--#if expr="$loop_mountpoints" -->
