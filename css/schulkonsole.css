@@ -550,6 +550,18 @@ body {
 	display: none;
 }
 
+label.error {
+	color: #d54f4f;
+}
+
+
+p.selectdomain {
+	float: right;
+}
+
+form.singleton {
+	float: left;
+}
 
 
 hr {
@@ -557,6 +569,8 @@ hr {
 	padding: 0;
 	margin-top: 10px;
 	margin-bottom: 1px;
+
+	clear: left;
 
 	border: none;
 
@@ -637,9 +651,9 @@ table.liste tr.editing {
 #roomhandoutcopy tr > th:first-child + th + th,
 #roomhandoutcopy tr > td:first-child + td + td,
 #roomhandoutcopy tr > td:first-child[colspan="2"] + td,
-#roomcollect tr > th:first-child + th + th,
-#roomcollect tr > td:first-child + td + td,
-#roomcollect tr > td:first-child[colspan="2"] + td,
+#roomcollect tr > th:first-child + th + th + th,
+#roomcollect tr > td:first-child + td + td + td,
+#roomcollect tr > td:first-child[colspan="3"] + td,
 #classpasswords tr > td:first-child + td + td,
 #classpasswords tr > td:first-child[colspan="2"] + td,
 #classhandoutcopy tr > th:first-child + th + th,
@@ -693,6 +707,8 @@ table.liste tr.editing {
 
 
 
+#diskquotas,
+#mailquotas,
 #roomshares,
 #roomhandoutcopy,
 #roomhandout,
@@ -712,8 +728,6 @@ table.liste tr.editing {
 	width: 62%;
 }
 
-#diskquotas,
-#mailquotas,
 #roomoverview,
 #printersoverview,
 #roomcollect,

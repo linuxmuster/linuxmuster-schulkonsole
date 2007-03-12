@@ -17,8 +17,8 @@
 <div id="content">
 
 <!--#if expr="$projects" -->
-<form method="post"> <p style="float: right;">
-<select name="projects">
+<form method="post">
+<p class="selectdomain"> <select name="projects">
 <optgroup label="Projekte">
 <!--#if expr="$loop_projects" --> <option value="$projects{gid}"><!--#echo var="projects{name}" --></option>
 <!--#endif -->

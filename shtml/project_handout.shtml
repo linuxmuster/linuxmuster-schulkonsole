@@ -15,6 +15,24 @@
 </div>
 
 <div id="content">
+
+<!--#if expr="$projects" -->
+<form method="post">
+<p class="selectdomain"> <select name="projects">
+<optgroup label="Projekte">
+<!--#if expr="$loop_projects" --> <option value="$projects{gid}"><!--#echo var="projects{name}" --></option>
+<!--#endif -->
+</optgroup>
+<optgroup label="aktuelles Projekt">
+<option value="$project_gid" selected><!--#echo var="project" --></option>
+</optgroup>
+</select>
+<input type="submit" value="Wechseln">
+</p>
+</form>
+<!--#endif -->
+
+
 <h2><gettext>Projekte</gettext> :: <gettext>Bereitstellen</gettext></h2>
 
 <h3><gettext>Ausgew&auml;hltes Projekt:</gettext> <!--#echo var="project" --></h3>

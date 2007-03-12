@@ -15,10 +15,29 @@
 </div>
 
 <div id="content">
+
+<!--#if expr="$projects" -->
+<form method="post">
+<p class="selectdomain"> <select name="projects">
+<optgroup label="Projekte">
+<!--#if expr="$loop_projects" --> <option value="$projects{gid}"><!--#echo var="projects{name}" --></option>
+<!--#endif -->
+</optgroup>
+<optgroup label="aktuelles Projekt">
+<option value="$project_gid" selected><!--#echo var="project" --></option>
+</optgroup>
+</select>
+<input type="submit" value="Wechseln">
+</p>
+</form>
+<!--#endif -->
+
+
 <h2><gettext>Projekte</gettext> :: <gettext>Webfreigabe</gettext></h2>
 
 <h3><gettext>Ausgew&auml;hltes Projekt:</gettext> <!--#echo var="project" --></h3>
 
+<!--#if expr="$wwwactive" -->
 <form method="post">
 
 <table id="projectwww" class="liste">
@@ -91,6 +110,9 @@
 <p><input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen"></p>
 
 </form>
+<!--#else -->
+<p><gettext>Die Funktionen dieser Seite sind zur Zeit nicht aktiv.</gettext></p>
+<!--#endif -->
 
 
 

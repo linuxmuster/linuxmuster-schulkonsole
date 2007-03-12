@@ -32,7 +32,9 @@ $VERSION = 0.03;
 @EXPORT_OK = qw(
 	create_db
 	drop_db
+	drop_db_user
 	list_db
+	list_db_user
 	create_repository
 	drop_repository
 	list_repository
@@ -235,6 +237,58 @@ sub drop_db {
 
 
 
+=head3 C<drop_db_user($id, $password, @dbs)>
+
+Delete user's databases
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=item C<@dbs>
+
+Names of databases to delete
+
+=back
+
+=head3 Description
+
+This wraps the command
+C<< mysqladmin drop <db> >>, for each C<db> in C<@dbs>
+
+=cut
+
+sub drop_db_user {
+	my $id = shift;
+	my $password = shift;
+	my @dbs = @_;
+
+	my $pid = start_wrapper(Schulkonsole::Config::DROPDBUSERAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	foreach my $db (@dbs) {
+		print SCRIPTOUT "$db\n";
+	}
+	print SCRIPTOUT "\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+}
+
+
+
+
+
 =head3 C<list_db($id, $password, $gid)>
 
 List databases
@@ -279,6 +333,61 @@ sub list_db {
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
 	print SCRIPTOUT "1\n$gid\n";
+
+	my @re;
+	while (<SCRIPTIN>) {
+		chomp;
+		push @re, $_;
+	}
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	return \@re;
+}
+
+
+
+
+
+=head3 C<list_db_user($id, $password)>
+
+List databases
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=back
+
+=head3 Return value
+
+A reference to an array of databases
+
+=head3 Description
+
+This wraps the command
+C<< linuxmuster-mysql --list --user=<uid> >>, where
+C<uid> is the UID of the user with the ID C<$id>
+and returns the result as a list of databases
+
+=cut
+
+sub list_db_user {
+	my $id = shift;
+	my $password = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::LISTDBUSERAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
 	my @re;
 	while (<SCRIPTIN>) {

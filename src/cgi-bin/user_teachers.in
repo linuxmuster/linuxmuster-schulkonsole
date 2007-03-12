@@ -239,7 +239,7 @@ $q->param('newteacher') and do {
 			birthdate => $birthdate,
 			login => $login,
 			firstpassword => '---     ',
-			short => 'kurz ',
+			short => 'usertoken ',
 			diskquota => 'quota ',
 			mailquota => 'mailquota ',
 		};
@@ -405,7 +405,7 @@ foreach my $teacher (sort keys %$teachers) {
 			surname => $$teachers{$teacher}{surname},
 			firstname => $$teachers{$teacher}{firstname},
 			birthdate => $$teachers{$teacher}{birthdate},
-			short => ($$teachers{$teacher}{short} ne 'kurz' ?
+			short => ($$teachers{$teacher}{short} ne 'usertoken' ?
 			          $$teachers{$teacher}{short}
 			        : $$teachers{$teacher}{login}),
 		};

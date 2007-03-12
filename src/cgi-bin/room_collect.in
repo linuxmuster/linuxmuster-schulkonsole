@@ -54,8 +54,8 @@ my $workstation_users = $room_session->workstation_users();
 
 my $id = $sk_session->userdata('id');
 my $password = $sk_session->get_password();
-if (   $q->param('collectcopy')
-    or $q->param('collectmove')) {
+if (   $q->param('collecttop')
+    or $q->param('collectbottom')) {
 	my @users;
 	my $is_all_users = 1;
 	foreach my $host (keys %$workstation_users) {
@@ -73,20 +73,10 @@ if (   $q->param('collectcopy')
 
 	if (@users) {
 		eval {
-		if ($q->param('collectcopy')) {
-			Schulkonsole::Sophomorix::collectcopy_from_room_users(
-				$id, $password,
-				$room_session->info('name'), @users);
-	
-			if ($is_all_users) {
-				$sk_session->set_status($sk_session->d()->get('Kopiert'), 0);
-			} else {
-				$sk_session->set_status($sk_session->d()->get('Kopiert von')
-					. ' ' . join(', ', @users),
-					0);
-			}
-	
-		} else {
+		if (   (    $q->param('collecttop')
+		        and $q->param('deletetop'))
+		    or (    $q->param('collectbottom')
+		        and $q->param('deletebottom'))) {
 			Schulkonsole::Sophomorix::collect_from_room_users($id, $password,
 				$room_session->info('name'), @users);
 	
@@ -96,6 +86,18 @@ if (   $q->param('collectcopy')
 			} else {
 				$sk_session->set_status(
 					$sk_session->d()->get('Eingesammelt von')
+					. ' ' . join(', ', @users),
+					0);
+			}
+		} else {
+			Schulkonsole::Sophomorix::collectcopy_from_room_users(
+				$id, $password,
+				$room_session->info('name'), @users);
+	
+			if ($is_all_users) {
+				$sk_session->set_status($sk_session->d()->get('Kopiert'), 0);
+			} else {
+				$sk_session->set_status($sk_session->d()->get('Kopiert von')
 					. ' ' . join(', ', @users),
 					0);
 			}
@@ -136,6 +138,8 @@ foreach my $workstation (sort keys %$workstations) {
 				name => $workstation,
 				editing => ($$userdata{uid} eq $editing_user),
 				login => $$userdata{uid},
+				firstname => $$userdata{firstname},
+				surname => $$userdata{surname},
 				first => $first_login,
 				files => Schulkonsole::Sophomorix::create_file_list(
 				         	$$user_share_files{$$userdata{id}}),
@@ -197,17 +201,22 @@ $sk_session->print_page("$this_file.shtml", $this_file);
 
 =over
 
-=item C<collectcopy>
+=item C<collecttop>
 
-The files of the selected users are copied to the current users directory
+A submit button indicating that C<deletetop> is to be evaluated
 
-=item C<collectmove>
+=item C<collectbottom>
 
-The files of the selected users are moved to the current users directory
+A submit button indicating that C<deletebottom> is to be evaluated
+
+=item C<deletetop>/C<deletebottom>
+
+If true the files are moved, copied otherwise
 
 =item C<${overview_workstations{login}};collect>
 
-Selected if the users files are to be collected
+Checkboxes created in loop over template variable
+C<overview_workstations>. Collecting is performed with the selected logins.
 
 =back
 

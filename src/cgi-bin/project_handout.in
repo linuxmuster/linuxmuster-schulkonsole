@@ -108,7 +108,7 @@ eval {
 my $admin_share_files = Schulkonsole::Sophomorix::ls_handout_project(
 	$sk_session->userdata('id'),
 	$sk_session->get_password(),
-	$$projects{$project}{longname});
+	$$projects{$project}{gid});
 
 =item C<admin_share_files>
 
@@ -138,7 +138,6 @@ foreach my $project (sort {
 	keys %$projects) {
 	push @projects, { gid => $project,
 	                  name => $$projects{$project}{displayname},
-	                  longname => $$projects{$project}{longname},
 	                };
 }
 
@@ -155,10 +154,6 @@ GID of the project
 =item C<name>
 
 Name of the project
-
-=item C<longname>
-
-Long name of the project
 
 =back
 
@@ -191,13 +186,6 @@ The name of the selected project
 
 $sk_session->set_var('project', $$projects{$project}{displayname});
 
-=item C<projectlongname>
-
-The long name of the selected project
-
-=cut
-
-$sk_session->set_var('projectlongname', $$projects{$project}{longname});
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);

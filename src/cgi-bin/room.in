@@ -555,6 +555,17 @@ if ($@) {
 }
 
 
+
+=item C<intranetactive>
+
+True if intranet is configured to be started at boot time
+
+=cut
+
+$sk_session->set_var('intranetactive', $Schulkonsole::Config::_lml_start);
+
+
+
 $room_session->set_vars($sk_session);
 
 $sk_session->print_page("$this_file.shtml", $this_file);

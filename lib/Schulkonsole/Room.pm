@@ -339,7 +339,7 @@ sub set_vars {
 
 		my $end_time = $this->param('end_time');
 		$session->set_var('endedittime',
-			POSIX::strftime('%H:%M', localtime($end_time))) if $end_time;
+			POSIX::strftime('%H:%M', localtime($end_time))) if $end_time > 0;
 	} else {
 		my $permissions = Schulkonsole::Config::permissions_pages();
 		my $users = $this->workstation_users();

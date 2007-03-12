@@ -18,7 +18,7 @@
 
 <!--#if expr="$projects" -->
 <form method="post">
-<p style="float: right;">
+<p class="selectdomain">
 <select name="projects">
 <optgroup label="Projekte">
 <!--#if expr="$loop_projects" --> <option value="$projects{gid}"><!--#echo var="projects{name}" --></option>
@@ -104,7 +104,7 @@
 
 <p>
 <label for="projectname">Kurzname</label>:
-<input id="projectname" name="projectname">
+p_<input id="projectname" name="projectname">
 
 <input type="submit" name="createproject" value="Anlegen">
 </p>

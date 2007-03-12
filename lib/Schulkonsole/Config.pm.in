@@ -73,6 +73,7 @@ $VERSION = 0.06;
 	$_imap_host
 	$_wrapper_user
 	$_wrapper_firewall
+	$_wrapper_ovpn
 	$_wrapper_printer
 	$_wrapper_sophomorix
 	$_wrapper_cyrus
@@ -86,6 +87,9 @@ $VERSION = 0.06;
 
 	$_sophomorix_conf_true
 	$_sophomorix_conf_false
+
+	$_backup_conf_true
+	$_backup_conf_false
 
 	QUOTAAPP
 	CYRUSQUOTAAPP
@@ -110,7 +114,9 @@ $VERSION = 0.06;
 	SETPASSWORDSAPP
 	WWWPERMISSIONSAPP
 	CREATEDROPDBAPP
+	DROPDBUSERAPP
 	LISTDBAPP
+	LISTDBUSERAPP
 	CREATEDROPREPOSITORYAPP
 	LISTREPOSITORYAPP
 	PROJECTMEMBERSAPP
@@ -128,6 +134,9 @@ $VERSION = 0.06;
 	WRITEFILEAPP
 	IMPORTWORKSTATIONSAPP
 	IMPORTPRINTERSAPP
+	OVPNCHECKAPP
+	OVPNDOWNLOADAPP
+	OVPNCREATEAPP
 
 	TEST_NONE
 	TEST_HANDOUT
@@ -373,9 +382,17 @@ use constant {
 
 C<create_drop_db>
 
+=item C<DROPDBUSERAPP>
+
+C<drop_db_user>
+
 =item C<LISTDBAPP>
 
 C<list_db>
+
+=item C<LISTDBUSERAPP>
+
+C<list_db_user>
 
 =item C<CREATEDROPREPOSITORYAPP>
 
@@ -391,9 +408,11 @@ C<list_repository>
 
 use constant {
 	CREATEDROPDBAPP => 31,
-	LISTDBAPP => 32,
-	CREATEDROPREPOSITORYAPP => 33,
-	LISTREPOSITORYAPP => 34,
+	DROPDBUSERAPP => 32,
+	LISTDBAPP => 33,
+	LISTDBUSERAPP => 34,
+	CREATEDROPREPOSITORYAPP => 35,
+	LISTREPOSITORYAPP => 36,
 };
 
 
@@ -418,9 +437,36 @@ C<import_printers>
 =cut
 
 use constant {
-	WRITEFILEAPP => 35,
-	IMPORTWORKSTATIONSAPP => 36,
-	IMPORTPRINTERSAPP => 37,
+	WRITEFILEAPP => 37,
+	IMPORTWORKSTATIONSAPP => 38,
+	IMPORTPRINTERSAPP => 39,
+};
+
+
+=head3 Constants for wrapper-ovpn
+
+=over
+
+=item C<OVPNCHECKAPP>
+
+C<ovpn_check>
+
+=item C<OVPNDOWNLOADAPP>
+
+C<ovpn_download>
+
+=item C<OVPNCREATEAPP>
+
+C<ovpn_download>
+
+=back
+
+=cut
+
+use constant {
+	OVPNCHECKAPP => 40,
+	OVPNDOWNLOADAPP => 41,
+	OVPNCREATEAPP => 42,
 };
 
 
@@ -525,12 +571,16 @@ This file lists the classrooms
 
 Default network settings
 
+=item C<$_backup_conf_file>
+
+Setup for automated backup
+
 =back
 
 =cut
 
 use vars qw($_workstations_file $_printers_file $_classrooms_file
-            $_network_settings_file);
+            $_network_settings_file $_backup_conf_file);
 
 
 =head3 Files with status information
@@ -562,6 +612,10 @@ CUPS printer configuration file
 
 A format-string to generate the filename for workstation information
 
+=item C<$_lml_start>
+
+True if linuxmuster is started at boot time
+
 =back
 
 =cut
@@ -569,7 +623,8 @@ A format-string to generate the filename for workstation information
 use vars qw($_lml_cache_dir
             $_blocked_hosts_internet_file $_blocked_hosts_intranet_file
             $_unfiltered_hosts_file $_cups_printers_conf_file
-            $_workstation_file);
+            $_workstation_file
+            $_lml_start);
 
 
 =head3 Special template files
@@ -661,6 +716,10 @@ Path to wrapper to execute commands as a user
 
 Path to wrapper to access the firewall
 
+=item C<$_wrapper_ovpn>
+
+Path to wrapper to handle OpenVPN certificates
+
 =item C<$_wrapper_printer>
 
 Path to wrapper to access printers
@@ -685,7 +744,7 @@ Path to wrapper to write files with root permissions
 
 =cut
 
-use vars qw($_wrapper_user $_wrapper_firewall $_wrapper_printer
+use vars qw($_wrapper_user $_wrapper_firewall $_wrapper_ovpn $_wrapper_printer
             $_wrapper_sophomorix $_wrapper_cyrus $_wrapper_collab
             $_wrapper_files);
 
@@ -716,13 +775,26 @@ use vars qw(%_root_app_name_ids @_root_apps);
 
 =item C<$_sophomorix_conf_true>
 
+Value used for 'true' in Sophomorix configuration files
+
 =item C<$_sophomorix_conf_false>
+
+Value used for 'false' in Sophomorix configuration files
+
+=item C<$_backup_conf_true>
+
+Value used for 'true' in backup.conf
+
+=item C<_backup_conf_false>
+
+Value used for 'false' in backup.conf
 
 =back
 
 =cut
 
-use vars qw($_sophomorix_conf_true $_sophomorix_conf_false);
+use vars qw($_sophomorix_conf_true $_sophomorix_conf_false
+            $_backup_conf_true $_backup_conf_false);
 
 
 
@@ -737,10 +809,10 @@ $_db_conf_file = "$_sysconfdir/db.conf";
 
 
 # read environment variables of linuxmuster scripts
-my $lml_config_dir = '/usr/share/linuxmuster/config/dist.conf';
+my $lml_config_file = '/usr/share/linuxmuster/config/dist.conf';
 my %lml_env;
 
-tie %lml_env, 'Env::Bash', Source => $lml_config_dir;
+tie %lml_env, 'Env::Bash', Source => $lml_config_file;
 $_lml_cache_dir = $lml_env{CACHEDIR};
 $_blocked_hosts_internet_file = $lml_env{BLOCKEDHOSTSINTERNET};
 $_blocked_hosts_intranet_file = $lml_env{BLOCKEDHOSTSINTRANET};
@@ -749,6 +821,17 @@ $_workstations_file = $lml_env{WIMPORTDATA};
 $_printers_file = $lml_env{PRINTERS};
 $_classrooms_file = $lml_env{CLASSROOMS};
 $_network_settings_file = $lml_env{NETWORKSETTINGS};
+
+$_backup_conf_file = $lml_env{SYSCONFDIR} . '/backup.conf';
+
+
+# read environment variables of linuxmuster scripts
+my $lml_default_config_file = '/etc/default/linuxmuster-base';
+my %lml_default_env;
+
+tie %lml_default_env, 'Env::Bash', Source => $lml_default_config_file;
+$_lml_start = ($lml_default_env{START_LINUXMUSTER} eq 'yes');
+
 
 $_cups_printers_conf_file = '/etc/cups/printers.conf';
 
@@ -762,13 +845,14 @@ $_session_expire_time = '+1h';	# delete session after 1 hour idle time
 $_login_expire_time = '+1h';	# invalidate session unless logged in within an
                              	# hour
 
-$_tmp_valid_time = '+5m';	# invalidate temporarily stored data after 5 minutes
+$_tmp_valid_time = '+1m';	# invalidate temporarily stored data after 1 minute
 
 $_http_root = '/schulkonsole';
 $_htaccess_filename = '.htaccess';
 $_imap_host = 'localhost';
 $_wrapper_user = '@pkglibexecdir@/bin/wrapper-user';
 $_wrapper_firewall = '@pkglibexecdir@/bin/wrapper-firewall';
+$_wrapper_ovpn = '@pkglibexecdir@/bin/wrapper-ovpn';
 $_wrapper_printer = '@pkglibexecdir@/bin/wrapper-printer';
 $_wrapper_sophomorix = '@pkglibexecdir@/bin/wrapper-sophomorix';
 $_wrapper_cyrus = '@pkglibexecdir@/bin/wrapper-cyrus';
@@ -811,12 +895,17 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 	'chmod' => CHMODAPP,
 	'quota' => SETQUOTAAPP,
 	create_drop_db => CREATEDROPDBAPP,
+	drop_db_user => DROPDBUSERAPP,
 	list_db => LISTDBAPP,
+	list_db_user => LISTDBUSERAPP,
 	create_drop_repository => CREATEDROPREPOSITORYAPP,
 	list_repository => LISTREPOSITORYAPP,
 	write_file => WRITEFILEAPP,
 	import_workstations => IMPORTWORKSTATIONSAPP,
 	import_printers => IMPORTPRINTERSAPP,
+	ovpn_check => OVPNCHECKAPP,
+	ovpn_download => OVPNDOWNLOADAPP,
+	ovpn_create => OVPNCREATEAPP,
 );
 
 
@@ -855,18 +944,26 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 	[ '/usr/sbin/sophomorix-quota', '/usr/sbin/sophomorix-class',
 	  '/usr/sbin/sophomorix-project', ],
 	'/usr/sbin/linuxmuster-mysql',
+	'/usr/bin/mysqladmin',
+	'/usr/sbin/linuxmuster-mysql',
 	'/usr/sbin/linuxmuster-mysql',
 	'/usr/sbin/linuxmuster-svn',
 	'/usr/sbin/linuxmuster-svn',
 	1,
 	'/usr/sbin/import_workstations',
 	'/usr/sbin/import_printers',
+	'/usr/share/linuxmuster/scripts/ovpn-client-cert.sh',
+	'/usr/share/linuxmuster/scripts/ovpn-client-cert.sh',
+	'/usr/share/linuxmuster/scripts/ovpn-client-cert.sh',
 );
 
 
 
 $_sophomorix_conf_true = 'yes';
 $_sophomorix_conf_false = 'no';
+
+$_backup_conf_true = 'yes';
+$_backup_conf_false = 'no';
 
 
 

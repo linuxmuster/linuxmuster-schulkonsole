@@ -104,6 +104,7 @@ attributes C<name>, C<value>, and C<id> of the HTML-tag C<input>,
 in the attribute C<for> of the HTML-tag C<label>,
 in the attribute C<value> of the HTML-tag C<option>,
 in the attributes C<style> and C<title> of the HTML-tag C<span>,
+in the attribute C<href> of the HTML-tag C<a>,
 and in the attribute C<action> of the HTML-tag C<form>.
 The value of the attribute C<id> will be converted to a valid string if
 necessary.
@@ -128,6 +129,20 @@ Example:
       </option>
   <!--#endif -->
 
+
+=head3 Form values
+
+In some tags the parameters passed in the CGI-object of the CGI::Session are
+evaluated.
+
+
+C<input>-fields of types C<text> and C<hidden> are filled with the value
+in the parameters.
+
+In a group of radio buttons (C<input>-fields of type C<radio>) the button
+with the value passed in the parameters is checked.
+
+In C<select> the C<option> selected in the parameters is selected.
 
 
 =head3 Gettext
@@ -268,7 +283,7 @@ sub print_page {
 	);
 	$p->report_tags('div', 'label', 'form', 'input', 'textarea', 'select',
 	                'option', 'optgroup',
-	                'th', 'title', 'meta', 'html', 'span', 'gettext');
+	                'th', 'title', 'meta', 'html', 'span', 'a', 'gettext');
 
 	$p->parse_file("$Schulkonsole::Config::_templatedir/$filename")
 		or die "$0: Cannot parse $Schulkonsole::Config::_templatedir/$filename: $!\n";
@@ -411,14 +426,32 @@ sub start_tag_handler {
 					print_content(substitute_token($text, $tokenpos, $subst));
 			    } else {
 					if (defined $$attr_ref{value}) {
+						# substitute template variables in attribute "value"
 						my $value = $$attr_ref{value};
-						my $new_value = substitute_vars($value) if $value;
+						my $new_value = substitute_vars($value);
 						if (    defined $new_value
 						    and $new_value ne $value) {
 							$$subst{value} = CGI->escapeHTML($new_value);
 						} else {
+							# if "value" contained no variables, use gettext
 							$$subst{value} = $_d->get($value);
 						}
+
+						# check last checked radio-button
+						if (    @values == 1
+						    and $$attr_ref{type} eq 'radio') {
+							my $checked = $values[0];
+							my $is_checked = $$attr_ref{checked};
+
+							if ($is_checked) {
+								$$subst{checked} = 0
+									if $checked ne $$subst{value};
+							} else {
+								$$subst{checked} = 1
+									if $checked eq $$subst{value};
+							}
+						}
+
 					}
 
 					if (%$subst) {
@@ -451,6 +484,14 @@ sub start_tag_handler {
 				}
 
 				print_content(substitute_token($text, $tokenpos, $subst));
+			} else {
+				print_content($text);
+			}
+		} elsif ($tagname eq 'a') {
+			if (   not $_do_buffer
+			    and $$attr_ref{href} =~ /^\$/) {
+				print_content(substitute_token($text, $tokenpos,
+					{ href => substitute_vars($$attr_ref{href}) } ));
 			} else {
 				print_content($text);
 			}

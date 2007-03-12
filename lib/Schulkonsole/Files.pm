@@ -41,6 +41,7 @@ $VERSION = 0.06;
 	write_classrooms_file
 	write_printers_file
 	write_workstations_file
+	write_backup_conf_file
 	import_printers
 	import_workstations
 );
@@ -294,6 +295,41 @@ Writes the file /etc/linuxmuster/workstations
 
 sub write_workstations_file {
 	write_file(@_, 2);
+}
+
+
+
+
+=head3 C<write_backup_conf_file($id, $password, $lines)>
+
+Write new backup.conf
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$lines>
+
+The lines of the new file
+
+=back
+
+=head4 Description
+
+Writes the file /etc/linuxmuster/backup.conf
+
+=cut
+
+sub write_backup_conf_file {
+	write_file(@_, 3);
 }
 
 

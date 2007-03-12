@@ -754,6 +754,12 @@ numeric constant: C<Schulkonsole::Config::PRINTCLASSAPP>
 
 =item class_gid
 
+The class' GID
+
+=item filetype
+
+The filetype, 0 (PDF) or 1 (CSV)
+
 =back
 
 =cut
@@ -763,6 +769,10 @@ $app_id == Schulkonsole::Config::PRINTCLASSAPP and do {
 	($class_gid) = $class_gid =~ /^(.+)$/;
 	exit -107 unless defined $class_gid;
 
+	my $filetype = <>;
+	($filetype) = $filetype =~ /^([01])$/;
+	exit -110 unless defined $filetype;
+
 	my $opts = "--class \Q$class_gid\E --postfix \Q$$userdata{uid}";
 
 	# sophomorix-print cannot be invoked with taint checks enabled
@@ -770,15 +780,27 @@ $app_id == Schulkonsole::Config::PRINTCLASSAPP and do {
 	$( = $);
 	system "$app $opts >/dev/null 2>/dev/null " and last SWITCH;
 
-	my $filename = "$DevelConf::druck_pfad/$class_gid-$$userdata{uid}.pdf";
-	open PDF, "<$filename" or (print STDERR "$filename: $!\n" and exit -110);
+	my $filename;
+	SWITCHFILETYPE: {
+	$filetype == 0 and do {
+		$filename = "$DevelConf::druck_pfad/$class_gid-$$userdata{uid}.pdf";
+		last SWITCHFILETYPE;
+	};
+	$filetype == 1 and do {
+		$filename = "$DevelConf::druck_pfad/$class_gid-$$userdata{uid}.csv";
+		last SWITCHFILETYPE;
+	};
+	exit -110;
+	}
+	
+	open DATA, "<$filename" or (print STDERR "$filename: $!\n" and exit -121);
 	{
 		local $/ = undef;
-		while (<PDF>) {
+		while (<DATA>) {
 			print;
 		}
 	}
-	close PDF;
+	close DATA;
 
 	exit 0;
 };

@@ -25,8 +25,10 @@ provides the following variables:
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
+use Env::Bash;
 use Sophomorix::SophomorixAPI;
 use Sophomorix::SophomorixConfig;
+use Schulkonsole::Files;
 use Schulkonsole::Session;
 use Schulkonsole::Sophomorix;
 use Schulkonsole::WWW;
@@ -36,6 +38,8 @@ my $this_file = 'settings';
 
 my $true = $Schulkonsole::Config::_sophomorix_conf_true;
 my $false = $Schulkonsole::Config::_sophomorix_conf_false;
+my $backup_true = $Schulkonsole::Config::_backup_conf_true;
+my $backup_false = $Schulkonsole::Config::_backup_conf_false;
 
 
 my $sk_session = new Schulkonsole::Session($this_file);
@@ -128,12 +132,39 @@ my %sophomorix_conf_bool_in_form = (
 
 
 
+
+# boolean values in backup.conf are represented with $backup_true and
+# $backup_false in backup.conf
+
+=item C<ipcop>
+
+True if ipcop in F<backup.conf> is true
+
+=item C<verify>
+
+True if verify in F<backup.conf> is true
+
+=item C<unmount>
+
+True if unmount in F<backup.conf> is true
+
+=cut
+
+my %backup_conf_bool_in_form = (
+	ipcop => 1,
+	verify => 1,
+	unmount => 1,
+);
+
+
 my %sophomorix_conf = read_sophomorix_conf();
 my %quota_conf = read_quota_conf();
 my %filesystem_conf = read_filesystem_conf();
+my %backup_conf = read_backup_conf();
 my %sophomorix_conf_new;
 my %quota_conf_new;
 my %filesystem_conf_new;
+my %backup_conf_new;
 
 
 if ($q->param('accept')) {
@@ -200,6 +231,88 @@ if ($q->param('accept')) {
 			if (not $filesystem_conf{$param}) {
 				$filesystem_conf_new{$param} = 1;
 			}
+		} elsif (defined $backup_conf{$param}) {
+			my $value = $q->param($param);
+			if ($backup_conf_bool_in_form{$param}) {
+				if ($value != $backup_conf{$param}) {
+					$backup_conf_new{$param} = $value;
+				}
+			} else {
+				$value =~ s/^\s*(.+?)\s*$/$1/;
+				if ($backup_conf{$param} ne $value) {
+					CHECKBACKUPVALUE: {
+					$param eq 'backupdevice' and do {
+						last CHECKBACKUPVALUE;
+					};
+					$param eq 'mountpoint' and do {
+						last CHECKBACKUPVALUE;
+					};
+					$param eq 'restoremethod' and do {
+						if (    $value ne 'hd'
+						    and $value ne 'nfs') {
+							$sk_session->mark_input_error('restoremethod');
+							push @errors, $sk_session->d()->get(
+								'Restoremethode muss hd oder nfs sein');
+						}
+
+						last CHECKBACKUPVALUE;
+					};
+					$param eq 'isoprefix' and do {
+						last CHECKBACKUPVALUE;
+					};
+					$param eq 'mediasize' and do {
+						last CHECKBACKUPVALUE;
+					};
+					(   $param eq 'includedirs'
+					 or $param eq 'excludedirs') and do {
+						my @dirs = split ',', $value;
+						foreach my $dir (@dirs) {
+							$dir =~ s/^\s*(.+?)\s*$/$1/;
+						}
+						$value = join ',', @dirs;
+
+						last CHECKBACKUPVALUE;
+					};
+					$param eq 'services' and do {
+						last CHECKBACKUPVALUE;
+					};
+					$param eq 'compression' and do {
+						if ($value !~ /^\d$/) {
+							$sk_session->mark_input_error('compression');
+							push @errors, $sk_session->d()->get(
+								'Erlaubte Werte f&uuml;r Kompressionsgrad sind 0 bis 9');
+						}
+						last CHECKBACKUPVALUE;
+					};
+					$param eq 'keepfull' and do {
+						if ($value !~ /^[1-9]$/) {
+							$sk_session->mark_input_error('keepfull');
+							push @errors, $sk_session->d()->get(
+								'Erwarte Zahl zwischen 1 und 9 bei Anzahl der vorgehaltenen Vollbackups');
+						}
+						last CHECKBACKUPVALUE;
+					};
+					$param eq 'keepdiff' and do {
+						if ($value !~ /^[1-9]\d*$/) {
+							$sk_session->mark_input_error('keepdiff');
+							push @errors, $sk_session->d()->get(
+								'Erwarte Zahl gr&ouml;&szlig;er gleich 1 bei Anzahl der vorgehaltenen differentiellen Backups');
+						}
+						last CHECKBACKUPVALUE;
+					};
+					$param eq 'keepinc' and do {
+						if ($value !~ /^[1-9]\d*$/) {
+							$sk_session->mark_input_error('keepfull');
+							push @errors, $sk_session->d()->get(
+								'Erwarte Zahl gr&ouml;&szlig;er gleich 1 bei Anzahl der vorgehaltenen inkrementellen Backups');
+						}
+						last CHECKBACKUPVALUE;
+					};
+					}
+					$backup_conf_new{$param} = $value;
+				}
+
+			}
 		}
 	}
 
@@ -216,6 +329,13 @@ if ($q->param('accept')) {
 			$filesystem_conf_new{$param} = 0;
 		}
 	}
+# unneccesary. Specification requires radio buttons
+#	foreach my $param (keys %backup_conf_bool_in_form) {
+#		if (    not defined $q->param($param)
+#		    and $backup_conf{$param}) {
+#			$backup_conf_new{$param} = 0;
+#		}
+#	}
 
 
 	# commit changes
@@ -268,6 +388,13 @@ if ($q->param('accept')) {
 			}
 			$is_changed = 1;
 		}
+		if (%backup_conf_new) {
+			my $lines = new_backup_lines(\%backup_conf_new, \%backup_conf);
+			Schulkonsole::Files::write_backup_conf_file(
+				$id, $password, $lines);
+
+			$is_changed = 1;
+		}
 
 		if ($is_changed) {
 			Schulkonsole::Sophomorix::process_quota($id, $password,
@@ -310,6 +437,15 @@ foreach my $key (keys %quota_conf) {
 		$q->param($key, $quota_conf{$key});
 	}
 }
+foreach my $key (keys %backup_conf) {
+	if (defined $backup_conf_new{$key}) {
+		$q->param($key, $backup_conf_new{$key});
+	} else {
+		$q->param($key, $backup_conf{$key});
+	}
+}
+
+
 
 =item C<mountpoints>
 
@@ -325,6 +461,20 @@ foreach my $key (keys %filesystem_conf) {
 		$sk_session->set_var($key, $filesystem_conf{$key});
 	}
 }
+
+
+
+my $server_name = $sk_session->{template_vars}{SERVER_NAME};
+my $var_backupcron_link = "https://${server_name}:999/cron/";
+
+=item C<backupcron_link>
+
+URI to manage scheduled cron jobs
+
+=cut
+
+$sk_session->set_var('backupcron_link', $var_backupcron_link);
+
 
 
 
@@ -554,6 +704,100 @@ True if the WWW directory is accessible
 
 
 
+sub read_backup_conf {
+	my %backup_env;
+	tie %backup_env, 'Env::Bash',
+		Source => $Schulkonsole::Config::_backup_conf_file;
+
+=item C<backupdevice>
+
+corresponds to backupdevice in F<backup.conf>
+
+=item C<mountpoint>
+
+corresponds to mountpoint in F<backup.conf>
+
+=item C<restoremethod>
+
+corresponds to restoremethod in F<backup.conf>
+
+=item C<ipcop>
+
+true or false, corresponds to ipcop in F<backup.conf>
+
+=item C<verify>
+
+true or false, corresponds to verify in F<backup.conf>
+
+=item C<isoprefix>
+
+corresponds to isoprefix in F<backup.conf>
+
+=item C<mediasize>
+
+corresponds to mediasize in F<backup.conf>
+
+=item C<includedirs>
+
+corresponds to includedirs in F<backup.conf>
+
+=item C<excludedirs>
+
+corresponds to excludedirs in F<backup.conf>
+
+=item C<services>
+
+corresponds to services in F<backup.conf>
+
+=item C<compression>
+
+corresponds to compression in F<backup.conf>
+
+=item C<unmount>
+
+true or false, corresponds to unmount in F<backup.conf>
+
+=item C<keepfull>
+
+corresponds to keepfull in F<backup.conf>
+
+=item C<keepdiff>
+
+corresponds to keepdiff in F<backup.conf>
+
+=item C<keepinc>
+
+corresponds to keepinc in F<backup.conf>
+
+=cut
+
+	return (
+		backupdevice => $backup_env{backupdevice},
+		mountpoint => $backup_env{mountpoint},
+		restoremethod => $backup_env{restoremethod},
+
+		ipcop => ($backup_env{ipcop} eq $backup_true ? 1 : 0),
+
+		verify => ($backup_env{verify} eq $backup_true ? 1 : 0),
+		isoprefix => $backup_env{isoprefix},
+		mediasize => $backup_env{mediasize},
+
+		includedirs => $backup_env{includedirs},
+		excludedirs => $backup_env{excludedirs},
+
+		services => $backup_env{services},
+
+		compression => int($backup_env{compression}),
+		unmount => ($backup_env{unmount} eq $backup_true ? 1 : 0),
+		keepfull => int($backup_env{keepfull}),
+		keepdiff => int($backup_env{keepdiff}),
+		keepinc => int($backup_env{keepinc}),
+	);
+}
+
+
+
+
 
 sub new_sophomorix_lines {
 	my $new = shift;
@@ -703,5 +947,95 @@ sub new_quota_lines {
 	return \@lines;
 }
 
+
+
+
+
+sub new_backup_lines {
+	my $new = shift;
+	my $old = shift;
+
+	my %key_map = (
+		backupdevice => 'backupdevice',
+		mountpoint => 'mountpoint',
+		restoremethod => 'restoremethod',
+
+		ipcop => 'ipcop',
+
+		verify => 'verify',
+		isoprefix => 'isoprefix',
+		mediasize => 'mediasize',
+
+		includedirs => 'includedirs',
+		excludedirs => 'excludedirs',
+
+		services => 'services',
+
+		compression => 'compression',
+		unmount => 'unmount',
+		keepfull => 'keepfull',
+		keepdiff => 'keepdiff',
+		keepinc => 'keepinc',
+	);
+
+
+
+	my %new = %$new;
+
+	my @lines;
+	if (open BACKUPCONF, "<$Schulkonsole::Config::_backup_conf_file") {
+
+		while (my $line = <BACKUPCONF>) {
+			foreach my $new_key (keys %new) {
+				my $key = $key_map{$new_key};
+				if ($line =~ /^\s*$key\s*=/) {
+					# skip lines that are part of this key-value pair
+					while ($line =~ /\\$/) {
+						$line = <BACKUPCONF>;
+					}
+
+					my $value = $new{$new_key};
+					if ($backup_conf_bool_in_form{$new_key}) {
+						$value = ($value ? $backup_true : $backup_false);
+					} else {
+						$value = $new{$new_key};
+					}
+
+					if ($value ne "\Q$value") {
+						$value =~ s/"/\\"/g;
+						$line = "$key=\"$value\"\n";
+					} else {
+						$line = "$key=$value\n";
+					}
+					delete $new{$new_key};
+
+					last;
+				}
+			}
+			push @lines, $line;
+		}
+
+		close BACKUPCONF;
+	}
+
+	if (%new) {
+		push @lines, "# schulkonsole\n";
+
+		my $line;
+		foreach my $new_key (keys %new) {
+			my $value = $new{$new_key};
+			if ($backup_conf_bool_in_form{$new_key}) {
+				$value = ($value ? $backup_true : $backup_false);
+			} else {
+				$value = $new{$new_key};
+			}
+
+			push @lines, "$key_map{$new_key}=$value\n";
+		}
+	}
+
+
+	return \@lines;
+}
 
 =back

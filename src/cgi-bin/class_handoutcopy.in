@@ -46,8 +46,14 @@ if (not $sk_session->get_password()) {
 
 my $q = $sk_session->query();
 
-my $class = $sk_session->param('class');
 my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+my $class = $q->param('classes');
+if (    $class
+    and $$classs{$class}) {
+	$sk_session->param('class', $class);
+}
+$class = $sk_session->param('class');
+
 if (   not $class
     or not $$classs{$class}) {
 	my $url = $q->url( -absolute => 1 );
@@ -167,6 +173,35 @@ The user's surname
 =cut
 
 $sk_session->set_var('students', \@students);
+
+
+my @classs;
+foreach my $class (sort {
+    $$classs{$a}{displayname} cmp $$classs{$b}{displayname} } keys %$classs) {
+	push @classs, { gid => $class,
+	                name => $$classs{$class}{displayname} };
+}
+
+=item C<classes>
+
+An array of hashes of the classes of which the current user is a member
+with the keys
+
+=over
+
+=item C<gid>
+
+The GID of the class
+
+=item C<name>
+
+The name of the class
+
+=back
+
+=cut
+
+$sk_session->set_var('classes', \@classs);
 
 
 =item C<class>

@@ -76,7 +76,7 @@ numeric constant: C<Schulkonsole::Config::WRITEFILEAPP>
 
 =item file
 
-0 = classrooms, 1 = printers, 2 = workstations
+0 = classrooms, 1 = printers, 2 = workstations, 3 = backup.conf
 
 =back
 
@@ -88,6 +88,7 @@ $app_id == Schulkonsole::Config::WRITEFILEAPP and do {
 	exit -120 unless defined $file;
 
 	my $filename;
+	my $perm;
 	SWITCHWRITEFILE: {
 	$file == 0 and do {
 		$filename = $Schulkonsole::Config::_classrooms_file;
@@ -99,6 +100,11 @@ $app_id == Schulkonsole::Config::WRITEFILEAPP and do {
 	};
 	$file == 2 and do {
 		$filename = $Schulkonsole::Config::_workstations_file;
+		last SWITCHWRITEFILE;
+	};
+	$file == 3 and do {
+		$filename = $Schulkonsole::Config::_backup_conf_file;
+		$perm = 0755 unless -e $filename;
 		last SWITCHWRITEFILE;
 	};
 	}
@@ -114,6 +120,10 @@ $app_id == Schulkonsole::Config::WRITEFILEAPP and do {
 
 	while (<>) {
 		print FILE;
+	}
+
+	if (defined $perm) {
+		chmod $perm, $filename;
 	}
 
 	close FILE or exit -123;

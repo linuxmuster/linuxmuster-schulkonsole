@@ -1,8 +1,8 @@
 <p><gettext>Klassenarbeit:</gettext>
 <!--#if expr="$done_test_start" -->
-<a href="room_test_handout"><gettext>Austeilen</gettext></a>
+<a href="room_test_handout"><gettext>Bereitstellen</gettext></a>
 <!--#else -->
-<gettext>Austeilen</gettext>
+<gettext>Bereitstellen</gettext>
 <!--#endif -->
 -
 <!--#if expr="$done_test_handout" -->

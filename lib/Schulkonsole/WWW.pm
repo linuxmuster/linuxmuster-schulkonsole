@@ -41,6 +41,7 @@ $VERSION = 0.04;
 	set_group_permissions
 	set_www_on
 	set_www_off
+	is_active
 );
 
 
@@ -444,6 +445,32 @@ sub set_www_off {
 	Schulkonsole::Sophomorix::www_set_global_permissions(
 		$id, $password,
 		0);
+}
+
+
+
+=head3 C<is_active()>
+
+Return if access to WWW is activated
+
+=head3 Parameters
+
+none
+
+=head3 Return value
+
+True if access to WWW is active
+
+=head3 Description
+
+Returns whether the access to WWW directories is globally activated
+
+=cut
+
+sub is_active {
+	my @stat = stat $DevelConf::www_people;
+
+	return $stat[2] & 055;
 }
 
 

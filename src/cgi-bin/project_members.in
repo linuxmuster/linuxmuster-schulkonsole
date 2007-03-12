@@ -581,7 +581,6 @@ foreach my $project (sort {
 	my $member = {
 		gid => $$member_projectdatas{$project}{gid},
 		name => $$member_projectdatas{$project}{displayname},
-		longname => $$member_projectdatas{$project}{longname},
 		ismember => defined $$projects{$project},
 	};
 	push @project_members, $member;
@@ -601,10 +600,6 @@ GID of a project
 =item C<name>
 
 The project's name
-
-=item C<longname>
-
-The project's long name
 
 =item C<ismember>
 
@@ -628,7 +623,6 @@ foreach my $project (sort {
 	                 keys %$projects) {
 	push @projects, { gid => $project,
 	                  name => $$projects{$project}{displayname},
-	                  longname => $$projects{$project}{longname},
 	                };
 }
 
@@ -684,13 +678,6 @@ Name of the selected project
 
 	$sk_session->set_var('project', $$projects{$project}{displayname});
 
-=item C<projectlongname>
-
-Long name of the selected project
-
-=cut
-
-	$sk_session->set_var('projectlongname', $$projects{$project}{longname});
 }
 
 $sk_session->print_page("$this_file.shtml", $this_file);

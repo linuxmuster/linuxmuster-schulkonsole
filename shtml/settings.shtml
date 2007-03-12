@@ -102,7 +102,7 @@
 </tr>
 </table>
 
-
+<hr>
 
 <h3><gettext>Login</gettext> <gettext>(Lehrer)</gettext></h3>
 
@@ -139,6 +139,7 @@
 </tr>
 </table>
 
+<hr>
 
 <h3><gettext>Login</gettext> <gettext>(Sch&uuml;ler)</gettext></h3>
 
@@ -175,6 +176,7 @@
 </tr>
 </table>
 
+<hr>
 
 <h3><gettext>L&ouml;schen</gettext> <gettext>(Lehrer)</gettext></h3>
 
@@ -191,6 +193,7 @@
 </tr>
 </table>
 
+<hr>
 
 <h3><gettext>L&ouml;schen</gettext> <gettext>(Sch&uuml;ler)</gettext></h3>
 
@@ -206,6 +209,96 @@
 <td><input size="5" maxlength="4" name="deactivatestudent" id="deactivatestudent"> Tage</td>
 </tr>
 </table>
+
+<hr>
+
+<h3><gettext>Backup</gettext></h3>
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="even">
+<td><label for="backupdevice"><gettext>Backupger&auml;t (z.B. /dev/sdb1 oder NFS-Share)</gettext></label></td>
+<td><input type="text" name="backupdevice" id="backupdevice"></td>
+</tr>
+<tr class="odd">
+<td><label for="mountpoint"><gettext>Mountpunkt (Verzeicnis, in das das Backupger&auml;t ins Serverdateisystem eingeh&auml;ngt ist)</gettext></label></td>
+<td><input type="text" name="mountpoint" id="mountpoint"></td>
+</tr>
+<tr class="even">
+<td><gettext>Restoremethode, hd: von Fest-/Wechselplatte, nfs: von NFS-Share</gettext></td>
+<td>
+<input type="radio" name="restoremethod" id="restoremethodhd" value="hd" checked>
+<label for="restoremethodhd"><gettext>hd</gettext></label><br>
+<input type="radio" name="restoremethod" id="restoremethodnfs" value="nfs">
+<label for="restoremethodnfs"><gettext>nfs</gettext></label><br>
+</td>
+</tr>
+<tr class="odd">
+<td><gettext>IPCop-Einstellungen sichern?</gettext></td>
+<td>
+<input type="radio" name="ipcop" id="ipcoptrue" value="1">
+<label for="ipcoptrue"><gettext>Ja</gettext></label><br>
+<input type="radio" name="ipcop" id="ipcopfalse" value="0">
+<label for="ipcopfalse"><gettext>Nein</gettext></label>
+</td>
+<tr class="even">
+<td><gettext>Backup verifizieren?</gettext></td>
+<td>
+<input type="radio" name="verify" id="verifytrue" value="1">
+<label for="verifytrue"><gettext>Ja</gettext></label><br>
+<input type="radio" name="verify" id="verifyfalse" value="0">
+<label for="verifyfalse"><gettext>Nein</gettext></label>
+</td>
+</tr>
+<tr class="odd">
+<td><label for="isoprefix"><gettext>Pr&auml;fix f&uuml;r ISO-Dateien</gettext></label></td>
+<td><input type="text" name="isoprefix" id="isoprefix"></td>
+</tr>
+<tr class="even">
+<td><label for="mediasize"><gettext>Gr&ouml;&szlig;e der ISO-Dateien in MB</gettext></label></td>
+<td><input size="5" maxlength="4" type="text" name="mediasize" id="mediasize"></td>
+</tr>
+<tr class="odd">
+<td><label for="includedirs"><gettext>Einzuschlie&szlig;ende Verzeichnisse, leeres Feld bedeutet alle</gettext></label></td>
+<td><input type="text" size="40" name="includedirs" id="includedirs"></td>
+</tr>
+<tr class="even">
+<td><label for="excludedirs"><gettext>Vom Backup auszuschlie&szlig;ende Verzeichnisse</gettext></label></td>
+<td><input type="text" size="40" name="excludedirs" id="excludedirs"></td>
+</tr>
+<tr class="odd">
+<td><label for="services"><gettext>W&auml;hrend des Backups herunterzufahrende  Dienste</gettext></label></td>
+<td><input type="text" size="40" name="services" id="services"></td>
+</tr>
+<tr class="even">
+<td><label for="compression"><gettext>Kompressionsgrad</gettext></label></td>
+<td><input size="2" maxlength="1" type="text" name="compression" id="compression"></td>
+</tr>
+<tr class="odd">
+<td><gettext>Backupger&auml;t nach Backup aush&auml;ngen?</gettext></td>
+<td>
+<input type="radio" name="unmount" id="unmounttrue" value="1">
+<label for="unmounttrue"><gettext>Ja</gettext></label><br>
+<input type="radio" name="unmount" id="unmountfalse" value="0">
+<label for="unmountfalse"><gettext>Nein</gettext></label>
+</td>
+</tr>
+<tr class="odd">
+<td><label for="keepfull"><gettext>Anzahl der vorgehaltenen Vollbackups</gettext></label></td>
+<td><input type="text" size="2", maxlength="1" name="keepfull" id="keepfull"></td>
+</tr>
+<tr class="even">
+<td><label for="keepdiff"><gettext>Anzahl der vorgehaltenen differentiellen Backups</gettext></label></td>
+<td><input type="text" size="3", maxlength="2" name="keepdiff" id="keepdiff"></td>
+</tr>
+<tr class="odd">
+<td><label for="keepinc"><gettext>Anzahl der vorgehaltenen inkrementellen Backups</gettext></label></td>
+<td><input type="text" size="3", maxlength="2" name="keepinc" id="keepinc"></td>
+</tr>
+</table>
+
+<p><a href="$backupcron_link"><gettext>Zeitplanung vollautomatischer Backups</gettext></a></p>
 
 
 <p>

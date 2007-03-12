@@ -165,6 +165,99 @@ GID to which the repository belongs
 	exec "$app $opts" or last SWITCH;
 };
 
+=head3 drop_db_user
+
+numeric constant: C<Schulkonsole::Config::DROPDBUSERAPP>
+
+=head4 Description
+
+invokes
+
+C<< mysqladmin drop <db> >> for each database
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<db1>, C<db2>, ...
+
+A list of names of databases, one per line terminated with empty line
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::DROPDBUSERAPP and do {
+	my %dbs;
+	while (<>) {
+		my ($db) = /^(.+)$/;
+		last unless $db;
+
+		$dbs{$db} = 1;
+
+	}
+	exit -50 unless %dbs;
+
+	my @dbs;
+
+	## linuxmuster-mysql cannot be invoked with taint checks enabled
+	local $< = $>;
+	# MySQL searches for .my.cnf in $HOME
+	$ENV{HOME} = (getpwuid($>))[7];
+
+	open LIST, $Schulkonsole::Config::_root_apps[Schulkonsole::Config::LISTDBUSERAPP] . " --list --user=\Q$$userdata{uid}\E |" or exit -51;
+	while (<LIST>) {
+		my ($db) = /^(.+)$/;
+		push @dbs, $db if $dbs{$db};
+	}
+	exit -50 unless @dbs;
+
+
+
+	foreach my $db (@dbs) {
+		my $opts = "--force drop \Q$db";
+		system "$app $opts";
+		exit ($? >> 8) if $?;
+	}
+
+	exit 0;
+};
+
+=head3 list_db_user
+
+numeric constant: C<Schulkonsole::Config::LISTDBUSERAPP>
+
+=head4 Description
+
+invokes
+
+=over
+
+=item
+
+C<< linuxmuster-mysql --list --user=<uid> >>
+
+=back
+
+=head4 Parameters from standard input
+
+none
+
+=cut
+
+$app_id == Schulkonsole::Config::LISTDBUSERAPP and do {
+	my $opts = "--list --user=\Q$$userdata{uid}";
+
+	# linuxmuster-svn cannot be invoked with taint checks enabled
+	local $< = $>;
+	# MySQL searches for .my.cnf in $HOME
+	$ENV{HOME} = (getpwuid($>))[7];
+
+	exec "$app $opts" or last SWITCH;
+};
+
+
+
 =head3 list_db
 
 numeric constant: C<Schulkonsole::Config::LISTDBAPP>

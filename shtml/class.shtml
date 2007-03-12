@@ -18,7 +18,7 @@
 
 <!--#if expr="$classes" -->
 <form method="post">
-<p style="float: right;">
+<p class="selectdomain">
 <select name="classes">
 <optgroup label="Klassen">
 <!--#if expr="$loop_classes" --> <option value="$classes{gid}"><!--#echo var="classes{name}" --></option>

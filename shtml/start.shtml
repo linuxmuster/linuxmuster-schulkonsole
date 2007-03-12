@@ -16,7 +16,7 @@
 
 <div id="content">
 
-<h2>Status</h2>
+<h2><gettext>Startseite von</gettext> <!--#echo var="firstname" --> <!--#echo var="surname" --></h2>
 
 
 <h3><gettext>Druckauftr&auml;ge</gettext></h3>
@@ -38,6 +38,7 @@
 <p><gettext>Keine Druckauftr&auml;ge</gettext></p>
 <!--#endif -->
 
+<hr>
 
 <h3><gettext>Passwort&auml;nderung</gettext></h3>
 <form method="post">
@@ -58,79 +59,97 @@
 </form>
 
 
+<hr>
 
 <h3><gettext>Info</gettext></h3>
 
 <h4><gettext>Quota</gettext></h4>
 
-<p><gettext>Festplattenquota:</gettext></p></p>
 <!--#if expr="$diskquotas" -->
-<table id="#diskquotas" class="liste">
-<tr>
-	<th rowspan="2"><gettext>Pfad</gettext></th>
-	<th colspan="5"><gettext>Speicherplatz</gettext></th>
-	<th colspan="5"><gettext>Dateien</gettext></th>
-</tr>
-<tr>
-	<th><gettext>ben.</gettext></th>
-	<th><gettext>Lim.</gettext></th>
-	<th><gettext>Max</gettext></th>
-	<th><gettext>%</gettext></th>
-	<th><gettext>Zeit</gettext></th>
-	<th><gettext>ben.</gettext></th>
-	<th><gettext>Lim.</gettext></th>
-	<th><gettext>Max</gettext></th>
-	<th><gettext>%</gettext></th>
-	<th><gettext>Zeit</gettext></th>
-</tr>
+<p><gettext>Festplattenquota:</gettext></p></p>
+
+<table id="diskquotas">
+<col width="30%">
+<col width="70%">
 <!--#if expr="$loop_diskquotas" -->
+<tr>
+
+<td>
+<!--#echo var="diskquotas{path}" -->
+</td>
+
+<td>
+
+<p>
+<!--#echo var="diskquotas{path}" -->:<br>
+	<gettext>Speicherplatz/KB:</gettext>
+	<!--#echo var="diskquotas{blocks_usage}" -->/<!--#echo var="diskquotas{blocks_soft}" -->
+	- max: <!--#echo var="diskquotas{blocks_hard}" -->
+	- <!--#echo var="diskquotas{blocks_percent}" -->%<br>
+	<!--#if expr="$diskquotas{blocks_grace}" -->
+	<gettext>verbleibende Zeit:</gettext> <!--#echo var="diskquotas{blocks_grace}" --><br><!--#endif -->
+	<gettext>Dateien:</gettext>
+	<!--#echo var="diskquotas{files_usage}" -->/<!--#echo var="diskquotas{files_soft}" -->
+	- max: <!--#echo var="diskquotas{files_hard}" -->
+	- <!--#echo var="diskquotas{files_percent}" -->%<br>
+	<!--#if expr="$diskquotas{files_grace}" -->
+	<gettext>verbleibende Zeit:</gettext> <!--#echo var="diskquotas{files_grace}" --><br><!--#endif --><br>
+</p>
+
+<ul>
 <!--#if expr="$diskquotas{warn}" -->
-<!--#if expr="$odd" --><!--#set var="odd" value="0" -->
-<!--#else --><!--#set var="odd" value="1" --><!--#endif -->
-<tr class="warn">
+<li class="warn">
 <!--#else -->
-<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="bgeins">
-<!--#else --><!--#set var="odd" value="1" --><tr class="bgzwei"><!--#endif -->
+<li>
 <!--#endif -->
-	<td><!--#echo var="diskquotas{path}" --></td>
-	<td><!--#echo var="diskquotas{blocks_usage}" --></td>
-	<td><!--#echo var="diskquotas{blocks_soft}" --></td>
-	<td><!--#echo var="diskquotas{blocks_hard}" --></td>
-	<td><!--#echo var="diskquotas{blocks_percent}" --></td>
-	<td><!--#echo var="diskquotas{blocks_grace}" --></td>
-	<td><!--#echo var="diskquotas{files_usage}" --></td>
-	<td><!--#echo var="diskquotas{files_soft}" --></td>
-	<td><!--#echo var="diskquotas{files_hard}" --></td>
-	<td><!--#echo var="diskquotas{files_percent}" --></td>
-	<td><!--#echo var="diskquotas{files_grace}" --></td>
+<span title="${diskquotas{path}}: ${diskquotas{blocks_percent}}%" style="width: ${diskquotas{blocks_percent_rounded}}%;">&nbsp;</span>
+</li>
+</ul>
+
+</td>
+
 </tr>
 <!--#endif -->
+
 </table>
+
+
 <!--#else -->
 <p><gettext>Keine Quota</gettext></p>
 <!--#endif -->
 
-<p><gettext>Mailquota:</gettext></p>
+<p><gettext>Mailquota von</gettext> <!--#echo var="mailaliases" -->:</p>
 <!--#if expr="$mailquotas" -->
-<table id="mailquotas" class="liste">
-<tr>
-	<th><gettext>Postfach</gettext></th>
-	<th><gettext>Typ</gettext></th>
-	<th><gettext>benutzt</gettext></th>
-	<th><gettext>Max</gettext></th>
-	<th><gettext>%</gettext></th>
-</tr>
+<table id="mailquotas">
+<col width="30%">
+<col width="70%">
+
 <!--#if expr="$loop_mailquotas" -->
-<!--#if expr="$mailquotas{warn}" -->
-<tr class="warn">
-<!--#else -->
 <tr>
-<!--#endif -->
+
 <td><!--#echo var="mailquotas{mbox}" --></td>
-<td><!--#echo var="mailquotas{type}" --></td>
-<td><!--#echo var="mailquotas{usage}" --></td>
-<td><!--#echo var="mailquotas{limit}" --></td>
-<td><!--#echo var="mailquotas{usage_percent}" --></td>
+
+<td><!--#if expr="$mailquotas{limit}" -->
+
+
+<p>
+    <gettext>E-Mail-Speicher/KB:</gettext>
+    <!--#echo var="mailquotas{usage}" -->/<!--#echo var="mailquotas{limit}" -->
+    - <!--#echo var="mailquotas{percent}" -->%
+</p>
+
+
+<ul>
+<!--#if expr="$mailquotas{warn}" -->
+<li class="warn">
+<!--#else -->
+<li>
+<!--#endif -->
+<span title="E-Mail: ${mailquotas{usage}}/${mailquotas{limit}} ${mailquotas{percent}}%" style="width: ${mailquotas{percent_rounded}}%;">&nbsp;</span>
+</li>
+</ul>
+<!--#else -->-<!--#endif --></td>
+
 </tr>
 <!--#endif -->
 </table>
@@ -140,13 +159,82 @@
 
 
 
-<!--#if expr="$projects" -->
 <hr>
 
+<h4><gettext>Projekte</gettext></h4>
+
 <p>
-<gettext>Projekte</gettext>: <!--#echo var="projects" -->
-</p>
+<!--#if expr="$projects" -->
+<!--#echo var="projects" -->
+<!--#else -->
+<gettext>keine Projekte vorhanden</gettext>
 <!--#endif -->
+</p>
+
+<hr>
+
+<h4><gettext>Datenbanken</gettext></h4>
+
+<!--#if expr="$dbs" -->
+
+<!--#if expr="$allow_drop_db" -->
+<form method="post">
+
+<table>
+<!--#if expr="$loop_dbs" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><label for="${dbs}_drop"><!--#echo var="dbs" --></label></td>
+<td><input id="${dbs}_drop" name="${dbs};drop" type="checkbox"></td>
+</tr><!--#endif -->
+</table>
+
+<p><input type="submit" name="dropdbs" value="L&ouml;schen"></p>
+
+</form>
+<!--#else -->
+
+<table>
+<!--#if expr="$loop_dbs" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><!--#echo var="dbs" --></td>
+</tr><!--#endif -->
+</table>
+
+<!--#endif -->
+<p>
+<a href="$phpmyadmin_link"><gettext>Zur Datenbankverwaltung</gettext></a>
+</p>
+<!--#else -->
+<p><gettext>keine Datenbanken vorhanden</gettext></p>
+<!--#endif -->
+
+
+<form method="post">
+<h3><gettext>OpenVPN-Zertifikat</gettext></h3>
+<!--#if expr="$has_ovpn" -->
+<p><gettext>Ein OpenVPN-Zertifikat wurde f&uuml;r Sie erstellt.</gettext></p>
+<p><input type="submit" name="ovpndownload" value="OpenVPN-Zertifikat herunterladen"></p>
+<!--#else -->
+<h4><gettext>OpenVPN-Zertifikat erstellen</gettext></h4>
+
+<table>
+<tr>
+<td><label for="ovpnpassword"><gettext>Zertifikatspasswort (mind. 6 Zeichen):</gettext></label></td>
+<td><input type="password" id="ovpnpassword" name="ovpnpassword"></td>
+</tr>
+<tr>
+<td><label for="ovpnpasswordagain"><gettext>Zertifikatspasswort best&auml;tigen:</gettext></label></td>
+<td><input type="password" id="ovpnpasswordagain" name="ovpnpasswordagain"></td>
+</tr>
+</table>
+
+<p><input type="submit" value="Zertifikat erstellen und herunterladen"></p>
+
+<!--#endif -->
+</form>
+
 
 </div>
 

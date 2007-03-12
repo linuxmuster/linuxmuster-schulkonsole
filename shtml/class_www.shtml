@@ -15,10 +15,30 @@
 </div>
 
 <div id="content">
+
+<!--#if expr="$classes" -->
+<form method="post">
+<p class="selectdomain">
+<select name="classes">
+<optgroup label="Klassen">
+<!--#if expr="$loop_classes" --> <option value="$classes{gid}"><!--#echo var="classes{name}" --></option>
+<!--#endif -->
+</optgroup>
+<optgroup label="aktuelle Klasse">
+<option value="$class_gid" selected><!--#echo var="class" --></option>
+</optgroup>
+</select>
+<input type="submit" value="Wechseln">
+</p>
+</form>
+<!--#endif -->
+
+
 <h2><gettext>Klassen</gettext> :: <gettext>Webfreigabe</gettext></h2>
 
 <h3><gettext>Ausgew&auml;hlte Klasse:</gettext> <!--#echo var="class" --></h3>
 
+<!--#if expr="$wwwactive" -->
 <form method="post">
 
 <table id="classwww" class="liste">
@@ -70,6 +90,9 @@
 <p><input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen"></p>
 
 </form>
+<!--#else -->
+<p><gettext>Die Funktionen dieser Seite sind zur Zeit nicht aktiv.</gettext></p>
+<!--#endif -->
 
 
 

@@ -513,7 +513,7 @@ The name of the class
 	
 				my @projects_result;
 				foreach my $a_project (sort {
-					$$projects{$a}{longname} cmp $$projects{$b}{longname} }
+					$$projects{$a}{displayname} cmp $$projects{$b}{displayname} }
 					keys %$projects) {
 					next if $a_project eq $project;
 	
@@ -524,7 +524,6 @@ The name of the class
 					my $result = {
 						gid => $$projects{$a_project}{gid},
 						name => $$projects{$a_project}{displayname},
-						longname => $$projects{$a_project}{longname},
 					};
 					push @projects_result, $result;
 				}
@@ -541,13 +540,9 @@ An array of hashes with the keys
 
 The GID of a project
 
-=item C<displayname>
+=item C<name>
 
 The name of the project
-
-=item C<longname>
-
-The long name of the project
 
 =back
 
@@ -645,13 +640,6 @@ The name of the selected project
 
 $sk_session->set_var('project', $$projects{$project}{displayname});
 
-=item C<projectlongname>
-
-The long name of the selected project
-
-=cut
-
-$sk_session->set_var('projectlongname', $$projects{$project}{longname});
 
 $sk_session->print_page("$this_file.shtml", $this_file);
 

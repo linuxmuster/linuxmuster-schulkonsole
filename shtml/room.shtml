@@ -152,6 +152,7 @@
 <!--#endif -->
 	<!--#endif --></td>
 	<td><!--#if expr="$overview_workstations{first}" -->
+<!--#if expr="$intranetactive" -->
 <!--#if expr="$overview_workstations{intranet}" -->
 <!--#if expr="$overview_workstations{editing}" -->
 	<input type="checkbox" disabled checked>
@@ -160,6 +161,9 @@
 <!--#endif -->
 <!--#else -->
 	<input type="checkbox" name="${overview_workstations{name}};intranet">
+<!--#endif -->
+<!--#else -->
+	<input type="checkbox" disabled checked>
 <!--#endif -->
 	<!--#endif --></td>
 	<td><!--#if expr="$overview_workstations{first}" -->

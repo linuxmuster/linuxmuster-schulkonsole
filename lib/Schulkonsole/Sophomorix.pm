@@ -1893,7 +1893,7 @@ sub remove_from_class {
 
 =head3 C<print_class($id, $password, $class_gid)>
 
-Return PDF document with class info
+Return document with class info
 
 =head4 Parameters
 
@@ -1911,18 +1911,22 @@ The password of the teacher invoking the command
 
 The GID of the class
 
+=item C<$filetype>
+
+Type of the file, either 0 (PDF) or 1 (CSV)
+
 =back
 
 =head4 Return value
 
-PDF-data
+PDF-data or CSV-data
 
 =head4 Description
 
 This wraps the command
 C<sophomorix-print --class class-gid --postfix uid>, where
 uid is the UID of the teacher with ID C<$id> and class-gid is C<$class_gid>
-and returns the data of the produced PDF document.
+and returns the data of the produced document.
 
 =cut
 
@@ -1930,24 +1934,26 @@ sub print_class {
 	my $id = shift;
 	my $password = shift;
 	my $class_gid = shift;
+	my $filetype = shift;
 
 	my $pid = start_wrapper(Schulkonsole::Config::PRINTCLASSAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	print SCRIPTOUT "$class_gid\n";
+	print SCRIPTOUT "$class_gid\n$filetype\n";
 
-	my $pdf_data;
+	my $data;
 	my $is_error = 0;
 	{
 		local $/ = undef;
 		while (<SCRIPTIN>) {
-			$pdf_data .= $_;
+			$data .= $_;
 		}
 	}
-	if ($pdf_data !~ /^\%PDF/) {
+	if (    $filetype == 0
+	    and $data !~ /^\%PDF/) {
 		$is_error = 1;
-		$input_buffer = $pdf_data;
+		$input_buffer = $data;
 	}
 
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
@@ -1956,7 +1962,7 @@ sub print_class {
 	if ($is_error) {
 		return undef;
 	} else {
-		return $pdf_data;
+		return $data;
 	}
 }
 

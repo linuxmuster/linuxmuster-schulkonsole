@@ -82,14 +82,23 @@ sub read_session_data {
 
 	$this->{filename} = $filename;
 
-	   open SESSION, "+<$filename"
-	or open SESSION, "+>$filename"
-	or die "$0: Cannot open $filename: $!\n";
+	do {
+		if (defined $this->{fh}) {
+			close $this->{fh};
+		}
 
-	SESSION->autoflush(1);
-	$this->{fh} = *SESSION;
+		   open SESSION, "+<$filename"
+		or open SESSION, "+>$filename"
+		or die "$0: Cannot open $filename: $!\n";
 
-	$this->lock();
+		SESSION->autoflush(1);
+		$this->{fh} = *SESSION;
+
+		$this->lock();
+
+# repeat if session was deleted, while we waited for lock
+	} while (   (not -e $filename)
+	         or $this->param('deleted'));
 }
 
 
@@ -157,10 +166,11 @@ sub delete {
 	my $this = shift;
 
 	unlink $this->{filename} if -e $this->{filename};
-	close $this->{fh};
+
+	my $fh = $this->{fh};
 
 	$this->{_DATA} = {};
-	$this->{deleted} = 1;
+	$this->param('deleted', 1);
 }
 
 
@@ -169,12 +179,10 @@ sub delete {
 sub DESTROY {
 	my $this = shift;
 
-	if (not $this->{deleted}) {
-		$this->write_session_data();
+	$this->write_session_data();
 
 #	$this->unlock();
-		close $this->{fh};
-	}
+	close $this->{fh};
 }
 
 

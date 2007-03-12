@@ -24,9 +24,10 @@ else
 	CFLAGS += -O2
 endif
 
-# constants used in src/bin/wrapper-user.c and src/bin/wrapper-firewall.c
-# src/bin/wrapper-printer.c, src/bin/wrapper-sophomorix.c,
-# src/bin/wrapper-cyrus.c, src/bin/wrapper-collab.c, src/bin/wrapper-files.c
+# constants used in src/util/wrapper-user.c and src/util/wrapper-firewall.c
+# src/util/wrapper-printer.c, src/util/wrapper-sophomorix.c,
+# src/util/wrapper-cyrus.c, src/util/wrapper-collab.c, src/util/wrapper-files.c
+# src/util/wrapper-ovpn.c
 CFLAGS += -DWWWUID=33	# uid of www-data
 CFLAGS += -DMINUID=500	# uid of nwberater
 
@@ -74,7 +75,7 @@ install: build
 	# Add here commands to install the package into debian/tmp
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
 	install -d -o root -g root -m 755 $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole
-	install -p -o root -g root -m 644 $(CURDIR)/doc/etc/apache2/conf.d/schulkonsole $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/apache2.conf
+	install -p -o root -g root -m 644 $(CURDIR)/doc/etc/apache2/sites-available/schulkonsole $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/apache2.conf
 	install -p -o root -g root -m 644 $(CURDIR)/doc/etc/schulkonsole/permissions.conf $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/permissions.conf
 
 	install -D -p -o root -g root -m 0644 debian/linuxmuster-schulkonsole.lintian debian/tmp/usr/share/lintian/overrides/linuxmuster-schulkonsole
@@ -92,7 +93,7 @@ binary-indep: build install
 	dh_install -i
 	dh_link -i
 	dh_compress -i
-	dh_fixperms -i -X/var/run/schulkonsole -X/usr/lib/schulkonsole/bin/wrapper-user -X/usr/lib/schulkonsole/bin/wrapper-firewall -X/usr/lib/schulkonsole/bin/wrapper-printer -X/usr/lib/schulkonsole/bin/wrapper-sophomorix -X/usr/lib/schulkonsole/bin/wrapper-collab -X/usr/lib/schulkonsole/bin/wrapper-files
+	dh_fixperms -i -X/var/run/schulkonsole -X/usr/lib/schulkonsole/bin/wrapper-user -X/usr/lib/schulkonsole/bin/wrapper-firewall -X/usr/lib/schulkonsole/bin/wrapper-printer -X/usr/lib/schulkonsole/bin/wrapper-sophomorix -X/usr/lib/schulkonsole/bin/wrapper-collab -X/usr/lib/schulkonsole/bin/wrapper-files -X/usr/lib/schulkonsole/bin/wrapper-ovpn
 	dh_perl -i /usr/share/schulkonsole /usr/lib/schulkonsole
 	dh_installdeb -i
 	dh_gencontrol -i
@@ -110,7 +111,7 @@ binary-arch: build install
 	dh_link -a
 	dh_strip -a
 	dh_compress -a
-	dh_fixperms -i -X/var/run/schulkonsole -X/usr/lib/schulkonsole/bin/wrapper-user -X/usr/lib/schulkonsole/bin/wrapper-firewall -X/usr/lib/schulkonsole/bin/wrapper-printer -X/usr/lib/schulkonsole/bin/wrapper-sophomorix -X/usr/lib/schulkonsole/bin/wrapper-collab -X/usr/lib/schulkonsole/bin/wrapper-files
+	dh_fixperms -i -X/var/run/schulkonsole -X/usr/lib/schulkonsole/bin/wrapper-user -X/usr/lib/schulkonsole/bin/wrapper-firewall -X/usr/lib/schulkonsole/bin/wrapper-printer -X/usr/lib/schulkonsole/bin/wrapper-sophomorix -X/usr/lib/schulkonsole/bin/wrapper-collab -X/usr/lib/schulkonsole/bin/wrapper-files -X/usr/lib/schulkonsole/bin/wrapper-ovpn
 	dh_installdeb -a
 	dh_shlibdeps -a
 	dh_gencontrol -a

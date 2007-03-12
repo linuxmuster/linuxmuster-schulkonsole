@@ -80,170 +80,169 @@ if (not Schulkonsole::DB::is_project_admin($$projects{$project}{id},
 
 
 
+if (Schulkonsole::WWW::is_active()) {
 
+	my $member_userdatas
+		= Schulkonsole::DB::project_user_members($$projects{$project}{gidnumber});
 
+	my $project_permissions = Schulkonsole::WWW::project_permissions($project);
 
-my $member_userdatas
-	= Schulkonsole::DB::project_user_members($$projects{$project}{gidnumber});
-
-my $project_permissions = Schulkonsole::WWW::project_permissions($project);
-
-my @student_uids;
-my @teacher_uids;
-foreach my $member (keys %$member_userdatas) {
-	if ($$member_userdatas{$member}{gid} eq 'teachers') {
-		push @teacher_uids, $member;
-	} else {
-		push @student_uids, $member;
-	}
-}
-	
-my $student_permissions =
-	Schulkonsole::WWW::student_permissions(@student_uids);
-my $teacher_permissions =
-	Schulkonsole::WWW::teacher_permissions(@teacher_uids);
-
-
-if ($q->param('accept')) {
-	eval {
-	my $id = $sk_session->userdata('id');
-	my $password = $sk_session->get_password();
-
-	my $group_public = ($q->param('grouppublic') ? 1 : 0);
-	my $group_upload = ($q->param('groupupload') ? 1 : 0);
-	my $is_group_changed = 0;
-	if ($$project_permissions{$project}{public}) {
-		if (not $group_public) {
-			$is_group_changed = 1;
+	my @student_uids;
+	my @teacher_uids;
+	foreach my $member (keys %$member_userdatas) {
+		if ($$member_userdatas{$member}{gid} eq 'teachers') {
+			push @teacher_uids, $member;
+		} else {
+			push @student_uids, $member;
 		}
-	} elsif ($group_public) {
-		$is_group_changed = 1;
 	}
-	if (not $is_group_changed) {
-		if ($$project_permissions{$project}{upload}) {
-			if (not $group_upload) {
+
+	my $student_permissions =
+		Schulkonsole::WWW::student_permissions(@student_uids);
+	my $teacher_permissions =
+		Schulkonsole::WWW::teacher_permissions(@teacher_uids);
+
+
+	if ($q->param('accept')) {
+		eval {
+		my $id = $sk_session->userdata('id');
+		my $password = $sk_session->get_password();
+
+		my $group_public = ($q->param('grouppublic') ? 1 : 0);
+		my $group_upload = ($q->param('groupupload') ? 1 : 0);
+		my $is_group_changed = 0;
+		if ($$project_permissions{$project}{public}) {
+			if (not $group_public) {
 				$is_group_changed = 1;
 			}
-		} elsif ($group_upload) {
+		} elsif ($group_public) {
 			$is_group_changed = 1;
 		}
-	}
-
-	if ($is_group_changed) {
-		Schulkonsole::WWW::set_group_permissions($id, $password,
-			$group_public, $group_upload, $project);
-
-		$project_permissions = Schulkonsole::WWW::project_permissions($project);
-	}
-
-
-	my @public_upload_users;
-	my @public_noupload_users;
-	my @private_upload_users;
-	my @private_noupload_users;
-
-
-	foreach my $user (keys %$member_userdatas) {
-		my $public = ($q->param("$user;public") ? 1 : 0);
-		my $upload = ($q->param("$user;upload") ? 1 : 0);
-
-		if ($$member_userdatas{$user}{gid} eq 'teachers') {
-			if (   $public != $$teacher_permissions{$user}{public}
-			    or (    $upload
-				    and not $$teacher_permissions{$user}{upload})) {
-				if ($public) {
-					push @public_upload_users, $user;
-				} else {
-					push @private_upload_users, $user;
+		if (not $is_group_changed) {
+			if ($$project_permissions{$project}{upload}) {
+				if (not $group_upload) {
+					$is_group_changed = 1;
 				}
+			} elsif ($group_upload) {
+				$is_group_changed = 1;
 			}
-		} else {
-			if (   $public != $$student_permissions{$user}{public}
-			    or $upload != $$student_permissions{$user}{upload}) {
-				if ($public) {
-					if ($upload) {
+		}
+
+		if ($is_group_changed) {
+			Schulkonsole::WWW::set_group_permissions($id, $password,
+				$group_public, $group_upload, $project);
+
+			$project_permissions = Schulkonsole::WWW::project_permissions($project);
+		}
+
+
+		my @public_upload_users;
+		my @public_noupload_users;
+		my @private_upload_users;
+		my @private_noupload_users;
+
+
+		foreach my $user (keys %$member_userdatas) {
+			my $public = ($q->param("$user;public") ? 1 : 0);
+			my $upload = ($q->param("$user;upload") ? 1 : 0);
+
+			if ($$member_userdatas{$user}{gid} eq 'teachers') {
+				if (   $public != $$teacher_permissions{$user}{public}
+				    or (    $upload
+					    and not $$teacher_permissions{$user}{upload})) {
+					if ($public) {
 						push @public_upload_users, $user;
 					} else {
-						push @public_noupload_users, $user;
-					}
-				} else {
-					if ($upload) {
 						push @private_upload_users, $user;
-					} elsif ($$member_userdatas{$user}{gid} ne 'teacher') {
-						push @private_noupload_users, $user;
+					}
+				}
+			} else {
+				if (   $public != $$student_permissions{$user}{public}
+				    or $upload != $$student_permissions{$user}{upload}) {
+					if ($public) {
+						if ($upload) {
+							push @public_upload_users, $user;
+						} else {
+							push @public_noupload_users, $user;
+						}
+					} else {
+						if ($upload) {
+							push @private_upload_users, $user;
+						} elsif ($$member_userdatas{$user}{gid} ne 'teacher') {
+							push @private_noupload_users, $user;
+						}
 					}
 				}
 			}
 		}
+
+		if (   @public_upload_users
+		    or @public_noupload_users
+		    or @private_upload_users
+		    or @private_noupload_users) {
+			Schulkonsole::WWW::set_user_permissions($id, $password,
+				1, 1, @public_upload_users) if @public_upload_users;
+			Schulkonsole::WWW::set_user_permissions($id, $password,
+				1, 0, @public_noupload_users) if @public_noupload_users;
+			Schulkonsole::WWW::set_user_permissions($id, $password,
+				0, 1, @private_upload_users) if @private_upload_users;
+			Schulkonsole::WWW::set_user_permissions($id, $password,
+				0, 0, @private_noupload_users) if @private_noupload_users;
+
+			$student_permissions =
+				Schulkonsole::WWW::student_permissions(@student_uids);
+			$teacher_permissions =
+				Schulkonsole::WWW::teacher_permissions(@teacher_uids);
+		}
+
+		if (   $is_group_changed
+		    or @public_upload_users
+		    or @public_noupload_users
+		    or @private_upload_users
+		    or @private_noupload_users) {
+			$sk_session->set_status(
+				$sk_session->d()->get("&Auml;nderungen &uuml;bernommen."), 0);
+		} else {
+			$sk_session->set_status(
+				$sk_session->d()->get("Keine &Auml;nderungen."), 1);
+		}
+		};
+		if ($@) {
+			$sk_session->standard_error_handling($this_file, $@);
+		}
 	}
 
-	if (   @public_upload_users
-	    or @public_noupload_users
-	    or @private_upload_users
-	    or @private_noupload_users) {
-		Schulkonsole::WWW::set_user_permissions($id, $password,
-			1, 1, @public_upload_users) if @public_upload_users;
-		Schulkonsole::WWW::set_user_permissions($id, $password,
-			1, 0, @public_noupload_users) if @public_noupload_users;
-		Schulkonsole::WWW::set_user_permissions($id, $password,
-			0, 1, @private_upload_users) if @private_upload_users;
-		Schulkonsole::WWW::set_user_permissions($id, $password,
-			0, 0, @private_noupload_users) if @private_noupload_users;
 
-		$student_permissions =
-			Schulkonsole::WWW::student_permissions(@student_uids);
-		$teacher_permissions =
-			Schulkonsole::WWW::teacher_permissions(@teacher_uids);
+
+	my @teachers;
+	my @students;
+	foreach my $user (sort {
+	    $$member_userdatas{$a}{surname} cmp $$member_userdatas{$b}{surname} }
+		@student_uids) {
+
+
+		my $member = {
+			login => $user,
+			firstname => $$member_userdatas{$user}{firstname},
+			surname => $$member_userdatas{$user}{surname},
+			www => $$student_permissions{$user},
+		};
+		push @students, $member;
 	}
 
-	if (   $is_group_changed
-	    or @public_upload_users
-	    or @public_noupload_users
-	    or @private_upload_users
-	    or @private_noupload_users) {
-		$sk_session->set_status(
-			$sk_session->d()->get("&Auml;nderungen &uuml;bernommen."), 0);
-	} else {
-		$sk_session->set_status(
-			$sk_session->d()->get("Keine &Auml;nderungen."), 1);
+	foreach my $user (sort {
+	    $$member_userdatas{$a}{surname} cmp $$member_userdatas{$b}{surname} }
+		@teacher_uids) {
+
+
+		my $member = {
+			login => $user,
+			firstname => $$member_userdatas{$user}{firstname},
+			surname => $$member_userdatas{$user}{surname},
+			www => $$teacher_permissions{$user},
+		};
+		push @teachers, $member;
 	}
-	};
-	if ($@) {
-		$sk_session->standard_error_handling($this_file, $@);
-	}
-}
-
-
-
-my @teachers;
-my @students;
-foreach my $user (sort {
-    $$member_userdatas{$a}{surname} cmp $$member_userdatas{$b}{surname} }
-	@student_uids) {
-
-
-	my $member = {
-		login => $user,
-		firstname => $$member_userdatas{$user}{firstname},
-		surname => $$member_userdatas{$user}{surname},
-		www => $$student_permissions{$user},
-	};
-	push @students, $member;
-}
-
-foreach my $user (sort {
-    $$member_userdatas{$a}{surname} cmp $$member_userdatas{$b}{surname} }
-	@teacher_uids) {
-
-
-	my $member = {
-		login => $user,
-		firstname => $$member_userdatas{$user}{firstname},
-		surname => $$member_userdatas{$user}{surname},
-		www => $$teacher_permissions{$user},
-	};
-	push @teachers, $member;
-}
 
 =item C<students>/C<teachers>
 
@@ -283,8 +282,8 @@ True if upload possible
 
 =cut
 
-$sk_session->set_var('students', \@students);
-$sk_session->set_var('teachers', \@teachers);
+	$sk_session->set_var('students', \@students);
+	$sk_session->set_var('teachers', \@teachers);
 
 =item C<projectwww>
 
@@ -304,9 +303,16 @@ True if upload possible
 
 =cut
 
-$sk_session->set_var('projectwww', $$project_permissions{$project});
+	$sk_session->set_var('projectwww', $$project_permissions{$project});
 
+=item C<wwwactive>
 
+True if access to WWW directories is possible
+
+=cut
+
+    $sk_session->set_var('wwwactive', 1);
+}
 
 
 my @projects;
@@ -315,7 +321,6 @@ foreach my $project (sort {
 	keys %$projects) {
 	push @projects, { gid => $project,
 	                  name => $$projects{$project}{displayname},
-	                  longname => $$projects{$project}{longname},
 	                };
 }
 
@@ -332,10 +337,6 @@ GID of the project
 =item C<name>
 
 Name of the project
-
-=item C<longname>
-
-Long name of the project
 
 =back
 
@@ -368,13 +369,6 @@ Name of the selected project
 
 $sk_session->set_var('project', $$projects{$project}{displayname});
 
-=item C<projectlongname>
-
-Long name of the selected project
-
-=cut
-
-$sk_session->set_var('projectlongname', $$projects{$project}{longname});
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);
