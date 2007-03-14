@@ -117,14 +117,9 @@ $q->param('add') and do {
 	last COMMANDS;
 };
 $q->param('showlogadd') and do {
-	my $logfile_base = "$DevelConf::log_files/sophomorix-add.txt.";
-	my @logfiles = sort glob "$logfile_base*";
-	my $logfile = $logfiles[-1];
-
-	if (    $logfile
-	    and open LOG, "<$logfile") {
-		local $/ = undef;
-		my $log = <LOG>;
+	eval {
+		my $logadd =
+			Schulkonsole::Sophomorix::read_add_log_file($id, $password);
 
 =item C<logadd>
 
@@ -132,8 +127,9 @@ Output of C<sophomorix-add>
 
 =cut
 
-		$sk_session->set_var('logadd', $log);
-	} else {
+		$sk_session->set_var('logadd', join("\n", @$logadd));
+	};
+	if ($@) {
 		$sk_session->set_status(
 			$sk_session->d()->get('Kann Logdatei nicht &ouml;ffnen'), 1);
 	}
@@ -157,14 +153,9 @@ $q->param('move') and do {
 	last COMMANDS;
 };
 $q->param('showlogmove') and do {
-	my $logfile_base = "$DevelConf::log_files/sophomorix-move.txt.";
-	my @logfiles = sort glob "$logfile_base*";
-	my $logfile = $logfiles[-1];
-
-	if (    $logfile
-	    and open LOG, "<$logfile") {
-		local $/ = undef;
-		my $log = <LOG>;
+	eval {
+		my $logmove =
+			Schulkonsole::Sophomorix::read_move_log_file($id, $password);
 
 =item C<logmove>
 
@@ -172,8 +163,9 @@ Output of C<sophomorix-move>
 
 =cut
 
-		$sk_session->set_var('logmove', $log);
-	} else {
+		$sk_session->set_var('logmove', join("\n", @$logmove));
+	};
+	if ($@) {
 		$sk_session->set_status(
 			$sk_session->d()->get('Kann Logdatei nicht &ouml;ffnen'), 1);
 	}
@@ -197,14 +189,9 @@ $q->param('kill') and do {
 	last COMMANDS;
 };
 $q->param('showlogkill') and do {
-	my $logfile_base = "$DevelConf::log_files/sophomorix-kill.txt.";
-	my @logfiles = sort glob "$logfile_base*";
-	my $logfile = $logfiles[-1];
-
-	if (    $logfile
-	    and open LOG, "<$logfile") {
-		local $/ = undef;
-		my $log = <LOG>;
+	eval {
+		my $logkill =
+			Schulkonsole::Sophomorix::read_kill_log_file($id, $password);
 
 =item C<logkill>
 
@@ -212,8 +199,9 @@ Output of C<sophomorix-kill>
 
 =cut
 
-		$sk_session->set_var('logkill', $log);
-	} else {
+		$sk_session->set_var('logkill', join("\n", @$logkill));
+	};
+	if ($@) {
 		$sk_session->set_status(
 			$sk_session->d()->get('Kann Logdatei nicht &ouml;ffnen'), 1);
 	}

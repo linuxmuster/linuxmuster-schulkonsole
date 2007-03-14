@@ -132,6 +132,9 @@ $VERSION = 0.05;
 	read_students_file
 	read_admin_report_file
 	read_office_report_file
+	read_add_log_file
+	read_move_log_file
+	read_kill_log_file
 	write_teachers_file
 	write_students_file
 	write_sophomorix_conf
@@ -3111,6 +3114,114 @@ Reads the file /var/lib/sophomorix/check-result/report.office
 
 sub read_office_report_file {
 	return read_file(@_, 6);
+}
+
+
+
+
+=head3 C<read_add_log_file($id, $password)>
+
+Read last of sophomorix.add.txt.* log files
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the admin invoking the command
+
+=back
+
+=head4 Return value
+
+A reference to an array of the lines in the log file
+
+=head4 Description
+
+Reads the last file of the sorted list of
+/var/log/sophomorix/sophomorix.add.txt.* log files, i.e. the newest.
+
+=cut
+
+sub read_add_log_file {
+	return read_file(@_, 7);
+}
+
+
+
+
+=head3 C<read_move_log_file($id, $password)>
+
+Read last of sophomorix.move.txt.* log files
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the admin invoking the command
+
+=back
+
+=head4 Return value
+
+A reference to an array of the lines in the log file
+
+=head4 Description
+
+Reads the last file of the sorted list of
+/var/log/sophomorix/sophomorix.move.txt.* log files, i.e. the newest.
+
+=cut
+
+sub read_move_log_file {
+	return read_file(@_, 8);
+}
+
+
+
+
+=head3 C<read_kill_log_file($id, $password)>
+
+Read last of sophomorix.kill.txt.* log files
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the admin invoking the command
+
+=back
+
+=head4 Return value
+
+A reference to an array of the lines in the log file
+
+=head4 Description
+
+Reads the last file of the sorted list of
+/var/log/sophomorix/sophomorix.kill.txt.* log files, i.e. the newest.
+
+=cut
+
+sub read_kill_log_file {
+	return read_file(@_, 9);
 }
 
 

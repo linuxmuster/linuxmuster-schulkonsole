@@ -508,7 +508,7 @@ sub what {
 		and return 'DB-Liste kann nicht gelesen werden';
 	(   $this->{code} == WRAPPER_SOPHOMORIX_INVALID_FILENUMBER
 	 or $this->{code} == WRAPPER_FILES_INVALID_FILENUMBER)
-		and return 'Erwarte 0 bis 6 fuer number';
+		and return 'Ungueltiger Wert fuer number';
 	$this->{code} == WRAPPER_SOPHOMORIX_PROCESS_RUNNING
 		and return 'Prozess laeuft schon';
 	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_MODE
