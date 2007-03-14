@@ -173,7 +173,7 @@ numeric constant: C<Schulkonsole::Config::DROPDBUSERAPP>
 
 invokes
 
-C<< mysqladmin drop <db> >> for each database
+C<< linuxmuster-mysql --drop --dbname=<db> >> for each database
 
 =head4 Parameters from standard input
 
@@ -215,7 +215,7 @@ $app_id == Schulkonsole::Config::DROPDBUSERAPP and do {
 
 
 	foreach my $db (@dbs) {
-		my $opts = "--force drop \Q$db";
+		my $opts = "--drop --dbname=\Q$db";
 		system "$app $opts";
 		exit ($? >> 8) if $?;
 	}
