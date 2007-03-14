@@ -118,7 +118,7 @@
 <p><gettext>Keine Quota</gettext></p>
 <!--#endif -->
 
-<p><gettext>Mailquota von</gettext> <!--#echo var="mailaliases" -->:</p>
+<p><gettext>Mailquota von</gettext> <!--#echo var="mailaddresses_str" -->:</p>
 <!--#if expr="$mailquotas" -->
 <table id="mailquotas">
 <col width="30%">
