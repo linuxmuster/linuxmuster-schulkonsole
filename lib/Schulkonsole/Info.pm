@@ -195,7 +195,7 @@ sub mailaliases {
 	close ALIASES;
 
 	foreach my $line (@lines) {
-		my ($alias, $aliaseds) = $line =~ /^(.*?):\s*(.+)$/;
+		my ($alias, $aliaseds) = $line =~ /^(.*?):\s*(.+?)\s*$/;
 		$alias = lc $alias;
 		foreach my $aliased (split /\s*,\s*/, $aliaseds) {
 			if ($aliass{$aliased}) {

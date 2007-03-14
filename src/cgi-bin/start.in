@@ -145,20 +145,18 @@ True if the user is over quota
 
 =item C<projects>
 
-A comma seperated list of the user's projects
+A comma separated list of the user's projects
 
 =item C<classes_str>
 
-A comma seperated list of the user's classes
+A comma separated list of the user's classes
 
-=item C<mailaliases>
-
-A comma seperated list of the user's mailaliases
 
 =cut
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
+use Sys::Hostname;
 use Net::CUPS;
 use Schulkonsole::Session;
 use Schulkonsole::Config;
@@ -631,8 +629,35 @@ $sk_session->set_var('classes_str', $var_classes_str);
 
 
 
-my $var_mailaliases = join ', ', Schulkonsole::Info::mailaliases($uid);
+my @mailaliass = Schulkonsole::Info::mailaliases($uid);
+my $var_mailaliases = join ', ', @mailaliass;
+
+=item C<mailaliases>
+
+A comma separated list of the user's mailaliases
+
+=cut
+
 $sk_session->set_var('mailaliases', $var_mailaliases);
+
+
+
+my ($hostname) = gethostbyname(Sys::Hostname::hostname());
+my ($maildomain) = $hostname =~ /^.*?\.(.+)$/;
+
+my @array_mailaddresss;
+foreach my $mailalias (sort $uid, @mailaliass) {
+	push @array_mailaddresss, "$mailalias\@$maildomain";
+}
+my $var_mailaddresses = join ', ', @array_mailaddresss;
+
+=item C<mailaddresses_str>
+
+A comma separated list of the user's mailaddresses
+
+=cut
+
+$sk_session->set_var('mailaddresses_str', $var_mailaddresses);
 
 
 
