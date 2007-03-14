@@ -5,7 +5,7 @@ NameVirtualHost *:242
 	DocumentRoot /var/www/
 	<Directory /var/www/>
 		Order allow,deny
-		deny from all
+		allow from all
 		<Files favicon.ico>
 			Order allow,deny
 			allow from all
