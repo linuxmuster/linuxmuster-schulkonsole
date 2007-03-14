@@ -1,10 +1,21 @@
 NameVirtualHost *:242
 <VirtualHost *:242>
 	ServerAdmin webmaster@localhost
-	
+
+	DocumentRoot /var/www/
+	<Directory /var/www/>
+		Order allow,deny
+		deny from all
+		<Files favicon.ico>
+			Order allow,deny
+			allow from all
+		</Files>
+	</Directory>
+
 	Alias /schulkonsole/css/ /usr/share/schulkonsole/css/
 	Alias /schulkonsole/schulkonsole.js /usr/share/schulkonsole/shtml/schulkonsole.js
 	Alias /schulkonsole/img/ /usr/share/schulkonsole/img/
+	Alias /favicon.ico /usr/share/schulkonsole/img/favicon.ico
 
 
 	ScriptAlias /schulkonsole/ /usr/lib/schulkonsole/cgi-bin/
