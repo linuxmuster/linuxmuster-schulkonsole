@@ -106,6 +106,7 @@ $VERSION = 0.05;
 	add_to_class
 	remove_from_class
 	print_class
+	print_teachers
 	global_shares_on
 	global_shares_off
 
@@ -130,6 +131,8 @@ $VERSION = 0.05;
 
 	read_teachers_file
 	read_students_file
+	read_extra_user_file
+	read_extra_course_file
 	read_admin_report_file
 	read_office_report_file
 	read_add_log_file
@@ -137,6 +140,8 @@ $VERSION = 0.05;
 	read_kill_log_file
 	write_teachers_file
 	write_students_file
+	write_extra_user_file
+	write_extra_course_file
 	write_sophomorix_conf
 	write_quota_conf
 	write_mailquota_conf
@@ -1972,6 +1977,79 @@ sub print_class {
 
 
 
+=head3 C<print_teachers($id, $password, $class_gid)>
+
+Return document with teachers info
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the administrator invoking the command
+
+=item C<$password>
+
+The password of the administratorr invoking the command
+
+=item C<$filetype>
+
+Type of the file, either 0 (PDF) or 1 (CSV)
+
+=back
+
+=head4 Return value
+
+PDF-data or CSV-data
+
+=head4 Description
+
+This wraps the command
+C<sophomorix-print --teacher>, where
+uid is the UID of the teacher with ID C<$id> and class-gid is C<$class_gid>
+and returns the data of the produced document.
+
+=cut
+
+sub print_teachers {
+	my $id = shift;
+	my $password = shift;
+	my $filetype = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::PRINTTEACHERSAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "$filetype\n";
+
+	my $data;
+	my $is_error = 0;
+	{
+		local $/ = undef;
+		while (<SCRIPTIN>) {
+			$data .= $_;
+		}
+	}
+	if (    $filetype == 0
+	    and $data !~ /^\%PDF/) {
+		$is_error = 1;
+		$input_buffer = $data;
+	}
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	if ($is_error) {
+		return undef;
+	} else {
+		return $data;
+	}
+}
+
+
+
+
 =head3 C<passwords_reset($id, $password, @users)>
 
 Reset users' passwords
@@ -2889,11 +2967,12 @@ The password of the admin invoking the command
 
 =head4 Return value
 
-A reference to an array of the lines in the file /etc/sophomorix/lehrer.txt
+A reference to an array of the lines in the file
+/etc/sophomorix/user/lehrer.txt
 
 =head4 Description
 
-Reads the file /etc/sophomorix/lehrer.txt
+Reads the file /etc/sophomorix/user/lehrer.txt
 
 =cut
 
@@ -2924,16 +3003,89 @@ The password of the admin invoking the command
 
 =head4 Return value
 
-A reference to an array of the lines in the file /etc/sophomorix/schueler.txt
+A reference to an array of the lines in the file
+/etc/sophomorix/user/schueler.txt
 
 =head4 Description
 
-Reads the file /etc/sophomorix/schueler.txt
+Reads the file /etc/sophomorix/user/schueler.txt
 
 =cut
 
 sub read_students_file {
 	return read_file(@_, 1);
+}
+
+
+
+
+=head3 C<read_extra_user_file($id, $password)>
+
+Read the extraschueler.txt
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the admin invoking the command
+
+=item C<$password>
+
+The password of the admin invoking the command
+
+=back
+
+=head4 Return value
+
+A reference to an array of the lines in the file
+/etc/sophomorix/user/extraschueler.txt
+
+=head4 Description
+
+Reads the file /etc/sophomorix/user/extraschueler.txt
+
+=cut
+
+sub read_extra_user_file {
+	return read_file(@_, 10);
+}
+
+
+
+
+=head3 C<read_extra_course_file($id, $password)>
+
+Read the extrakurse.txt
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the admin invoking the command
+
+=item C<$password>
+
+The password of the admin invoking the command
+
+=back
+
+=head4 Return value
+
+A reference to an array of the lines in the file
+/etc/sophomorix/user/extrakurse.txt
+
+=head4 Description
+
+Reads the file /etc/sophomorix/user/extrakurse.txt
+
+=cut
+
+sub read_extra_course_file {
+	return read_file(@_, 11);
 }
 
 
@@ -3250,7 +3402,7 @@ sub write_file {
 
 =head3 C<write_teachers_file($id, $password, $lines)>
 
-Write new sophomorix.conf
+Write new lehrer.txt
 
 =head4 Parameters
 
@@ -3272,7 +3424,7 @@ The lines of the new file
 
 =head4 Description
 
-Writes the file /etc/sophomorix/user/sophomorix.conf and backups the old
+Writes the file /etc/sophomorix/user/lehrer.txt and backups the old
 file
 
 =cut
@@ -3286,7 +3438,7 @@ sub write_teachers_file {
 
 =head3 C<write_students_file($id, $password, $lines)>
 
-Write new sophomorix.conf
+Write new schueler.txt
 
 =head4 Parameters
 
@@ -3308,13 +3460,85 @@ The lines of the new file
 
 =head4 Description
 
-Writes the file /etc/sophomorix/user/sophomorix.conf and backups the old
+Writes the file /etc/sophomorix/user/schueler.txt and backups the old
 file
 
 =cut
 
 sub write_students_file {
 	write_file(@_, 1);
+}
+
+
+
+
+=head3 C<write_extra_user_file($id, $password, $lines)>
+
+Write new extraschueler.txt
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$lines>
+
+The lines of the new file
+
+=back
+
+=head4 Description
+
+Writes the file /etc/sophomorix/user/extraschueler.txt and backups the old
+file
+
+=cut
+
+sub write_extra_user_file {
+	write_file(@_, 5);
+}
+
+
+
+
+=head3 C<write_extra_course_file($id, $password, $lines)>
+
+Write new extrakurse.txt
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$lines>
+
+The lines of the new file
+
+=back
+
+=head4 Description
+
+Writes the file /etc/sophomorix/user/extrakurse.txt and backups the old
+file
+
+=cut
+
+sub write_extra_course_file {
+	write_file(@_, 6);
 }
 
 

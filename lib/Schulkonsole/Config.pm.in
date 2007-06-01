@@ -111,6 +111,7 @@ $VERSION = 0.06;
 	RESETROOMAPP
 	EDITOWNCLASSMEMBERSHIPAPP
 	PRINTCLASSAPP
+	PRINTTEACHERSAPP
 	SETPASSWORDSAPP
 	WWWPERMISSIONSAPP
 	CREATEDROPDBAPP
@@ -274,6 +275,10 @@ C<edit_own_class_membership>
 
 C<print_class>
 
+=item C<PRINTTEACHERSAPP>
+
+C<print_teachers>
+
 =item C<SETPASSWORDSAPP>
 
 C<set_passwords>
@@ -344,20 +349,21 @@ use constant {
 	RESETROOMAPP => 14,
 	EDITOWNCLASSMEMBERSHIPAPP => 15,
 	PRINTCLASSAPP => 16,
-	SETPASSWORDSAPP => 17,
-	WWWPERMISSIONSAPP => 18,
-	PROJECTMEMBERSAPP => 19,
-	PROJECTCREATEDROPAPP => 20,
-	READSOPHOMORIXFILEAPP => 21,
-	WRITESOPHOMORIXFILEAPP => 22,
-	USERSCHECKAPP => 23,
-	USERSADDAPP => 24,
-	USERSMOVEAPP => 25,
-	USERSKILLAPP => 26,
-	USERSADDMOVEKILLAPP => 27,
-	TEACHINAPP => 28,
-	CHMODAPP => 29,
-	SETQUOTAAPP => 30,
+	PRINTTEACHERSAPP => 17,
+	SETPASSWORDSAPP => 18,
+	WWWPERMISSIONSAPP => 19,
+	PROJECTMEMBERSAPP => 20,
+	PROJECTCREATEDROPAPP => 21,
+	READSOPHOMORIXFILEAPP => 22,
+	WRITESOPHOMORIXFILEAPP => 23,
+	USERSCHECKAPP => 24,
+	USERSADDAPP => 25,
+	USERSMOVEAPP => 26,
+	USERSKILLAPP => 27,
+	USERSADDMOVEKILLAPP => 28,
+	TEACHINAPP => 29,
+	CHMODAPP => 30,
+	SETQUOTAAPP => 31,
 };
 
 =head3 Constants for wrapper-cyrus
@@ -407,12 +413,12 @@ C<list_repository>
 =cut
 
 use constant {
-	CREATEDROPDBAPP => 31,
-	DROPDBUSERAPP => 32,
-	LISTDBAPP => 33,
-	LISTDBUSERAPP => 34,
-	CREATEDROPREPOSITORYAPP => 35,
-	LISTREPOSITORYAPP => 36,
+	CREATEDROPDBAPP => 32,
+	DROPDBUSERAPP => 33,
+	LISTDBAPP => 34,
+	LISTDBUSERAPP => 35,
+	CREATEDROPREPOSITORYAPP => 36,
+	LISTREPOSITORYAPP => 37,
 };
 
 
@@ -437,9 +443,9 @@ C<import_printers>
 =cut
 
 use constant {
-	WRITEFILEAPP => 37,
-	IMPORTWORKSTATIONSAPP => 38,
-	IMPORTPRINTERSAPP => 39,
+	WRITEFILEAPP => 38,
+	IMPORTWORKSTATIONSAPP => 39,
+	IMPORTPRINTERSAPP => 40,
 };
 
 
@@ -464,9 +470,9 @@ C<ovpn_download>
 =cut
 
 use constant {
-	OVPNCHECKAPP => 40,
-	OVPNDOWNLOADAPP => 41,
-	OVPNCREATEAPP => 42,
+	OVPNCHECKAPP => 41,
+	OVPNDOWNLOADAPP => 42,
+	OVPNCREATEAPP => 43,
 };
 
 
@@ -880,6 +886,7 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 	room_reset => RESETROOMAPP,
 	edit_own_class_membership => EDITOWNCLASSMEMBERSHIPAPP,
 	print_class => PRINTCLASSAPP,
+	print_teachers => PRINTTEACHERSAPP,
 	set_passwords => SETPASSWORDSAPP,
 	www_permissions => WWWPERMISSIONSAPP,
 	project_members => PROJECTMEMBERSAPP,
@@ -926,6 +933,7 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 	'/usr/bin/sophomorix-teacher',
 	'/usr/sbin/sophomorix-room',
 	'/usr/bin/sophomorix-teacher',
+	'/usr/sbin/sophomorix-print',
 	'/usr/sbin/sophomorix-print',
 	'/usr/sbin/sophomorix-passwd',
 	'/usr/sbin/sophomorix-www',

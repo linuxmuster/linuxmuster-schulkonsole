@@ -16,10 +16,10 @@
 
 <div id="content">
 
-<h2><gettext>Benutzerverwaltung</gettext> :: <gettext>Sch&uuml;lerliste pflegen</gettext></h3>
+<h2><gettext>Benutzerverwaltung</gettext> :: <gettext>Sch&uuml;lerliste pflegen</gettext></h2>
 
 <form method="post" enctype="multipart/form-data">
-<h4><label for="studentsfilename"><gettext>Datei importieren</gettext></label></h4>
+<h3><label for="studentsfilename"><gettext>Datei importieren</gettext></label></h3>
 <p>
 <input type="file" id="studentsfilename" name="studentsfilename">
 <input type="submit" name="studentsupload" value="Hochladen">
@@ -29,7 +29,7 @@
 <hr>
 
 <form method="post">
-<h4><label for="students"><gettext>Editieren</gettext></label></h4>
+<h3><label for="students"><gettext>Editieren</gettext></label></h3>
 
 <p>
 <textarea id="students" name="students" rows="20" cols="70">

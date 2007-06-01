@@ -28,7 +28,8 @@ NameVirtualHost *:242
 		Allow from all
 	</Directory>
 
-	RedirectMatch ^/$ /schulkonsole/start
+	RedirectMatch permanent ^/$ /schulkonsole/start
+	RedirectMatch permanent ^/schulkonsole$ /schulkonsole/start
 
 
 	ErrorLog /var/log/apache2/schulkonsole-error.log

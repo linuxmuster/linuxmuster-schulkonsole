@@ -79,6 +79,7 @@ $VERSION = 0.06;
 	project_user_members
 	project_class_members
 	project_project_members
+	get_teachers
 	find_teachers
 	find_students
 	find_classes
@@ -1266,6 +1267,45 @@ sub project_project_members {
 
 
 
+=head3 C<get_teachers($query)>
+
+Returns teachers
+
+=head4 Return value
+
+A reference to a hash with UIDs as key and userdata as value
+
+=head4 Description
+
+Returns all users with the initial group 'teacher'
+
+=cut
+
+sub get_teachers {
+
+	my $prepare_userdata = $_select_userdata
+		. 'WHERE gid = \'teachers\'';
+	my $sth = $_dbh->prepare($prepare_userdata)
+		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+			$prepare_userdata);
+	$sth->execute
+		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+			$prepare_userdata);
+
+
+	my %re;
+	while (my $row = $sth->fetchrow_hashref) {
+		$re{$$row{uid}} = $row;
+	}
+
+
+
+	return \%re;
+}
+
+
+
+
 =head3 C<find_teachers($query)>
 
 Returns teachers
@@ -1375,11 +1415,13 @@ sub find_students {
 	$query =~ tr/*/%/;
 	my $pattern = "\%\L$query\E\%";
 
+	# a student's initial group is an adminclass
 	my $prepare_userdata = $_select_basic_userdata
-		. 'WHERE gidnumber > 10000 '	# TODO teachers-GID = 10000?
-		. 'AND (   uid LIKE ?'
-		.     ' OR LOWER(firstname) LIKE ?'
-		.     ' OR LOWER(surname) LIKE ?)';
+		. 'RIGHT JOIN classdata ON userdata.gidnumber = classdata.gidnumber '
+		. 'WHERE classdata.type = \'adminclass\' '
+		. 'AND (   userdata.uid LIKE ?'
+		.     ' OR LOWER(userdata.firstname) LIKE ?'
+		.     ' OR LOWER(userdata.surname) LIKE ?)';
 	my $sth = $_dbh->prepare($prepare_userdata)
 		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
 			$prepare_userdata);

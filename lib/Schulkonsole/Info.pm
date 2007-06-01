@@ -137,14 +137,18 @@ sub groups_projects {
 
 
 
-=head3 C<member_projects($groups)>
+=head3 C<groups_classes($groups)>
 
 =cut
 
 sub groups_classes {
 	my $groups = shift;
 
-	return Schulkonsole::DB::groups_classes($groups);
+	my $classs = Schulkonsole::DB::groups_classes($groups);
+	delete $$classs{'attic'};
+
+
+	return $classs;
 }
 
 

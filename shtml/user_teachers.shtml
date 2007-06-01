@@ -23,7 +23,7 @@
 
 <form method="post">
 
-<h4><gettext>Editieren</gettext></h4>
+<h3><gettext>Editieren</gettext></h3>
 
 <table id="teachersedit" class="liste">
 <tr>
@@ -49,7 +49,7 @@
 <!--#else -->
 
 <form method="post" enctype="multipart/form-data">
-<h4><label for="teachersfilename"><gettext>Datei importieren</gettext></label></h4>
+<h3><label for="teachersfilename"><gettext>Datei importieren</gettext></label></h3>
 <p>
 <input type="file" id="teachersfilename" name="teachersfilename">
 <input type="submit" name="teachersupload" value="Hochladen">
@@ -61,7 +61,7 @@
 <hr>
 
 <form method="post">
-<h4><gettext>Lehrer hinzuf&uuml;gen</gettext></h4>
+<h3><gettext>Lehrer hinzuf&uuml;gen</gettext></h3>
 
 <table id="teachersadd" class="liste">
 <tr>
@@ -85,7 +85,7 @@
 <hr>
 
 <form method="post">
-<h4><gettext>Lehrer entfernen</gettext></h4>
+<h3><gettext>Lehrer entfernen</gettext></h3>
 
 <table id="teachersdelete" class="liste">
 <tr>
@@ -105,45 +105,6 @@
 <p><input type="submit" name="acceptteachers" value="&Auml;nderungen &uuml;bernehmen"></p>
 </form>
 
-<hr>
-
-<form method="post">
-<h4><gettext>Passw&ouml;rter f&uuml;r Lehrer</gettext></h4>
-
-<table id="teacherspasswords" class="liste">
-<tr>
-<th><gettext>Login</gettext></th>
-<th><gettext>Name</gettext></th>
-<th></th>
-<th></th>
-</tr>
-<!--#if expr="$loop_teachers" -->
-<tr>
-<td><!--#echo var="teachers{login}" --></td>
-<td><!--#echo var="teachers{firstname}" --> <!--#echo var="teachers{surname}" --></td>
-<td><input type="checkbox" name="${teachers{login}};select"></td>
-<td><input type="submit" name="${teachers{login}}_showpassword" value="Erstpasswort anzeigen"></td>
-</tr>
-<!--#endif -->
-<tr class="quickselection">
-<td colspan="2"><gettext>Schnellauswahl</gettext></td>
-<td colspan="2"><input type="button" value="An" name="select" onClick="check_uncheck(this)"></td>
-</tr>
-<tr>
-<th><gettext>Name</gettext></th>
-<th></th>
-<th></th>
-</tr>
-</table>
-
-<ul>
-<li><input type="submit" name="passwords_reset" value="Zur&uuml;cksetzen auf Erstpasswort"></li>
-<li><input type="submit" name="passwords_random" value="Zufallspasswort setzen"></li>
-<li><input type="submit" name="passwords_set" value="Passwort setzen">:
-<input type="password" name="userpassword"></li>
-</ul>
-
-</form>
 
 </div>
 
@@ -156,7 +117,7 @@
 <p><gettext>Hier k&ouml;nnen Sie, falls noch nicht geschehen, die Datei mit den Lehrerdaten
 <q>lehrer.txt</q> ins System hochladen. Beachten Sie, dass diese Option nur vorhanden ist,
 solange keine <q>lehrer.txt</q> im System vorliegt.</gettext></p>
-<p><gettext>Die weitere Datenpflege sowie Passwort&auml;nderungen nehmen Sie dann &uuml;ber diese
+<p><gettext>Die weitere Datenpflege nehmen Sie dann &uuml;ber diese
 Seite vor.</gettext></p>
 
 <img src="img/lmz.jpg" alt="Landesmedienzentrum BW">

@@ -805,6 +805,59 @@ $app_id == Schulkonsole::Config::PRINTCLASSAPP and do {
 	exit 0;
 };
 
+=head3 print_teachers
+
+numeric constant: C<Schulkonsole::Config::PRINTTEACHERSAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item filetype
+
+The filetype, 0 (PDF) or 1 (CSV)
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::PRINTTEACHERSAPP and do {
+	my $filetype = <>;
+	($filetype) = $filetype =~ /^([01])$/;
+	exit -110 unless defined $filetype;
+
+	my $opts = "--teacher";
+
+	# sophomorix-print cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+	system "$app $opts >/dev/null 2>/dev/null " and last SWITCH;
+
+	my $filename;
+	SWITCHFILETYPE: {
+	$filetype == 0 and do {
+		$filename = "$DevelConf::druck_pfad/teachers.pdf";
+		last SWITCHFILETYPE;
+	};
+	$filetype == 1 and do {
+		$filename = "$DevelConf::druck_pfad/teachers.csv";
+		last SWITCHFILETYPE;
+	};
+	exit -110;
+	}
+	
+	open DATA, "<$filename" or (print STDERR "$filename: $!\n" and exit -121);
+	{
+		local $/ = undef;
+		while (<DATA>) {
+			print;
+		}
+	}
+	close DATA;
+
+	exit 0;
+};
+
 =head3 set_passwords
 
 numeric constant: C<Schulkonsole::Config::SETPASSWORDSAPP>
@@ -955,7 +1008,7 @@ number of the file to read (0 = lehrer.txt, 1 = schueler.txt,
 
 $app_id == Schulkonsole::Config::READSOPHOMORIXFILEAPP and do {
 	my $number = <>;
-	($number) = $number =~ /^([0-9])$/;
+	($number) = $number =~ /^([0-9]|1[01])$/;
 	exit -120 unless defined $number;
 
 	my $filename;
@@ -986,6 +1039,14 @@ $app_id == Schulkonsole::Config::READSOPHOMORIXFILEAPP and do {
 	};
 	$number == 6 and do {
 		$filename = "$DevelConf::ergebnis_pfad/report.office";
+		last SWITCHREADFILE;
+	};
+	$number == 10 and do {
+		$filename = "$DevelConf::users_pfad/extraschueler.txt";
+		last SWITCHREADFILE;
+	};
+	$number == 11 and do {
+		$filename = "$DevelConf::users_pfad/extrakurse.txt";
 		last SWITCHREADFILE;
 	};
 	my $filename_base;
@@ -1041,7 +1102,7 @@ the lines to be written in the file
 
 $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 	my $number = <>;
-	($number) = $number =~ /^([01234])$/;
+	($number) = $number =~ /^([0123456])$/;
 	exit -120 unless defined $number;
 
 	my $path;
@@ -1076,6 +1137,18 @@ $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 		$path = $DevelConf::config_pfad;
 		$filename = 'mailquota.txt';
 		$stat[2] = 0644;
+		last SWITCHWRITEFILE;
+	};
+	$number == 5 and do {
+		$path = $DevelConf::users_pfad;
+		$filename = 'extraschueler.txt';
+		$stat[2] = 0600;
+		last SWITCHWRITEFILE;
+	};
+	$number == 6 and do {
+		$path = $DevelConf::users_pfad;
+		$filename = 'extrakurse.txt';
+		$stat[2] = 0600;
 		last SWITCHWRITEFILE;
 	};
 	}

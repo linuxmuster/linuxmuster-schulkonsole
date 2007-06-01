@@ -9,8 +9,9 @@ pkglibexec_SCRIPTS=start logout \
 	project_handout project_collect project_db project_revision_control \
 	project_www project_shares \
 	settings \
-	user user_students user_teachers user_check user_teachin user_commit \
-	user_reports \
+	user user_students user_teachers user_extra \
+	user_teacherpasswords \
+	user_check user_teachin user_commit user_reports \
 	rooms printers printers_edit hosts \
 	quotas quotas_teachers quotas_classes quotas_projects quotas_others
 
@@ -27,9 +28,9 @@ EXTRA_DIST = start.in logout.in \
 	project_db.in project_revision_control.in project_www.in \
 	project_shares.in \
 	settings.in \
-	user.in \
-	user_students.in user_teachers.in user_check.in user_teachin.in \
-	user_commit.in user_reports.in \
+	user.in user_students.in user_teachers.in user_extra.in \
+	user_teacherpasswords.in \
+	user_check.in user_teachin.in user_commit.in user_reports.in \
 	rooms.in printers.in printers_edit.in hosts.in \
 	quotas.in \
 	quotas_teachers.in quotas_classes.in quotas_projects.in quotas_others.in

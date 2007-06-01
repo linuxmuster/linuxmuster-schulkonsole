@@ -83,6 +83,7 @@ COMMANDS: {
 		my $member_projectdatas;
 		my $admins;
 
+		my $error;
 		foreach my $param ($q->param) {
 			if (my ($member, $scope)
 			    	= $param =~ /^(.+)_(admin|member|class|project)$/) {
@@ -91,9 +92,9 @@ COMMANDS: {
 					my $member_userdata
 						= Schulkonsole::DB::get_userdata($member);
 					if (not $member_userdata) {
-						$sk_session->set_status($sk_session->d()->get(
-								'Benutzer gibt es nicht'),
-						1);
+						$error .= sprintf(
+							$sk_session->d()->get('Benutzer %s gibt es nicht.'),
+							$member);
 
 						last ADDSCOPE;
 					}
@@ -104,9 +105,8 @@ COMMANDS: {
 						$$member_userdata{gid});
 
 					if (not $$groups{teachers}) {
-						$sk_session->set_status($sk_session->d()->get(
-								'Benutzer ist kein Lehrer'),
-						1);
+						$error .= sprintf($sk_session->d()->get(
+								'Benutzer %s ist kein Lehrer.'), $member);
 
 						last ADDSCOPE;
 					}
@@ -121,9 +121,9 @@ COMMANDS: {
 							unless defined $admins;
 
 						if ($$admins{$$member_userdata{uidnumber}}) {
-							$sk_session->set_status($sk_session->d()->get(
-									'Benutzer ist bereits Projektmitglied'),
-							1);
+							$error .= sprintf $sk_session->d()->get(
+									'Benutzer %s ist bereits Projektmitglied.'),
+									$member;
 
 							last ADDSCOPE
 						} else {
@@ -139,9 +139,9 @@ COMMANDS: {
 					my $member_userdata
 						= Schulkonsole::DB::get_userdata($member);
 					if (not $member_userdata) {
-						$sk_session->set_status($sk_session->d()->get(
-								'Benutzer gibt es nicht'),
-						1);
+						$error .= sprintf
+							$sk_session->d()->get('Benutzer %s gibt es nicht.'),
+							$member;
 
 						last ADDSCOPE;
 					}
@@ -151,9 +151,9 @@ COMMANDS: {
 						unless defined $member_userdatas;
 
 					if ($$member_userdatas{$member}) {
-						$sk_session->set_status($sk_session->d()->get(
-								'Benutzer ist bereits Projektmitglied'),
-						1);
+						$error .= sprintf $sk_session->d()->get(
+								'Benutzer %s ist bereits Projektmitglied.'),
+								$member;
 
 						last ADDSCOPE;
 					}
@@ -163,13 +163,20 @@ COMMANDS: {
 					last ADDSCOPE;
 				};
 				$scope =~ /^c/ and do {
+					if ($member eq 'attic') {
+						$error .= sprintf $sk_session->d()->get(
+									'Klasse %s gibt es nicht.'),
+								$member;
+
+						last ADDSCOPE;
+					}
+
 					my $member_classdata
 						= Schulkonsole::DB::get_classdata($member);
 
 					if (not $member_classdata) {
-						$sk_session->set_status($sk_session->d()->get(
-								'Klasse gibt es nicht'),
-						1);
+						$error .= sprintf $sk_session->d()->get(
+									'Klasse %s gibt es nicht.'), $member;
 
 						last ADDSCOPE;
 					}
@@ -180,9 +187,9 @@ COMMANDS: {
 						unless defined $member_classdatas;
 
 					if ($$member_classdatas{$member}) {
-						$sk_session->set_status($sk_session->d()->get(
-								'Klasse ist bereits Projektmitglied'),
-						1);
+						$error .= sprintf $sk_session->d()->get(
+									'Klasse %s ist bereits Projektmitglied.'),
+								$member;
 
 						last ADDSCOPE;
 					}
@@ -196,9 +203,8 @@ COMMANDS: {
 						= Schulkonsole::DB::get_projectdata($member);
 
 					if (not $member_projectdata) {
-						$sk_session->set_status($sk_session->d()->get(
-								'Projekt gibt es nicht'),
-						1);
+						$error .= sprintf $sk_session->d()->get(
+								'Projekt %s gibt es nicht.'), $member;
 
 						last ADDSCOPE;
 					}
@@ -209,9 +215,9 @@ COMMANDS: {
 						unless defined $member_projectdatas;
 
 					if ($$member_projectdatas{$member}) {
-						$sk_session->set_status($sk_session->d()->get(
-								'Projekt ist bereits Projektmitglied'),
-						1);
+						$error .= sprintf $sk_session->d()->get(
+									'Projekt %s ist bereits Projektmitglied.'),
+								$member;
 
 						last ADDSCOPE;
 					}
@@ -289,8 +295,10 @@ COMMANDS: {
 			$url =~ s/$this_file$/project_members/g;
 			$sk_session->redirect($url);
 		} else {
-			$sk_session->set_status($sk_session->d()->get(
-					'Keine neuen Mitglieder ausgew&auml;hlt'),
+			$sk_session->set_status(
+					($error ? "$error<br>" : '')
+					. $sk_session->d()->get(
+					  	'Keine neuen Mitglieder ausgew&auml;hlt'),
 				1);
 		}
 
@@ -452,6 +460,7 @@ The user's class
 	
 		$q->param('scope') eq 'class' and do {
 			my $classs = Schulkonsole::DB::find_classes($query);
+			delete $$classs{attic};
 	
 			if (%$classs) {
 				my $member_classdatas
@@ -464,7 +473,7 @@ The user's class
 					keys %$classs) {
 					my $gid = $$classs{$class}{gid};
 	
-					next if  $$member_classdatas{$gid};
+					next if $$member_classdatas{$gid};
 	
 					my $result = {
 						gid => $$classs{$class}{gid},
@@ -576,20 +585,22 @@ The name of the project
 					$$students{$user}{gidnumber},
 					$$students{$user}{gid});
 				my $classs = Schulkonsole::DB::groups_classes($groups);
-				my @classs;
-				foreach my $class (values %$classs) {
-					push @classs, $$class{displayname};
+				if (%$classs) {
+					my @classs;
+					foreach my $class (values %$classs) {
+						push @classs, $$class{displayname};
+					}
+					my $var_classes_str = join ', ', @classs;
+	
+	
+					my $result = {
+						login => $uid,
+						firstname => $$students{$user}{firstname},
+						surname => $$students{$user}{surname},
+						class => $var_classes_str,
+					};
+					push @students_result, $result;
 				}
-				my $var_classes_str = join ', ', @classs;
-	
-	
-				my $result = {
-					login => $uid,
-					firstname => $$students{$user}{firstname},
-					surname => $$students{$user}{surname},
-					class => $var_classes_str,
-				};
-				push @students_result, $result;
 			}
 	
 			$sk_session->set_var('students', \@students_result);

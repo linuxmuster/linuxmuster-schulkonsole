@@ -840,9 +840,17 @@ Do common error handling
 
 =over
 
+=item C<$page>
+
+Page to display when password has been verified
+
 =item C<$@>
 
 A Schulkonsole::Error object
+
+=item C<do_redirect>
+
+True if the user client will be re-directed after an error
 
 =back
 
@@ -856,14 +864,21 @@ sub standard_error_handling {
 	my $this = shift;
 	my $page = shift;
 	my $error = shift;
+	my $do_redirect = shift;
 
 	if (ref $error) {
+		my $error_str;
 		if ($error->{internal}) {
-			$this->set_status(
-				$this->d()->get('Interner Fehler'), 1);
+			$error_str = $this->d()->get('Interner Fehler');
 			print STDERR $error;
 		} else {
-			$this->set_status($this->d()->get($@->what()), 1);
+			$error_str = $error->what();
+		}
+
+		if ($do_redirect) {
+			$this->set_status_redirect($error_str, 1);
+		} else {
+			$this->set_status($error_str, 1);
 		}
 
 		# password changed -> re-authenticate
@@ -880,7 +895,7 @@ sub standard_error_handling {
 			$this->exit_with_login_page($page);
 		}
 	} else {
-		die $@;
+		die $error;
 	}
 }
 

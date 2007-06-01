@@ -72,9 +72,28 @@ $class = $sk_session->param('class');
 
 
 
+my $all_classs = Schulkonsole::DB::classes();
+delete $$all_classs{'attic'};
+
+
 eval {
 COMMANDS: {
 if (my ($new_class) = $q->param('class_add')) {
+	if (not $$all_classs{$new_class}) {
+		$sk_session->set_status(
+			sprintf($sk_session->d()->get('Klasse %s gibt es nicht'),
+			        $new_class),
+			1);
+		last COMMANDS;
+	}
+	if ($$classs{$new_class}) {
+		$sk_session->set_status(
+			sprintf($sk_session->d()->get('Sie sind bereits in Klasse %s'),
+			        $new_class),
+			1);
+		last COMMANDS;
+	}
+
 	Schulkonsole::Sophomorix::add_to_class(
 		$sk_session->userdata('id'),
 		$sk_session->get_password(),
@@ -118,10 +137,6 @@ if ($@) {
 }
 
 
-
-
-
-my $all_classs = Schulkonsole::DB::classes();
 
 my @classs;
 my @other_classs;

@@ -14,7 +14,8 @@ dist_shtml_DATA = login.shtml logout.shtml start.shtml \
 	project_db.shtml project_revision_control.shtml project_www.shtml \
 	project_shares.shtml project_drop_verify.shtml \
 	settings.shtml \
-	user.shtml user_students.shtml user_teachers.shtml \
+	user.shtml user_students.shtml user_teachers.shtml user_extra.shtml \
+	user_teacherpasswords.shtml \
 	user_check.shtml user_teachin.shtml user_commit.shtml user_reports.shtml\
 	rooms.shtml printers.shtml printers_edit.shtml hosts.shtml \
 	quotas.shtml \

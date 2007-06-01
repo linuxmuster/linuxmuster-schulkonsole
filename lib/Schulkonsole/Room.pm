@@ -131,6 +131,9 @@ sub start_lesson {
 	$this->param('user_id', $this->{_ROOMDATA}{id});
 	$this->param('edit', 1);
 
+	$this->param('start_time',$^T);
+
+
 
 	my $blocked_hosts_internet
 		= Schulkonsole::Firewall::blocked_hosts_internet();

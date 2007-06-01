@@ -154,7 +154,7 @@
 	</td>
 	<td><!--#if expr="$overview_workstations{first}" -->
 <!--#if expr="$overview_workstations{internet}" -->
-<!--#if expr="$overview_workstations{editing}" -->
+<!--#if expr="$overview_workstations{editinghost}" -->
 	<input type="checkbox" disabled checked>
 <!--#else --><!--#set var="quickinternetoff" value="1" -->
 	<input type="checkbox" name="${overview_workstations{name}};internet" checked>
@@ -166,7 +166,7 @@
 	<td><!--#if expr="$overview_workstations{first}" -->
 <!--#if expr="$intranetactive" -->
 <!--#if expr="$overview_workstations{intranet}" -->
-<!--#if expr="$overview_workstations{editing}" -->
+<!--#if expr="$overview_workstations{editinghost}" -->
 	<input type="checkbox" disabled checked>
 <!--#else --><!--#set var="quickintranetoff" value="1" -->
 	<input type="checkbox" name="${overview_workstations{name}};intranet" checked>
@@ -182,11 +182,7 @@
 <!--#if expr="$overview_workstations{webfilter}" --><!--#set var="quickwebfilteroff" value="1" -->
 	<input type="checkbox" name="${overview_workstations{name}};webfilter" checked>
 <!--#else -->
-<!--#if expr="$overview_workstations{editing}" -->
-	<input type="checkbox" disabled>
-<!--#else -->
 	<input type="checkbox" name="${overview_workstations{name}};webfilter">
-<!--#endif -->
 <!--#endif -->
 	<!--#endif --></td>
 <!--#if expr="$overview_workstations{printer}" -->
@@ -195,11 +191,7 @@
 <!--#if expr="$overview_workstations{printer}{off}" -->
 	<input type="checkbox" name="${overview_workstations{login}};${overview_workstations{printer}{name}};printer">
 <!--#else -->
-<!--#if expr="$overview_workstations{editing}" -->
-	<input type="checkbox" disabled checked>
-<!--#else -->
 	<input type="checkbox" name="${overview_workstations{login}};${overview_workstations{printer}{name}};printer" checked>
-<!--#endif -->
 <!--#endif -->
 	</td>
 <!--#endif -->
@@ -211,12 +203,8 @@
 
 	<!--#if expr="$overview_workstations{login}" -->
 	<td>
-<!--#if expr="$overview_workstations{shares}" -->
-<!--#if expr="$overview_workstations{editing}" -->
-	<input type="checkbox" disabled checked>
-<!--#else --><!--#set var="quicksharesoff" value="1" -->
+<!--#if expr="$overview_workstations{shares}" --><!--#set var="quicksharesoff" value="1" -->
 	<input type="checkbox" name="${overview_workstations{login}};shares" checked>
-<!--#endif -->
 <!--#else -->
 	<input type="checkbox" name="${overview_workstations{login}};shares">
 <!--#endif -->

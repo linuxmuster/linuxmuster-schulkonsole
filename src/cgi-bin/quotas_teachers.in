@@ -246,6 +246,8 @@ sub get_teachers {
 		= Schulkonsole::Sophomorix::read_teachers_file($id, $password);
 
 	foreach my $line (@$teachers_lines) {
+		next if $line =~ /^#/;
+
 		my ($group, $surname, $firstname, $birthdate, $login,
 		    $firstpassword, $short,
 		    $diskquota, $mailquota) = split /\s*;/, $line;
