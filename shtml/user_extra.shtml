@@ -16,11 +16,11 @@
 
 <div id="content">
 
-<h2><gettext>Benutzerverwaltung</gettext> :: <gettext>Extraliste pflegen</gettext></h2>
+<h2><gettext>Benutzerverwaltung</gettext> :: <gettext>Extralisten pflegen</gettext></h2>
 
 
 <form method="post">
-<h3><label for="extrauser"><gettext>Sch&uuml;er editieren</gettext></label></h3>
+<h3><label for="extrauser"><gettext>Extrasch&uuml;ler editieren</gettext></label></h3>
 
 <p>
 <textarea id="extrauser" name="extrauser" rows="20" cols="70">
@@ -34,7 +34,7 @@
 <hr>
 
 <form method="post">
-<h3><label for="extracourse"><gettext>Kurse editieren</gettext></label></h3>
+<h3><label for="extracourse"><gettext>Extrakurse editieren</gettext></label></h3>
 
 <p>
 <textarea id="extracourse" name="extracourse" rows="20" cols="70">
@@ -53,7 +53,11 @@
 
 <h2><gettext>Info</gettext></h2>
 
-<p></p>
+<p><gettext>Hier pflegen Sie Extrasch&uuml;ler und Extrakurse.</gettext></p>
+<p><gettext>Editieren Sie die Listen in den entsprechenden Textfeldern. Ge&auml;nderte Daten
+werden &uuml;ber die Schaltfl&auml;che <q>&Auml;nderungen &uuml;bernehmen</q> im System
+gespeichert. Fahren Sie dann mit dem Men&uuml;punkt <q>Benutzerlisten pr&uuml;fen</q> fort.</gettext></p>
+<p><gettext>Kommentarzeilen beginnen mit einem Gatter (#) und werden nicht ausgewertet.</gettext></p>
 
 <img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>
