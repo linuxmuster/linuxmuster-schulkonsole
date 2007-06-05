@@ -202,7 +202,7 @@ $q->param('newteacher') and do {
 	my @errors;
 	if ($login !~ /^[a-z]{2,16}$/) {
 		push @errors, $sk_session->d()->get(
-			'Der Loginname muss aus 2 bis 16 Kleinbuchstaben bestehen');
+			'Der Loginname muss aus 2 bis 16 Kleinbuchstaben (ohne Umlaute) bestehen');
 
 		$sk_session->mark_input_error('newlogin');
 	} elsif ($$teachers{$login}) {
