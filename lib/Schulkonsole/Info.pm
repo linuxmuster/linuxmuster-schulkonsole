@@ -167,9 +167,11 @@ sub mailaliases {
 
 		return unless $aliass{$aliased};
 
-		my @re = @{ $aliass{$aliased} };
+		my @aliass = @{ $aliass{$aliased} };
+		my @re = @aliass;
+		delete $aliass{$aliased};
 
-		foreach my $alias (@{ $aliass{$aliased} }) {
+		foreach my $alias (@aliass) {
 			push @re, get_aliases($alias);
 		}
 
