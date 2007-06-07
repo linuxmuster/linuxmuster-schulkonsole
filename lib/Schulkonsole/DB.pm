@@ -1433,6 +1433,8 @@ sub find_students {
 
 	my %re;
 	while (my $row = $sth->fetchrow_hashref) {
+		next if $$row{uid} =~ /\$$/;
+
 		$re{$$row{uid}} = $row;
 	}
 
