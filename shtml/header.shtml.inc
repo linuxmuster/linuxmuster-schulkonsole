@@ -10,7 +10,7 @@
 <!--#endif -->
 <gettext>Version</gettext> <!--#echo var="version" -->
 <gettext>f&uuml;r Linux Musterl&ouml;sung 3.0</gettext>
-<img src="img/MOII.png" alt="Medienoffensive Schule II">
+<img src="img/paedml.png" alt="paedML Die Musterl&ouml;sung Baden-W&uml;rttemberg">
 </div>
 <div id="supportnetz">
 <a href="http://www.support-netz.de/">[www.support-netz.de]</a>
