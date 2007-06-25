@@ -1,5 +1,5 @@
 imgdir = $(pkgdatadir)/img
-dist_img_DATA = bw.jpg lmz.jpg MOII.png \
+dist_img_DATA = bw.jpg lmz.jpg MOII.png paedml.png \
 	support-netz2.jpg support-netz2_restricted.jpg\
 	punkt-v.png punkt-h.png punkt-h2.png \
 	info.png info-rot.png info-gruen.png \
