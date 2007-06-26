@@ -1677,7 +1677,7 @@ $app_id == Schulkonsole::Config::SETOWNPASSWORDAPP and do {
 	($password) = $password =~ /^(.+)$/;
 	exit -112 unless $password;
 
-	my $opts = "--user \Q$$userdata{uid}\E --pass \Q$password";
+	my $opts = "--nofirstpassupdate --user \Q$$userdata{uid}\E --pass \Q$password";
 
 	exec "$app $opts" or last SWITCH;
 };
