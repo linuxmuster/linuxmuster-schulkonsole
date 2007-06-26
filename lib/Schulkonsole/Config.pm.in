@@ -138,6 +138,7 @@ $VERSION = 0.06;
 	OVPNCHECKAPP
 	OVPNDOWNLOADAPP
 	OVPNCREATEAPP
+	SETOWNPASSWORDAPP
 
 	TEST_NONE
 	TEST_HANDOUT
@@ -335,6 +336,10 @@ C<chmod>
 
 C<quota>
 
+=item C<SETOWNPASSWORDAPP>
+
+C<set_own_password>
+
 =back
 
 =cut
@@ -364,6 +369,7 @@ use constant {
 	TEACHINAPP => 29,
 	CHMODAPP => 30,
 	SETQUOTAAPP => 31,
+	SETOWNPASSWORDAPP => 32,
 };
 
 =head3 Constants for wrapper-cyrus
@@ -413,12 +419,12 @@ C<list_repository>
 =cut
 
 use constant {
-	CREATEDROPDBAPP => 32,
-	DROPDBUSERAPP => 33,
-	LISTDBAPP => 34,
-	LISTDBUSERAPP => 35,
-	CREATEDROPREPOSITORYAPP => 36,
-	LISTREPOSITORYAPP => 37,
+	CREATEDROPDBAPP => 33,
+	DROPDBUSERAPP => 34,
+	LISTDBAPP => 35,
+	LISTDBUSERAPP => 36,
+	CREATEDROPREPOSITORYAPP => 37,
+	LISTREPOSITORYAPP => 38,
 };
 
 
@@ -443,9 +449,9 @@ C<import_printers>
 =cut
 
 use constant {
-	WRITEFILEAPP => 38,
-	IMPORTWORKSTATIONSAPP => 39,
-	IMPORTPRINTERSAPP => 40,
+	WRITEFILEAPP => 39,
+	IMPORTWORKSTATIONSAPP => 40,
+	IMPORTPRINTERSAPP => 41,
 };
 
 
@@ -470,9 +476,9 @@ C<ovpn_download>
 =cut
 
 use constant {
-	OVPNCHECKAPP => 41,
-	OVPNDOWNLOADAPP => 42,
-	OVPNCREATEAPP => 43,
+	OVPNCHECKAPP => 42,
+	OVPNDOWNLOADAPP => 43,
+	OVPNCREATEAPP => 44,
 };
 
 
@@ -901,6 +907,7 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 	teachin => TEACHINAPP,
 	'chmod' => CHMODAPP,
 	'quota' => SETQUOTAAPP,
+	set_own_password => SETOWNPASSWORDAPP,
 	create_drop_db => CREATEDROPDBAPP,
 	drop_db_user => DROPDBUSERAPP,
 	list_db => LISTDBAPP,
@@ -951,6 +958,7 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 	1,
 	[ '/usr/sbin/sophomorix-quota', '/usr/sbin/sophomorix-class',
 	  '/usr/sbin/sophomorix-project', ],
+	'/usr/sbin/sophomorix-passwd',
 	'/usr/sbin/linuxmuster-mysql',
 	'/usr/sbin/linuxmuster-mysql',
 	'/usr/sbin/linuxmuster-mysql',

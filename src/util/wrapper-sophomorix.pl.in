@@ -870,13 +870,21 @@ numeric constant: C<Schulkonsole::Config::SETPASSWORDSAPP>
 
 reset (0)/password (1)/random (2)
 
+=item scope
+
+users (0)/rooms (1)
+
 =item password (for type = 1)
 
 password to set if type is 1
 
-=item users
+=item users (for scope = 0)
 
 the users for whom to set the passwords
+
+=item rooms (for scope = 1)
+
+the rooms for which to set the workstation passwords
 
 =back
 
@@ -886,6 +894,11 @@ $app_id == Schulkonsole::Config::SETPASSWORDSAPP and do {
 	my $type = <>;
 	($type) = $type =~ /^([012])$/;
 	exit -111 unless defined $type;
+
+	my $scope = <>;
+	($scope) = $scope =~ /^([01])$/;
+	exit -117 unless defined $scope;
+
 
 	my $opts = '--hide ';
 	TYPE: {
@@ -917,7 +930,11 @@ $app_id == Schulkonsole::Config::SETPASSWORDSAPP and do {
 	}
 	exit -98 unless @users;
 
-	$opts .= ' --users ' . join(',', @users);
+	if ($scope == 0) {
+		$opts .= ' --users ' . join(',', @users);
+	} else {
+		$opts .= ' --rooms ' . join(',', @users);
+	}
 
 	# sophomorix-passwd cannot be invoked with taint checks enabled
 	$< = $>;
@@ -1637,6 +1654,32 @@ $app_id == Schulkonsole::Config::SETQUOTAAPP and do {
 	}
 
 	exit 0;
+};
+
+=head3 set_own_password
+
+numeric constant: C<Schulkonsole::Config::SETOWNPASSWORDAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item newpassword
+
+The new password
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::SETOWNPASSWORDAPP and do {
+	my $password = <>;
+	($password) = $password =~ /^(.+)$/;
+	exit -112 unless $password;
+
+	my $opts = "--user \Q$$userdata{uid}\E --pass \Q$password";
+
+	exec "$app $opts" or last SWITCH;
 };
 
 }

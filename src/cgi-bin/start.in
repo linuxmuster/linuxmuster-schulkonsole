@@ -163,6 +163,7 @@ use Schulkonsole::Config;
 use Schulkonsole::Info;
 use Schulkonsole::Collab;
 use Schulkonsole::OVPN;
+use Schulkonsole::Sophomorix;
 
 my $this_file = 'start';
 
@@ -238,6 +239,11 @@ COMMANDS: {
 		$sk_session->mark_input_error('oldpassword');
 		$sk_session->set_status(
 			$sk_session->d()->get('Altes Passwort eingeben'), 1);
+	} elsif ($oldpassword ne $password) {
+		$error_cnt++;
+		$sk_session->mark_input_error('oldpassword');
+		$sk_session->set_status(
+			$sk_session->d()->get('Altes Passwort stimmt nicht'), 1);
 	}
 
 	if (not $newpassword) {
@@ -266,9 +272,8 @@ COMMANDS: {
 			'Neues Passwort nicht richtig wiederholt'), 1);
 	} else {
 		eval {
-			Schulkonsole::DB::change_password($uid,
-				$oldpassword,
-				$newpassword, $newpasswordagain);
+			Schulkonsole::Sophomorix::change_password($id,
+				$oldpassword, $newpassword);
 
 			$sk_session->save_password($newpasswordagain);
 

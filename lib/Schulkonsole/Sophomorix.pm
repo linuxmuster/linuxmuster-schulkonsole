@@ -165,6 +165,8 @@ $VERSION = 0.05;
 	read_add_file
 	read_kill_file
 	read_move_file
+
+	change_password
 );
 
 
@@ -2089,7 +2091,7 @@ sub passwords_reset {
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	print SCRIPTOUT "0\n", join("\n", @users), "\n\n";
+	print SCRIPTOUT "0\n0\n", join("\n", @users), "\n\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -2138,7 +2140,7 @@ sub passwords_random {
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	print SCRIPTOUT "2\n", join("\n", @users), "\n\n";
+	print SCRIPTOUT "2\n0\n", join("\n", @users), "\n\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -2193,7 +2195,7 @@ sub passwords_set {
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	print SCRIPTOUT "1\n$user_password\n", join("\n", @users), "\n\n";
+	print SCRIPTOUT "1\n0\n$user_password\n", join("\n", @users), "\n\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -4455,6 +4457,113 @@ sub project_set_quota {
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
 	print SCRIPTOUT "17\n$project\n$diskquota\n$mailquota\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+}
+
+
+
+
+=head3 C<change_password($id, $password, $newpassword)>
+
+Set password
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=item C<$newpassword>
+
+new password
+
+=back
+
+=head4 Description
+
+This wraps the commands
+C<sophomorix-passwd --user uid --pass password>,
+where uid is the UID of the user with the ID C<$id> and password is
+C<newpassword>.
+
+=cut
+
+sub change_password {
+	my $id = shift;
+	my $password = shift;
+	my $newpassword = shift;
+
+
+	my $pid = start_wrapper(Schulkonsole::Config::SETOWNPASSWORDAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "$newpassword\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+}
+
+
+
+
+=head3 C<change_room_password($id, $password, $newpassword)>
+
+Set password
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$newpassword>
+
+new password
+
+=item C<@rooms>
+
+The rooms where the workstations' passwords are to be set
+
+=back
+
+=head4 Description
+
+This wraps the commands
+C<sophomorix-passwd --room room1,room2,... --pass password>,
+where room1,room2,... is the rooms in C<@rooms> and password is
+C<$newpassword>.
+
+=cut
+
+sub change_room_password {
+	my $id = shift;
+	my $password = shift;
+	my $newpassword = shift;
+	my @rooms = @_;
+
+
+	my $pid = start_wrapper(Schulkonsole::Config::SETPASSWORDSAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "1\n1\n$newpassword\n", join("\n", @rooms), "\n\n";
 
 	buffer_input(\*SCRIPTIN);
 

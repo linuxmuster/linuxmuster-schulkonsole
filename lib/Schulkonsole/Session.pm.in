@@ -562,6 +562,7 @@ sub exit_with_login_page {
 	}
 
 
+	$this->set_var('version', $Schulkonsole::Config::_version);
 	Schulkonsole::Template::print_page($this,
 		$Schulkonsole::Config::_login_template, $action);
 

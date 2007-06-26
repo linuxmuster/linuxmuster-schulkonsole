@@ -4,6 +4,7 @@ use Schulkonsole::Config;
 use Schulkonsole::DB;
 use Schulkonsole::Firewall;
 use Schulkonsole::RoomSession;
+use Schulkonsole::Sophomorix;
 
 =head1 NAME
 
@@ -210,10 +211,14 @@ sub end_lesson_at {
 
 sub change_workstation_passwords {
 	my $this = shift;
+	my $id = shift;
 	my $password = shift;
+	my $newpassword = shift;
 
-	return Schulkonsole::DB::change_workstation_passwords(
-		$this->{_ROOMDATA}{name}, $password);
+	return Schulkonsole::Sophomorix::change_room_password(
+		$id, $password,
+		$newpassword,
+		$this->{_ROOMDATA}{name});
 }
 
 

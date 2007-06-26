@@ -64,6 +64,7 @@ if ($q->param('collectmove')) {
 		0);
 
 	$room_session->change_workstation_passwords(
+		$id, $password,
 		Schulkonsole::Room::random_password(12));
 
 	my $url = $q->url( -absolute => 1 );
