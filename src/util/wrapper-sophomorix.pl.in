@@ -1679,6 +1679,9 @@ $app_id == Schulkonsole::Config::SETOWNPASSWORDAPP and do {
 
 	my $opts = "--nofirstpassupdate --user \Q$$userdata{uid}\E --pass \Q$password";
 
+	# sophomorix-passwd cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
 	exec "$app $opts" or last SWITCH;
 };
 
