@@ -67,7 +67,6 @@ foreach my $group (('ALL', keys %$groups)) {
 exit -34 unless $app;
 
 
-my $opts;
 SWITCH: {
 
 =head3 internet_on_off
@@ -197,6 +196,22 @@ $app_id == Schulkonsole::Config::URLFILTERONOFFAPP and do {
 	# set ruid, so that ssh searches for .ssh/ in /root
 	$< = $>;
 	exec "$app $opts" or last SWITCH;
+};
+
+=head3 urlfilter_check
+
+numeric constant: C<Schulkonsole::Config::URLFILTERCHECKAPP>
+
+=head4 Description
+
+invokes C<check_urlfilter.sh>
+
+=cut
+
+$app_id == Schulkonsole::Config::URLFILTERCHECKAPP and do {
+	# set ruid, so that ssh searches for .ssh/ in /root
+	$< = $>;
+	exec "$app" or last SWITCH;
 };
 $app_id == Schulkonsole::Config::ALLONAPP and do {
 	my $room = <>;

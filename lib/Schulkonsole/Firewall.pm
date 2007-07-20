@@ -62,6 +62,7 @@ $VERSION = 0.03;
 	internet_off
 	intranet_on
 	intranet_off
+	urlfilter_check
 	urlfilter_on
 	urlfilter_off
 	all_on
@@ -129,12 +130,19 @@ sub stop_wrapper {
 	my $out = shift;
 	my $in = shift;
 	my $err = shift;
+	my $one_is_good = shift;
+
+	my $rv = undef;
+
 
 	my $re = waitpid $pid, 0;
 	if (    ($re == $pid or $re == -1)
 	    and $?) {
 		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
+		if (    $one_is_good
+		    and $error == -255) {
+			$rv = 1;
+		} elsif ($error < -127) {
 			die new Schulkonsole::Error(
 				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
 				$Schulkonsole::Config::_wrapper_firewall, $!,
@@ -159,6 +167,9 @@ sub stop_wrapper {
 			($input_buffer ? "Output: $input_buffer" : 'No Output'));
 	
 	undef $input_buffer;
+
+
+	return $rv;
 }
 
 
@@ -369,6 +380,51 @@ sub intranet_off {
 
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 	umask($umask);
+}
+
+
+
+
+=head3 C<urlfilter_check($id, $password)>
+
+Checks if URL-filter is active
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=back
+
+=head4 Return value
+
+True if active, false otherwise
+
+=head3 Description
+
+This wraps the command C<check_urlfilter.sh>.
+
+=cut
+
+sub urlfilter_check {
+	my $id = shift;
+	my $password = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::URLFILTERCHECKAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	buffer_input(\*SCRIPTIN);
+
+
+	return not stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN, 1);
 }
 
 

@@ -93,6 +93,8 @@ my $id = $sk_session->userdata('id');
 my $password = $sk_session->get_password();
 
 
+my $is_urlfilter_active
+	= Schulkonsole::Firewall::urlfilter_check($id, $password);
 
 
 # perform commands
@@ -154,10 +156,12 @@ if ($q->param('acceptfirewall')) {
 			push @block_hosts_intranet, $mac
 				unless $$blocked_hosts_intranet{$mac};
 		}
-		if ($q->param("$host;webfilter")) {
-			push @filter_hosts, $host if $$unfiltered_hosts{$mac};
-		} else {
-			push @unfilter_hosts, $host unless $$unfiltered_hosts{$mac};
+		if ($is_urlfilter_active) {
+			if ($q->param("$host;webfilter")) {
+				push @filter_hosts, $host if $$unfiltered_hosts{$mac};
+			} else {
+				push @unfilter_hosts, $host unless $$unfiltered_hosts{$mac};
+			}
 		}
 
 
@@ -373,7 +377,8 @@ if ($@) {
 eval {
 my $blocked_hosts_internet = Schulkonsole::Firewall::blocked_hosts_internet();
 my $blocked_hosts_intranet = Schulkonsole::Firewall::blocked_hosts_intranet();
-my $unfiltered_hosts = Schulkonsole::Firewall::unfiltered_hosts();
+my $unfiltered_hosts = ($is_urlfilter_active ?
+	Schulkonsole::Firewall::unfiltered_hosts() : ());
 my $printer_info = Schulkonsole::Printer::printer_info($id, $password);
 
 my $share_states = Schulkonsole::Sophomorix::share_states($id, $password,
@@ -571,6 +576,16 @@ True if intranet is configured to be started at boot time
 =cut
 
 $sk_session->set_var('intranetactive', $Schulkonsole::Config::_lml_start);
+
+
+
+=item C<urlfilteractive>
+
+True if URL-filter is active
+
+=cut
+
+$sk_session->set_var('urlfilteractive', $is_urlfilter_active);
 
 
 

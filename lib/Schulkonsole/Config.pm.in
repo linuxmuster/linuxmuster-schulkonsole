@@ -96,6 +96,7 @@ $VERSION = 0.06;
 
 	INTERNETONOFFAPP
 	INTRANETONOFFAPP
+	URLFILTERCHECKAPP
 	URLFILTERONOFFAPP
 	ALLONAPP
 	ALLONATAPP
@@ -186,6 +187,10 @@ C<internet_on_off>
 
 C<intranet_on_off>
 
+=item C<URLFILTERCHECKAPP>
+
+C<urlfilter_check>
+
 =item C<URLFILTERONOFFAPP>
 
 C<urlfilter_on_off>
@@ -205,9 +210,10 @@ C<all_on_at>
 use constant {
 	INTERNETONOFFAPP => 0,
 	INTRANETONOFFAPP => 1,
-	URLFILTERONOFFAPP => 2,
-	ALLONAPP => 3,
-	ALLONATAPP => 4,
+	URLFILTERCHECKAPP => 2,
+	URLFILTERONOFFAPP => 3,
+	ALLONAPP => 4,
+	ALLONATAPP => 5,
 };
 
 =head3 Constants for wrapper-printer
@@ -231,9 +237,9 @@ C<printer_allow_deny>
 =cut
 
 use constant {
-	PRINTERINFOAPP => 5,
-	PRINTERONOFFAPP => 6,
-	PRINTERALLOWDENYAPP => 7,
+	PRINTERINFOAPP => 6,
+	PRINTERONOFFAPP => 7,
+	PRINTERALLOWDENYAPP => 8,
 };
 
 =head3 Constants for wrapper-sophomorix
@@ -345,31 +351,31 @@ C<set_own_password>
 =cut
 
 use constant {
-	SHARESTATESAPP => 8,
-	SHARESONOFFAPP => 9,
-	LSHANDOUTAPP => 10,
-	LSCOLLECTAPP => 11,
-	HANDOUTAPP => 12,
-	COLLECTAPP => 13,
-	RESETROOMAPP => 14,
-	EDITOWNCLASSMEMBERSHIPAPP => 15,
-	PRINTCLASSAPP => 16,
-	PRINTTEACHERSAPP => 17,
-	SETPASSWORDSAPP => 18,
-	WWWPERMISSIONSAPP => 19,
-	PROJECTMEMBERSAPP => 20,
-	PROJECTCREATEDROPAPP => 21,
-	READSOPHOMORIXFILEAPP => 22,
-	WRITESOPHOMORIXFILEAPP => 23,
-	USERSCHECKAPP => 24,
-	USERSADDAPP => 25,
-	USERSMOVEAPP => 26,
-	USERSKILLAPP => 27,
-	USERSADDMOVEKILLAPP => 28,
-	TEACHINAPP => 29,
-	CHMODAPP => 30,
-	SETQUOTAAPP => 31,
-	SETOWNPASSWORDAPP => 32,
+	SHARESTATESAPP => 9,
+	SHARESONOFFAPP => 10,
+	LSHANDOUTAPP => 11,
+	LSCOLLECTAPP => 12,
+	HANDOUTAPP => 13,
+	COLLECTAPP => 14,
+	RESETROOMAPP => 15,
+	EDITOWNCLASSMEMBERSHIPAPP => 16,
+	PRINTCLASSAPP => 17,
+	PRINTTEACHERSAPP => 18,
+	SETPASSWORDSAPP => 19,
+	WWWPERMISSIONSAPP => 20,
+	PROJECTMEMBERSAPP => 21,
+	PROJECTCREATEDROPAPP => 22,
+	READSOPHOMORIXFILEAPP => 23,
+	WRITESOPHOMORIXFILEAPP => 24,
+	USERSCHECKAPP => 25,
+	USERSADDAPP => 26,
+	USERSMOVEAPP => 27,
+	USERSKILLAPP => 28,
+	USERSADDMOVEKILLAPP => 29,
+	TEACHINAPP => 30,
+	CHMODAPP => 31,
+	SETQUOTAAPP => 32,
+	SETOWNPASSWORDAPP => 33,
 };
 
 =head3 Constants for wrapper-cyrus
@@ -419,12 +425,12 @@ C<list_repository>
 =cut
 
 use constant {
-	CREATEDROPDBAPP => 33,
-	DROPDBUSERAPP => 34,
-	LISTDBAPP => 35,
-	LISTDBUSERAPP => 36,
-	CREATEDROPREPOSITORYAPP => 37,
-	LISTREPOSITORYAPP => 38,
+	CREATEDROPDBAPP => 34,
+	DROPDBUSERAPP => 35,
+	LISTDBAPP => 36,
+	LISTDBUSERAPP => 37,
+	CREATEDROPREPOSITORYAPP => 38,
+	LISTREPOSITORYAPP => 39,
 };
 
 
@@ -449,9 +455,9 @@ C<import_printers>
 =cut
 
 use constant {
-	WRITEFILEAPP => 39,
-	IMPORTWORKSTATIONSAPP => 40,
-	IMPORTPRINTERSAPP => 41,
+	WRITEFILEAPP => 40,
+	IMPORTWORKSTATIONSAPP => 41,
+	IMPORTPRINTERSAPP => 42,
 };
 
 
@@ -476,9 +482,9 @@ C<ovpn_download>
 =cut
 
 use constant {
-	OVPNCHECKAPP => 42,
-	OVPNDOWNLOADAPP => 43,
-	OVPNCREATEAPP => 44,
+	OVPNCHECKAPP => 43,
+	OVPNDOWNLOADAPP => 44,
+	OVPNCREATEAPP => 45,
 };
 
 
@@ -877,6 +883,7 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 %_root_app_name_ids = (
 	internet_on_off => INTERNETONOFFAPP,
 	intranet_on_off => INTRANETONOFFAPP,
+	urlfilter_check => URLFILTERCHECKAPP,
 	urlfilter_on_off => URLFILTERONOFFAPP,
 	all_on => ALLONAPP,
 	all_on_at => ALLONATAPP,
@@ -926,6 +933,7 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 @_root_apps = (
 	'/usr/share/linuxmuster/scripts/internet_on_off.sh',
 	'/usr/share/linuxmuster/scripts/intranet_on_off.sh',
+	'/usr/share/linuxmuster/scripts/check_urlfilter.sh',
 	'/usr/share/linuxmuster/scripts/urlfilter_on_off.sh',
 	1,
 	1,
