@@ -297,6 +297,7 @@ sub new_printer_lines_room {
 	my $printer = shift;
 	my $rooms = shift;
 
+	@$rooms = ('-') unless @$rooms;
 
 	my @lines;
 	my $done = 0;
@@ -335,6 +336,7 @@ sub new_printer_lines_host {
 	my $printer = shift;
 	my $hosts = shift;
 
+	@$hosts = ('-') unless @$hosts;
 
 	my @lines;
 	my $done = 0;

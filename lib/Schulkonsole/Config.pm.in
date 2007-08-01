@@ -1548,12 +1548,16 @@ sub printers {
 		next unless $printer;
 
 		my %rooms;
-		foreach my $room (split ',', $rooms) {
-			$rooms{$room} = 1;
+		if ($rooms ne '-') {
+			foreach my $room (split ',', $rooms) {
+				$rooms{$room} = 1;
+			}
 		}
 		my %hosts;
-		foreach my $host (split ',', $hosts) {
-			$hosts{$host} = 1;
+		if ($hosts ne '-') {
+			foreach my $host (split ',', $hosts) {
+				$hosts{$host} = 1;
+			}
 		}
 
 		$re{$printer} = {
