@@ -171,8 +171,12 @@ $app_id == Schulkonsole::Config::PRINTERALLOWDENYAPP and do {
 
 
 	foreach my $printer (keys %printer_users) {
-		system "$app -p\Q$printer\E -u deny:"
-			. join(',', @{ $printer_users{$printer} });
+		if ( @{ $printer_users{$printer} } ) {
+			system "$app -p\Q$printer\E -u deny:"
+				. join(',', @{ $printer_users{$printer} });
+		} else {
+			system "$app -p\Q$printer\E -u deny:none";
+		}
 	}
 
 	exit 0;
