@@ -480,8 +480,13 @@ sub all_on {
 				}
 				my @deny_users = map { quotemeta } keys %deny_users;
 	
-				system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::PRINTERALLOWDENYAPP]
-					. " -p\Q$printer\E -u deny:" . join(',', @deny_users);
+				if ( @deny_users ) {
+					system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::PRINTERALLOWDENYAPP]
+						. " -p\Q$printer\E -u deny:" . join(',', @deny_users);
+				} else {
+					system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::PRINTERALLOWDENYAPP]
+						. " -p\Q$printer\E -u deny:none";
+				}
 			}
 		}
 	}
