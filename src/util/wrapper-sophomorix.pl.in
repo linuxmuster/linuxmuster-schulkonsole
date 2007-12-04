@@ -1225,6 +1225,9 @@ numeric constant: C<Schulkonsole::Config::USERSCHECKAPP>
 =cut
 
 $app_id == Schulkonsole::Config::USERSCHECKAPP and do {
+	$< = $>;
+	$) = 0;
+	$( = $);
 	exec "$app" or last SWITCH;
 };
 
