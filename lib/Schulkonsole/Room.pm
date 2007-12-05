@@ -54,7 +54,20 @@ sub new {
 	}
 
 	$room = $session->param('room');
-	$room = $remote_room unless $room;
+	if (not $room) {
+		foreach my $classroom (@$classrooms) {
+			if ($classroom eq $remote_room) {
+				$session->param('room', $remote_room);
+				$room = $remote_room;
+				last;
+			}
+		}
+	}
+
+
+	return undef unless $room;
+
+
 
 	$id = $session->userdata('id');
 
