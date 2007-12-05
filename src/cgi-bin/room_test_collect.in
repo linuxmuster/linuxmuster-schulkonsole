@@ -51,11 +51,11 @@ if (   not $room_session
 my $workstations
 	= Schulkonsole::Config::workstations_room($room_session->info('name'));
 my $workstation_users = $room_session->workstation_users();
-my @workstation_user_ids;
+my %workstation_user_ids;
 foreach my $host (keys %$workstations) {
 	eval {
 	my $login_userdata = Schulkonsole::DB::get_userdata($host);
-	push @workstation_user_ids, $$login_userdata{id};
+	$workstation_user_ids{$host} = $$login_userdata{id};
 	};
 }
 
@@ -84,13 +84,16 @@ eval {
 my $user_share_files = Schulkonsole::Sophomorix::ls_collect(
 	$sk_session->userdata('id'),
 	$sk_session->get_password(),
-	@workstation_user_ids);
+	values %workstation_user_ids);
+
 
 my @array_overview_workstations;
 foreach my $workstation (sort keys %$workstations) {
 	my $first_login = 1;
 	if (    $$workstation_users{$workstation}
 	    and @{ $$workstation_users{$workstation} }) {
+		my $workstation_user_id = $workstation_user_ids{$workstation};
+
 		foreach my $userdata (sort { $$a{uid} cmp $$b{uid} }
 		                           @{ $$workstation_users{$workstation} }) {
 			my $overview_workstation = {
@@ -99,7 +102,7 @@ foreach my $workstation (sort keys %$workstations) {
 				workstationaccount => ($$userdata{uid} eq $workstation),
 				first => $first_login,
 				files => Schulkonsole::Sophomorix::create_file_list(
-				         	$$user_share_files{$$userdata{id}}),
+				         	$$user_share_files{$workstation_user_id}),
 			};
 			push @array_overview_workstations, $overview_workstation;
 
