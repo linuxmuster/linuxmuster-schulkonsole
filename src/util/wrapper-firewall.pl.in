@@ -322,9 +322,10 @@ sub all_on {
 		$opts = " --reset-room \Q$room";
 		system "$app $opts";
 
-		Schulkonsole::DB::change_workstation_passwords(
-			random_password());
 
+		$app = $Schulkonsole::Config::_root_apps[Schulkonsole::Config::SETPASSWORDSAPP];
+		$opts = " --hide --random --rooms \Q$room";
+		system "$app $opts";
 	}
 
 	my $oldsettings = $room_session->param('oldsettings');
