@@ -679,7 +679,16 @@ table.liste tr.editing {
 #projectshares tr > th:first-child + th + th,
 #projectshares tr > td:first-child + td + td,
 #projectshares tr > td:first-child[colspan="2"] + td,
-#printersedit tr > td:first-child + td {
+#printersedit tr > td:first-child + td,
+#classwww tr > th:first-child + th + th,
+#classwww tr > td:first-child + td + td,
+#classwww tr > td:first-child + td + td + td,
+#classwww tr > td:first-child[colspan="2"] + td,
+#projectwww tr > th:first-child + th + th,
+#projectwww tr > td:first-child + td + td,
+#projectwww tr > td:first-child + td + td + td,
+#projectwww tr > td:first-child[colspan="2"] + td
+{
 	text-align: center;
 }
 
