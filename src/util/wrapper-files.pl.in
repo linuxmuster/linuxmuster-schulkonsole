@@ -85,7 +85,7 @@ numeric constant: C<Schulkonsole::Config::WRITEFILEAPP>
 $app_id == Schulkonsole::Config::WRITEFILEAPP and do {
 	my $file = <>;
 	($file) = $file =~ /^(\d+)$/;
-	exit -120 unless defined $file;
+	exit -105 unless defined $file;
 
 	my $filename;
 	my $perm;
@@ -107,6 +107,11 @@ $app_id == Schulkonsole::Config::WRITEFILEAPP and do {
 		$perm = 0755 unless -e $filename;
 		last SWITCHWRITEFILE;
 	};
+	$file == 4 and do {
+		$filename = $Schulkonsole::Config::_preferences_conf_file;
+		$perm = 0644 unless -e $filename;
+		last SWITCHWRITEFILE;
+	};
 	}
 
 	$< = $>;
@@ -114,7 +119,7 @@ $app_id == Schulkonsole::Config::WRITEFILEAPP and do {
 	$( = $);
 	umask(022);
 
-	open FILE, ">$filename" or exit -121;
+	open FILE, ">$filename" or exit -106;
 	flock FILE, 2;
 	seek FILE, 0, 0;
 
@@ -126,7 +131,7 @@ $app_id == Schulkonsole::Config::WRITEFILEAPP and do {
 		chmod $perm, $filename;
 	}
 
-	close FILE or exit -123;
+	close FILE;
 
 	exit 0;
 };
@@ -147,7 +152,7 @@ $app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
 		close STDERR;
 
 		my $lockfile = Schulkonsole::Config::lockfile('import_workstations');
-		open LOCK, ">>$lockfile" or exit -121;
+		open LOCK, ">>$lockfile" or exit -106;
 		flock LOCK, 2;
 		seek LOCK, 0, 0;
 		truncate LOCK, 0;
@@ -179,7 +184,7 @@ $app_id == Schulkonsole::Config::IMPORTPRINTERSAPP and do {
 		close STDERR;
 
 		my $lockfile = Schulkonsole::Config::lockfile('import_printers');
-		open LOCK, ">>$lockfile" or exit -121;
+		open LOCK, ">>$lockfile" or exit -106;
 		flock LOCK, 2;
 		seek LOCK, 0, 0;
 		truncate LOCK, 0;

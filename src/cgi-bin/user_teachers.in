@@ -55,6 +55,7 @@ sub get_teachers {
 	my $teachers_lines
 		= Schulkonsole::Sophomorix::read_teachers_file($id, $password);
 
+	my $cnt = 1;
 	foreach my $line (@$teachers_lines) {
 		next if $line =~ /^#/;
 
@@ -64,19 +65,25 @@ sub get_teachers {
 
 		my ($key) = $login =~ /^\s*(.+?)\s*$/;
 
-		if ($key) {
-			$teachers{$key} = {
-				group => $group,
-				surname => $surname,
-				firstname => $firstname,
-				birthdate => $birthdate,
-				login => $login,
-				firstpassword => $firstpassword,
-				short => $short,
-				diskquota => $diskquota,
-				mailquota => $mailquota,
-			};
+		my $error = 0;
+		if (not $key) {
+			$key = "\#$cnt $surname $firstname";
+			$error = 1;
+			$cnt++;
 		}
+
+		$teachers{$key} = {
+			group => $group,
+			surname => $surname,
+			firstname => $firstname,
+			birthdate => $birthdate,
+			login => $login,
+			firstpassword => $firstpassword,
+			short => $short,
+			diskquota => $diskquota,
+			mailquota => $mailquota,
+			error => $error,
+		};
 	}
 	};
 
@@ -87,6 +94,7 @@ sub get_teachers {
 
 sub put_teachers {
 	my $teachers = shift;
+
 
 	my @lines;
 	foreach my $teacher (sort {
@@ -140,8 +148,11 @@ $q->param('teachersupload') and do {
 			Schulkonsole::Sophomorix::write_teachers_file($id, $password,
 			                                              \@lines);
 
-			$sk_session->set_status($sk_session->d()->get(
-				'Datei hochgeladen'), 0);
+			$sk_session->set_status(
+				  $sk_session->d()->get('Datei hochgeladen.')
+				. ' '
+				.  $sk_session->d()->get('Die Benutzerdaten m&uuml;ssen noch in das System &uuml;bernommen werden.'),
+				0);
 
 		} else {
 			$sk_session->set_status($sk_session->d()->get(
@@ -155,36 +166,65 @@ $q->param('acceptteachers') and do {
 
 	my @errors;
 	foreach my $param ($q->param) {
-		if (my ($login, $action) = $param =~ /^(.+)_(surname|firstname|birthdate|delete)$/) {
+		if (my ($key, $action) = $param =~ /^(.+)_(surname|firstname|birthdate|delete|login)$/) {
 			my $value = $q->param($param);
-			if ($$teachers{$login}) {
-				if (   not $$teachers{$login}{$action}
-				    or $$teachers{$login}{$action} !~ /^$value\s*$/) {
+			if ($$teachers{$key}) {
+				if (   not $$teachers{$key}{$action}
+				    or $$teachers{$key}{$action} !~ /^$value\s*$/) {
 
-					if (    $action =~ /^b/
-					    and $value !~ /^\s*\d{1,2}\.\d{1,2}\.\d{4}\s*$/) {
-						push @errors, sprintf($sk_session->d()->get(
-							'ung&uuml;tiges Geburtsdatum f&uuml;r %s'), $login);
+					my $is_error = 0;
+					CHECKVALUE: {
+					$action =~ /^b/ and do {
+						if ($value !~ /^\s*\d{1,2}\.\d{1,2}\.\d{4}\s*$/) {
+							push @errors, sprintf($sk_session->d()->get(
+								'ung&uuml;tiges Geburtsdatum f&uuml;r %s'),
+								$key);
 
-						$sk_session->mark_input_error("${login}_birthdate");
-					} else {
-						$$teachers{$login}{$action} = $value;
+							$sk_session->mark_input_error("${key}_birthdate");
+
+							$is_error = 1;
+						}
+
+						last CHECKVALUE;
+					};
+					$action =~ /^l/ and do {
+						if ($$teachers{$value}) {
+							push @errors, sprintf($sk_session->d()->get(
+								'Login %s schon vorhanden'), $value);
+
+							$sk_session->mark_input_error("${key}_login");
+
+							$is_error = 1;
+						} else {
+							$$teachers{$key}{error} = 0;
+						}
+
+						last CHECKVALUE;
+					};
+
 					}
+
+					$$teachers{$key}{$action} = $value unless $is_error;
 				}
 			} else {
 				push @errors, sprintf($sk_session->d()->get(
-					'Lehrer %s unbekannt'), $login);
+					'Lehrer %s unbekannt'), $key);
 			}
 		}
 	}
+
+
 
 	if (@errors) {
 		$sk_session->set_status(join(', ', @errors), 1);
 	} else {
 		put_teachers($teachers);
 
-		$sk_session->set_status($sk_session->d()->get(
-			'&Auml;nderungen &uuml;bernommen'), 0);
+		$sk_session->set_status(
+			  $sk_session->d()->get('&Auml;nderungen &uuml;bernommen')
+			. ' '
+			. $sk_session->d()->get('Die Benutzerdaten m&uuml;ssen noch in das System &uuml;bernommen werden.'),
+			0);
 	}
 
 
@@ -275,16 +315,30 @@ if ($@) {
 
 my $teachers = get_teachers();
 my @teachers;
+my @error_teachers;
 foreach my $teacher (sort keys %$teachers) {
-	push @teachers, {
-			login => $$teachers{$teacher}{login},
-			surname => $$teachers{$teacher}{surname},
-			firstname => $$teachers{$teacher}{firstname},
-			birthdate => $$teachers{$teacher}{birthdate},
-			short => ($$teachers{$teacher}{short} ne 'usertoken' ?
-			          $$teachers{$teacher}{short}
-			        : $$teachers{$teacher}{login}),
-		};
+	if ($$teachers{$teacher}{error}) {
+		push @error_teachers, {
+				key => $teacher,
+				login => $$teachers{$teacher}{login},
+				surname => $$teachers{$teacher}{surname},
+				firstname => $$teachers{$teacher}{firstname},
+				birthdate => $$teachers{$teacher}{birthdate},
+				short => ($$teachers{$teacher}{short} ne 'usertoken' ?
+				          $$teachers{$teacher}{short}
+				        : $$teachers{$teacher}{login}),
+			};
+	} else {
+		push @teachers, {
+				login => $$teachers{$teacher}{login},
+				surname => $$teachers{$teacher}{surname},
+				firstname => $$teachers{$teacher}{firstname},
+				birthdate => $$teachers{$teacher}{birthdate},
+				short => ($$teachers{$teacher}{short} ne 'usertoken' ?
+				          $$teachers{$teacher}{short}
+				        : $$teachers{$teacher}{login}),
+			};
+	}
 }
 
 =head3 Template variables specific to user_teachers.shtml
@@ -323,6 +377,14 @@ User's sign
 
 $sk_session->set_var('teachers', \@teachers);
 
+$sk_session->set_var('error_teachers', \@error_teachers);
+
+
+
+if (    not @teachers
+    and not @error_teachers) {
+	$sk_session->set_var('teachersuploadallowed', 1);
+}
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);

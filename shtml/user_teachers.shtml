@@ -6,7 +6,7 @@
 <!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
-<body onload="timer_step()">
+<body>
 
 <!--#include file="header.shtml.inc" -->
 
@@ -18,47 +18,6 @@
 
 <h2><gettext>Benutzerverwaltung</gettext> :: <gettext>Lehrerliste pflegen</gettext></h2>
 
-
-<!--#if expr="$teachers" -->
-
-<form method="post">
-
-<h3><gettext>Editieren</gettext></h3>
-
-<table id="teachersedit" class="liste">
-<tr>
-<th><gettext>Nachname</gettext></th>
-<th><gettext>Vorname</gettext></th>
-<th><gettext>Geburtsdatum</gettext></th>
-<th><gettext>K&uuml;rzel</gettext></th>
-</tr>
-<!--#if expr="$loop_teachers" -->
-<tr>
-<td><input name="${teachers{login}}_surname" value="$teachers{surname}"></td>
-<td><input name="${teachers{login}}_firstname" value="$teachers{firstname}"></td>
-<td><input name="${teachers{login}}_birthdate" value="$teachers{birthdate}"></td>
-<td><!--#echo var="teachers{short}" --></td>
-</tr>
-<!--#endif -->
-</table>
-
-<p><input type="submit" name="acceptteachers" value="&Auml;nderungen &uuml;bernehmen"></p>
-
-</form>
-
-<!--#else -->
-
-<form method="post" enctype="multipart/form-data">
-<h3><label for="teachersfilename"><gettext>Datei importieren</gettext></label></h3>
-<p>
-<input type="file" id="teachersfilename" name="teachersfilename">
-<input type="submit" name="teachersupload" value="Hochladen">
-</p>
-</form>
-
-<!--#endif -->
-
-<hr>
 
 <form method="post">
 <h3><gettext>Lehrer hinzuf&uuml;gen</gettext></h3>
@@ -78,11 +37,93 @@
 </tr>
 </table>
 
-<p><input type="submit" name="newteacher" value="&Auml;nderungen &uuml;bernehmen"></p>
+<p><input type="submit" name="newteacher" value="&Auml;nderungen in Lehrerliste speichern"></p>
 </form>
 
 
 <hr>
+
+
+<!--#if expr="$teachersuploadallowed" -->
+
+<form method="post" enctype="multipart/form-data">
+<h3><label for="teachersfilename"><gettext>Datei importieren</gettext></label></h3>
+<p>
+<input type="file" id="teachersfilename" name="teachersfilename">
+<input type="submit" name="teachersupload" value="Hochladen">
+</p>
+</form>
+
+<!--#else -->
+
+<!--#if expr="$error_teachers" -->
+
+<form method="post">
+
+
+<h3><gettext>Fehler korrigieren</gettext></h3>
+
+<table id="errorteachersedit" class="liste">
+<tr>
+<th><gettext>Nachname</gettext></th>
+<th><gettext>Vorname</gettext></th>
+<th><gettext>Geburtsdatum</gettext></th>
+<th><gettext>Login</gettext></th>
+</tr>
+<!--#if expr="$loop_error_teachers" -->
+<tr>
+<td><input name="${error_teachers{key}}_surname" value="$error_teachers{surname}"></td>
+<td><input name="${error_teachers{key}}_firstname" value="$error_teachers{firstname}"></td>
+<td><input name="${error_teachers{key}}_birthdate" value="$error_teachers{birthdate}"></td>
+<td><input name="${error_teachers{key}}_login" value="$error_teachers{login}"></td>
+</tr>
+<!--#endif -->
+</table>
+
+<p><input type="submit" name="acceptteachers" value="&Auml;nderungen in Lehrerliste speichern"></p>
+
+</form>
+
+<hr>
+
+<!--#endif -->
+
+
+<!--#if expr="$teachers" -->
+
+<form method="post">
+
+<h3><gettext>Editieren</gettext></h3>
+
+
+<table id="teachersedit" class="liste">
+<tr>
+<th><gettext>Nachname</gettext></th>
+<th><gettext>Vorname</gettext></th>
+<th><gettext>Geburtsdatum</gettext></th>
+<th><gettext>K&uuml;rzel</gettext></th>
+</tr>
+<!--#if expr="$loop_teachers" -->
+<tr>
+<td><input name="${teachers{login}}_surname" value="$teachers{surname}"></td>
+<td><input name="${teachers{login}}_firstname" value="$teachers{firstname}"></td>
+<td><input name="${teachers{login}}_birthdate" value="$teachers{birthdate}"></td>
+<td><!--#echo var="teachers{short}" --></td>
+</tr>
+<!--#endif -->
+</table>
+
+<p><input type="submit" name="acceptteachers" value="&Auml;nderungen in Lehrerliste speichern"></p>
+
+</form>
+
+<!--#endif -->
+
+<!--#endif -->
+
+
+<hr>
+
 
 <form method="post">
 <h3><gettext>Lehrer entfernen</gettext></h3>
@@ -102,7 +143,7 @@
 <!--#endif -->
 </table>
 
-<p><input type="submit" name="acceptteachers" value="&Auml;nderungen &uuml;bernehmen"></p>
+<p><input type="submit" name="acceptteachers" value="&Auml;nderungen in Lehrerliste speichern"></p>
 </form>
 
 

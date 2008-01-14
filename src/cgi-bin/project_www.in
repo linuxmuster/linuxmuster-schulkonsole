@@ -147,15 +147,7 @@ if (Schulkonsole::WWW::is_active()) {
 			my $upload = ($q->param("$user;upload") ? 1 : 0);
 
 			if ($$member_userdatas{$user}{gid} eq 'teachers') {
-				if (   $public != $$teacher_permissions{$user}{public}
-				    or (    $upload
-					    and not $$teacher_permissions{$user}{upload})) {
-					if ($public) {
-						push @public_upload_users, $user;
-					} else {
-						push @private_upload_users, $user;
-					}
-				}
+				next;
 			} else {
 				if (   $public != $$student_permissions{$user}{public}
 				    or $upload != $$student_permissions{$user}{upload}) {

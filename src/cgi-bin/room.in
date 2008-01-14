@@ -97,12 +97,12 @@ if ($room_session) {
 			if (not $room_session->param('edit')) {
 				$sk_session->set_status(
 					$sk_session->d()->get(
-						"In diesem Raum findet kein Unterricht statt."),
+						'In diesem Raum findet kein Unterricht statt.'),
 					1);
 			} else {
 				$sk_session->set_status(
 					$sk_session->d()->get(
-						"Sie halten keinen Unterricht in diesem Raum."),
+						'Sie halten keinen Unterricht in diesem Raum.'),
 					1);
 			}
 			last COMMANDS;

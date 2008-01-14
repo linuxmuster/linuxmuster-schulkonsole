@@ -149,11 +149,31 @@ sub start_lesson {
 
 
 
-	my $blocked_hosts_internet
+	my $blocked_hosts_internet_all
 		= Schulkonsole::Firewall::blocked_hosts_internet();
-	my $blocked_hosts_intranet
+	my $blocked_hosts_intranet_all
 		= Schulkonsole::Firewall::blocked_hosts_intranet();
-	my $unfiltered_hosts = Schulkonsole::Firewall::unfiltered_hosts();
+	my $unfiltered_hosts_all = Schulkonsole::Firewall::unfiltered_hosts();
+
+	my %blocked_hosts_internet;
+	my %blocked_hosts_intranet;
+	my %unfiltered_hosts;
+
+	my $workstations =
+		Schulkonsole::Config::workstations_room($this->{_ROOMDATA}{name});
+	foreach my $workstation (keys %$workstations) {
+		my ($mac) = $$workstations{$workstation}{mac} =~ /^(\w{2}(?::\w{2}){5})$/;
+		my ($host) = $$workstations{$workstation}{ip} =~ /^([\w.-]+)$/i;
+
+		$blocked_hosts_internet{$mac} = 1
+			if ($$blocked_hosts_internet_all{$mac});
+		$blocked_hosts_intranet{$mac} = 1
+			if ($$blocked_hosts_intranet_all{$mac});
+		$unfiltered_hosts{$mac} = 1
+			if ($$unfiltered_hosts_all{$mac});
+	}
+
+	
 
 	my $printers
 		= Schulkonsole::Config::printers_room($this->{_ROOMDATA}{name});
@@ -166,9 +186,9 @@ sub start_lesson {
 
 
 	$this->param('oldsettings', {
-		blocked_hosts_internet => $blocked_hosts_internet,
-		blocked_hosts_intranet => $blocked_hosts_intranet,
-		unfiltered_hosts => $unfiltered_hosts,
+		blocked_hosts_internet => \%blocked_hosts_internet,
+		blocked_hosts_intranet => \%blocked_hosts_intranet,
+		unfiltered_hosts => \%unfiltered_hosts,
 		printers_accept => \%printers_accept,
 	});
 
@@ -341,6 +361,19 @@ True if files in the exam have been handed out
 
 True if the passwords of the workstations have been changed for the exam
 
+=item C<todo_test_handout>
+
+True if the next step is to hand out files
+
+=item C<todo_test_password>
+
+True if the next step is to change the passwords of the workstations
+for the exam
+
+=item C<todo_test_collect>
+
+True if the next step is to collect files
+
 =back
 
 =cut
@@ -394,6 +427,15 @@ sub set_vars {
 	and $session->set_var('done_test_handout', 1)
 	and $test_step > 2
 	and $session->set_var('done_test_password', 1);
+
+
+	if ($test_step == 1) {
+		$session->set_var('todo_test_handout', 1)
+	} elsif ($test_step == 2) {
+		$session->set_var('todo_test_password', 1)
+	} elsif ($test_step == 3) {
+		$session->set_var('todo_test_collect', 1)
+	}
 
 }
 

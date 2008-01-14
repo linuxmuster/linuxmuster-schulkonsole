@@ -56,6 +56,7 @@ $VERSION = 0.06;
 	groups_classes
 
 	classes
+	all_classes
 	get_classdata
 	get_class_userdatas
 	projects
@@ -429,12 +430,12 @@ sub groups_classes {
 
 =head3 C<classes()>
 
-Returns all classes
+Returns all visible classes
 
 =head4 Description
 
-Returns all classes as a
-reference to a hash with the class names as keys and the class data as
+Returns all visible classes as a
+reference to a hash with the class GIDs as keys and the class data as
 values.
 
 =cut
@@ -444,6 +445,42 @@ sub classes {
 
 	my $prepare_classdata
 		= 'SELECT * FROM classdata WHERE type = \'adminclass\'';
+	my $sth = $_dbh->prepare($prepare_classdata)
+		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+			$prepare_classdata);
+	$sth->execute
+		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+			$prepare_classdata);
+
+	while (my $row = $sth->fetchrow_hashref) {
+		$classs{$$row{gid}} = $row;
+	}
+
+
+	return \%classs;
+}
+
+
+
+
+=head3 C<all_classes()>
+
+Returns all classes
+
+=head4 Description
+
+Returns all visible and hidden classes as a
+reference to a hash with the class GIDs as keys and the class data as
+values.
+
+=cut
+
+sub all_classes {
+	my %classs;
+
+	my $prepare_classdata
+		=   'SELECT * FROM classdata '
+		  . 'WHERE type = \'adminclass\' OR type = \'hiddenclass\'';
 	my $sth = $_dbh->prepare($prepare_classdata)
 		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
 			$prepare_classdata);
@@ -560,7 +597,7 @@ Returns all projects
 =head4 Description
 
 Returns all projects as a
-reference to a hash with the project names as keys and the class data as
+reference to a hash with the project names as keys and the project data as
 values.
 
 =cut

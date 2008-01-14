@@ -202,6 +202,22 @@ $q->param('addrows') and do {
 
 	last COMMANDS;
 };
+$q->param('import') and do {
+	if (Schulkonsole::Config::count_unimported_workstations()) {
+		my $id = $sk_session->userdata('id');
+		my $password = $sk_session->get_password();
+
+		Schulkonsole::Files::import_workstations($id, $password);
+
+		$sk_session->set_status(
+			$sk_session->d()->get('Workstations werden importiert'), 0);
+	} else {
+		$sk_session->set_status(
+			$sk_session->d()->get('Keine Workstations zu importieren'), 1);
+	}
+
+	last COMMANDS;
+};
 }
 };
 if ($@) {
@@ -252,6 +268,26 @@ An array to produce additional empty lines
 
 $sk_session->set_var('add', [ 1 .. $additional_lines_cnt ]);
 
+
+
+my ($unimported, $comments) =
+	Schulkonsole::Config::count_unimported_workstations();
+
+=item C<unimported>
+
+True if not all configured workstations were imported into the system
+
+=cut
+
+$sk_session->set_var('unimported', $unimported);
+
+=item C<comments>
+
+True if the workstations file contains comments
+
+=cut
+
+$sk_session->set_var('comments', $comments);
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);
@@ -314,6 +350,8 @@ sub new_workstations_lines {
 	if (open WORKSTATIONS, "<$Schulkonsole::Config::_workstations_file") {
 		my %cnt;
 		while (<WORKSTATIONS>) {
+			next if /^#/;
+
 			my ($room, $host, $group, $mac, $ip,
 			    $mask, $dummy1, $dummy2, $dummy3, $dummy4) = split ';';
 

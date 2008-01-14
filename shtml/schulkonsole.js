@@ -1,5 +1,32 @@
 var timer = 1801;
 
+
+
+window.onload = function()
+{
+	var element = document.getElementById("timer");
+	if (element && element.firstChild) {
+		timer = max_idle_time(element.firstChild.nodeValue);
+	}
+
+	timer_step();
+}
+
+
+
+function max_idle_time(hh_mm_ss)
+{
+	var h_m_s = hh_mm_ss.split(":");
+	var h = h_m_s[0] * 1;
+	var m = h_m_s[1] * 1;
+	var s = h_m_s[2] * 1;
+
+
+	return ((h * 60) + m * 1) * 60 + s + 1;
+}
+
+
+
 function timer_step() {
 	timer -= 1;
 
@@ -42,6 +69,7 @@ function command_name(name)
 
 	return "";
 }
+
 
 
 function check_uncheck(command_button)

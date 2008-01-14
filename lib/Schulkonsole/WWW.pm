@@ -130,7 +130,7 @@ sub student_permissions {
 
 =head2 Functions
 
-=head3 C<teacher_permissions(@students)>
+=head3 C<teacher_permissions(@teachers)>
 
 Get the access permissions to teachers' WWW directories
 
@@ -151,7 +151,7 @@ C<{ public => 0|1, upload => 0|1 }> as a value.
 
 =head3 Description
 
-Examines the access permissions to the WWW directories of teachers of a class
+Examines the access permissions to the WWW directories of teachers
 and returns the result
 
 =cut

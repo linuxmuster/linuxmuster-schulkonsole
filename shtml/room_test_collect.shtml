@@ -6,7 +6,7 @@
 <!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
-<body onload="timer_step()">
+<body>
 
 <!--#include file="header.shtml.inc" -->
 
@@ -71,6 +71,9 @@
 
 <p><input type="submit" name="collectcopy" value="Kopien einsammeln">
    <input type="submit" name="collectmove" value="Einsammeln und beenden"></p>
+
+
+<p><input type="submit" value="Aktualisieren"></p>
 
 </form>
 

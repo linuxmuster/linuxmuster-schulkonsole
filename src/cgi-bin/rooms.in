@@ -122,6 +122,16 @@ True if the room is available
 
 $sk_session->set_var('rooms', \@rooms_array);
 
+=item C<unimported>
+
+True if not all configured workstations were imported into the system
+
+=cut
+
+$sk_session->set_var('unimported',
+	Schulkonsole::Config::count_unimported_workstations());
+
+
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);

@@ -67,8 +67,58 @@ if (   not $project
 
 
 
+my $admins = Schulkonsole::DB::project_admins($$projects{$project}{id});
+my $is_admin = $$admins{$sk_session->userdata('uidnumber')};
+my $is_joinable = $$projects{$project}{joinable};
+
 eval {
 COMMANDS: {
+
+$q->param('projectisopenaccept') and do {
+	if (not $is_admin) {
+		$sk_session->set_status($sk_session->d()->get(
+				'Sie sind kein Administrator dieser Klasse'),
+			1);
+		last COMMANDS;
+	}
+
+	if ($q->param('projectisopen')) {
+		if (not $is_joinable) {
+			Schulkonsole::Sophomorix::set_project_joinable(
+				$sk_session->userdata('id'),
+				$sk_session->get_password(),
+				$project,
+				1);
+			$sk_session->set_status($sk_session->d()->get(
+					'Das Projekt wurde ge&ouml;ffnet'),
+				0);
+			$is_joinable = 1;
+		} else {
+			$sk_session->set_status($sk_session->d()->get(
+					'Das Projekt ist bereits ge&ouml;ffnet'),
+				1);
+		}
+	} else {
+		if ($is_joinable) {
+			Schulkonsole::Sophomorix::set_project_joinable(
+				$sk_session->userdata('id'),
+				$sk_session->get_password(),
+				$project,
+				0);
+			$is_joinable = 0;
+			$sk_session->set_status($sk_session->d()->get(
+					'Das Projekt wurde geschlossen'),
+				0);
+		} else {
+			$sk_session->set_status($sk_session->d()->get(
+					'Das Projekt ist bereits geschlossen'),
+				1);
+		}
+	}
+
+
+	last COMMANDS;
+};
 
 foreach my $param ($q->param) {
 	if (my ($member, $action, $scope, @rest) = $param
@@ -97,10 +147,6 @@ foreach my $param ($q->param) {
 				}
 			}
 		} else {	# remove
-			my $is_admin = Schulkonsole::DB::is_project_admin(
-			    	$$projects{$project}{id},
-					$sk_session->userdata('uidnumber'));
-
 			my $id = $sk_session->userdata('id');
 			my $password = $sk_session->get_password();
 
@@ -212,7 +258,6 @@ if ($@) {
 
 
 
-my $admins = Schulkonsole::DB::project_admins($$projects{$project}{id});
 my $member_userdatas
 	= Schulkonsole::DB::project_user_members($$projects{$project}{gidnumber});
 my $member_classdatas
@@ -225,14 +270,25 @@ my $member_quotaroots = Schulkonsole::Cyrus::quota(keys %$member_userdatas);
 
 
 
+if ($$admins{$sk_session->userdata('uidnumber')}) {
+
 =item C<isadmin>
 
 Indicates that the current user is an administrator of the selected project
+
+=cut
+
+	$sk_session->set_var('isadmin', 1);
+
+=item C<joinable>
+
+Indicates that the selected project is open
 (and adding new members is possible)
 
 =cut
 
-$sk_session->set_var('isadmin', $$admins{$sk_session->userdata('uidnumber')});
+	$sk_session->set_var('isopen', $is_joinable);
+}
 
 
 my @student_members;
@@ -582,6 +638,7 @@ foreach my $project (sort {
 		gid => $$member_projectdatas{$project}{gid},
 		name => $$member_projectdatas{$project}{displayname},
 		ismember => defined $$projects{$project},
+		isopen => $$member_projectdatas{$project}{joinable},
 	};
 	push @project_members, $member;
 }

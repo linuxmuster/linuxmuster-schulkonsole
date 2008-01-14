@@ -6,7 +6,7 @@
 <!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
-<body onload="timer_step()">
+<body>
 
 <!--#include file="header.shtml.inc" -->
 
@@ -37,8 +37,21 @@
 
 <h3><gettext>Ausgew&auml;hltes Projekt:</gettext> <!--#echo var="project" --></h3>
 
+<!--#if expr="$isadmin" -->
+
+<form method="post">
+<p><label for="projectisopen">Offenes Projekt</label>
+<!--#if expr="$isopen" -->
+<input type="checkbox" id="projectisopen" name="projectisopen" checked><br>
+<!--#else -->
+<input type="checkbox" id="projectisopen" name="projectisopen"><br>
+<!--#endif -->
+<input type="submit" name="projectisopenaccept" value="&Auml;nderungen speichern">
+</p>
+</form>
 
 <!--#if expr="$isadmin" -->
+<!--#if expr="$isopen" -->
 <h3><gettext>Mitglieder hinzuf&uuml;gen</gettext></h3>
 
 <form method="post" action="project_addmembers">
@@ -57,6 +70,11 @@
 </form>
 <!--#endif -->
 
+<!--#else -->
+<p><gettext>Das Projekt ist geschlossen.</gettext></p>
+<!--#endif -->
+<!--#endif -->
+
 
 <form method="post">
 
@@ -67,7 +85,7 @@
 <table id="projectmemberclasses" class="liste">
 <tr>
 <th><gettext>Klassenname</gettext></th>
-<!--#if expr="$isadmin" -->
+<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
 <!--#endif -->
 </tr>
@@ -79,14 +97,14 @@
 <!--#else -->
 <td><!--#echo var="membersclasses{name}" --></td>
 <!--#endif -->
-<!--#if expr="$isadmin" -->
+<!--#if expr="$isopen" -->
 <td><input type="submit" name="${membersclasses{gid}}_removeclass" value="Mitgliedschaft beenden"></td>
-</tr>
 <!--#endif -->
+</tr>
 <!--#endif -->
 <tr>
 <th><gettext>Klassenname</gettext></th>
-<!--#if expr="$isadmin" -->
+<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
 <!--#endif -->
 </tr>
@@ -103,7 +121,8 @@
 <table id="projectmemberprojects" class="liste">
 <tr>
 <th><gettext>Projektname</gettext></th>
-<!--#if expr="$isadmin" -->
+<th><gettext>Offenes Projekt</gettext></th>
+<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
 <!--#endif -->
 </tr>
@@ -115,14 +134,18 @@
 <!--#else -->
 <td><!--#echo var="membersprojects{name}" --></td>
 <!--#endif -->
-<!--#if expr="$isadmin" -->
+<!--#if expr="$isopen" -->
+<td><input type="checkbox" disabled checked></td>
 <td><input type="submit" name="${membersprojects{gid}}_removeproject" value="Mitgliedschaft beenden"></td>
+<!--#else -->
+<td></td>
+<!--#endif -->
 </tr>
 <!--#endif -->
-<!--#endif -->
 <tr>
-<th colspan="2"><gettext>Projektname</gettext></th>
-<!--#if expr="$isadmin" -->
+<th><gettext>Projektname</gettext></th>
+<th><gettext>Offenes Projekt</gettext></th>
+<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
 <!--#endif -->
 </tr>
@@ -141,7 +164,7 @@
 <th><gettext>Login</gettext></th>
 <th><gettext>Name</gettext></th>
 <th><gettext>Projektleitung</gettext></th>
-<!--#if expr="$isadmin" -->
+<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
 <!--#endif -->
 </tr>
@@ -155,7 +178,7 @@
 <!--#else -->
 <td><input type="checkbox" disabled></td>
 <!--#endif -->
-<!--#if expr="$isadmin" -->
+<!--#if expr="$isopen" -->
 <td><input type="submit" name="${membersteachers{login}}_removeuser" value="Mitgliedschaft beenden"></td>
 <!--#endif -->
 </tr>
@@ -164,7 +187,7 @@
 <th><gettext>Login</gettext></th>
 <th><gettext>Name</gettext></th>
 <th><gettext>Projektleitung</gettext></th>
-<!--#if expr="$isadmin" -->
+<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
 <!--#endif -->
 </tr>
@@ -185,7 +208,7 @@
 <th><gettext>Festplattenquota</gettext></th>
 <th><gettext>E-Mailquota</gettext></th>
 <th><gettext>Klasse</gettext></th>
-<!--#if expr="$isadmin" -->
+<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
 <!--#endif -->
 </tr>
@@ -252,7 +275,7 @@
 </ul>
 <!--#else -->-<!--#endif --></td>
 <td><!--#echo var="membersstudents{class}" --></td>
-<!--#if expr="$isadmin" -->
+<!--#if expr="$isopen" -->
 <td><input type="submit" name="${membersstudents{login}}_removeuser" value="Mitgliedschaft beenden"></td>
 <!--#endif -->
 </tr>
@@ -263,7 +286,7 @@
 <th><gettext>Festplattenquota</gettext></th>
 <th><gettext>E-Mailquota</gettext></th>
 <th><gettext>Klasse</gettext></th>
-<!--#if expr="$isadmin" -->
+<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
 <!--#endif -->
 </tr>

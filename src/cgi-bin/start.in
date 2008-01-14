@@ -164,6 +164,7 @@ use Schulkonsole::Info;
 use Schulkonsole::Collab;
 use Schulkonsole::OVPN;
 use Schulkonsole::Sophomorix;
+use Schulkonsole::WWW;
 
 my $this_file = 'start';
 
@@ -187,14 +188,23 @@ if ($@) {
 	$sk_session->standard_error_handling($this_file, $@);
 }
 
+my $is_www_active = Schulkonsole::WWW::is_active();
+
+
 
 my $is_allow_drop_db = 0;
+my $is_allow_www_permissions = 0;
+my $done_cnt = 0;
 my $permissions = Schulkonsole::Config::permissions_apps();
 my $groups = $sk_session->groups();
 foreach my $group (keys %$groups) {
 	if ($$permissions{$group}{drop_db_user}) {
 		$is_allow_drop_db = 1;
-		last;
+		last if ++$done_cnt == 2;
+	}
+	if ($$permissions{$group}{www_permissions}) {
+		$is_allow_www_permissions = 1;
+		last if ++$done_cnt == 2;
 	}
 }
 
@@ -450,6 +460,51 @@ $q->param('dropdbs') and do {
 	last COMMANDS;
 };
 
+$q->param('wwwaccept') and do {
+	if ($is_allow_www_permissions) {
+		eval {
+		my $www_permissions = Schulkonsole::WWW::teacher_permissions($uid);
+
+		if ($$www_permissions{$uid}{public}) {
+			if (not $q->param('wwwpublic')) {
+				Schulkonsole::WWW::set_user_permissions(
+					$id, $password,
+					0,
+					$$www_permissions{$uid}{upload},
+					$uid);
+				$sk_session->set_status($sk_session->d()->get(
+						'Zugang zum Webverzeichnis ge&auml;ndert'), 0);
+			} else {
+				$sk_session->set_status($sk_session->d()->get(
+						'Zugang zum Webverzeichnis ist bereits privat'), 1);
+			}
+		} else {
+			if ($q->param('wwwpublic')) {
+				Schulkonsole::WWW::set_user_permissions(
+					$id, $password,
+					1,
+					$$www_permissions{$uid}{upload},
+					$uid);
+				$sk_session->set_status($sk_session->d()->get(
+						'Zugang zum Webverzeichnis ge&auml;ndert'), 0);
+			} else {
+				$sk_session->set_status($sk_session->d()->get(
+						'Zugang zum Webverzeichnis ist bereits &ouml;ffentlich'), 1);
+			}
+		}
+
+
+		};
+		if ($@) {
+			$sk_session->standard_error_handling($this_file, $@);
+		}
+	} else {
+		$sk_session->set_status($sk_session->d()->get(
+				'Sie d&uuml;rfen die Berechtigung f&uuml;r ihr Webverzeichnis nicht &auml;ndern.'), 1);
+	}
+
+	last COMMANDS;
+};
 
 } # end COMMANDS
 
@@ -716,6 +771,39 @@ True if the user has an OpenVPN certificate
 =cut
 
 $sk_session->set_var('has_ovpn', $has_ovpn);
+
+
+
+if ($is_allow_www_permissions) {
+
+=item C<allowwwwpermissions>
+
+True if user may change access permissions of the WWW directory
+
+=cut
+
+	$sk_session->set_var('allowwwwpermissions', 1);
+
+=item C<wwwactive>
+
+True if access to WWW is activated
+
+=cut
+
+	$sk_session->set_var('wwwactive', $is_www_active);
+
+
+	my $www_permissions = Schulkonsole::WWW::teacher_permissions($uid);
+
+=item C<wwwpublic>
+
+True if public access to user's WWW directory is enabled
+
+=cut
+
+	$sk_session->set_var('wwwpublic', $$www_permissions{$uid}{public});
+}
+
 
 
 

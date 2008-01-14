@@ -45,6 +45,12 @@ if (   not $room_session
 	$sk_session->redirect($url);
 }
 
+if ($room_session->param('test_step')) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room_test/g;
+	$sk_session->redirect($url);
+}
+
 
 my $editing_userdata = $room_session->info('editing_userdata');
 my $editing_user = $$editing_userdata{uid};

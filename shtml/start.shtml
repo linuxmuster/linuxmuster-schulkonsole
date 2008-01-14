@@ -6,7 +6,7 @@
 <!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
-<body onload="timer_step()">
+<body>
 
 <!--#include file="header.shtml.inc" -->
 
@@ -210,6 +210,7 @@
 <p><gettext>keine Datenbanken vorhanden</gettext></p>
 <!--#endif -->
 
+<hr>
 
 <form method="post">
 <h3><gettext>OpenVPN-Zertifikat</gettext></h3>
@@ -234,6 +235,27 @@
 
 <!--#endif -->
 </form>
+
+<hr>
+
+<!--#if expr="$allowwwwpermissions" -->
+<h3><gettext>Pers&ouml;nliches Webverzeichnis</gettext></h3>
+<!--#if expr="$wwwactive" -->
+<form method="post">
+<p><label for="wwwpublic"><gettext>&Ouml;ffentlich</gettext></label>
+<!--#if expr="$wwwpublic" -->
+   <input type="checkbox" name="wwwpublic" id="wwwpublic" checked>
+<!--#else -->
+   <input type="checkbox" name="wwwpublic" id="wwwpublic">
+<!--#endif -->
+</p>
+<p><input type="submit" name="wwwaccept" value="&Auml;nderung speichern"></p>
+</form>
+<!--#else -->
+<p><gettext>Der Zugriff auf die Webverzeichnisse ist global
+ausgeschaltet.</gettext></p>
+<!--#endif -->
+<!--#endif -->
 
 
 </div>

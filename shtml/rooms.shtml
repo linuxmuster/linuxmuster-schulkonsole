@@ -6,7 +6,7 @@
 <!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
-<body onload="timer_step()">
+<body>
 
 <!--#include file="header.shtml.inc" -->
 
@@ -15,6 +15,15 @@
 </div>
 
 <div id="content">
+
+<!--#if expr="$unimported" -->
+<p><gettext>Es wurden noch nicht alle Hosts mit ihren R&auml;men in das
+System &uuml;bernommen. Bitte &uuml;berpr&uuml;fen Sie die
+<a href="hosts">Hosts-Liste</a>.
+</gettext></p>
+<!--#endif -->
+
+
 
 <h2><gettext>R&auml;ume</gettext></h2>
 

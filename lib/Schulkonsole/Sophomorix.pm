@@ -1,7 +1,12 @@
 use strict;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
+
+use Sophomorix::SophomorixConfig;
+use Sophomorix::SophomorixAPI;
+
 use Schulkonsole::Error;
+use Schulkonsole::ExternalError;
 use Schulkonsole::Config;
 use Safe;
 
@@ -128,6 +133,7 @@ $VERSION = 0.05;
 	add_class_to_project
 	add_project_to_project
 	remove_admin_from_project
+	set_project_joinable
 
 	read_teachers_file
 	read_students_file
@@ -167,6 +173,10 @@ $VERSION = 0.05;
 	read_move_file
 
 	change_password
+
+	hide_unhide_classes
+
+	is_locked
 );
 
 
@@ -234,13 +244,14 @@ sub stop_wrapper {
 	my $re = waitpid $pid, 0;
 	if (    ($re == $pid or $re == -1)
 	    and $?) {
-		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
+		my $error = ($? >> 8);
+		if ($error <= 128) {
+			die new Schulkonsole::ExternalError(
+				Sophomorix::SophomorixAPI::fetch_error_string($error), 0,
 				$Schulkonsole::Config::_wrapper_sophomorix, $!,
 				($input_buffer ? "Output: $input_buffer" : 'No Output'));
 		} else {
+			$error -= 256;
 			die new Schulkonsole::Error(
 				Schulkonsole::Error::WRAPPER_SOPHOMORIX_ERROR_BASE + $error,
 				$Schulkonsole::Config::_wrapper_sophomorix);
@@ -2410,7 +2421,9 @@ The users to be added
 =head4 Description
 
 This wraps the command
-C<sophomorix-project --addmembers user1,user2 --project project-gid>, where
+C<sophomorix-project --caller caller --addmembers user1,user2 --project project-gid>,
+where
+caller is the UID of the user with the ID C<$id>,
 C<user1,user2,...> are the UIDs passed in C<@users>
 and project-gid is C<$project_gid>.
 
@@ -2466,7 +2479,9 @@ The users to be removed
 =head4 Description
 
 This wraps the command
-C<sophomorix-project --removemembers user1,user2 --project project-gid>, where
+C<sophomorix-project --caller caller --removemembers user1,user2 --project project-gid>,
+where
+caller is the UID of the user with the ID C<$id>,
 C<user1,user2,...> are the UIDs passed in C<@users>
 and project-gid is C<$project_gid>.
 
@@ -2521,7 +2536,9 @@ The users to be added
 =head4 Description
 
 This wraps the command
-C<sophomorix-project --addadmins user1,user2 --project project-gid>, where
+C<sophomorix-project --caller caller --addadmins user1,user2 --project project-gid>,
+where
+caller is the UID of the user with the ID C<$id>,
 C<user1,user2,...> are the UIDs passed in C<@users>
 and project-gid is C<$project_gid>.
 
@@ -2576,7 +2593,9 @@ The users to be removed
 =head4 Description
 
 This wraps the command
-C<sophomorix-project --removeadmins user1,user2 --project project-gid>, where
+C<sophomorix-project --caller caller --removeadmins user1,user2 --project project-gid>,
+where
+caller is the UID of the user with the ID C<$id>,
 C<user1,user2,...> are the UIDs passed in C<@users>
 and project-gid is C<$project_gid>.
 
@@ -2593,6 +2612,67 @@ sub remove_admin_from_project {
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
 	print SCRIPTOUT "$project_gid\n0\n1\n", join("\n", @users), "\n\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+}
+
+
+
+
+=head3 C<set_project_joinable($id, $password, $project_gid, $is_join)>
+
+Removes admins from a project
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$project_gid>
+
+The GID of the project
+
+=item C<$is_join>
+
+True if the project is to be joinable
+
+=back
+
+=head4 Description
+
+This wraps the command
+C<sophomorix-project --caller caller --project project-gid [--join|--nojoin]>,
+where
+caller is the UID of the user with the ID C<$id>,
+project-gid is C<$project_gid>
+and C<--join>/C<--nojoin> is used if C<$is_join> is true/false
+
+=cut
+
+sub set_project_joinable {
+	my $id = shift;
+	my $password = shift;
+	my $project_gid = shift;
+	my $is_join = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::PROJECTJOINNOJOINAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	if ($is_join) {
+		print SCRIPTOUT "$project_gid\n\n\n";
+	} else {
+		print SCRIPTOUT "\n$project_gid\n\n";
+	}
 
 	buffer_input(\*SCRIPTIN);
 
@@ -2631,8 +2711,9 @@ The classes to be removed
 =head4 Description
 
 This wraps the command
-C<sophomorix-project --addmembergroups group1,group2 --project project-gid>,
+C<sophomorix-project --caller caller --addmembergroups group1,group2 --project project-gid>,
 where
+caller is the UID of the user with the ID C<$id>,
 C<group1,group2,...> are the GIDs passed in C<@groups>
 and project-gid is C<$project_gid>.
 
@@ -2687,8 +2768,9 @@ The classes to be removed
 =head4 Description
 
 This wraps the command
-C<sophomorix-project --removemembergroups group1,group2 --project project-gid>,
+C<sophomorix-project --caller caller --removemembergroups group1,group2 --project project-gid>,
 where
+caller is the UID of the user with the ID C<$id>,
 C<group1,group2,...> are the GIDs passed in C<@groups>
 and project-gid is C<$project_gid>.
 
@@ -2743,7 +2825,9 @@ The groups to be removed
 =head4 Description
 
 This wraps the command
-C<sophomorix-project --removememberprojects group1,group2 --project project-gid>, where
+C<sophomorix-project --caller caller --removememberprojects group1,group2 --project project-gid>,
+where
+caller is the UID of the user with the ID C<$id>,
 C<group1,group2,...> are the GIDs passed in C<@groups>
 and project-gid is C<$project_gid>.
 
@@ -2798,7 +2882,9 @@ The groups to be removed
 =head4 Description
 
 This wraps the command
-C<sophomorix-project --removememberprojects group1,group2 --project project-gid>, where
+C<sophomorix-project --caller caller --removememberprojects group1,group2 --project project-gid>,
+where
+caller is the UID of the user with the ID C<$id>,
 C<group1,group2,...> are the GIDs passed in C<@groups>
 and project-gid is C<$project_gid>.
 
@@ -2824,7 +2910,7 @@ sub remove_project_from_project {
 
 
 
-=head3 C<create_project($id, $password, $project_gid)>
+=head3 C<create_project($id, $password, $project_gid, $is_open)>
 
 Create a project
 
@@ -2844,14 +2930,21 @@ The password of the teacher invoking the command
 
 The GID of the project
 
+=item C<$is_open>
+
+True if the user list of the project can be changed
+
 =back
 
 =head4 Description
 
 This wraps the command
-C<sophomorix-project --project project-gid --create --admins uid>, where
+C<sophomorix-project --caller caller --project project-gid --create --admins uid [--join|--nojoin]>,
+where
+caller is the UID of the user with the ID C<$id>,
 project-gid is C<$project_gid>,
-and uid is the UID of the user with the ID C<$id>.
+uid is the UID of the user with the ID C<$id>,
+and the option C<--join>/C<--nojoin> is used if C<$is_open> is true/false.
 
 =cut
 
@@ -2859,12 +2952,13 @@ sub create_project {
 	my $id = shift;
 	my $password = shift;
 	my $project_gid = shift;
+	my $is_open = shift;
 
 	my $pid = start_wrapper(Schulkonsole::Config::PROJECTCREATEDROPAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	print SCRIPTOUT "$project_gid\n1\n";
+	print SCRIPTOUT "$project_gid\n1\n", ($is_open ? 1 : 0), "\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -2899,7 +2993,9 @@ The GID of the project
 =head4 Description
 
 This wraps the command
-C<sophomorix-project --project project-gid --kill>, where
+C<sophomorix-project --caller caller --project project-gid --kill>,
+where
+caller is the UID of the user with the ID C<$id>,
 project-gid is C<$project_gid>.
 
 =cut
@@ -4438,8 +4534,10 @@ mailquota or undef
 =head4 Description
 
 This wraps the commands
-C<sophomorix-project --project name --quota diskquota --mailquota mailquota>,
-where name is C<$project>, diskquota is C<$diskquota> and mailquota is
+C<sophomorix-project --caller caller --project name --quota diskquota --mailquota mailquota>,
+where
+caller is the UID of the user with the ID C<$id>,
+name is C<$project>, diskquota is C<$diskquota> and mailquota is
 C<mailquota>.
 
 =cut
@@ -4545,7 +4643,7 @@ The rooms where the workstations' passwords are to be set
 
 =head4 Description
 
-This wraps the commands
+This wraps the command
 C<sophomorix-passwd --room room1,room2,... --pass password>,
 where room1,room2,... is the rooms in C<@rooms> and password is
 C<$newpassword>.
@@ -4570,6 +4668,147 @@ sub change_room_password {
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 }
 
+
+
+
+
+
+=head3 C<is_locked($app_id)>
+
+Check if Sophomorix is locked
+
+=head4 Parameters
+
+=over
+
+=item C<$app_id>
+
+The Schulkonsole's ID of the application to check
+
+=backA
+
+=head4 Return value
+
+1 if locked, 0 otherwise
+
+=head4 Description
+
+Checks if the application with ID C<$app_id> is locked by Sophomorix
+
+=cut
+
+sub is_locked {
+	my $app_id = shift;
+	my $app = $Schulkonsole::Config::_root_apps[$app_id];
+
+
+	open SOPHOMORIXLOCK, "<$DevelConf::lock_file" or return 0;
+	flock SOPHOMORIXLOCK, 2;
+	seek SOPHOMORIXLOCK, 0, 0;
+
+	while (<SOPHOMORIXLOCK>) {
+		my ($lock, $date, $create, $sophomorix_app, $pid) = split '::';
+
+		return 1 if $sophomorix_app eq $app;
+	}
+
+
+	close SOPHOMORIXLOCK;
+
+
+	return 0;
+}
+
+
+
+=head3 C<locks()>
+
+Get Sophomorix locks
+
+=head4 Return value
+
+A hash with Sophomorix commands as keys and PIDs as values
+
+=head4 Description
+
+Returns all Sophomorix locks in a hash
+
+=cut
+
+sub locks {
+	my %re;
+
+	open SOPHOMORIXLOCK, "<$DevelConf::lock_file" or return 0;
+	flock SOPHOMORIXLOCK, 2;
+	seek SOPHOMORIXLOCK, 0, 0;
+
+	while (<SOPHOMORIXLOCK>) {
+		my ($lock, $date, $create, $sophomorix_app, $pid) = split '::';
+
+		$re{$sophomorix_app} = $pid;
+	}
+
+
+	close SOPHOMORIXLOCK;
+
+
+	return %re;
+}
+
+
+
+=head3 C<hide_unhide_classes($id, $password, $hide_classs, unhide_classs)>
+
+Hide/unhide classes
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$hide_classs>
+
+A reference to an array of GIDs of classes to hide
+
+=item C<$unhide_classs>
+
+A reference to an array of GIDs of classes to un-hide
+
+=back
+
+=head4 Description
+
+This wraps the command
+C<sophomorix-class --class GID --hide> for all GIDs in C<$hide_classs>
+and the command
+C<sophomorix-class --class GID --unhide> for all GIDs in C<$unhide_classs>
+
+=cut
+
+sub hide_unhide_classes {
+	my $id = shift;
+	my $password = shift;
+	my $hide_classs = shift;
+	my $unhide_classs = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::HIDEUNHIDECLASSAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT join("\n", @$hide_classs), "\n\n",
+	                join("\n", @$unhide_classs), "\n\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+}
 
 
 

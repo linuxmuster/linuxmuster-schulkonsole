@@ -5,11 +5,20 @@
 <!--#if expr="$link_room_shares" -->
 	<a href="room_shares"><gettext>Tauschen</gettext></a>
 <!--#endif -->
+<!--#if expr="$exammode" -->
+<!--#if expr="$link_room_handout" -->
+	<span class="disabled"><gettext>Austeilen</gettext></span>
+<!--#endif -->
+<!--#if expr="$link_room_collect" -->
+	<span class="disabledseparator"><gettext>Einsammeln</gettext></span>
+<!--#endif -->
+<!--#else -->
 <!--#if expr="$link_room_handout" -->
 	<a href="room_handout"><gettext>Austeilen</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_room_collect" -->
 	<a class="separator" href="room_collect"><gettext>Einsammeln</gettext></a>
+<!--#endif -->
 <!--#endif -->
 <!--#if expr="$link_room_test" -->
 	

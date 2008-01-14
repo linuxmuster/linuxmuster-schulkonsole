@@ -305,6 +305,12 @@ body {
 }
 
 
+#subsubmenu a.todo, #subsubmenu a.todocurrent {
+	color: #666666;
+	background-color: #ffff66;
+}
+
+
 
 
 
@@ -628,6 +634,17 @@ table.liste tr.editing {
 	background-color: #deffdf;
 }
 
+
+.important {
+	font-size: +140%;
+	font-weight: bold;
+	color: #000000;
+	background-color: #d54f4f;
+}
+
+.important strong {
+	font-style: italic;
+}
 
 
 #roomoverview tr > td:first-child + td + td,

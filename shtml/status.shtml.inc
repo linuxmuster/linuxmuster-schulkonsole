@@ -6,7 +6,7 @@
 <!--#if expr="$REMOTE_ADDR" -->
 <p class="info">
 <gettext>Sitzungsdauer:</gettext> <!--#echo var="session_time" --><br>
-<gettext>verbleibend:</gettext> <span id="timer"><gettext>unbekannt</gettext></span></p>
+<gettext>verbleibend:</gettext> <span id="timer"><!--#echo var="max_idle_hh_mm_ss" --></span></p>
 <p class="info"><gettext>Benutzer:</gettext>
 <strong><!--#echo var="firstname" --> <!--#echo var="surname" --></strong><br>
 <gettext>Raum:</gettext>

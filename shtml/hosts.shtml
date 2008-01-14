@@ -6,14 +6,25 @@
 <!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
-<body onload="timer_step()">
+<body>
 
 <!--#include file="header.shtml.inc" -->
 
 <div id="submenu">
+<img src="img/bw.jpg" alt="Baden-W&uuml;rttemberg - Ministerium f&uuml;r Kultur-, Jugend und Sport">
 </div>
 
 <div id="content">
+
+<!--#if expr="$unimported" -->
+<form method="post">
+<p><gettext>Es wurden noch nicht alle Hosts in das System &uuml;bernommen.
+</gettext></p>
+
+<p><input type="submit" name="import" value="Hosts jetzt &uuml;bernehmen"></p>
+</form>
+<!--#endif -->
+
 
 <h2><gettext>Hosts</gettext></h2>
 
@@ -86,7 +97,11 @@
 </table>
 
 
-
+<!--#if expr="$comments" -->
+<p><gettext><strong>Hinweis:</strong> Die Host-Liste enth&auml;t manuell
+hinzugef&uuml;gte Kommentarzeilen. Diese werden beim Speichern
+gel&ouml;scht.</gettext></p>
+<!--#endif -->
 <p>
 <input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
 <input type="reset" value="Zur&uuml;cksetzen">

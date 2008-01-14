@@ -1,0 +1,239 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Einstellungen</gettext> - <gettext>Benutzerverwaltung</gettext></title>
+<!--#include file="css.shtml.inc" -->
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-settings.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Einstellungen</gettext> :: <gettext>Benutzerverwaltung</gettext></h2>
+
+<form method="post">
+
+<h3><gettext>Global</gettext></h3>
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="even">
+<td><label for="birthlimitlow" accesskey="g"><gettext>Geburtsjahreszahl f&uuml;r Sch&uuml;ler</gettext></label></td>
+<td><input type="text" size="5" maxlength="4" name="birthlimitlow" id="birthlimitlow">
+  - <input type="text" size="5" maxlength="4" name="birthlimitup" id="birthlimitup"></td>
+</tr>
+<tr class="odd">
+<td><label for="filterstarclass" accesskey="f"><gettext>Sternchenklassen filtern</gettext></label></td>
+<!--#if expr="$filterstarclass" -->
+<td><input type="checkbox" name="filterstarclass" id="filterstarclass" checked></td>
+<!--#else -->
+<td><input type="checkbox" name="filterstarclass" id="filterstarclass"></td>
+<!--#endif -->
+</tr>
+<tr class="even">
+<td><label for="activatequota"><gettext>Quota aktivieren</gettext></label></td>
+<!--#if expr="$activatequota" -->
+<td><input type="checkbox" name="activatequota" id="activatequota" checked></td>
+<!--#else -->
+<td><input type="checkbox" name="activatequota" id="activatequota"></td>
+<!--#endif -->
+</tr>
+<!--#if expr="$mountpoints" -->
+<tr class="odd">
+<td><gettext>Standardquota Lehrer</gettext></td>
+<td>
+
+<table class="tabletable">
+<!--#if expr="$loop_mountpoints" -->
+<th><label for="${mountpoints}_quotateacher"><!--#echo var="mountpoints" --></label></th>
+<!--#endif -->
+</tr>
+<tr>
+<!--#if expr="$loop_mountpoints" -->
+<td><input size="6" maxlength="5" name="${mountpoints}_quotateacher" id="${mountpoints}_quotateacher"> MB</td>
+<!--#endif -->
+</tr>
+</table>
+
+</td>
+</tr>
+<tr class="even">
+<td><gettext>Standardquota Sch&uuml;ler</gettext></td>
+<td>
+
+<table class="tabletable">
+<!--#if expr="$loop_mountpoints" -->
+<th><label for="${mountpoints}_quotastudent"><!--#echo var="mountpoints" --></label></th>
+<!--#endif -->
+</tr>
+<tr>
+<!--#if expr="$loop_mountpoints" -->
+<td><input size="6" maxlength="5" name="${mountpoints}_quotastudent" id="${mountpoints}_quotastudent"> MB</td>
+<!--#endif -->
+</tr>
+</table>
+
+</td>
+</tr>
+<!--#endif -->
+<tr class="odd">
+<td><label for="activateglobalshares"><gettext>Schulweites Tauschen aktivieren</gettext></label></td>
+<!--#if expr="$activateglobalshares" -->
+<td><input type="checkbox" name="activateglobalshares" id="activateglobalshares" checked></td>
+<!--#else -->
+<td><input type="checkbox" name="activateglobalshares" id="activateglobalshares"></td>
+<!--#endif -->
+</tr>
+<tr class="even">
+<td><label for="activatewww"><gettext>Zugriff auf Webordner aktivieren</gettext></label></td>
+<!--#if expr="$activatewww" -->
+<td><input type="checkbox" name="activatewww" id="activatewww" checked></td>
+<!--#else -->
+<td><input type="checkbox" name="activatewww" id="activatewww"></td>
+<!--#endif -->
+</tr>
+</table>
+
+<hr>
+
+<h3><gettext>Login</gettext> <gettext>(Lehrer)</gettext></h3>
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="even">
+<td><label for="activaterandompasswordteacher"><gettext>Zufallspasswort</gettext></label></td>
+<!--#if expr="$activaterandompasswordteacher" -->
+<td><input type="checkbox" name="activaterandompasswordteacher" id="activaterandompasswordteacher" checked></td>
+<!--#else -->
+<td><input type="checkbox" name="activaterandompasswordteacher" id="activaterandompasswordteacher"></td>
+<!--#endif -->
+</tr>
+<tr class="odd">
+<td><label for="randompasswordlengthteacher"><gettext>Zufallspasswortzeichen</gettext></label></td>
+<td><input type="text" size="3" name="randompasswordlengthteacher" id="randompasswordlengthteacher"></td>
+</tr>
+<tr class="even">
+<td><label for="activatesshteacher"><gettext>Shell aktivieren</gettext></label></td>
+<!--#if expr="$activatesshteacher" -->
+<td><input type="checkbox" name="activatesshteacher" id="activatesshteacher" checked></td>
+<!--#else -->
+<td><input type="checkbox" name="activatesshteacher" id="activatesshteacher"></td>
+<!--#endif -->
+</tr>
+<tr class="odd">
+<td><label for="changesmbpasswordteacher"><gettext>Sambapasswort bei Erstanmeldung &auml;ndern</gettext></label></td>
+<!--#if expr="$changesmbpasswordteacher" -->
+<td><input type="checkbox" name="changesmbpasswordteacher" id="changesmbpasswordteacher" checked></td>
+<!--#else -->
+<td><input type="checkbox" name="changesmbpasswordteacher" id="changesmbpasswordteacher"></td>
+<!--#endif -->
+</tr>
+</table>
+
+<hr>
+
+<h3><gettext>Login</gettext> <gettext>(Sch&uuml;ler)</gettext></h3>
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="even">
+<td><label for="activaterandompasswordstudent"><gettext>Zufallspasswort</gettext></label></td>
+<!--#if expr="$activaterandompasswordstudent" -->
+<td><input type="checkbox" name="activaterandompasswordstudent" id="activaterandompasswordstudent" checked></td>
+<!--#else -->
+<td><input type="checkbox" name="activaterandompasswordstudent" id="activaterandompasswordstudent"></td>
+<!--#endif -->
+</tr>
+<tr class="odd">
+<td><label for="randompasswordlengthstudent"><gettext>Zufallspasswortzeichen</gettext></label></td>
+<td><input type="text" size="3" name="randompasswordlengthstudent" id="randompasswordlengthstudent"></td>
+</tr>
+<tr class="even">
+<td><label for="activatesshstudent"><gettext>Shell aktivieren</gettext></label></td>
+<!--#if expr="$activatesshstudent" -->
+<td><input type="checkbox" name="activatesshstudent" id="activatesshstudent" checked></td>
+<!--#else -->
+<td><input type="checkbox" name="activatesshstudent" id="activatesshstudent"></td>
+<!--#endif -->
+</tr>
+<tr class="odd">
+<td><label for="changesmbpasswordstudent"><gettext>Sambapasswort bei Erstanmeldung &auml;ndern</gettext></label></td>
+<!--#if expr="$changesmbpasswordstudent" -->
+<td><input type="checkbox" name="changesmbpasswordstudent" id="changesmbpasswordstudent" checked></td>
+<!--#else -->
+<td><input type="checkbox" name="changesmbpasswordstudent" id="changesmbpasswordstudent"></td>
+<!--#endif -->
+</tr>
+</table>
+
+<hr>
+
+<h3><gettext>L&ouml;schen</gettext> <gettext>(Lehrer)</gettext></h3>
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="even">
+<td><label for="tolerateteacher"><gettext>Duldungszeitraum</gettext></label></td>
+<td><input size="5" maxlength="4" name="tolerateteacher" id="tolerateteacher"> Tage</td>
+</tr>
+<tr class="odd">
+<td><label for="deactivateteacher"><gettext>Deaktivierungszeitraum</gettext></label></td>
+<td><input size="5" maxlength="4" name="deactivateteacher" id="deactivateteacher"> Tage</td>
+</tr>
+</table>
+
+<hr>
+
+<h3><gettext>L&ouml;schen</gettext> <gettext>(Sch&uuml;ler)</gettext></h3>
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="even">
+<td><label for="toleratestudent"><gettext>Duldungszeitraum</gettext></label></td>
+<td><input size="5" maxlength="4" name="toleratestudent" id="toleratestudent"> Tage</td>
+</tr>
+<tr class="odd">
+<td><label for="deactivatestudent"><gettext>Deaktivierungszeitraum</gettext></label></td>
+<td><input size="5" maxlength="4" name="deactivatestudent" id="deactivatestudent"> Tage</td>
+</tr>
+</table>
+
+<p>
+<input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
+</p>
+
+</form>
+
+
+</div>
+
+<div id="info">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext>Info</gettext></h2>
+
+<p><gettext>Bearbeiten Sie hier die globalen Einstellungen f&uuml;r die
+Benutzerverwaltung.</gettext></p>
+<p><gettext>F&uuml;r eine detaillierte Beschreibung der einzelnen Punkte
+konsultieren Sie bitte die Dokumentation.</gettext></p>
+
+<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

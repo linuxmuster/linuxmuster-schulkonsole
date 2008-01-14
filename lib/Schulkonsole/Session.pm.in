@@ -945,6 +945,7 @@ sub init {
 	# set standard variables
 	$this->set_var('version', $Schulkonsole::Config::_version);
 
+
 	$this->set_var('username', ${ $this->{userdata} }{uid});
 	$this->set_var('firstname', ${ $this->{userdata} }{firstname});
 	$this->set_var('surname', ${ $this->{userdata} }{surname});
@@ -965,6 +966,16 @@ sub init {
 	$this->set_var('SERVER_NAME', $ENV{SERVER_NAME});
 
 	$this->set_var('max_idle_time', $Schulkonsole::Config::_max_idle_time);
+
+	my $max_idle_time_left = Schulkonsole::Config::expire_seconds(
+		$Schulkonsole::Config::_max_idle_time);
+	my $max_idle_hh = int($max_idle_time_left / 3600);
+	$max_idle_time_left -= $max_idle_hh * 3600;
+	my $max_idle_mm = int($max_idle_time_left / 60);
+	my $max_idle_ss = $max_idle_time_left - $max_idle_mm * 60;
+	my $max_idle_hh_mm_ss =
+		sprintf("%d:%02d:%02d", $max_idle_hh, $max_idle_mm, $max_idle_ss);
+	$this->set_var('max_idle_hh_mm_ss', $max_idle_hh_mm_ss);
 
 	my $sec = $^T - $this->{session}->param('session_start_time');
 	$sec = 0 if $sec < 0;

@@ -308,7 +308,9 @@ sub all_on {
 
 	if ($room_session->param('test_step')) {
 		my $room = $room_session->param('name');
-		my $opts = "--teacher \Q$$userdata{uid}"
+		my $editing_userdata = Schulkonsole::DB::get_userdata_by_id(
+				$room_session->param('user_id'));
+		my $opts = "--teacher \Q$$editing_userdata{uid}"
 			. ' --collect --exam'
 			. " --room \Q$room";
 

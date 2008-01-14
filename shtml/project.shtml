@@ -6,7 +6,7 @@
 <!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
-<body onload="timer_step()">
+<body>
 
 <!--#include file="header.shtml.inc" -->
 
@@ -52,6 +52,7 @@
 <tr>
 <th><gettext>Projektename</gettext></th>
 <th><gettext>Zusatzquota</gettext></th>
+<th><gettext>Offenes Projekt</gettext></th>
 <th></th>
 <th></th>
 </tr>
@@ -61,17 +62,29 @@
 <td><input type="submit" name="${projects{gid}}_members" value="$projects{name}"></td>
 <td><!--#if expr="$projects{addquota}" -->
 <!--#echo var="projects{addquota}" -->&nbsp;MB<!--#else -->-<!--#endif --></td>
+
+<!--#if expr="$projects{joinable}" -->
+<td><input type="checkbox" disabled checked></td>
+<!--#else -->
+<td><input type="checkbox" disabled</td>
+<!--#endif -->
+<!--#if expr="$projects{joinable}" -->
 <!--#if expr="$projects{islastadmin}" -->
 <td></td>
 <!--#else -->
 <td><input type="submit" name="${projects{gid}}_remove" value="Austragen"></td>
 <!--#endif -->
+<!--#else -->
+<td></td>
+<!--#endif -->
+
 <!--#if expr="$projects{isadmin}" -->
 <td><input type="submit" name="${projects{gid}}_drop" value="L&ouml;schen"></td>
 <!--#else -->
 <td></td>
-</tr>
 <!--#endif -->
+
+</tr>
 <!--#endif -->
 </table>
 
@@ -105,6 +118,8 @@
 <p>
 <label for="projectname">Kurzname</label>:
 p_<input id="projectname" name="projectname">
+<input type="checkbox" id="projectisopen" name="projectisopen" checked>
+<label for="projectisopen">offenes Projekt</label><br>
 
 <input type="submit" name="createproject" value="Anlegen">
 </p>
@@ -119,13 +134,17 @@ p_<input id="projectname" name="projectname">
 
 <h2><gettext>Info</gettext></h2>
 
-<p><gettext>W&auml;hlen Sie ein Projekt aus dem Pull-Down-Men&uuml; oben rechts
-oder aus der Liste, um damit arbeiten zu k&ouml;nnen.</gettext></p>
-<p><gettext>Tragen Sie sich aus einem Projekt aus, wenn Sie darin nicht mehr mitarbeiten.</gettext></p>
-<p><gettext>Tragen Sie sich in ein Projekt ein, indem Sie es im Pull-Down-Men&uuml; ausw&auml;hlen
-und dann die Schaltfl&auml;che <q>Eintragen</q> bet&auml;tigen.</gettext></p>
+<p><gettext>W&auml;hlen Sie ein Projekt aus dem Pull-Down-Men&uuml; oben
+rechts oder aus der Liste, um damit arbeiten zu k&ouml;nnen.</gettext></p>
+<p><gettext>Tragen Sie sich aus einem Projekt aus, wenn Sie darin nicht mehr
+mitarbeiten.</gettext></p>
+<p><gettext>Tragen Sie sich in ein Projekt ein, indem Sie es im
+Pull-Down-Men&uuml; ausw&auml;hlen und dann die Schaltfl&auml;che
+<q>Eintragen</q> bet&auml;tigen.</gettext></p>
 <p><gettext>Erlaubte Zeichen f&uuml;r den Kurznamen eines neuen Projekts sind
 a-z und 0-9. Der Name muss zwischen 3 und 14 Zeichen lang sein.</gettext></p>
+<p><gettext><q>Offenes</q> Projekt bedeutet, andere Projekte k&ouml;nnen sich
+in das Projekt eintragen.</gettext></p>
 
 <img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>

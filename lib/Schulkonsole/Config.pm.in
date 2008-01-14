@@ -32,6 +32,7 @@ $VERSION = 0.06;
 	permissions_apps
 	workstation_info
 	workstations_room
+	workstations
 
 	rooms
 	hosts
@@ -50,9 +51,11 @@ $VERSION = 0.06;
 	$_runtimedir
 	$_lockdir
 
+	$_preferences_conf_file
 	$_permissions_conf_file
 	$_db_conf_file
 	$_workstations_file
+	$_dhcpd_conf_file
 	$_printers_file
 	$_classrooms_file
 	$_blocked_hosts_internet_file
@@ -123,6 +126,7 @@ $VERSION = 0.06;
 	LISTREPOSITORYAPP
 	PROJECTMEMBERSAPP
 	PROJECTCREATEDROPAPP
+	PROJECTJOINNOJOINAPP
 	READSOPHOMORIXFILEAPP
 	WRITESOPHOMORIXFILEAPP
 	USERSCHECKAPP
@@ -133,13 +137,14 @@ $VERSION = 0.06;
 	TEACHINAPP
 	CHMODAPP
 	SETQUOTAAPP
+	SETOWNPASSWORDAPP
+	HIDEUNHIDECLASSAPP
 	WRITEFILEAPP
 	IMPORTWORKSTATIONSAPP
 	IMPORTPRINTERSAPP
 	OVPNCHECKAPP
 	OVPNDOWNLOADAPP
 	OVPNCREATEAPP
-	SETOWNPASSWORDAPP
 
 	TEST_NONE
 	TEST_HANDOUT
@@ -302,6 +307,10 @@ C<project_members>
 
 C<project_create_drop>
 
+=item C<PROJECTJOINNOJOINAPP>
+
+C<project_join_no_join>
+
 =item C<READSOPHOMORIXFILEAPP>
 
 C<read_sophomorix_file>
@@ -346,6 +355,10 @@ C<quota>
 
 C<set_own_password>
 
+=ITEM C<HIDEUNHIDECLASSAPP>
+
+C<hide_unhide_class>
+
 =back
 
 =cut
@@ -365,17 +378,19 @@ use constant {
 	WWWPERMISSIONSAPP => 20,
 	PROJECTMEMBERSAPP => 21,
 	PROJECTCREATEDROPAPP => 22,
-	READSOPHOMORIXFILEAPP => 23,
-	WRITESOPHOMORIXFILEAPP => 24,
-	USERSCHECKAPP => 25,
-	USERSADDAPP => 26,
-	USERSMOVEAPP => 27,
-	USERSKILLAPP => 28,
-	USERSADDMOVEKILLAPP => 29,
-	TEACHINAPP => 30,
-	CHMODAPP => 31,
-	SETQUOTAAPP => 32,
-	SETOWNPASSWORDAPP => 33,
+	PROJECTJOINNOJOINAPP => 23,
+	READSOPHOMORIXFILEAPP => 24,
+	WRITESOPHOMORIXFILEAPP => 25,
+	USERSCHECKAPP => 26,
+	USERSADDAPP => 27,
+	USERSMOVEAPP => 28,
+	USERSKILLAPP => 29,
+	USERSADDMOVEKILLAPP => 30,
+	TEACHINAPP => 31,
+	CHMODAPP => 32,
+	SETQUOTAAPP => 33,
+	SETOWNPASSWORDAPP => 34,
+	HIDEUNHIDECLASSAPP => 35,
 };
 
 =head3 Constants for wrapper-cyrus
@@ -425,12 +440,12 @@ C<list_repository>
 =cut
 
 use constant {
-	CREATEDROPDBAPP => 34,
-	DROPDBUSERAPP => 35,
-	LISTDBAPP => 36,
-	LISTDBUSERAPP => 37,
-	CREATEDROPREPOSITORYAPP => 38,
-	LISTREPOSITORYAPP => 39,
+	CREATEDROPDBAPP => 36,
+	DROPDBUSERAPP => 37,
+	LISTDBAPP => 38,
+	LISTDBUSERAPP => 39,
+	CREATEDROPREPOSITORYAPP => 40,
+	LISTREPOSITORYAPP => 41,
 };
 
 
@@ -455,9 +470,9 @@ C<import_printers>
 =cut
 
 use constant {
-	WRITEFILEAPP => 40,
-	IMPORTWORKSTATIONSAPP => 41,
-	IMPORTPRINTERSAPP => 42,
+	WRITEFILEAPP => 42,
+	IMPORTWORKSTATIONSAPP => 43,
+	IMPORTPRINTERSAPP => 44,
 };
 
 
@@ -482,9 +497,9 @@ C<ovpn_download>
 =cut
 
 use constant {
-	OVPNCHECKAPP => 43,
-	OVPNDOWNLOADAPP => 44,
-	OVPNCREATEAPP => 45,
+	OVPNCHECKAPP => 45,
+	OVPNDOWNLOADAPP => 46,
+	OVPNCREATEAPP => 47,
 };
 
 
@@ -554,6 +569,10 @@ use vars qw($_version $_sysconfdir $_templatedir $_runtimedir $_lockdir);
 
 =over
 
+=item C<$_preferences_conf_file>
+
+User set preferences
+
 =item C<$_permissions_conf_file>
 
 Defines which user groups can access pages and applications
@@ -566,7 +585,7 @@ Data to access the database
 
 =cut
 
-use vars qw($_permissions_conf_file $_db_conf_file);
+use vars qw($_preferences_conf_file $_permissions_conf_file $_db_conf_file);
 
 
 =head3 Linuxmuster configuration files
@@ -576,6 +595,10 @@ use vars qw($_permissions_conf_file $_db_conf_file);
 =item C<$_workstations_file>
 
 This file lists the workstations
+
+=item C<$_dhcpd_conf_file>
+
+DHCPD configuration file
 
 =item C<$_printers_file>
 
@@ -598,7 +621,7 @@ Setup for automated backup
 =cut
 
 use vars qw($_workstations_file $_printers_file $_classrooms_file
-            $_network_settings_file $_backup_conf_file);
+            $_network_settings_file $_backup_conf_file $_dhcpd_conf_file);
 
 
 =head3 Files with status information
@@ -822,6 +845,7 @@ $_templatedir = '@datadir@/@PACKAGE@/shtml';
 $_runtimedir = '@pkgruntimedir@';
 $_lockdir = '/var/lock';
 
+$_preferences_conf_file = "$_sysconfdir/preferences.conf";
 $_permissions_conf_file = "$_sysconfdir/permissions.conf";
 $_db_conf_file = "$_sysconfdir/db.conf";
 
@@ -836,6 +860,7 @@ $_blocked_hosts_internet_file = $lml_env{BLOCKEDHOSTSINTERNET};
 $_blocked_hosts_intranet_file = $lml_env{BLOCKEDHOSTSINTRANET};
 $_unfiltered_hosts_file = $lml_env{UNFILTEREDHOSTS};
 $_workstations_file = $lml_env{WIMPORTDATA};
+$_dhcpd_conf_file = $lml_env{DHCPDCONF};
 $_printers_file = $lml_env{PRINTERS};
 $_classrooms_file = $lml_env{CLASSROOMS};
 $_network_settings_file = $lml_env{NETWORKSETTINGS};
@@ -904,6 +929,7 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 	www_permissions => WWWPERMISSIONSAPP,
 	project_members => PROJECTMEMBERSAPP,
 	project_create_drop => PROJECTCREATEDROPAPP,
+	project_join_no_join => PROJECTJOINNOJOINAPP,
 	read_sophomorix_file => READSOPHOMORIXFILEAPP,
 	write_sophomorix_file => WRITESOPHOMORIXFILEAPP,
 	check_users => USERSCHECKAPP,
@@ -914,6 +940,7 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 	teachin => TEACHINAPP,
 	'chmod' => CHMODAPP,
 	'quota' => SETQUOTAAPP,
+	'hide_unhide_class' => HIDEUNHIDECLASSAPP,
 	set_own_password => SETOWNPASSWORDAPP,
 	create_drop_db => CREATEDROPDBAPP,
 	drop_db_user => DROPDBUSERAPP,
@@ -954,6 +981,7 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 	'/usr/sbin/sophomorix-www',
 	'/usr/sbin/sophomorix-project',
 	'/usr/sbin/sophomorix-project',
+	'/usr/sbin/sophomorix-project',
 	1,
 	1,
 	'/usr/sbin/sophomorix-check',
@@ -967,6 +995,7 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 	[ '/usr/sbin/sophomorix-quota', '/usr/sbin/sophomorix-class',
 	  '/usr/sbin/sophomorix-project', ],
 	'/usr/sbin/sophomorix-passwd',
+	'/usr/sbin/sophomorix-class',
 	'/usr/sbin/linuxmuster-mysql',
 	'/usr/sbin/linuxmuster-mysql',
 	'/usr/sbin/linuxmuster-mysql',
@@ -1153,6 +1182,8 @@ sub workstation_info {
 
 	if (open CONF, "<$_workstations_file") {
 		while (<CONF>) {
+			next if /^#/;
+
 			my $dummy;
 			my $conf_ip;
 			($room, $conf_workstation, $dummy, $dummy, $conf_ip) = split ';';
@@ -1232,6 +1263,8 @@ sub workstations_room {
 
 	if (open CONF, "<$_workstations_file") {
 		while (<CONF>) {
+			next if /^#/;
+
 			my ($conf_room, $workstation, $hw_class, $mac, $ip) = split ';';
 
 			if ($conf_room eq $room) {
@@ -1251,6 +1284,66 @@ sub workstations_room {
 
 
 	return \%workstations;
+}
+
+
+
+
+=head3 C<count_unimported_workstations()>
+
+Count unimported workstations
+
+=head4 Return value
+
+In list context, an array with the number of unimported workstations as
+first and the number of comments as second element.
+Otherwise the number of unimported workstations.
+
+=head4 Description
+
+Counts how many of the workstations configured in C<$_workstations_file>
+are not actually present in the system.
+
+=cut
+
+sub count_unimported_workstations {
+	my %workstations;
+	my $comment_cnt = 0;
+
+	if (open CONF, "<$_workstations_file") {
+		while (<CONF>) {
+			if (/^#/) {
+				$comment_cnt++;
+				next;
+			}
+
+			my ($conf_room, $workstation, $hw_class, $mac, $ip) = split ';';
+
+			$workstations{$workstation} = 1;
+		}
+
+		close CONF;
+
+
+		open CONF, "<$_dhcpd_conf_file"
+			or die "$0: Cannot open $_dhcpd_conf_file: $!\n";
+
+		while (<CONF>) {
+			s/#.*//;
+
+			if (my ($workstation) = /option\s+host-name\s+"(.+)"/) {
+				delete $workstations{$workstation}
+					if $workstations{$workstation};
+			}
+		}
+
+	} else {
+		warn "$0: Cannot open $_workstations_file: $!\n";
+	}
+
+
+	my $unimported_cnt = keys %workstations;
+	return (wantarray ? ($unimported_cnt, $comment_cnt) : $unimported_cnt);
 }
 
 
@@ -1366,6 +1459,8 @@ sub rooms {
 		or die "$0: Cannot open $_workstations_file: $!\n";
 
 	while (<ROOMS>) {
+		next if /^#/;
+
 		my ($room, $workstation) = split ';';
 
 		if ($workstation) {
@@ -1400,6 +1495,8 @@ sub hosts {
 		or die "$0: Cannot open $_workstations_file: $!\n";
 
 	while (<HOSTS>) {
+		next if /^#/;
+
 		my ($room, $workstation) = split ';';
 
 		if ($workstation) {
@@ -1434,6 +1531,8 @@ sub workstations {
 		or die "$0: Cannot open $_workstations_file: $!\n";
 
 	while (<WORKSTATIONS>) {
+		next if /^#/;
+
 		chomp;
 		my @fields = split ';';
 
@@ -1602,7 +1701,7 @@ sub read_conf {
 
 
 
-=head3 C<expire_seconds()>
+=head3 C<expire_seconds($time_str)>
 
 Returns the number of seconds described in a string
 
@@ -1649,6 +1748,16 @@ sub expire_seconds {
 }
 
 
+
+
+# read preferences from file
+
+eval {
+my %preferences = read_conf($_preferences_conf_file);
+
+$_max_idle_time = $preferences{max_idle_time}
+	if ($preferences{max_idle_time});
+};
 
 
 

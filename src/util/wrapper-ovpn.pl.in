@@ -108,7 +108,7 @@ none
 	if ($app_id == Schulkonsole::Config::OVPNCREATEAPP) {
 		my $ovpn_password = <>;
 		($ovpn_password) = $ovpn_password =~ /^(.{6,})$/;
-		exit -112 unless $ovpn_password;
+		exit -97 unless $ovpn_password;
 
 		$opts .= '--create';
 

@@ -9,6 +9,7 @@ pkglibexec_SCRIPTS=start logout \
 	project_handout project_collect project_db project_revision_control \
 	project_www project_shares \
 	settings \
+	settings_program settings_users settings_classs settings_backup \
 	user user_students user_teachers user_extra \
 	user_teacherpasswords \
 	user_check user_teachin user_commit user_reports \
@@ -27,7 +28,8 @@ EXTRA_DIST = start.in logout.in \
 	project_handoutcopy.in project_handout.in project_collect.in \
 	project_db.in project_revision_control.in project_www.in \
 	project_shares.in \
-	settings.in \
+	settings.in settings_program.in settings_users.in settings_classs.in \
+	settings_backup.in \
 	user.in user_students.in user_teachers.in user_extra.in \
 	user_teacherpasswords.in \
 	user_check.in user_teachin.in user_commit.in user_reports.in \

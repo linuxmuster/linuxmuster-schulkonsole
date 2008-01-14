@@ -6,7 +6,7 @@
 <!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
-<body onload="timer_step()">
+<body>
 
 <!--#include file="header.shtml.inc" -->
 
@@ -67,14 +67,14 @@
 <td><!--#echo var="teachers{login}" --></td>
 <td><!--#echo var="teachers{firstname}" --> <!--#echo var="teachers{surname}" --></td>
 <!--#if expr="$teachers{www}{public}" --><!--#set var="quickpublicoff" value="1" -->
-<td><input type="checkbox" name="${teachers{login}};public" checked></td>
+<td><input type="checkbox" disabled checked></td>
 <!--#else -->
-<td><input type="checkbox" name="${teachers{login}};public"></td>
+<td><input type="checkbox" disabled></td>
 <!--#endif -->
 <!--#if expr="$teachers{www}{upload}" --><!--#set var="quickuploadoff" value="1" -->
 <td><input type="checkbox" disabled checked></td>
 <!--#else -->
-<td><input type="checkbox" name="${teachers{login}};upload"></td>
+<td><input type="checkbox" disabled></td>
 <!--#endif -->
 </tr>
 <!--#endif -->

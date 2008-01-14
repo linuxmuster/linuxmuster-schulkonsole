@@ -108,7 +108,8 @@ if ($q->param('createproject')) {
 	Schulkonsole::Sophomorix::create_project(
 		$sk_session->userdata('id'),
 		$sk_session->get_password(),
-		$projectname);
+		$projectname,
+		$q->param('projectisopen'));
 
 	$all_projects = Schulkonsole::DB::projects();
 	if ($$all_projects{$projectname}) {
@@ -130,24 +131,40 @@ if ($q->param('createproject')) {
 		
 
 } elsif (my ($new_project) = $q->param('project_add')) {
-	Schulkonsole::Sophomorix::add_to_project(
-		$sk_session->userdata('id'),
-		$sk_session->get_password(),
-		$new_project,
-		$sk_session->userdata('uid'));
-	$sk_session->set_status(
-		sprintf($sk_session->d()->get('In Projekt %s eingetragen'),
-		        $new_project),
-		0);
-
-	$sk_session->read_groups_from_db();
-	$projects = Schulkonsole::Info::groups_projects($sk_session->groups());
-	$project = $new_project;
-	$sk_session->param('project', $project);
+	if ($$all_projects{$new_project}{joinable}) {
+		Schulkonsole::Sophomorix::add_to_project(
+			$sk_session->userdata('id'),
+			$sk_session->get_password(),
+			$new_project,
+			$sk_session->userdata('uid'));
+		$sk_session->set_status(
+			sprintf($sk_session->d()->get('In Projekt %s eingetragen'),
+			        $new_project),
+			0);
+	
+		$sk_session->read_groups_from_db();
+		$projects = Schulkonsole::Info::groups_projects($sk_session->groups());
+		$project = $new_project;
+		$sk_session->param('project', $project);
+	} else {
+		$sk_session->set_status(
+			sprintf($sk_session->d()->get('Eintragen in Projekt %s ist nicht erlaubt'),
+			        $new_project),
+			1);
+	}
 
 } else {
 	foreach my $old_project (keys %$projects) {
 		if ($q->param("${old_project}_remove")) {
+			if ($$all_projects{$old_project}{joinable}) {
+				$sk_session->set_status(
+					sprintf($sk_session->d()->get(
+						'Sie d&uuml;rfen die Benutzerliste von %s nicht &auml;ndern'),
+						$$projects{$old_project}{displayname}),
+					1);
+				last COMMANDS;
+			}
+
 			my $is_admin = Schulkonsole::DB::is_project_admin(
 			              	$$projects{$old_project}{id},
 			              	$sk_session->userdata('uidnumber'));
@@ -281,10 +298,11 @@ foreach my $project (sort {
 		push @projects, { gid => $project,
 		                  name => $$all_projects{$project}{displayname},
 		                  addquota => $add_quota,
+						  joinable => $$all_projects{$project}{joinable},
 		                  isadmin => $is_admin,
 		                  islastadmin => ($is_admin == -1),
 		                };
-	} else {
+	} elsif ($$all_projects{$project}{joinable}) {
 		push @other_projects, { gid => $project,
 		                        name => $$all_projects{$project}{displayname},
 	                          };
