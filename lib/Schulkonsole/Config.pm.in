@@ -1320,7 +1320,7 @@ sub count_unimported_workstations {
 
 			my ($conf_room, $workstation, $hw_class, $mac, $ip) = split ';';
 
-			$workstations{$workstation} = 1 if $workstation;
+			$workstations{"\L$workstation"} = 1 if $workstation;
 		}
 
 		close CONF;
@@ -1333,6 +1333,7 @@ sub count_unimported_workstations {
 			s/#.*//;
 
 			if (my ($workstation) = /option\s+host-name\s+"(.+)"/) {
+				$workstation = lc $workstation;
 				delete $workstations{$workstation}
 					if $workstations{$workstation};
 			}
