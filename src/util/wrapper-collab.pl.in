@@ -162,7 +162,9 @@ GID to which the repository belongs
 		# MySQL searches for .my.cnf in $HOME
 		$ENV{HOME} = (getpwuid($>))[7];
 	}
-	exec "$app $opts" or last SWITCH;
+	exec "$app $opts";
+	
+	last SWITCH;
 };
 
 =head3 drop_db_user
@@ -216,8 +218,7 @@ $app_id == Schulkonsole::Config::DROPDBUSERAPP and do {
 
 	foreach my $db (@dbs) {
 		my $opts = "--drop --dbname=\Q$db";
-		system "$app $opts";
-		exit ($? >> 8) if $?;
+		system("$app $opts") == 0 or exit ($? >> 8);
 	}
 
 	exit 0;
@@ -253,7 +254,9 @@ $app_id == Schulkonsole::Config::LISTDBUSERAPP and do {
 	# MySQL searches for .my.cnf in $HOME
 	$ENV{HOME} = (getpwuid($>))[7];
 
-	exec "$app $opts" or last SWITCH;
+	exec "$app $opts";
+
+	last SWITCH;
 };
 
 
@@ -355,7 +358,9 @@ GID to which the repository belongs
 		# MySQL searches for .my.cnf in $HOME
 		$ENV{HOME} = (getpwuid($>))[7];
 	}
-	exec "$app $opts" or last SWITCH;
+	exec "$app $opts";
+	
+	last SWITCH;
 };
 
 }
