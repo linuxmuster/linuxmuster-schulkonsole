@@ -50,10 +50,9 @@
 </p>
 </form>
 
-<!--#if expr="$isadmin" -->
-<!--#if expr="$isopen" -->
 <h3><gettext>Mitglieder hinzuf&uuml;gen</gettext></h3>
 
+<!--#if expr="$isopen" -->
 <form method="post" action="project_addmembers">
 <p>
 <label for="query"><gettext>Suche:</gettext></label>
@@ -68,8 +67,6 @@
    <input type="radio" name="scope" id="radioproject" value="project">
    <label for="radioproject"><gettext>Projekt</gettext></label></p>
 </form>
-<!--#endif -->
-
 <!--#else -->
 <p><gettext>Das Projekt ist geschlossen.</gettext></p>
 <!--#endif -->
