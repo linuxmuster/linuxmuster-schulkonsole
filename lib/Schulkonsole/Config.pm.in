@@ -1182,7 +1182,7 @@ sub workstation_info {
 
 	if (open CONF, "<$_workstations_file") {
 		while (<CONF>) {
-			next if /^#/;
+			next if /^#/ || /^\s*$/;
 
 			my $dummy;
 			my $conf_ip;
@@ -1263,7 +1263,7 @@ sub workstations_room {
 
 	if (open CONF, "<$_workstations_file") {
 		while (<CONF>) {
-			next if /^#/;
+			next if /^#/ || /^\s*$/;
 
 			my ($conf_room, $workstation, $hw_class, $mac, $ip) = split ';';
 
@@ -1316,10 +1316,11 @@ sub count_unimported_workstations {
 				$comment_cnt++;
 				next;
 			}
+			next if /^\s*$/;
 
 			my ($conf_room, $workstation, $hw_class, $mac, $ip) = split ';';
 
-			$workstations{$workstation} = 1;
+			$workstations{$workstation} = 1 if $workstation;
 		}
 
 		close CONF;
@@ -1459,7 +1460,7 @@ sub rooms {
 		or die "$0: Cannot open $_workstations_file: $!\n";
 
 	while (<ROOMS>) {
-		next if /^#/;
+		next if /^#/ || /^\s*$/;
 
 		my ($room, $workstation) = split ';';
 
@@ -1495,7 +1496,7 @@ sub hosts {
 		or die "$0: Cannot open $_workstations_file: $!\n";
 
 	while (<HOSTS>) {
-		next if /^#/;
+		next if /^#/ || /^\s*$/;
 
 		my ($room, $workstation) = split ';';
 
@@ -1531,7 +1532,7 @@ sub workstations {
 		or die "$0: Cannot open $_workstations_file: $!\n";
 
 	while (<WORKSTATIONS>) {
-		next if /^#/;
+		next if /^#/ || /^\s*$/;
 
 		chomp;
 		my @fields = split ';';

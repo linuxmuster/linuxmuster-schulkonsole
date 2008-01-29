@@ -350,7 +350,7 @@ sub new_workstations_lines {
 	if (open WORKSTATIONS, "<$Schulkonsole::Config::_workstations_file") {
 		my %cnt;
 		while (<WORKSTATIONS>) {
-			next if /^#/;
+			next if /^#/ || /^\s*$/;
 
 			my ($room, $host, $group, $mac, $ip,
 			    $mask, $dummy1, $dummy2, $dummy3, $dummy4) = split ';';
