@@ -4802,8 +4802,9 @@ sub hide_unhide_classes {
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	print SCRIPTOUT join("\n", @$hide_classs), "\n\n",
-	                join("\n", @$unhide_classs), "\n\n";
+	print SCRIPTOUT
+	      (@$hide_classs ? join("\n", @$hide_classs) . "\n\n" : "\n"),
+	      (@$unhide_classs ? join("\n", @$unhide_classs) . "\n\n" : "\n");
 
 	buffer_input(\*SCRIPTIN);
 

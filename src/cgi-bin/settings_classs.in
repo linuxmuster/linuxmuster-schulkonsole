@@ -80,10 +80,21 @@ if ($q->param('accept')) {
 		}
 	}
 	eval {
-		Schulkonsole::Sophomorix::hide_unhide_classes(
-			$id, $password,
-			\@hide_classs, \@unhide_classs);
-		$classs = Schulkonsole::DB::all_classes();
+		if (   @hide_classs
+		    or @unhide_classs) {
+			Schulkonsole::Sophomorix::hide_unhide_classes(
+				$id, $password,
+				\@hide_classs, \@unhide_classs);
+			$classs = Schulkonsole::DB::all_classes();
+			delete $$classs{'attic'};
+
+			$sk_session->set_status($sk_session->d()->get(
+				'&Auml;nderungen &uuml;bernommen.'), 0);
+		} else {
+			$sk_session->set_status($sk_session->d()->get(
+				'Keine &Auml;nderungen.'), 1);
+		}
+
 	};
 	if ($@) {
 		$sk_session->standard_error_handling($this_file, $@);
