@@ -92,14 +92,6 @@
 <td><input type="checkbox" name="activateglobalshares" id="activateglobalshares"></td>
 <!--#endif -->
 </tr>
-<tr class="even">
-<td><label for="activatewww"><gettext>Zugriff auf Webordner aktivieren</gettext></label></td>
-<!--#if expr="$activatewww" -->
-<td><input type="checkbox" name="activatewww" id="activatewww" checked></td>
-<!--#else -->
-<td><input type="checkbox" name="activatewww" id="activatewww"></td>
-<!--#endif -->
-</tr>
 </table>
 
 <hr>

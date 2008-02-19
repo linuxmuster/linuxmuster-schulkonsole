@@ -1,12 +1,28 @@
+linuxmuster-schulkonsole (0.9.14.1-1) unstable; urgency=low
+
+  * www-, svn- und db-Optionen aus shtml/settings_users.shtml und
+    shtml/start.shtml entfernt.
+  * Seiten class_db, class_revision_control, class_www, project_db,
+    project_revision_control und project_www aus permissions.conf
+    entfernt
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Tue, 19 Feb 2008 16:14:05 +0000
+
+linuxmuster-schulkonsole (0.9.13.4-1) unstable; urgency=low
+
+  * New upstream revision 58, fixes several bugs
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Thu, 31 Jan 2008 08:44:00 +0100
+
 linuxmuster-schulkonsole (0.9.13.3-1) unstable; urgency=low
 
   * New upstream release
-    (closes: #202 "Anzeige auskommentierter Einträge in der lehrer.txt in der
+    (closes: #202 "Anzeige auskommentierter Eintraege in der lehrer.txt in der
                    Schulkonsole")
-    (closes: #264 "Auskommentierte Räume erscheinen in der Schulkonsole")
+    (closes: #264 "Auskommentierte Raeume erscheinen in der Schulkonsole")
     (closes: #273 "Aktionen wenn sophomorix gesperrt wurde")
-    (closes: #278 "Zusätzliche Eigenschaft von Projekten: offen/geschlossen")
-    (closes: #297 "Steuerung der Webfreigabe für Lehrer in der Schulkonsole")
+    (closes: #278 "Zusaetzliche Eigenschaft von Projekten: offen/geschlossen")
+    (closes: #297 "Steuerung der Webfreigabe fuer Lehrer in der Schulkonsole")
     (closes: #314 "Konfiguration der Sitzungsdauer in der Schulkonsole")
     (closes: #316 "Anpassungen im Klassenarbeitsmodus")
     (closes: #321 "Unterricht kann nicht beendet werden bei aktiviertem
@@ -17,13 +33,13 @@ linuxmuster-schulkonsole (0.9.13.3-1) unstable; urgency=low
 
 linuxmuster-schulkonsole (0.9.12-1) unstable; urgency=low
 
-  * DenyUser-Bug in wrapper-printer.pl.in und wrapper-firewall.pl.in gefixt (schließt #303)
+  * DenyUser-Bug in wrapper-printer.pl.in und wrapper-firewall.pl.in gefixt (schliesst #303)
 
  -- Thomas Schmitt <schmitt@lmz-bw.de>  Fri, 28 Sep 2007 16:41:58 +0200
 
 linuxmuster-schulkonsole (0.9.11-1) unstable; urgency=low
 
-  * new upstream release (schließt #279)
+  * new upstream release (schliesst #279)
 
  -- Thomas Schmitt <schmitt@lmz-bw.de>  Sat, 04 Aug 2007 14:56:17 +0200
 

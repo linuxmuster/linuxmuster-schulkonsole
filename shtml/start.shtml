@@ -173,45 +173,6 @@
 
 <hr>
 
-<h4><gettext>Datenbanken</gettext></h4>
-
-<!--#if expr="$dbs" -->
-
-<!--#if expr="$allow_drop_db" -->
-<form method="post">
-
-<table>
-<!--#if expr="$loop_dbs" -->
-<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
-<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
-<td><label for="${dbs}_drop"><!--#echo var="dbs" --></label></td>
-<td><input id="${dbs}_drop" name="${dbs};drop" type="checkbox"></td>
-</tr><!--#endif -->
-</table>
-
-<p><input type="submit" name="dropdbs" value="L&ouml;schen"></p>
-
-</form>
-<!--#else -->
-
-<table>
-<!--#if expr="$loop_dbs" -->
-<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
-<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
-<td><!--#echo var="dbs" --></td>
-</tr><!--#endif -->
-</table>
-
-<!--#endif -->
-<p>
-<a href="$phpmyadmin_link"><gettext>Zur Datenbankverwaltung</gettext></a>
-</p>
-<!--#else -->
-<p><gettext>keine Datenbanken vorhanden</gettext></p>
-<!--#endif -->
-
-<hr>
-
 <form method="post">
 <h3><gettext>OpenVPN-Zertifikat</gettext></h3>
 <!--#if expr="$has_ovpn" -->
@@ -236,27 +197,6 @@
 <!--#endif -->
 </form>
 
-<hr>
-
-<!--#if expr="$allowwwwpermissions" -->
-<h3><gettext>Pers&ouml;nliches Webverzeichnis</gettext></h3>
-<!--#if expr="$wwwactive" -->
-<form method="post">
-<p><label for="wwwpublic"><gettext>&Ouml;ffentlich</gettext></label>
-<!--#if expr="$wwwpublic" -->
-   <input type="checkbox" name="wwwpublic" id="wwwpublic" checked>
-<!--#else -->
-   <input type="checkbox" name="wwwpublic" id="wwwpublic">
-<!--#endif -->
-</p>
-<p><input type="submit" name="wwwaccept" value="&Auml;nderung speichern"></p>
-</form>
-<!--#else -->
-<p><gettext>Der Zugriff auf die Webverzeichnisse ist global
-ausgeschaltet.</gettext></p>
-<!--#endif -->
-<!--#endif -->
-
 
 </div>
 
@@ -271,9 +211,7 @@ ausgeschaltet.</gettext></p>
 und Ihr Passwort &auml;ndern. Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch
 auf dem Server und in Ihrem Postfach. Alle Werte sind
 in Kilobyte angegeben. Zus&auml;tzlich wird angezeigt in welchen Projekten Sie
-Mitglied sind und welche Unterrichts-Datenbanken f&uuml;r Sie erstellt
-wurden. Als Lehrer/in k&ouml;nnen Sie nicht mehr ben&ouml;tigte
-Datenbanken l&ouml;schen.</gettext></p>
+Mitglied sind.</gettext></p>
 <p><gettext>Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden.
 Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner <q>OpenVPN</q>
 abgelegt.</gettext></p>
