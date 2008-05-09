@@ -620,15 +620,27 @@ table.liste tr {
 }
 
 table.liste tr.even,
+table.liste tr.hosteven,
 table.settings tr.even {
 	background-color: #ffffdd;
 }
 
-
 table.liste tr.odd,
+table.liste tr.hostodd,
 table.settings tr.odd {
 	background-color: #ffffff;
 }
+
+table.liste tr.hostodd > td:first-child,
+table.liste tr.hosteven > td:first-child {
+	padding-left: 2em;
+}
+
+table.liste tr.unset {
+	background-color: #ffffff;
+	color: #999999;
+}
+
 
 table.liste tr.editing {
 	background-color: #deffdf;
@@ -638,7 +650,7 @@ table.liste tr.editing {
 .important {
 	font-size: +140%;
 	font-weight: bold;
-	color: #000000;
+	color: #ffffff;
 	background-color: #d54f4f;
 }
 

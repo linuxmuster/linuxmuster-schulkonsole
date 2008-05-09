@@ -213,6 +213,27 @@ $app_id == Schulkonsole::Config::URLFILTERCHECKAPP and do {
 	$< = $>;
 	exec "$app" or last SWITCH;
 };
+
+=head3 all_on
+
+numeric constant: C<Schulkonsole::Config::ALLONAPP>
+
+=head4 Description
+
+Resets the workstation settings in a room
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<room>
+
+The name of the room
+
+=back
+
+=cut
+
 $app_id == Schulkonsole::Config::ALLONAPP and do {
 	my $room = <>;
 	($room) = $room =~ /^([\w -]+)$/;
@@ -226,6 +247,31 @@ $app_id == Schulkonsole::Config::ALLONAPP and do {
 
 	exit 0;
 };
+
+=head3 all_on_at
+
+numeric constant: C<Schulkonsole::Config::ALLONATAPP>
+
+=head4 Description
+
+Resets the workstation settings in a room at a given time
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<room>
+
+The name of the room
+
+=item C<time>
+
+Absolute time in seconds since the Epoch
+
+=back
+
+=cut
+
 $app_id == Schulkonsole::Config::ALLONATAPP and do {
 	my $room = <>;
 	($room) = $room =~ /^([\w -]+)$/;
@@ -235,7 +281,7 @@ $app_id == Schulkonsole::Config::ALLONATAPP and do {
 	($time) = $time =~ /^(\d+)$/;
 	exit -41 unless $time;
 
-	{ # write values and end session
+	{ # write values and close session
 	my $room_session = room_session($room);
 	$room_session->param('end_time', $time);
 	}
@@ -258,10 +304,12 @@ $app_id == Schulkonsole::Config::ALLONATAPP and do {
 		exit -45 unless $stored_id;
 		my $stored_time = $room_session->param('end_time');
 		exit -45 unless $stored_time;
+		my $is_exam_mode = $room_session->param('test_step');
 
 		if (    $stored_time == $time
 		    and $stored_id == $id
-		    and $stored_room eq $room) {
+		    and $stored_room eq $room
+			and not $is_exam_mode) {
 
 			Schulkonsole::DB::reconnect();
 			all_on($room_session);

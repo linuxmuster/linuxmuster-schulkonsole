@@ -3,7 +3,7 @@ perllib_DATA = Session.pm Config.pm
 dist_perllib_DATA = DB.pm Error.pm ExternalError.pm Gettext.pm Template.pm \
 	Room.pm RoomSession.pm \
 	TeachIn.pm \
-	Info.pm Firewall.pm Printer.pm Sophomorix.pm Cyrus.pm Collab.pm WWW.pm \
+	Info.pm Firewall.pm Printer.pm Sophomorix.pm Cyrus.pm \
 	Files.pm SophomorixQuotas.pm OVPN.pm
 
 CLEANFILES = $(perllib_DATA)

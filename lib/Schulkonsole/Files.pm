@@ -41,6 +41,7 @@ $VERSION = 0.06;
 	write_classrooms_file
 	write_printers_file
 	write_workstations_file
+	write_room_defaults_file
 	write_backup_conf_file
 	write_preferences_conf_file
 	import_printers
@@ -301,6 +302,41 @@ sub write_workstations_file {
 
 
 
+=head3 C<write_room_defaults_file($id, $password, $lines)>
+
+Write new room_defaults file
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$lines>
+
+The lines of the new file
+
+=back
+
+=head4 Description
+
+Writes the file /etc/linuxmuster/room_defaults
+
+=cut
+
+sub write_room_defaults_file {
+	write_file(@_, 3);
+}
+
+
+
+
 =head3 C<write_backup_conf_file($id, $password, $lines)>
 
 Write new backup.conf
@@ -330,7 +366,7 @@ Writes the file /etc/linuxmuster/backup.conf
 =cut
 
 sub write_backup_conf_file {
-	write_file(@_, 3);
+	write_file(@_, 4);
 }
 
 
@@ -365,7 +401,7 @@ Writes the file /etc/linuxmuster/schulkonsole/preferences.conf
 =cut
 
 sub write_preferences_conf_file {
-	write_file(@_, 4);
+	write_file(@_, 5);
 }
 
 
@@ -398,14 +434,35 @@ This wraps the command C<import_workstations>
 sub import_workstations {
 	my $id = shift;
 	my $password = shift;
+	my $sk_session = shift;
+
+	$sk_session->put_aside_session();
 
 	my $pid = start_wrapper(Schulkonsole::Config::IMPORTWORKSTATIONSAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	print SCRIPTOUT $sk_session->session_id(), "\n";
 
 	buffer_input(\*SCRIPTIN);
 
+
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	sleep 1;
+
+
+	$sk_session->get_back_session();
+	my $cgi_session = $sk_session->{session};
+	if ($cgi_session->param('statusbgiserror')) {
+		my $statusbg = $cgi_session->param('statusbg');
+
+		$cgi_session->clear('statusbg');
+		$cgi_session->clear('statusbgiserror');
+
+		die new Schulkonsole::Error(
+			Schulkonsole::Error::PUBLIC_BG_ERROR,
+			$statusbg);
+	}
 }
 
 

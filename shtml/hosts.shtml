@@ -16,13 +16,25 @@
 
 <div id="content">
 
+<!--#if expr="$isimporting" -->
+<!--#else -->
+<!--#if expr="$unconfigured" -->
+<form method="post">
+<p class="important"><gettext>Die Liste der konfigurierten Hosts stimmt nicht mit den
+tats&auml;chlich im System vorhandenen Hosts &uuml;berein.</gettext></p>
+
+<p><input type="submit" name="import" value="Hosts jetzt &uuml;bernehmen"></p>
+</form>
+<!--#else -->
 <!--#if expr="$unimported" -->
 <form method="post">
-<p><gettext>Es wurden noch nicht alle Hosts in das System &uuml;bernommen.
+<p class="important"><gettext>Es wurden noch nicht alle Hosts in das System &uuml;bernommen.
 </gettext></p>
 
 <p><input type="submit" name="import" value="Hosts jetzt &uuml;bernehmen"></p>
 </form>
+<!--#endif -->
+<!--#endif -->
 <!--#endif -->
 
 
@@ -122,7 +134,7 @@ gel&ouml;scht.</gettext></p>
 <p><gettext>&Auml;ndern Sie einfach die entsprechenden Felder in der Liste.</gettext></p>
 <p><gettext>F&uuml;r einen neuen Rechner f&uuml;llen Sie die n&auml;chste freie Zeile aus.</gettext></p>
 <p><gettext>Um einen Eintrag zu l&ouml;schen, setzen Sie das H&auml;kchen in der entsprechenden Checkbox am Zeilenende.</gettext></p>
-<p><gettext>Schliessen Sie die Aktion mit <q>&Auml;nderungen &uuml;bernehmen</q>  ab.</gettext></p>
+<p><gettext>Schliessen Sie die Aktion mit &#8222;&Auml;nderungen &uuml;bernehmen&#8221;  ab.</gettext></p>
 
 <img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>

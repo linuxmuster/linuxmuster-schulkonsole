@@ -949,69 +949,6 @@ $app_id == Schulkonsole::Config::SETPASSWORDSAPP and do {
 	exec "$app $opts" or last SWITCH;
 };
 
-=head3 www_permissions
-
-numeric constant: C<Schulkonsole::Config::WWWPERMISSIONSAPP>
-
-=head4 Parameters from standard input
-
-=over
-
-=item is_groups
-
-0 if settings are for users, 1 for groups
-
-=item is_public
-
-1 if public access is allowed, 0 otherwise
-
-=item is_upload
-
-1 if upload is allowed, 0 otherwise
-
-=item users
-
-the UIDs of the users or GIDs of the groups (depending on is_groups)
-
-=back
-
-=cut
-
-$app_id == Schulkonsole::Config::WWWPERMISSIONSAPP and do {
-	my $is_groups = <>;
-	($is_groups) = $is_groups =~ /^([01])$/;
-	exit -98 unless defined $is_groups;
-
-	my $is_public = <>;
-	($is_public) = $is_public =~ /^([01])$/;
-	exit -99 unless defined $is_public;
-
-	my $is_upload = <>;
-	($is_upload) = $is_upload =~ /^([01])$/;
-	exit -100 unless defined $is_upload;
-
-	my @users;
-	while (my $user = <>) {
-		last if $user =~ /^$/;
-		($user) = $user =~ /^(.+)$/;
-		exit -81 unless $user;
-
-		push @users, "\Q$user";
-	}
-	exit -82 unless @users;
-
-	my $opts = "--caller \Q$$userdata{uid}\E "
-		. ($is_groups ? '--user' : '--group')
-		. ($is_public ? '-public' : '-private')
-		. ($is_upload ? '-upload' : '-noupload')
-		. ' ' . join(',', @users);
-
-	# sophomorix-www cannot be invoked with taint checks enabled
-	$< = $>;
-	$( = $);
-	exec "$app $opts" or last SWITCH;
-};
-
 =head3 read_sophomorix_file
 
 numeric constant: C<Schulkonsole::Config::READSOPHOMORIXFILEAPP>
@@ -1536,11 +1473,6 @@ $app_id == Schulkonsole::Config::CHMODAPP and do {
 	$number == 0 and do {
 		$filename = "$DevelConf::share_school";
 		$mode = $on ? 03777 : 0700;
-		last SWITCHDIR;
-	};
-	$number == 1 and do {
-		$filename = "$DevelConf::www_people";
-		$mode = $on ? 0755 : 0700;
 		last SWITCHDIR;
 	};
 	}

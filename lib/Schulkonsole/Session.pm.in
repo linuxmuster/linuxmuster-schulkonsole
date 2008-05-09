@@ -178,7 +178,13 @@ sub end_session {
 	my $this = shift;
 
 	$this->{logout} = 1;
+
+	my $sid = $this->{session}->id();
+
 	$this->{session}->delete();
+
+	my $session_lockfile = Schulkonsole::Config::lockfile('cgisession_' . $sid);
+	unlink $session_lockfile;
 }
 
 
@@ -905,6 +911,74 @@ sub standard_error_handling {
 
 
 
+=head3 C<session_id()>
+
+Return the ID of this session
+
+=head4 Description
+
+Returns the ID of the CGI::Session.
+
+=cut
+
+sub session_id
+{
+	my $this = shift;
+
+	return $this->{session}->id();
+}
+
+
+
+
+=head3 C<put_aside_session()>
+
+Put the CGI::Session aside.
+
+=head4 Description
+
+Closes the CGI::Session and releases the lock. Use get_back_session() to
+lock and load it again.
+
+=cut
+
+sub put_aside_session
+{
+	my $this = shift;
+
+	$this->{session}->close();
+	flock $this->{lock}, 8;
+}
+
+
+
+=head3 C<get_back_session()>
+
+Get the CGI::Session back.
+
+=head4 Description
+
+Loads the CGI::Session after re-instating the lock.
+Use after put_aside_session().
+
+=cut
+
+sub get_back_session
+{
+	my $this = shift;
+
+	my $sid = $this->{session}->id();
+
+	flock $this->{lock}, 2;
+
+	$this->{session} = new CGI::Session("driver:File", $sid,
+	   { Directory => $Schulkonsole::Config::_runtimedir });
+}
+
+
+
+
+
 #=head2 Private methods
 
 sub init {
@@ -915,8 +989,23 @@ sub init {
 	$this->{query} = new CGI;
 
 	umask(umask() | 077);	# session-file mode 0600
+	# create session from query to get the session id
 	$this->{session} = new CGI::Session("driver:File", $this->{query},
 	   { Directory => $Schulkonsole::Config::_runtimedir });
+	my $sid = $this->{session}->id();
+	$this->{session}->close();
+
+	# lock session and re-open
+	my $session_lockfile = Schulkonsole::Config::lockfile(
+			'cgisession_' . $sid);
+	open $this->{lock}, ">>$session_lockfile" or exit -106;
+	flock $this->{lock}, 2;
+
+
+	$this->{session} = new CGI::Session("driver:File", $sid,
+	   { Directory => $Schulkonsole::Config::_runtimedir });
+
+
 	$this->{session}->expire($Schulkonsole::Config::_login_expire_time)
 		unless $this->{session}->param('session_start_time');
 
@@ -939,6 +1028,14 @@ sub init {
 			$this->{session}->param('statusredirectiserror'));
 		$this->{session}->clear('statusredirect');
 		$this->{session}->clear('statusredirectiserror');
+	} elsif ($this->{session}->param('statusbg')) {
+		$this->set_status(
+			  $this->{d}->get('Ausgabe des Hintergrundprozess: ')
+			. $this->{session}->param('statusbg'), 
+		$this->{session}->param('statusbgiserror'));
+
+		$this->{session}->clear('statusbg');
+		$this->{session}->clear('statusbgiserror');
 	}
 
 
@@ -1135,6 +1232,7 @@ sub init_l10n
 
 	$this->set_var
 }
+
 
 
 

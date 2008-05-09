@@ -10,6 +10,11 @@ window.onload = function()
 	}
 
 	timer_step();
+
+	var elements = document.getElementsByTagName("input");
+	if (elements) {
+		elements[0].focus();
+	}
 }
 
 

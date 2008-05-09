@@ -2,21 +2,21 @@
 
 =head1 NAME
 
-rooms - add rooms to list of available rooms
+rooms_classrooms - add rooms to list of available rooms
 
 =head1 SYNOPSIS
 
- https://server/schulkonsole/rooms
+ https://server/schulkonsole/rooms_classrooms
 
 =head1 DESCRIPTION
 
-C<rooms> lets you add rooms to the list of available rooms in
+C<rooms_classrooms> lets you add rooms to the list of available rooms in
 https://server/schulkonsole/room
-The HTML template is rooms.shtml.
+The HTML template is rooms_classrooms.shtml.
 
 =head2 Template variables
 
-Additionally to the variables of Schulkonsole::Session C<rooms>
+Additionally to the variables of Schulkonsole::Session C<rooms_classrooms>
 provides the following variables:
 
 =over
@@ -29,7 +29,7 @@ use Schulkonsole::Session;
 use Schulkonsole::Files;
 
 
-my $this_file = 'rooms';
+my $this_file = 'rooms_classrooms';
 
 
 
@@ -122,14 +122,28 @@ True if the room is available
 
 $sk_session->set_var('rooms', \@rooms_array);
 
+
+
+my ($unimported, $unconfigured) =
+	Schulkonsole::Config::count_unimported_unconfigured_workstations();
+
 =item C<unimported>
 
 True if not all configured workstations were imported into the system
 
 =cut
 
-$sk_session->set_var('unimported',
-	Schulkonsole::Config::count_unimported_workstations());
+$sk_session->set_var('unimported', $unimported);
+
+=item C<unconfigured>
+
+True if not all imported workstations are configured, too
+
+=cut
+
+$sk_session->set_var('unconfigured', $unconfigured);
+
+
 
 
 

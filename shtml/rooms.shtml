@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="de">
-<title><gettext>Schulkonsole</gettext> - <gettext>R&auml;ume</gettext></title>
+<title><gettext>Schulkonsole</gettext> - <gettext>R&auml;ume</gettext> - <gettext>Standardeinstellungen</gettext></title>
 <!--#include file="css.shtml.inc" -->
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
@@ -11,45 +11,138 @@
 <!--#include file="header.shtml.inc" -->
 
 <div id="submenu">
-<img src="img/bw.jpg" alt="Baden-W&uuml;rttemberg - Ministerium f&uuml;r Kultur-, Jugend und Sport">
+<!--#include file="submenu-rooms.shtml.inc" -->
 </div>
 
 <div id="content">
 
-<!--#if expr="$unimported" -->
-<p><gettext>Es wurden noch nicht alle Hosts mit ihren R&auml;men in das
-System &uuml;bernommen. Bitte &uuml;berpr&uuml;fen Sie die
-<a href="hosts">Hosts-Liste</a>.
-</gettext></p>
-<!--#endif -->
-
-
-
-<h2><gettext>R&auml;ume</gettext></h2>
+<h2><gettext>Standardeinstellungen f&uuml;r R&auml;ume</gettext></h2>
 
 <form method="post">
 
 
-<table id="rooms" class="liste">
-<col width="80%">
+<table id="roomsdefaults" class="liste">
 <col width="20%">
+<colgroup span="3" width="11%"></colgroup>
+<colgroup span="2"></colgroup>
+<col width="3%">
 <tr>
-<th><gettext>Raumbezeichnung</gettext></th>
-<th><gettext>Computerraum</gettext></th>
+<th></th>
+<th><gettext>Internet</gettext></th>
+<th><gettext>Intranet</gettext></th>
+<th><gettext>Webfilter</gettext></th>
+<th colspan="2"></th>
+<th>X</th>
 </tr>
-<!--#if expr="$loop_rooms" -->
-<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
-<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
-<td><label for="${rooms{name}}_classroom"><!--#echo var="rooms{name}" --></label></td>
-<!--#if expr="$rooms{selected}" -->
-<td><input type="checkbox" id="${rooms{name}}_classroom" name="${rooms{name}}_classroom" checked></td>
+<tr>
+<td><gettext>default</gettext></td>
+<td>
+<select name="default_internet">
+<option value="-1">-</option>
+<option value="1"><gettext>An</gettext></option>
+<option value="0"><gettext>Aus</gettext></option>
+</select>
+</td>
+<td>
+<select name="default_intranet">
+<option value="-1">-</option>
+<option value="1"><gettext>An</gettext></option>
+<option value="0"><gettext>Aus</gettext></option>
+</select>
+</td>
+<td>
+<select name="default_webfilter">
+<option value="-1">-</option>
+<option value="1"><gettext>An</gettext></option>
+<option value="0"><gettext>Aus</gettext></option>
+</select>
+</td>
+<!--#if expr="$defaultrooms" --><td><select name="default_add">
+<!--#if expr="$loop_defaultrooms" -->	<option value="$defaultrooms"><!--#echo var="defaultrooms" --></option>
+<!--#endif -->
+</select></td>
+<td><input type="submit" name="add_room" value="Ausnahme hinzuf&uuml;gen"></td>
 <!--#else -->
-<td><input type="checkbox" id="${rooms{name}}_classroom" name="${rooms{name}}_classroom"></td>
+<td colspan="2"></td>
 <!--#endif -->
 </tr>
+<tr><td colspan="7">&nbsp;</td></tr>
+
+<!--#if expr="$loop_nondefaults" -->
+
+<!--#if expr="$odd" --><!--#set var="odd" value="0" -->
+<!--#else --><!--#set var="odd" value="1" --><!--#endif -->
+
+	<!--#if expr="$nondefaults{isroom}" -->
+	<!--#if expr="$nondefaults{isset}" -->
+	<!--#if expr="$odd" --><tr class="odd"><!--#else --><tr class="even"><!--#endif -->
+	<!--#else -->
+	<tr class="unset">
+	<!--#endif -->
+	<td><!--#echo var="nondefaults{name}" --></td>
+	<td>
+		<select name="${nondefaults{name}}_room_internet">
+		<option value="-1">-</option>
+		<option value="1"><gettext>An</gettext></option>
+		<option value="0"><gettext>Aus</gettext></option>
+		</select>
+	</td>
+	<td>
+		<select name="${nondefaults{name}}_room_intranet">
+		<option value="-1">-</option>
+		<option value="1"><gettext>An</gettext></option>
+		<option value="0"><gettext>Aus</gettext></option>
+		</select>
+	</td>
+	<td>
+		<select name="${nondefaults{name}}_room_webfilter">
+		<option value="-1">-</option>
+		<option value="1"><gettext>An</gettext></option>
+		<option value="0"><gettext>Aus</gettext></option>
+		</select>
+	</td>
+	<!--#if expr="$nondefaults{hosts}" -->
+	<td><select name="${nondefaults{name}}_add">
+		<!--#if expr="$loop_nondefaults{hosts}" -->
+		<option value="$nondefaults{hosts}"><!--#echo var="nondefaults{hosts}" --></option>
+	<!--#endif -->
+	</select></td>
+	<td><input type="submit" name="${nondefaults{name}}_add_host" value="Ausnahme hinzuf&uuml;gen"></td>
+	<!--#else -->
+	<td colspan="2"></td>
+	<!--#endif -->
+	<td><input type="checkbox" name="${nondefaults{name}}_room_delete"></td>
+	</tr>
+	<!--#else -->
+	<!--#if expr="$odd" --><tr class="hostodd"><!--#else --><tr class="hosteven"><!--#endif -->
+	<td><!--#echo var="nondefaults{name}" --></td>
+	<td>
+		<select name="${nondefaults{name}}_internet">
+		<option value="-1">-</option>
+		<option value="1"><gettext>An</gettext></option>
+		<option value="0"><gettext>Aus</gettext></option>
+		</select>
+	</td>
+	<td>
+		<select name="${nondefaults{name}}_intranet">
+		<option value="-1">-</option>
+		<option value="1"><gettext>An</gettext></option>
+		<option value="0"><gettext>Aus</gettext></option>
+		</select>
+	</td>
+	<td>
+		<select name="${nondefaults{name}}_webfilter">
+		<option value="-1">-</option>
+		<option value="1"><gettext>An</gettext></option>
+		<option value="0"><gettext>Aus</gettext></option>
+		</select>
+	</td>
+	<td colspan="2"></td>
+	<td><input type="checkbox" name="${nondefaults{name}}_delete"></td>
+	</tr>
+	<!--#endif -->
 <!--#endif -->
 </table>
-
 
 
 <p>
@@ -67,8 +160,7 @@ System &uuml;bernommen. Bitte &uuml;berpr&uuml;fen Sie die
 
 <h2><gettext>Info</gettext></h2>
 
-<p><gettext>Legen Sie hier fest, welche R&auml;ume von der Schulkonsole als Computerraum
-unter <q>aktueller Raum</q> verwaltbar sein sollen.</gettext></p>
+<p><gettext>.</gettext></p>
 
 <img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
 </div>

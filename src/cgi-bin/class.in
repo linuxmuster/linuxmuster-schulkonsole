@@ -99,7 +99,9 @@ if (my ($new_class) = $q->param('class_add')) {
 		$sk_session->get_password(),
 		$new_class);
 	$sk_session->set_status(
-		sprintf($sk_session->d()->get('In Klasse %s eingetragen'), $new_class),
+		  sprintf($sk_session->d()->get('In Klasse %s eingetragen.'), $new_class)
+		. ' '
+		. $sk_session->d()->get('Melden Sie sich unter Windows erneut an, damit Sie auf die Gruppenverzeichnisse zugreifen k&ouml;nnen.'),
 		0);
 
 	$sk_session->read_groups_from_db();

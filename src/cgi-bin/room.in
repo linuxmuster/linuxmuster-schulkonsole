@@ -314,7 +314,7 @@ if ($room_session) {
 		$room_session->end_lesson_now($id, $password);
 	
 		$sk_session->set_status(
-			$sk_session->d()->get("Unterricht beendet."), 0);
+			$sk_session->d()->get('Unterricht beendet.'), 0);
 	
 	
 	} elsif ($q->param('end_lesson_at')) {
@@ -322,17 +322,25 @@ if ($room_session) {
 			if (not $room_session->param('edit')) {
 				$sk_session->set_status(
 					$sk_session->d()->get(
-						"In diesem Raum findet kein Unterricht statt."),
-				1);
+						'In diesem Raum findet kein Unterricht statt.'),
+					1);
 			} else {
 				$sk_session->set_status(
 					$sk_session->d()->get(
-						"Sie d&uuml;rfen den Unterricht in diesem Raum nicht beenden."),
+						'Sie d&uuml;rfen den Unterricht in diesem Raum nicht beenden.'),
 					1);
 			}
 			last COMMANDS;
 		}
-	
+
+		if ($room_session->param('test_step')) {
+			$sk_session->set_status(
+				$sk_session->d()->get(
+					'In diesem Raum findet eine Klassenarbeit statt.'),
+				1);
+			last COMMANDS;
+		}
+
 		my @end_time = localtime($^T);
 		$end_time[2] = $q->param('lesson_end_hours');
 		$end_time[1] = $q->param('lesson_end_minutes');

@@ -76,7 +76,8 @@ numeric constant: C<Schulkonsole::Config::WRITEFILEAPP>
 
 =item file
 
-0 = classrooms, 1 = printers, 2 = workstations, 3 = backup.conf
+0 = classrooms, 1 = printers, 2 = workstations, 3 = room_defaults,
+4 = backup.conf, 5 = preferences.conf
 
 =back
 
@@ -103,11 +104,15 @@ $app_id == Schulkonsole::Config::WRITEFILEAPP and do {
 		last SWITCHWRITEFILE;
 	};
 	$file == 3 and do {
+		$filename = $Schulkonsole::Config::_room_defaults_file;
+		last SWITCHWRITEFILE;
+	};
+	$file == 4 and do {
 		$filename = $Schulkonsole::Config::_backup_conf_file;
 		$perm = 0755 unless -e $filename;
 		last SWITCHWRITEFILE;
 	};
-	$file == 4 and do {
+	$file == 5 and do {
 		$filename = $Schulkonsole::Config::_preferences_conf_file;
 		$perm = 0644 unless -e $filename;
 		last SWITCHWRITEFILE;
@@ -143,6 +148,10 @@ numeric constant: C<Schulkonsole::Config::IMPORTWORKSTATIONSAPP>
 =cut
 
 $app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
+	my $sid = <>;
+	($sid) = $sid =~ /^(.+)$/;
+	exit -10 unless defined $sid;
+
 	my $pid = fork;
 	exit -44 unless defined $pid;
 
@@ -151,6 +160,7 @@ $app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
 		close STDOUT;
 		close STDERR;
 
+		umask(027);
 		my $lockfile = Schulkonsole::Config::lockfile('import_workstations');
 		open LOCK, ">>$lockfile" or exit -106;
 		flock LOCK, 2;
@@ -162,7 +172,31 @@ $app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
 		$) = 0;
 		$( = $);
 		umask(022);
-		exec "$app" or last SWITCH;
+		open APP, "$app | " or last SWITCH;
+		my $line;
+		while (<APP>) {
+			$line = $_;
+		}
+		close APP;
+		if ($?) {
+			my $error_code = $?;
+			use CGI::Session;
+
+			my $session_lockfile = Schulkonsole::Config::lockfile("cgisession_$sid");
+			open SESSIONLOCK, ">>$session_lockfile" or exit -106;
+			flock SESSIONLOCK, 2;
+
+			my $session = new CGI::Session("driver:File", $sid, { Directory => $Schulkonsole::Config::_runtimedir });
+			if ($session->param('username')) {
+				chomp $line;
+				$session->param('statusbg', $line);
+				$session->param('statusbgiserror', $error_code);
+				$session->close;
+			} else {
+				$session->delete();
+			}
+		}
+		exit $?;
 	} else {
 		exit 0;
 	}

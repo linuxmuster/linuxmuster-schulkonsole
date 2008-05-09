@@ -161,10 +161,8 @@ use Net::CUPS;
 use Schulkonsole::Session;
 use Schulkonsole::Config;
 use Schulkonsole::Info;
-use Schulkonsole::Collab;
 use Schulkonsole::OVPN;
 use Schulkonsole::Sophomorix;
-use Schulkonsole::WWW;
 
 my $this_file = 'start';
 
@@ -186,37 +184,6 @@ $has_ovpn = Schulkonsole::OVPN::check($id, $password);
 };
 if ($@) {
 	$sk_session->standard_error_handling($this_file, $@);
-}
-
-my $is_www_active = Schulkonsole::WWW::is_active();
-
-
-
-my $is_allow_drop_db = 0;
-my $is_allow_www_permissions = 0;
-my $done_cnt = 0;
-my $permissions = Schulkonsole::Config::permissions_apps();
-my $groups = $sk_session->groups();
-foreach my $group (keys %$groups) {
-	if ($$permissions{$group}{drop_db_user}) {
-		$is_allow_drop_db = 1;
-		last if ++$done_cnt == 2;
-	}
-	if ($$permissions{$group}{www_permissions}) {
-		$is_allow_www_permissions = 1;
-		last if ++$done_cnt == 2;
-	}
-}
-
-
-my $array_dbs;
-# use cached list of DBs if possible and if the user is not allowed to
-# manipulate this list, otherwise re-read the list
-if (   $is_allow_drop_db
-    or (not $array_dbs = $sk_session->temp_param('array_dbs'))) {
-	$array_dbs = Schulkonsole::Collab::list_db_user($id, $password);
-
-	$sk_session->temp_param('array_dbs', $array_dbs);
 }
 
 
@@ -418,89 +385,6 @@ $q->param('ovpndownload') and do {
 	};
 	if ($@) {
 		$sk_session->standard_error_handling($this_file, $@);
-	}
-
-	last COMMANDS;
-};
-
-$q->param('dropdbs') and do {
-	if (not $is_allow_drop_db) {
-		$sk_session->set_status($sk_session->d()->get(
-				'Sie haben keine Berechtigung Datenbanken zu l&ouml;schen'), 1);
-		last COMMANDS;
-	}
-
-	my @drops;
-	foreach my $db (@$array_dbs) {
-		if ($q->param("${db};drop")) {
-			push @drops, $db;
-		}
-	}
-
-	if (not @drops) {
-		$sk_session->set_status($sk_session->d()->get(
-				'Keine Datenbank zum L&ouml;schen ausge&auml;hlt'), 1);
-
-		last COMMANDS;
-	}
-
-	eval {
-		Schulkonsole::Collab::drop_db_user($id, $password, @drops);
-
-		$array_dbs = Schulkonsole::Collab::list_db_user($id, $password);
-		$sk_session->temp_param('array_dbs', $array_dbs);
-
-		$sk_session->set_status($sk_session->d()->get(
-				'Datenbanken gel&ouml;scht'), 0);
-	};
-	if ($@) {
-		$sk_session->standard_error_handling($this_file, $@);
-	}
-
-	last COMMANDS;
-};
-
-$q->param('wwwaccept') and do {
-	if ($is_allow_www_permissions) {
-		eval {
-		my $www_permissions = Schulkonsole::WWW::teacher_permissions($uid);
-
-		if ($$www_permissions{$uid}{public}) {
-			if (not $q->param('wwwpublic')) {
-				Schulkonsole::WWW::set_user_permissions(
-					$id, $password,
-					0,
-					$$www_permissions{$uid}{upload},
-					$uid);
-				$sk_session->set_status($sk_session->d()->get(
-						'Zugang zum Webverzeichnis ge&auml;ndert'), 0);
-			} else {
-				$sk_session->set_status($sk_session->d()->get(
-						'Zugang zum Webverzeichnis ist bereits privat'), 1);
-			}
-		} else {
-			if ($q->param('wwwpublic')) {
-				Schulkonsole::WWW::set_user_permissions(
-					$id, $password,
-					1,
-					$$www_permissions{$uid}{upload},
-					$uid);
-				$sk_session->set_status($sk_session->d()->get(
-						'Zugang zum Webverzeichnis ge&auml;ndert'), 0);
-			} else {
-				$sk_session->set_status($sk_session->d()->get(
-						'Zugang zum Webverzeichnis ist bereits &ouml;ffentlich'), 1);
-			}
-		}
-
-
-		};
-		if ($@) {
-			$sk_session->standard_error_handling($this_file, $@);
-		}
-	} else {
-		$sk_session->set_status($sk_session->d()->get(
-				'Sie d&uuml;rfen die Berechtigung f&uuml;r ihr Webverzeichnis nicht &auml;ndern.'), 1);
 	}
 
 	last COMMANDS;
@@ -722,35 +606,6 @@ $sk_session->set_var('mailaddresses_str', $var_mailaddresses);
 
 
 
-=item C<dbs>
-
-An array of the user's databases
-
-=cut
-
-$sk_session->set_var('dbs', $array_dbs);
-
-=item C<db_str>
-
-A comma separated list of the user's databases
-
-=cut
-
-$sk_session->set_var('db_str', join(', ', @$array_dbs));
-
-
-
-=item C<allow_drop_db>
-
-True if the user is allowed to drop databases
-
-=cut
-
-$sk_session->set_var('allow_drop_db', $is_allow_drop_db);
-
-
-
-
 my $server_name = $sk_session->{template_vars}{SERVER_NAME};
 my $var_phpmyadmin_link = "https://$server_name/phpmyadmin/";
 
@@ -773,36 +628,6 @@ True if the user has an OpenVPN certificate
 $sk_session->set_var('has_ovpn', $has_ovpn);
 
 
-
-if ($is_allow_www_permissions) {
-
-=item C<allowwwwpermissions>
-
-True if user may change access permissions of the WWW directory
-
-=cut
-
-	$sk_session->set_var('allowwwwpermissions', 1);
-
-=item C<wwwactive>
-
-True if access to WWW is activated
-
-=cut
-
-	$sk_session->set_var('wwwactive', $is_www_active);
-
-
-	my $www_permissions = Schulkonsole::WWW::teacher_permissions($uid);
-
-=item C<wwwpublic>
-
-True if public access to user's WWW directory is enabled
-
-=cut
-
-	$sk_session->set_var('wwwpublic', $$www_permissions{$uid}{public});
-}
 
 
 

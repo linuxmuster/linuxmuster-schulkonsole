@@ -15,15 +15,6 @@
 <!--#if expr="$link_project_collect" -->
 	<a class="separator" href="project_collect"><gettext>Einsammeln</gettext></a>
 <!--#endif -->
-<!--#if expr="$link_project_db" -->
-	<a href="project_db"><gettext>Datenbanken</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_project_revision_control" -->
-	<a href="project_revision_control"><gettext>Versionskontrolle</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_project_www" -->
-	<a href="project_www"><gettext>Webfreigabe</gettext></a>
-<!--#endif -->
 <!--#if expr="$link_project_shares" -->
 	<a class="end" href="project_shares"><gettext>Tauschen</gettext></a>
 <!--#endif -->
@@ -36,15 +27,6 @@
 <!--#endif -->
 <!--#if expr="$link_project_collect" -->
 	<span class="disabled"><gettext>Einsammeln</gettext></span>
-<!--#endif -->
-<!--#if expr="$link_project_db" -->
-	<span class="disabled"><gettext>Datenbanken</gettext></span>
-<!--#endif -->
-<!--#if expr="$link_project_revision_control" -->
-	<span class="disabled"><gettext>Versionskontrolle</gettext></span>
-<!--#endif -->
-<!--#if expr="$link_project_www" -->
-	<span class="disabled"><gettext>Webfreigabe</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_project_shares" -->
 	<span class="disabled"><gettext>Tauschen</gettext></span>
@@ -62,15 +44,6 @@
 <!--#endif -->
 <!--#if expr="$link_project_collect" -->
 	<span class="disabledseparator"><gettext>Einsammeln</gettext></span>
-<!--#endif -->
-<!--#if expr="$link_project_db" -->
-	<span class="disabled"><gettext>Datenbanken</gettext></span>
-<!--#endif -->
-<!--#if expr="$link_project_revision_control" -->
-	<span class="disabled"><gettext>Versionskontrolle</gettext></span>
-<!--#endif -->
-<!--#if expr="$link_project_www" -->
-	<span class="disabled"><gettext>Webfreigabe</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_project_shares" -->
 	<span class="disabledend"><gettext>Tauschen</gettext></span>

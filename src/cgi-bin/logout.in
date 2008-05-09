@@ -30,9 +30,33 @@ $sk_session->end_session();
 my $q = new CGI;
 my $url = $q->url( -full => 1 );
 $url =~ s/$this_file$/start/g;
-$sk_session->redirect($url);
 
+my $pid = fork;
+if (not $pid) {
+	$sk_session->redirect($url);
+} else {
+	my $session_lockfiles_prefix = Schulkonsole::Config::lockfile('cgisession');
+	my @lockfiles = glob($session_lockfiles_prefix . '*');
 
+	foreach my $lockfile (@lockfiles) {
+		my ($sid) = $lockfile =~ /^${session_lockfiles_prefix}_(.+)$/;
+		my $session_file = "$Schulkonsole::Config::_runtimedir/cgisess_$sid";
+		if (open LOCK, "<$lockfile") {
+			if (flock LOCK, (2 | 4)) {
+				if (open SESSION, "<$session_file") {
+					my @stats = stat SESSION;
+					if ($stats[9] < $^T - Schulkonsole::Config::expire_seconds(
+					    		$Schulkonsole::Config::_session_expire_time)) {
+						unlink $session_file;
+						unlink $lockfile;
+					}
+				} elsif (not -e $session_file) {
+					unlink $lockfile;
+				}
+			}
+		}
+	}
+}
 
 
 =head2 Form fields

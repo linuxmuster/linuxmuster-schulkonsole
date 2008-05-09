@@ -17,15 +17,6 @@
 <!--#if expr="$link_class_collect" -->
 	<a class="separator" href="class_collect"><gettext>Einsammeln</gettext></a>
 <!--#endif -->
-<!--#if expr="$link_class_db" -->
-	<a href="class_db"><gettext>Datenbanken</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_class_revision_control" -->
-	<a href="class_revision_control"><gettext>Versionskontrolle</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_class_www" -->
-	<a href="class_www"><gettext>Webfreigabe</gettext></a>
-<!--#endif -->
 <!--#if expr="$link_class_shares" -->
 	<a class="separator" href="class_shares"><gettext>Tauschen</gettext></a>
 <!--#endif -->
@@ -47,15 +38,6 @@
 <!--#endif -->
 <!--#if expr="$link_class_collect" -->
 	<span class="disabledseparator"><gettext>Einsammeln</gettext></span>
-<!--#endif -->
-<!--#if expr="$link_class_db" -->
-	<span class="disabled"><gettext>Datenbanken</gettext></span>
-<!--#endif -->
-<!--#if expr="$link_class_revision_control" -->
-	<span class="disabled"><gettext>Versionskontrolle</gettext></span>
-<!--#endif -->
-<!--#if expr="$link_class_www" -->
-	<span class="disabled"><gettext>Webfreigabe</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_class_shares" -->
 	<span class="disabledseparator"><gettext>Tauschen</gettext></span>

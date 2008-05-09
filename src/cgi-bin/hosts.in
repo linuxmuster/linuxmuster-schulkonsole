@@ -168,7 +168,8 @@ $q->param('accept') and do {
 			Schulkonsole::Files::write_workstations_file(
 				$id, $password,
 				$lines);
-			Schulkonsole::Files::import_workstations($id, $password);
+			Schulkonsole::Files::import_workstations($id, $password,
+				$sk_session);
 
 
 			$status .=
@@ -203,11 +204,11 @@ $q->param('addrows') and do {
 	last COMMANDS;
 };
 $q->param('import') and do {
-	if (Schulkonsole::Config::count_unimported_workstations()) {
+	if (Schulkonsole::Config::count_unimported_unconfigured_workstations()) {
 		my $id = $sk_session->userdata('id');
 		my $password = $sk_session->get_password();
 
-		Schulkonsole::Files::import_workstations($id, $password);
+		Schulkonsole::Files::import_workstations($id, $password, $sk_session);
 
 		$sk_session->set_status(
 			$sk_session->d()->get('Workstations werden importiert'), 0);
@@ -270,8 +271,8 @@ $sk_session->set_var('add', [ 1 .. $additional_lines_cnt ]);
 
 
 
-my ($unimported, $comments) =
-	Schulkonsole::Config::count_unimported_workstations();
+my ($unimported, $unconfigured, $comments) =
+	Schulkonsole::Config::count_unimported_unconfigured_workstations();
 
 =item C<unimported>
 
@@ -281,6 +282,14 @@ True if not all configured workstations were imported into the system
 
 $sk_session->set_var('unimported', $unimported);
 
+=item C<unconfigured>
+
+True if not all imported workstations are configured, too
+
+=cut
+
+$sk_session->set_var('unconfigured', $unconfigured);
+
 =item C<comments>
 
 True if the workstations file contains comments
@@ -288,6 +297,25 @@ True if the workstations file contains comments
 =cut
 
 $sk_session->set_var('comments', $comments);
+
+
+
+=item C<isimporting>
+
+True if import_workstations is running
+
+=cut
+
+my $lockfile_import_workstations
+	= Schulkonsole::Config::lockfile('import_workstations');
+if (open LOCK, "<$lockfile_import_workstations") {
+	if (not flock(LOCK, (2 | 4))) {
+		$sk_session->set_var('isimporting', 1);
+	}
+}
+
+
+
 
 
 $sk_session->print_page("$this_file.shtml", $this_file);
@@ -311,6 +339,9 @@ sub syntax_check {
 	return 1 unless $id;
 
 	my @errors;
+	push @errors, $sk_session->d()->get('ung&uuml;ltiger Raumname')
+		if (   $room !~ /^[a-z\d\.\-]+$/i
+		    or $room eq 'default');
 	push @errors, $sk_session->d()->get('ung&uuml;ltiger Name')
 		unless $name =~ /^[a-z\d\-]+$/;
 	push @errors, $sk_session->d()->get('ung&uuml;ltige Gruppen')

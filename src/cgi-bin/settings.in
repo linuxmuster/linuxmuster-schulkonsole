@@ -30,7 +30,6 @@ use Sophomorix::SophomorixConfig;
 use Schulkonsole::Files;
 use Schulkonsole::Session;
 use Schulkonsole::Sophomorix;
-use Schulkonsole::WWW;
 
 
 my $this_file = 'settings';
@@ -378,13 +377,6 @@ if ($q->param('accept')) {
 					Schulkonsole::Sophomorix::global_shares_off($id, $password);
 				}
 			}
-			if (defined $filesystem_conf_new{activatewww}) {
-				if ($filesystem_conf_new{activatewww}) {
-					Schulkonsole::WWW::set_www_on($id, $password);
-				} else {
-					Schulkonsole::WWW::set_www_off($id, $password);
-				}
-			}
 			$is_changed = 1;
 		}
 		if (%backup_conf_new) {
@@ -679,24 +671,17 @@ standard-schueler in F<quota.txt>
 
 
 sub read_filesystem_conf {
-	my @stat = stat $DevelConf::www_people;
-	my $perm_www_people = $stat[2];
-	@stat = stat $DevelConf::share_school;
+	my @stat = stat $DevelConf::share_school;
 	my $perm_share_school = $stat[2];
 
 =item C<activateglobalshares>
 
 True if shares are accessible
 
-=item C<activatewww>
-
-True if the WWW directory is accessible
-
 =cut
 
 	return (
 		activateglobalshares => $perm_share_school & 077,
-		activatewww => $perm_www_people & 055,
 	);
 }
 

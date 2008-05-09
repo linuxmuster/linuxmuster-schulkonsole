@@ -55,6 +55,7 @@ $VERSION = 0.06;
 	$_permissions_conf_file
 	$_db_conf_file
 	$_workstations_file
+	$_room_defaults_file
 	$_dhcpd_conf_file
 	$_printers_file
 	$_classrooms_file
@@ -596,6 +597,10 @@ use vars qw($_preferences_conf_file $_permissions_conf_file $_db_conf_file);
 
 This file lists the workstations
 
+=item C<$_room_defaults_file>
+
+This file defines the default internet, intranet, and webfilter settings
+
 =item C<$_dhcpd_conf_file>
 
 DHCPD configuration file
@@ -620,7 +625,8 @@ Setup for automated backup
 
 =cut
 
-use vars qw($_workstations_file $_printers_file $_classrooms_file
+use vars qw($_workstations_file $_room_defaults_file $_classrooms_file
+            $_printers_file
             $_network_settings_file $_backup_conf_file $_dhcpd_conf_file);
 
 
@@ -860,6 +866,7 @@ $_blocked_hosts_internet_file = $lml_env{BLOCKEDHOSTSINTERNET};
 $_blocked_hosts_intranet_file = $lml_env{BLOCKEDHOSTSINTRANET};
 $_unfiltered_hosts_file = $lml_env{UNFILTEREDHOSTS};
 $_workstations_file = $lml_env{WIMPORTDATA};
+$_room_defaults_file = $lml_env{ROOMDEFAULTS};
 $_dhcpd_conf_file = $lml_env{DHCPDCONF};
 $_printers_file = $lml_env{PRINTERS};
 $_classrooms_file = $lml_env{CLASSROOMS};
@@ -1289,27 +1296,29 @@ sub workstations_room {
 
 
 
-=head3 C<count_unimported_workstations()>
+=head3 C<count_unimported_unconfigured_workstations()>
 
-Count unimported workstations
+Count unimported and unconfigured workstations
 
 =head4 Return value
 
 In list context, an array with the number of unimported workstations as
-first and the number of comments as second element.
-Otherwise the number of unimported workstations.
+first, the number of unconfigured workstation as second, and the number of
+comments as third element.
+Otherwise true, if there are unimported or unconfigured workstations.
 
 =head4 Description
 
 Counts how many of the workstations configured in C<$_workstations_file>
-are not actually present in the system.
+are not actually present in the system and vice versa.
 
 =cut
 
-sub count_unimported_workstations {
+sub count_unimported_unconfigured_workstations {
 	my %workstations;
 	my $comment_cnt = 0;
 
+	my $unconfigured_cnt = 0;
 	if (open CONF, "<$_workstations_file") {
 		while (<CONF>) {
 			if (/^#/) {
@@ -1334,8 +1343,11 @@ sub count_unimported_workstations {
 
 			if (my ($workstation) = /option\s+host-name\s+"(.+)"/) {
 				$workstation = lc $workstation;
-				delete $workstations{$workstation}
-					if $workstations{$workstation};
+				if ($workstations{$workstation}) {
+					delete $workstations{$workstation}
+				} else {
+					$unconfigured_cnt++;
+				}
 			}
 		}
 
@@ -1345,7 +1357,8 @@ sub count_unimported_workstations {
 
 
 	my $unimported_cnt = keys %workstations;
-	return (wantarray ? ($unimported_cnt, $comment_cnt) : $unimported_cnt);
+	return (wantarray ? ($unimported_cnt, $unconfigured_cnt, $comment_cnt) :
+	                    $unimported_cnt || $unconfigured_cnt );
 }
 
 

@@ -15,6 +15,8 @@ $VERSION = 0.06;
 	USER_PASSWORD_MISMATCH
 	UNKNOWN_ROOM
 	QUOTA_NOT_ALL_MOUNTPOINTS
+	PUBLIC_BG_ERROR
+	INTERNAL_BG_ERROR
 	DB_PREPARE_FAILED
 	DB_EXECUTE_FAILED
 	DB_FETCH_FAILED
@@ -148,14 +150,19 @@ use constant {
 	USER_AUTHENTICATION_FAILED  => 1,
 	USER_PASSWORD_MISMATCH => 2,
 
+
 	UNKNOWN_ROOM => 3,
 
 	QUOTA_NOT_ALL_MOUNTPOINTS => 10,
+
+	PUBLIC_BG_ERROR => 20,
 
 	INTERNAL => 1000,
 	DB_PREPARE_FAILED => 1001,
 	DB_EXECUTE_FAILED => 1002,
 	DB_FETCH_FAILED => 1003,
+
+	INTERNAL_BG_ERROR => 1020,
 
 	UNKNOWN_PASSWORD_ENCRYPTION => 2001,
 	DB_USER_DOES_NOT_EXIST => 2002,
@@ -278,6 +285,7 @@ use constant {
 	WRAPPER_FILES_PROGRAM_ERROR => 11000 -2,
 	WRAPPER_FILES_UNAUTHORIZED_UID => 11000 -3,
 	WRAPPER_FILES_SCRIPT_EXEC_FAILED => 11000 -6,
+	WRAPPER_FILES_INVALID_SESSION_ID => 11000 -10,
 	WRAPPER_FILES_UNAUTHENTICATED_ID => 11000 -32,
 	WRAPPER_FILES_APP_ID_DOES_NOT_EXIST => 11000 -33,
 	WRAPPER_FILES_UNAUTHORIZED_ID => 11000 -34,
@@ -285,15 +293,15 @@ use constant {
 	WRAPPER_FILES_INVALID_FILENUMBER => 11000 -105,
 	WRAPPER_FILES_CANNOT_OPEN_FILE => 11000 -106,
 
-	WRAPPER_OVPN_ERROR_BASE => 11000,
-	WRAPPER_OVPN_GENERAL_ERROR => 11000 -1,
-	WRAPPER_OVPN_PROGRAM_ERROR => 11000 -2,
-	WRAPPER_OVPN_UNAUTHORIZED_UID => 11000 -3,
-	WRAPPER_OVPN_SCRIPT_EXEC_FAILED => 11000 -6,
-	WRAPPER_OVPN_UNAUTHENTICATED_ID => 11000 -32,
-	WRAPPER_OVPN_APP_ID_DOES_NOT_EXIST => 11000 -33,
-	WRAPPER_OVPN_UNAUTHORIZED_ID => 11000 -34,
-	WRAPPER_OVPN_INVALID_PASSWORD => 11000 -97,
+	WRAPPER_OVPN_ERROR_BASE => 12000,
+	WRAPPER_OVPN_GENERAL_ERROR => 12000 -1,
+	WRAPPER_OVPN_PROGRAM_ERROR => 12000 -2,
+	WRAPPER_OVPN_UNAUTHORIZED_UID => 12000 -3,
+	WRAPPER_OVPN_SCRIPT_EXEC_FAILED => 12000 -6,
+	WRAPPER_OVPN_UNAUTHENTICATED_ID => 12000 -32,
+	WRAPPER_OVPN_APP_ID_DOES_NOT_EXIST => 12000 -33,
+	WRAPPER_OVPN_UNAUTHORIZED_ID => 12000 -34,
+	WRAPPER_OVPN_INVALID_PASSWORD => 12000 -97,
 };
 
 use overload
@@ -335,6 +343,10 @@ sub what {
 		and return 'Raum ist unbekannt';
 	$this->{code} == QUOTA_NOT_ALL_MOUNTPOINTS
 		and return 'F&uuml;r Diskquota m&uuml;ssen alle oder keine Felder ausgef&uuml;llt sein';
+	$this->{code} == PUBLIC_BG_ERROR
+		and return 'Fehler im Hintergrundprozess: ' . ${ $this->{info} }[0];
+	$this->{code} == INTERNAL_BG_ERROR
+		and return 'Fehler im Hintergrundprozess';
 	$this->{code} == DB_PREPARE_FAILED
 		and return 'Prepare fehlgeschlagen';
 	$this->{code} == DB_EXECUTE_FAILED
@@ -413,6 +425,8 @@ sub what {
 	 or $this->{code} == WRAPPER_FILES_UNAUTHORIZED_ID
 	 or $this->{code} == WRAPPER_OVPN_UNAUTHORIZED_ID)
 		and return 'Nicht autorisierter Aufrufer nach ID';
+	$this->{code} == WRAPPER_FILES_INVALID_SESSION_ID
+		and return 'Ungueltige Session-ID';
 	$this->{code} == WRAPPER_FIREWALL_INVALID_MAC
 		and return 'Ungueltige MAC-Adresse';
 	$this->{code} == WRAPPER_FIREWALL_NO_MACS
@@ -523,6 +537,8 @@ sub what {
 		and return 'Ungueltiger Wert fuer mailquota';
 	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_IS_JOIN
 		and return 'Erwarte 1 oder 0 fuer is_open';
+	$this->{what}
+		and return $this->{what};
 
 	return 'Unbekannter Fehler ' . $this->{code}
 		. ' [' . join(', ', (caller(2))[1..3]) . ']'; 
