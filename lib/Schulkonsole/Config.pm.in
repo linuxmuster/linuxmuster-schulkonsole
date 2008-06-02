@@ -209,6 +209,10 @@ C<all_on>
 
 C<all_on_at>
 
+=item C<ROOMSRESETAPP>
+
+C<rooms_reset>
+
 =back
 
 =cut
@@ -220,6 +224,7 @@ use constant {
 	URLFILTERONOFFAPP => 3,
 	ALLONAPP => 4,
 	ALLONATAPP => 5,
+	ROOMSRESETAPP => 6
 };
 
 =head3 Constants for wrapper-printer
@@ -243,9 +248,9 @@ C<printer_allow_deny>
 =cut
 
 use constant {
-	PRINTERINFOAPP => 6,
-	PRINTERONOFFAPP => 7,
-	PRINTERALLOWDENYAPP => 8,
+	PRINTERINFOAPP => 7,
+	PRINTERONOFFAPP => 8,
+	PRINTERALLOWDENYAPP => 9,
 };
 
 =head3 Constants for wrapper-sophomorix
@@ -365,33 +370,33 @@ C<hide_unhide_class>
 =cut
 
 use constant {
-	SHARESTATESAPP => 9,
-	SHARESONOFFAPP => 10,
-	LSHANDOUTAPP => 11,
-	LSCOLLECTAPP => 12,
-	HANDOUTAPP => 13,
-	COLLECTAPP => 14,
-	RESETROOMAPP => 15,
-	EDITOWNCLASSMEMBERSHIPAPP => 16,
-	PRINTCLASSAPP => 17,
-	PRINTTEACHERSAPP => 18,
-	SETPASSWORDSAPP => 19,
-	WWWPERMISSIONSAPP => 20,
-	PROJECTMEMBERSAPP => 21,
-	PROJECTCREATEDROPAPP => 22,
-	PROJECTJOINNOJOINAPP => 23,
-	READSOPHOMORIXFILEAPP => 24,
-	WRITESOPHOMORIXFILEAPP => 25,
-	USERSCHECKAPP => 26,
-	USERSADDAPP => 27,
-	USERSMOVEAPP => 28,
-	USERSKILLAPP => 29,
-	USERSADDMOVEKILLAPP => 30,
-	TEACHINAPP => 31,
-	CHMODAPP => 32,
-	SETQUOTAAPP => 33,
-	SETOWNPASSWORDAPP => 34,
-	HIDEUNHIDECLASSAPP => 35,
+	SHARESTATESAPP => 10,
+	SHARESONOFFAPP => 11,
+	LSHANDOUTAPP => 12,
+	LSCOLLECTAPP => 13,
+	HANDOUTAPP => 14,
+	COLLECTAPP => 15,
+	RESETROOMAPP => 16,
+	EDITOWNCLASSMEMBERSHIPAPP => 17,
+	PRINTCLASSAPP => 18,
+	PRINTTEACHERSAPP => 19,
+	SETPASSWORDSAPP => 20,
+	WWWPERMISSIONSAPP => 21,
+	PROJECTMEMBERSAPP => 22,
+	PROJECTCREATEDROPAPP => 23,
+	PROJECTJOINNOJOINAPP => 24,
+	READSOPHOMORIXFILEAPP => 25,
+	WRITESOPHOMORIXFILEAPP => 26,
+	USERSCHECKAPP => 27,
+	USERSADDAPP => 28,
+	USERSMOVEAPP => 29,
+	USERSKILLAPP => 30,
+	USERSADDMOVEKILLAPP => 31,
+	TEACHINAPP => 32,
+	CHMODAPP => 33,
+	SETQUOTAAPP => 34,
+	SETOWNPASSWORDAPP => 35,
+	HIDEUNHIDECLASSAPP => 36,
 };
 
 =head3 Constants for wrapper-cyrus
@@ -441,12 +446,12 @@ C<list_repository>
 =cut
 
 use constant {
-	CREATEDROPDBAPP => 36,
-	DROPDBUSERAPP => 37,
-	LISTDBAPP => 38,
-	LISTDBUSERAPP => 39,
-	CREATEDROPREPOSITORYAPP => 40,
-	LISTREPOSITORYAPP => 41,
+	CREATEDROPDBAPP => 37,
+	DROPDBUSERAPP => 38,
+	LISTDBAPP => 39,
+	LISTDBUSERAPP => 40,
+	CREATEDROPREPOSITORYAPP => 41,
+	LISTREPOSITORYAPP => 42,
 };
 
 
@@ -471,9 +476,9 @@ C<import_printers>
 =cut
 
 use constant {
-	WRITEFILEAPP => 42,
-	IMPORTWORKSTATIONSAPP => 43,
-	IMPORTPRINTERSAPP => 44,
+	WRITEFILEAPP => 43,
+	IMPORTWORKSTATIONSAPP => 44,
+	IMPORTPRINTERSAPP => 45,
 };
 
 
@@ -498,9 +503,9 @@ C<ovpn_download>
 =cut
 
 use constant {
-	OVPNCHECKAPP => 45,
-	OVPNDOWNLOADAPP => 46,
-	OVPNCREATEAPP => 47,
+	OVPNCHECKAPP => 46,
+	OVPNDOWNLOADAPP => 47,
+	OVPNCREATEAPP => 48,
 };
 
 
@@ -919,6 +924,7 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 	urlfilter_on_off => URLFILTERONOFFAPP,
 	all_on => ALLONAPP,
 	all_on_at => ALLONATAPP,
+	rooms_reset => ROOMSRESETAPP,
 	printer_info => PRINTERINFOAPP,
 	printer_on_off => PRINTERONOFFAPP,
 	printer_allow_deny => PRINTERALLOWDENYAPP,
@@ -971,6 +977,7 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 	'/usr/share/linuxmuster/scripts/urlfilter_on_off.sh',
 	1,
 	1,
+	'/usr/sbin/linuxmuster-reset',
 	1,
 	[ '/usr/sbin/accept', '/usr/sbin/reject' ],
 	'/usr/sbin/lpadmin',

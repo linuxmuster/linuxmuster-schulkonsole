@@ -38,6 +38,9 @@ Schulkonsole::Firewall - interface to Linuxmusterloesung Firewall commands
  my $time = $^T + 3600;
  Schulkonsole::Firewall::all_on_at($id, $password, $room, $time);
 
+
+ Schulkonsole::Firewall::rooms_reset_all($id, $password);
+
 =head1 DESCRIPTION
 
 Schulkonsole::Firewall is an interface to the Linuxmusterloesung Firewall
@@ -715,6 +718,49 @@ A hash with an unfiltered host's MAC-address as key and C<1> as value.
 sub unfiltered_hosts {
 	return read_mac_file($Schulkonsole::Config::_unfiltered_hosts_file);
 }
+
+
+
+
+=head3 C<rooms_reset_all($id, $password)>
+
+Resets firewall settings of all workstations
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=back
+
+=head3 Description
+
+Invokes C<linuxmuster-reset --all>
+
+=cut
+
+sub rooms_reset_all {
+	my $id = shift;
+	my $password = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::ROOMSRESETAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "0\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+}
+
 
 
 

@@ -320,6 +320,37 @@ $app_id == Schulkonsole::Config::ALLONATAPP and do {
 
 	exit 0;
 };
+
+=head3 rooms_reset
+
+numeric constant: C<Schulkonsole::Config::ROOMSRESETAPP>
+
+=head4 Description
+
+Resets the workstation settings in a room
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<scope>
+
+0 (= all)
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::ROOMSRESETAPP and do {
+	my $scope = <>;
+	($scope) = $scope =~ /^0$/;
+	exit -45 unless $scope;
+
+	$< = $>;
+	my $opts = '--all';
+	exec "$app $opts" or last SWITCH;
+};
+
 }
 
 

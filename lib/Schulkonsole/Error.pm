@@ -202,6 +202,7 @@ use constant {
 	WRAPPER_FIREWALL_CANNOT_WRITE_ROOMFILE => 6000 -42,
 	WRAPPER_FIREWALL_CANNOT_READ_ROOMFILE => 6000 -43,
 	WRAPPER_FIREWALL_CANNOT_FORK => 6000 -44,
+	WRAPPER_FIREWALL_INVALID_ROOM_SCOPE => 6000 -45,
 
 	WRAPPER_PRINTER_ERROR_BASE => 7000,
 	WRAPPER_PRINTER_GENERAL_ERROR => 7000 -1,
@@ -445,6 +446,8 @@ sub what {
 		and return 'Raumdatei kann nicht geschrieben werden';
 	$this->{code} == WRAPPER_FIREWALL_CANNOT_READ_ROOMFILE
 		and return 'Raumdatei kann nicht gelesen werden';
+	$this->{code} == WRAPPER_FIREWALL_INVALID_ROOM_SCOPE
+		and return 'Erwarte 0 fuer scope';
 	(   $this->{code} == WRAPPER_FIREWALL_CANNOT_FORK
 	 or $this->{code} == WRAPPER_SOPHOMORIX_CANNOT_FORK
 	 or $this->{code} == WRAPPER_FILES_CANNOT_FORK)
