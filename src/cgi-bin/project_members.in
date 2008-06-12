@@ -155,6 +155,13 @@ foreach my $param ($q->param) {
 				$scope =~ /^u/ and do {	# user
 					my $member_userdata
 						= Schulkonsole::DB::get_userdata($member);
+					if (not $member_userdata) {
+						$sk_session->set_status(
+							sprintf($sk_session->d()->get(
+								'Benutzer %s gibt es nicht.'), $member));
+						last SCOPE;
+					}
+
 					my $is_member_admin = Schulkonsole::DB::is_project_admin(
 						$$projects{$project}{id},
 						$$member_userdata{uidnumber});

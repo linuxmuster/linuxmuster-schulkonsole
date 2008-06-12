@@ -55,6 +55,7 @@ my %workstation_user_ids;
 foreach my $host (keys %$workstations) {
 	eval {
 	my $login_userdata = Schulkonsole::DB::get_userdata($host);
+	next unless $login_userdata;
 	$workstation_user_ids{$host} = $$login_userdata{id};
 	};
 }
