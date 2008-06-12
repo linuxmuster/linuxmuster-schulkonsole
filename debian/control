@@ -7,7 +7,7 @@ Standards-Version: 3.7.2
 
 Package: linuxmuster-schulkonsole
 Architecture: all
-Depends: linuxmuster-schulkonsole-wrapper (= ${Source-Version}), libcgi-perl, libcgi-session-perl, liblocale-gettext-perl, libhtml-parser-perl, libdbi-perl, libdbd-odbc-perl | libdbd-pg-perl, libcrypt-passwdmd5-perl, libcrypt-smbhash-perl, libnet-cups-perl (= 0.41), libcrypt-rijndael-perl, libnet-imap-simple-perl, libenv-bash-perl, cyrus-common | cyrus21-common | cyrus22-common | cyrus-common-2.2, libproc-process-perl, ${perl:Depends}, ${misc:Depends}
+Depends: linuxmuster-schulkonsole-wrapper (= ${Source-Version}), libcgi-perl, libcgi-session-perl, liblocale-gettext-perl, libhtml-parser-perl, libdbi-perl, libdbd-odbc-perl | libdbd-pg-perl, libcrypt-passwdmd5-perl, libcrypt-smbhash-perl, libnet-cups-perl (>= 0.41),  libnet-cups-perl (<< 0.50), libcrypt-rijndael-perl, libnet-imap-simple-perl, libenv-bash-perl, cyrus-common | cyrus21-common | cyrus22-common | cyrus-common-2.2, libproc-process-perl, ${perl:Depends}, ${misc:Depends}
 Recommends: sophomorix-base, linuxmuster-base
 Description: web-based administration tool for the Linuxmusterloesung
  Schulkonsole is a web-interface for Linuxmusterloesung systems.
