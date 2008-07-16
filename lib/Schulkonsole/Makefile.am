@@ -4,7 +4,7 @@ dist_perllib_DATA = DB.pm Error.pm ExternalError.pm Gettext.pm Template.pm \
 	Room.pm RoomSession.pm \
 	TeachIn.pm \
 	Info.pm Firewall.pm Printer.pm Sophomorix.pm Cyrus.pm \
-	Files.pm SophomorixQuotas.pm OVPN.pm
+	Files.pm SophomorixQuotas.pm OVPN.pm Linbo.pm
 
 CLEANFILES = $(perllib_DATA)
 EXTRA_DIST = Session.pm.in Config.pm.in

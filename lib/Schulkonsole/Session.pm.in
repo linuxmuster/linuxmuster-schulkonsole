@@ -136,6 +136,10 @@ Corresponds to the environment variable REMOTE_ADDR
 
 Corresponds to the environment variable HTTP_HOST
 
+=item C<SERVER_ADDR>
+
+Corresponds to the environment variable SERVER_ADDR
+
 =item C<SERVER_NAME>
 
 Corresponds to the environment variable SERVER_NAME
@@ -1060,6 +1064,7 @@ sub init {
 	$this->set_var('REMOTE_HOST', $ENV{REMOTE_HOST});
 	$this->set_var('REMOTE_ADDR', $ENV{REMOTE_ADDR});
 	$this->set_var('HTTP_HOST', $ENV{HTTP_HOST});
+	$this->set_var('SERVER_ADDR', $ENV{SERVER_ADDR});
 	$this->set_var('SERVER_NAME', $ENV{SERVER_NAME});
 
 	$this->set_var('max_idle_time', $Schulkonsole::Config::_max_idle_time);

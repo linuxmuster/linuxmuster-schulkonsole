@@ -52,4 +52,4 @@
 <!--#endif -->
 <!--#endif -->
 
-<img src="img/bw.jpg" alt="Baden-W&uuml;rttemberg - Ministerium f&uuml;r Kultur-, Jugend und Sport">
+<!--#include file="footer_submenu.shtml.inc" -->

@@ -70,6 +70,8 @@ $VERSION = 0.03;
 	urlfilter_off
 	all_on
 	all_on_at
+	rooms_reset_all
+	rooms_reset
 );
 
 
@@ -755,6 +757,62 @@ sub rooms_reset_all {
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
 	print SCRIPTOUT "0\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+}
+
+
+
+
+
+
+=head3 C<rooms_reset($id, $password, $rooms, $hosts)>
+
+Resets firewall settings selected workstations
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=item C<$rooms>
+
+Reference to an array of rooms
+
+=item C<$hosts>
+
+Reference to an array of hosts
+
+=back
+
+=head3 Description
+
+Invokes C<linuxmuster-reset --room=ROOM> for each C<ROOM> in C<$rooms>,
+and C<linuxmuster-reset --host=HOST> for each C<HOST> in C<$hosts>.
+
+=cut
+
+sub rooms_reset {
+	my $id = shift;
+	my $password = shift;
+	my $rooms = shift;
+	my $hosts = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::ROOMSRESETAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "1\n", join("\n", @$rooms, ''), "\n",
+	                       join("\n", @$hosts, ''), "\n";
 
 	buffer_input(\*SCRIPTIN);
 

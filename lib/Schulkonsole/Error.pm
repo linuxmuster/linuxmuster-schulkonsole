@@ -16,6 +16,7 @@ $VERSION = 0.06;
 	UNKNOWN_ROOM
 	QUOTA_NOT_ALL_MOUNTPOINTS
 	PUBLIC_BG_ERROR
+	LINBO_START_CONF_ERROR
 	INTERNAL_BG_ERROR
 	DB_PREPARE_FAILED
 	DB_EXECUTE_FAILED
@@ -141,6 +142,20 @@ $VERSION = 0.06;
 	WRAPPER_OVPN_APP_ID_DOES_NOT_EXIST
 	WRAPPER_OVPN_UNAUTHORIZED_ID
 	WRAPPER_OVPN_INVALID_PASSWORD
+	WRAPPER_LINBO_ERROR_BASE
+	WRAPPER_LINBO_GENERAL_ERROR
+	WRAPPER_LINBO_PROGRAM_ERROR
+	WRAPPER_LINBO_UNAUTHORIZED_UID
+	WRAPPER_LINBO_SCRIPT_EXEC_FAILED
+	WRAPPER_LINBO_UNAUTHENTICATED_ID
+	WRAPPER_LINBO_APP_ID_DOES_NOT_EXIST
+	WRAPPER_LINBO_UNAUTHORIZED_ID
+	WRAPPER_LINBO_INVALID_GROUP
+	WRAPPER_LINBO_INVALID_FILENAME
+	WRAPPER_LINBO_INVALID_IS_EXAMPLE
+	WRAPPER_LINBO_INVALID_IMAGE
+	WRAPPER_LINBO_INVALID_ACTION
+	WRAPPER_LINBO_CANNOT_OPEN_FILE
 );
 
 # package constants
@@ -156,6 +171,9 @@ use constant {
 	QUOTA_NOT_ALL_MOUNTPOINTS => 10,
 
 	PUBLIC_BG_ERROR => 20,
+
+	LINBO_START_CONF_ERROR => 50,
+
 
 	INTERNAL => 1000,
 	DB_PREPARE_FAILED => 1001,
@@ -278,8 +296,8 @@ use constant {
 	WRAPPER_COLLAB_UNAUTHORIZED_ID => 10000 -34,
 	WRAPPER_COLLAB_INVALID_IS_CREATE => 10000 -48,
 	WRAPPER_COLLAB_INVALID_IS_GID => 10000 -49,
-	WRAPPER_COLLAB_NO_DB => 10000 - 50,
-	WRAPPER_COLLAB_READ_DB_LIST_FAILED => 10000 - 51,
+	WRAPPER_COLLAB_NO_DB => 10000 -50,
+	WRAPPER_COLLAB_READ_DB_LIST_FAILED => 10000 -51,
 
 	WRAPPER_FILES_ERROR_BASE => 11000,
 	WRAPPER_FILES_GENERAL_ERROR => 11000 -1,
@@ -303,6 +321,21 @@ use constant {
 	WRAPPER_OVPN_APP_ID_DOES_NOT_EXIST => 12000 -33,
 	WRAPPER_OVPN_UNAUTHORIZED_ID => 12000 -34,
 	WRAPPER_OVPN_INVALID_PASSWORD => 12000 -97,
+
+	WRAPPER_LINBO_ERROR_BASE => 13000,
+	WRAPPER_LINBO_GENERAL_ERROR => 13000 -1,
+	WRAPPER_LINBO_PROGRAM_ERROR => 13000 -2,
+	WRAPPER_LINBO_UNAUTHORIZED_UID => 13000 -3,
+	WRAPPER_LINBO_SCRIPT_EXEC_FAILED => 13000 -6,
+	WRAPPER_LINBO_UNAUTHENTICATED_ID => 13000 -32,
+	WRAPPER_LINBO_APP_ID_DOES_NOT_EXIST => 13000 -33,
+	WRAPPER_LINBO_UNAUTHORIZED_ID => 13000 -34,
+	WRAPPER_LINBO_INVALID_GROUP => 13000 -55,
+	WRAPPER_LINBO_INVALID_FILENAME => 13000 -56,
+	WRAPPER_LINBO_INVALID_IS_EXAMPLE => 13000 -57,
+	WRAPPER_LINBO_INVALID_IMAGE => 13000 -58,
+	WRAPPER_LINBO_INVALID_ACTION => 13000 -59,
+	WRAPPER_LINBO_CANNOT_OPEN_FILE => 13000 -106,
 };
 
 use overload
@@ -346,6 +379,8 @@ sub what {
 		and return 'F&uuml;r Diskquota m&uuml;ssen alle oder keine Felder ausgef&uuml;llt sein';
 	$this->{code} == PUBLIC_BG_ERROR
 		and return 'Fehler im Hintergrundprozess: ' . ${ $this->{info} }[0];
+	$this->{code} == LINBO_START_CONF_ERROR
+		and return "Fehler in der Konfiguration";
 	$this->{code} == INTERNAL_BG_ERROR
 		and return 'Fehler im Hintergrundprozess';
 	$this->{code} == DB_PREPARE_FAILED
@@ -362,7 +397,8 @@ sub what {
 		and return 'Keine Workstationbenutzer';
 	(   $this->{code} == CANNOT_OPEN_FILE
 	 or $this->{code} == WRAPPER_SOPHOMORIX_CANNOT_OPEN_FILE
-	 or $this->{code} == WRAPPER_FILES_CANNOT_OPEN_FILE)
+	 or $this->{code} == WRAPPER_FILES_CANNOT_OPEN_FILE
+	 or $this->{code} == WRAPPER_LINBO_CANNOT_OPEN_FILE)
 		and return 'Kann Datei nicht oeffnen';
 	$this->{code} == FILE_FORMAT_ERROR
 		and return 'Datei hat falsches Format';
@@ -378,7 +414,8 @@ sub what {
 	 or $this->{code} == WRAPPER_SOPHOMORIX_PROGRAM_ERROR
 	 or $this->{code} == WRAPPER_COLLAB_PROGRAM_ERROR
 	 or $this->{code} == WRAPPER_FILES_PROGRAM_ERROR
-	 or $this->{code} == WRAPPER_OVPN_PROGRAM_ERROR)
+	 or $this->{code} == WRAPPER_OVPN_PROGRAM_ERROR
+	 or $this->{code} == WRAPPER_LINBO_PROGRAM_ERROR)
 		and return 'Programmaufruf fehlgeschlagen';
 	(   $this->{code} == WRAPPER_USER_UNAUTHORIZED_UID
 	 or $this->{code} == WRAPPER_FIREWALL_UNAUTHORIZED_UID
@@ -387,7 +424,8 @@ sub what {
 	 or $this->{code} == WRAPPER_CYRUS_UNAUTHORIZED_UID
 	 or $this->{code} == WRAPPER_COLLAB_UNAUTHORIZED_UID
 	 or $this->{code} == WRAPPER_FILES_UNAUTHORIZED_UID
-	 or $this->{code} == WRAPPER_OVPN_UNAUTHORIZED_UID)
+	 or $this->{code} == WRAPPER_OVPN_UNAUTHORIZED_UID
+	 or $this->{code} == WRAPPER_LINBO_UNAUTHORIZED_UID)
 		and return 'Nicht autorisierter Aufrufer';
 	$this->{code} == WRAPPER_USER_INVALID_UID
 		and return 'Wechsel zu diesem Benutzer nicht erlaubt';
@@ -403,28 +441,32 @@ sub what {
 	 or $this->{code} == WRAPPER_CYRUS_SCRIPT_EXEC_FAILED
 	 or $this->{code} == WRAPPER_COLLAB_SCRIPT_EXEC_FAILED
 	 or $this->{code} == WRAPPER_FILES_SCRIPT_EXEC_FAILED
-	 or $this->{code} == WRAPPER_OVPN_SCRIPT_EXEC_FAILED)
+	 or $this->{code} == WRAPPER_OVPN_SCRIPT_EXEC_FAILED
+	 or $this->{code} == WRAPPER_LINBO_SCRIPT_EXEC_FAILED)
 		and return 'Skriptaufruf fehlgeschlagen';
 	(   $this->{code} == WRAPPER_FIREWALL_UNAUTHENTICATED_ID
 	 or $this->{code} == WRAPPER_PRINTER_UNAUTHENTICATED_ID
 	 or $this->{code} == WRAPPER_SOPHOMORIX_UNAUTHENTICATED_ID
 	 or $this->{code} == WRAPPER_COLLAB_UNAUTHENTICATED_ID
 	 or $this->{code} == WRAPPER_FILES_UNAUTHENTICATED_ID
-	 or $this->{code} == WRAPPER_OVPN_UNAUTHENTICATED_ID)
+	 or $this->{code} == WRAPPER_OVPN_UNAUTHENTICATED_ID
+	 or $this->{code} == WRAPPER_LINBO_UNAUTHENTICATED_ID)
 		and return 'Authentifizierung fehlgeschlagen nach ID';
 	(   $this->{code} == WRAPPER_FIREWALL_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == WRAPPER_PRINTER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == WRAPPER_SOPHOMORIX_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == WRAPPER_COLLAB_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == WRAPPER_FILES_APP_ID_DOES_NOT_EXIST
-	 or $this->{code} == WRAPPER_OVPN_APP_ID_DOES_NOT_EXIST)
+	 or $this->{code} == WRAPPER_OVPN_APP_ID_DOES_NOT_EXIST
+	 or $this->{code} == WRAPPER_LINBO_APP_ID_DOES_NOT_EXIST)
 		and return 'Programm-ID unbekannt';
 	(   $this->{code} == WRAPPER_FIREWALL_UNAUTHORIZED_ID
 	 or $this->{code} == WRAPPER_PRINTER_UNAUTHORIZED_ID
 	 or $this->{code} == WRAPPER_SOPHOMORIX_UNAUTHORIZED_ID
 	 or $this->{code} == WRAPPER_COLLAB_UNAUTHORIZED_ID
 	 or $this->{code} == WRAPPER_FILES_UNAUTHORIZED_ID
-	 or $this->{code} == WRAPPER_OVPN_UNAUTHORIZED_ID)
+	 or $this->{code} == WRAPPER_OVPN_UNAUTHORIZED_ID
+	 or $this->{code} == WRAPPER_LINBO_UNAUTHORIZED_ID)
 		and return 'Nicht autorisierter Aufrufer nach ID';
 	$this->{code} == WRAPPER_FILES_INVALID_SESSION_ID
 		and return 'Ungueltige Session-ID';
@@ -447,7 +489,7 @@ sub what {
 	$this->{code} == WRAPPER_FIREWALL_CANNOT_READ_ROOMFILE
 		and return 'Raumdatei kann nicht gelesen werden';
 	$this->{code} == WRAPPER_FIREWALL_INVALID_ROOM_SCOPE
-		and return 'Erwarte 0 fuer scope';
+		and return 'Erwarte 0 oder 1 fuer scope';
 	(   $this->{code} == WRAPPER_FIREWALL_CANNOT_FORK
 	 or $this->{code} == WRAPPER_SOPHOMORIX_CANNOT_FORK
 	 or $this->{code} == WRAPPER_FILES_CANNOT_FORK)
@@ -523,6 +565,16 @@ sub what {
 		and return 'Keine Datenbanken';
 	$this->{code} == WRAPPER_COLLAB_READ_DB_LIST_FAILED
 		and return 'DB-Liste kann nicht gelesen werden';
+	$this->{code} == WRAPPER_LINBO_INVALID_GROUP
+		and return 'Ungueltiger Gruppenname';
+	$this->{code} == WRAPPER_LINBO_INVALID_FILENAME
+		and return 'Ungueltiger Dateiname';
+	$this->{code} == WRAPPER_LINBO_INVALID_IS_EXAMPLE
+		and return 'Erwarte 1 oder 0 fuer is_example';
+	$this->{code} == WRAPPER_LINBO_INVALID_IMAGE
+		and return 'Ungueltiger Image-Dateiname';
+	$this->{code} == WRAPPER_LINBO_INVALID_ACTION
+		and return 'action muss 0, 1 oder 2 sein';
 	(   $this->{code} == WRAPPER_SOPHOMORIX_INVALID_FILENUMBER
 	 or $this->{code} == WRAPPER_FILES_INVALID_FILENUMBER)
 		and return 'Ungueltiger Wert fuer number';

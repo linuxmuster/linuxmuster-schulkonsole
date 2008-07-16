@@ -1,6 +1,7 @@
 use strict;
 use POSIX;
 use HTML::Parser;
+use HTML::Entities;
 use Schulkonsole::Config;
 
 package Schulkonsole::Template;
@@ -385,15 +386,16 @@ sub start_tag_handler {
 		if ($tagname eq 'gettext') {
 			$_in_gettext = 1;
 		} elsif ($tagname eq 'form') {
+			my $anchor = $1 if $$attr_ref{action} =~ s/(#[^#]*)//;
 			if (not $$attr_ref{action}) {
 				print_content(
 					substitute_token($text, $tokenpos,
-						{ action => CGI->escapeHTML($action) }));
+						{ action => CGI->escapeHTML($action) . $anchor }));
 			} elsif (my ($action, $path) = $$attr_ref{action} =~ m:^(.+)/(\$.+):) {
 				my $new_path = substitute_vars($path);
 				print_content(
 					substitute_token($text, $tokenpos,
-						{ action => CGI->escapeHTML("$action/$new_path") }));
+						{ action => CGI->escapeHTML("$action/$new_path") . $anchor }));
 			} else {
 				print_content($text);
 			}
@@ -412,7 +414,7 @@ sub start_tag_handler {
 				if (    $name
 				    and my $new_name = substitute_vars($name)) {
 					if ($new_name ne $name) {
-						$$subst{name} = CGI->escapeHTML($new_name);
+						$$subst{name} = HTML::Entities::encode_entities(CGI->escapeHTML($new_name));
 						$name = $new_name;
 					}
 				}
@@ -477,7 +479,10 @@ sub start_tag_handler {
 				    and my $new_for = substitute_vars($for)) {
 					$new_for =~ s/[^A-Za-z0-9\-_:.]//g;
 					$new_for =~ s/^([^A-Za-z])/x$1/;
-					$$subst{for} = $new_for if $new_for ne $for;
+					if ($new_for ne $for) {
+						$$subst{for} = $new_for;
+						$for = $new_for;
+					}
 				}
 				if (defined $_input_errors{$for}) {
 					$$subst{class} = $$attr_ref{class} . 'error';
@@ -570,13 +575,27 @@ sub start_tag_handler {
 			if ($_do_buffer) {
 				print_content($text);
 			} else {
-				$_element_name = $$attr_ref{name};
-				my $new_element_name = substitute_vars($_element_name)
-					if $_element_name;
-				if ($new_element_name ne $_element_name) {
-					print_content(substitute_token($text, $tokenpos,
-						{ name => CGI->escapeHTML($new_element_name) }));
-					$_element_name = $new_element_name;
+				my $subst = {};
+
+				my $id = $$attr_ref{id};
+				if (    $id
+				    and my $new_id = substitute_vars($id)) {
+					$new_id =~ s/[^A-Za-z0-9\-_:.]//g;
+					$new_id =~ s/^([^A-Za-z])/x$1/;
+					$$subst{id} = $new_id if $new_id ne $id;
+				}
+				my $name = $$attr_ref{name};
+				if (    $name
+				    and my $new_name = substitute_vars($name)) {
+					if ($new_name ne $name) {
+						$$subst{name} = HTML::Entities::encode_entities(CGI->escapeHTML($new_name));
+						$name = $new_name;
+					}
+				}
+
+				$_element_name = $name;
+				if (%$subst) {
+					print_content(substitute_token($text, $tokenpos, $subst));
 				} else {
 					print_content($text);
 				}
@@ -767,6 +786,8 @@ sub comment_handler {
 				if ($html_string) {
 					my $var_loop = $_var_loop;
 					if (my $loop_array = get_value($var_loop)) {
+						die "Not a reference at: $var_loop\n"
+							unless ref $loop_array;
 						foreach my $var (@$loop_array) {
 							set_value($var_loop, $var);
 							my $p = new HTML::Parser(

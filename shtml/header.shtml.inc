@@ -5,15 +5,15 @@
 	<!--#if expr="$link_class" -->
 <h1><gettext>Schulkonsole f&uuml;r Lehrer/innen</gettext></h1>
 	<!--#else -->
+		<!--#if expr="$link_start" -->
 <h1><gettext>Schulkonsole f&uuml;r Sch&uuml;ler/innen</gettext></h1>
+		<!--#else -->
+<h1><gettext>Schulkonsole</gettext></h1>
+		<!--#endif -->
 	<!--#endif -->
 <!--#endif -->
 <gettext>Version</gettext> <!--#echo var="version" -->
-<gettext>f&uuml;r Linux Musterl&ouml;sung 3.0</gettext>
-<img src="img/paedml.png" alt="paedML Die Musterl&ouml;sung Baden-W&uuml;rttemberg">
-</div>
-<div id="supportnetz">
-<a href="http://www.support-netz.de/">[www.support-netz.de]</a>
+<p><gettext>F&uuml;r diese Version gibt es keinen Support.</gettext></p>
 </div>
 
 <!--#include file="menu.shtml.inc" -->

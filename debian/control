@@ -1,19 +1,31 @@
-Source: linuxmuster-schulkonsole
+Source: schulkonsole
 Section: admin
 Priority: optional
 Maintainer: Aike Reyer <aike@users.sourceforge.net>
 Build-Depends: debhelper (>= 4.0.0), autotools-dev
 Standards-Version: 3.7.2
 
-Package: linuxmuster-schulkonsole
+Package: schulkonsole
 Architecture: all
-Depends: linuxmuster-schulkonsole-wrapper (= ${Source-Version}), libcgi-perl, libcgi-session-perl, liblocale-gettext-perl, libhtml-parser-perl, libdbi-perl, libdbd-odbc-perl | libdbd-pg-perl, libcrypt-passwdmd5-perl, libcrypt-smbhash-perl, libnet-cups-perl (>= 0.41),  libnet-cups-perl (<< 0.50), libcrypt-rijndael-perl, libnet-imap-simple-perl, libenv-bash-perl, cyrus-common | cyrus21-common | cyrus22-common | cyrus-common-2.2, libproc-process-perl, ${perl:Depends}, ${misc:Depends}
+Depends: schulkonsole-wrapper (>= ${source:Version}), schulkonsole-wrapper (<< ${source:Version}.1~), schulkonsole-templates, libcgi-perl, libcgi-session-perl, liblocale-gettext-perl, libhtml-parser-perl, libdbi-perl, libdbd-odbc-perl | libdbd-pg-perl, libcrypt-passwdmd5-perl, libcrypt-smbhash-perl, libnet-cups-perl (>= 0.55), libcrypt-rijndael-perl, libnet-imap-simple-perl, libenv-bash-perl, cyrus-common | cyrus21-common | cyrus22-common | cyrus-common-2.2, libproc-process-perl, ${perl:Depends}, ${misc:Depends}
 Recommends: sophomorix-base, linuxmuster-base
-Description: web-based administration tool for the Linuxmusterloesung
- Schulkonsole is a web-interface for Linuxmusterloesung systems.
+Description: web-based administration tool for the PaedML
+ Schulkonsole is a web-interface for PaedML systems.
 
-Package: linuxmuster-schulkonsole-wrapper
+Package: schulkonsole-templates
+Architecture: all
+Depends: schulkonsole (= ${source:Version}), ${misc:Depends}
+Description: templates for schulkonsole
+ Schulkonsole is a web-interface for Linuxmusterloesung systems.
+ .
+ This package contains the HTML-templates
+
+Package: schulkonsole-wrapper
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: linuxmuster-schulkonsole-wrapper
 Description: suid-wrappers for schulkonsole
- wrappers to allow execution of utility-programs under different uid
+ Schulkonsole is a web-interface for Linuxmusterloesung systems.
+ .
+ This package contains the wrappers to allow execution of utility-programs
+ under different uid

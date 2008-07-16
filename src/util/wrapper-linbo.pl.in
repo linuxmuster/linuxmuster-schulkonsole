@@ -1,0 +1,403 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+wrapper-linbo.pl - wrapper for configuration of linbo
+
+=head1 SYNOPSIS
+
+ my $id = $userdata{id};
+ my $password = 'secret';
+ my $app_id = Schulkonsole::Config::INTERNETONOFFAPP;
+
+ my $linbo_username = 'testuser';
+
+ open SCRIPT, "| $Schulkonsole::Config::_wrapper_linbo";
+ print SCRIPT <<INPUT;
+ $id
+ $password
+ $app_id
+ $linbo_username
+
+ INPUT
+
+=head1 DESCRIPTION
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Config;
+use Schulkonsole::DB;
+use POSIX;
+
+
+
+my $id = <>;
+$id = int($id);
+my $password = <>;
+chomp $password;
+
+my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
+exit -32 unless $userdata;
+
+my $app_id = <>;
+($app_id) = $app_id =~ /^(\d+)$/;
+exit -33
+	unless defined $app_id && $Schulkonsole::Config::_root_apps[$app_id];
+
+
+
+my $permissions = Schulkonsole::Config::permissions_apps();
+my $groups = Schulkonsole::DB::user_groups(
+	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
+
+my $app;
+foreach my $group (('ALL', keys %$groups)) {
+	foreach my $name (keys %{ $$permissions{$group} }) {
+		if ($Schulkonsole::Config::_root_app_name_ids{$name} == $app_id) {
+			$app = $Schulkonsole::Config::_root_apps[$app_id];
+			last;
+		}
+	}
+}
+exit -34 unless $app;
+
+
+my $opts;
+SWITCH: {
+
+=head3 write_start_conf
+
+numeric constant: C<Schulkonsole::Config::LINBOWRITESTARTCONFAPP>
+
+=head4 Description
+
+Writes lines into a start.conf.<group>
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<group>
+
+=item C<lines>
+
+=cut
+
+$app_id == Schulkonsole::Config::LINBOWRITESTARTCONFAPP and do {
+	my $group = <>;
+	($group) = $group =~ /^([a-z\d_]+)$/;
+	exit -55 unless defined $group;
+
+	my $filename = $Schulkonsole::Config::_linbo_start_conf_prefix . $group;
+	if (-e $filename) {
+		# backup old file
+		my $time = POSIX::strftime("%Y-%m-%d-%H%M", localtime($^T));
+		my $old_filename = $filename . '-' . $time;
+		my $cnt = 0;
+		while (-e $old_filename) {
+			$cnt++;
+			$old_filename = $filename . '-' . $time . '-' . $cnt;
+		}
+
+		rename $filename, $old_filename;
+	}
+
+
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+
+	open FILE, ">$filename" or exit -106;
+	flock FILE, 2;
+	seek FILE, 0, 0;
+
+	while (<>) {
+		print FILE;
+	}
+
+	close FILE;
+
+	exit 0;
+};
+
+=head3 copy_start_conf
+
+numeric constant: C<Schulkonsole::Config::LINBOCOPYSTARTCONFAPP>
+
+=head4 Description
+
+Writes lines into a start.conf.<group>
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<group>
+
+=item C<lines>
+
+=cut
+
+$app_id == Schulkonsole::Config::LINBOCOPYSTARTCONFAPP and do {
+	my $src = <>;
+	($src) = $src =~ /^([a-z\d_]+(?:-\d{4}-\d{2}-\d{2}-\d{6})?)$/;
+	exit -55 unless defined $src;
+
+	my $dest = <>;
+	($dest) = $dest =~ /^([a-z\d_]+)$/;
+	exit -55 unless defined $dest;
+
+	my $src_filename = $Schulkonsole::Config::_linbo_start_conf_prefix . $src;
+	my $dest_filename = $Schulkonsole::Config::_linbo_start_conf_prefix . $dest;
+	if (-e $dest_filename) {
+		# backup old file
+		my $time = POSIX::strftime("%Y-%m-%d-%H%M", localtime($^T));
+		my $old_filename = $dest_filename . '-' . $time;
+		my $cnt = 0;
+		while (-e $old_filename) {
+			$cnt++;
+			$old_filename = $dest_filename . '-' . $time . '-' . $cnt;
+		}
+
+		rename $dest_filename, $old_filename;
+	}
+
+
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+
+	open SRC, "<$src_filename" or exit -106;
+	flock SRC, 1;
+	seek SRC, 0, 0;
+
+	open DEST, ">$dest_filename" or exit -106;
+	flock DEST, 2;
+	seek DEST, 0, 0;
+
+	while (<SRC>) {
+		s/^Group\s*=.*?(\s*#.*)?$/Group = $dest$1/;
+		print DEST;
+	}
+
+	close DEST;
+	close SRC;
+
+
+	exit 0;
+};
+
+=head3 copy_regpatch
+
+numeric constant: C<Schulkonsole::Config::LINBOCOPYREGPATCHAPP>
+
+=head4 Description
+
+Copies a template to <image>.reg
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<template>
+
+=item C<is_example>
+
+=item C<image>
+
+=cut
+
+$app_id == Schulkonsole::Config::LINBOCOPYREGPATCHAPP and do {
+	my $regpatch = <>;
+	($regpatch) = $regpatch =~ /^([^\/]+\.reg)$/;
+	exit -56 unless defined $regpatch;
+
+	my $is_example = <>;
+	($is_example) = $is_example =~ /^([01])$/;
+	exit -57 unless defined $is_example;
+
+	my $image = <>;
+	($image) = $image =~ /^([^\/]+\.(?:cloop|rsync))$/;
+	exit -58 unless defined $image;
+
+	my $src_filename = ($is_example ?
+		  "$Schulkonsole::Config::_linbo_dir/examples"
+		: $Schulkonsole::Config::_linbo_dir)
+		. "/$regpatch";
+	my $dest_filename = "$Schulkonsole::Config::_linbo_dir/$image.reg";
+
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+
+	open SRC, "<$src_filename" or exit -106;
+	flock SRC, 1;
+	seek SRC, 0, 0;
+
+	open DEST, ">$dest_filename" or exit -106;
+	flock DEST, 2;
+	seek DEST, 0, 0;
+
+	{
+	local $/ = undef;
+	while (<SRC>) {
+		print DEST;
+	}
+	}
+
+	close DEST;
+	close SRC;
+
+
+	exit 0;
+};
+
+=head3 linbo_delete
+
+numeric constant: C<Schulkonsole::Config::LINBODELETEAPP>
+
+=head4 Description
+
+Deletes a LINBO file
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<filename>
+
+=cut
+
+$app_id == Schulkonsole::Config::LINBODELETEAPP and do {
+	my $filename = <>;
+	($filename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.reg|pxegrub\.lst\.(?:[a-z\d_]+))$/;
+	exit -56 unless defined $filename;
+
+
+	my $file = "$Schulkonsole::Config::_linbo_dir/$filename";
+
+	unlink $file;
+
+	exit 0;
+};
+
+=head3 linbo_manage_images
+
+numeric constant: C<Schulkonsole::Config::LINBOIMAGEAPP>
+
+=head4 Description
+
+Copy, rename, delete LINBO images.
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<action>
+
+0 (= delete), 1 (= move), or 2 (= copy)
+
+=item C<filename>
+
+Image name with C<.cloop> or C<.rsync> suffix
+
+=item C<new_image> (if C<action> not delete)
+
+New image name without C<.cloop> and C<.rsync> suffix
+
+=cut
+
+$app_id == Schulkonsole::Config::LINBOIMAGEAPP and do {
+	my $action = <>;
+	($action) = $action =~ /^([012])$/;
+	exit -59 unless defined $action;
+
+	my $filename = <>;
+	my ($image, $image_suffix) = $filename =~ /^([^\/]+)\.(cloop|rsync)$/;
+	exit -58 unless defined $image;
+
+	my $file = "$Schulkonsole::Config::_linbo_dir/$image.$image_suffix";
+	my @suffixes = ('.desc', '.info', '.list', '.reg', '');
+
+	my @errors;
+	if ($action) {
+		my $new_image = <>;
+		($new_image) = $new_image =~ /^([^\/]+?)$/;
+		exit -58 unless defined $new_image;
+
+		my $new_file = "$Schulkonsole::Config::_linbo_dir/$new_image.$image_suffix";
+		if ($action == 1) {
+			foreach my $suffix (@suffixes) {
+				rename "$file$suffix", "$new_file$suffix";
+			}
+		} else {
+			foreach my $suffix (@suffixes) {
+				system "cp -p \Q$file$suffix\E \Q$new_file$suffix\E";
+			}
+		}
+	} else {
+		foreach my $suffix (@suffixes) {
+			unlink "$file$suffix";
+		}
+	}
+
+	exit 0;
+};
+
+=head3 linbo_write
+
+numeric constant: C<Schulkonsole::Config::LINBOWRITEAPP>
+
+=head4 Description
+
+Writes a LINBO file
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<filename>
+
+=item C<lines>
+
+=cut
+
+$app_id == Schulkonsole::Config::LINBOWRITEAPP and do {
+	my $filename = <>;
+	($filename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.(?:reg|desc)|pxegrub\.lst\.(?:[a-z\d_]+))$/;
+	exit -56 unless defined $filename;
+
+	my $file = "$Schulkonsole::Config::_linbo_dir/$filename";
+
+
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+
+	open FILE, ">$file" or exit -106;
+	flock FILE, 2;
+	seek FILE, 0, 0;
+
+	while (<>) {
+		print FILE;
+	}
+
+	close FILE;
+
+	exit 0;
+};
+
+}
+
+
+
+exit -2;	# program error
+
+
+

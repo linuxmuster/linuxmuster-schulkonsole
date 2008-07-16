@@ -26,13 +26,15 @@
 <colgroup span="3" width="11%"></colgroup>
 <colgroup span="2"></colgroup>
 <col width="3%">
+<col width="3%">
 <tr>
 <th></th>
 <th><gettext>Internet</gettext></th>
 <th><gettext>Intranet</gettext></th>
 <th><gettext>Webfilter</gettext></th>
 <th colspan="2"></th>
-<th>X</th>
+<th><img title="zur&uuml;cksetzen" src="img/reset.png" alt="0"></th>
+<th><img title="l&ouml;schen" src="img/trash.png" alt="X"></th>
 </tr>
 <tr>
 <td><gettext>default</gettext></td>
@@ -65,6 +67,8 @@
 <!--#else -->
 <td colspan="2"></td>
 <!--#endif -->
+<td><input type="checkbox" name="reset_all"></td>
+<td></td>
 </tr>
 <tr><td colspan="7">&nbsp;</td></tr>
 
@@ -111,6 +115,7 @@
 	<!--#else -->
 	<td colspan="2"></td>
 	<!--#endif -->
+	<td><input type="checkbox" name="${nondefaults{name}}_room_reset"></td>
 	<td><input type="checkbox" name="${nondefaults{name}}_room_delete"></td>
 	</tr>
 	<!--#else -->
@@ -138,6 +143,7 @@
 		</select>
 	</td>
 	<td colspan="2"></td>
+	<td><input type="checkbox" name="${nondefaults{name}}_reset"></td>
 	<td><input type="checkbox" name="${nondefaults{name}}_delete"></td>
 	</tr>
 	<!--#endif -->
@@ -147,7 +153,12 @@
 
 <p>
 <input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
+<input type="submit" name="reset" value="Auswahl zur&uuml;cksetzen">
 </p>
+
+</form>
+
+
 
 </form>
 
@@ -162,12 +173,18 @@
 
 <p><gettext>Legen Sie hier die Standardeinstellungen f&uuml;r die Workstations
 in den R&auml;umen fest.</gettext></p>
-<p><gettext>Um eine Ausnahme f&uuml;r eine Workstation anzulegen, muss ein Eintrag
-f&uuml;r den Raum hinzugef&uuml;gt worden sein</gettext>.
-<p><gettext>Um einen Eintrag zu l&ouml;schen, setzen Sie das H&auml;kchen in der entsprechenden Checkbox am Zeilenende.</gettext></p>
-<p><gettext>Schliessen Sie die Aktion mit &#8222;&Auml;nderungen &uuml;bernehmen&#8220; ab.</gettext></p>
+<p><gettext>Um eine Ausnahme f&uuml;r eine Workstation anzulegen, muss ein
+Eintrag f&uuml;r den Raum hinzugef&uuml;gt worden sein</gettext>.
+<p><gettext>Um einen Eintrag zu l&ouml;schen, setzen Sie das H&auml;kchen in
+der entsprechenden Checkbox am Zeilenende.</gettext></p>
+<p><gettext>Schliessen Sie die Aktion mit
+&#8222;&Auml;nderungen &uuml;bernehmen&#8220; ab.</gettext></p>
+<p><gettext>Um die Rechner in einem Raum oder einzelne Rechner
+zur&uuml;ckzusetzen, setzen Sie das H&auml;kchen in der entsprechenden
+Checkbox und w&auml;hlen die Aktion
+&#8222;Auswahl zur&uuml;cksetzen&#8220;.</gettext></p>
 
-<img src="img/lmz.jpg" alt="Landesmedienzentrum BW">
+<!--#include file="footer_info.shtml.inc" -->
 </div>
 
 <!--#include file="footer.shtml.inc" -->

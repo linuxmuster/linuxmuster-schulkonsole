@@ -32,6 +32,9 @@
 <!--#if expr="$link_hosts" -->
    <a href="hosts"><gettext>Hosts</gettext></a>
 <!--#endif -->
+<!--#if expr="$link_linbo" -->
+   <a href="linbo"><gettext>LINBO</gettext></a>
+<!--#endif -->
 <!--#if expr="$link_logout" -->
    <a href="logout"><gettext>Abmelden</gettext></a>
 <!--#endif -->

@@ -83,6 +83,7 @@ $VERSION = 0.06;
 	$_wrapper_cyrus
 	$_wrapper_collab
 	$_wrapper_files
+	$_wrapper_linbo
 
 	%_root_app_name_ids
 	@_root_apps
@@ -146,6 +147,10 @@ $VERSION = 0.06;
 	OVPNCHECKAPP
 	OVPNDOWNLOADAPP
 	OVPNCREATEAPP
+	LINBOWRITESTARTCONFAPP
+	LINBOCOPYSTARTCONFAPP
+	LINBOCOPYREGPATCHAPP
+	LINBOIMAGEAPP
 
 	TEST_NONE
 	TEST_HANDOUT
@@ -509,6 +514,48 @@ use constant {
 };
 
 
+=head3 Constants for wrapper-linbo
+
+=over
+
+=item C<LINBOWRITESTARTCONFAPP>
+
+C<write_start_conf>
+
+=item C<LINBOCOPYSTARTCONFAPP>
+
+C<copy_start_conf>
+
+=item C<LINBOCOPYREGPATCHAPP>
+
+C<copy_regpatch>
+
+=item C<LINBODELETEAPP>
+
+C<linbo_delete>
+
+=item C<LINBOWRITEAPP>
+
+C<linbo_write>
+
+=item C<LINBOIMAGEAPP>
+
+C<linbo_manage_images>
+
+=back
+
+=cut
+
+use constant {
+	LINBOWRITESTARTCONFAPP => 49,
+	LINBOCOPYSTARTCONFAPP => 50,
+	LINBOCOPYREGPATCHAPP => 51,
+	LINBODELETEAPP => 52,
+	LINBOWRITEAPP => 53,
+	LINBOIMAGEAPP => 54,
+};
+
+
 =head3 Constants that describe the state of an exam
 
 =over
@@ -622,6 +669,22 @@ This file lists the classrooms
 
 Default network settings
 
+=item C<$_linbo_dir>
+
+LINBO directory
+
+=item C<$_linbo_start_conf_prefix>
+
+Prefix of start.conf.* files
+
+=item C<$_linbo_templates_os_dir>
+
+Directory holding LINBO templates for section [OS]
+
+=item C<$_linbo_template_partition>
+
+The LINBO template for section [Partition]
+
 =item C<$_backup_conf_file>
 
 Setup for automated backup
@@ -632,7 +695,11 @@ Setup for automated backup
 
 use vars qw($_workstations_file $_room_defaults_file $_classrooms_file
             $_printers_file
-            $_network_settings_file $_backup_conf_file $_dhcpd_conf_file);
+            $_network_settings_file
+            $_linbo_dir $_linbo_start_conf_prefix
+            $_linbo_templates_dir $_linbo_templates_os_dir
+            $_linbo_template_partition
+            $_backup_conf_file $_dhcpd_conf_file);
 
 
 =head3 Files with status information
@@ -792,13 +859,17 @@ Path to wrapper to control databases and revision control
 
 Path to wrapper to write files with root permissions
 
+=item C<$_wrapper_linbo>
+
+Path to wrapper to write linbo configuration files
+
 =back
 
 =cut
 
 use vars qw($_wrapper_user $_wrapper_firewall $_wrapper_ovpn $_wrapper_printer
             $_wrapper_sophomorix $_wrapper_cyrus $_wrapper_collab
-            $_wrapper_files);
+            $_wrapper_files $_wrapper_linbo);
 
 
 =head3 Variables used by wrappers
@@ -876,8 +947,13 @@ $_dhcpd_conf_file = $lml_env{DHCPDCONF};
 $_printers_file = $lml_env{PRINTERS};
 $_classrooms_file = $lml_env{CLASSROOMS};
 $_network_settings_file = $lml_env{NETWORKSETTINGS};
+$_linbo_dir = $lml_env{LINBODIR};
+$_linbo_templates_dir = '@datadir@/@PACKAGE@/linbo/templates';
+$_linbo_templates_os_dir = "$_linbo_templates_dir/os";
+$_linbo_template_partition = "$_linbo_templates_dir/part/start.conf.partition";
 
 $_backup_conf_file = $lml_env{SYSCONFDIR} . '/backup.conf';
+$_linbo_start_conf_prefix = $_linbo_dir . '/start.conf.';
 
 
 # read environment variables of linuxmuster scripts
@@ -913,6 +989,7 @@ $_wrapper_sophomorix = '@pkglibexecdir@/bin/wrapper-sophomorix';
 $_wrapper_cyrus = '@pkglibexecdir@/bin/wrapper-cyrus';
 $_wrapper_collab = '@pkglibexecdir@/bin/wrapper-collab';
 $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
+$_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
 
 
 
@@ -967,6 +1044,12 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 	ovpn_check => OVPNCHECKAPP,
 	ovpn_download => OVPNDOWNLOADAPP,
 	ovpn_create => OVPNCREATEAPP,
+	write_start_conf => LINBOWRITESTARTCONFAPP,
+	copy_start_conf => LINBOCOPYSTARTCONFAPP,
+	copy_regpatch => LINBOCOPYREGPATCHAPP,
+	linbo_delete => LINBODELETEAPP,
+	linbo_write => LINBOWRITEAPP,
+	linbo_manage_images => LINBOIMAGEAPP,
 );
 
 
@@ -1022,6 +1105,12 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 	'/usr/share/linuxmuster/scripts/ovpn-client-cert.sh',
 	'/usr/share/linuxmuster/scripts/ovpn-client-cert.sh',
 	'/usr/share/linuxmuster/scripts/ovpn-client-cert.sh',
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
 );
 
 
@@ -1062,6 +1151,8 @@ my %permissions_apps;
 sub permissions {
 	return if (%permissions_pages or %permissions_apps);
 
+	my $is_linbo_enabled = is_linbo_enabled();
+
 	my $section = 0;
 
 	open PERMISSIONS, "<$_permissions_conf_file"
@@ -1088,7 +1179,11 @@ sub permissions {
 				SWITCH: {
 				$section == 1 and do {
 					foreach my $page (@resources) {
-						$permissions_pages{$group}{$page} = 1;
+						# only allow linbo-pages if linbo is enabled
+						if (   $is_linbo_enabled
+						    or $page !~ /^linbo/) {
+							$permissions_pages{$group}{$page} = 1;
+						}
 					}
 					last SWITCH;
 				};
@@ -1104,6 +1199,7 @@ sub permissions {
 			}
 		}
 	}
+
 
 	close PERMISSIONS;
 }
@@ -1696,6 +1792,40 @@ sub printers {
 
 
 
+=head3 is_linbo_enabled()
+
+Check if LINBO is enabled
+
+=head4 Return value
+
+True if LINBO is enabled, false otherwise
+
+=head4 Description
+
+Checks if LINBO is enabled.
+
+=cut
+
+my $is_linbo_enabled;
+sub is_linbo_enabled {
+	return $is_linbo_enabled if defined $is_linbo_enabled;
+
+	open NETWORKSETTINGS, "<$Schulkonsole::Config::_network_settings_file"
+		or return 0;
+	while (<NETWORKSETTINGS>) {
+		my ($key, $value) = /^\s*(\S+)\s*=\s*(.+)$/;
+		if ($key eq 'imaging') {
+			$is_linbo_enabled = (($value =~ /^linbo/) ? 1 : 0);
+			last;
+		}
+	}
+	close NETWORKSETTINGS;
+
+	return $is_linbo_enabled;
+}
+
+
+
 
 sub read_conf {
 	my $filename = shift;
@@ -1778,7 +1908,10 @@ eval {
 my %preferences = read_conf($_preferences_conf_file);
 
 $_max_idle_time = $preferences{max_idle_time}
-	if ($preferences{max_idle_time});
+	if (exists $preferences{max_idle_time});
+$_templatedir = $preferences{templatedir}
+	if (    exists $preferences{templatedir}
+	    and -d $preferences{templatedir});
 };
 
 

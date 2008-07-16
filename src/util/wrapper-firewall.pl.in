@@ -343,12 +343,38 @@ Resets the workstation settings in a room
 
 $app_id == Schulkonsole::Config::ROOMSRESETAPP and do {
 	my $scope = <>;
-	($scope) = $scope =~ /^0$/;
-	exit -45 unless $scope;
+	($scope) = $scope =~ /^([01])$/;
+	exit -45 unless defined $scope;
 
-	$< = $>;
-	my $opts = '--all';
-	exec "$app $opts" or last SWITCH;
+	if ($scope == 0) {
+		my $opts = '--all';
+		$< = $>;
+		exec "$app $opts" or last SWITCH;
+	} else {
+		my @rooms_reset;
+		while (<>) {
+			last if /^$/;
+			my ($room) = /^([\w -]+)$/;
+			exit -39 unless $room;
+			push @rooms_reset, $room;
+		}
+		my @hosts_reset;
+		while (<>) {
+			last if /^$/;
+			my ($host) = /^([\w.-]+)$/i;
+			exit -37 unless $host;
+			push @hosts_reset, $host;
+		}
+
+		foreach my $room (@rooms_reset) {
+			system "$app --room=\Q$room\E";
+		}
+		foreach my $host (@hosts_reset) {
+			system "$app --host=\Q$host\E";
+		}
+
+		exit 0;
+	}
 };
 
 }

@@ -21,11 +21,17 @@ dist_shtml_DATA = login.shtml logout.shtml start.shtml \
 	quotas.shtml \
 	quotas_teachers.shtml quotas_classes.shtml quotas_projects.shtml \
 	quotas_others.shtml \
+	linbo.shtml \
+	linbo_edit.shtml linbo_images.shtml linbo_new.shtml linbo_pxeedit.shtml \
+	linbo_regpatchedit.shtml \
 	submenu-room.shtml.inc submenu-class.shtml.inc \
 	submenu-project.shtml.inc submenu-user.shtml.inc \
 	submenu-settings.shtml.inc submenu-quotas.shtml.inc \
 	submenu-rooms.shtml.inc subsubmenu-room_test.shtml.inc \
+	submenu-linbo.shtml.inc \
 	css.shtml.inc \
+	footer_submenu.shtml.inc \
+	footer_info.shtml.inc \
 	schulkonsole.js
 
 CLEANFILES = messages.pl

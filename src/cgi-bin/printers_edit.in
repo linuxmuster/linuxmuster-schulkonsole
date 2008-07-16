@@ -25,7 +25,8 @@ provides the following variables:
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
-use Net::CUPS::Printer;
+use Net::CUPS;
+use Net::CUPS::Destination;
 use Schulkonsole::Session;
 use Schulkonsole::Files;
 
@@ -50,7 +51,8 @@ if (not $sk_session->get_password()) {
 my $q = $sk_session->query();
 
 
-my @printers = Net::CUPS::Printer::cupsGetPrinters();      # existing printers
+my $cups = new Net::CUPS;
+my @destinations = $cups->getDestinations();      # existing printers
 my $printers = eval { Schulkonsole::Config::printers(); }; # configured printers
 $printers = {} if $@;
 
@@ -58,7 +60,9 @@ $printers = {} if $@;
 
 my $edit_printer;
 eval {
-foreach my $printer (@printers) {
+foreach my $destination (@destinations) {
+	my $printer = $destination->getName();
+
 	if ($q->param("${printer}_rooms")) {	# init rooms
 		$edit_printer = $printer;
 

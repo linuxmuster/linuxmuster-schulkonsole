@@ -158,6 +158,7 @@ use strict;
 use lib '@datadir@/@PACKAGE@';
 use Sys::Hostname;
 use Net::CUPS;
+use Net::CUPS::Destination;
 use Schulkonsole::Session;
 use Schulkonsole::Config;
 use Schulkonsole::Info;
@@ -193,8 +194,9 @@ sub password_cb {
 	return $password;
 }
 
-Net::CUPS::Printer::cupsSetUser($uid);
-Net::CUPS::Printer::cupsSetPasswordCB(\&password_cb);
+my $cups = new Net::CUPS;
+$cups->setUsername($uid);
+$cups->setPasswordCB(\&password_cb);
 
 
 
@@ -280,7 +282,7 @@ defined $q->param('printjobs') and do {
 		if (not Net::CUPS::Printer::cupsCancelJob($job_dest, $job_id)) {
 			my $error = Net::CUPS::Printer::cupsLastError();
 			SWITCH: {
-			$error == Net::CUPS::Protocol::IPP_NOT_POSSIBLE and do {
+			$error == Net::CUPS::IPP_NOT_POSSIBLE and do {
 				$status .= $sk_session->d()->get('nicht m&ouml;glich');
 				last SWITCH;
 			};
@@ -394,16 +396,18 @@ $q->param('ovpndownload') and do {
 
 
 
-my @jobs = Net::CUPS::Printer::cupsGetJobs(undef, 1, 0);
 my @array_printjobs;
-foreach my $job (@jobs) {
-	next unless $job;
+foreach my $destination ($cups->getDestinations) {
+	my @jobs = $destination->getJobs(1, 0);
+	foreach my $job (@jobs) {
+		next unless $job;
 
-	my $printjob = {
-		id => "$$job{dest}-$$job{id}",
-		title => $$job{title},
-	};
-	push @array_printjobs, $printjob;
+		my $printjob = {
+			id => "$$job{dest}-$$job{id}",
+			title => $$job{title},
+		};
+		push @array_printjobs, $printjob;
+	}
 }
 $sk_session->set_var('printjobs', \@array_printjobs) if @array_printjobs;
 
