@@ -19,7 +19,7 @@ set -e
 
 case "$1" in
     remove)
-		update-alternatives --remove schulkonsole-site /etc/apache2/sites-available/schulkonsole-with-paedml-templates
+		update-alternatives --remove schulkonsole-site /etc/apache2/sites-available/schulkonsole
     ;;
 
     upgrade|deconfigure|failed-upgrade)

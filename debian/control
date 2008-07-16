@@ -8,6 +8,7 @@ Standards-Version: 3.7.2
 Package: schulkonsole
 Architecture: all
 Depends: schulkonsole-wrapper (>= ${source:Version}), schulkonsole-wrapper (<< ${source:Version}.1~), schulkonsole-templates, libcgi-perl, libcgi-session-perl, liblocale-gettext-perl, libhtml-parser-perl, libdbi-perl, libdbd-odbc-perl | libdbd-pg-perl, libcrypt-passwdmd5-perl, libcrypt-smbhash-perl, libnet-cups-perl (>= 0.55), libcrypt-rijndael-perl, libnet-imap-simple-perl, libenv-bash-perl, cyrus-common | cyrus21-common | cyrus22-common | cyrus-common-2.2, libproc-process-perl, ${perl:Depends}, ${misc:Depends}
+Conflicts: linuxmuster-schulkonsole (<< 0.9.16)
 Recommends: sophomorix-base, linuxmuster-base
 Description: web-based administration tool for the PaedML
  Schulkonsole is a web-interface for PaedML systems.
@@ -15,6 +16,7 @@ Description: web-based administration tool for the PaedML
 Package: schulkonsole-templates
 Architecture: all
 Depends: schulkonsole (= ${source:Version}), ${misc:Depends}
+Conflicts: linuxmuster-schulkonsole (<< 0.9.16)
 Description: templates for schulkonsole
  Schulkonsole is a web-interface for Linuxmusterloesung systems.
  .
