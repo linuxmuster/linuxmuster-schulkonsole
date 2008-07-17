@@ -1,4 +1,4 @@
-shtmldir = $(pkgdatadir)/shtml
+shtmldir = $(datarootdir)/schulkonsole/shtml
 dist_shtml_DATA = login.shtml logout.shtml start.shtml \
 	menu.shtml.inc header.shtml.inc footer.shtml.inc status.shtml.inc \
 	room.shtml room_handout.shtml room_collect.shtml room_shares.shtml \
