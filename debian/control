@@ -13,9 +13,10 @@ Recommends: sophomorix-base, linuxmuster-base
 Description: web-based administration tool for the PaedML
  Schulkonsole is a web-interface for PaedML systems.
 
-Package: schulkonsole-templates
+Package: schulkonsole-templates-base
 Architecture: all
 Depends: schulkonsole (= ${source:Version}), ${misc:Depends}
+Provides: schulkonsole-templates
 Conflicts: linuxmuster-schulkonsole (<< 0.9.16)
 Description: templates for schulkonsole
  Schulkonsole is a web-interface for Linuxmusterloesung systems.
