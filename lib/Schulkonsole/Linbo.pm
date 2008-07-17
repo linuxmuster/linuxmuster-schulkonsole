@@ -92,7 +92,7 @@ use vars qw(%_allowed_keys);
 		append => 1,
 		startenabled => 4,
 		syncenabled => 4,
-		remotesyncenabled => 4,
+		newenabled => 4,
 		hidden => 4,
 		autostart => 4,
 	},
@@ -420,7 +420,8 @@ sub read_start_conf {
 	my $unnamed_partitions_cnt = 0;
 	while (<CONF>) {
 		next if /^\s*#/ || /^\s*$/;
-		s/\s*#.*//;
+		s/#.*//;
+		s/\s+$//;
 
 		if (my ($section_str) = /^\[(Partition|OS|LINBO)\]$/i) {
 			if (%$os) {
@@ -1289,7 +1290,7 @@ sub write_start_conf {
 		foreach my $key (('Name', 'Version', 'Description', 'Image',
 		                  'BaseImage', 'Boot', 'Root', 'Kernel', 'Initrd',
 		                  'Append', 'StartEnabled', 'SyncEnabled',
-		                  'RemoteSyncEnabled', 'Hidden', 'Autostart',)) {
+		                  'NewEnabled', 'Hidden', 'Autostart',)) {
 			my $key_data = $oss{$name_version}{Keys}{lc $key};
 			next unless $key_data;
 

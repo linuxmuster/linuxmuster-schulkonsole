@@ -218,9 +218,9 @@
 <!--#else --><input type="checkbox" id="${devs{os}{n}}_syncenabled" name="${devs{os}{n}}_syncenabled"><!--#endif --></td>
 </tr>
 <tr class="odd">
-<td><label for="${devs{os}{n}}_remotesyncenabled"><gettext>Neu+Start-Button f&uuml;r dieses Betriebssystem anzeigen</gettext>:</label></td>
-<td><!--#if expr="$devs{os}{remotesyncenabled}" --><input type="checkbox" id="${devs{os}{n}}_remotesyncenabled" name="${devs{os}{n}}_remotesyncenabled" checked>
-<!--#else --><input type="checkbox" id="${devs{os}{n}}_remotesyncenabled" name="${devs{os}{n}}_remotesyncenabled"><!--#endif --></td>
+<td><label for="${devs{os}{n}}_newenabled"><gettext>Neu+Start-Button f&uuml;r dieses Betriebssystem anzeigen</gettext>:</label></td>
+<td><!--#if expr="$devs{os}{newenabled}" --><input type="checkbox" id="${devs{os}{n}}_newenabled" name="${devs{os}{n}}_newenabled" checked>
+<!--#else --><input type="checkbox" id="${devs{os}{n}}_newenabled" name="${devs{os}{n}}_newenabled"><!--#endif --></td>
 </tr>
 <tr class="even">
 <td><label for="${devs{os}{n}}_hidden"><gettext>Betriebssystemreiter verstecken</gettext>:</label></td>
