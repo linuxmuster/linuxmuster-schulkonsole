@@ -79,8 +79,8 @@ install: build
 	install -p -o root -g root -m 644 $(CURDIR)/doc/etc/apache2/sites-available/schulkonsole $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/apache2.conf
 	install -p -o root -g root -m 644 $(CURDIR)/doc/etc/schulkonsole/permissions.conf $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/permissions.conf
 
-	install -D -p -o root -g root -m 0644 debian/schulkonsole.lintian debian/tmp/usr/share/lintian/overrides/schulkonsole
-	install -D -p -o root -g root -m 0644 debian/schulkonsole-wrapper.lintian debian/tmp/usr/share/lintian/overrides/schulkonsole-wrapper
+	install -D -p -o root -g root -m 0644 debian/linuxmuster-schulkonsole.lintian debian/tmp/usr/share/lintian/overrides/linuxmuster-schulkonsole
+	install -D -p -o root -g root -m 0644 debian/linuxmuster-schulkonsole-wrapper.lintian debian/tmp/usr/share/lintian/overrides/linuxmuster-schulkonsole-wrapper
 
 
 
