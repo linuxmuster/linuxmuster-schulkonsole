@@ -2,7 +2,7 @@
 Name = Windows$PART        # Name des Betriebssystems
 Version =                  # Version (optional, frei waehlbar)
 Description = Windows XP $PART            # Beschreibung
-Image = $RECHNERGRUPPE-win$PART.rsync     # Dateiname des differentiellen Images
+Image =                                   # Dateiname des differentiellen Images
                                           # (Erweiterung .rsync)
 BaseImage = $RECHNERGRUPPE-win$PART.cloop # Dateiname des Basisimages
                                           # (Erweiterung .cloop)
@@ -17,7 +17,7 @@ Append =                   # Kernel-Append-Parameter, bei Windows
                            # immer leer
 StartEnabled = yes         # "Start"-Button anzeigen
 SyncEnabled = yes          # "Sync"-Button anzeigen
-RemoteSyncEnabled = yes    # Synchronisation mit dem Server zulassen
+NewEnabled = yes           # "Neu+Start"-Button anzeigen
 Hidden = yes               # blendet den OS-Reiter für dieses System
                            # aus
 Autostart = no             # yes: startet dieses System ohne Benutzer-
