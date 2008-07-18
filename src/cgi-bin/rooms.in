@@ -163,10 +163,8 @@ $q->param('accept') and do {
 	Schulkonsole::Files::write_room_defaults_file(
 		$id, $password,
 		$lines);
-	Schulkonsole::Firewall::rooms_reset_all($id, $password);
 
 	$defaults = read_room_defaults(\%room_hosts, $host_rooms);
-
 	$q->delete_all();
 
 	$sk_session->set_status($sk_session->d()->get(
