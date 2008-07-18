@@ -34,7 +34,7 @@
 <!--#else -->
 <!--#if expr="$editfilename" -->
 
-<h2><gettext>Registrypatch-Dateien der Rechnergruppen editieren</gettext></h2>
+<h2><gettext>Registrypatch-Dateien der Rechnergruppen editieren</gettext>: <!--#echo var="editfilename" --></h2>
 
 <form method="post">
 <textarea name="regpatch" rows="20" cols="70"></textarea>
