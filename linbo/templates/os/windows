@@ -1,0 +1,25 @@
+[OS]                       # Beginn einer Betriebssystemdefinition
+Name = Windows$PART        # Name des Betriebssystems
+Version =                  # Version (optional, frei waehlbar)
+Description = Windows XP $PART            # Beschreibung
+Image = $RECHNERGRUPPE-win$PART.rsync     # Dateiname des differentiellen Images
+                                          # (Erweiterung .rsync)
+BaseImage = $RECHNERGRUPPE-win$PART.cloop # Dateiname des Basisimages
+                                          # (Erweiterung .cloop)
+Boot = /dev/$DEVICE$PART   # Partition, die Kernel & Initrd enthaelt
+Root = /dev/$DEVICE$PART   # Partition, in die das BS installiert ist
+                           # bei Windows ist Boot und Root immer
+                           # dieselbe Partition
+Kernel = pxegrub           # bei Windows immer pxegrub
+Initrd =                   # Relativer Pfad zur Initrd, bei Windows
+                           # immer leer
+Append =                   # Kernel-Append-Parameter, bei Windows
+                           # immer leer
+StartEnabled = yes         # "Start"-Button anzeigen
+SyncEnabled = yes          # "Sync"-Button anzeigen
+RemoteSyncEnabled = yes    # Synchronisation mit dem Server zulassen
+Hidden = yes               # blendet den OS-Reiter für dieses System
+                           # aus
+Autostart = no             # yes: startet dieses System ohne Benutzer-
+                           # interaktion automatisch synchronisiert
+
