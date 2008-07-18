@@ -187,6 +187,13 @@ $q->param('add_room') and do {
 $q->param('reset') and do {
 
 	if ($q->param('reset_all')) {
+		if (%$defaults == 1) {
+			$sk_session->set_status($sk_session->d()->get(
+				'Es gibt keine Eintr&auml;ge f&uuml;r R&auml;ume oder Rechner'),
+				1);
+			last COMMANDS;
+		}
+
 		Schulkonsole::Firewall::rooms_reset_all(
 			$sk_session->userdata('id'),
 			$sk_session->get_password());

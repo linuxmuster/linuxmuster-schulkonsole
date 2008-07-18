@@ -67,7 +67,11 @@
 <!--#else -->
 <td colspan="2"></td>
 <!--#endif -->
+<!--#if expr="$nondefaults" -->
 <td><input type="checkbox" name="reset_all"></td>
+<!--#else -->
+<td><input type="checkbox" disabled></td>
+<!--#endif -->
 <td></td>
 </tr>
 <tr><td colspan="7">&nbsp;</td></tr>
@@ -153,7 +157,11 @@
 
 <p>
 <input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
+<!--#if expr="$nondefaults" -->
 <input type="submit" name="reset" value="Auswahl zur&uuml;cksetzen">
+<!--#else -->
+<input type="submit" value="Auswahl zur&uuml;cksetzen" disabled>
+<!--#endif -->
 </p>
 
 </form>
