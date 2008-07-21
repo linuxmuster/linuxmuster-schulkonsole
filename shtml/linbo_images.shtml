@@ -116,7 +116,7 @@
 <!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
 	<td><label for="${images_base}_newimage"><!--#echo var="images_base" --></label></td>
 	<td><input title="Beschreibung anzeigen/editieren" type="image" src="img/edit.png" alt="Beschreibung" name="${images_base}_editdesc" value="E"></td>
-	<td><input title="Information anzeigen" type="image" src="img/info.png" alt="Info" name="${images_base}_info" value="I"></td>
+	<td><input title="Information anzeigen" type="image" src="img/showinfo.png" alt="Info" name="${images_base}_info" value="I"></td>
 	<td><input title="Liste anzeigen" type="image" src="img/list.png" alt="Liste" name="${images_base}_list" value="L"></td>
 	<td><input name="${images_base}_newimage"></td>
 	<td><input title="Image umbenennen" type="image" src="img/move.png" alt="Umbenennen" name="${images_base}_move" value="U"></td>
