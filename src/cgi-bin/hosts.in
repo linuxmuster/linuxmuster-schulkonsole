@@ -357,7 +357,7 @@ sub syntax_check {
 		push @errors, $sk_session->d()->get('ung&uuml;ltige IP');
 	}
 	push @errors, $sk_session->d()->get('ung&uuml;ltige Optionen')
-		unless $opts =~ /^(|noudma|unicast|noudma,unicast)$/;
+		unless $opts =~ /^(|noudma|unicast|noudma,unicast|pxegrub-v2|pxegrub-v3)$/;
 
 
 	if (@errors) {
