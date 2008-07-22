@@ -201,7 +201,7 @@ Name of the selected group
 					if $$conf{linbo}{cache} eq $$partition{dev};
 				delete $$partition{oss} if $$partition{oss};
 				$$partition{id} = 0x82;
-				$$partition{fstype} = '';
+				$$partition{fstype} = 'swap';
 				$q->param("${n}_fstype", $$partition{fstype}) if defined $n;
 
 				last SWITCHNEWSYSTEM;
