@@ -246,7 +246,7 @@ foreach my $workstation (sort {
 	$q->param("${workstation}_ip", $$workstations{$workstation}{ip})
 		unless $q->param("${workstation}_ip");
 	$q->param("${workstation}_pxe",
-	          ($$workstations{$workstation}{pxe} eq $pxe_on ? 1 : 0))
+	          ($$workstations{$workstation}{pxe} ? 0 : 1))
 		unless defined $q->param("${workstation}_pxe");
 	$q->param("${workstation}_opts", $$workstations{$workstation}{opts})
 		unless defined $q->param("${workstation}_opts");
