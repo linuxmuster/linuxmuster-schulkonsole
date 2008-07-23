@@ -772,11 +772,13 @@ sub check_and_prepare_start_conf {
 	}
 
 
+	# check if size is set (if it has to be set)
 	foreach my $partition (keys %{ $$conf{partitions} }) {
 		my $dev = $$conf{partitions}{$partition}{dev};
 
 		my ($name, $number) = $dev =~ /^(.*?)(\d*)$/;
-		if (not $re{partitions}{$dev}{size}) {
+		if (    exists $re{partitions}{$dev}{size}
+		    and not $re{partitions}{$dev}{size}) {
 			if ($number > 4) {
 				if ($number < $max_logical_partition{$name}) {
 					$errors{partitions}{$partition}{partition}
@@ -1731,9 +1733,16 @@ sub get_conf_from_query {
 		}
 	}
 
-	if (    $cache_hd
-	    and $partition_params[$cache_hd]{dev}) {
-		$linbo_params{cache} = $partition_params[$cache_hd]{dev};
+	if (defined $cache_hd) {
+	    if (my $dev = $partition_params[$cache_hd]{dev}) {	# true for valid forms
+			# param "${dev_n}_iscache" takes precedence over "linbo_cache"
+			if ($linbo_params{cache} ne $dev) {
+				$q->param('linbo_cache', $dev);
+				$linbo_params{cache} = $partition_params[$cache_hd]{dev};
+			}
+		} else {
+			$linbo_params{cache} = '';
+		}
 	}
 
 

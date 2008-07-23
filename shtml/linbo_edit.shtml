@@ -43,7 +43,7 @@
 <tr class="odd">
 <!--#if expr="$iscachehd" -->
 <td><gettext>Cache-Partition auf dem Arbeitsplatzrechner</gettext>:</td>
-<td><!--#echo var="cache" --></td>
+<td><!--#echo var="cache" --><input type="hidden" name="linbo_cache"></td>
 <!--#else -->
 <tr class="odd">
 <td><label for="linbo_cache"><gettext>Cache-Partition auf dem Arbeitsplatzrechner</gettext>:</label></td>
@@ -90,8 +90,8 @@
 <option value="windows"><gettext>MS Windows</gettext></option>
 <option value="gnulinux"><gettext>GNU/Linux</gettext></option>
 <option value="data" selected><gettext>Daten</gettext></option>
-<option value="swap"><gettext>Swap</gettext></option>
-<option value="cache"><gettext>Cache</gettext></option>
+<option value="swap"><gettext>Swap</gettext></option><!--#if expr="$iscachehd" --><!--#else -->
+<option value="cache"><gettext>Cache</gettext></option><!--#endif -->
 <option value="ext"><gettext>erweitert</gettext></option>
 </select>
 </p>
@@ -239,7 +239,7 @@
 <!--#if expr="$devs{isgnulinux}" --><!--#else --><option value="gnulinux"><gettext>GNU/Linux</gettext></option><!--#endif -->
 <!--#if expr="$devs{isdata}" --><!--#else --><option value="data"><gettext>Daten</gettext></option><!--#endif -->
 <!--#if expr="$devs{isswap}" --><!--#else --><option value="swap"><gettext>Swap</gettext></option><!--#endif -->
-<!--#if expr="$devs{iscache}" --><!--#else --><option value="cache"><gettext>Cache</gettext></option><!--#endif -->
+<!--#if expr="$devs{iscache}" --><!--#else --><!--#if expr="$iscachehd" --><!--#else --><option value="cache"><gettext>Cache</gettext></option><!--#endif --><!--#endif -->
 <!--#if expr="$devs{isext}" --><!--#else --><option value="ext"><gettext>erweitert</gettext></option><!--#endif -->
 </select>&nbsp;<input type="submit" name="${devs{n}}_modify" value="System &auml;ndern"></p>
 <!--#endif -->
@@ -321,7 +321,7 @@
 <!--#if expr="$devs{isgnulinux}" --><!--#else --><option value="gnulinux"><gettext>GNU/Linux</gettext></option><!--#endif -->
 <!--#if expr="$devs{isdata}" --><!--#else --><option value="data"><gettext>Daten</gettext></option><!--#endif -->
 <!--#if expr="$devs{isswap}" --><!--#else --><option value="swap"><gettext>Swap</gettext></option><!--#endif -->
-<!--#if expr="$devs{iscache}" --><!--#else --><option value="cache"><gettext>Cache</gettext></option><!--#endif -->
+<!--#if expr="$devs{iscache}" --><!--#else --><!--#if expr="$iscachehd" --><!--#else --><option value="cache"><gettext>Cache</gettext></option><!--#endif --><!--#endif -->
 <!--#if expr="$devs{isext}" --><!--#else --><option value="ext"><gettext>erweitert</gettext></option><!--#endif -->
 </select>&nbsp;<input type="submit" name="${devs{n}}_modify" value="System &auml;ndern">
 
@@ -352,8 +352,8 @@
 <option value="windows"><gettext>MS Windows</gettext></option>
 <option value="gnulinux"><gettext>GNU/Linux</gettext></option>
 <option value="data" selected><gettext>Daten</gettext></option>
-<option value="swap"><gettext>Swap</gettext></option>
-<option value="cache"><gettext>Cache</gettext></option>
+<option value="swap"><gettext>Swap</gettext></option><!--#if expr="$iscachehd" --><!--#else -->
+<option value="cache"><gettext>Cache</gettext></option><!--#endif -->
 <option value="ext"><gettext>erweitert</gettext></option>
 </select>
 </p>
