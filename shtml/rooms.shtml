@@ -156,12 +156,12 @@
 
 
 <p>
-<input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
 <!--#if expr="$nondefaults" -->
 <input type="submit" name="reset" value="Auswahl zur&uuml;cksetzen">
 <!--#else -->
 <input type="submit" value="Auswahl zur&uuml;cksetzen" disabled>
 <!--#endif -->
+<input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
 </p>
 
 </form>
