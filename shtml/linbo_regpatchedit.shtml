@@ -92,7 +92,11 @@
 <p><gettext>Es sind keine Templateedateien vorhanden.</gettext></p>
 <!--#endif -->
 <!--#else -->
+<!--#if expr="$regpatches" -->
 <p><gettext>Es gibt keine Imagedateien ohne Registrypatch.</gettext></p>
+<!--#else -->
+<p><gettext>Es gibt keine Imagedateien.</gettext></p>
+<!--#endif -->
 <!--#endif -->
 
 
