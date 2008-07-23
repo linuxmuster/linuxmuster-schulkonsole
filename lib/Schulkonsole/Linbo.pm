@@ -1713,6 +1713,8 @@ sub get_conf_from_query {
 	}
 
 
+	my $autostart = $q->param('autostart');
+
 	for (my $dev_n = 0; $dev_n < @os_params; $dev_n++) {
 		if ($os_params[$dev_n]) {
 			for (my $os_n = 0; $os_n < @{ $os_params[$dev_n] }; $os_n++) {
@@ -1720,6 +1722,7 @@ sub get_conf_from_query {
 
 				$$os{root} = $partition_params[$dev_n]{dev};
 				$$os{n} = $os_n;
+				$$os{autostart} = ($autostart eq "$dev_n.$os_n" ? 1 : 0);
 
 				push @{ $partitions{$dev_n}{oss} }, $os;
 			}
