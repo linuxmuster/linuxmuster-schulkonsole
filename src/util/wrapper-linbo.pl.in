@@ -143,12 +143,13 @@ Writes lines into a start.conf.<group>
 
 $app_id == Schulkonsole::Config::LINBOCOPYSTARTCONFAPP and do {
 	my $src = <>;
-	($src) = $src =~ /^([a-z\d_]+(?:-\d{4}-\d{2}-\d{2}-\d{6})?)$/;
+	($src) = $src =~ /^([a-z\d_]+[^\/]*)$/;
 	exit -55 unless defined $src;
 
 	my $dest = <>;
 	($dest) = $dest =~ /^([a-z\d_]+)$/;
 	exit -55 unless defined $dest;
+
 
 	my $src_filename = $Schulkonsole::Config::_linbo_start_conf_prefix . $src;
 	my $dest_filename = $Schulkonsole::Config::_linbo_start_conf_prefix . $dest;

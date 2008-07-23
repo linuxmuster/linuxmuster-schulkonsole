@@ -64,6 +64,12 @@ $q->param('copy') and do {
 			1);
 		last SWITCHCOMMAND;
 	}
+	if (not $$groups{$src}) {
+		$sk_session->set_status(sprintf(
+				$sk_session->d()->get('Gruppe %s existiert nicht'), $src),
+			1);
+		last SWITCHCOMMAND;
+	}
 
 	my $dest = $q->param('dest');
 	$dest =~ s/\s*(\S+)\s*/$1/;
@@ -85,8 +91,14 @@ $q->param('copy') and do {
 		$sk_session->get_password(),
 		$src, $dest);
 
-	$sk_session->set_status(
-		$sk_session->d()->get('Konfigurationsdatei kopiert'), 0);
+	$groups = Schulkonsole::Linbo::groups();
+	if ($$groups{$dest}) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Konfigurationsdatei kopiert'), 0);
+	} else {
+		$sk_session->set_status(
+			$sk_session->d()->get('Konfigurationsdatei konnte nicht kopiert werden'), 1);
+	}
 
 	last SWITCHCOMMAND;
 };

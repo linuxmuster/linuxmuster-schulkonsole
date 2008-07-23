@@ -235,8 +235,13 @@ sub groups {
 	my @files = glob($Schulkonsole::Config::_linbo_start_conf_prefix . '*');
 
 	my %re;
+	# this will take all files, that start with _linbo_start_conf_prefix
+	# plus a valid group name and optionally an arbitrary suffix (except it
+	# ends with '~')
 	foreach my $file (@files) {
-		my ($group) = $file =~ /^\Q${Schulkonsole::Config::_linbo_start_conf_prefix}\E(.*)/;
+		next if $file =~ /~$/;	# skip editor backup files
+		my ($group) = $file =~ /^\Q${Schulkonsole::Config::_linbo_start_conf_prefix}\E([a-z\d_]+.*)/;
+		next unless $group;
 
 		$re{$group} = 1;
 	}
