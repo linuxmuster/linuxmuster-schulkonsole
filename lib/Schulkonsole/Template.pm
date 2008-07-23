@@ -252,7 +252,7 @@ sub print_page {
 	         or $_session_id ne $old_session_id) {
 		my $cookie = $_query->cookie(
 			-name => $sk_session->{session}->name,
-			-value => $sk_session->{session}->id,
+			-value => $_session_id,
 			-path => $Schulkonsole::Config::_http_root,
 			-secure => 1,
 		);
