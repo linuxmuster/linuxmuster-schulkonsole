@@ -37,7 +37,7 @@
 <h2><gettext>Registrypatch-Dateien der Rechnergruppen editieren</gettext>: <!--#echo var="editfilename" --></h2>
 
 <form method="post">
-<textarea name="regpatch" rows="20" cols="70"></textarea>
+<p><textarea wrap="off" name="regpatch" rows="20" cols="70"></textarea></p>
 <p><input type="hidden" name="filename" value="$editfilename"><input type="submit" name="edit" value="&Auml;nderungen speichern">
 <input type="submit" name="abort" value="Schlie&szlig;en"></p>
 
