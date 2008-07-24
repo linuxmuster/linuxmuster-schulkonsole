@@ -699,25 +699,27 @@ sub check_and_prepare_start_conf {
 			my $is_windows = ($id != 0x83);
 
 
+			my $dev_n = $$conf{partitions}{$partition}{n};
 			foreach my $os (@{ $$conf{partitions}{$partition}{oss} }) {
 				my $name = $$os{name};
+				my $n = "$dev_n.$$os{n}";
 
 				# check for empty name
 				if (not $name) {
-					$errors{oss}{$$os{n}}{partition}
+					$errors{oss}{$n}{partition}
 						= $$conf{partitions}{$partition};
-					$errors{oss}{$$os{n}}{os} = $os;
-					$errors{oss}{$$os{n}}{errors}{name} = 1;
+					$errors{oss}{$n}{os} = $os;
+					$errors{oss}{$n}{errors}{name} = 1;
 					next;
 				}
 				my $version = $$os{version};
 
 				# check if host + version is unique
 				if (exists $re{oss}{$name}{$version}) {
-					$errors{oss}{$$os{n}}{partition}
+					$errors{oss}{$n}{partition}
 						= $$conf{partitions}{$partition};
-					$errors{oss}{$$os{n}}{os} = $os;
-					$errors{oss}{$$os{n}}{errors}{version} = 10;
+					$errors{oss}{$n}{os} = $os;
+					$errors{oss}{$n}{errors}{version} = 10;
 					next;
 				}
 
@@ -738,11 +740,11 @@ sub check_and_prepare_start_conf {
 					my $value
 						= string_to_type($_allowed_keys{2}{$key}, $$os{$key});
 					if (not defined $value) {
-						$errors{oss}{$$os{n}}{errors}{$key} = 2;
+						$errors{oss}{$n}{errors}{$key} = 2;
 						next;
 					} elsif (    not $value
 					         and $not_empty{$key}) {
-						$errors{oss}{$$os{n}}{errors}{$key} = 1;
+						$errors{oss}{$n}{errors}{$key} = 1;
 					}
 
 					$re{oss}{$name}{$version}{$key} = $value;
@@ -751,10 +753,10 @@ sub check_and_prepare_start_conf {
 
 				# if there were errors, add some information
 				if (    exists $errors{oss}
-				    and exists $errors{oss}{$$os{n}}) {
-					$errors{oss}{$$os{n}}{partition}
+				    and exists $errors{oss}{$n}) {
+					$errors{oss}{$n}{partition}
 						= $$conf{partitions}{$partition};
-					$errors{oss}{$$os{n}}{os} = $os;
+					$errors{oss}{$n}{os} = $os;
 				}
 
 				$re{oss}{$name}{$version}{root} = $dev;
@@ -882,16 +884,15 @@ sub handle_start_conf_errors {
 	my @errors;
 	foreach my $section (keys %$errors) {
 		if ($section eq 'oss') {
-			foreach my $os_n (keys %{ $$errors{oss} }) {
-				my $n = $$errors{oss}{$os_n}{partition}{n} . '.' . $os_n;
-				my $os = $$errors{oss}{$os_n}{os};
+			foreach my $n (keys %{ $$errors{oss} }) {
+				my $os = $$errors{oss}{$n}{os};
 
 				my $os_name = ($$os{version} ? $$os{name} . $$os{version} : $$os{name});
-				my $dev = $$errors{oss}{$os_n}{partition}{dev};
+				my $dev = $$errors{oss}{$n}{partition}{dev};
 
-				foreach my $key (keys %{ $$errors{oss}{$os_n}{errors} }) {
+				foreach my $key (keys %{ $$errors{oss}{$n}{errors} }) {
 					$session->mark_input_error("${n}_$key");
-					my $code = $$errors{oss}{$os_n}{errors}{$key};
+					my $code = $$errors{oss}{$n}{errors}{$key};
 					my $key_descr = ($key_descr{$key} || "\u$key");
 					if ($code == 1) {
 						push @errors, sprintf($session->d()->get('Leerer Wert f&uuml;r &#8222;%s&#8220; bei %s auf %s'),
