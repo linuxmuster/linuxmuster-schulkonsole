@@ -51,7 +51,8 @@ my $q = $sk_session->query();
 eval {
 my $groups = Schulkonsole::Linbo::groups();
 foreach my $group (keys %$groups) {
-	delete $$groups{$group} if $group =~ /\d{4}-\d{2}-\d{2}-\d{4}(?:-\d+)?$/;
+	# if it is not a valid group name it must be a backup file
+	delete $$groups{$group} unless $group =~ /^([a-z\d_]+)$/;
 }
 
 my $group = $q->param('group');
