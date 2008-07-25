@@ -155,7 +155,8 @@ sub stop_wrapper {
 		} else {
 			die new Schulkonsole::Error(
 				Schulkonsole::Error::WRAPPER_FIREWALL_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_firewall);
+				$Schulkonsole::Config::_wrapper_firewall,
+				($input_buffer ? "Output: $input_buffer" : 'No Output'));
 		}
 	}
 

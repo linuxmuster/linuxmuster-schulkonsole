@@ -366,14 +366,18 @@ $app_id == Schulkonsole::Config::ROOMSRESETAPP and do {
 			push @hosts_reset, $host;
 		}
 
+		my $is_error = 0;
+		$< = $>;
 		foreach my $room (@rooms_reset) {
-			system "$app --room=\Q$room\E";
+			system("$app --room=\Q$room\E") == 0 or $is_error++;
 		}
 		foreach my $host (@hosts_reset) {
-			system "$app --host=\Q$host\E";
+			system("$app --host=\Q$host\E") == 0 or $is_error++;
 		}
 
-		exit 0;
+		exit 0 unless $is_error;
+
+		last SWITCH;
 	}
 };
 

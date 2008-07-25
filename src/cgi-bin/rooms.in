@@ -186,7 +186,8 @@ $q->param('add_room') and do {
 
 $q->param('reset') and do {
 
-	if ($q->param('reset_all')) {
+	my $is_reset_all = 0;
+	if ($is_reset_all = $q->param('reset_all')) {
 		if (%$defaults == 1) {
 			$sk_session->set_status($sk_session->d()->get(
 				'Es gibt keine Eintr&auml;ge f&uuml;r R&auml;ume oder Rechner'),
@@ -197,34 +198,36 @@ $q->param('reset') and do {
 		Schulkonsole::Firewall::rooms_reset_all(
 			$sk_session->userdata('id'),
 			$sk_session->get_password());
-	} else {
-		my @rooms_reset;
-		my @hosts_reset;
-		foreach my $room (keys %room_hosts) {
-			if ($q->param("${room}_room_reset")) {
-				push @rooms_reset, $room;
-			} else {
-				foreach my $host (sort @{ $room_hosts{$room} }) {
-					if ($q->param("${host}_reset")) {
-						push @hosts_reset, $host;
-					}
+	}
+
+	my @rooms_reset;
+	my @hosts_reset;
+	foreach my $room (keys %room_hosts) {
+		if ($q->param("${room}_room_reset")) {
+			push @rooms_reset, $room;
+		} else {
+			foreach my $host (sort @{ $room_hosts{$room} }) {
+				if ($q->param("${host}_reset")) {
+					push @hosts_reset, $host;
 				}
 			}
 		}
-
-		if (    not @rooms_reset
-		    and not @hosts_reset) {
-			$sk_session->set_status($sk_session->d()->get(
-				'Nichts ausgew&auml;hlt'), 1);
-			last COMMANDS;
-		}
-
-
-		Schulkonsole::Firewall::rooms_reset(
-			$sk_session->userdata('id'),
-			$sk_session->get_password(),
-			\@rooms_reset, \@hosts_reset);
 	}
+
+	if (not (   $is_reset_all
+	         or @rooms_reset
+	         or @hosts_reset)) {
+		$sk_session->set_status($sk_session->d()->get(
+			'Nichts ausgew&auml;hlt'), 1);
+		last COMMANDS;
+	}
+
+
+	Schulkonsole::Firewall::rooms_reset(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		\@rooms_reset, \@hosts_reset);
+
 
 	$sk_session->set_status($sk_session->d()->get(
 		'Auswahl zur&uuml;ckgesetzt'), 0);
