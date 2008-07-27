@@ -85,7 +85,7 @@
 <!--#endif -->
 <!--#if expr="$templatesosnonwin" -->
 <tr>
-<td><label for="os3"><gettext>Betriebssystem 3 (Partition 3)</gettext></label></td>
+<td><label for="os3"><gettext>Betriebssystem 3 (Partition 5)</gettext></label></td>
 <td><select id="os3" name="os3">
 <option value=""></option><!--#if expr="$loop_templatesosnonwin" -->
 <option value="$templatesosnonwin"><!--#echo var="templatesosnonwin" --></option>
@@ -94,7 +94,7 @@
 <td><input name="size3"></td>
 </tr>
 <tr>
-<td><label for="os4"><gettext>Betriebssystem 4 (Partition 4)</gettext></label></td>
+<td><label for="os4"><gettext>Betriebssystem 4 (Partition 6)</gettext></label></td>
 <td><select id="os4" name="os4">
 <option value=""></option><!--#if expr="$loop_templatesosnonwin" -->
 <option value="$templatesosnonwin"><!--#echo var="templatesosnonwin" --></option>
