@@ -120,7 +120,7 @@ $q->param('create') and do {
 
 
 	my @errors;
-	if ($group !~ /^[a-z_]+$/) {
+	if ($group !~ /^[a-z\d_]+$/) {
 		push @errors, $sk_session->d()->get('Ung&uuml;ltiger Gruppenname');
 		$sk_session->mark_input_error('group');
 	} elsif ($$groups{$group}) {
