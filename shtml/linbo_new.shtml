@@ -48,11 +48,10 @@
 <td><input id="disksize" name="disksize"></td>
 </tr>
 <tr>
-<td><label for="device"><gettext>Festplattencontroller (SATA (sda) oder PATA/IDE (hda))</gettext>:</label></td>
+<td><label for="device"><gettext>Festplattencontroller (ab LINBO 1.1.0 immer SATA (sda))</gettext>:</label></td>
 <td>
 <select id="device" name="device">
 <option value="sda"><gettext>SATA</gettext></option>
-<option value="hda"><gettext>PATA</gettext></option>
 </select>
 </td>
 </tr>
@@ -121,7 +120,12 @@
 
 <h2><gettext>Info</gettext></h2>
 
-<p><gettext>.</gettext></p>
+<p><gettext>Kopieren Sie hier die Konfiguration einer bestehenden Rechnergruppe
+oder erstellen Sie eine neue Gruppenkonfiguration.</gettext></p>
+<p><gettext>Beachten Sie, dass ab LINBO 1.1.0 IDE-Platten wie SATA-Platten angesprochen werden.
+Deshalb ist im Dropdown-Men&uuml; keine andere Auswahl m&ouml;glich.</gettext></p>
+<p><gettext>Ist die neue Gruppenkonfiguration erstellt, k&ouml;nnen Sie im Untermen&uuml; &#8222;Gruppenkonfiguration editieren&#8220;
+gegebenenfalls weitere Anpassungen an der neuen Konfiguration vornehmen.</gettext></p>
 
 <!--#include file="footer_info.shtml.inc" -->
 </div>
