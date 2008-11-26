@@ -1,8 +1,25 @@
+linuxmuster-schulkonsole (0.9.17.3-1) unstable; urgency=low
+
+  * various modifications concerning to LINBO 1.1.0:
+    - removed linbo_pxedit from permissions.conf
+    - changed version to 0.9.17.3 in configure.ac
+    - hosts.shtml, hosts.in: removed pxegrubv2 and pxegrubv3 options
+    - linbo_new.shtml:
+      removed PATA option from dropdown, added notes
+    - linbo.shtml, linbo_edit.shtml, linbo_regpatchedit.shtml, linbo_images.shtml:
+      added notes
+    - Linbo.pm (start.conf manipulation for windows systems):
+      changed kernel from pxegrub to grub.exe,
+      removed append line handling, so it will be untouched by saving changes
+    - changed pxegrub to grub.exe in linbo os templates
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Wed, 26 Nov 2008 21:03:46 +0100
+
 linuxmuster-schulkonsole (0.9.17.2-1) unstable; urgency=low
 
   * New upstream release
 
- -- Thomas Schmitt <schmitt@lmz-bw.de>  Fri,  7 Nov 2008 12:38:30 +0100
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Wed, 26 Nov 2008 13:43:09 +0100
 
 linuxmuster-schulkonsole (0.9.17.1-1) unstable; urgency=low
 
