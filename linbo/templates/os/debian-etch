@@ -8,7 +8,7 @@ BaseImage = $RECHNERGRUPPE-etch-part$PART.cloop   # Dateiname des Basisimages
                                                   # (Erweiterung .cloop)
 Boot = /dev/$DEVICE$PART   # Partition, die Kernel & Initrd enthaelt
 Root = /dev/$DEVICE$PART   # Partition, in die das BS installiert ist
-Kernel = vmlinuz           # bei Windows immer pxegrub
+Kernel = vmlinuz           # bei Windows immer grub.exe
 Initrd = initrd.img        # Relativer Pfad zur Initrd
 Append = ro                # Kernel-Append-Parameter
 StartEnabled = yes         # "Start"-Button anzeigen

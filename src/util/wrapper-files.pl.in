@@ -159,6 +159,9 @@ $app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
 		close STDIN;
 		close STDOUT;
 		close STDERR;
+		open STDOUT, ">>/dev/null" or die;
+		open STDERR, ">>&STDOUT" or die;
+
 
 		umask(027);
 		my $lockfile = Schulkonsole::Config::lockfile('import_workstations');
@@ -209,29 +212,11 @@ numeric constant: C<Schulkonsole::Config::IMPORTPRINTERSAPP>
 =cut
 
 $app_id == Schulkonsole::Config::IMPORTPRINTERSAPP and do {
-	my $pid = fork;
-	exit -44 unless defined $pid;
-
-	if (not $pid) {
-		close STDIN;
-		close STDOUT;
-		close STDERR;
-
-		my $lockfile = Schulkonsole::Config::lockfile('import_printers');
-		open LOCK, ">>$lockfile" or exit -106;
-		flock LOCK, 2;
-		seek LOCK, 0, 0;
-		truncate LOCK, 0;
-		print LOCK "$$\n";
-
-		$< = $>;
-		$) = 0;
-		$( = $);
-		umask(022);
-		exec "$app" or last SWITCH;
-	} else {
-		exit 0;
-	}
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+	exec "$app" or last SWITCH;
 };
 
 }

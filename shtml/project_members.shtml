@@ -52,7 +52,6 @@
 
 <h3><gettext>Mitglieder hinzuf&uuml;gen</gettext></h3>
 
-<!--#if expr="$isopen" -->
 <form method="post" action="project_addmembers">
 <p>
 <label for="query"><gettext>Suche:</gettext></label>
@@ -67,9 +66,6 @@
    <input type="radio" name="scope" id="radioproject" value="project">
    <label for="radioproject"><gettext>Projekt</gettext></label></p>
 </form>
-<!--#else -->
-<p><gettext>Das Projekt ist geschlossen.</gettext></p>
-<!--#endif -->
 <!--#endif -->
 
 
@@ -82,9 +78,7 @@
 <table id="projectmemberclasses" class="liste">
 <tr>
 <th><gettext>Klassenname</gettext></th>
-<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
-<!--#endif -->
 </tr>
 <!--#if expr="$loop_membersclasses" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
@@ -94,16 +88,12 @@
 <!--#else -->
 <td><!--#echo var="membersclasses{name}" --></td>
 <!--#endif -->
-<!--#if expr="$isopen" -->
 <td><input type="submit" name="${membersclasses{gid}}_removeclass" value="Mitgliedschaft beenden"></td>
-<!--#endif -->
 </tr>
 <!--#endif -->
 <tr>
 <th><gettext>Klassenname</gettext></th>
-<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
-<!--#endif -->
 </tr>
 </table>
 
@@ -119,9 +109,7 @@
 <tr>
 <th><gettext>Projektname</gettext></th>
 <th><gettext>Offenes Projekt</gettext></th>
-<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
-<!--#endif -->
 </tr>
 <!--#if expr="$loop_membersprojects" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
@@ -131,10 +119,8 @@
 <!--#else -->
 <td><!--#echo var="membersprojects{name}" --></td>
 <!--#endif -->
-<!--#if expr="$isopen" -->
 <td><input type="checkbox" disabled checked></td>
 <td><input type="submit" name="${membersprojects{gid}}_removeproject" value="Mitgliedschaft beenden"></td>
-<!--#else -->
 <td></td>
 <!--#endif -->
 </tr>
@@ -142,9 +128,7 @@
 <tr>
 <th><gettext>Projektname</gettext></th>
 <th><gettext>Offenes Projekt</gettext></th>
-<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
-<!--#endif -->
 </tr>
 </table>
 
@@ -161,9 +145,7 @@
 <th><gettext>Login</gettext></th>
 <th><gettext>Name</gettext></th>
 <th><gettext>Projektleitung</gettext></th>
-<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
-<!--#endif -->
 </tr>
 <!--#if expr="$loop_membersteachers" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
@@ -175,18 +157,14 @@
 <!--#else -->
 <td><input type="checkbox" disabled></td>
 <!--#endif -->
-<!--#if expr="$isopen" -->
 <td><input type="submit" name="${membersteachers{login}}_removeuser" value="Mitgliedschaft beenden"></td>
-<!--#endif -->
 </tr>
 <!--#endif -->
 <tr>
 <th><gettext>Login</gettext></th>
 <th><gettext>Name</gettext></th>
 <th><gettext>Projektleitung</gettext></th>
-<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
-<!--#endif -->
 </tr>
 </table>
 
@@ -205,9 +183,7 @@
 <th><gettext>Festplattenquota</gettext></th>
 <th><gettext>E-Mailquota</gettext></th>
 <th><gettext>Klasse</gettext></th>
-<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
-<!--#endif -->
 </tr>
 <!--#if expr="$loop_membersstudents" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
@@ -272,9 +248,7 @@
 </ul>
 <!--#else -->-<!--#endif --></td>
 <td><!--#echo var="membersstudents{class}" --></td>
-<!--#if expr="$isopen" -->
 <td><input type="submit" name="${membersstudents{login}}_removeuser" value="Mitgliedschaft beenden"></td>
-<!--#endif -->
 </tr>
 <!--#endif -->
 <tr>
@@ -283,9 +257,7 @@
 <th><gettext>Festplattenquota</gettext></th>
 <th><gettext>E-Mailquota</gettext></th>
 <th><gettext>Klasse</gettext></th>
-<!--#if expr="$isopen" -->
 <th><gettext>Mitgliedschaft beenden</gettext></th>
-<!--#endif -->
 </tr>
 </table>
 
