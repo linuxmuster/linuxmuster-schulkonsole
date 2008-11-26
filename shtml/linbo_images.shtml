@@ -98,9 +98,9 @@
 <form method="post">
 <table id="linbobaseimages" class="liste">
 
-<col width="50%">
+<colgroup width="50%"></colgroup>
 <colgroup span="3" width="3%"></colgroup>
-<col width="32%">
+<colgroup width="32%"></colgroup>
 <colgroup span="3" width="3%"></colgroup>
 
 <tr>
@@ -118,7 +118,7 @@
 	<td><input title="Beschreibung anzeigen/editieren" type="image" src="img/edit.png" alt="Beschreibung" name="${images_base}_editdesc" value="E"></td>
 	<td><input title="Information anzeigen" type="image" src="img/showinfo.png" alt="Info" name="${images_base}_info" value="I"></td>
 	<td><input title="Liste anzeigen" type="image" src="img/list.png" alt="Liste" name="${images_base}_list" value="L"></td>
-	<td><input name="${images_base}_newimage"></td>
+	<td><input id="${images_base}_newimage" name="${images_base}_newimage"></td>
 	<td><input title="Image umbenennen" type="image" src="img/move.png" alt="Umbenennen" name="${images_base}_move" value="U"></td>
 	<td><input title="Image kopieren" type="image" src="img/copy.png" alt="Kopieren" name="${images_base}_copy" value="K"></td>
 	<td><input title="Image l&ouml;schen" type="image" src="img/trash.png" alt="L&ouml;schen" name="${images_base}_delete" value="L"></td>
@@ -134,9 +134,9 @@
 <form method="post">
 <table id="linboimages" class="liste">
 
-<col width="53%">
+<colgroup width="53%"></colgroup>
 <colgroup span="2" width="3%"></colgroup>
-<col width="32%">
+<colgroup width="32%"></colgroup>
 <colgroup span="3" width="3%"></colgroup>
 
 <tr>
@@ -149,10 +149,10 @@
 <!--#if expr="$loop_images_diff" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
 <!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
-	<td><!--#echo var="images_diff" --></td>
+	<td><label for="${images_diff}_newimage"><!--#echo var="images_diff" --></label></td>
 	<td><input title="Beschreibung anzeigen/editieren" type="image" src="img/edit.png" alt="Beschreibung" name="${images_diff}_editdesc" value="E"></td>
 	<td><input title="Information anzeigen" type="image" src="img/info.png" alt="Info" name="${images_diff}_info" value="I"></td>
-	<td><input name="${images_diff}_newimage"></td>
+	<td><input id="${images_diff}_newimage" name="${images_diff}_newimage"></td>
 	<td><input title="Image umbenennen" type="image" src="img/move.png" alt="Umbenennen" name="${images_diff}_move" value="U"></td>
 	<td><input title="Image kopieren" type="image" src="img/copy.png" alt="Kopieren" name="${images_diff}_copy" value="K"></td>
 	<td><input title="Image l&ouml;schen" type="image" src="img/trash.png" alt="L&ouml;schen" name="${images_diff}_delete" value="L"></td>

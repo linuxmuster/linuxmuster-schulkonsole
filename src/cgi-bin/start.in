@@ -279,15 +279,21 @@ defined $q->param('printjobs') and do {
 			$status .= ', ';
 		}
 		$status .= "$job: ";
-		if (not Net::CUPS::Printer::cupsCancelJob($job_dest, $job_id)) {
-			my $error = Net::CUPS::Printer::cupsLastError();
-			SWITCH: {
-			$error == Net::CUPS::IPP_NOT_POSSIBLE and do {
-				$status .= $sk_session->d()->get('nicht m&ouml;glich');
-				last SWITCH;
-			};
-			$status .= Net::CUPS::Printer::cupsErrorString($error);
-			}
+
+		my $destination = $cups->getDestination($job_dest);
+		if (not $destination->cancelJob($job_id)) {
+            # Net::CUPS >= 0.55 only supports getLastErrorString() via
+			# CUPS::Destination::getError()
+#			my $error = Net::CUPS::Printer::cupsLastError();
+#			SWITCH: {
+#			$error == Net::CUPS::IPP_NOT_POSSIBLE and do {
+#				$status .= $sk_session->d()->get('nicht m&ouml;glich');
+#				last SWITCH;
+#			};
+#			$status .= Net::CUPS::Printer::cupsErrorString($error);
+#			}
+			$status .= $destination->getError();
+
 			$is_error = 1;
 		} else {
 			$status .= $sk_session->d()->get('abgebrochen');
@@ -399,7 +405,8 @@ $q->param('ovpndownload') and do {
 my @array_printjobs;
 foreach my $destination ($cups->getDestinations) {
 	my @jobs = $destination->getJobs(1, 0);
-	foreach my $job (@jobs) {
+	foreach my $job_id (@jobs) {
+		my $job = $destination->getJob($job_id);
 		next unless $job;
 
 		my $printjob = {

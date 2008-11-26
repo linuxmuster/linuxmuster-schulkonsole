@@ -733,7 +733,7 @@ $app_id == Schulkonsole::Config::PROJECTCREATEDROPAPP and do {
 	my $opts = "--caller \Q$$userdata{uid}\E --project \Q$project_gid\E ";
 	if ($do_create) {
 		my $is_open = <>;
-		($is_open) = $is_open =~ /^[01]$/;
+		($is_open) = $is_open =~ /^([01])$/;
 		exit -113 unless defined $is_open;
 
 		$opts .= '--create '
