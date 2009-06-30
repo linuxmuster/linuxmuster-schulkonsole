@@ -85,7 +85,11 @@ Name of the selected group
 
 	$sk_session->set_var('group', $group);
 
-
+	# make selected group first entry on dropdown
+	delete $$groups{$group};
+	my @groups = keys %$groups;
+	unshift @groups, $group;
+	$sk_session->set_var('groups', [ @groups ]);
 
 
 	my @devs;
