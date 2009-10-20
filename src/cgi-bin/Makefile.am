@@ -1,5 +1,5 @@
 pkglibexecdir = $(libexecdir)/@PACKAGE@/cgi-bin
-pkglibexec_SCRIPTS=start logout \
+pkglibexec_SCRIPTS=example start logout \
 	room room_shares room_handout room_collect \
 	room_test room_test_handout room_test_password room_test_collect \
 	room_test_end \
@@ -18,7 +18,7 @@ pkglibexec_SCRIPTS=start logout \
 	linbo linbo_edit linbo_new linbo_regpatchedit linbo_pxeedit linbo_images
 
 CLEANFILES = $(pkglibexec_SCRIPTS)
-EXTRA_DIST = start.in logout.in \
+EXTRA_DIST = example.in start.in logout.in \
 	room.in room_shares.in room_handout.in room_collect.in room_test.in \
 	room_test_handout.in room_test_password.in room_test_collect.in \
 	room_test_end.in \
