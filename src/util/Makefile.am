@@ -16,7 +16,7 @@ pkglibexec_SCRIPTS=wrapper-firewall.pl wrapper-printer.pl \
 CLEANFILES=$(pkglibexec_SCRIPTS)
 EXTRA_DIST=wrapper-firewall.pl.in wrapper-printer.pl.in \
 	wrapper-sophomorix.pl.in wrapper-files.pl.in wrapper-ovpn.pl.in \
-	wrapper-linbo.pl
+	wrapper-linbo.pl.in
 
 
 do_subst = sed \
