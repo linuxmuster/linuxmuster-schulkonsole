@@ -1,6 +1,6 @@
 <div id="menu">
 <!--#if expr="$link_start" -->
-   <a href="start"><gettext>Startseite</gettext></a>
+   <a href="start"><gettext>Mein Konto</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_settings" -->
 <!--#else -->
