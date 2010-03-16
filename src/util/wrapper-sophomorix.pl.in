@@ -647,7 +647,7 @@ numeric constant: C<Schulkonsole::Config::PROJECTMEMBERSAPP>
 
 $app_id == Schulkonsole::Config::PROJECTMEMBERSAPP and do {
 	my $project_gid = <>;
-	($project_gid) = $project_gid =~ /^((?:p_)?[a-z0-9]{3,14})$/;
+	($project_gid) = $project_gid =~ /^((?:p_)?[a-z0-9_-]{3,14})$/;
 	exit -101 unless defined $project_gid;
 
 	my $do_add = <>;
@@ -722,7 +722,7 @@ numeric constant: C<Schulkonsole::Config::PROJECTCREATEDROPAPP>
 
 $app_id == Schulkonsole::Config::PROJECTCREATEDROPAPP and do {
 	my $project_gid = <>;
-	($project_gid) = $project_gid =~ /^((?:p_)?[a-z0-9]{3,14})$/;
+	($project_gid) = $project_gid =~ /^((?:p_)?[a-z0-9_-]{3,14})$/;
 	exit -101 unless defined $project_gid;
 
 	my $do_create = <>;
@@ -1516,7 +1516,7 @@ $app_id == Schulkonsole::Config::SETQUOTAAPP and do {
 			($gid) = $gid =~ /^(.+)$/;
 			exit -91 unless $gid;
 		} else {
-			($gid) = $gid =~ /^((?:p_)?[a-z0-9]{3,14})$/;
+			($gid) = $gid =~ /^((?:p_)?[a-z0-9_-]{3,14})$/;
 			exit -101 unless defined $gid;
 		}
 
