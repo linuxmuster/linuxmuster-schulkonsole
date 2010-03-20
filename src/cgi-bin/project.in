@@ -89,7 +89,7 @@ if ($q->param('createproject')) {
 	if ($projectname !~ /^(p_)?[a-z0-9_-]{3,14}$/) {
 		$sk_session->mark_input_error('projectname');
 		$sk_session->set_status($sk_session->d()->get(
-			'Der Projektnamen darf nur aus Kleinbuchstaben (ohne Umlaute) und Zahlen bestehen und muss zwischen 3 und 14 Zeichen lang sein.'),
+			'Der Projektnamen darf nur aus Kleinbuchstaben (ohne Umlaute), Zahlen, dem Unterstrich und Bindestrich bestehen und muss zwischen 3 und 14 Zeichen lang sein.'),
 			1);
 		last COMMANDS;
 	}
