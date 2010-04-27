@@ -153,17 +153,16 @@
 		<!--#echo var="overview_workstations{login}" -->
 		<!--#else -->-<!--#endif -->
 	</td>
+
 	<td><!--#if expr="$overview_workstations{first}" -->
 <!--#if expr="$overview_workstations{internet}" -->
-<!--#if expr="$overview_workstations{editinghost}" -->
-	<input type="checkbox" disabled checked>
-<!--#else --><!--#set var="quickinternetoff" value="1" -->
+      <!--#set var="quickinternetoff" value="1" -->
 	<input type="checkbox" name="${overview_workstations{name}};internet" checked>
-<!--#endif -->
 <!--#else -->
 	<input type="checkbox" name="${overview_workstations{name}};internet">
 <!--#endif -->
 	<!--#endif --></td>
+
 	<td><!--#if expr="$overview_workstations{first}" -->
 <!--#if expr="$intranetactive" -->
 <!--#if expr="$overview_workstations{intranet}" -->
