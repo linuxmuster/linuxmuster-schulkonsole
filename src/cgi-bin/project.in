@@ -22,7 +22,7 @@ provides the following variables:
 =cut
 
 use strict;
-use lib '/usr/share/schulkonsole';
+use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Session;
 use Schulkonsole::Info;
 use Schulkonsole::Sophomorix;

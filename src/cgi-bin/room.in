@@ -135,7 +135,7 @@ if ($room_session) {
 			if ($q->param("$host;internet")) {
 				push @unblock_hosts_internet, $mac
 					if $$blocked_hosts_internet{$mac};
-			} elsif (not $is_editing_host) {
+			} else {
 				push @block_hosts_internet, $mac
 					unless $$blocked_hosts_internet{$mac};
 			}
