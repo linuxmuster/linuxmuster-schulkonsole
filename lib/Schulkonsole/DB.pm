@@ -1,4 +1,4 @@
-se strict;
+use strict;
 use DBI;
 use Crypt::PasswdMD5;
 use Crypt::SmbHash;
