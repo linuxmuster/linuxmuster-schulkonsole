@@ -169,9 +169,10 @@ sub verify_password_by_userdata {
 			last SWITCH;
 		};
 		$userpassword =~ s/^\{SSHA\}//i and do {
-			my ($salt) = substring(decode_base64($userpassword), 20);
+			my ($salt) = substring(
+				MIME::Base64::decode_base64($userpassword), 20);
 
-			if (encode_base64(
+			if (MIME::Base64::encode_base64(
 				Digest::SHA1::sha1($password . $salt, "") . $salt)
 				eq $userpassword) {
 				return $userdata;
