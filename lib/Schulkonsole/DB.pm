@@ -1,4 +1,4 @@
-use strict;
+se strict;
 use DBI;
 use Crypt::PasswdMD5;
 use Crypt::SmbHash;
@@ -172,8 +172,8 @@ sub verify_password_by_userdata {
 			my ($salt) = substring(decode_base64($userpassword), 20);
 
 			if (encode_base64(
-				Digest::SHA1::sha1($password . $salt, "") . $salt))
-				eq $userpassword {
+				Digest::SHA1::sha1($password . $salt, "") . $salt)
+				eq $userpassword) {
 				return $userdata;
 			}
 			last SWITCH;
