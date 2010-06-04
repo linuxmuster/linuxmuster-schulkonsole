@@ -507,7 +507,7 @@ sub read_start_conf {
 		if (not exists $partitions{$partition}) {
 			$partitions{$partition} = {
 					dev => $partition,
-					id => ($$os{kernel} eq 'grub.exe' ? 0x07 : 0x83),
+					id => ($$os{kernel} eq ('grub.exe' || 'reboot') ? 0x07 : 0x83),
 				};
 		}
 
@@ -564,7 +564,6 @@ sub check_and_prepare_start_conf {
 
 	my %windows_ignore = (
 		'boot' => 1,
-		'kernel' => 1,
 		'initrd' => 1,
 		'append' => 1,
 	);
@@ -763,7 +762,6 @@ sub check_and_prepare_start_conf {
 				if ($is_windows) {
 					$re{oss}{$name}{$version}{boot}
 						= $re{oss}{$name}{$version}{root};
-					$re{oss}{$name}{$version}{kernel} = 'grub.exe';
 					$re{oss}{$name}{$version}{initrd} = '';
 				}
 			}

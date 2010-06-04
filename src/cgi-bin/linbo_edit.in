@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#! /usr/bin/perl 
 
 =head1 NAME
 
@@ -384,7 +384,7 @@ Name of the selected group
 
 	my $dev_cnt = $$conf{partitions_cnt} + 0;
 	my $cache = $$conf{linbo}{cache};
-	my $is_cachehd = 0;
+	my $is_cached = 0;
 	foreach my $partition (sort {
 			my ($name_a, $number_a) = $$partitions{$a}{dev} =~ /^(.*?)(\d*)$/;
 			my ($name_b, $number_b) = $$partitions{$b}{dev} =~ /^(.*?)(\d*)$/;
@@ -419,7 +419,7 @@ Name of the selected group
 			$type = 2;
 		} elsif ($$partitions{$partition}{dev} eq $cache) {	# cache
 			$type = 1;
-			$is_cachehd = 1;
+			$is_cached = 1;
 		} else {
 			$type = 0;	# data
 		}
@@ -491,13 +491,13 @@ Value for C<Cache> in section C<[LINBO]>
 	$sk_session->set_var('cache', $$conf{linbo}{cache});
 
 
-=item C<iscachehd>
+=item C<iscached>
 
 True if a partition is selected as cache
 
 =cut
 
-	$sk_session->set_var('iscachehd', $is_cachehd);
+	$sk_session->set_var('iscached', $is_cached);
 
 
 =item C<devs>

@@ -41,7 +41,7 @@
 <col width="40%">
 </colgroup>
 <tr class="odd">
-<!--#if expr="$iscachehd" -->
+<!--#if expr="$iscached" -->
 <td><gettext>Cache-Partition auf dem Arbeitsplatzrechner</gettext>:</td>
 <td><!--#echo var="cache" --><input type="hidden" name="linbo_cache"></td>
 <!--#else -->
@@ -90,7 +90,7 @@
 <option value="windows"><gettext>MS Windows</gettext></option>
 <option value="gnulinux"><gettext>GNU/Linux</gettext></option>
 <option value="data" selected><gettext>Daten</gettext></option>
-<option value="swap"><gettext>Swap</gettext></option><!--#if expr="$iscachehd" --><!--#else -->
+<option value="swap"><gettext>Swap</gettext></option><!--#if expr="$iscached" --><!--#else -->
 <option value="cache"><gettext>Cache</gettext></option><!--#endif -->
 <option value="ext"><gettext>erweitert</gettext></option>
 </select>
@@ -228,6 +228,16 @@
 <!--#else --><input type="checkbox" id="${devs{os}{n}}_hidden" name="${devs{os}{n}}_hidden"><!--#endif --></td>
 </tr>
 <tr class="odd">
+<!--#if expr="$devs{iswindows}" -->
+<td><label for="${devs{os}{n}}_kernel"><gettext>Systemstart durch</gettext>:</label></td>
+<td><select id="${devs{os}{n}}_kernel" name="${devs{os}{n}}_kernel">
+<option value="grub.exe"><gettext>grub.exe</gettext></option>
+<option value="reboot"><gettext>reboot</gettext></option>
+</select>
+</td>
+</tr>
+<tr class="even">
+<!--#endif -->
 <td><label for="${devs{os}{n}}_autostart"><gettext>Betriebssystem automatisch starten</gettext>:</label></td>
 <td><!--#if expr="$devs{os}{autostart}" --><input type="radio" id="${devs{os}{n}}_autostart" name="autostart" value="${devs{os}{n}}" checked><!--#set var="isautostartselected" value="1" -->
 <!--#else --><input type="radio" id="${devs{os}{n}}_autostart" name="autostart" value="${devs{os}{n}}"><!--#endif --><!--#set var="isautostartpossible" value="1" --></td>
@@ -239,7 +249,7 @@
 <!--#if expr="$devs{isgnulinux}" --><!--#else --><option value="gnulinux"><gettext>GNU/Linux</gettext></option><!--#endif -->
 <!--#if expr="$devs{isdata}" --><!--#else --><option value="data"><gettext>Daten</gettext></option><!--#endif -->
 <!--#if expr="$devs{isswap}" --><!--#else --><option value="swap"><gettext>Swap</gettext></option><!--#endif -->
-<!--#if expr="$devs{iscache}" --><!--#else --><!--#if expr="$iscachehd" --><!--#else --><option value="cache"><gettext>Cache</gettext></option><!--#endif --><!--#endif -->
+<!--#if expr="$devs{iscache}" --><!--#else --><!--#if expr="$iscached" --><!--#else --><option value="cache"><gettext>Cache</gettext></option><!--#endif --><!--#endif -->
 <!--#if expr="$devs{isext}" --><!--#else --><option value="ext"><gettext>erweitert</gettext></option><!--#endif -->
 </select>&nbsp;<input type="submit" name="${devs{n}}_modify" value="System &auml;ndern"></p>
 <!--#endif -->
@@ -321,7 +331,7 @@
 <!--#if expr="$devs{isgnulinux}" --><!--#else --><option value="gnulinux"><gettext>GNU/Linux</gettext></option><!--#endif -->
 <!--#if expr="$devs{isdata}" --><!--#else --><option value="data"><gettext>Daten</gettext></option><!--#endif -->
 <!--#if expr="$devs{isswap}" --><!--#else --><option value="swap"><gettext>Swap</gettext></option><!--#endif -->
-<!--#if expr="$devs{iscache}" --><!--#else --><!--#if expr="$iscachehd" --><!--#else --><option value="cache"><gettext>Cache</gettext></option><!--#endif --><!--#endif -->
+<!--#if expr="$devs{iscache}" --><!--#else --><!--#if expr="$iscached" --><!--#else --><option value="cache"><gettext>Cache</gettext></option><!--#endif --><!--#endif -->
 <!--#if expr="$devs{isext}" --><!--#else --><option value="ext"><gettext>erweitert</gettext></option><!--#endif -->
 </select>&nbsp;<input type="submit" name="${devs{n}}_modify" value="System &auml;ndern">
 
@@ -352,7 +362,7 @@
 <option value="windows"><gettext>MS Windows</gettext></option>
 <option value="gnulinux"><gettext>GNU/Linux</gettext></option>
 <option value="data" selected><gettext>Daten</gettext></option>
-<option value="swap"><gettext>Swap</gettext></option><!--#if expr="$iscachehd" --><!--#else -->
+<option value="swap"><gettext>Swap</gettext></option><!--#if expr="$iscached" --><!--#else -->
 <option value="cache"><gettext>Cache</gettext></option><!--#endif -->
 <option value="ext"><gettext>erweitert</gettext></option>
 </select>
@@ -400,6 +410,7 @@
 
 <p><gettext>Klicken Sie auf einen Gruppennamen, um den Editor zu &ouml;ffnen.</gettext></p>
 <p><gettext>Beachten Sie, dass sich im Editor der Radio-Button zur Deaktivierung des Autostarts am Seitenende befindet.</gettext></p>
+<p><getext>Beachten Sie ausserdem, dass beim reboot-workaround die gruppenspezifische Datei &quot;menu.lst.&lt;gruppe&gt;&quot; vorhanden ist und der Rechner von der lokalen Festplatte aus startet.</gettext></p>
 
 <!--#include file="footer_info.shtml.inc" -->
 </div>
