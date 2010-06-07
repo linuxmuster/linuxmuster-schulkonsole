@@ -169,7 +169,7 @@ sub verify_password_by_userdata {
 			last SWITCH;
 		};
 		$userpassword =~ s/^\{SSHA\}//i and do {
-			my ($salt) = substring(
+			my ($salt) = substr(
 				MIME::Base64::decode_base64($userpassword), 20);
 
 			if (MIME::Base64::encode_base64(
