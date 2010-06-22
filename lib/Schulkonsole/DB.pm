@@ -171,18 +171,20 @@ sub verify_password_by_userdata {
 		$userpassword =~ s/^\{SSHA\}//i and do {
 			my ($salt) = substr(
 				MIME::Base64::decode_base64($userpassword), 20);
-
-			if (MIME::Base64::encode_base64(
-				Digest::SHA1::sha1($password . $salt, "") . $salt)
-				eq $userpassword) {
+			my $sha1digest = Digest::SHA1->new;
+			$sha1digest->add($password);
+			$sha1digest->add($salt);
+			my $b64hash = MIME::Base64::encode_base64($sha1digest->digest . $salt);
+			chomp($b64hash);
+			if ( $b64hash eq $userpassword ) {
 				return $userdata;
 			}
 			last SWITCH;
 		};
 		my $error = new Schulkonsole::Error(
 			Schulkonsole::Error::UNKNOWN_PASSWORD_ENCRYPTION,
-				$$userdata{uid});
-		print STDERR "$error\n";
+			$$userdata{uid});
+			print STDERR "$error\n";
 		}
 	}
 
