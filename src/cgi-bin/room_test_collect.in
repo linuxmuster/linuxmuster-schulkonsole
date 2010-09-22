@@ -46,11 +46,16 @@ if (   not $room_session
 	$sk_session->redirect($url);
 }
 
-
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+my $room = $room_session->info('name');
 
 my $workstations
-	= Schulkonsole::Config::workstations_room($room_session->info('name'));
-my $workstation_users = $room_session->workstation_users();
+	= Schulkonsole::Config::workstations_room($room);
+
+my $workstation_users 
+	= $room_session->workstation_users($id, $password, $room);
+
 my %workstation_user_ids;
 foreach my $host (keys %$workstations) {
 	eval {
@@ -69,9 +74,7 @@ if ($q->param('collectmove')) {
 
 } elsif ($q->param('collectcopy')) {
 	eval {
-	Schulkonsole::Sophomorix::collectcopy_exam($sk_session->userdata('id'),
-		$sk_session->get_password(),
-		$room_session->info('name'));
+	Schulkonsole::Sophomorix::collectcopy_exam($id,$password,$room);
 
 	$sk_session->set_status($sk_session->d()->get('Kopiert'), 0);
 	};
@@ -83,8 +86,7 @@ if ($q->param('collectmove')) {
 
 eval {
 my $user_share_files = Schulkonsole::Sophomorix::ls_collect(
-	$sk_session->userdata('id'),
-	$sk_session->get_password(),
+	$id,$password,
 	values %workstation_user_ids);
 
 

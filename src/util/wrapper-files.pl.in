@@ -219,6 +219,26 @@ $app_id == Schulkonsole::Config::IMPORTPRINTERSAPP and do {
 	exec "$app" or last SWITCH;
 };
 
+=head3 update_logins
+
+numeric constant: C<Schulkonsole::Config::UPDATELOGINSAPP>
+
+=cut
+
+$app_id == Schulkonsole::Config::UPDATELOGINSAPP and do {
+	my $room = <>;
+	($room) = $room =~ /^(.+)$/;
+	exit -89 unless defined $room;
+
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+	exec "$app $room" or last SWITCH;
+	#exit 0;
+};
+
+
 }
 
 

@@ -46,14 +46,13 @@ if (   not $room_session
 	$sk_session->redirect($url);
 }
 
-
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+my $room = $room_session->info('name');
 
 if ($q->param('handouttest')) {
 	eval {
-	Schulkonsole::Sophomorix::handout_from_room(
-		$sk_session->userdata('id'),
-		$sk_session->get_password(),
-		$room_session->info('name'));
+	Schulkonsole::Sophomorix::handout_from_room($id, $password, $room);
 
 	$sk_session->set_status_redirect($sk_session->d()->get('Ausgeteilt'), 0);
 
@@ -83,9 +82,7 @@ if ($q->param('handouttest')) {
 
 eval {
 my $teacher_share_files
-	= Schulkonsole::Sophomorix::ls_handout_exam(
-		$sk_session->userdata('id'),
-		$sk_session->get_password());
+	= Schulkonsole::Sophomorix::ls_handout_exam($id, $password);
 
 =item C<teacher_share_files>
 
@@ -112,8 +109,9 @@ if ($@) {
 
 
 my $workstations
-	= Schulkonsole::Config::workstations_room($room_session->info('name'));
-my $workstation_users = $room_session->workstation_users();
+	= Schulkonsole::Config::workstations_room($room);
+my $workstation_users
+	= $room_session->workstation_users($id, $password, $room);
 
 
 my @array_overview_workstations;

@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#! /usr/bin/perl -d
 
 =head1 NAME
 
@@ -37,7 +37,7 @@ use Schulkonsole::Sophomorix;
 my $this_file = 'room';
 
 
-my $sk_session = new Schulkonsole::Session($this_file);
+	my $sk_session = new Schulkonsole::Session($this_file);
 if (not $sk_session->get_password()) {
 	my $q = new CGI;
 	my $url = $q->url( -full => 1 );
@@ -58,15 +58,14 @@ my $room_session = new Schulkonsole::Room($sk_session);
 
 
 if ($room_session) {
+	my $id = $sk_session->userdata('id');
+	my $password = $sk_session->get_password();
 	my $room = $room_session->info('name');
 	
 	
-	
-	my $workstations = Schulkonsole::Config::workstations_room($room);
 	my $printers = Schulkonsole::Config::printers_room($room);
-	
-	my $workstation_users = $room_session->workstation_users();
-	
+	my $workstations = Schulkonsole::Config::workstations_room($room);
+	my $workstation_users = $room_session->workstation_users($id, $password, $room);
 	
 	my $editing_userdata = $room_session->info('editing_userdata');
 	my $editing_user = $$editing_userdata{uid};
@@ -77,11 +76,7 @@ if ($room_session) {
 			push @login_ids, $$userdata{id};
 		}
 	}
-	
-	
-	my $id = $sk_session->userdata('id');
-	my $password = $sk_session->get_password();
-	
+		
 	
 	my $is_urlfilter_active
 		= Schulkonsole::Firewall::urlfilter_check($id, $password);
@@ -501,7 +496,7 @@ True if the user cannot access the printer
 =cut
 	
 	$sk_session->set_var('overview_workstations', \@array_overview_workstations);
-	
+
 	
 	my @array_overview_devices;
 	foreach my $printer (@$printers) {
@@ -545,7 +540,6 @@ True if the device is accessible from this room
 =cut
 	
 	$sk_session->set_var('overview_devices', \@array_overview_devices);
-	
 	
 =item C<printers>
 	
