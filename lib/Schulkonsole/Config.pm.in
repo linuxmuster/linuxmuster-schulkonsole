@@ -1385,7 +1385,7 @@ sub workstations_room {
 				$workstations{$workstation}{room} = $room;
 				$workstations{$workstation}{name} = $workstation;
 				$workstations{$workstation}{hw_class} = $hw_class;
-				$workstations{$workstation}{mac} = $mac;
+				$workstations{$workstation}{mac} = uc $mac;
 				$workstations{$workstation}{ip} = $ip;
 			}
 		}
