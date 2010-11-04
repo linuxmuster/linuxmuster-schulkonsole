@@ -544,11 +544,8 @@ sub update_logins {
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
 	print SCRIPTOUT $room, "\n";
-		
-	buffer_input(\*SCRIPTIN);	
-		
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 }
+
 
 
 

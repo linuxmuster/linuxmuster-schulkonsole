@@ -235,7 +235,6 @@ $app_id == Schulkonsole::Config::UPDATELOGINSAPP and do {
 	$( = $);
 	umask(022);
 	exec "$app $room" or last SWITCH;
-	#exit 0;
 };
 
 
