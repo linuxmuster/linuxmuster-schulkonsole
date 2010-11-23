@@ -1,0 +1,704 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+project_addmembers - add members to project
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/project_addmembers
+
+=head1 DESCRIPTION
+
+C<project_addmembers> lets you search users, classes and projects and add
+them to a project.
+The HTML template is project_addmembers.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<project_addmembers>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::Sophomorix;
+
+my $this_file = 'project_addmembers';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $project = $sk_session->param('project');
+my $projects = Schulkonsole::Info::groups_projects($sk_session->groups());
+if (   not $project
+    or not $$projects{$project}) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/project/g;
+	$sk_session->redirect($url);
+}
+
+
+if (not Schulkonsole::DB::is_project_admin($$projects{$project}{id},
+        	$sk_session->userdata('uidnumber'))) {
+	$sk_session->set_status_redirect($sk_session->d()->get(
+			'Sie sind kein Projektleiter'),
+		1);
+
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/project_members/g;
+	$sk_session->redirect($url);
+}
+
+
+eval {
+COMMANDS: {
+	$q->param('add') and do {
+		my %remove_members;
+		my %add_members;
+		my %add_admins;
+		my %add_classs;
+		my %add_projects;
+
+		my $member_userdatas;
+		my $member_classdatas;
+		my $member_projectdatas;
+		my $admins;
+
+		my $error;
+		foreach my $param ($q->param) {
+			if (my ($member, $scope)
+			    	= $param =~ /^(.+)_(admin|member|class|project)$/) {
+				ADDSCOPE: {
+				$scope =~ /^a/ and do {
+					my $member_userdata
+						= Schulkonsole::DB::get_userdata($member);
+					if (not $member_userdata) {
+						$error .= sprintf(
+							$sk_session->d()->get('Benutzer %s gibt es nicht.'),
+							$member);
+
+						last ADDSCOPE;
+					}
+
+					my $groups = Schulkonsole::DB::user_groups(
+						$$member_userdata{uidnumber},
+						$$member_userdata{gidnumber},
+						$$member_userdata{gid});
+
+					if (not $$groups{teachers}) {
+						$error .= sprintf($sk_session->d()->get(
+								'Benutzer %s ist kein Lehrer.'), $member);
+
+						last ADDSCOPE;
+					}
+
+					$member_userdatas = Schulkonsole::DB::project_user_members(
+						$$projects{$project}{gidnumber})
+						unless defined $member_userdatas;
+
+					if ($$member_userdatas{$member}) {
+						$admins = Schulkonsole::DB::project_admins(
+							$$projects{$project}{id})
+							unless defined $admins;
+
+						if ($$admins{$$member_userdata{uidnumber}}) {
+							$error .= sprintf $sk_session->d()->get(
+									'Benutzer %s ist bereits Projektmitglied.'),
+									$member;
+
+							last ADDSCOPE
+						} else {
+							$remove_members{$$member_userdata{uid}} = 1;
+						}
+					}
+
+					$add_admins{$$member_userdata{uid}} = 1;
+
+					last ADDSCOPE;
+				};
+				$scope =~ /^m/ and do {
+					my $member_userdata
+						= Schulkonsole::DB::get_userdata($member);
+					if (not $member_userdata) {
+						$error .= sprintf
+							$sk_session->d()->get('Benutzer %s gibt es nicht.'),
+							$member;
+
+						last ADDSCOPE;
+					}
+
+					$member_userdatas = Schulkonsole::DB::project_user_members(
+						$$projects{$project}{gidnumber})
+						unless defined $member_userdatas;
+
+					if ($$member_userdatas{$member}) {
+						$error .= sprintf $sk_session->d()->get(
+								'Benutzer %s ist bereits Projektmitglied.'),
+								$member;
+
+						last ADDSCOPE;
+					}
+
+					$add_members{$$member_userdata{uid}} = 1;
+
+					last ADDSCOPE;
+				};
+				$scope =~ /^c/ and do {
+					if ($member eq 'attic') {
+						$error .= sprintf $sk_session->d()->get(
+									'Klasse %s gibt es nicht.'),
+								$member;
+
+						last ADDSCOPE;
+					}
+
+					my $member_classdata
+						= Schulkonsole::DB::get_classdata($member);
+
+					if (not $member_classdata) {
+						$error .= sprintf $sk_session->d()->get(
+									'Klasse %s gibt es nicht.'), $member;
+
+						last ADDSCOPE;
+					}
+
+					$member_classdatas
+						= Schulkonsole::DB::project_class_members(
+						  	$$projects{$project}{id})
+						unless defined $member_classdatas;
+
+					if ($$member_classdatas{$member}) {
+						$error .= sprintf $sk_session->d()->get(
+									'Klasse %s ist bereits Projektmitglied.'),
+								$member;
+
+						last ADDSCOPE;
+					}
+
+					$add_classs{$$member_classdata{gid}} = 1;
+
+					last ADDSCOPE;
+				};
+				$scope =~ /^p/ and do {
+					my $member_projectdata
+						= Schulkonsole::DB::get_projectdata($member);
+
+					if (not $member_projectdata) {
+						$error .= sprintf $sk_session->d()->get(
+								'Projekt %s gibt es nicht.'), $member;
+
+						last ADDSCOPE;
+					}
+
+					$member_projectdatas
+						= Schulkonsole::DB::project_project_members(
+						  	$$projects{$project}{id})
+						unless defined $member_projectdatas;
+
+					if ($$member_projectdatas{$member}) {
+						$error .= sprintf $sk_session->d()->get(
+									'Projekt %s ist bereits Projektmitglied.'),
+								$member;
+
+						last ADDSCOPE;
+					}
+
+					$add_projects{$$member_projectdata{gid}} = 1;
+
+					last ADDSCOPE;
+				};
+				}
+			}
+		}
+
+
+		foreach my $admin (keys %add_admins) {
+			delete $add_members{$admin} if exists $add_members{$admin};
+		}
+
+
+		my $id = $sk_session->userdata('id');
+		my $password = $sk_session->get_password();
+
+		my $is_added = 0;
+		if (%remove_members) {
+			Schulkonsole::Sophomorix::remove_from_project(
+				$id, $password,
+				$$projects{$project}{gid},
+				keys %remove_members);
+
+			$is_added = 1;
+		}
+
+		if (%add_admins) {
+			Schulkonsole::Sophomorix::add_admin_to_project(
+				$id, $password,
+				$$projects{$project}{gid},
+				keys %add_admins);
+
+			$is_added = 1;
+		}
+
+		if (%add_members) {
+			Schulkonsole::Sophomorix::add_to_project(
+				$id, $password,
+				$$projects{$project}{gid},
+				keys %add_members);
+
+			$is_added = 1;
+		}
+
+		if (%add_classs) {
+			Schulkonsole::Sophomorix::add_class_to_project(
+				$id, $password,
+				$$projects{$project}{gid},
+				keys %add_classs);
+
+			$is_added = 1;
+		}
+
+		if (%add_projects) {
+			Schulkonsole::Sophomorix::add_project_to_project(
+				$id, $password,
+				$$projects{$project}{gid},
+				keys %add_projects);
+
+			$is_added = 1;
+		}
+
+
+		if ($is_added) {
+			$sk_session->set_status_redirect($sk_session->d()->get(
+					'Aufgenommen'),
+				0);
+
+			my $url = $q->url( -absolute => 1 );
+			$url =~ s/$this_file$/project_members/g;
+			$sk_session->redirect($url);
+		} else {
+			$sk_session->set_status(
+					($error ? "$error<br>" : '')
+					. $sk_session->d()->get(
+					  	'Keine neuen Mitglieder ausgew&auml;hlt'),
+				1);
+		}
+
+
+		last COMMANDS;
+	};
+
+
+	foreach my $param ($q->param) {
+		if (my ($class) = $param =~ /^(.+)_showclass$/) {
+			my $students = Schulkonsole::DB::get_class_userdatas($class);
+
+
+			my @students_result;
+			if (%$students) {
+				my $member_userdatas = Schulkonsole::DB::project_user_members(
+				                       	$$projects{$project}{gidnumber});
+				foreach my $user (sort {
+					$$students{$a}{surname} cmp $$students{$b}{surname} }
+					keys %$students) {
+					my $uid = $$students{$user}{uid};
+
+					next if $$member_userdatas{$uid};
+
+					my $groups = Schulkonsole::DB::user_groups(
+						$$students{$user}{uidnumber},
+						$$students{$user}{gidnumber},
+						$$students{$user}{gid});
+
+
+					my $result = {
+						login => $uid,
+						firstname => $$students{$user}{firstname},
+						surname => $$students{$user}{surname},
+						class => $class,
+					};
+					push @students_result, $result;
+				}
+
+			}
+
+
+			if (@students_result) {
+
+=item C<students>
+
+Set on query with scope teachers
+and on command showclass.
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=item C<class>
+
+The user's class
+
+=back
+
+=cut
+
+				$sk_session->set_var('students', \@students_result);
+			} else {
+				$sk_session->set_status($sk_session->d()->get(
+						'Keine Nicht-Mitglieder in dieser Klasse'),
+					1);
+			}
+
+
+
+			last COMMANDS;
+		}
+	}
+} # end COMMANDS
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+
+
+if (not $sk_session->{template_vars}{students}) {
+	if (my $query = $q->param('query')) {
+
+		QUERYSCOPE: {
+		$q->param('scope') eq 'teacher' and do {
+			my $teachers = Schulkonsole::DB::find_teachers($query);
+	
+			if (%$teachers) {
+				my $admins = Schulkonsole::DB::project_admins(
+				             	$$projects{$project}{id});
+				my $member_userdatas
+					= Schulkonsole::DB::project_user_members(
+					  	$$projects{$project}{gidnumber});
+	
+				my @teachers_result;
+				foreach my $user (sort {
+					$$teachers{$a}{surname} cmp $$teachers{$b}{surname} }
+					keys %$teachers) {
+					my $uid = $$teachers{$user}{uid};
+	
+					next if $$member_userdatas{$uid};
+	
+					my $result = {
+						login => $uid,
+						firstname => $$teachers{$user}{firstname},
+						surname => $$teachers{$user}{surname},
+					};
+					push @teachers_result, $result;
+				}
+
+=item C<teachers>
+
+Set on query with scope teachers.
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=item C<class>
+
+The user's class
+
+=back
+
+=cut
+
+				$sk_session->set_var('teachers', \@teachers_result);
+			} else {
+				$sk_session->set_status(
+					$sk_session->d()->get('Nichts gefunden'), 1);
+			}
+	
+			last QUERYSCOPE;
+		};
+	
+		$q->param('scope') eq 'class' and do {
+			my $classs = Schulkonsole::DB::find_classes($query);
+			delete $$classs{attic};
+	
+			if (%$classs) {
+				my $member_classdatas
+					= Schulkonsole::DB::project_class_members(
+					  	$$projects{$project}{id});
+	
+				my @classs_result;
+				foreach my $class (sort {
+					$$classs{$a}{displayname} cmp $$classs{$b}{displayname} }
+					keys %$classs) {
+					my $gid = $$classs{$class}{gid};
+	
+					next if $$member_classdatas{$gid};
+	
+					my $result = {
+						gid => $$classs{$class}{gid},
+						name => $$classs{$class}{displayname},
+					};
+					push @classs_result, $result;
+				}
+
+=item C<classes>
+
+Set on query with scope class.
+An array of hashes with the keys
+
+=over
+
+=item C<gid>
+
+The GID of a class
+
+=item C<displayname>
+
+The name of the class
+
+=back
+
+=cut
+
+				$sk_session->set_var('classes', \@classs_result);
+			} else {
+				$sk_session->set_status(
+					$sk_session->d()->get('Nichts gefunden'), 1);
+			}
+	
+			last QUERYSCOPE;
+		};
+	
+		$q->param('scope') eq 'project' and do {
+			my $projects = Schulkonsole::DB::find_projects($query);
+	
+			if (    %$projects
+			    and (   keys %$projects > 1
+				     or not $$projects{$project})) {
+				my $member_projectdatas
+					= Schulkonsole::DB::project_project_members(
+					  	$$projects{$project}{id});
+	
+				my @projects_result;
+				foreach my $a_project (sort {
+					$$projects{$a}{displayname} cmp $$projects{$b}{displayname} }
+					keys %$projects) {
+					next if $a_project eq $project;
+	
+					my $gid = $$projects{$a_project}{gid};
+	
+					next if $$member_projectdatas{$gid};
+	
+					my $result = {
+						gid => $$projects{$a_project}{gid},
+						name => $$projects{$a_project}{displayname},
+					};
+					push @projects_result, $result;
+				}
+
+
+=item C<projects>
+
+Set on query with scope project.
+An array of hashes with the keys
+
+=over
+
+=item C<gid>
+
+The GID of a project
+
+=item C<name>
+
+The name of the project
+
+=back
+
+=cut
+
+				$sk_session->set_var('projects', \@projects_result);
+			} else {
+				$sk_session->set_status(
+					$sk_session->d()->get('Nichts gefunden'), 1);
+			}
+	
+			last QUERYSCOPE;
+		};
+	
+	
+		my $students = Schulkonsole::DB::find_students($query);
+	
+		if (%$students) {
+			my $member_userdatas = Schulkonsole::DB::project_user_members(
+			                       	$$projects{$project}{gidnumber});
+			my @students_result;
+			foreach my $user (sort {
+				$$students{$a}{surname} cmp $$students{$b}{surname} }
+				keys %$students) {
+				my $uid = $$students{$user}{uid};
+	
+				next if $$member_userdatas{$uid};
+	
+				my $groups = Schulkonsole::DB::user_groups(
+					$$students{$user}{uidnumber},
+					$$students{$user}{gidnumber},
+					$$students{$user}{gid});
+				my $classs = Schulkonsole::DB::groups_classes($groups);
+				if (%$classs) {
+					my @classs;
+					foreach my $class (values %$classs) {
+						push @classs, $$class{displayname};
+					}
+					my $var_classes_str = join ', ', @classs;
+	
+	
+					my $result = {
+						login => $uid,
+						firstname => $$students{$user}{firstname},
+						surname => $$students{$user}{surname},
+						class => $var_classes_str,
+					};
+					push @students_result, $result;
+				}
+			}
+	
+			$sk_session->set_var('students', \@students_result);
+		} else {
+			$sk_session->set_status(
+				$sk_session->d()->get('Nichts gefunden'), 1);
+		}
+	
+		}
+	} else {
+		$sk_session->set_status_redirect(
+			$sk_session->d()->get('Suchanfrage ist leer'), 1);
+
+		my $url = $q->url( -absolute => 1 );
+		$url =~ s/$this_file$/project_members/g;
+		$sk_session->redirect($url);
+	}
+}
+
+
+
+
+
+my $all_projects = Schulkonsole::DB::projects();
+
+
+=item C<isadmin>
+
+Indicates that the current user is an administrator of the selected project
+
+=cut
+
+$sk_session->set_var('isadmin', 1);
+
+=item C<project_gid>
+
+The GID of the selected project
+
+=cut
+
+$sk_session->set_var('project_gid', $project);
+
+=item C<project>
+
+The name of the selected project
+
+=cut
+
+$sk_session->set_var('project', $$projects{$project}{displayname});
+
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<query>
+
+A substring to search in scope
+
+=item C<scope>
+
+The scope of the query. Possible values are C<student>, C<teacher>,
+C<class>, and C<project>
+
+=item C<${classes{gid}}_showclass>
+
+If true, show list of students of C<$classes{gid}>
+
+=item C<add>
+
+If true add the selected users, classes, projects:
+
+=over
+
+=item C<${students{login}}_member>/C<${teachers{login}}_member>
+
+Checkboxes created in loops over template variables C<students> and
+C<teachers>
+
+=item C<${teachers{login}}_admin>
+
+Checkboxes created in loop over template variable C<teachers>. If true
+add the user as an admin to the project
+
+=item C<${classes{gid}}_class>
+
+Checkboxes created in loop over template variable C<classes>
+
+=item C<${projects{gid}}_project>
+
+Checkboxes created in loop over template variable C<projects>
+
+=back
+
+=back
+

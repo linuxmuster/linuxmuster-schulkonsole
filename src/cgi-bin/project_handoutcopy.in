@@ -1,0 +1,274 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+project_handoutcopy - hand out copies of files to project
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/project_handoutcopy
+
+=head1 DESCRIPTION
+
+C<project_handoutcopy> lets you copy files to members of a selected project
+from your directory. The HTML template is project_handoutcopy.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<project_handoutcopy>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::Sophomorix;
+
+my $this_file = 'project_handoutcopy';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+my $projects = Schulkonsole::Info::groups_projects($sk_session->groups());
+
+
+
+my $project = $q->param('projects');
+if (    $project
+    and $$projects{$project}) {
+	$sk_session->param('project', $project);
+}
+$project = $sk_session->param('project');
+
+if (   not $project
+    or not $$projects{$project}) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/project/g;
+	$sk_session->redirect($url);
+}
+
+if (not Schulkonsole::DB::is_project_admin($$projects{$project}{id},
+        	$sk_session->userdata('uidnumber'))) {
+	$sk_session->set_status_redirect($sk_session->d()->get(
+		'Sie sind kein Projektleiter'),
+		1);
+
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/project_members/g;
+	$sk_session->redirect($url);
+}
+
+
+
+
+
+
+
+
+my $member_userdatas
+	= Schulkonsole::DB::project_user_members($$projects{$project}{gidnumber});
+
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+if ($q->param('handoutcopy')) {
+	my @users;
+	my $is_all_users = 1;
+	foreach my $user (keys %$member_userdatas) {
+		if ($q->param("$user;handout")) {
+			push @users, $user;
+		} elsif (    $is_all_users
+		         and $$member_userdatas{$user}{uidnumber}
+		             	!= $sk_session->userdata('uidnumber')) {
+			$is_all_users = 0;
+		}
+	}
+
+	if (@users) {
+		eval {
+			Schulkonsole::Sophomorix::handoutcopy_from_project_to_users(
+				$id, $password, $project, @users);
+
+			if ($is_all_users) {
+				$sk_session->set_status($sk_session->d()->get('Ausgeteilt'), 0);
+			} else {
+				$sk_session->set_status($sk_session->d()->get('Ausgeteilt an')
+					. ' ' . join(', ', @users),
+				0);
+			}
+		};
+		if ($@) {
+			$sk_session->standard_error_handling($this_file, $@);
+		}
+	} else {
+		$sk_session->set_status($sk_session->d()->get(
+			'Keine Benutzer ausgew&auml;hlt'), 1);
+	}
+}
+
+
+
+
+
+
+
+
+
+eval {
+my $admin_share_files = Schulkonsole::Sophomorix::ls_handoutcopy_project(
+	$id, $password,
+	$$projects{$project}{gid});
+
+=item C<admin_share_files>
+
+Available files as returned by C<Schulkonsole::Sophomorix::create_file_list()>
+
+=cut
+
+$sk_session->set_var('admin_share_files',
+	Schulkonsole::Sophomorix::create_file_list($admin_share_files));
+};
+if ($@) {
+	if (    ref $@
+	    and $@->{code} == Schulkonsole::Error::WRAPPER_SOPHOMORIX_NO_SUCH_DIRECTORY) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Verzeichnis zum Austeilen nicht gefunden'),
+				1);
+	} else {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+}
+
+
+
+
+my @members;
+foreach my $user (sort {
+	$$member_userdatas{$a}{surname} cmp $$member_userdatas{$b}{surname} }
+	keys %$member_userdatas) {
+	next if $user eq $sk_session->userdata('uid');
+
+	my $member = {
+		login => $user,
+		firstname => $$member_userdatas{$user}{firstname},
+		surname => $$member_userdatas{$user}{surname},
+	};
+	push @members, $member;
+}
+
+=item C<members>
+
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=back
+
+=cut
+
+$sk_session->set_var('members', \@members);
+
+
+
+
+my @projects;
+foreach my $project (sort {
+	$$projects{$a}{displayname} cmp $$projects{$b}{displayname} }
+	keys %$projects) {
+	push @projects, { gid => $project,
+	                  name => $$projects{$project}{displayname},
+	                };
+}
+
+=item C<projects>
+
+Projects of the current user as an array of hashes with the keys
+
+=over
+
+=item C<gid>
+
+GID of the project
+
+=item C<name>
+
+Name of the project
+
+=back
+
+=cut
+
+$sk_session->set_var('projects', \@projects);
+
+
+=item C<isadmin>
+
+Indicates that the current user is an administrator of the selected project
+
+=cut
+
+$sk_session->set_var('isadmin', 1);
+
+=item C<project_gid>
+
+The GID of the selected project
+
+=cut
+
+$sk_session->set_var('project_gid', $project);
+
+=item C<project>
+
+The name of the selected project
+
+=cut
+
+$sk_session->set_var('project', $$projects{$project}{displayname});
+
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<${members{login}};handout>
+
+Checkboxes created in loop over template variable C<members>. Copying
+is performed with the selected logins.
+
+=back
+

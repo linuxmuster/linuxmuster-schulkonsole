@@ -1,0 +1,282 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+project_collect - collect files from a project
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/project_collect
+
+=head1 DESCRIPTION
+
+C<project_collect> lets you copy or move files of members of a selected project
+to your directory. The HTML template is project_collect.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<project_collect>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::Sophomorix;
+
+my $this_file = 'project_collect';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+my $projects = Schulkonsole::Info::groups_projects($sk_session->groups());
+
+
+
+my $project = $q->param('projects');
+if (    $project
+    and $$projects{$project}) {
+	$sk_session->param('project', $project);
+}
+$project = $sk_session->param('project');
+
+if (   not $project
+    or not $$projects{$project}) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/project/g;
+	$sk_session->redirect($url);
+}
+
+if (not Schulkonsole::DB::is_project_admin($$projects{$project}{id},
+        	$sk_session->userdata('uidnumber'))) {
+	$sk_session->set_status_redirect($sk_session->d()->get(
+		'Sie sind kein Projektleiter'),
+		1);
+
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/project_members/g;
+	$sk_session->redirect($url);
+}
+
+
+
+
+
+
+
+
+my $member_userdatas
+	= Schulkonsole::DB::project_user_members($$projects{$project}{gidnumber});
+
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+if (   $q->param('collecttop')
+    or $q->param('collectbottom')) {
+	my @users;
+	my $is_all_users = 1;
+	foreach my $user (keys %$member_userdatas) {
+		if ($q->param("$user;collect")) {
+			push @users, $user;
+		} elsif ($is_all_users) {
+			$is_all_users = 0;
+		}
+	}
+
+	if (@users) {
+		eval {
+			if (   (    $q->param('collecttop')
+			        and $q->param('deletetop'))
+			    or (    $q->param('collectbottom')
+			        and $q->param('deletebottom'))) {
+				Schulkonsole::Sophomorix::collect_from_project_users(
+					$id, $password, $project, @users);
+			} else {
+				Schulkonsole::Sophomorix::collectcopy_from_project_users(
+					$id, $password, $project, @users);
+			}
+
+			if ($is_all_users) {
+				$sk_session->set_status(
+					$sk_session->d()->get('Eingesammelt'),
+					0);
+			} else {
+				$sk_session->set_status(
+					  $sk_session->d()->get('Eingesammelt von')
+					. ' ' . join(', ', @users),
+					0);
+			}
+		};
+		if ($@) {
+			$sk_session->standard_error_handling($this_file, $@);
+		}
+	} else {
+		$sk_session->set_status($sk_session->d()->get(
+			'Keine Benutzer ausgew&auml;hlt'), 1);
+	}
+}
+
+
+
+
+
+eval {
+my @login_ids;
+foreach my $user (keys %$member_userdatas) {
+	push @login_ids, $$member_userdatas{$user}{id};
+}
+my $user_share_files = Schulkonsole::Sophomorix::ls_collect(
+	$id, $password, @login_ids);
+
+
+my @members;
+foreach my $user (sort {
+	$$member_userdatas{$a}{surname} cmp $$member_userdatas{$b}{surname} }
+	keys %$member_userdatas) {
+
+	my $member = {
+		login => $user,
+		firstname => $$member_userdatas{$user}{firstname},
+		surname => $$member_userdatas{$user}{surname},
+		files => Schulkonsole::Sophomorix::create_file_list(
+		         	$$user_share_files{$$member_userdatas{$user}{id}}),
+	};
+	push @members, $member;
+}
+
+=item C<members>
+
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=item C<files>
+
+A list of the user's collectable files as returned from
+C<Schulkonsole::Sophomorix::create_file_list()>.
+
+=back
+
+=cut
+
+$sk_session->set_var('members', \@members);
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+
+my @projects;
+foreach my $project (sort {
+	$$projects{$a}{displayname} cmp $$projects{$b}{displayname} }
+	keys %$projects) {
+	push @projects, { gid => $project,
+	                  name => $$projects{$project}{displayname},
+	                };
+}
+
+=item C<projects>
+
+Projects of the current user as an array of hashes with the keys
+
+=over
+
+=item C<gid>
+
+GID of the project
+
+=item C<name>
+
+Name of the project
+
+=back
+
+=cut
+
+$sk_session->set_var('projects', \@projects);
+
+
+=item C<isadmin>
+
+Indicates that the current user is an administrator of the selected project
+
+=cut
+
+$sk_session->set_var('isadmin', 1);
+
+=item C<project_gid>
+
+The GID of the selected project
+
+=cut
+
+$sk_session->set_var('project_gid', $project);
+
+=item C<project>
+
+The name of the selected project
+
+=cut
+
+$sk_session->set_var('project', $$projects{$project}{displayname});
+
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<collecttop>
+
+A submit button indicating that C<deletetop> is to be evaluated
+
+=item C<collectbottom>
+
+A submit button indicating that C<deletebottom> is to be evaluated
+
+=item C<deletetop>/C<deletebottom>
+
+If true the files are moved, copied otherwise
+
+=item C<${members{login}};collect>
+
+Checkboxes created in loop over template variable C<members>. Collecting
+is performed with the selected logins.
+
+=back
+

@@ -1,0 +1,536 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+hosts - edit list of hosts
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/hosts
+
+=head1 DESCRIPTION
+
+C<hosts> lets you add new hosts to and edit the list of hosts in the network.
+The HTML templates is hosts.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<hosts>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Files;
+use Env::Bash;
+
+
+
+my $this_file = 'hosts';
+
+my $pxe_on = '22';
+my $pxe_off = '0';
+
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+my $additional_lines_cnt = 5;
+
+
+
+eval {
+COMMANDS: {
+$q->param('accept') and do {
+	my $old = Schulkonsole::Config::workstations();
+	my %new;
+	my @add_errors;
+	my @edit_errors;
+	foreach my $param ($q->param) {
+		if (my ($i) = $param =~ /^(\d+)_addip$/) {
+			if ($q->param("${i}_addignore")) {
+				$q->delete("${i}_addroom");
+				$q->delete("${i}_addname");
+				$q->delete("${i}_addgroups");
+				$q->delete("${i}_addmac");
+				$q->delete("${i}_addip");
+				$q->delete("${i}_addpxe");
+				$q->delete("${i}_addopts");
+			}
+
+			$additional_lines_cnt = $i if $i > $additional_lines_cnt;
+
+
+			my ($name) = $q->param("${i}_addname") =~ /^\s*(.+?)\s*$/;
+			$name = lc $name;
+
+			my ($room) = $q->param("${i}_addroom") =~ /^\s*(.+?)\s*$/;
+			my ($groups) = $q->param("${i}_addgroups") =~ /^\s*(.+?)\s*$/;
+			my ($mac) = $q->param("${i}_addmac") =~ /^\s*(.+?)\s*$/;
+			my ($ip) = $q->param("${i}_addip") =~ /^\s*(.+?)\s*$/;
+			my $pxe = ($q->param("${i}_addpxe") ? $pxe_on : $pxe_off);
+			my $opts = $q->param("${i}_addopts");
+
+			if (    (   $name
+			         or $room
+			         or $groups
+			         or $mac
+			         or $ip)
+			    and syntax_check($room, $name, $groups, $mac, $ip,
+			                     $pxe, $opts, 0, \@add_errors)) {
+				$q->delete("${i}_addroom");
+				$q->delete("${i}_addname");
+				$q->delete("${i}_addgroups");
+				$q->delete("${i}_addmac");
+				$q->delete("${i}_addip");
+				$q->delete("${i}_addpxe");
+				$q->delete("${i}_addopts");
+				$new{$name}{room} = $room;
+				$new{$name}{name} = $name;
+				$new{$name}{groups} = $groups;
+				$new{$name}{mac} = $mac;
+				$new{$name}{ip} = $ip;
+				$new{$name}{pxe} = $pxe;
+				$new{$name}{opts} = $opts;
+			}
+		} elsif (my ($host) = $param =~ /^(.+)_ip$/) {
+			if ($q->param("${host}_delete")) {
+				$new{$host} = undef;
+				next;
+			}
+
+			my ($name) = $q->param("${host}_name") =~ /^\s*(.+?)\s*$/;
+			$name = lc $name;
+
+			my ($room) = $q->param("${host}_room") =~ /^\s*(.+?)\s*$/;
+			my ($groups) = $q->param("${host}_groups") =~ /^\s*(.+?)\s*$/;
+			my ($mac) = $q->param("${host}_mac") =~ /^\s*(.+?)\s*$/;
+			my ($ip) = $q->param("${host}_ip") =~ /^\s*(.+?)\s*$/;
+			my $pxe = ($q->param("${host}_pxe") ? $pxe_on : $pxe_off);
+			my $opts = $q->param("${host}_opts");
+
+
+			if (    $$old{$host}
+			    and $name eq $$old{$host}{name}
+			    and $room eq $$old{$host}{room}
+			    and $groups eq $$old{$host}{groups}
+			    and $mac eq $$old{$host}{mac}
+			    and $ip eq $$old{$host}{ip}
+			    and $pxe eq $$old{$host}{pxe}
+			    and $opts eq $$old{$host}{opts}) {
+			} elsif (    (   $name
+			              or $room
+			              or $groups
+			              or $mac
+			              or $ip)
+			         and syntax_check($room, $name, $groups, $mac, $ip,
+			                          $pxe, $opts, $host, \@edit_errors)) {
+				$new{$host}{room} = $room;
+				$new{$host}{name} = $name;
+				$new{$host}{groups} = $groups;
+				$new{$host}{mac} = $mac;
+				$new{$host}{ip} = $ip;
+				$new{$host}{pxe} = $pxe;
+				$new{$host}{opts} = $opts;
+			}
+		}
+	}
+
+	if (@edit_errors) {
+		$sk_session->set_status(join(', ', @edit_errors, @add_errors), 1);
+	} else {
+		my $status;
+		my $is_error;
+
+		if (%new) {
+			my $lines = new_workstations_lines(\%new);
+
+			my $id = $sk_session->userdata('id');
+			my $password = $sk_session->get_password();
+			Schulkonsole::Files::write_workstations_file(
+				$id, $password,
+				$lines);
+			Schulkonsole::Files::import_workstations($id, $password,
+				$sk_session);
+
+
+			$status .=
+				$sk_session->d()->get('&Auml;nderungen &uuml;bernommen.');
+			$is_error = 0;
+
+			$q->delete_all();
+		} else {
+			$status .= $sk_session->d()->get('Keine &Auml;nderungen.');
+			$is_error = 1;
+		}
+
+		if (@add_errors) {
+			$status .= '<br>' . $sk_session->d()->get('ignoriert: ')
+				. join(', ', @add_errors);
+		}
+		$sk_session->set_status($status, $is_error);
+	}
+
+
+	last COMMANDS;
+};
+$q->param('addrows') and do {
+	my $cnt = 0;
+	foreach my $param ($q->param) {
+		if ($param =~ /^(\d+)_addip$/) {
+			$cnt = $1 if $1 > $cnt;
+		}
+	}
+	$additional_lines_cnt = $cnt + $q->param('addcnt');
+
+	last COMMANDS;
+};
+$q->param('import') and do {
+	if (Schulkonsole::Config::count_unimported_unconfigured_workstations()) {
+		my $id = $sk_session->userdata('id');
+		my $password = $sk_session->get_password();
+
+		Schulkonsole::Files::import_workstations($id, $password, $sk_session);
+
+		$sk_session->set_status(
+			$sk_session->d()->get('Workstations werden importiert'), 0);
+	} else {
+		$sk_session->set_status(
+			$sk_session->d()->get('Keine Workstations zu importieren'), 1);
+	}
+
+	last COMMANDS;
+};
+}
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+my $workstations = Schulkonsole::Config::workstations();
+my @workstations_array;
+foreach my $workstation (sort {
+		   $$workstations{$a}{room} cmp $$workstations{$b}{room}
+		or $a cmp $b }
+	keys %$workstations) {
+
+	push @workstations_array, $workstation;
+
+	$q->param("${workstation}_room", $$workstations{$workstation}{room})
+		unless $q->param("${workstation}_room");
+	$q->param("${workstation}_name", $$workstations{$workstation}{name})
+		unless $q->param("${workstation}_name");
+	$q->param("${workstation}_groups", $$workstations{$workstation}{groups})
+		unless $q->param("${workstation}_groups");
+	$q->param("${workstation}_mac", $$workstations{$workstation}{mac})
+		unless $q->param("${workstation}_mac");
+	$q->param("${workstation}_ip", $$workstations{$workstation}{ip})
+		unless $q->param("${workstation}_ip");
+	$q->param("${workstation}_pxe", ($$workstations{$workstation}{pxe} ? 1 : 0))
+		unless defined $q->param("${workstation}_pxe");
+	$q->param("${workstation}_opts", $$workstations{$workstation}{opts})
+		unless defined $q->param("${workstation}_opts");
+
+}
+
+=item C<workstations>
+
+An array with the names of the hosts in the network
+
+=cut
+
+$sk_session->set_var('workstations', \@workstations_array);
+
+=item C<add>
+
+An array to produce additional empty lines
+
+=cut
+
+$sk_session->set_var('add', [ 1 .. $additional_lines_cnt ]);
+
+
+
+my ($unimported, $unconfigured, $comments) =
+	Schulkonsole::Config::count_unimported_unconfigured_workstations();
+
+=item C<unimported>
+
+True if not all configured workstations were imported into the system
+
+=cut
+
+$sk_session->set_var('unimported', $unimported);
+
+=item C<unconfigured>
+
+True if not all imported workstations are configured, too
+
+=cut
+
+$sk_session->set_var('unconfigured', $unconfigured);
+
+=item C<comments>
+
+True if the workstations file contains comments
+
+=cut
+
+$sk_session->set_var('comments', $comments);
+
+
+
+=item C<isimporting>
+
+True if import_workstations is running
+
+=cut
+
+my $lockfile_import_workstations
+	= Schulkonsole::Config::lockfile('import_workstations');
+if (open LOCK, "<$lockfile_import_workstations") {
+	if (not flock(LOCK, (2 | 4))) {
+		$sk_session->set_var('isimporting', 1);
+	}
+}
+
+
+
+
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+
+
+
+sub syntax_check {
+	my $room = shift;
+	my $name = shift;
+	my $groups = shift;
+	my $mac = shift;
+	my $ip = shift;
+	my $pxe = shift;
+	my $opts = shift;
+
+	my $existing_id = shift;
+	my $errors = shift;
+
+	my $id = ($name ? $name : $existing_id);
+	return 1 unless $id;
+
+	my @errors;
+	push @errors, $sk_session->d()->get('ung&uuml;ltiger Raumname')
+		if (   $room !~ /^[a-z\d\.\-]+$/i
+		    or $room eq 'default');
+	push @errors, $sk_session->d()->get('ung&uuml;ltiger Name')
+		unless $name =~ /^[a-z\d\-]+$/;
+	push @errors, $sk_session->d()->get('ung&uuml;ltige Gruppen')
+		unless ($groups =~ /^[a-z\d_]+(,[a-z\d_]+)*$/);
+	push @errors, $sk_session->d()->get('ung&uuml;ltige MAC')
+		unless $mac =~ /^[A-Fa-f\d]{2}(:[A-Fa-f\d]{2}){5}$/;
+	my (@ip) = $ip =~ /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+	if (   not @ip
+	    or $ip[0] > 255
+	    or $ip[1] > 255
+	    or $ip[2] > 255
+	    or $ip[3] > 255) {
+		push @errors, $sk_session->d()->get('ung&uuml;ltige IP');
+	}
+	push @errors, $sk_session->d()->get('ung&uuml;ltige Optionen')
+		unless $opts =~ /^(|noudma|unicast|noudma,unicast)$/;
+
+
+	if (@errors) {
+		$id .= "/$room" if $room;
+		push @$errors, ("$id: " . join(', ', @errors));
+		return 0;
+	} else {
+		return 1;
+	}
+}
+
+
+
+
+sub new_workstations_lines {
+	my $changes = shift;
+
+
+	my @lines;
+	my %changes = %$changes;
+	if (open WORKSTATIONS, "<$Schulkonsole::Config::_workstations_file") {
+		my %cnt;
+		while (<WORKSTATIONS>) {
+			next if /^#/ || /^\s*$/;
+
+			my ($room, $host, $group, $mac, $ip,
+			    $mask, $dummy1, $dummy2, $dummy3, $dummy4) = split ';';
+
+			$cnt{$host}++;
+			my $key = "$host!$cnt{$host}";
+
+			if (exists $changes{$key}) {
+				push @lines,
+					  "$changes{$key}{room};$changes{$key}{name};"
+					. "$changes{$key}{groups};"
+					. "$changes{$key}{mac};$changes{$key}{ip};"
+					. "$mask;$dummy1;$dummy2;$dummy3;$dummy4;"
+					. "$changes{$key}{pxe};$changes{$key}{opts}\n"
+					if defined $changes{$key};
+
+				delete $changes{$key};
+			} else {
+				push @lines, $_;
+			}
+		}
+
+		close WORKSTATIONS;
+	}
+
+
+	if (%changes) {
+		my %network_settings_env;
+		tie %network_settings_env, 'Env::Bash',
+		    Source => $Schulkonsole::Config::_network_settings_file;
+		my $mask = $network_settings_env{internmask} || '255.240.0.0';
+
+		my $default_mask_and_dummy = "$mask;1;1;1;1;";
+		foreach my $host (sort keys %changes) {
+			next unless defined $changes{$host};
+
+			push @lines,
+				  "$changes{$host}{room};$changes{$host}{name};"
+				. "$changes{$host}{groups};"
+				. "$changes{$host}{mac};$changes{$host}{ip};"
+				. $default_mask_and_dummy
+				. "$changes{$host}{pxe};$changes{$host}{opts}\n";
+		}
+	}
+
+
+	return \@lines;
+}
+
+
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<addrows>
+
+Add C<addcnt> rows to enter new workstations
+
+=item C<addcnt>
+
+The number of additional rows
+
+=item C<accept>
+
+Accept the changes in the form
+
+=back
+
+The following fields are created in a loop over the template variable
+C<workstations>:
+
+=over
+
+=item C<${workstations}_room>
+
+Room of the workstation
+
+=item C<${workstations}_name>
+
+Name of the workstations
+
+=item C<${workstations}_groups>
+
+Groups of the workstation in a comma separated list
+
+=item C<${workstations}_mac>
+
+MAC of the workstation
+
+=item C<${workstations}_ip>
+
+IP of the workstation
+
+=item C<${workstations}_pxe>
+
+True if PXE is activated for the workstation
+
+=item C<${workstations}_opts>
+
+Option for the workstation. Either no options or
+C<noudma>, C<unicast>, or C<noudma,unicast>.
+
+=item C<${workstations}_delete>
+
+If true, delete the workstation from the list
+
+=back
+
+
+The following fields are created in a loop over the template variable
+C<add>:
+
+=over
+
+=item C<${add}_addroom>
+
+Room of the workstation
+
+=item C<${add}_addname>
+
+Name of the workstations
+
+=item C<${add}_addgroups>
+
+Groups of the workstation in a comma separated list
+
+=item C<${add}_addmac>
+
+MAC of the workstation
+
+=item C<${add}_addip>
+
+IP of the workstation
+
+=item C<${add}_addpxe>
+
+True if PXE is activated for the workstation
+
+=item C<${add}_addopts>
+
+Option for the workstation. Either no options or
+C<noudma>, C<unicast>, or C<noudma,unicast>.
+
+=item C<${add}_addignore>
+
+If true, ignore this entry
+
+=back
+

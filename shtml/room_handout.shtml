@@ -1,0 +1,124 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>aktueller Raum</gettext>: <!--#echo var="room" --> - <gettext>Austeilen</gettext></title>
+<!--#include file="css.shtml.inc" -->
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-room.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Aktueller Raum</gettext>: <!--#echo var="room" -->
+:: <gettext>Austeilen</gettext></h2>
+
+<p>
+<gettext>Nutzung:</gettext>
+
+<!--#echo var="editinguser" --> <gettext>unterrichtet in Raum</gettext>
+<!--#echo var="room" -->.
+<!--#if expr="$endedittime" -->
+<gettext>Unterrichtsende um</gettext> <!--#echo var="endedittime" -->.
+<!--#endif -->
+</p>
+
+<!--#if expr="$exammode" -->
+<p><gettext>Klassenarbeitsmodus ist <strong>aktiv</strong>.</gettext></p>
+<!--#else -->
+<p><gettext>Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.</gettext></p>
+<!--#endif -->
+
+
+<form method="post">
+
+
+<h3><gettext>Auszuteilende Dateien</gettext></h3>
+
+<!--#if expr="$teacher_share_files" -->
+<ul>
+<!--#if expr="$loop_teacher_share_files" -->
+	<li><!--#if expr="$teacher_share_files{isdir}" --><img src="img/folder.gif" alt="*"><!--#else --><img src="img/file.gif" alt=""><!--#endif -->
+	    <!--#echo var="teacher_share_files{name}" --></li>
+<!--#endif -->
+</ul>
+<!--#else -->
+<p><gettext>Keine Dateien</gettext><p>
+<!--#endif -->
+<p><input type="submit" value="Ansicht aktualisieren"></p>
+
+
+<table id="roomhandoutcopy" class="liste">
+<tr>
+<th><gettext>Hostname</gettext></th>
+<th><gettext>Login</gettext></th>
+<th><gettext>Auswahl</gettext></th>
+</tr>
+<!--#if expr="$loop_overview_workstations" -->
+<!--#if expr="$overview_workstations{editing}" -->
+<tr class="editing">
+<!--#if expr="$odd" --><!--#set var="odd" value="0" -->
+<!--#else --><!--#set var="odd" value="1" --><!--#endif -->
+<!--#else -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<!--#endif -->
+	<td><!--#if expr="$overview_workstations{first}" -->
+	    <!--#echo var="overview_workstations{name}" -->
+	    <!--#endif --></td>
+	<!--#if expr="$overview_workstations{login}" -->
+	<td>
+	    <!--#echo var="overview_workstations{login}" -->
+	</td>
+	<td><!--#if expr="$overview_workstations{editing}" -->
+		<input type="checkbox" disabled><!--#else -->
+		<input type="checkbox" name="${overview_workstations{login}};handout" checked>
+	<!--#endif --></td>
+	<!--#else -->
+	<td>-</td>
+	<td></td>
+	<!--#endif -->
+</tr>
+<!--#endif -->
+<tr>
+<td colspan="2"></td>
+<td>|</td>
+</tr>
+<tr class="quickselection">
+<td colspan="2"><gettext>Schnellauswahl</gettext></td>
+<td><input class="button" type="button" value="Aus" name="handout" onClick="check_uncheck(this)" checked></td>
+</tr>
+</table>
+
+<p><input type="submit" name="handoutcopy" value="Austeilen"></p>
+</form>
+
+</div>
+
+<div id="info">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext>Info</gettext></h2>
+
+<p><gettext>Auszuteilende Dateien m&uuml;ssen in Ihrem Heimatverzeichnis unter
+&#8222;_auszuteilen -&gt; auszuteilen-aktueller_raum&#8220; abgelegt sein. Der Inhalt dieses Ordners wird hier
+aufgelistet.<br>
+Nachtr&auml;glich dorthin abgelegte Dateien k&ouml;nnen Sie &uuml;ber die Schaltfl&auml;che &#8222;Ansicht aktualiseren&#8220;
+sichtbar machen.</gettext></p>
+<p><gettext>Die Sch&uuml;ler/innen finden die ausgeteilten Dateien in ihrem Heimatverzeichnis unter
+&#8222;__austeilen -&gt; austeilen-aktueller_raum.&#8220;</gettext></p>
+
+<!--#include file="footer_info.shtml.inc" -->
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

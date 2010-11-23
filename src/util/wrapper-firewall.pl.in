@@ -1,0 +1,664 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+wrapper-firewall.pl - wrapper for configuration of firewall
+
+=head1 SYNOPSIS
+
+ my $id = $userdata{id};
+ my $password = 'secret';
+ my $app_id = Schulkonsole::Config::INTERNETONOFFAPP;
+
+ open SCRIPT, "| $Schulkonsole::Config::_wrapper_firewall";
+ print SCRIPT <<INPUT;
+ $id
+ $password
+ $app_id
+ 1
+ 00:00:39:F2:C9:A1
+ 00:00:39:F2:C9:A2
+
+ INPUT
+
+=head1 DESCRIPTION
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Sophomorix::SophomorixAPI;
+use Sophomorix::SophomorixConfig;
+use Schulkonsole::Config;
+use Schulkonsole::DB;
+use Schulkonsole::RoomSession;
+use Schulkonsole::Firewall;
+
+
+
+my $id = <>;
+$id = int($id);
+my $password = <>;
+chomp $password;
+
+my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
+exit -32 unless $userdata;
+
+my $app_id = <>;
+($app_id) = $app_id =~ /^(\d+)$/;
+exit -33
+	unless defined $app_id && $Schulkonsole::Config::_root_apps[$app_id];
+
+
+
+my $permissions = Schulkonsole::Config::permissions_apps();
+my $groups = Schulkonsole::DB::user_groups(
+	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
+
+my $app;
+foreach my $group (('ALL', keys %$groups)) {
+	foreach my $name (keys %{ $$permissions{$group} }) {
+		if ($Schulkonsole::Config::_root_app_name_ids{$name} == $app_id) {
+			$app = $Schulkonsole::Config::_root_apps[$app_id];
+			last;
+		}
+	}
+}
+exit -34 unless $app;
+
+
+SWITCH: {
+
+=head3 internet_on_off
+
+numeric constant: C<Schulkonsole::Config::INTERNETONOFFAPP>
+
+=head4 Description
+
+invokes C<<
+internet_on_off.sh --trigger=<on|off> --maclist=<mac1,mac2,...,macn>
+>>
+
+
+=head4 Parameters from standard input
+
+=over
+
+=item trigger
+
+C<1> (on) or C<0> (off)
+
+=item mac
+
+MAC-addresses one per line, end with empty line
+
+Format of address is xx:xx:xx:xx:xx:xx where xx is a hexadecimal value.
+
+=back
+
+
+=head3 intranet_on_off
+
+numeric constant: C<Schulkonsole::Config::INTRANETONOFFAPP>
+
+=head4 Description
+
+invokes C<<
+intranet_on_off.sh --trigger=<on|off> --maclist=<mac1,mac2,...,macn>
+>>
+
+
+=head4 Parameters from standard input
+
+=over
+
+=item trigger
+
+C<1> (on) or C<0> (off)
+
+=item mac
+
+MAC-addresses one per line, end with empty line
+
+Format of address is xx:xx:xx:xx:xx:xx where xx is a hexadecimal value.
+
+=back
+
+=cut
+
+(   $app_id == Schulkonsole::Config::INTERNETONOFFAPP
+ or $app_id == Schulkonsole::Config::INTRANETONOFFAPP) and do {
+	my $trigger = <>;
+	$trigger = int($trigger) ? 'on' : 'off';
+
+	my @macs;
+	while (my $mac = <>) {
+		last if $mac =~ /^$/;
+
+		($mac) = $mac =~ /^(\w{2}(?::\w{2}){5})$/;
+		exit -35 unless $mac;
+
+		push @macs, $mac;
+	}
+	exit -36 unless @macs;
+
+	my $opts = "--trigger=$trigger --maclist=" . join(',', @macs);
+
+	# set ruid, so that ssh searches for .ssh/ in /root
+	local $< = $>;
+	local $) = 0;
+	local $( = $);
+	umask(022);
+	exec "$app $opts" or last SWITCH;
+};
+
+=head3 urlfilter_on_off
+
+numeric constant: C<Schulkonsole::Config::URLFILTERONOFFAPP>
+
+=head4 Description
+
+invokes C<<
+urlfilter_on_off.sh --trigger=<on|off> --hostlist=<host1,host2,...,hostn>
+>>
+
+
+=head4 Parameters from standard input
+
+=over
+
+=item trigger
+
+C<1> (on) or C<0> (off)
+
+=item host
+
+hostnames one per line, end with empty line
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::URLFILTERONOFFAPP and do {
+	my $trigger = <>;
+	$trigger = int($trigger) ? 'on' : 'off';
+
+	my @hosts;
+	while (my $host = <>) {
+		last if $host =~ /^$/;
+
+		($host) = $host =~ /^([\w.-]+)$/i;
+		exit -37 unless $host;
+
+		push @hosts, $host;
+	}
+	exit -38 unless @hosts;
+
+	my $opts = "--trigger=$trigger --hostlist=" . join(',', @hosts);
+
+	# set ruid, so that ssh searches for .ssh/ in /root
+	local $< = $>;
+	local $) = 0;
+	local $( = $);
+	umask(022);
+	exec "$app $opts" or last SWITCH;
+};
+
+=head3 urlfilter_check
+
+numeric constant: C<Schulkonsole::Config::URLFILTERCHECKAPP>
+
+=head4 Description
+
+invokes C<check_urlfilter.sh>
+
+=cut
+
+$app_id == Schulkonsole::Config::URLFILTERCHECKAPP and do {
+	# set ruid, so that ssh searches for .ssh/ in /root
+	local $< = $>;
+	exec "$app" or last SWITCH;
+};
+
+=head3 all_on
+
+numeric constant: C<Schulkonsole::Config::ALLONAPP>
+
+=head4 Description
+
+Resets the workstation settings in a room
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<room>
+
+The name of the room
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::ALLONAPP and do {
+	my $room = <>;
+	($room) = $room =~ /^([\w -]+)$/;
+	exit -39 unless $room;
+
+	my $room_session = room_session($room);
+
+	all_on($room_session);
+
+	$room_session->delete();
+
+	exit 0;
+};
+
+=head3 all_on_at
+
+numeric constant: C<Schulkonsole::Config::ALLONATAPP>
+
+=head4 Description
+
+Resets the workstation settings in a room at a given time
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<room>
+
+The name of the room
+
+=item C<time>
+
+Absolute time in seconds since the Epoch
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::ALLONATAPP and do {
+	my $room = <>;
+	($room) = $room =~ /^([\w -]+)$/;
+	exit -39 unless $room;
+
+	my $time = <>;
+	($time) = $time =~ /^(\d+)$/;
+	exit -41 unless $time;
+
+	{ # write values and close session
+	my $room_session = room_session($room);
+	$room_session->param('end_time', $time);
+	}
+
+	my $pid = fork;
+	exit -44 unless defined $pid;
+
+	if (not $pid) {
+		close STDIN;
+		close STDOUT;
+		close STDERR;
+		open STDOUT, ">>/dev/null" or die;
+		open STDERR, ">>&STDOUT" or die;
+
+		sleep $time - $^T;
+
+		my $room_session = room_session($room);
+
+		my $stored_room = $room_session->param('name');
+		exit -45 unless $stored_room;
+		my $stored_id = $room_session->param('user_id');
+		exit -45 unless $stored_id;
+		my $stored_time = $room_session->param('end_time');
+		exit -45 unless $stored_time;
+		my $is_exam_mode = $room_session->param('test_step');
+
+		if (    $stored_time == $time
+		    and $stored_id == $id
+		    and $stored_room eq $room
+			and not $is_exam_mode) {
+
+			Schulkonsole::DB::reconnect();
+			all_on($room_session);
+
+			$room_session->delete();
+		}
+	}
+
+	exit 0;
+};
+
+=head3 rooms_reset
+
+numeric constant: C<Schulkonsole::Config::ROOMSRESETAPP>
+
+=head4 Description
+
+Resets the workstation settings in a room
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<scope>
+
+0 (= all)
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::ROOMSRESETAPP and do {
+	my $scope = <>;
+	($scope) = $scope =~ /^([01])$/;
+	exit -45 unless defined $scope;
+
+	if ($scope == 0) {
+		my $opts = '--all';
+		$< = $>;
+		exec "$app $opts" or last SWITCH;
+	} else {
+		my @rooms_reset;
+		while (<>) {
+			last if /^$/;
+			my ($room) = /^([\w -]+)$/;
+			exit -39 unless $room;
+			push @rooms_reset, $room;
+		}
+		my @hosts_reset;
+		while (<>) {
+			last if /^$/;
+			my ($host) = /^([\w.-]+)$/i;
+			exit -37 unless $host;
+			push @hosts_reset, $host;
+		}
+
+		my $is_error = 0;
+		local $< = $>;
+		local $) = 0;
+		local $( = $);
+		umask(022);	# otherwise linuxmuster-reset will create files without
+		            # read permissions for us
+
+		foreach my $room (@rooms_reset) {
+			system("$app --room=\Q$room\E") == 0 or $is_error++;
+		}
+		foreach my $host (@hosts_reset) {
+			system("$app --host=\Q$host\E") == 0 or $is_error++;
+		}
+
+		exit 0 unless $is_error;
+
+		last SWITCH;
+	}
+};
+
+}
+
+
+
+exit -2;	# program error
+
+
+
+sub room_session {
+	my $room = shift;
+
+	my $session = new Schulkonsole::RoomSession($room);
+
+	exit -1 unless $session;
+
+	# 'unprivileged' is set in the main CGI-script
+	# do not keep a session, that we created as root
+	if (not $session->param('unprivileged')) {
+		$session->delete();
+		exit 0;
+	}
+
+	return $session;
+}
+
+
+
+
+sub all_on {
+	my $room_session = shift;
+
+	my $workstations
+		= Schulkonsole::Config::workstations_room($room_session->param('name'));
+
+	if ($room_session->param('test_step')) {
+		my $room = $room_session->param('name');
+		my $editing_userdata = Schulkonsole::DB::get_userdata_by_id(
+				$room_session->param('user_id'));
+		my $opts = "--teacher \Q$$editing_userdata{uid}"
+			. ' --collect --exam'
+			. " --room \Q$room";
+
+		my $app = $Schulkonsole::Config::_root_apps[Schulkonsole::Config::COLLECTAPP];
+
+		local $< = $>;
+		local $) = 0;
+		local $( = $);
+		umask(022);
+		system "$app $opts";
+
+		$app = $Schulkonsole::Config::_root_apps[Schulkonsole::Config::RESETROOMAPP];
+		$opts = " --reset-room \Q$room";
+		system "$app $opts";
+
+
+		$app = $Schulkonsole::Config::_root_apps[Schulkonsole::Config::SETPASSWORDSAPP];
+		$opts = " --hide --random --rooms \Q$room";
+		system "$app $opts";
+	}
+
+	my $oldsettings = $room_session->param('oldsettings');
+
+	my $blocked_hosts_internet
+		= Schulkonsole::Firewall::blocked_hosts_internet();
+	my $blocked_hosts_intranet
+		= Schulkonsole::Firewall::blocked_hosts_intranet();
+	my $unfiltered_hosts = Schulkonsole::Firewall::unfiltered_hosts();
+	my @internet_ons;
+	my @internet_offs;
+	my @intranet_ons;
+	my @intranet_offs;
+	my @webfilter_ons;
+	my @webfilter_offs;
+	foreach my $workstation (keys %$workstations) {
+		my ($mac) = $$workstations{$workstation}{mac} =~ /^(\w{2}(?::\w{2}){5})$/;
+		my ($host) = $$workstations{$workstation}{ip} =~ /^([\w.-]+)$/i;
+		if (    $$oldsettings{blocked_hosts_internet}
+		    and    $$oldsettings{blocked_hosts_internet}{$mac}
+		        != $$blocked_hosts_internet{$mac}) {
+			if ($$oldsettings{blocked_hosts_internet}{$mac}) {
+				push @internet_offs, $mac;
+			} else {
+				push @internet_ons, $mac;
+			}
+		}
+		if (    $$oldsettings{blocked_hosts_intranet}
+		    and    $$oldsettings{blocked_hosts_intranet}{$mac}
+		        != $$blocked_hosts_intranet{$mac}) {
+			if ($$oldsettings{blocked_hosts_intranet}{$mac}) {
+				push @intranet_offs, $mac;
+			} else {
+				push @intranet_ons, $mac;
+			}
+		}
+		if (    $$oldsettings{unfiltered_hosts}
+		    and    $$oldsettings{unfiltered_hosts}{$mac}
+		        != $$unfiltered_hosts{$mac}) {
+			if ($$oldsettings{unfiltered_hosts}{$mac}) {
+				push @webfilter_offs, $host;
+			} else {
+				push @webfilter_ons, $host;
+			}
+		}
+	}
+
+
+	# set ruid, so that ssh searches for .ssh/ in /root
+	local $< = $>;
+	local $) = 0;
+	local $( = $);
+	umask(022);
+	if (@webfilter_offs) {
+		my $opts = "--trigger=off --hostlist=" . join(',', @webfilter_offs);
+
+		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::URLFILTERONOFFAPP]
+				. ' ' . $opts;
+	}
+	if (@webfilter_ons) {
+		my $opts = "--trigger=on --hostlist=" . join(',', @webfilter_ons);
+
+		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::URLFILTERONOFFAPP]
+				. ' ' . $opts;
+	}
+
+	if (@internet_ons) {
+		my $opts = "--trigger=on --maclist=" . join(',', @internet_ons);
+
+		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::INTERNETONOFFAPP]
+			. ' ' . $opts;
+	}
+	if (@internet_offs) {
+		my $opts = "--trigger=off --maclist=" . join(',', @internet_offs);
+
+		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::INTERNETONOFFAPP]
+			. ' ' . $opts;
+	}
+
+	if (@intranet_ons) {
+		my $opts = "--trigger=on --maclist=" . join(',', @intranet_ons);
+
+		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::INTRANETONOFFAPP]
+			. ' ' . $opts;
+	}
+	if (@intranet_offs) {
+		my $opts = "--trigger=off --maclist=" . join(',', @intranet_offs);
+
+		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::INTRANETONOFFAPP]
+			. ' ' . $opts;
+	}
+
+
+	if ($$oldsettings{printers_accept}) {
+		my %value_type = (
+			DenyUser => 2,
+			Accepting => 1,
+		);
+	
+		open PRINTERSCONF, "<$Schulkonsole::Config::_cups_printers_conf_file"
+			or exit -64;
+	
+		my $printer;
+		my %printer_info;
+		while (<PRINTERSCONF>) {
+			if (/^<.*Printer\s+(.+)>/) {
+				$printer = $1;
+			} elsif (m:^</:) {
+				$printer = undef;
+			} elsif (    my ($name, $value) = /^([DA]\S+)\s+(.*)$/
+			         and $printer) {
+				if ($value_type{$name}) {
+					if ($value_type{$name} == 2) {
+						$printer_info{$printer}{$name}{$value} = 1;
+					} else {
+						$printer_info{$printer}{$name} = $value;
+					}
+				}
+			}
+		}
+	
+		close PRINTERSCONF;
+
+
+		my $printer_on_off_app
+			= $Schulkonsole::Config::_root_apps[Schulkonsole::Config::PRINTERONOFFAPP];
+		foreach my $printer (keys %{ $$oldsettings{printers_accept} }) {
+			if (    $printer_info{$printer}
+			    and $$oldsettings{printers}{$printer}) {
+				if ($$oldsettings{printers_accept}{$printer}) {
+					if ($printer_info{$printer}{Accepting} ne 'Yes') {
+						system "$$printer_on_off_app[0] \Q$printer";
+					}
+				} else {
+					if ($printer_info{$printer}{Accepting} eq 'Yes') {
+						system "$$printer_on_off_app[1] \Q$printer";
+					}
+				}
+	
+				my $old_deny_users
+					= $$oldsettings{printers}{$printer}{DenyUser};
+				my %deny_users;
+				if ($printer_info{$printer}{DenyUser}) {
+					%deny_users = %{ $printer_info{$printer}{DenyUser} };
+				}
+
+				if ($old_deny_users) {
+					foreach my $user (keys %$old_deny_users) {
+						if ($$old_deny_users{$user}) {
+							$deny_users{$user} = 1 unless $deny_users{$user};
+						} else {
+							delete $deny_users{$user}
+								if exists $deny_users{$user};
+						}
+					}
+				}
+				my @deny_users = map { quotemeta } keys %deny_users;
+	
+				if ( @deny_users ) {
+					system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::PRINTERALLOWDENYAPP]
+						. " -p\Q$printer\E -u deny:" . join(',', @deny_users);
+				} else {
+					system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::PRINTERALLOWDENYAPP]
+						. " -p\Q$printer\E -u deny:none";
+				}
+			}
+		}
+	}
+
+
+
+	if ($$oldsettings{share_states}) {
+		my $old_share_states = $$oldsettings{share_states};
+		my @shares_on;
+		my @shares_off;
+		foreach my $login_id (keys %$old_share_states) {
+			my $login_userdata
+				= Schulkonsole::DB::get_userdata_by_id($login_id);
+			next unless $login_userdata;
+			my $share_dir
+				= "$$login_userdata{homedirectory}/$Language::share_dir/";
+	
+			if (-d $share_dir) {
+				my $mode = (stat $share_dir)[2];
+				my $share_state = (($mode & 05) == 05);
+	
+				if ($$old_share_states{$login_id}) {
+					push @shares_on, "\Q$$login_userdata{uid}" unless $share_state;
+				} else {
+					push @shares_off, "\Q$$login_userdata{uid}" if $share_state;
+				}
+	
+			}
+		}
+
+		my $shares_app
+		  = $Schulkonsole::Config::_root_apps[Schulkonsole::Config::SHARESONOFFAPP];
+
+		system $shares_app
+			. " --teacher \Q$$userdata{uid}\E --shares --users " . join(',', @shares_on)
+			if @shares_on;
+		system $shares_app
+			. " --teacher \Q$$userdata{uid}\E --noshares --users " . join(',', @shares_off)
+			if @shares_off;
+	}
+
+
+	return 1;
+}
+

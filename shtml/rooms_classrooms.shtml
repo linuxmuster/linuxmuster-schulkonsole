@@ -1,0 +1,88 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>R&auml;ume</gettext> - <gettext>EDV-R&auml;ume</gettext></title>
+<!--#include file="css.shtml.inc" -->
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-rooms.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<!--#if expr="$unconfigured" -->
+<p class="important">
+<gettext>Die Liste der konfigurierten Hosts und ihrer R&auml;me stimmt nicht
+mit den tats&auml;chlich im System vorhandenen Hosts &uuml;berein.</gettext>
+<gettext>Bitte &uuml;berpr&uuml;fen Sie die <a href="hosts">Hosts-Liste</a>.</gettext>
+</p>
+<!--#else -->
+<!--#if expr="$unimported" -->
+<p class="important">
+<gettext>Es wurden noch nicht alle Hosts mit ihren R&auml;men in das
+System &uuml;bernommen.<gettext>
+<gettext>Bitte &uuml;berpr&uuml;fen Sie die <a href="hosts">Hosts-Liste</a>.</gettext>
+</p>
+<!--#endif -->
+<!--#endif -->
+
+
+
+<h2><gettext>R&auml;ume</gettext></h2>
+
+<form method="post">
+
+
+<table id="rooms" class="liste">
+<col width="80%">
+<col width="20%">
+<tr>
+<th><gettext>Raumbezeichnung</gettext></th>
+<th><gettext>Computerraum</gettext></th>
+</tr>
+<!--#if expr="$loop_rooms" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><label for="${rooms{name}}_classroom"><!--#echo var="rooms{name}" --></label></td>
+<!--#if expr="$rooms{selected}" -->
+<td><input type="checkbox" id="${rooms{name}}_classroom" name="${rooms{name}}_classroom" checked></td>
+<!--#else -->
+<td><input type="checkbox" id="${rooms{name}}_classroom" name="${rooms{name}}_classroom"></td>
+<!--#endif -->
+</tr>
+<!--#endif -->
+</table>
+
+
+
+<p>
+<input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
+</p>
+
+</form>
+
+
+</div>
+
+<div id="info">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext>Info</gettext></h2>
+
+<p><gettext>Legen Sie hier fest, welche R&auml;ume von der Schulkonsole als Computerraum
+unter &#8222;aktueller Raum&#8220; verwaltbar sein sollen.</gettext></p>
+
+<!--#include file="footer_info.shtml.inc" -->
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

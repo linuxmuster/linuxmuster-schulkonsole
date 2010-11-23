@@ -1,0 +1,200 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+room_handout - hand out copies of files to room
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/room_handout
+
+=head1 DESCRIPTION
+
+C<room_handout> lets you copy files to members of a selected room
+from your directory. The HTML template is room_handout.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session and
+Schulkonsole::Room::set_vars()
+C<room_handout> provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Room;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::Session;
+
+my $this_file = 'room_handout';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+my $q = $sk_session->query();
+
+my $room_session = new Schulkonsole::Room($sk_session);
+
+
+if (   not $room_session
+    or not $room_session->info('is_editing')) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room/g;
+	$sk_session->redirect($url);
+}
+
+if ($room_session->param('test_step')) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room_test/g;
+	$sk_session->redirect($url);
+}
+
+
+
+my $editing_userdata = $room_session->info('editing_userdata');
+my $editing_user = $$editing_userdata{uid};
+
+my $workstations
+	= Schulkonsole::Config::workstations_room($room_session->info('name'));
+my $workstation_users = $room_session->workstation_users();
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+if ($q->param('handoutcopy')) {
+	my @users;
+	my $is_all_users = 1;
+	foreach my $host (keys %$workstation_users) {
+		foreach my $userdata (@{ $$workstation_users{$host} }) {
+			my $user = $$userdata{uid};
+			next if $user eq $editing_user;
+
+			if ($q->param("$user;handout")) {
+				push @users, $user;
+			} elsif ($is_all_users) {
+				$is_all_users = 0;
+			}
+		}
+	}
+
+	if (@users) {
+		eval {
+		Schulkonsole::Sophomorix::handoutcopy_from_room_to_users(
+			$id, $password, @users);
+
+		if ($is_all_users) {
+			$sk_session->set_status($sk_session->d()->get('Ausgeteilt'), 0);
+		} else {
+			$sk_session->set_status($sk_session->d()->get('Ausgeteilt an')
+				. ' ' . join(', ', @users),
+			0);
+		}
+		};
+		if ($@) {
+			$sk_session->standard_error_handling($this_file, $@);
+		}
+	} else {
+		$sk_session->set_status($sk_session->d()->get(
+			'Keine Benutzer ausgew&auml;hlt'), 1);
+	}
+}
+
+
+eval {
+my $teacher_share_files = Schulkonsole::Sophomorix::ls_handoutcopy_current_room(
+	$id, $password);
+
+=item C<teacher_share_files>
+
+Available files as returned by C<Schulkonsole::Sophomorix::create_file_list()>
+
+=cut
+
+$sk_session->set_var('teacher_share_files',
+	Schulkonsole::Sophomorix::create_file_list($teacher_share_files));
+};
+if ($@) {
+	if (    ref $@
+	    and $@->{code} == Schulkonsole::Error::WRAPPER_SOPHOMORIX_NO_SUCH_DIRECTORY) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Verzeichnis zum Austeilen nicht gefunden'),
+				1);
+	} else {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+}
+
+
+my @array_overview_workstations;
+foreach my $workstation (sort keys %$workstations) {
+	my $first_login = 1;
+	if (    $$workstation_users{$workstation}
+	    and @{ $$workstation_users{$workstation} }) {
+		foreach my $userdata (sort { $$a{uid} cmp $$b{uid} }
+		                           @{ $$workstation_users{$workstation} }) {
+			my $overview_workstation = {
+				name => $workstation,
+				editing => ($$userdata{uid} eq $editing_user),
+				login => $$userdata{uid},
+				first => $first_login,
+			};
+			push @array_overview_workstations, $overview_workstation;
+
+			$first_login = 0;
+		}
+	}
+}
+
+=item C<overview_workstations>
+
+Users logged in on workstations in room as an array of hashes with
+the keys
+
+=over
+
+=item C<name>
+
+Name of a workstation
+
+=item C<editing>
+
+True if the logged in user is giving a lesson in the room
+
+=item C<login>
+
+Login of the user
+
+=item C<first>
+
+True if the user is the first of all users on the workstation
+
+=back
+
+=cut
+
+$sk_session->set_var('overview_workstations', \@array_overview_workstations);
+
+
+$room_session->set_vars($sk_session);
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<handoutcopy>
+
+Hand out copies to selected users
+
+=item C<${overview_workstations{login}};handout>
+
+Checkboxes created in loop over template variable C<overview_workstations>.
+Copying is performed with the selected logins.
+
+=back
+

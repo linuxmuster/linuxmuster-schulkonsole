@@ -1,0 +1,189 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Benutzer</gettext> - <gettext>&Auml;nderungen durchf&uuml;hren</gettext></title>
+<!--#include file="css.shtml.inc" -->
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-user.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Benutzerverwaltung</gettext> :: <gettext>&Auml;nderungen durchf&uuml;hren</gettext></h2>
+
+<form method="post">
+
+<!--#if expr="$isalling" -->
+<p>
+<gettext>Benutzer anlegen/versetzen/l&ouml;schen l&auml;uft.</gettext>
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="all" value="Benutzer anlegen/versetzen/l&ouml;schen">
+</p>
+<!--#endif -->
+
+
+<hr>
+
+
+<!--#if expr="$isadding" -->
+<p>
+<gettext>Anlegen l&auml;uft.</gettext>
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="add" value="Benutzer anlegen">
+</p>
+<!--#endif -->
+
+<!--#if expr="$logadd" -->
+<pre>
+<!--#echo var="logadd" -->
+</pre>
+<p>
+<input type="submit" name="showlogadd" value="Aktualisieren">
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="showlogadd" value="Letzte Logdatei ansehen">
+</p>
+<!--#endif -->
+
+<!--#if expr="$addlist" -->
+<table id="commitadd" class="liste">
+<tr>
+<th><gettext>Bezeichner</gettext></th>
+<th><gettext>Gruppe</gettext></th>
+</tr>
+<!--#if expr="$loop_addlist" -->
+<tr>
+<td><!--#echo var="addlist{identifier}" --></td>
+<td><!--#echo var="addlist{group}" --></td>
+</tr>
+<!--#endif -->
+</table>
+<!--#endif -->
+
+
+<hr>
+
+<!--#if expr="$ismoving" -->
+<p>
+<gettext>Versetzen l&auml;uft.</gettext>
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="move" value="Benutzer versetzen">
+</p>
+<!--#endif -->
+
+<!--#if expr="$logmove" -->
+<pre>
+<!--#echo var="logmove" -->
+</pre>
+<p>
+<input type="submit" name="showlogmove" value="Aktualisieren">
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="showlogmove" value="Letzte Logdatei ansehen">
+</p>
+<!--#endif -->
+
+<!--#if expr="$movelist" -->
+<table id="commitmove" class="liste">
+<tr>
+<th><gettext>Benutzer</gettext></th>
+<th><gettext>von</gettext></th>
+<th><gettext>nach</gettext></th>
+<th><gettext>Status</gettext></th>
+</tr>
+<!--#if expr="$loop_movelist" -->
+<tr>
+<td><!--#echo var="movelist{login}" --></td>
+<td><!--#echo var="movelist{from}" --></td>
+<td><!--#echo var="movelist{to}" --></td>
+<td><!--#echo var="movelist{status}" --></td>
+</tr>
+<!--#endif -->
+</table>
+<!--#endif -->
+
+
+<hr>
+
+<!--#if expr="$iskilling" -->
+<p>
+<gettext>L&ouml;schen l&auml;uft.</gettext>
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="kill" value="Benutzer l&ouml;schen">
+</p>
+<!--#endif -->
+
+<!--#if expr="$logkill" -->
+<pre>
+<!--#echo var="logkill" -->
+</pre>
+<p>
+<input type="submit" name="showlogkill" value="Aktualisieren">
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="showlogkill" value="Letzte Logdatei ansehen">
+</p>
+<!--#endif -->
+
+<!--#if expr="$killlist" -->
+<table id="commitkill" class="liste">
+<tr>
+<th><gettext>Benutzer</gettext></th>
+<th><gettext>Bezeichner</gettext></th>
+</tr>
+<!--#if expr="$loop_killlist" -->
+<tr>
+<td><!--#echo var="killlist{login}" --></td>
+<td><!--#echo var="killlist{identifier}" --></td>
+</tr>
+<!--#endif -->
+</table>
+<!--#endif -->
+
+
+
+</form>
+
+
+</div>
+
+<div id="info">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext>Info</gettext></h2>
+
+<p><gettext>Auf dieser Seite bekommen Sie zun&auml;chst einen &Uuml;berblick &uuml;ber die
+durchzuf&uuml;hrenden &Auml;nderungen.</gettext></p>
+<p><gettext>Sie k&ouml;nnen die anstehenden Aktionen entweder in einem Durchgang oder nacheinander
+ausf&uuml;hren lassen.</gettext></p>
+<p><gettext>Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund ausgef&uuml;hrt
+wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen
+Prozesses k&ouml;nnen Sie sich &uuml;ber die Schaltfl&auml;che &#8222;Letze Logdatei ansehen&#8220;
+anzeigen lassen.</gettext></p>
+
+<!--#include file="footer_info.shtml.inc" -->
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

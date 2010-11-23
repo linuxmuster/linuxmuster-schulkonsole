@@ -1,0 +1,210 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+class_handout - hand out files to class
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/class_handout
+
+=head1 DESCRIPTION
+
+C<class_handout> lets you hand out files to a selected class.
+The HTML template is class_handout.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<class_handout>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::Sophomorix;
+
+my $this_file = 'class_handout';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+my $class = $q->param('classes');
+if (    $class
+    and $$classs{$class}) {
+	$sk_session->param('class', $class);
+}
+$class = $sk_session->param('class');
+
+if (   not $class
+    or not $$classs{$class}) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/class/g;
+	$sk_session->redirect($url);
+}
+
+
+my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
+
+
+if ($q->param('handout')) {
+	eval {
+	Schulkonsole::Sophomorix::handout_class($sk_session->userdata('id'),
+		$sk_session->get_password(),
+		$class);
+
+	$sk_session->set_status(
+		$sk_session->d()->get('Vorlagen bereitgestellt'), 0);
+	};
+	if ($@) {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+eval {
+my $teacher_share_files = Schulkonsole::Sophomorix::ls_handout_class(
+	$sk_session->userdata('id'),
+	$sk_session->get_password(),
+	$class);
+
+=item C<teacher_share_files>
+
+Available files as returned by C<Schulkonsole::Sophomorix::create_file_list()>
+
+=cut
+
+$sk_session->set_var('teacher_share_files',
+	Schulkonsole::Sophomorix::create_file_list($teacher_share_files));
+};
+if ($@) {
+	if (    ref $@
+	    and $@->{code} == Schulkonsole::Error::WRAPPER_SOPHOMORIX_NO_SUCH_DIRECTORY) {
+		$sk_session->set_status(
+			$sk_session->d()->get(
+				'Verzeichnis zum Bereitstellen nicht gefunden'),
+				1);
+	} else {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+}
+
+
+
+my @students;
+foreach my $user (sort {
+	$$class_userdatas{$a}{surname} cmp $$class_userdatas{$b}{surname} }
+	keys %$class_userdatas) {
+
+	my $student = {
+		login => $user,
+		firstname => $$class_userdatas{$user}{firstname},
+		surname => $$class_userdatas{$user}{surname},
+	};
+	push @students, $student;
+}
+
+=item C<students>
+
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=back
+
+=cut
+
+$sk_session->set_var('students', \@students);
+
+
+my @classs;
+foreach my $class (sort {
+    $$classs{$a}{displayname} cmp $$classs{$b}{displayname} } keys %$classs) {
+	push @classs, { gid => $class,
+	                name => $$classs{$class}{displayname} };
+}
+
+=item C<classes>
+
+An array of hashes of the classes of which the current user is a member
+with the keys
+
+=over
+
+=item C<gid>
+
+The GID of the class
+
+=item C<name>
+
+The name of the class
+
+=back
+
+=cut
+
+$sk_session->set_var('classes', \@classs);
+
+
+=item C<class>
+
+The name of the class
+
+=cut
+
+$sk_session->set_var('class', $$classs{$class}{displayname});
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<handout>
+
+Handout files
+
+=back
+

@@ -1,0 +1,53 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Login</gettext></title>
+<!--#include file="css.shtml.inc" -->
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="menu"> </div>
+<div id="special"> </div>
+
+<div id="submenu">
+<!--#include file="footer_submenu.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Anmeldung</gettext></h2>
+<p>
+<form method="post" action="">
+<table>
+<tr>
+<td><label for="username"><gettext>Benutzername</gettext></label>: </td>
+<td><input id="username" name="username"></td>
+</tr>
+<tr>
+<td><label for="password"><gettext>Passwort</gettext></label>: </td>
+<td><input id="password" name="password" type="password"></td>
+</table>
+<p><input type="submit" value="Anmelden"></p>
+</form>
+
+</div>
+
+<div id="info">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext>Info</gettext></h2>
+
+<p><gettext>Bitte melden Sie sich mit Benutzername und Passwort an.</gettext></p>
+
+<!--#include file="footer_info.shtml.inc" -->
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

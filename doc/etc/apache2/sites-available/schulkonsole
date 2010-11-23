@@ -1,0 +1,47 @@
+NameVirtualHost *:242
+<VirtualHost *:242>
+	ServerAdmin webmaster@localhost
+
+	DocumentRoot /var/www/
+	<Directory /var/www/>
+		Order allow,deny
+		deny from all
+		<Files favicon.ico>
+			Order allow,deny
+			allow from all
+		</Files>
+	</Directory>
+
+	Alias /schulkonsole/css/ /usr/share/schulkonsole/css/
+	Alias /schulkonsole/schulkonsole.js /usr/share/schulkonsole/shtml/schulkonsole.js
+	Alias /schulkonsole/img/ /usr/share/schulkonsole/img/
+	Alias /favicon.ico /usr/share/schulkonsole/img/favicon.ico
+
+
+	ScriptAlias /schulkonsole/ /usr/lib/schulkonsole/cgi-bin/
+	<Directory "/usr/lib/schulkonsole/cgi-bin/">
+		SSLRequireSSL
+		AllowOverride None
+		Options ExecCGI -MultiViews
+		RedirectMatch permanent ^/schulkonsole/$ /schulkonsole/start
+		Order allow,deny
+		Allow from all
+	</Directory>
+
+	RedirectMatch permanent ^/$ /schulkonsole/start
+	RedirectMatch permanent ^/schulkonsole$ /schulkonsole/start
+
+
+	ErrorLog /var/log/apache2/schulkonsole-error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/schulkonsole-access.log combined
+	ServerSignature On
+
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/private/server.pem
+    SSLCertificateKeyFile /etc/ssl/private/server.pem
+</VirtualHost>

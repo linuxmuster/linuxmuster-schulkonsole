@@ -1,0 +1,189 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+wrapper-printer.pl - wrapper for printer access
+
+=head1 SYNOPSIS
+
+ my $id = $userdata{id};
+ my $password = 'secret';
+ my $app_id = Schulkonsole::Config::PRINTERINFOAPP;
+
+ open SCRIPT, "| $Schulkonsole::Config::_wrapper_printer";
+ print SCRIPT <<INPUT;
+ $id
+ $password
+ $app_id
+
+ INPUT
+
+=head1 DESCRIPTION
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Data::Dumper;
+use Schulkonsole::Config;
+use Schulkonsole::DB;
+
+
+
+my $id = <>;
+$id = int($id);
+my $password = <>;
+chomp $password;
+
+my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
+exit -32 unless $userdata;
+
+my $app_id = <>;
+($app_id) = $app_id =~ /^(\d+)$/;
+exit -33
+	unless defined $app_id && $Schulkonsole::Config::_root_apps[$app_id];
+
+
+
+my $permissions = Schulkonsole::Config::permissions_apps();
+my $groups = Schulkonsole::DB::user_groups(
+	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
+
+my $app;
+foreach my $group (('ALL', keys %$groups)) {
+	foreach my $name (keys %{ $$permissions{$group} }) {
+		if ($Schulkonsole::Config::_root_app_name_ids{$name} == $app_id) {
+			$app = $Schulkonsole::Config::_root_apps[$app_id];
+			last;
+		}
+	}
+}
+exit -34 unless $app;
+
+
+my $opts;
+SWITCH: {
+
+=head3 printer_info
+
+numeric constant: C<Schulkonsole::Config::PRINTERINFOAPP>
+
+=head4 Description
+
+Dumps code to be C<eval>ed to a hash with the printer names as keys an
+as value a hash with configuration variable names as keys an their values
+as values.
+
+=head4 Parameters from standard input
+
+none
+
+=cut
+
+$app_id == Schulkonsole::Config::PRINTERINFOAPP and do {
+	my %value_type = (
+		AllowUser => 2,
+		DenyUser => 2,
+		State => 1,
+		StateMessage => 1,
+		Info => 1,
+		Location => 1,
+		Accepting => 1,
+	);
+
+	open PRINTERSCONF, "<$Schulkonsole::Config::_cups_printers_conf_file"
+		or exit -64;
+
+	my $printer;
+	my %printer_info;
+	while (<PRINTERSCONF>) {
+		if (/^<.*Printer\s+(.+)>/) {
+			$printer = $1;
+		} elsif (m:^</:) {
+			$printer = undef;
+		} elsif (    my ($name, $value) = /^(\S+)\s+(.*)$/
+		         and $printer) {
+			if ($value_type{$name}) {
+				if ($value_type{$name} == 2) {
+					$printer_info{$printer}{$name}{$value} = 1;
+				} else {
+					$printer_info{$printer}{$name} = $value;
+				}
+			}
+		}
+	}
+
+	close PRINTERSCONF;
+
+	my $data = Data::Dumper->new([ \%printer_info ]);
+	$data->Terse(1);
+	$data->Indent(0);
+	print $data->Dump;
+
+	exit 0;
+};
+$app_id == Schulkonsole::Config::PRINTERONOFFAPP and do {
+	my $on = <>;
+	($on) = $on =~ /^(\d)$/;
+
+	my @printers;
+	while (my $printer = <>) {
+		last if $printer =~ /^$/;
+
+		($printer) = $printer =~ /^(\S{0,127})$/;
+		exit -65 unless $printer;
+
+		push @printers, $printer
+	}
+	exit -66 unless @printers;
+
+	if ($on) {
+		foreach my $printer (@printers) {
+			system "$$app[0] \Q$printer";
+		}
+	} else {
+		foreach my $printer (@printers) {
+			system "$$app[1] \Q$printer";
+		}
+	}
+
+
+	exit 0;
+};
+$app_id == Schulkonsole::Config::PRINTERALLOWDENYAPP and do {
+	my %printer_users;
+
+	while (my $printer = <>) {
+		last if $printer =~ /^$/;
+		($printer) = $printer =~ /^(\S{0,127})$/;
+		exit -65 unless $printer;
+
+		$printer_users{$printer} = [];
+		while (my $user = <>) {
+			last if $user =~ /^$/;
+			($user) = $user =~ /^(\S+)$/;
+			exit -67 unless $user;
+
+			push @{ $printer_users{$printer} }, "\Q$user";
+		}
+	}
+	exit -66 unless %printer_users;
+
+
+	foreach my $printer (keys %printer_users) {
+		if ( @{ $printer_users{$printer} } ) {
+			system "$app -p\Q$printer\E -u deny:"
+				. join(',', @{ $printer_users{$printer} });
+		} else {
+			system "$app -p\Q$printer\E -u deny:none";
+		}
+	}
+
+	exit 0;
+};
+}
+
+
+
+exit -2;	# program error
+

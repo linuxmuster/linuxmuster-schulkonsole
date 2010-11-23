@@ -1,0 +1,68 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Einstellungen</gettext> - <gettext>Klassen</gettext></title>
+<!--#include file="css.shtml.inc" -->
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-settings.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Einstellungen</gettext> :: <gettext>Klassen</gettext></h2>
+
+<form method="post">
+
+<h3><gettext>Global</gettext></h3>
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr><th><gettext>Klassenname</gettext></th><th><gettext>sichtbar</gettext></th></tr>
+<!--#if expr="$loop_classes" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><label for="${classes{gid}}_visible"><!--#echo var="classes{name}" --></label></td><td>
+<!--#if expr="${classes{visible}}" -->
+<input type="checkbox" name="${classes{gid}}_visible" id="${classes{gid}}_visible" checked>
+<!--#else -->
+<input type="checkbox" name="${classes{gid}}_visible" id="${classes{gid}}_visible">
+<!--#endif -->
+</td>
+</tr>
+<!--#endif -->
+</table>
+
+<p>
+<input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
+</p>
+
+</form>
+
+
+</div>
+
+<div id="info">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext>Info</gettext></h2>
+
+<p><gettext>Bearbeiten Sie hier die sichtbaren Klassen.</gettext></p>
+<p><gettext>F&uuml;r eine detaillierte Beschreibung der einzelnen Punkte
+konsultieren Sie bitte die Dokumentation.</gettext></p>
+
+<!--#include file="footer_info.shtml.inc" -->
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

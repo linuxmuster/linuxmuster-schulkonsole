@@ -1,0 +1,229 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+room_collect - collect files from users in a room
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/room_collect
+
+=head1 DESCRIPTION
+
+C<room_collect> lets you copy or move files of users in a selected room
+to your directory. The HTML template is room_collect.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session and
+Schulkonsole::Room::set_vars()
+C<room_collect> provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Room;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::Session;
+
+my $this_file = 'room_collect';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+my $q = $sk_session->query();
+
+my $room_session = new Schulkonsole::Room($sk_session);
+
+
+if (   not $room_session
+    or not $room_session->info('is_editing')) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room/g;
+	$sk_session->redirect($url);
+}
+
+if ($room_session->param('test_step')) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room_test/g;
+	$sk_session->redirect($url);
+}
+
+
+my $editing_userdata = $room_session->info('editing_userdata');
+my $editing_user = $$editing_userdata{uid};
+
+my $workstations
+	= Schulkonsole::Config::workstations_room($room_session->info('name'));
+my $workstation_users = $room_session->workstation_users();
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+if (   $q->param('collecttop')
+    or $q->param('collectbottom')) {
+	my @users;
+	my $is_all_users = 1;
+	foreach my $host (keys %$workstation_users) {
+		foreach my $userdata (@{ $$workstation_users{$host} }) {
+			my $user = $$userdata{uid};
+			next if $user eq $editing_user;
+
+			if ($q->param("$user;collect")) {
+				push @users, $user;
+			} elsif ($is_all_users) {
+				$is_all_users = 0;
+			}
+		}
+	}
+
+	if (@users) {
+		eval {
+		if (   (    $q->param('collecttop')
+		        and $q->param('deletetop'))
+		    or (    $q->param('collectbottom')
+		        and $q->param('deletebottom'))) {
+			Schulkonsole::Sophomorix::collect_from_room_users($id, $password,
+				$room_session->info('name'), @users);
+	
+			if ($is_all_users) {
+				$sk_session->set_status($sk_session->d()->get('Eingesammelt'),
+					0);
+			} else {
+				$sk_session->set_status(
+					$sk_session->d()->get('Eingesammelt von')
+					. ' ' . join(', ', @users),
+					0);
+			}
+		} else {
+			Schulkonsole::Sophomorix::collectcopy_from_room_users(
+				$id, $password,
+				$room_session->info('name'), @users);
+	
+			if ($is_all_users) {
+				$sk_session->set_status($sk_session->d()->get('Kopiert'), 0);
+			} else {
+				$sk_session->set_status($sk_session->d()->get('Kopiert von')
+					. ' ' . join(', ', @users),
+					0);
+			}
+		}
+		};
+		if ($@) {
+			$sk_session->standard_error_handling($this_file, $@);
+		}
+	} else {
+		$sk_session->set_status($sk_session->d()->get(
+			'Keine Benutzer ausgew&auml;hlt'), 1);
+	}
+}
+
+
+
+eval {
+my @login_ids;
+foreach my $host (keys %$workstation_users) {
+	foreach my $userdata (@{ $$workstation_users{$host} }) {
+		push @login_ids, $$userdata{id};
+	}
+}
+my $user_share_files = Schulkonsole::Sophomorix::ls_collect(
+	$sk_session->userdata('id'),
+	$sk_session->get_password(),
+	@login_ids);
+
+
+my @array_overview_workstations;
+foreach my $workstation (sort keys %$workstations) {
+	my $first_login = 1;
+	if (    $$workstation_users{$workstation}
+	    and @{ $$workstation_users{$workstation} }) {
+		foreach my $userdata (sort { $$a{uid} cmp $$b{uid} }
+		                           @{ $$workstation_users{$workstation} }) {
+			my $overview_workstation = {
+				name => $workstation,
+				editing => ($$userdata{uid} eq $editing_user),
+				login => $$userdata{uid},
+				firstname => $$userdata{firstname},
+				surname => $$userdata{surname},
+				first => $first_login,
+				files => Schulkonsole::Sophomorix::create_file_list(
+				         	$$user_share_files{$$userdata{id}}),
+			};
+			push @array_overview_workstations, $overview_workstation;
+
+			$first_login = 0;
+		}
+	}
+}
+
+=item C<overview_workstations>
+
+Users logged in on workstations in room as an array of hashes with
+the keys
+
+=over
+
+=item C<name>
+
+Name of a workstation
+
+=item C<editing>
+
+True if the logged in user is giving a lesson in the room
+
+=item C<login>
+
+Login of the user
+
+=item C<first>
+
+True if the user is the first of all users on the workstation
+
+=item C<files>
+
+A list of the user's collectable files as returned from
+C<Schulkonsole::Sophomorix::create_file_list()>
+
+=back
+
+=cut
+
+$sk_session->set_var('overview_workstations', \@array_overview_workstations);
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+$room_session->set_vars($sk_session);
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<collecttop>
+
+A submit button indicating that C<deletetop> is to be evaluated
+
+=item C<collectbottom>
+
+A submit button indicating that C<deletebottom> is to be evaluated
+
+=item C<deletetop>/C<deletebottom>
+
+If true the files are moved, copied otherwise
+
+=item C<${overview_workstations{login}};collect>
+
+Checkboxes created in loop over template variable
+C<overview_workstations>. Collecting is performed with the selected logins.
+
+=back
+

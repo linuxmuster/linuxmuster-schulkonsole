@@ -1,0 +1,245 @@
+linuxmuster-schulkonsole (0.9.20-lenny0) unstable; urgency=low
+
+  * tschmitt: next attempt to fix ssha based logins in DB.pm.
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Tue, 22 Jun 2010 13:18:34 +0200
+
+linuxmuster-schulkonsole (0.9.19-lenny0) unstable; urgency=low
+
+  * cplo: fixed implemented ssha based logins in DB.pm.
+  * cplo: added reboot workaround in linbo editor (#197).
+  * tschmitt: changed version to 0.9.19.
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Tue, 08 Jun 2010 08:35:02 +0200
+
+linuxmuster-schulkonsole (0.9.18-lenny0) unstable; urgency=low
+
+  * cplo: implemented ssha based logins.
+  * cplo: added reboot workaround in linbo editor (#197).
+  * tschmitt:
+    - changed version to 0.9.18.
+    - fixed german umlaut in shtml/user_teacherpasswords.shtml.
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Sat, 05 Jun 2010 13:56:55 +0200
+
+linuxmuster-schulkonsole (0.9.17.5-1) unstable; urgency=low
+
+  * roesslerrr: Added "_" and "-" to the allowed chars in project names on the school panel.
+  * cplo: Adapted error message when entering illegal characters.
+  * tschmitt: changed package dependency from libcgi-perl (obsolete) to libcgi-pm-perl.
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Tue, 20 Apr 2010 16:47:38 +0200
+
+linuxmuster-schulkonsole (0.9.17.4-1) unstable; urgency=low
+
+  * cplo, fixes #159: changed labes of buttons passwords_reset, passwords_random and
+    passwords_set and and according infotext.
+  * cplo, fixes #112: changes main menu entry from "Startseite" to "Mein Konto" and changes
+    caption of the site from "Startseite von" to "Konto von" and changes according
+    infotext.
+  * tschmitt: added automake, autoconf, gettext, gnulib to build depends.
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Wed, 10 Feb 2010 11:35:31 +0100
+
+linuxmuster-schulkonsole (0.9.17.3-1) unstable; urgency=low
+
+  * various modifications concerning to LINBO 1.1.0:
+    - removed linbo_pxedit from permissions.conf
+    - changed version to 0.9.17.3 in configure.ac
+    - hosts.shtml, hosts.in: removed pxegrubv2 and pxegrubv3 options
+    - linbo_new.shtml:
+      removed PATA option from dropdown, added notes
+    - linbo.shtml, linbo_edit.shtml, linbo_regpatchedit.shtml, linbo_images.shtml:
+      added notes
+    - Linbo.pm (start.conf manipulation for windows systems):
+      changed kernel from pxegrub to grub.exe,
+      removed append line handling, so it will be untouched by saving changes
+    - changed pxegrub to grub.exe in linbo os templates
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Wed, 26 Nov 2008 21:03:46 +0100
+
+linuxmuster-schulkonsole (0.9.17.2-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Wed, 26 Nov 2008 13:43:09 +0100
+
+linuxmuster-schulkonsole (0.9.17.1-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Mon, 27 Oct 2008 17:01:17 +0100
+
+linuxmuster-schulkonsole (0.9.17-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Tue,  2 Sep 2008 14:18:57 +0200
+
+linuxmuster-schulkonsole (0.9.16.2-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Mon, 28 Jul 2008 09:02:54 +0200
+
+linuxmuster-schulkonsole (0.9.16.1-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Fri, 25 Jul 2008 14:17:25 +0200
+
+linuxmuster-schulkonsole (0.9.16-8) unstable; urgency=low
+
+  * new upstream revision 97
+  
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Fri, 25 Jul 2008 10:24:08 +0200
+
+linuxmuster-schulkonsole (0.9.16-7) unstable; urgency=low
+
+  * new upstream revision 96
+  
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Thu, 24 Jul 2008 15:54:45 +0200
+
+linuxmuster-schulkonsole (0.9.16-6) unstable; urgency=low
+
+  * new upstream revision 86
+  
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Mon, 21 Jul 2008 19:07:09 +0200
+
+linuxmuster-schulkonsole (0.9.16-5) unstable; urgency=low
+
+  * added shtml templates to package linuxmuster-schulkonsole and removed them
+    from linuxmuster-schulkonsole-templates-base
+  * added two new options "pxegrub-v2" and "pxegrub-v3" to host options pull
+    down menu (needed for linbo)
+  
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Mon, 21 Jul 2008 11:24:59 +0200
+
+linuxmuster-schulkonsole (0.9.16-4) unstable; urgency=low
+
+  * fixed linbo templates
+  
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Sat, 19 Jul 2008 17:23:01 +0200
+
+linuxmuster-schulkonsole (0.9.16-3) unstable; urgency=low
+
+  * new upstream revision 83 (Aike):
+    - added LINBO templates
+    - regpatch and pxegrub.lst editors now show filenames
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Fri, 18 Jul 2008 17:09:44 +0200
+
+linuxmuster-schulkonsole (0.9.16-2) unstable; urgency=low
+
+  * new upstream revision 80 (Aike):
+    - lib/Schulkonsole/Linbo.pm, src/cgi-bin/linbo_edit.in, shtml/linbo_edit.shtml:
+      linbo start.conf option RemoteSyncEnabled renamed to NewEnabled
+    -  src/cgi-bin/rooms.in, shtml/rooms.shtml: call "linuxmuster-reset --all" only
+       on reset, if there are entries for rooms and hosts in room_defaults
+  * removed version from depended template packages in control file
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Fri, 18 Jul 2008 09:29:17 +0200
+
+linuxmuster-schulkonsole (0.9.16-1) unstable; urgency=low
+
+  * New upstream version 0.9.16
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Thu, 19 Jun 2008 13:38:22 +0200
+
+linuxmuster-schulkonsole (0.9.14.1-1) unstable; urgency=low
+
+  * www-, svn- und db-Optionen aus shtml/settings_users.shtml und
+    shtml/start.shtml entfernt.
+  * Seiten class_db, class_revision_control, class_www, project_db,
+    project_revision_control und project_www aus permissions.conf
+    entfernt
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Tue, 19 Feb 2008 16:14:05 +0000
+
+linuxmuster-schulkonsole (0.9.13.4-1) unstable; urgency=low
+
+  * New upstream revision 58, fixes several bugs
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Thu, 31 Jan 2008 08:44:00 +0100
+
+linuxmuster-schulkonsole (0.9.13.3-1) unstable; urgency=low
+
+  * New upstream release
+    (closes: #202 "Anzeige auskommentierter Eintraege in der lehrer.txt in der
+                   Schulkonsole")
+    (closes: #264 "Auskommentierte Raeume erscheinen in der Schulkonsole")
+    (closes: #273 "Aktionen wenn sophomorix gesperrt wurde")
+    (closes: #278 "Zusaetzliche Eigenschaft von Projekten: offen/geschlossen")
+    (closes: #297 "Steuerung der Webfreigabe fuer Lehrer in der Schulkonsole")
+    (closes: #314 "Konfiguration der Sitzungsdauer in der Schulkonsole")
+    (closes: #316 "Anpassungen im Klassenarbeitsmodus")
+    (closes: #321 "Unterricht kann nicht beendet werden bei aktiviertem
+                   Klassenarbeitsmodus")
+    (closes: #329 "klassenarbeitsmodus - aktualisierungsbuttons")
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Mon, 14 Jan 2008 14:15:37 +0100
+
+linuxmuster-schulkonsole (0.9.12-1) unstable; urgency=low
+
+  * DenyUser-Bug in wrapper-printer.pl.in und wrapper-firewall.pl.in gefixt (schliesst #303)
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Fri, 28 Sep 2007 16:41:58 +0200
+
+linuxmuster-schulkonsole (0.9.11-1) unstable; urgency=low
+
+  * new upstream release (schliesst #279)
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Sat, 04 Aug 2007 14:56:17 +0200
+
+linuxmuster-schulkonsole (0.9.10-1) unstable; urgency=low
+
+  * Version auf 0.9.10 hochgesetzt
+  * rt #271 gefixt (aktueller Raum, urlfilter check)
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Fri, 20 Jul 2007 13:12:55 +0200
+
+linuxmuster-schulkonsole (0.9.9-2) unstable; urgency=low
+
+  * Passwortaenderung in wrapper-sophomorix.pl gefixt (Aike)
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Sat, 07 Jul 2007 10:35:57 +0200
+
+linuxmuster-schulkonsole (0.9.9-1) unstable; urgency=low
+
+  * new upstream release
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Thu, 28 Jun 2007 17:48:50 +0200
+
+linuxmuster-schulkonsole (0.9.8-4) unstable; urgency=low
+
+  * paedML Logo mit angepasstem css ergaenzt (A. Mendyk)
+  
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Tue, 26 Jun 2007 07:21:02 +0200
+
+linuxmuster-schulkonsole (0.9.8-3) unstable; urgency=low
+
+  * Hilfetext in user_teachers.shtml modifiziert (schliesst #223)
+  * ueberschrift in user_check.shtml angepasst (schliesst #232)
+  * Hilfetext in user_check.shtml gekuerzt
+  * Hilfetext in start.shtml gekuerzt
+  * Hilfetext in room.shtml gekuerzt
+  * Hilfetext in room_handout.shtml gekuerzt
+  * Hilfetext in room_collect.shtml gekuerzt
+  * fehlenden Hilfetext in room_test_handout.shtml eingegeben
+  * fehlenden Hilfetext in room_test_password.shtml eingegeben
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Mon, 18 Jun 2007 20:19:14 +0200
+
+linuxmuster-schulkonsole (0.9.8-2) unstable; urgency=low
+
+  * new upstream release
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Mon, 11 Jun 2007 12:14:00 +0200
+
+linuxmuster-schulkonsole (0.9.8-1) unstable; urgency=low
+
+  * new upstream release
+  * einige Hinweistexte modifiziert und fuer neue Seiten ergaenzt
+  * Submenue Lehrerpasswoerter nach unten geschoben
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Tue, 05 Jun 2007 16:49:57 +0200

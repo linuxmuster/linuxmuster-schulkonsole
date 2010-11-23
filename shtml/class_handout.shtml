@@ -1,0 +1,87 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Klassen</gettext>: <!--#echo var="class" --> - <gettext>Bereitstellen</gettext></title>
+<!--#include file="css.shtml.inc" -->
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-class.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<!--#if expr="$classes" -->
+<form method="post">
+<p class="selectdomain">
+<select name="classes">
+<optgroup label="Klassen">
+<!--#if expr="$loop_classes" --> <option value="$classes{gid}"><!--#echo var="classes{name}" --></option>
+<!--#endif -->
+</optgroup>
+<optgroup label="aktuelle Klasse">
+<option value="$class_gid" selected><!--#echo var="class" --></option>
+</optgroup>
+</select>
+<input type="submit" value="Wechseln">
+</p>
+</form>
+<!--#endif -->
+
+
+<h2><gettext>Klassen</gettext> :: <gettext>Bereitstellen</gettext></h2>
+
+<h3><gettext>Ausgew&auml;hlte Klasse:</gettext> <!--#echo var="class" --></h3>
+
+
+<form method="post">
+
+
+<h3><gettext>Vorlagen</gettext></h3>
+
+<!--#if expr="$teacher_share_files" -->
+<ul>
+<!--#if expr="$loop_teacher_share_files" -->
+	<li><!--#if expr="$teacher_share_files{isdir}" -->
+	*<!--#endif --><!--#echo var="teacher_share_files{name}" --></li>
+<!--#endif -->
+</ul>
+<!--#else -->
+<p><gettext>Keine Dateien</gettext><p>
+<!--#endif -->
+<p><input type="submit" value="Ansicht aktualisieren"></p>
+
+
+<p><input type="submit" name="handout" value="Bereitstellen"></p>
+</form>
+
+
+
+
+</div>
+
+
+<div id="info">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext>Info</gettext></h2>
+
+<p><gettext>Ihre Vorlagen m&uuml;ssen in Ihrem Heimatverzeichnis unter
+&#8222;_bereitstellen -&gt; bereitstellen-Klasse&#8220; abgelegt sein.</gettext></p>
+<p><gettext>Nach dem Bet&auml;tigen der Schaltfl&auml;che &#8222;Bereitstellen&#8220;
+finden die Sch&uuml;ler/innen Ihre Vorlagen in ihrem Heimatverzeichnis unter
+&#8222;__vorlagen -&gt; vorlagen-Klasse&#8220;.</gettext></p>
+
+<!--#include file="footer_info.shtml.inc" -->
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

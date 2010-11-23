@@ -1,0 +1,190 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>linbo</gettext></title>
+<!--#include file="css.shtml.inc" -->
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-linbo.shtml.inc" -->
+</div>
+
+<div id="content">
+
+
+<!--#if expr="$deleteimage" -->
+
+<h2><gettext>Imagedatei l&ouml;schen</gettext></h2>
+
+<h3><gettext>Bitte best&auml;tigen</gettext></h3>
+
+<form method="post">
+<p><!--#echo var="deleteimage" --> <gettext>wirklich l&ouml;schen?</gettext></p>
+
+<p><input type="hidden" name="image" value="$deleteimage"><input type="submit" name="delete" value="Best&auml;tigen">
+<input type="submit" name="abort" value="Abbrechen"></p>
+
+</form>
+
+<!--#else -->
+<!--#if expr="$moveimage" -->
+<h2><gettext>Imagedatei umbenennen</gettext></h2>
+
+<h3><gettext>Bitte best&auml;tigen</gettext></h3>
+
+<form method="post">
+<p><!--#echo var="moveimage" --> <gettext>&uuml;berschreiben?</gettext></p>
+
+<p><input type="hidden" name="src" value="$src"><input type="hidden" name="dst" value="$moveimage"><input type="submit" name="move" value="&Uuml;berschreiben">
+<input type="submit" name="abort" value="Abbrechen"></p>
+
+</form>
+
+<!--#else -->
+<!--#if expr="$copyimage" -->
+<h2><gettext>Imagedatei kopieren</gettext></h2>
+
+<h3><gettext>Bitte best&auml;tigen</gettext></h3>
+
+<form method="post">
+<p><!--#echo var="copyimage" --> <gettext>&uuml;berschreiben?</gettext></p>
+
+<p><input type="hidden" name="src" value="$src"><input type="hidden" name="dst" value="$copyimage"><input type="submit" name="copy" value="&Uuml;berschreiben">
+<input type="submit" name="abort" value="Abbrechen"></p>
+
+</form>
+
+<!--#else -->
+<!--#if expr="$editfilename" -->
+
+<h2><!--#echo var="image" -->: <gettext>Imagebeschreibung editieren</gettext></h2>
+
+<form method="post">
+<p><textarea wrap="off" name="imagedesc" rows="20" cols="70"></textarea></p>
+<p><input type="hidden" name="filename" value="$editfilename"><input type="submit" name="edit" value="&Auml;nderungen speichern">
+<input type="submit" name="abort" value="Schlie&szlig;en"></p>
+
+</form>
+
+<!--#else -->
+<!--#if expr="$imageinfo" -->
+
+<h2><!--#echo var="image" -->: <gettext>Image-Informationen</gettext></h2>
+
+<form method="post">
+<pre id="imageinfo"><!--#echo var="imageinfo" --></pre>
+<p><input type="submit" name="abort" value="Schlie&szlig;en"></p>
+
+</form>
+<!--#else -->
+<!--#if expr="$imagelist" -->
+
+<h2><!--#echo var="image" -->: <gettext>Image-Liste</gettext></h2>
+
+<form method="post">
+<pre id="imagelist"><!--#echo var="imagelist" --></pre>
+<p><input type="submit" name="abort" value="Schlie&szlig;en"></p>
+
+</form>
+<!--#else -->
+
+<h2><gettext>Basisimages</gettext></h2>
+
+<form method="post">
+<table id="linbobaseimages" class="liste">
+
+<colgroup width="50%"></colgroup>
+<colgroup span="3" width="3%"></colgroup>
+<colgroup width="32%"></colgroup>
+<colgroup span="3" width="3%"></colgroup>
+
+<tr>
+<th>Imagename</th>
+<th></th>
+<th></th>
+<th></th>
+<th colspan="3">Umbenennen/Kopieren</th>
+<th></th>
+</tr>
+<!--#if expr="$loop_images_base" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+	<td><label for="${images_base}_newimage"><!--#echo var="images_base" --></label></td>
+	<td><input title="Beschreibung anzeigen/editieren" type="image" src="img/edit.png" alt="Beschreibung" name="${images_base}_editdesc" value="E"></td>
+	<td><input title="Information anzeigen" type="image" src="img/showinfo.png" alt="Info" name="${images_base}_info" value="I"></td>
+	<td><input title="Liste anzeigen" type="image" src="img/list.png" alt="Liste" name="${images_base}_list" value="L"></td>
+	<td><input id="${images_base}_newimage" name="${images_base}_newimage"></td>
+	<td><input title="Image umbenennen" type="image" src="img/move.png" alt="Umbenennen" name="${images_base}_move" value="U"></td>
+	<td><input title="Image kopieren" type="image" src="img/copy.png" alt="Kopieren" name="${images_base}_copy" value="K"></td>
+	<td><input title="Image l&ouml;schen" type="image" src="img/trash.png" alt="L&ouml;schen" name="${images_base}_delete" value="L"></td>
+</tr><!--#endif -->
+</table>
+
+</form>
+
+<hr>
+
+<h2>Differenzielle Images</h2>
+
+<form method="post">
+<table id="linboimages" class="liste">
+
+<colgroup width="53%"></colgroup>
+<colgroup span="2" width="3%"></colgroup>
+<colgroup width="32%"></colgroup>
+<colgroup span="3" width="3%"></colgroup>
+
+<tr>
+<th>Imagename</th>
+<th></th>
+<th></th>
+<th colspan="3">Umbenennen/Kopieren</th>
+<th></th>
+</tr>
+<!--#if expr="$loop_images_diff" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+	<td><label for="${images_diff}_newimage"><!--#echo var="images_diff" --></label></td>
+	<td><input title="Beschreibung anzeigen/editieren" type="image" src="img/edit.png" alt="Beschreibung" name="${images_diff}_editdesc" value="E"></td>
+	<td><input title="Information anzeigen" type="image" src="img/info.png" alt="Info" name="${images_diff}_info" value="I"></td>
+	<td><input id="${images_diff}_newimage" name="${images_diff}_newimage"></td>
+	<td><input title="Image umbenennen" type="image" src="img/move.png" alt="Umbenennen" name="${images_diff}_move" value="U"></td>
+	<td><input title="Image kopieren" type="image" src="img/copy.png" alt="Kopieren" name="${images_diff}_copy" value="K"></td>
+	<td><input title="Image l&ouml;schen" type="image" src="img/trash.png" alt="L&ouml;schen" name="${images_diff}_delete" value="L"></td>
+</tr><!--#endif -->
+</table>
+
+</form>
+
+<!--#endif -->
+<!--#endif -->
+<!--#endif -->
+<!--#endif -->
+<!--#endif -->
+<!--#endif -->
+
+
+</div>
+
+<div id="info">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext>Info</gettext></h2>
+
+<p><gettext>Wenn Sie die Maus auf die Symbole bewegen, werden Hilfetexte angezeigt.</gettext></p>
+<p><gettext>Zum Umbennenen und Kopieren von Images, m&uuml;ssen Sie einen neuen Dateinamen eingeben.
+Dateierweiterungen (.cloop/.rsync) k&ouml;nnen weggelassen werden.</gettext></p>
+
+<!--#include file="footer_info.shtml.inc" -->
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

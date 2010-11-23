@@ -1,0 +1,140 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+wrapper-ovpn.pl - wrapper for configuration of ovpn
+
+=head1 SYNOPSIS
+
+ my $id = $userdata{id};
+ my $password = 'secret';
+ my $app_id = Schulkonsole::Config::INTERNETONOFFAPP;
+
+ my $ovpn_username = 'testuser';
+
+ open SCRIPT, "| $Schulkonsole::Config::_wrapper_ovpn";
+ print SCRIPT <<INPUT;
+ $id
+ $password
+ $app_id
+ $ovpn_username
+
+ INPUT
+
+=head1 DESCRIPTION
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Config;
+use Schulkonsole::DB;
+
+
+
+my $id = <>;
+$id = int($id);
+my $password = <>;
+chomp $password;
+
+my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
+exit -32 unless $userdata;
+
+my $app_id = <>;
+($app_id) = $app_id =~ /^(\d+)$/;
+exit -33
+	unless defined $app_id && $Schulkonsole::Config::_root_apps[$app_id];
+
+
+
+my $permissions = Schulkonsole::Config::permissions_apps();
+my $groups = Schulkonsole::DB::user_groups(
+	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
+
+my $app;
+foreach my $group (('ALL', keys %$groups)) {
+	foreach my $name (keys %{ $$permissions{$group} }) {
+		if ($Schulkonsole::Config::_root_app_name_ids{$name} == $app_id) {
+			$app = $Schulkonsole::Config::_root_apps[$app_id];
+			last;
+		}
+	}
+}
+exit -34 unless $app;
+
+
+my $opts;
+SWITCH: {
+
+=head3 check
+
+numeric constant: C<Schulkonsole::Config::OVPNCHECKAPP>
+
+=head4 Description
+
+invokes C<<
+ovpn-client-cert.sh --check --username=<username>
+>>
+
+
+=head4 Parameters from standard input
+
+none
+
+=head3 download
+
+numeric constant: C<Schulkonsole::Config::OVPNDOWNLOADAPP>
+
+=head4 Description
+
+invokes C<<
+ovpn-client-cert.sh --download --username=<username>
+>>
+
+
+=head4 Parameters from standard input
+
+none
+
+=cut
+
+(   $app_id == Schulkonsole::Config::OVPNCHECKAPP
+ or $app_id == Schulkonsole::Config::OVPNDOWNLOADAPP
+ or $app_id == Schulkonsole::Config::OVPNCREATEAPP) and do {
+	# set ruid, so that ssh searches for .ssh/ in /root
+	$< = $>;
+
+	my $opts = "--username=\Q$$userdata{uid}\E ";
+	if ($app_id == Schulkonsole::Config::OVPNCREATEAPP) {
+		my $ovpn_password = <>;
+		($ovpn_password) = $ovpn_password =~ /^(.{6,})$/;
+		exit -97 unless $ovpn_password;
+
+		$opts .= '--create';
+
+		open PIPE, "| $app $opts" or last SWITCH;
+		print PIPE "$ovpn_password\n";
+		close PIPE;
+
+		last SWITCH if $?;
+
+		exit 0;
+
+	} elsif ($app_id == Schulkonsole::Config::OVPNDOWNLOADAPP) {
+		$opts .= '--download';
+	} else {
+		$opts .= '--check';
+	}
+
+
+	exec "$app $opts" or last SWITCH;
+};
+
+}
+
+
+
+exit -2;	# program error
+
+
+

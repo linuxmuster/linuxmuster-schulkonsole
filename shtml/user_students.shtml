@@ -1,0 +1,62 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Benutzer</gettext> - <gettext>Sch&uuml;lerliste pflegen</gettext></title>
+<!--#include file="css.shtml.inc" -->
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-user.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Benutzerverwaltung</gettext> :: <gettext>Sch&uuml;lerliste pflegen</gettext></h2>
+
+<form method="post" enctype="multipart/form-data">
+<h3><label for="studentsfilename"><gettext>Datei importieren</gettext></label></h3>
+<p>
+<input type="file" id="studentsfilename" name="studentsfilename">
+<input type="submit" name="studentsupload" value="Hochladen">
+</p>
+</form>
+
+<hr>
+
+<form method="post">
+<h3><label for="students"><gettext>Editieren</gettext></label></h3>
+
+<p>
+<textarea id="students" name="students" rows="20" cols="70">
+</textarea>
+</p>
+
+<p><input type="submit" name="studentsedit" value="&Auml;nderungen speichern"></p>
+
+</form>
+
+</div>
+
+<div id="info">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext>Info</gettext></h2>
+
+<p><gettext>Hier k&ouml;nnen Sie die aus dem Schulverwaltungsprogramm exportierte Datei
+&#8222;schueler.txt&#8220; ins System hochladen.</gettext></p>
+<p><gettext>Zudem haben Sie hier die M&ouml;glichkeit, &Auml;nderungen an den Sch&uuml;lerdaten
+von Hand einzupflegen.</gettext></p>
+
+<!--#include file="footer_info.shtml.inc" -->
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

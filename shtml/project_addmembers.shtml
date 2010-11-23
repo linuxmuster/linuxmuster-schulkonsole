@@ -1,0 +1,177 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Projekte</gettext>: <!--#echo var="project" --> - <gettext>Mitglieder hinzuf&uuml;gen</gettext></title>
+<!--#include file="css.shtml.inc" -->
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-project.shtml.inc" -->
+</div>
+
+<div id="content">
+<h2><gettext>Projekte</gettext> :: <gettext>Mitglieder hinzuf&uuml;gen</gettext></h2>
+
+<h3><gettext>Ausgew&auml;hltes Projekt:</gettext> <!--#echo var="project" --></h3>
+
+
+<form method="post">
+
+<!--#if expr="$students" -->
+<table id="searchstudents" class="liste">
+<tr>
+<th><gettext>Login</gettext></th>
+<th><gettext>Name</gettext></th>
+<th><gettext>Klasse</gettext></th>
+<th><gettext>Mitgliedschaft</gettext></th>
+</tr>
+<!--#if expr="$loop_students" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><!--#echo var="students{login}" --></td>
+<td><!--#echo var="students{firstname}" --> <!--#echo var="students{surname}" --></td>
+<td><!--#echo var="students{class}" --></td>
+<td><input type="checkbox" name="${students{login}}_member"></td>
+</tr>
+<!--#endif -->
+<tr>
+<th><gettext>Login</gettext></th>
+<th><gettext>Name</gettext></th>
+<th><gettext>Klasse</gettext></th>
+<th><gettext>Mitgliedschaft</gettext></th>
+</tr>
+</table>
+
+<p><input type="submit" name="add" value="Aufnehmen"></p>
+
+<!--#endif -->
+
+
+<!--#if expr="$teachers" -->
+<table id="searchteachers" class="liste">
+<tr>
+<th><gettext>Login</gettext></th>
+<th><gettext>Name</gettext></th>
+<th><gettext>Mitgliedschaft</gettext></th>
+<th><gettext>Projektleitung</gettext></th>
+</tr>
+<!--#if expr="$loop_teachers" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><!--#echo var="teachers{login}" --></td>
+<td><!--#echo var="teachers{firstname}" --> <!--#echo var="teachers{surname}" --></td>
+<td><input type="checkbox" name="${teachers{login}}_member"></td>
+<td><input type="checkbox" name="${teachers{login}}_admin"></td>
+</tr>
+<!--#endif -->
+<tr>
+<th><gettext>Login</gettext></th>
+<th><gettext>Name</gettext></th>
+<th><gettext>Mitgliedschaft</gettext></th>
+<th><gettext>Projektleitung</gettext></th>
+</tr>
+</table>
+
+<p><input type="submit" name="add" value="Aufnehmen"></p>
+
+<!--#endif -->
+
+
+
+<!--#if expr="$classes" -->
+<table id="searchclasses" class="liste">
+<tr>
+<th><gettext>Name</gettext></th>
+<th><gettext>Mitgliedschaft</gettext></th>
+</tr>
+<!--#if expr="$loop_classes" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><input type="submit" name="${classes{gid}}_showclass" value="$classes{name}"></td>
+<td><input type="checkbox" name="${classes{gid}}_class"></td>
+</tr>
+<!--#endif -->
+<tr>
+<th><gettext>Name</gettext></th>
+<th><gettext>Mitgliedschaft</gettext></th>
+</tr>
+</table>
+
+<p><input type="submit" name="add" value="Aufnehmen"></p>
+
+<!--#endif -->
+
+
+
+<!--#if expr="$projects" -->
+<table id="searchprojects" class="liste">
+<tr>
+<th><gettext>Name</gettext></th>
+<th><gettext>Mitgliedschaft</gettext></th>
+</tr>
+<!--#if expr="$loop_projects" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><!--#echo var="projects{name}" --></td>
+<td><input type="checkbox" name="${projects{gid}}_project"></td>
+</tr>
+<!--#endif -->
+<tr>
+<th><gettext>Name</gettext></th>
+<th><gettext>Mitgliedschaft</gettext></th>
+</tr>
+</table>
+
+<p><input type="submit" name="add" value="Aufnehmen"></p>
+
+<!--#endif -->
+
+<input type="hidden" name="query">
+<input type="hidden" name="scope">
+
+</form>
+
+
+
+<form method="post">
+<p>
+<label for="query"><gettext>Neue Suche:</gettext></label>
+<input id="query" name="query">
+<input type="submit" name="search" value="Suche"></p>
+<p><input type="radio" name="scope" id="radiostudent" value="student" checked>
+   <label for="radiostudent"><gettext>Sch&uuml;ler</gettext></label>
+   <input type="radio" name="scope" id="radioteacher" value="teacher">
+   <label for="radioteacher"><gettext>Lehrer</gettext></label>
+   <input type="radio" name="scope" id="radioclass" value="class">
+   <label for="radioclass"><gettext>Klasse</gettext></label>
+   <input type="radio" name="scope" id="radioproject" value="project">
+   <label for="radioproject"><gettext>Projekt</gettext></label></p>
+</form>
+
+
+</div>
+
+
+<div id="info">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext>Info</gettext></h2>
+
+<p><gettext>W&auml;hlen Sie die Mitglieder aus, die Sie neu ins Projekt aufnehmen
+wollen und klicken Sie dann auf die Schaltfl&auml;che &#8222;Aufnehmen&#8220;.</gettext></p>
+<p><gettext>Falls das Suchergebnis nicht Ihren Erwartungen entspricht, k&ouml;nnen Sie
+unten eine neue Suche starten.</gettext></p>
+
+<!--#include file="footer_info.shtml.inc" -->
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

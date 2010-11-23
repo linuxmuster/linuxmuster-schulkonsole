@@ -1,0 +1,69 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Drucker</gettext></title>
+<!--#include file="css.shtml.inc" -->
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="footer_submenu.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Drucker</gettext></h2>
+
+<form method="post" action="printers_edit">
+
+
+<table id="printers" class="liste">
+<colgroup span="5" width="20%">
+<col width="16%">
+<col width="27%">
+<col width="15%">
+<col width="27%">
+<col width="15%">
+</colgroup>
+<tr>
+<th><gettext>Drucker</gettext></th>
+<th colspan="2"><gettext>R&auml;ume</gettext></th>
+<th colspan="2"><gettext>Rechner</gettext></th>
+</tr>
+<!--#if expr="$loop_printers" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><!--#echo var="printers{name}" --></td>
+<td><label for="${printers{name}}_rooms"><!--#echo var="printers{rooms}" --></label></td>
+<td><input type="submit" id="${printers{name}}_rooms" name="${printers{name}}_rooms" value="Bearbeiten"></td>
+<td><label for="${printers{name}}_hosts"><!--#echo var="printers{hosts}" --></label></td>
+<td><input type="submit" id="${printers{name}}_hosts" name="${printers{name}}_hosts" value="Bearbeiten"></td>
+</tr>
+<!--#endif -->
+</table>
+
+
+</form>
+
+
+</div>
+
+<div id="info">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext>Info</gettext></h2>
+
+<p><gettext>Legen Sie hier fest, welche R&auml;ume bzw. einzelne Rechner Zugriff auf welche Drucker haben.</gettext></p>
+
+<!--#include file="footer_info.shtml.inc" -->
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

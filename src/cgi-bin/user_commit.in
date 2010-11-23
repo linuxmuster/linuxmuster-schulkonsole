@@ -1,0 +1,335 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+user_commit - commit the changes to the user lists into the DB
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/user_commit
+
+=head1 DESCRIPTION
+
+C<user_commit> lets you commit the changes to the user lists into the DB.
+The HTML template is user_commit.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<user_commit>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Sophomorix::SophomorixAPI;
+use Sophomorix::SophomorixConfig;
+use Proc::ProcessTable;
+use Schulkonsole::Session;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::TeachIn;
+
+
+my $this_file = 'user_commit';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+
+
+my $process_table = new Proc::ProcessTable;
+my $app_add
+	= $Schulkonsole::Config::_root_apps[Schulkonsole::Config::USERSADDAPP];
+$app_add =~ s:.*/::;
+my $app_move
+	= $Schulkonsole::Config::_root_apps[Schulkonsole::Config::USERSMOVEAPP];
+$app_move =~ s:.*/::;
+my $app_kill
+	= $Schulkonsole::Config::_root_apps[Schulkonsole::Config::USERSKILLAPP];
+$app_kill =~ s:.*/::;
+
+my %running;
+foreach my $process (@{ $process_table->table }) {
+	if ($process->fname =~ /^soph/) {
+		CMND: {
+		$process->cmndline =~ /$app_add/ and do {
+			$running{add} = $process->pid;
+			last CMND;
+		};
+		$process->cmndline =~ /$app_move/ and do {
+			$running{move} = $process->pid;
+			last CMND;
+		};
+		$process->cmndline =~ /$app_kill/ and do {
+			$running{kill} = $process->pid;
+			last CMND;
+		};
+		}
+	}
+}
+
+
+
+eval {
+COMMANDS: {
+$q->param('all') and do {
+	Schulkonsole::Sophomorix::users_addmovekill($id, $password);
+
+	$sk_session->set_status($sk_session->d()->get(
+		'Anlegen, L&ouml;schen und Versetzen wurden gestartet'), 0);
+
+	$running{add} = 1;
+
+	last COMMANDS;
+};
+$q->param('add') and do {
+	if ($running{add}) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Anlegen l&auml;uft schon'), 1);
+	} else {
+		my $log_file = Schulkonsole::Sophomorix::users_add($id, $password);
+		$sk_session->param('logfileadd', $log_file);
+
+		$sk_session->set_status(
+			$sk_session->d()->get('Anlegen wurde gestartet'), 0);
+
+		$running{add} = 1;
+	}
+
+	last COMMANDS;
+};
+$q->param('showlogadd') and do {
+	eval {
+		my $logadd =
+			Schulkonsole::Sophomorix::read_add_log_file($id, $password);
+
+=item C<logadd>
+
+Output of C<sophomorix-add>
+
+=cut
+
+		$sk_session->set_var('logadd', join("\n", @$logadd));
+	};
+	if ($@) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Kann Logdatei nicht &ouml;ffnen'), 1);
+	}
+
+	last COMMANDS;
+};
+$q->param('move') and do {
+	if ($running{move}) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Versetzen l&auml;uft schon'), 1);
+	} else {
+		my $log_file = Schulkonsole::Sophomorix::users_move($id, $password);
+		$sk_session->param('logfilemove', $log_file);
+
+		$sk_session->set_status(
+			$sk_session->d()->get('Versetzen wurde gestartet'), 0);
+
+		$running{move} = 1;
+	}
+
+	last COMMANDS;
+};
+$q->param('showlogmove') and do {
+	eval {
+		my $logmove =
+			Schulkonsole::Sophomorix::read_move_log_file($id, $password);
+
+=item C<logmove>
+
+Output of C<sophomorix-move>
+
+=cut
+
+		$sk_session->set_var('logmove', join("\n", @$logmove));
+	};
+	if ($@) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Kann Logdatei nicht &ouml;ffnen'), 1);
+	}
+
+	last COMMANDS;
+};
+$q->param('kill') and do {
+	if ($running{kill}) {
+		$sk_session->set_status(
+			$sk_session->d()->get('L&ouml;schen l&auml;uft schon'), 1);
+	} else {
+		my $lock_file = Schulkonsole::Sophomorix::users_kill($id, $password);
+		$sk_session->param('logfilekill', $lock_file);
+
+		$sk_session->set_status(
+			$sk_session->d()->get('L&ouml;schen wurde gestartet'), 0);
+
+		$running{kill} = 1;
+	}
+
+	last COMMANDS;
+};
+$q->param('showlogkill') and do {
+	eval {
+		my $logkill =
+			Schulkonsole::Sophomorix::read_kill_log_file($id, $password);
+
+=item C<logkill>
+
+Output of C<sophomorix-kill>
+
+=cut
+
+		$sk_session->set_var('logkill', join("\n", @$logkill));
+	};
+	if ($@) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Kann Logdatei nicht &ouml;ffnen'), 1);
+	}
+
+	last COMMANDS;
+};
+}
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+my $list_add;
+my $list_move;
+my $list_kill;
+eval {
+$list_add = Schulkonsole::Sophomorix::list_add($id, $password);
+};
+eval {
+$list_move = Schulkonsole::Sophomorix::list_move($id, $password);
+};
+eval {
+$list_kill = Schulkonsole::Sophomorix::list_kill($id, $password);
+};
+
+
+
+my $teachin = new Schulkonsole::TeachIn;
+
+=item C<teachin>
+
+True if data is prepared for add/move/kill
+
+=cut
+
+$sk_session->set_var('teachin', 1) if $teachin->is_read();
+
+
+=item C<isadding>
+
+True if C<sophomorix-add> is running
+
+=cut
+
+$sk_session->set_var('isadding', $running{add});
+
+=item C<ismoving>
+
+True if C<sophomorix-move> is running
+
+=cut
+
+$sk_session->set_var('ismoving', $running{move});
+
+=item C<iskilling>
+
+True if C<sophomorix-kill> is running
+
+=cut
+
+$sk_session->set_var('iskilling', $running{kill});
+
+
+=item C<addlist>
+
+An array with the users to be added as returned from
+C<Schulkonsole::Sophomorix::list_add()>
+
+=cut
+
+$sk_session->set_var('addlist', $list_add);
+
+=item C<movelist>
+
+An array with the users to be moved as returned from
+C<Schulkonsole::Sophomorix::list_move()>
+
+=cut
+
+$sk_session->set_var('movelist', $list_move);
+
+=item C<killlist>
+
+An array with the users to be killed as returned from
+C<Schulkonsole::Sophomorix::list_kill()>
+
+=cut
+
+$sk_session->set_var('killlist', $list_kill);
+
+
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<all>
+
+Add, move and kill users
+
+=item C<add>
+
+Add users
+
+=item C<move>
+
+Move users
+
+=item C<kill>
+
+Kill users
+
+=item C<showlogadd>
+
+Show output of C<sophomorix-add> (in template variable C<$logadd>)
+
+=item C<showlogmove>
+
+Show output of C<sophomorix-move> (in template variable C<$logmove>)
+
+=item C<showlogkill>
+
+Show output of C<sophomorix-kill> (in template variable C<$logkill>)
+
+=back
+

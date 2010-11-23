@@ -1,0 +1,69 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>aktueller Raum</gettext>: <!--#echo var="room" --> - <gettext>Klassenarbeitsmodus</gettext></title>
+<!--#include file="css.shtml.inc" -->
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-room.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<!--#include file="subsubmenu-room_test.shtml.inc" -->
+
+<h2><gettext>Aktueller Raum</gettext>: <!--#echo var="room" -->
+::  <gettext>Klassenarbeitsmodus</gettext></h2>
+
+<p>
+<gettext>Nutzung:</gettext>
+
+<!--#if expr="$editinguser" -->
+<!--#echo var="editinguser" -->
+<gettext>unterrichtet in Raum</gettext>
+<!--#echo var="room" -->.
+<!--#if expr="$endedittime" -->
+<gettext>Unterrichtsende um</gettext> <!--#echo var="endedittime" -->.
+<!--#endif -->
+</p>
+
+<p><gettext>Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.</gettext></p>
+
+<hr>
+
+<form method="post">
+<p><label for="workstationpassword">Workstationpasswort:</label>
+   <input id="workstationpassword" name="workstationpassword"></p>
+<p><input type="submit" name="starttest" value="Klassenarbeit starten">
+</p>
+</form>
+
+
+
+</div>
+
+<div id="info">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext>Info</gettext></h2>
+
+<p><gettext>&Uuml;bernehmen Sie entweder das vorgegebene Zufallspasswort oder geben Sie ein
+eigenes Passwort ein.</gettext></p>
+<p><gettext>Mit Bet&auml;tigung der Schaltfl&auml;che &#8222;Klassenarbeit starten&#8220; wird das neue
+Passwort an alle Arbeitsstationen im Raum verteilt, und die Sch&uuml;ler/innen k&ouml;nnen sich
+mit dem Namen der Arbeitsstation und dem eben vergebenen Passwort anmelden.</gettext></p>
+
+<!--#include file="footer_info.shtml.inc" -->
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

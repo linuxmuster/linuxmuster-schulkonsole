@@ -1,0 +1,375 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+linbo_regpatchedit - edit LINBO's registry patches
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/linbo_regpatchedit
+
+=head1 DESCRIPTION
+
+C<linbo_regpatchedit> lets the user choose a registry patch file and edit it,
+and create new registry patches.
+The HTML template is linbo_regpatchedit.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<linbo_regpatchedit>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Linbo;
+
+
+my $this_file = 'linbo_regpatchedit';
+
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+my $regpatches = Schulkonsole::Linbo::regpatches();
+my $images = Schulkonsole::Linbo::images();
+my $example_regpatches = Schulkonsole::Linbo::example_regpatches();
+
+my $is_action;
+
+eval {
+
+SWITCHCOMMAND: {
+$q->param('create') and do {
+	my $image = $q->param('image');
+	my $template = $q->param('template');
+
+	my @errors;
+	if (not $$images{$image}) {
+		push @errors, sprintf($sk_session->d()->get('Image %s nicht vorhanden'),
+		                      $image);
+	}
+
+	if ($$regpatches{"$image.reg"}) {
+		push @errors, sprintf($sk_session->d()->get('%s.reg existiert bereits'),
+		                      $image);
+	}
+
+	my $is_example;
+	if ($template =~ s/_example$//) {
+		if (not $$example_regpatches{$template}) {
+			push @errors, sprintf($sk_session->d()->get(
+					'Beispieltemplate %s nicht vorhanden'), $template);
+		}
+		$is_example = 1;
+	} elsif (not $$regpatches{$template}) {
+		push @errors, sprintf($sk_session->d()->get(
+				'Registrypatch %s nicht vorhanden'), $template);
+	}
+
+
+
+	if (@errors) {
+		$sk_session->set_status(join(', ', @errors), 1);
+		last SWITCHCOMMAND;
+	}
+
+
+	Schulkonsole::Linbo::copy_regpatch(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		$template,
+		$is_example,
+		$image);
+
+	$regpatches = Schulkonsole::Linbo::regpatches();
+	if (not $$regpatches{"$image.reg"}) {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s.reg konnte nicht erstellt werden'), $image), 1);
+	} else {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s.reg erstellt'), $image), 0);
+
+		if (open REGPATCH, "<$Schulkonsole::Config::_linbo_dir/$image.reg") {
+			flock REGPATCH, 1;
+			seek REGPATCH, 0, 0;
+
+			{
+			local $/ = undef;
+			my $lines = <REGPATCH>;
+			$q->param('regpatch', $lines);
+			}
+
+			$sk_session->set_var('editfilename', "$image.reg");
+			$is_action = 1;
+		} else {
+			$sk_session->set_status(sprintf($sk_session->d()->get(
+				'Kann Datei %s nicht &ouml;ffnen'), "$image.reg"),
+			1);
+
+		}
+	}
+
+	last SWITCHCOMMAND;
+};
+
+$q->param('delete') and do {
+	my $filename = $q->param('filename');
+
+	if ($filename !~ /^[^\/]+\.(?:cloop|rsync)\.reg$/) {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s ist kein Registrypatch'), $filename), 1);
+		last SWITCHCOMMAND;
+	}
+
+	if (not $$regpatches{$filename}) {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s existiert nicht'), $filename), 1);
+		last SWITCHCOMMAND;
+	}
+
+
+	Schulkonsole::Linbo::delete_file(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		$filename);
+
+	$regpatches = Schulkonsole::Linbo::regpatches();
+	if (not $$regpatches{$filename}) {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s gel&ouml;scht'), $filename), 0);
+	} else {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s konnte nicht gel&ouml;scht werden'), $filename), 0);
+	}
+
+	last SWITCHCOMMAND;
+};
+
+$q->param('edit') and do {
+	my $filename = $q->param('filename');
+
+	if ($filename !~ /^[^\/]+\.(?:cloop|rsync)\.reg$/) {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s ist kein Registrypatch'), $filename), 1);
+		last SWITCHCOMMAND;
+	}
+
+	if (not $$regpatches{$filename}) {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s existiert nicht'), $filename), 1);
+		last SWITCHCOMMAND;
+	}
+
+
+	my $lines = $q->param('regpatch');
+
+	Schulkonsole::Linbo::write_file(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		$filename,
+		$lines);
+
+	
+	$sk_session->set_status(sprintf($sk_session->d()->get(
+		'%s geschrieben'), $filename), 0);
+
+	last SWITCHCOMMAND;
+};
+
+
+=head3 Parameters dependent on selected submit button
+
+The following variables are set if a submit button of the form
+<filename>_<command> has been selected. <filename> is the name of a
+PXE start configuration file, and command is either C<edit> or C<delete>.
+
+=cut
+
+foreach my $param ($q->param) {
+	if (my ($regpatch, $command) = $param =~ /^(.+)_(edit|delete)$/) {
+		if (not $$regpatches{$regpatch}) {
+			$sk_session->set_status(sprintf($sk_session->d()->get(
+				'%s existiert nicht'), $regpatch), 1);
+
+			last SWITCHCOMMAND;
+		}
+
+		if ($command eq 'edit') {
+			if (open REGPATCH, "<$Schulkonsole::Config::_linbo_dir/$regpatch") {
+				flock REGPATCH, 1;
+				seek REGPATCH, 0, 0;
+
+				{
+				local $/ = undef;
+				my $lines = <REGPATCH>;
+				$q->param('regpatch', $lines);
+				}
+
+=item C<editfilename>
+
+Name of a file to delete, if <command> is C<edit>.
+The contents of the file are in the query parameter C<regpatch>.
+
+=cut
+
+				$sk_session->set_var('editfilename', $regpatch);
+				$is_action = 1;
+			} else {
+				$sk_session->set_status(sprintf($sk_session->d()->get(
+					'Kann Datei %s nicht &ouml;ffnen'), $regpatch),
+					1);
+
+			}
+
+			last SWITCHCOMMAND;
+		} elsif ($command eq 'delete') {
+
+=item C<deletefilename>
+
+Name of a file to delete, if <command> is C<delete>.
+(Waiting for confirmation).
+
+=cut
+
+			$sk_session->set_var('deletefilename', $regpatch);
+			$is_action = 1;
+
+			$sk_session->set_status('Bitte best&auml;tigen', 1);
+			last SWITCHCOMMAND;
+		}
+	}
+}
+
+}
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+
+if (not $is_action) {
+	my @array_regpatches = sort keys %$regpatches;
+
+=item C<regpatches>
+
+A list of all regpatches
+
+=cut
+
+	$sk_session->set_var('regpatches', \@array_regpatches);
+
+
+
+
+
+	my @array_example_regpatches = sort keys %$example_regpatches;
+
+=item C<example_regpatches>
+
+A list of all example regpatches
+
+=cut
+
+	$sk_session->set_var('example_regpatches', \@array_example_regpatches);
+
+
+
+
+
+=item C<hastemplates>
+
+True if there are any templates
+
+=cut
+
+	$sk_session->set_var('hastemplates',
+		(@array_regpatches || @array_example_regpatches));
+
+
+
+
+
+	my @images_array;
+	foreach my $image (sort keys %$images) {
+		push @images_array, $image unless exists $$regpatches{"$image.reg"};
+	}
+
+
+=item C<images>
+
+A list of all images without a reg-patch
+
+=cut
+
+	$sk_session->set_var('images', \@images_array);
+}
+
+
+
+
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+
+
+
+
+
+
+=back
+
+=head2 Form fields
+
+=head2 Form fields
+
+=over
+
+=item C<filename>
+
+Filename to process
+
+=item C<delete>
+
+Delete C<filename> if selected
+
+=item C<edit> and C<regpatch>
+
+Write C<regpatch> to C<filename> if selected
+
+=item C<${regpatches}_edit>
+
+Edit file C<${regpatches> if selected
+
+=item C<${regpatches}_delete>
+
+Ask to confirm deletion of file C<${regpatches> if selected
+
+=item C<create>, C<image>, and C<template>
+
+If selected create a registry patch for C<image> from C<template>.
+Possible values for templates are from the array in the session variable
+C<regpatches>, and from the array in the session variable
+C<example_regpatches> with C<_example> appended.
+
+=back
+

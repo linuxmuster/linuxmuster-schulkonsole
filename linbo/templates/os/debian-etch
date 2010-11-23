@@ -1,0 +1,21 @@
+[OS]                       # Beginn einer Betriebssystemdefinition
+Name = Debian Etch Part$PART   # Name des Betriebssystems
+Version =                  # Version (optional, frei waehlbar)
+Description = Debian Etch Part$PART   # Beschreibung
+Image =                                           # Dateiname des differentiellen Images
+                                                  # (Erweiterung .rsync)
+BaseImage = $RECHNERGRUPPE-etch-part$PART.cloop   # Dateiname des Basisimages
+                                                  # (Erweiterung .cloop)
+Boot = /dev/$DEVICE$PART   # Partition, die Kernel & Initrd enthaelt
+Root = /dev/$DEVICE$PART   # Partition, in die das BS installiert ist
+Kernel = vmlinuz           # bei Windows immer grub.exe
+Initrd = initrd.img        # Relativer Pfad zur Initrd
+Append = ro                # Kernel-Append-Parameter
+StartEnabled = yes         # "Start"-Button anzeigen
+SyncEnabled = yes          # "Sync+Start"-Button anzeigen
+NewEnabled = yes           # "Neu+Start"-Button anzeigen
+Hidden = yes               # blendet den OS-Reiter für dieses System
+                           # aus
+Autostart = no             # yes: startet dieses System ohne Benutzer-
+                           # interaktion automatisch synchronisiert
+

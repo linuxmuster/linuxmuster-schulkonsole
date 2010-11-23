@@ -1,0 +1,247 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+class_collect - collect files from a class
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/class_collect
+
+=head1 DESCRIPTION
+
+C<class_collect> lets you copy or move files of members of a selected class
+to your directory. The HTML template is class_collect.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<class_collect>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::Sophomorix;
+
+my $this_file = 'class_collect';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+my $class = $q->param('classes');
+if (    $class
+    and $$classs{$class}) {
+	$sk_session->param('class', $class);
+}
+$class = $sk_session->param('class');
+
+if (   not $class
+    or not $$classs{$class}) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/class/g;
+	$sk_session->redirect($url);
+}
+
+
+my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
+
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+if (   $q->param('collecttop')
+    or $q->param('collectbottom')) {
+	my @users;
+	my $is_all_users = 1;
+	foreach my $user (keys %$class_userdatas) {
+		if ($q->param("$user;collect")) {
+			push @users, $user;
+		} elsif ($is_all_users) {
+			$is_all_users = 0;
+		}
+	}
+
+	if (@users) {
+		eval {
+			if (   (    $q->param('collecttop')
+			        and $q->param('deletetop'))
+			    or (    $q->param('collectbottom')
+			        and $q->param('deletebottom'))) {
+				Schulkonsole::Sophomorix::collect_from_class_users(
+					$id, $password, $class, @users);
+			} else {
+				Schulkonsole::Sophomorix::collectcopy_from_class_users(
+					$id, $password, $class, @users);
+			}
+
+			if ($is_all_users) {
+				$sk_session->set_status(
+					$sk_session->d()->get('Eingesammelt'),
+					0);
+			} else {
+				$sk_session->set_status(
+					  $sk_session->d()->get('Eingesammelt von')
+					. ' ' . join(', ', @users),
+					0);
+			}
+		};
+		if ($@) {
+			$sk_session->standard_error_handling($this_file, $@);
+		}
+	} else {
+		$sk_session->set_status($sk_session->d()->get(
+			'Keine Benutzer ausgew&auml;hlt'), 1);
+	}
+}
+
+
+
+
+eval {
+my @login_ids;
+foreach my $user (keys %$class_userdatas) {
+	push @login_ids, $$class_userdatas{$user}{id};
+}
+my $user_share_files = Schulkonsole::Sophomorix::ls_collect(
+	$id, $password, @login_ids);
+
+
+my @students;
+foreach my $user (sort {
+	$$class_userdatas{$a}{surname} cmp $$class_userdatas{$b}{surname} }
+	keys %$class_userdatas) {
+
+	my $student = {
+		login => $user,
+		firstname => $$class_userdatas{$user}{firstname},
+		surname => $$class_userdatas{$user}{surname},
+		files => Schulkonsole::Sophomorix::create_file_list(
+		         	$$user_share_files{$$class_userdatas{$user}{id}}),
+	};
+	push @students, $student;
+}
+
+=item C<students>
+
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=item C<files>
+
+A list of the user's collectable files as returned from
+C<Schulkonsole::Sophomorix::create_file_list()>
+
+=back
+
+=cut
+
+$sk_session->set_var('students', \@students);
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+
+
+my @classs;
+foreach my $class (sort {
+	$$classs{$a}{displayname} cmp $$classs{$b}{displayname} } keys %$classs) {
+	push @classs, { gid => $class,
+	                name => $$classs{$class}{displayname} };
+}
+
+=item C<classes>
+
+An array of hashes of the classes of which the current user is a member
+with the keys
+
+=over
+
+=item C<gid>
+
+The GID of the class
+
+=item C<name>
+
+The name of the class
+
+=back
+
+=cut
+
+$sk_session->set_var('classes', \@classs);
+
+
+=item C<class>
+
+The name of the class
+
+=cut
+
+$sk_session->set_var('class', $$classs{$class}{displayname});
+
+
+
+
+
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<collecttop>
+
+A submit button indicating that C<deletetop> is to be evaluated
+
+=item C<collectbottom>
+
+A submit button indicating that C<deletebottom> is to be evaluated
+
+=item C<deletetop>/C<deletebottom>
+
+If true the files are moved, copied otherwise
+
+=item C<${students{login}};collect>
+
+Checkboxes created in loop over template variable C<students>. Collecting
+is performed with the selected logins.
+
+=back

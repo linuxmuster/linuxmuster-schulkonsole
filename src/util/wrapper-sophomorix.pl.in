@@ -1,0 +1,1753 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+wrapper-sophomorix.pl - wrapper for sophomorix access
+
+=head1 SYNOPSIS
+
+ my $id = $userdata{id};
+ my $password = 'secret';
+ my $app_id = Schulkonsole::Config::PRINTERINFOAPP;
+
+ open SCRIPT, "| $Schulkonsole::Config::_wrapper_sophomorix";
+ print SCRIPT <<INPUT;
+ $id
+ $password
+ $app_id
+
+ INPUT
+
+=head1 DESCRIPTION
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use POSIX;
+use Data::Dumper;
+use Sophomorix::SophomorixAPI;
+use Sophomorix::SophomorixConfig;
+use Schulkonsole::Config;
+use Schulkonsole::DB;
+
+
+
+my $id = <>;
+$id = int($id);
+my $password = <>;
+chomp $password;
+
+my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
+exit -32 unless $userdata;
+
+my $app_id = <>;
+($app_id) = $app_id =~ /^(\d+)$/;
+exit -33
+	unless defined $app_id && $Schulkonsole::Config::_root_apps[$app_id];
+
+
+
+my $permissions = Schulkonsole::Config::permissions_apps();
+my $groups = Schulkonsole::DB::user_groups(
+	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
+
+my $app;
+foreach my $group (('ALL', keys %$groups)) {
+	foreach my $name (keys %{ $$permissions{$group} }) {
+		if ($Schulkonsole::Config::_root_app_name_ids{$name} == $app_id) {
+			$app = $Schulkonsole::Config::_root_apps[$app_id];
+			last;
+		}
+	}
+}
+exit -34 unless $app;
+
+
+SWITCH: {
+
+=head3 share_states
+
+numeric constant: C<Schulkonsole::Config::SHARESTATESAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item login_id
+
+IDs (not UIDs) of users. One per line, end with empty line
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::SHARESTATESAPP and do {
+	my @login_ids;
+
+	while (my $login_id = <>) {
+		last if $login_id =~ /^$/;
+		($login_id) = $login_id =~ /^(\d+)$/;
+		exit -83 unless $login_id;
+
+		push @login_ids, $login_id;
+	}
+	exit -84 unless @login_ids;
+
+	my %share_states;
+	foreach my $login_id (@login_ids) {
+		my $login_userdata = Schulkonsole::DB::get_userdata_by_id($login_id);
+		next unless $login_userdata;
+		my $share_dir = "$$login_userdata{homedirectory}/$Language::share_dir/";
+
+		if (-d $share_dir) {
+			my $mode = (stat $share_dir)[2];
+			$share_states{$login_id} = (($mode & 05) == 05);
+		}
+	}
+
+	my $data = Data::Dumper->new([ \%share_states ]);
+	$data->Terse(1);
+	$data->Indent(0);
+	print $data->Dump;
+
+	exit 0;
+};
+
+=head3 shares_on_off
+
+numeric constant: C<Schulkonsole::Config::SHARESONOFF>
+
+=head4 Parameters from standard input
+
+=over
+
+=item on
+
+C<1> (on) or C<0> (off)
+
+=item users
+
+UIDs one per line, end with empty line
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::SHARESONOFFAPP and do {
+	my $on = <>;
+	($on) = $on =~ /^(\d+)$/;
+	exit -80 unless defined $on;
+
+
+	my @users;
+
+	while (my $user = <>) {
+		last if $user =~ /^$/;
+		($user) = $user =~ /^(.+)$/;
+		exit -81 unless $user;
+
+		push @users, "\Q$user";
+	}
+	exit -82 unless @users;
+
+	my $opts = "--teacher \Q$$userdata{uid}\E "
+		. ($on ? '--shares' : '--noshares')
+		. ' --users ' . join(',', @users);
+
+	# sophomorix-teacher cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+	exec "$app $opts" or last SWITCH;
+};
+
+=head3 ls_handout
+
+numeric constant: C<Schulkonsole::Config::LSHANDOUTAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item do_copy
+
+=item type
+
+=item project (if type 8)
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::LSHANDOUTAPP and do {
+	my $do_copy = <>;
+	($do_copy) = $do_copy =~ /^(\d+)$/;
+	exit -86 unless defined $do_copy;
+
+
+	my $share_dir = "$$userdata{homedirectory}/";
+
+
+	if ($do_copy) {
+		$share_dir .=
+			"$Language::to_handoutcopy_dir/$Language::to_handoutcopy_string";
+	} else {
+		$share_dir .= "$Language::handout_dir/$Language::handout_string";
+	}
+
+	my $type = <>;
+	($type) = $type =~ /^(\d+)/;
+	exit -88 unless defined $type;
+
+	LSHANDOUTTYPE: {
+	($type & 1 or $type & 2) and do {
+		if ($do_copy) {
+				$share_dir .= $Language::current_room;
+		} else {
+				$share_dir .= $Language::exam;
+		}
+		last LSHANDOUTTYPE;
+	};
+	($type & 4) and do {
+		my $project = <>;
+		($project) = $project =~ /^(.+)$/;
+		exit -90 unless $project;
+		$share_dir .= $project;
+		last LSHANDOUTTYPE;
+	};
+	($type & 8) and do {
+		my $class = <>;
+		($class) = $class =~ /^(.+)$/;
+		exit -91 unless $class;
+		$share_dir .= $class;
+		last LSHANDOUTTYPE;
+	};
+	($type & 16) and do {
+		my $subclass = <>;
+		($subclass) = $subclass =~ /^(.+)$/;
+		exit -92 unless $subclass;
+		$share_dir .= $subclass;
+		last LSHANDOUTTYPE;
+	};
+	exit -87;
+	}
+
+	chdir $share_dir or exit -85;
+	my @files = glob '*';
+	my %files;
+	foreach my $file (@files) {
+		if (-d $file) {
+			$files{$file} = 'd';
+		} else {
+			$files{$file} = 0;
+		}
+	}
+
+	my $data = Data::Dumper->new([ \%files ]);
+	$data->Terse(1);
+	$data->Indent(0);
+	print $data->Dump;
+
+	exit 0;
+};
+
+=head3 ls_collect
+
+numeric constant: C<Schulkonsole::Config::LSCOLLECTAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item login_ids
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::LSCOLLECTAPP and do {
+	my @login_ids;
+	while (my $login_id = <>) {
+		last if $login_id =~ /^$/;
+		($login_id) = $login_id =~ /^(\d+)$/;
+		exit -83 unless $login_id;
+
+		push @login_ids, $login_id;
+	}
+	exit -84 unless @login_ids;
+
+
+
+	my %user_share_files;
+	foreach my $login_id (@login_ids) {
+		my $login_userdata = Schulkonsole::DB::get_userdata_by_id($login_id);
+		next unless $login_userdata;
+
+		my $share_dir
+			= "$$login_userdata{homedirectory}/$Language::collect_dir";
+
+		if (chdir $share_dir) {
+			my @files = glob '*';
+			my %files;
+			foreach my $file (@files) {
+				if (-d $file) {
+					$files{$file} = 'd';
+				} else {
+					$files{$file} = 0;
+				}
+			}
+
+			$user_share_files{$login_id} = \%files;
+		}
+	}
+
+	my $data = Data::Dumper->new([ \%user_share_files ]);
+	$data->Terse(1);
+	$data->Indent(0);
+	print $data->Dump;
+
+	exit 0;
+};
+
+=head3 handout
+
+numeric constant: C<Schulkonsole::Config::HANDOUTAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item do_copy
+
+=back
+
+if do_copy:
+
+=over
+
+=item from
+
+=item project if (from == 4)
+
+=item class if (from == 8)
+
+=item users
+
+=back
+
+else:
+
+=over
+
+=item type
+
+=item room (if type & 2)
+
+=item project if (type & 4)
+
+=item class if (type & 8)
+
+=item subclass if (type & 16)
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::HANDOUTAPP and do {
+	my $do_copy = <>;
+	($do_copy) = $do_copy =~ /^([01])$/;
+	exit -86 unless defined $do_copy;
+
+	my $opts = "--teacher \Q$$userdata{uid}";
+	if ($do_copy) {
+		my $from = <>;
+		($from) = $from =~ /^([1248])$/;
+		exit -87 unless defined $from;
+
+		FROMHANDOUT: {
+		($from == 1 or $from == 2) and do {
+			$opts .= ' --fromroom';
+			last FROMHANDOUT;
+		};
+		$from == 4 and do {
+			my $project = <>;
+			($project) = $project =~ /^(.+)$/;
+			exit -90 unless $project;
+			$opts .= " --fromproject \Q$project";
+			last FROMHANDOUT;
+		};
+		$from == 8 and do {
+			my $class = <>;
+			($class) = $class =~ /^(.+)$/;
+			exit -91 unless $class;
+			$opts .= " --fromclass \Q$class";
+			last FROMHANDOUT;
+		};
+		}
+
+
+		my @users;
+		while (my $user = <>) {
+			last if $user =~ /^$/;
+			($user) = $user =~ /^(.+)$/;
+			exit -81 unless $user;
+
+			push @users, "\Q$user";
+		}
+		exit -82 unless @users;
+
+		$opts .= ' --users ' . join(',', @users);
+		$opts .= ' --handoutcopy';
+	} else {
+		my $type = <>;
+		($type) = $type =~ /^(\d+)/;
+		exit -88 unless defined $type;
+
+
+		# sophomorix-teacher allows more than one type option
+		if ($type & 2) {
+			my $room = <>;
+			($room) = $room =~ /^(.+)$/;
+			exit -89 unless $room;
+			$opts .= " --room \Q$room";
+		}
+		if ($type & 4) {
+			my $project = <>;
+			($project) = $project =~ /^(.+)$/;
+			exit -90 unless $project;
+			$opts .= " --project \Q$project";
+		}
+		if ($type & 8) {
+			my $class = <>;
+			($class) = $class =~ /^(.+)$/;
+			exit -91 unless $class;
+			$opts .= " --class \Q$class";
+		};
+		if ($type & 16) {
+			my $subclass = <>;
+			($subclass) = $subclass =~ /^(.+)$/;
+			exit -92 unless $subclass;
+			$opts .= " --subclass \Q$subclass";
+		};
+
+
+		$opts .= ' --handout';
+	}
+
+
+	# sophomorix-teacher cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+	exec "$app $opts" or last SWITCH;
+};
+
+=head3 collect
+
+numeric constant: C<Schulkonsole::Config::COLLECTAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item do_copy
+
+=item is_exam
+
+=item from
+
+=item type (if not from)
+
+=item room (if type & 2)
+
+=item project (if type & 4 or from == 4)
+
+=item class (if type & 8 or from == 8)
+
+=item subclass (if type & 16)
+
+=item users (if from)
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::COLLECTAPP and do {
+	my $do_copy = <>;
+	($do_copy) = $do_copy =~ /^([01])$/;
+	exit -86 unless defined $do_copy;
+
+	my $is_exam = <>;
+	($is_exam) = $is_exam =~ /^([01])$/;
+	exit -93 unless defined $is_exam;
+
+	my $from = <>;
+	($from) = $from =~ /^([01248])$/;
+	exit -87 unless defined $from;
+
+	my $opts = "--teacher \Q$$userdata{uid}";
+
+
+	if ($from) {
+		FROMCOLLECT: {
+		($from == 1 or $from == 2) and do {
+			$opts .= ' --fromroom';
+			last FROMCOLLECT;
+		};
+		$from == 4 and do {
+			my $project = <>;
+			($project) = $project =~ /^(.+)$/;
+			exit -90 unless $project;
+			$opts .= " --fromproject \Q$project";
+			last FROMCOLLECT;
+		};
+		$from == 8 and do {
+			my $class = <>;
+			($class) = $class =~ /^(.+)$/;
+			exit -91 unless $class;
+			$opts .= " --fromclass \Q$class";
+			last FROMCOLLECT;
+		};
+		}
+
+
+		my @users;
+		while (my $user = <>) {
+			last if $user =~ /^$/;
+			($user) = $user =~ /^(.+)$/;
+			exit -81 unless $user;
+
+			push @users, "\Q$user";
+		}
+		exit -82 unless @users;
+
+		$opts .= ' --users ' . join(',', @users);
+	} else {
+		my $type = <>;
+		($type) = $type =~ /^(\d+)/;
+		exit -88 unless $type;
+
+
+		# sophomorix-teacher allows more than one type option
+		if ($type & 2) {
+			my $room = <>;
+			($room) = $room =~ /^(.+)$/;
+			exit -89 unless $room;
+			$opts .= " --room \Q$room";
+		}
+		if ($type & 4) {
+			my $project = <>;
+			($project) = $project =~ /^(.+)$/;
+			exit -90 unless $project;
+			$opts .= " --project \Q$project";
+		}
+		if ($type & 8) {
+			my $class = <>;
+			($class) = $class =~ /^(.+)$/;
+			exit -91 unless $class;
+			$opts .= " --class \Q$class";
+		}
+		if ($type & 16) {
+			my $subclass = <>;
+			($subclass) = $subclass =~ /^(.+)$/;
+			exit -92 unless $subclass;
+			$opts .= " --subclass \Q$subclass";
+		}
+	}
+
+
+	$opts .= ' --exam' if $is_exam;
+	$opts .= ($do_copy ? ' --collectcopy' : ' --collect');
+
+	# sophomorix-teacher cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+	exec "$app $opts" or last SWITCH;
+};
+
+=head3 room_reset
+
+numeric constant: C<Schulkonsole::Config::RESETROOMAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item room
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::RESETROOMAPP and do {
+	my $room = <>;
+	($room) = $room =~ /^(.+)$/;
+	exit -89 unless $room;
+
+	my $opts = "--reset-room \Q$room";
+
+	# sophomorix-room cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+	exec "$app $opts" or last SWITCH;
+};
+
+=head3 edit_own_class_membership
+
+numeric constant: C<Schulkonsole::Config::EDITOWNCLASSMEMBERSHIPAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item class_gid
+
+=item do_add
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::EDITOWNCLASSMEMBERSHIPAPP and do {
+	my $class_gid = <>;
+	($class_gid) = $class_gid =~ /^(.+)$/;
+	exit -91 unless defined $class_gid;
+
+	my $do_add = <>;
+	($do_add) = $do_add =~ /^(\d+)$/;
+	exit -94 unless defined $do_add;
+
+	my $opts = "--teacher \Q$$userdata{uid}\E "
+		. ($do_add ? '--add' : '--remove') . " \Q$class_gid";
+
+	# sophomorix-teacher cannot be invoked with taint checks enabled
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+	exec "$app $opts" or last SWITCH;
+};
+
+=head3 project_members
+
+numeric constant: C<Schulkonsole::Config::PROJECTMEMBERSAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item project_gid
+
+=item do_add
+
+=item users
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::PROJECTMEMBERSAPP and do {
+	my $project_gid = <>;
+	($project_gid) = $project_gid =~ /^((?:p_)?[a-z0-9_-]{3,14})$/;
+	exit -101 unless defined $project_gid;
+
+	my $do_add = <>;
+	($do_add) = $do_add =~ /^([01])$/;
+	exit -94 unless defined $do_add;
+
+	my $scope = <>;
+	($scope) = $scope =~ /^([0123])$/;
+	exit -102 unless defined $scope;
+
+	my @users;
+	while (my $user = <>) {
+		last if $user =~ /^$/;
+		($user) = $user =~ /^(.+)$/;
+		exit -81 unless $user;
+
+		push @users, "\Q$user";
+	}
+	exit -82 unless @users;
+
+	my $opts = "--caller \Q$$userdata{uid}\E "
+		. ($do_add ? '--add' : '--remove');
+
+	MEMBERSSCOPE: {
+	$scope == 0 and do {
+		$opts .= 'members ';
+		last MEMBERSSCOPE;
+	};
+	$scope == 1 and do {
+		$opts .= 'admins ';
+		last MEMBERSSCOPE;
+	};
+	$scope == 2 and do {
+		$opts .= 'membergroups ';
+		last MEMBERSSCOPE;
+	};
+	$scope == 3 and do {
+		$opts .= 'memberprojects ';
+		last MEMBERSSCOPE;
+	};
+	}
+
+	$opts .= join(',', @users) . " --project \Q$project_gid";
+
+	# sophomorix-project cannot be invoked with taint checks enabled
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+	exec "$app $opts" or last SWITCH;
+};
+
+=head3 project_create_drop
+
+numeric constant: C<Schulkonsole::Config::PROJECTCREATEDROPAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item project_gid
+
+=item do_add
+
+=item users
+
+=item is_open
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::PROJECTCREATEDROPAPP and do {
+	my $project_gid = <>;
+	($project_gid) = $project_gid =~ /^((?:p_)?[a-z0-9_-]{3,14})$/;
+	exit -101 unless defined $project_gid;
+
+	my $do_create = <>;
+	($do_create) = $do_create =~ /^([01])$/;
+	exit -103 unless defined $do_create;
+
+
+	my $opts = "--caller \Q$$userdata{uid}\E --project \Q$project_gid\E ";
+	if ($do_create) {
+		my $is_open = <>;
+		($is_open) = $is_open =~ /^([01])$/;
+		exit -113 unless defined $is_open;
+
+		$opts .= '--create '
+		         . ($is_open ? '--join' : '--nojoin')
+		         . " --admins \Q$$userdata{uid}";
+	} else {
+		$opts .= '--kill';
+	}
+
+	# sophomorix-project cannot be invoked with taint checks enabled
+	$< = $>;
+	$) = 0;	# sophomorix-project will re-create /etc/aliases
+	$( = $);
+	umask(022);
+	exec "$app $opts" or last SWITCH;
+};
+
+=head3 print_class
+
+numeric constant: C<Schulkonsole::Config::PRINTCLASSAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item class_gid
+
+The class' GID
+
+=item filetype
+
+The filetype, 0 (PDF) or 1 (CSV)
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::PRINTCLASSAPP and do {
+	my $class_gid = <>;
+	($class_gid) = $class_gid =~ /^(.+)$/;
+	exit -91 unless defined $class_gid;
+
+	my $filetype = <>;
+	($filetype) = $filetype =~ /^([01])$/;
+	exit -95 unless defined $filetype;
+
+	my $opts = "--class \Q$class_gid\E --postfix \Q$$userdata{uid}";
+
+	# sophomorix-print cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+	system("$app $opts >/dev/null 2>/dev/null") == 0 or exit ($? >> 8);
+
+	my $filename;
+	SWITCHFILETYPE: {
+	$filetype == 0 and do {
+		$filename = "$DevelConf::druck_pfad/$class_gid-$$userdata{uid}.pdf";
+		last SWITCHFILETYPE;
+	};
+	$filetype == 1 and do {
+		$filename = "$DevelConf::druck_pfad/$class_gid-$$userdata{uid}.csv";
+		last SWITCHFILETYPE;
+	};
+	exit -95;
+	}
+	
+	open DATA, "<$filename" or (print STDERR "$filename: $!\n" and exit -106);
+	{
+		local $/ = undef;
+		while (<DATA>) {
+			print;
+		}
+	}
+	close DATA;
+
+	exit 0;
+};
+
+=head3 print_teachers
+
+numeric constant: C<Schulkonsole::Config::PRINTTEACHERSAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item filetype
+
+The filetype, 0 (PDF) or 1 (CSV)
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::PRINTTEACHERSAPP and do {
+	my $filetype = <>;
+	($filetype) = $filetype =~ /^([01])$/;
+	exit -95 unless defined $filetype;
+
+	my $opts = "--teacher";
+
+	# sophomorix-print cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+	system("$app $opts >/dev/null 2>/dev/null ") == 0 or exit ($? >> 8);
+
+	my $filename;
+	SWITCHFILETYPE: {
+	$filetype == 0 and do {
+		$filename = "$DevelConf::druck_pfad/teachers.pdf";
+		last SWITCHFILETYPE;
+	};
+	$filetype == 1 and do {
+		$filename = "$DevelConf::druck_pfad/teachers.csv";
+		last SWITCHFILETYPE;
+	};
+	exit -95;
+	}
+	
+	open DATA, "<$filename" or (print STDERR "$filename: $!\n" and exit -106);
+	{
+		local $/ = undef;
+		while (<DATA>) {
+			print;
+		}
+	}
+	close DATA;
+
+	exit 0;
+};
+
+=head3 set_passwords
+
+numeric constant: C<Schulkonsole::Config::SETPASSWORDSAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item type
+
+reset (0)/password (1)/random (2)
+
+=item scope
+
+users (0)/rooms (1)
+
+=item password (for type = 1)
+
+password to set if type is 1
+
+=item users (for scope = 0)
+
+the users for whom to set the passwords
+
+=item rooms (for scope = 1)
+
+the rooms for which to set the workstation passwords
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::SETPASSWORDSAPP and do {
+	my $type = <>;
+	($type) = $type =~ /^([012])$/;
+	exit -96 unless defined $type;
+
+	my $scope = <>;
+	($scope) = $scope =~ /^([01])$/;
+	exit -102 unless defined $scope;
+
+
+	my $opts = '--hide ';
+	TYPE: {
+	$type == 0 and do {
+		$opts .= '--reset';
+		last TYPE;
+	};
+	$type == 1 and do {
+		my $password = <>;
+		($password) = $password =~ /^(.+)$/;
+		exit -97 unless $password;
+
+		$opts .= "--password \Q$password";
+		last TYPE;
+	};
+	$type == 2 and do {
+		$opts .= '--random';
+		last TYPE;
+	};
+	}
+
+	my @users;
+	while (my $user = <>) {
+		last if $user =~ /^$/;
+		($user) = $user =~ /^(.+)$/;
+		exit -81 unless $user;
+
+		push @users, "\Q$user";
+	}
+	exit -82 unless @users;
+
+	if ($scope == 0) {
+		$opts .= ' --users ' . join(',', @users);
+	} else {
+		$opts .= ' --rooms ' . join(',', @users);
+	}
+
+	# sophomorix-passwd cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+	exec "$app $opts" or last SWITCH;
+};
+
+=head3 read_sophomorix_file
+
+numeric constant: C<Schulkonsole::Config::READSOPHOMORIXFILEAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item number
+
+number of the file to read (0 = lehrer.txt, 1 = schueler.txt,
+2 = sophomorix.add, 3 = sophomorix.move, 4 = sophomorix.kill,
+5 = report.admin, 6 = report.office, 7 = last of sophomorix.add.txt.*,
+8 = last of sophomorix.move.txt.*, 9 = last of sophomorix.kill.txt.*)
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::READSOPHOMORIXFILEAPP and do {
+	my $number = <>;
+	($number) = $number =~ /^([0-9]|1[01])$/;
+	exit -105 unless defined $number;
+
+	my $filename;
+	SWITCHREADFILE: {
+	$number == 0 and do {
+		$filename = "$DevelConf::users_pfad/lehrer.txt";
+		last SWITCHREADFILE;
+	};
+	$number == 1 and do {
+		$filename = "$DevelConf::users_pfad/schueler.txt";
+		last SWITCHREADFILE;
+	};
+	$number == 2 and do {
+		$filename = "$DevelConf::ergebnis_pfad/sophomorix.add";
+		last SWITCHREADFILE;
+	};
+	$number == 3 and do {
+		$filename = "$DevelConf::ergebnis_pfad/sophomorix.move";
+		last SWITCHREADFILE;
+	};
+	$number == 4 and do {
+		$filename = "$DevelConf::ergebnis_pfad/sophomorix.kill";
+		last SWITCHREADFILE;
+	};
+	$number == 5 and do {
+		$filename = "$DevelConf::ergebnis_pfad/report.admin";
+		last SWITCHREADFILE;
+	};
+	$number == 6 and do {
+		$filename = "$DevelConf::ergebnis_pfad/report.office";
+		last SWITCHREADFILE;
+	};
+	$number == 10 and do {
+		$filename = "$DevelConf::users_pfad/extraschueler.txt";
+		last SWITCHREADFILE;
+	};
+	$number == 11 and do {
+		$filename = "$DevelConf::users_pfad/extrakurse.txt";
+		last SWITCHREADFILE;
+	};
+	my $filename_base;
+	BASENAME: {
+		$number == 7 and do {
+			$filename_base = "$DevelConf::log_files/sophomorix-add.txt.";
+			last BASENAME;
+		};
+		$number == 8 and do {
+			$filename_base = "$DevelConf::log_files/sophomorix-move.txt.";
+			last BASENAME;
+		};
+		$number == 9 and do {
+			$filename_base = "$DevelConf::log_files/sophomorix-kill.txt.";
+			last BASENAME;
+		};
+	}
+	my @filenames = sort glob "$filename_base*";
+	($filename) = $filenames[-1] =~ /^(.*)$/;
+	
+	} # end SWITCHREADFILE
+
+
+	open FILE, "<$filename" or exit -106;
+	while (<FILE>) {
+		print;
+	}
+	close FILE;
+
+	exit 0;
+};
+
+=head3 write_sophomorix_file
+
+numeric constant: C<Schulkonsole::Config::WRITESOPHOMORIXFILEAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item number
+
+number of the file to read (0 = lehrer.txt, 1 = schueler.txt,
+2 = sophomorix.conf, 3 = quota.conf , 4 = mailquota.conf)
+
+=item lines
+
+the lines to be written in the file
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
+	my $number = <>;
+	($number) = $number =~ /^([0123456])$/;
+	exit -105 unless defined $number;
+
+	my $path;
+	my $filename;
+	my @stat;
+	SWITCHWRITEFILE: {
+	$number == 0 and do {
+		$path = $DevelConf::users_pfad;
+		$filename = 'lehrer.txt';
+		$stat[2] = 0600;	# set default permissions for this file
+		last SWITCHWRITEFILE;
+	};
+	$number == 1 and do {
+		$path = $DevelConf::users_pfad;
+		$filename = 'schueler.txt';
+		$stat[2] = 0600;
+		last SWITCHWRITEFILE;
+	};
+	$number == 2 and do {
+		$path = $DevelConf::config_pfad;
+		$filename = 'sophomorix.conf';
+		$stat[2] = 0644;
+		last SWITCHWRITEFILE;
+	};
+	$number == 3 and do {
+		$path = $DevelConf::config_pfad;
+		$filename = 'quota.txt';
+		$stat[2] = 0644;
+		last SWITCHWRITEFILE;
+	};
+	$number == 4 and do {
+		$path = $DevelConf::config_pfad;
+		$filename = 'mailquota.txt';
+		$stat[2] = 0644;
+		last SWITCHWRITEFILE;
+	};
+	$number == 5 and do {
+		$path = $DevelConf::users_pfad;
+		$filename = 'extraschueler.txt';
+		$stat[2] = 0600;
+		last SWITCHWRITEFILE;
+	};
+	$number == 6 and do {
+		$path = $DevelConf::users_pfad;
+		$filename = 'extrakurse.txt';
+		$stat[2] = 0600;
+		last SWITCHWRITEFILE;
+	};
+	}
+
+	
+	my $full_filename = "$path/$filename";
+	if (-e $full_filename) {
+		@stat = stat $full_filename;
+
+		my $suffix_base = POSIX::strftime("-%Y-%m-%d_%H-%M", localtime);
+		my $suffix = $suffix_base;
+
+		my $backup_path = "$DevelConf::log_pfad/history";
+
+		if (not -e $backup_path) {
+			my @dirs = split '/', $backup_path;
+
+			my $dir = shift @dirs;
+			foreach my $next_dir (@dirs) {
+				$dir .= "/$next_dir";
+				mkdir $dir unless -e $dir;
+			}
+		} else {
+			my $cnt = 0;
+			while (-e "$backup_path/$filename$suffix") {
+				$cnt++;
+				$suffix = "$suffix_base-$cnt";
+			}
+		}
+
+		if (not rename $full_filename, "$backup_path/$filename$suffix") {
+			system("mv \Q$full_filename\E \Q$backup_path/$filename$suffix")
+				== 0 or exit -107;
+		}
+	} else {
+		$stat[4] = $>;
+		$stat[5] = 0;
+	}
+
+	open FILE, ">$full_filename" or exit -106;
+	while (<>) {
+		print FILE;
+	}
+	close FILE;
+
+	chown $stat[4], $stat[5], $full_filename;
+	chmod $stat[2], $full_filename;
+
+
+	exit 0;
+};
+
+=head3 check_users
+
+numeric constant: C<Schulkonsole::Config::USERSCHECKAPP>
+
+=cut
+
+$app_id == Schulkonsole::Config::USERSCHECKAPP and do {
+	$< = $>;
+	$) = 0;
+	$( = $);
+	exec "$app" or last SWITCH;
+};
+
+=head3 add_users
+
+numeric constant: C<Schulkonsole::Config::USERSADDAPP>
+
+=head3 move_users
+
+numeric constant: C<Schulkonsole::Config::USERSMOVEAPP>
+
+=head3 kill_users
+
+numeric constant: C<Schulkonsole::Config::USERSKILLAPP>
+
+=cut
+
+(   $app_id == Schulkonsole::Config::USERSADDAPP
+ or $app_id == Schulkonsole::Config::USERSMOVEAPP
+ or $app_id == Schulkonsole::Config::USERSKILLAPP) and do {
+
+	my $action;
+	ACTIONNAME: {
+	$app_id == Schulkonsole::Config::USERSADDAPP and do {
+		$action = 'add';
+		last ACTIONNAME;
+	};
+	$app_id == Schulkonsole::Config::USERSMOVEAPP and do {
+		$action = 'move';
+		last ACTIONNAME;
+	};
+	$app_id == Schulkonsole::Config::USERSKILLAPP and do {
+		$action = 'kill';
+		last ACTIONNAME;
+	};
+	}
+
+
+	my $lockfile = Schulkonsole::Config::lockfile("user$action");
+	open LOCK, "+>>$lockfile" or exit -106;
+	if (not flock(LOCK, 4 | 2)) {
+		exit -107;
+	} else {
+		use Proc::ProcessTable;
+
+		my $process_table = new Proc::ProcessTable;
+		my $app_cmnd = $app;
+		$app_cmnd =~ s:.*/::;
+		foreach my $process (@{ $process_table->table }) {
+			if (    $process->uid == $>
+			    and $process->fname =~ /^sophomor/
+			    and $process->cmndline =~ /$app_cmnd/) {
+				exit -107;
+			}
+		}
+	}
+
+	my $log_file_base = POSIX::strftime(
+		"$DevelConf::log_files/sophomorix-$action.txt.%Y-%m-%d_%H-%M-%S",
+		localtime);
+	my $log_file = $log_file_base;
+	my $cnt = 0;
+	while (-e $log_file) {
+		$cnt++;
+		$log_file = sprintf "$log_file_base-%02d", $cnt;
+	}
+	print "$log_file\n";
+
+	my $pid = fork;
+	exit -44 unless defined $pid;
+
+	if (not $pid) {
+		close STDIN;
+		$< = $>;
+		$) = 0;
+		$( = $);
+		umask(022);
+		open STDOUT, ">>$log_file";	# ignore errors
+		open STDERR, ">>&STDOUT";
+
+		$ENV{PATH} = '/bin:/sbin:/usr/sbin:/usr/bin';
+		$ENV{DEBIAN_FRONTEND} = 'teletype';
+		exec "$app" or last SWITCH;
+	} else {
+		seek LOCK, 0, 0;
+		truncate LOCK, 0;
+		print LOCK "$pid\n";
+	}
+
+
+	exit 0;
+};
+
+=head3 addmovekill_users
+
+numeric constant: C<Schulkonsole::Config::USERSADDMOVEKILLAPP>
+
+=cut
+
+$app_id == Schulkonsole::Config::USERSADDMOVEKILLAPP and do {
+
+	my $action = 'addmovekill';
+
+	my $addmovekill_lockfile = Schulkonsole::Config::lockfile("user$action");
+	open ALLLOCK, "+>>$addmovekill_lockfile" or exit -106;
+	if (not flock(ALLLOCK, 4 | 2)) {
+		exit -107;
+	}
+
+
+	my $pid = fork;
+	exit -44 unless defined $pid;
+
+	if (not $pid) {
+		close STDIN;
+		$< = $>;
+		$) = 0;
+		$( = $);
+		umask(022);
+		$ENV{PATH} = '/bin:/sbin:/usr/sbin:/usr/bin';
+		$ENV{DEBIAN_FRONTEND} = 'teletype';
+
+
+		my @action = ('add', 'move', 'kill');
+		USERAPPS: for my $i (0..2) {
+			my $lockfile = Schulkonsole::Config::lockfile("user$action[$i]");
+			open LOCK, "+>>$lockfile" or exit -106;
+			if (not flock(LOCK, 4 | 2)) {
+				next USERAPPS;
+			} else {
+				use Proc::ProcessTable;
+
+				my $process_table = new Proc::ProcessTable;
+				my $app_cmnd = $$app[$i];
+				$app_cmnd =~ s:.*/::;
+				foreach my $process (@{ $process_table->table }) {
+					if (    $process->uid == $>
+					    and $process->fname =~ /^sophomor/
+					    and $process->cmndline =~ /$app_cmnd/) {
+						next USERAPPS;
+					}
+				}
+			}
+
+			my $log_file_base = POSIX::strftime(
+				"$DevelConf::log_files/sophomorix-$action[$i].txt.%Y-%m-%d_%H-%M-%S",
+				localtime);
+			my $log_file = $log_file_base;
+			my $cnt = 0;
+			while (-e $log_file) {
+				$cnt++;
+				$log_file = sprintf "$log_file_base-%02d", $cnt;
+			}
+			open STDOUT, ">>$log_file";	# ignore errors
+			open STDERR, ">>&STDOUT";
+
+			system "$$app[$i]";
+
+			close LOCK;
+		}
+
+		close ALLLOCK;
+		exit 0;
+	} else {
+		truncate ALLLOCK, 0;
+		seek ALLLOCK, 0, 0;
+		print ALLLOCK "$pid\n";
+
+		close ALLLOCK;
+	}
+
+
+	exit 0;
+};
+
+=head3 teachin
+
+numeric constant: C<Schulkonsole::Config::TEACHINAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item mode
+
+0 = check, 1 = list, 2 = set
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::TEACHINAPP and do {
+	my $mode = <>;
+	($mode) = $mode =~ /^([012])$/;
+	exit -108 unless defined $mode;
+
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+
+	my $opts;
+
+	TEACHINMODE: {
+	$mode == 0 and do {
+		$opts = '--next 1';
+		last TEACHINMODE;
+	};
+	$mode == 1 and do {
+		$opts = '--all';
+		last TEACHINMODE;
+	};
+	$mode == 2 and do {
+		my @teachin_users;
+		my @ignore_users;
+		while (<>) {
+			last if /^$/;
+			chomp;
+
+			my ($username, $id) = /^(.+)\t(.*)$/;
+			exit -81 unless $username;
+
+			if ($id) {
+				push @teachin_users, "${username}::${id}";
+			} else {
+				push @ignore_users, $username;
+			}
+		}
+		exit -82 unless (@teachin_users or @ignore_users);
+
+		while (    @ignore_users
+		       and length(join(',', @ignore_users, @teachin_users)) > 800) {
+			my $end = (@ignore_users < 50) ? @ignore_users : 50;
+			$opts = '--all --ignore ' . quotemeta(join(',', @ignore_users[0..$end]));
+
+			system "$app $opts";
+			@ignore_users = @ignore_users[$end + 1..$#ignore_users];
+		}
+
+		while (    @teachin_users
+		       and length(join(',', @teachin_users)) > 800) {
+			my $end = (@teachin_users < 20) ? @teachin_users : 20;
+			$opts = '--all --teachin ' . quotemeta(join(',', @teachin_users[0..$end]));
+			system "$app $opts";
+			@teachin_users = @teachin_users[$end + 1..$#teachin_users];
+		}
+
+		if (@ignore_users) {
+			$opts = '--all --ignore ' . quotemeta(join(',', @ignore_users)) . ' ';
+		} else {
+			$opts = '--all ';
+		}
+		if (@teachin_users) {
+			$opts .= '--teach-in ' . quotemeta(join(',', @teachin_users));
+		}
+
+		exit 0 unless $opts;
+
+		last TEACHINMODE;
+	};
+	}
+
+	exec "$app $opts" or last SWITCH;
+};
+
+=head3 chmod
+
+numeric constant: C<Schulkonsole::Config::CHMODAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item on
+
+1 for permissive mode, 0 otherwise
+
+=item number
+
+number of the directory
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::CHMODAPP and do {
+	my $number = <>;
+	($number) = $number =~ /^([01])$/;
+	exit -105 unless defined $number;
+
+	my $on = <>;
+	($on) = $on =~ /^([01])$/;
+	exit -80 unless defined $on;
+
+	my $filename;
+	my $mode;
+	SWITCHDIR: {
+	$number == 0 and do {
+		$filename = "$DevelConf::share_school";
+		$mode = $on ? 03777 : 0700;
+		last SWITCHDIR;
+	};
+	}
+
+	chmod $mode, $filename or exit -109;
+
+	exit 0;
+};
+
+=head3 quota
+
+numeric constant: C<Schulkonsole::Config::SETQUOTAAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item mode
+
+bitwise or: 1 = set, 2 = teachers, 4 = students, 8 = force
+or
+16 = class, 17 = project
+
+=item diskquota (if mode == 16 or mode == 17)
+
+=item mailquota (if mode == 16 or mode == 17)
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::SETQUOTAAPP and do {
+	my $flags = <>;
+	($flags) = $flags =~ /^(\d+)$/;
+	exit -110 unless defined $flags || $flags > 17;
+
+	my $app_opts;
+	if ($flags > 15) {
+		my $gid = <>;
+		if ($flags == 16) {
+			($gid) = $gid =~ /^(.+)$/;
+			exit -91 unless $gid;
+		} else {
+			($gid) = $gid =~ /^((?:p_)?[a-z0-9_-]{3,14})$/;
+			exit -101 unless defined $gid;
+		}
+
+		my $diskquota = <>;
+		($diskquota) = $diskquota =~ /^((?:\d+(?:\+\d+)*)?|quota)$/;
+		exit -111 unless defined $diskquota;
+
+		my $mailquota = <>;
+		($mailquota) = $mailquota =~ /^(\d*|-1)$/;
+		exit -112 unless defined $mailquota;
+
+		exit -111 unless length($diskquota) || length($mailquota);
+
+
+		if ($flags == 16) {
+			$app_opts = "$$app[1] --class \Q$gid";
+			if (length($diskquota)) {
+				if ($diskquota eq 'quota') {
+					$app_opts .= ' --quota standard';
+				} else {
+					$app_opts .= " --quota \Q$diskquota";
+				}
+			}
+			if (length($mailquota)) {
+				$app_opts .= " --mailquota $mailquota";
+			}
+		} else {
+			$app_opts =   $$app[2]
+			            . " --caller \Q$$userdata{uid}\E --project \Q$gid";
+			if (length($diskquota)) {
+				if ($diskquota eq 'quota') {
+					$app_opts .= ' --addquota ""';
+				} else {
+					$app_opts .= " --addquota \Q$diskquota";
+				}
+			}
+			if (length($mailquota)) {
+				$app_opts .= " --addmailquota $mailquota";
+			}
+		}
+	} else {
+		$app_opts = "$$app[0] ";
+		$app_opts .= '--set ' if $flags & 1;
+		$app_opts .= '--teachers ' if $flags & 2;
+		$app_opts .= '--students ' if $flags & 4;
+		$app_opts .= '--force ' if $flags & 8;
+	}
+
+	my $pid = fork;
+	exit -44 unless defined $pid;
+
+	if (not $pid) {
+		close STDIN;
+		my $log_file_base = POSIX::strftime(
+			"$DevelConf::log_files/sophomorix-quota.txt.%Y-%m-%d_%H-%M-%S",
+			localtime);
+		my $log_file = $log_file_base;
+		my $cnt = 0;
+		while (-e $log_file) {
+			$cnt++;
+			$log_file = sprintf "$log_file_base-%02d", $cnt;
+		}
+		open STDOUT, ">>$log_file"; # ignore errors
+		open STDERR, ">>&STDOUT";
+
+		$< = $>;
+		$) = 0;
+		$( = $);
+		umask(022);
+
+		my $lockfile = Schulkonsole::Config::lockfile('processquota');
+		open LOCK, ">>$lockfile" or exit -106;
+		flock LOCK, 2;
+		truncate LOCK, 0;
+		seek LOCK, 0, 0;
+		print LOCK "$$\n";
+
+		exec $app_opts or last SWITCH;
+	}
+
+	exit 0;
+};
+
+=head3 set_own_password
+
+numeric constant: C<Schulkonsole::Config::SETOWNPASSWORDAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item newpassword
+
+The new password
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::SETOWNPASSWORDAPP and do {
+	my $password = <>;
+	($password) = $password =~ /^(.+)$/;
+	exit -97 unless $password;
+
+	my $opts = "--nofirstpassupdate --user \Q$$userdata{uid}\E --pass \Q$password";
+
+	# sophomorix-passwd cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+	exec "$app $opts" or last SWITCH;
+};
+
+=head3 hide_unhide_class
+
+numeric constant: C<Schulkonsole::Config::HIDEUNHIDECLASSAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item hide_classs
+
+Classes to hide
+
+=item unhide_classs
+
+Classes to unhide
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::HIDEUNHIDECLASSAPP and do {
+	my @hides;
+	my @nohides;
+	while (<>) {
+		last if /^$/;
+
+		my ($gid) = /^(.+)$/;
+		exit -91 unless $gid;
+
+		push @hides, $gid;
+	}
+	while (<>) {
+		last if /^$/;
+
+		my ($gid) = /^(.+)$/;
+		exit -91 unless $gid;
+
+		push @nohides, $gid;
+	}
+
+
+	# sophomorix-class cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+
+	my $opts = '--hide';
+	foreach my $gid (@hides) {
+		system("$app $opts --class \Q$gid\E") == 0 or exit ($? >> 8);
+	}
+	$opts = '--nohide';
+	foreach my $gid (@nohides) {
+		system("$app $opts --class \Q$gid\E") == 0 or exit ($? >> 8);
+	}
+
+
+	exit 0;
+};
+
+=head3 join_no_join_project
+
+numeric constant: C<Schulkonsole::Config::PROJECTJOINNOJOINAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item hide_classs
+
+Classes to hide
+
+=item unhide_classs
+
+Classes to unhide
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::PROJECTJOINNOJOINAPP and do {
+	my @joins;
+	my @nojoins;
+	while (<>) {
+		last if /^$/;
+
+		my ($gid) = /^(.+)$/;
+		exit -90 unless $gid;
+
+		push @joins, $gid;
+	}
+	while (<>) {
+		last if /^$/;
+
+		my ($gid) = /^(.+)$/;
+		exit -90 unless $gid;
+
+		push @nojoins, $gid;
+	}
+
+
+	# sophomorix-project cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+
+	my $opts = "--caller \Q$$userdata{uid}\E --join";
+	foreach my $gid (@joins) {
+		system("$app $opts --project \Q$gid\E") == 0 or exit ($? >> 8);
+	}
+	$opts = "--caller \Q$$userdata{uid}\E --nojoin";
+	foreach my $gid (@nojoins) {
+		system("$app $opts --project \Q$gid\E") == 0 or exit ($? >> 8);
+	}
+
+
+	exit 0;
+};
+
+}
+
+
+
+exit -2;	# program error
+

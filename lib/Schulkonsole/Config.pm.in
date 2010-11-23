@@ -1,0 +1,1920 @@
+=head1 NAME
+
+Schulkonsole::Config - access to schulkonsole configuration
+
+=head1 SYNOPSIS
+
+ use Schulkonsole::Config;
+
+ my %db_config = db();
+
+ my $page_permissions = permissions_pages();
+ my $app_permissions = permissions_apps();
+
+ my ($room, $workstation) = workstation_info('localhost', 127.0.0.1);
+ open INFO, '<' . workstation_file($workstation);
+ my $workstations =  workstations_room($room);
+ my $printers = printers_room($room);
+ my $classrooms = classrooms();
+
+=cut
+
+use strict;
+
+package Schulkonsole::Config;
+require Exporter;
+use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
+$VERSION = 0.06;
+@ISA = qw(Exporter);
+@EXPORT_OK = qw(
+	db
+	permissions_pages
+	permissions_apps
+	workstation_info
+	workstations_room
+	workstations
+
+	rooms
+	hosts
+	workstations
+
+	printers_room
+	printers
+	classrooms
+	workstation_file
+	lockfile
+
+	expire_seconds
+
+	$_sysconfdir
+	$_templatedir
+	$_runtimedir
+	$_lockdir
+
+	$_preferences_conf_file
+	$_permissions_conf_file
+	$_db_conf_file
+	$_workstations_file
+	$_room_defaults_file
+	$_dhcpd_conf_file
+	$_printers_file
+	$_classrooms_file
+	$_blocked_hosts_internet_file
+	$_blocked_hosts_intranet_file
+	$_unfiltered_hosts_file
+	$_cups_printers_conf_file
+
+	$_login_template
+
+	$_max_idle_time
+	$_session_expire_time
+	$_login_expire_time
+	$_tmp_valid_time
+
+	$_http_root
+	$_htaccess_filename
+
+	$_imap_host
+	$_wrapper_user
+	$_wrapper_firewall
+	$_wrapper_ovpn
+	$_wrapper_printer
+	$_wrapper_sophomorix
+	$_wrapper_cyrus
+	$_wrapper_collab
+	$_wrapper_files
+	$_wrapper_linbo
+
+	%_root_app_name_ids
+	@_root_apps
+
+	$_shell
+
+	$_sophomorix_conf_true
+	$_sophomorix_conf_false
+
+	$_backup_conf_true
+	$_backup_conf_false
+
+	QUOTAAPP
+	CYRUSQUOTAAPP
+
+	INTERNETONOFFAPP
+	INTRANETONOFFAPP
+	URLFILTERCHECKAPP
+	URLFILTERONOFFAPP
+	ALLONAPP
+	ALLONATAPP
+	PRINTERINFOAPP
+	PRINTERONOFFAPP
+	PRINTERALLOWDENYAPP
+	SHARESTATESAPP
+	SHARESONOFFAPP
+	LSHANDOUTAPP
+	LSCOLLECTAPP
+	HANDOUTAPP
+	COLLECTAPP
+	RESETROOMAPP
+	EDITOWNCLASSMEMBERSHIPAPP
+	PRINTCLASSAPP
+	PRINTTEACHERSAPP
+	SETPASSWORDSAPP
+	WWWPERMISSIONSAPP
+	CREATEDROPDBAPP
+	DROPDBUSERAPP
+	LISTDBAPP
+	LISTDBUSERAPP
+	CREATEDROPREPOSITORYAPP
+	LISTREPOSITORYAPP
+	PROJECTMEMBERSAPP
+	PROJECTCREATEDROPAPP
+	PROJECTJOINNOJOINAPP
+	READSOPHOMORIXFILEAPP
+	WRITESOPHOMORIXFILEAPP
+	USERSCHECKAPP
+	USERSADDAPP
+	USERSMOVEAPP
+	USERSKILLAPP
+	USERSADDMOVEKILLAPP
+	TEACHINAPP
+	CHMODAPP
+	SETQUOTAAPP
+	SETOWNPASSWORDAPP
+	HIDEUNHIDECLASSAPP
+	WRITEFILEAPP
+	IMPORTWORKSTATIONSAPP
+	IMPORTPRINTERSAPP
+	OVPNCHECKAPP
+	OVPNDOWNLOADAPP
+	OVPNCREATEAPP
+	LINBOWRITESTARTCONFAPP
+	LINBOCOPYSTARTCONFAPP
+	LINBOCOPYREGPATCHAPP
+	LINBOIMAGEAPP
+
+	TEST_NONE
+	TEST_HANDOUT
+	TEST_PASSWORD
+	TEST_COLLECT
+);
+
+use Env::Bash;
+use Schulkonsole::Error;
+
+=head1 DESCRIPTION
+
+=head2 Constants
+
+The following constants are used by the wrappers to identify which
+application to invoke. A user can only use these applications if the
+corresponding string is listed for his group in the section
+C<[External Programs]> in C<$_permissions_conf_file>.
+
+=head3 Constants for wrapper-user
+
+=over
+
+=item C<QUOTAAPP>
+
+C<quota>
+
+=back
+
+=cut
+
+use constant {
+	QUOTAAPP => 0,
+};
+
+=head3 Constants for wrapper-firewall
+
+=over
+
+=item C<INTERNETONOFFAPP>
+
+C<internet_on_off>
+
+=item C<INTRANETONOFFAPP>
+
+C<intranet_on_off>
+
+=item C<URLFILTERCHECKAPP>
+
+C<urlfilter_check>
+
+=item C<URLFILTERONOFFAPP>
+
+C<urlfilter_on_off>
+
+=item C<ALLONAPP>
+
+C<all_on>
+
+=item C<ALLONATAPP>
+
+C<all_on_at>
+
+=item C<ROOMSRESETAPP>
+
+C<rooms_reset>
+
+=back
+
+=cut
+
+use constant {
+	INTERNETONOFFAPP => 0,
+	INTRANETONOFFAPP => 1,
+	URLFILTERCHECKAPP => 2,
+	URLFILTERONOFFAPP => 3,
+	ALLONAPP => 4,
+	ALLONATAPP => 5,
+	ROOMSRESETAPP => 6
+};
+
+=head3 Constants for wrapper-printer
+
+=over
+
+=item C<PRINTERINFOAPP>
+
+C<printer_info>
+
+=item C<PRINTERONOFFAPP>
+
+C<printer_on_off>
+
+=item C<PRINTERALLOWDENYAPP>
+
+C<printer_allow_deny>
+
+=back
+
+=cut
+
+use constant {
+	PRINTERINFOAPP => 7,
+	PRINTERONOFFAPP => 8,
+	PRINTERALLOWDENYAPP => 9,
+};
+
+=head3 Constants for wrapper-sophomorix
+
+=over
+
+=item C<SHARESTATESAPP>
+
+C<share_states>
+
+=item C<SHARESONOFFAPP>
+
+C<shares_on_off>
+
+=item C<LSHANDOUTAPP>
+
+C<ls_handout>
+
+=item C<LSCOLLECTAPP>
+
+C<ls_collect>
+
+=item C<HANDOUTAPP>
+
+C<handout>
+
+=item C<COLLECTAPP>
+
+C<collect>
+
+=item C<RESETROOMAPP>
+
+C<room_reset>
+
+=item C<EDITOWNCLASSMEMBERSHIPAPP>
+
+C<edit_own_class_membership>
+
+=item C<PRINTCLASSAPP>
+
+C<print_class>
+
+=item C<PRINTTEACHERSAPP>
+
+C<print_teachers>
+
+=item C<SETPASSWORDSAPP>
+
+C<set_passwords>
+
+=item C<WWWPERMISSIONSAPP>
+
+C<www_permissions>
+
+=item C<PROJECTMEMBERSAPP>
+
+C<project_members>
+
+=item C<PROJECTCREATEDROPAPP>
+
+C<project_create_drop>
+
+=item C<PROJECTJOINNOJOINAPP>
+
+C<project_join_no_join>
+
+=item C<READSOPHOMORIXFILEAPP>
+
+C<read_sophomorix_file>
+
+=item C<WRITESOPHOMORIXFILEAPP>
+
+C<write_sophomorix_file>
+
+=item C<USERSCHECKAPP>
+
+C<check_users>
+
+=item C<USERSADDAPP>
+
+C<add_users>
+
+=item C<USERSMOVEAPP>
+
+C<move_users>
+
+=item C<USERSKILLAPP>
+
+C<kill_users>
+
+=item C<USERSADDMOVEKILLAPP>
+
+C<addmovekill_users>
+
+=item C<TEACHINAPP>
+
+C<teachin>
+
+=item C<CHMODAPP>
+
+C<chmod>
+
+=item C<SETQUOTAAPP>
+
+C<quota>
+
+=item C<SETOWNPASSWORDAPP>
+
+C<set_own_password>
+
+=item C<HIDEUNHIDECLASSAPP>
+
+C<hide_unhide_class>
+
+=back
+
+=cut
+
+use constant {
+	SHARESTATESAPP => 10,
+	SHARESONOFFAPP => 11,
+	LSHANDOUTAPP => 12,
+	LSCOLLECTAPP => 13,
+	HANDOUTAPP => 14,
+	COLLECTAPP => 15,
+	RESETROOMAPP => 16,
+	EDITOWNCLASSMEMBERSHIPAPP => 17,
+	PRINTCLASSAPP => 18,
+	PRINTTEACHERSAPP => 19,
+	SETPASSWORDSAPP => 20,
+	WWWPERMISSIONSAPP => 21,
+	PROJECTMEMBERSAPP => 22,
+	PROJECTCREATEDROPAPP => 23,
+	PROJECTJOINNOJOINAPP => 24,
+	READSOPHOMORIXFILEAPP => 25,
+	WRITESOPHOMORIXFILEAPP => 26,
+	USERSCHECKAPP => 27,
+	USERSADDAPP => 28,
+	USERSMOVEAPP => 29,
+	USERSKILLAPP => 30,
+	USERSADDMOVEKILLAPP => 31,
+	TEACHINAPP => 32,
+	CHMODAPP => 33,
+	SETQUOTAAPP => 34,
+	SETOWNPASSWORDAPP => 35,
+	HIDEUNHIDECLASSAPP => 36,
+};
+
+=head3 Constants for wrapper-cyrus
+
+=over
+
+=item C<CYRUSQUOTAAPP>
+
+=back
+
+=cut
+
+use constant {
+	CYRUSQUOTAAPP => 0,
+};
+
+=head3 Constants for wrapper-collab
+
+=over
+
+=item C<CREATEDROPDBAPP>
+
+C<create_drop_db>
+
+=item C<DROPDBUSERAPP>
+
+C<drop_db_user>
+
+=item C<LISTDBAPP>
+
+C<list_db>
+
+=item C<LISTDBUSERAPP>
+
+C<list_db_user>
+
+=item C<CREATEDROPREPOSITORYAPP>
+
+C<create_drop_repository>
+
+=item C<LISTREPOSITORYAPP>
+
+C<list_repository>
+
+=back
+
+=cut
+
+use constant {
+	CREATEDROPDBAPP => 37,
+	DROPDBUSERAPP => 38,
+	LISTDBAPP => 39,
+	LISTDBUSERAPP => 40,
+	CREATEDROPREPOSITORYAPP => 41,
+	LISTREPOSITORYAPP => 42,
+};
+
+
+=head3 Constants for wrapper-files
+
+=over
+
+=item C<WRITEFILEAPP>
+
+C<write_file>
+
+=item C<IMPORTWORKSTATIONSAPP>
+
+C<import_workstations>
+
+=item C<IMPORTPRINTERSAPP>
+
+C<import_printers>
+
+=back
+
+=cut
+
+use constant {
+	WRITEFILEAPP => 43,
+	IMPORTWORKSTATIONSAPP => 44,
+	IMPORTPRINTERSAPP => 45,
+};
+
+
+=head3 Constants for wrapper-ovpn
+
+=over
+
+=item C<OVPNCHECKAPP>
+
+C<ovpn_check>
+
+=item C<OVPNDOWNLOADAPP>
+
+C<ovpn_download>
+
+=item C<OVPNCREATEAPP>
+
+C<ovpn_download>
+
+=back
+
+=cut
+
+use constant {
+	OVPNCHECKAPP => 46,
+	OVPNDOWNLOADAPP => 47,
+	OVPNCREATEAPP => 48,
+};
+
+
+=head3 Constants for wrapper-linbo
+
+=over
+
+=item C<LINBOWRITESTARTCONFAPP>
+
+C<write_start_conf>
+
+=item C<LINBOCOPYSTARTCONFAPP>
+
+C<copy_start_conf>
+
+=item C<LINBOCOPYREGPATCHAPP>
+
+C<copy_regpatch>
+
+=item C<LINBODELETEAPP>
+
+C<linbo_delete>
+
+=item C<LINBOWRITEAPP>
+
+C<linbo_write>
+
+=item C<LINBOIMAGEAPP>
+
+C<linbo_manage_images>
+
+=back
+
+=cut
+
+use constant {
+	LINBOWRITESTARTCONFAPP => 49,
+	LINBOCOPYSTARTCONFAPP => 50,
+	LINBOCOPYREGPATCHAPP => 51,
+	LINBODELETEAPP => 52,
+	LINBOWRITEAPP => 53,
+	LINBOIMAGEAPP => 54,
+};
+
+
+=head3 Constants that describe the state of an exam
+
+=over
+
+=item C<TEST_NONE>
+
+=item C<TEST_HANDOUT>
+
+=item C<TEST_PASSWORD>
+
+=item C<TEST_COLLECT>
+
+=back
+
+=cut
+
+use constant {
+	TEST_NONE => 0,
+	TEST_HANDOUT => 1,
+	TEST_PASSWORD => 2,
+	TEST_COLLECT => 3,
+};
+
+
+
+=head2 Predefined variables
+
+=over
+
+=item C<$_version>
+
+The version of Schulkonsole
+
+=back
+
+=head3 Directories
+
+=over
+
+=item C<$_sysconfdir>
+
+The path to the directory that holds the schulkonsole configuration files
+
+=item C<$_templatedir>
+
+The path to the directory that holds the template files
+
+=item C<$_runtimedir>
+
+The path to the directory to store runtime information
+
+=item C<$_lockdir>
+
+The path to the directory to store lock files
+
+=back
+
+=cut
+
+use vars qw($_version $_sysconfdir $_templatedir $_runtimedir $_lockdir);
+
+
+=head3 Schulkonsole configuration files
+
+=over
+
+=item C<$_preferences_conf_file>
+
+User set preferences
+
+=item C<$_permissions_conf_file>
+
+Defines which user groups can access pages and applications
+
+=item C<$_db_conf_file>
+
+Data to access the database
+
+=back
+
+=cut
+
+use vars qw($_preferences_conf_file $_permissions_conf_file $_db_conf_file);
+
+
+=head3 Linuxmuster configuration files
+
+=over
+
+=item C<$_workstations_file>
+
+This file lists the workstations
+
+=item C<$_room_defaults_file>
+
+This file defines the default internet, intranet, and webfilter settings
+
+=item C<$_dhcpd_conf_file>
+
+DHCPD configuration file
+
+=item C<$_printers_file>
+
+This file lists the printers
+
+=item C<$_classrooms_file>
+
+This file lists the classrooms
+
+=item C<$_network_settings_file>
+
+Default network settings
+
+=item C<$_linbo_dir>
+
+LINBO directory
+
+=item C<$_linbo_start_conf_prefix>
+
+Prefix of start.conf.* files
+
+=item C<$_linbo_templates_os_dir>
+
+Directory holding LINBO templates for section [OS]
+
+=item C<$_linbo_template_partition>
+
+The LINBO template for section [Partition]
+
+=item C<$_backup_conf_file>
+
+Setup for automated backup
+
+=back
+
+=cut
+
+use vars qw($_workstations_file $_room_defaults_file $_classrooms_file
+            $_printers_file
+            $_network_settings_file
+            $_linbo_dir $_linbo_start_conf_prefix
+            $_linbo_templates_dir $_linbo_templates_os_dir
+            $_linbo_template_partition
+            $_backup_conf_file $_dhcpd_conf_file);
+
+
+=head3 Files with status information
+
+=over
+
+=item C<$_lml_cache_dir>
+
+Directory where Linuxmusterloesung caches information
+
+=item C<$_blocked_hosts_internet_file>
+
+This file contains a cached list of hosts that are blocked from the internet
+
+=item C<$_blocked_hosts_intranet_file>
+
+This file contains a cached list of hosts that are blocked from the intranet
+
+=item C<$_unfiltered_hosts_file>
+
+This files contains a cached list of hosts that are not filtered by the
+web-filter
+
+=item C<$_cups_printers_conf_file>
+
+CUPS printer configuration file
+
+=item C<$_workstation_file>
+
+A format-string to generate the filename for workstation information
+
+=item C<$_lml_start>
+
+True if linuxmuster is started at boot time
+
+=back
+
+=cut
+
+use vars qw($_lml_cache_dir
+            $_blocked_hosts_internet_file $_blocked_hosts_intranet_file
+            $_unfiltered_hosts_file $_cups_printers_conf_file
+            $_workstation_file
+            $_lml_start);
+
+
+=head3 Special template files
+
+=over
+
+=item C<$_login_template>
+
+The template to display the login form
+
+=back
+
+=cut
+
+use vars qw($_login_template);
+
+
+=head3 Time limits
+
+=over
+
+=item C<$_max_idle_time>
+
+Time after which to ask for the password if the user was idle
+
+=item C<$_session_expire_time>
+
+Time after which to delete the session if the user was idle
+
+=item C<$_login_expire_time>
+
+Time after which to delete the session if the user did not log in
+
+=item C<$_tmp_valid_time>
+
+Time after which to invalidate temporarily stored data
+
+=back
+
+=cut
+
+use vars qw($_max_idle_time $_session_expire_time $_login_expire_time
+            $_tmp_valid_time);
+
+
+=head3 Web server settings
+
+=over
+
+=item C<$_http_root>
+
+The root directory of schulkonsole in the URL
+
+=item C<$_htaccess_filename>
+
+The name of the configuration file usually named .htaccess
+
+=back
+
+=cut
+
+use vars qw($_http_root $_htaccess_filename);
+
+
+=head3 IMAP
+
+=over
+
+=item C<$_imap_host>
+
+The hostname of the IMAP server
+
+=back
+
+=cut
+
+use vars qw($_imap_host);
+
+
+=head3 SUID-Wrappers
+
+=over
+
+=item C<$_wrapper_user>
+
+Path to wrapper to execute commands as a user
+
+=item C<$_wrapper_firewall>
+
+Path to wrapper to access the firewall
+
+=item C<$_wrapper_ovpn>
+
+Path to wrapper to handle OpenVPN certificates
+
+=item C<$_wrapper_printer>
+
+Path to wrapper to access printers
+
+=item C<$_wrapper_sophomorix>
+
+Path to wrapper to access the Sophomorix scripts
+
+=item C<$_wrapper_cyrus>
+
+Path to wrapper to access the Cyrus IMAP server
+
+=item C<$_wrapper_collab>
+
+Path to wrapper to control databases and revision control
+
+=item C<$_wrapper_files>
+
+Path to wrapper to write files with root permissions
+
+=item C<$_wrapper_linbo>
+
+Path to wrapper to write linbo configuration files
+
+=back
+
+=cut
+
+use vars qw($_wrapper_user $_wrapper_firewall $_wrapper_ovpn $_wrapper_printer
+            $_wrapper_sophomorix $_wrapper_cyrus $_wrapper_collab
+            $_wrapper_files $_wrapper_linbo);
+
+
+=head3 Variables used by wrappers
+
+=over
+
+=item C<%_root_app_name_ids>
+
+Hash that maps the name of an application in the permissions configuration
+file to its numerical ID
+
+=item C<@_root_apps>
+
+List of applications with each application on the index of its ID
+
+=back
+
+=cut
+
+use vars qw(%_root_app_name_ids @_root_apps);
+
+
+=head3 Other variables
+
+=over
+
+=item C<$_sophomorix_conf_true>
+
+Value used for 'true' in Sophomorix configuration files
+
+=item C<$_sophomorix_conf_false>
+
+Value used for 'false' in Sophomorix configuration files
+
+=item C<$_backup_conf_true>
+
+Value used for 'true' in backup.conf
+
+=item C<_backup_conf_false>
+
+Value used for 'false' in backup.conf
+
+=back
+
+=cut
+
+use vars qw($_sophomorix_conf_true $_sophomorix_conf_false
+            $_backup_conf_true $_backup_conf_false);
+
+
+
+$_version = '@VERSION@';
+$_sysconfdir = '@sysconfdir@/@PACKAGE@';
+$_templatedir = '@datadir@/@PACKAGE@/shtml';
+$_runtimedir = '@pkgruntimedir@';
+$_lockdir = '/var/lock';
+
+$_preferences_conf_file = "$_sysconfdir/preferences.conf";
+$_permissions_conf_file = "$_sysconfdir/permissions.conf";
+$_db_conf_file = "$_sysconfdir/db.conf";
+
+
+# read environment variables of linuxmuster scripts
+my $lml_config_file = '/usr/share/linuxmuster/config/dist.conf';
+my %lml_env;
+
+tie %lml_env, 'Env::Bash', Source => $lml_config_file;
+$_lml_cache_dir = $lml_env{CACHEDIR};
+$_blocked_hosts_internet_file = $lml_env{BLOCKEDHOSTSINTERNET};
+$_blocked_hosts_intranet_file = $lml_env{BLOCKEDHOSTSINTRANET};
+$_unfiltered_hosts_file = $lml_env{UNFILTEREDHOSTS};
+$_workstations_file = $lml_env{WIMPORTDATA};
+$_room_defaults_file = $lml_env{ROOMDEFAULTS};
+$_dhcpd_conf_file = $lml_env{DHCPDCONF};
+$_printers_file = $lml_env{PRINTERS};
+$_classrooms_file = $lml_env{CLASSROOMS};
+$_network_settings_file = $lml_env{NETWORKSETTINGS};
+$_linbo_dir = $lml_env{LINBODIR};
+$_linbo_templates_dir = '@datadir@/@PACKAGE@/linbo/templates';
+$_linbo_templates_os_dir = "$_linbo_templates_dir/os";
+$_linbo_template_partition = "$_linbo_templates_dir/part/start.conf.partition";
+
+$_backup_conf_file = $lml_env{SYSCONFDIR} . '/backup.conf';
+$_linbo_start_conf_prefix = $_linbo_dir . '/start.conf.';
+
+
+# read environment variables of linuxmuster scripts
+my $lml_default_config_file = '/etc/default/linuxmuster-base';
+my %lml_default_env;
+
+tie %lml_default_env, 'Env::Bash', Source => $lml_default_config_file;
+$_lml_start = ($lml_default_env{START_LINUXMUSTER} eq 'yes');
+
+
+$_cups_printers_conf_file = '/etc/cups/printers.conf';
+
+$_workstation_file = "$_lml_cache_dir/logins/%s";
+
+$_login_template = 'login.shtml';
+
+
+$_max_idle_time = '+30m';	# ask for password after 30 minutes idle time
+$_session_expire_time = '+1h';	# delete session after 1 hour idle time
+$_login_expire_time = '+1h';	# invalidate session unless logged in within an
+                             	# hour
+
+$_tmp_valid_time = '+1m';	# invalidate temporarily stored data after 1 minute
+
+$_http_root = '/schulkonsole';
+$_htaccess_filename = '.htaccess';
+$_imap_host = 'localhost';
+$_wrapper_user = '@pkglibexecdir@/bin/wrapper-user';
+$_wrapper_firewall = '@pkglibexecdir@/bin/wrapper-firewall';
+$_wrapper_ovpn = '@pkglibexecdir@/bin/wrapper-ovpn';
+$_wrapper_printer = '@pkglibexecdir@/bin/wrapper-printer';
+$_wrapper_sophomorix = '@pkglibexecdir@/bin/wrapper-sophomorix';
+$_wrapper_cyrus = '@pkglibexecdir@/bin/wrapper-cyrus';
+$_wrapper_collab = '@pkglibexecdir@/bin/wrapper-collab';
+$_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
+$_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
+
+
+
+
+%_root_app_name_ids = (
+	internet_on_off => INTERNETONOFFAPP,
+	intranet_on_off => INTRANETONOFFAPP,
+	urlfilter_check => URLFILTERCHECKAPP,
+	urlfilter_on_off => URLFILTERONOFFAPP,
+	all_on => ALLONAPP,
+	all_on_at => ALLONATAPP,
+	rooms_reset => ROOMSRESETAPP,
+	printer_info => PRINTERINFOAPP,
+	printer_on_off => PRINTERONOFFAPP,
+	printer_allow_deny => PRINTERALLOWDENYAPP,
+	share_states => SHARESTATESAPP,
+	shares_on_off => SHARESONOFFAPP,
+	ls_handout => LSHANDOUTAPP,
+	ls_collect => LSCOLLECTAPP,
+	handout => HANDOUTAPP,
+	collect => COLLECTAPP,
+	room_reset => RESETROOMAPP,
+	edit_own_class_membership => EDITOWNCLASSMEMBERSHIPAPP,
+	print_class => PRINTCLASSAPP,
+	print_teachers => PRINTTEACHERSAPP,
+	set_passwords => SETPASSWORDSAPP,
+	www_permissions => WWWPERMISSIONSAPP,
+	project_members => PROJECTMEMBERSAPP,
+	project_create_drop => PROJECTCREATEDROPAPP,
+	project_join_no_join => PROJECTJOINNOJOINAPP,
+	read_sophomorix_file => READSOPHOMORIXFILEAPP,
+	write_sophomorix_file => WRITESOPHOMORIXFILEAPP,
+	check_users => USERSCHECKAPP,
+	add_users => USERSADDAPP,
+	move_users => USERSMOVEAPP,
+	kill_users => USERSKILLAPP,
+	addmovekill_users => USERSADDMOVEKILLAPP,
+	teachin => TEACHINAPP,
+	'chmod' => CHMODAPP,
+	'quota' => SETQUOTAAPP,
+	'hide_unhide_class' => HIDEUNHIDECLASSAPP,
+	set_own_password => SETOWNPASSWORDAPP,
+	create_drop_db => CREATEDROPDBAPP,
+	drop_db_user => DROPDBUSERAPP,
+	list_db => LISTDBAPP,
+	list_db_user => LISTDBUSERAPP,
+	create_drop_repository => CREATEDROPREPOSITORYAPP,
+	list_repository => LISTREPOSITORYAPP,
+	write_file => WRITEFILEAPP,
+	import_workstations => IMPORTWORKSTATIONSAPP,
+	import_printers => IMPORTPRINTERSAPP,
+	ovpn_check => OVPNCHECKAPP,
+	ovpn_download => OVPNDOWNLOADAPP,
+	ovpn_create => OVPNCREATEAPP,
+	write_start_conf => LINBOWRITESTARTCONFAPP,
+	copy_start_conf => LINBOCOPYSTARTCONFAPP,
+	copy_regpatch => LINBOCOPYREGPATCHAPP,
+	linbo_delete => LINBODELETEAPP,
+	linbo_write => LINBOWRITEAPP,
+	linbo_manage_images => LINBOIMAGEAPP,
+);
+
+
+@_root_apps = (
+	'/usr/share/linuxmuster/scripts/internet_on_off.sh',
+	'/usr/share/linuxmuster/scripts/intranet_on_off.sh',
+	'/usr/share/linuxmuster/scripts/check_urlfilter.sh',
+	'/usr/share/linuxmuster/scripts/urlfilter_on_off.sh',
+	1,
+	1,
+	'/usr/sbin/linuxmuster-reset',
+	1,
+	[ '/usr/sbin/accept', '/usr/sbin/reject' ],
+	'/usr/sbin/lpadmin',
+	'/usr/bin/sophomorix-teacher',
+	'/usr/bin/sophomorix-teacher',
+	'/usr/bin/sophomorix-teacher',
+	'/usr/bin/sophomorix-teacher',
+	'/usr/bin/sophomorix-teacher',
+	'/usr/bin/sophomorix-teacher',
+	'/usr/sbin/sophomorix-room',
+	'/usr/bin/sophomorix-teacher',
+	'/usr/sbin/sophomorix-print',
+	'/usr/sbin/sophomorix-print',
+	'/usr/sbin/sophomorix-passwd',
+	'/usr/sbin/sophomorix-www',
+	'/usr/sbin/sophomorix-project',
+	'/usr/sbin/sophomorix-project',
+	'/usr/sbin/sophomorix-project',
+	1,
+	1,
+	'/usr/sbin/sophomorix-check',
+	'/usr/sbin/sophomorix-add',
+	'/usr/sbin/sophomorix-move',
+	'/usr/sbin/sophomorix-kill',
+	[ '/usr/sbin/sophomorix-add', '/usr/sbin/sophomorix-move',
+	  '/usr/sbin/sophomorix-kill', ],
+	'/usr/sbin/sophomorix-teach-in',
+	1,
+	[ '/usr/sbin/sophomorix-quota', '/usr/sbin/sophomorix-class',
+	  '/usr/sbin/sophomorix-project', ],
+	'/usr/sbin/sophomorix-passwd',
+	'/usr/sbin/sophomorix-class',
+	'/usr/sbin/linuxmuster-mysql',
+	'/usr/sbin/linuxmuster-mysql',
+	'/usr/sbin/linuxmuster-mysql',
+	'/usr/sbin/linuxmuster-mysql',
+	'/usr/sbin/linuxmuster-svn',
+	'/usr/sbin/linuxmuster-svn',
+	1,
+	'/usr/sbin/import_workstations',
+	'/usr/sbin/import_printers',
+	'/usr/share/linuxmuster/scripts/ovpn-client-cert.sh',
+	'/usr/share/linuxmuster/scripts/ovpn-client-cert.sh',
+	'/usr/share/linuxmuster/scripts/ovpn-client-cert.sh',
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
+);
+
+
+
+$_sophomorix_conf_true = 'yes';
+$_sophomorix_conf_false = 'no';
+
+$_backup_conf_true = 'yes';
+$_backup_conf_false = 'no';
+
+
+
+
+
+=head2 Functions
+
+=head3 C<db()>
+
+=head4 Description
+
+Returns the database configuration
+
+=head4 Return value
+
+A hash with the configuration parameter's name as key and the value as value
+
+=cut
+
+sub db {
+	return read_conf($_db_conf_file);
+}
+
+
+
+
+my %permissions_pages;
+my %permissions_apps;
+sub permissions {
+	return if (%permissions_pages or %permissions_apps);
+
+	my $is_linbo_enabled = is_linbo_enabled();
+
+	my $section = 0;
+
+	open PERMISSIONS, "<$_permissions_conf_file"
+		or die "$0: Cannot open $_permissions_conf_file: $!\n";
+	while (<PERMISSIONS>) {
+		next if /^#/ or /^\s*$/;
+		if (my ($section_name) = /^\[(.*)\]/) {
+			SWITCH: {
+			$section_name =~ /^p/i and do {
+				$section = 1;
+				last SWITCH;
+			};
+			$section_name =~ /^e/i and do {
+				$section = 2;
+				last SWITCH;
+			};
+			die "$0: Section must be one of [Pages] or [external Programs] "
+				. "in $_permissions_conf_file, line $.\n";
+			}
+		} else {
+			my ($group, $resources) = /^(.+?)=(.+)$/;
+			if ($group and $resources) {
+				my @resources = split /\s+/, $resources;
+				SWITCH: {
+				$section == 1 and do {
+					foreach my $page (@resources) {
+						# only allow linbo-pages if linbo is enabled
+						if (   $is_linbo_enabled
+						    or $page !~ /^linbo/) {
+							$permissions_pages{$group}{$page} = 1;
+						}
+					}
+					last SWITCH;
+				};
+				$section == 2 and do {
+					foreach my $app (@resources) {
+						$permissions_apps{$group}{$app} = 1;
+					}
+					last SWITCH;
+				};
+				}
+			} else {
+				die "$0: Syntax error in $_permissions_conf_file, line $.\n";
+			}
+		}
+	}
+
+
+	close PERMISSIONS;
+}
+
+
+
+=head3 C<permissions_pages()>
+
+=head4 Description
+
+Returns the access permissions for the interface's web pages
+
+=head4 Return value
+
+A reference to a hash with the group name as key and a reference to a
+hash with the pages as keys and true as value as value.
+
+=cut
+
+sub permissions_pages {
+	permissions();
+
+
+	return \%permissions_pages;
+}
+
+
+
+=head3 C<permissions_apps()>
+
+=head4 Description
+
+Returns the access permissions for the helper applications used by the
+interface
+
+=head4 Return value
+
+A reference to a hash with the group name as key and a reference to a
+hash with the applications as keys and true as value as value.
+
+=cut
+
+sub permissions_apps {
+	permissions();
+
+
+	return \%permissions_apps;
+}
+
+
+
+
+=head3 C<workstation_info($workstation, $ip)>
+
+Returns the room and the configured name of a workstation
+
+=head4 Parameters
+
+=over 
+
+=item C<$workstation>
+
+DNS name of the workstation
+
+=item C<$ip>
+
+IP of the workstation
+
+=back
+
+=head4 Return value
+
+An array with the room as the first element and the configured name as the
+second element
+
+=head4 Description
+
+Returns the room and the configured name of the workstation C<$workstation>
+or the ip C<$ip>, whatever comes first
+
+=cut
+
+sub workstation_info {
+	my $workstation = shift;
+	my $ip = shift;
+
+	my $conf_workstation;
+	my $room;
+
+
+	if (open CONF, "<$_workstations_file") {
+		while (<CONF>) {
+			next if /^#/ || /^\s*$/;
+
+			my $dummy;
+			my $conf_ip;
+			($room, $conf_workstation, $dummy, $dummy, $conf_ip) = split ';';
+
+			last if (   $conf_workstation eq $workstation
+			         or $conf_ip eq $ip);
+			undef $conf_workstation;
+		}
+
+		close CONF;
+	} else {
+		warn "$0: Cannot open $_workstations_file: $!\n";
+	}
+
+
+	if (not $conf_workstation) {
+		($conf_workstation) = $workstation =~ /^([^.]*)/;
+		$room = '';
+	}
+
+	return ($room, $conf_workstation);
+}
+
+
+
+
+=head3 C<workstations_room($room)>
+
+Return info about the workstations in a room
+
+=head4 Parameters
+
+=over
+
+=item C<$room>
+
+The name of the room
+
+=back
+
+=head4 Return value
+
+A hash with the workstation names as values and a hash with the information
+about the workstation as value. The information hash has the following
+keys:
+
+=over
+
+=item C<room>
+
+The name of the room of the workstation
+
+=item C<name>
+
+The name of the workstation
+
+=item C<hw_class>
+
+The hardware class of the workstation
+
+=item C<mac>
+
+The MAC address of the workstation
+
+=item C<ip>
+
+The IP of the workstation
+
+=back
+
+=cut
+
+sub workstations_room {
+	my $room = shift;
+
+	my %workstations;
+
+	if (open CONF, "<$_workstations_file") {
+		while (<CONF>) {
+			next if /^#/ || /^\s*$/;
+
+			my ($conf_room, $workstation, $hw_class, $mac, $ip) = split ';';
+
+			if ($conf_room eq $room) {
+				$workstations{$workstation}{room} = $room;
+				$workstations{$workstation}{name} = $workstation;
+				$workstations{$workstation}{hw_class} = $hw_class;
+				$workstations{$workstation}{mac} = $mac;
+				$workstations{$workstation}{ip} = $ip;
+			}
+		}
+
+		close CONF;
+	} else {
+		warn "$0: Cannot open $_workstations_file: $!\n";
+	}
+
+
+
+	return \%workstations;
+}
+
+
+
+
+=head3 C<count_unimported_unconfigured_workstations()>
+
+Count unimported and unconfigured workstations
+
+=head4 Return value
+
+In list context, an array with the number of unimported workstations as
+first, the number of unconfigured workstation as second, and the number of
+comments as third element.
+Otherwise true, if there are unimported or unconfigured workstations.
+
+=head4 Description
+
+Counts how many of the workstations configured in C<$_workstations_file>
+are not actually present in the system and vice versa.
+
+=cut
+
+sub count_unimported_unconfigured_workstations {
+	my %workstations;
+	my $comment_cnt = 0;
+
+	my $unconfigured_cnt = 0;
+	if (open CONF, "<$_workstations_file") {
+		while (<CONF>) {
+			if (/^#/) {
+				$comment_cnt++;
+				next;
+			}
+			next if /^\s*$/;
+
+			my ($conf_room, $workstation, $hw_class, $mac, $ip) = split ';';
+
+			$workstations{"\L$workstation"} = 1 if $workstation;
+		}
+
+		close CONF;
+
+
+		open CONF, "<$_dhcpd_conf_file"
+			or die "$0: Cannot open $_dhcpd_conf_file: $!\n";
+
+		while (<CONF>) {
+			s/#.*//;
+
+			if (my ($workstation) = /option\s+host-name\s+"(.+)"/) {
+				$workstation = lc $workstation;
+				if ($workstations{$workstation}) {
+					delete $workstations{$workstation}
+				} else {
+					$unconfigured_cnt++;
+				}
+			}
+		}
+
+	} else {
+		warn "$0: Cannot open $_workstations_file: $!\n";
+	}
+
+
+	my $unimported_cnt = keys %workstations;
+	return (wantarray ? ($unimported_cnt, $unconfigured_cnt, $comment_cnt) :
+	                    $unimported_cnt || $unconfigured_cnt );
+}
+
+
+
+
+=head3 C<lockfile($task)>
+
+Creates the filename for a lockfile for a task
+
+=head4 Parameters
+
+=over
+
+=item C<$task>
+
+The name of the task to be locked
+
+=back
+
+=head4 Return value
+
+The filename
+
+=cut
+
+sub lockfile {
+	my $task = shift;
+
+	return sprintf("%s/schulkonsole-%s", $_lockdir, $task);
+}
+
+
+
+
+=head3 C<workstation_file($workstation)>
+
+Creates the filename of the file that stores login information about a
+workstation
+
+=head4 Parameters
+
+=over
+
+=item C<$workstation>
+
+The name of the workstation
+
+=back
+
+=head4 Return value
+
+The filename
+
+=cut
+
+sub workstation_file {
+	my $workstation = shift;
+
+	return sprintf($_workstation_file, $workstation);
+}
+
+
+
+
+
+=head3 C<classrooms()>
+
+Returns a list of all classrooms
+
+=head4 Return value
+
+A reference to an array of all classrooms
+
+=cut
+
+sub classrooms {
+	my @re;
+
+	open CLASSROOMS, "<$_classrooms_file"
+		or die "$0: Cannot open $_classrooms_file: $!\n";
+
+	while (<CLASSROOMS>) {
+		s/#.*//;
+		chomp;
+		next unless $_;
+
+		push @re, $_;
+	}
+
+	close CLASSROOMS;
+
+
+	return \@re;
+}
+
+
+
+
+=head3 C<rooms()>
+
+Returns a list of all rooms with workstations
+
+=head4 Return value
+
+A reference to a hash with all rooms from the workstations file as keys
+
+=cut
+
+sub rooms {
+	my %rooms;
+
+	open ROOMS, "<$_workstations_file"
+		or die "$0: Cannot open $_workstations_file: $!\n";
+
+	while (<ROOMS>) {
+		next if /^#/ || /^\s*$/;
+
+		my ($room, $workstation) = split ';';
+
+		if ($workstation) {
+			$rooms{$room} = 1 unless exists $rooms{$room};
+		}
+	}
+
+	close ROOMS;
+
+
+	return \%rooms;
+}
+
+
+
+
+=head3 C<hosts()>
+
+Returns a list of all workstations
+
+=head4 Return value
+
+A reference to a hash of all hosts from the workstations file as keys and
+the room of that workstation as value
+
+=cut
+
+sub hosts {
+	my %hosts;
+
+	open HOSTS, "<$_workstations_file"
+		or die "$0: Cannot open $_workstations_file: $!\n";
+
+	while (<HOSTS>) {
+		next if /^#/ || /^\s*$/;
+
+		my ($room, $workstation) = split ';';
+
+		if ($workstation) {
+			$hosts{$workstation} = $room;
+		}
+	}
+
+	close HOSTS;
+
+
+	return \%hosts;
+}
+
+
+
+
+=head3 C<workstations()>
+
+Returns a list of all workstations
+
+=head4 Return value
+
+A reference to a hash of all workstations from the workstations file as keys and
+the room of that workstation as value
+
+=cut
+
+sub workstations {
+	my %workstations;
+
+	open WORKSTATIONS, "<$_workstations_file"
+		or die "$0: Cannot open $_workstations_file: $!\n";
+
+	while (<WORKSTATIONS>) {
+		next if /^#/ || /^\s*$/;
+
+		chomp;
+		my @fields = split ';';
+
+		my $base = $fields[1];
+		if ($base) {
+			my $cnt = 0;
+			my $key;
+			do {
+				$cnt++;
+				$key = "$base!$cnt";
+			} while (exists $workstations{$key});
+
+			$workstations{$key}{room} = $fields[0];
+			$workstations{$key}{name} = $fields[1];
+			$workstations{$key}{groups} = $fields[2];
+			$workstations{$key}{mac} = $fields[3];
+			$workstations{$key}{ip} = $fields[4];
+			$workstations{$key}{pxe} = $fields[10];
+			$workstations{$key}{opts} = $fields[11];
+		}
+	}
+
+	close WORKSTATIONS;
+
+
+	return \%workstations;
+}
+
+
+
+
+
+=head3 C<printers_room($room)>
+
+Returns a list of all printers in a room
+
+=head4 Parameters
+
+=over
+
+=item C<$room>
+
+The name of the room
+
+=back
+
+=head4 Return value
+
+A reference to an array of the printers
+
+=cut
+
+sub printers_room {
+	my $room = shift;
+	my @re;
+
+	open PRINTERS, "<$_printers_file"
+		or die "$0: Cannot open $_printers_file: $!\n";
+
+	while (my $line = <PRINTERS>) {
+		$line =~ s/#.*//;
+		next unless $line;
+
+		my ($printer, $rooms, $hosts) = split /\s+/, $line;
+		next unless $rooms;
+
+		my $is_in_room = 0;
+		foreach my $conf_room (split ',', $rooms) {
+			if ($conf_room eq $room) {
+				$is_in_room = 1;
+				last;
+			}
+		}
+		next unless $is_in_room;
+
+		push @re, $printer;
+	}
+
+
+	close PRINTERS;
+
+
+	return \@re;
+}
+
+
+
+
+=head3 C<printers()>
+
+Returns all printers
+
+=head4 Return value
+
+A reference to a hash with the printer's name as key and a reference to
+a hash with the keys C<rooms> and C<hosts> with a reference to a hash
+with the rooms or resp. the hosts as keys and 1 as a value.
+
+=cut
+
+sub printers {
+	my %re;
+
+	open PRINTERS, "<$_printers_file"
+		or die "$0: Cannot open $_printers_file: $!\n";
+
+	while (my $line = <PRINTERS>) {
+		$line =~ s/#.*//;
+		next unless $line;
+
+		my ($printer, $rooms, $hosts) = split /\s+/, $line;
+		next unless $printer;
+
+		my %rooms;
+		if ($rooms ne '-') {
+			foreach my $room (split ',', $rooms) {
+				$rooms{$room} = 1;
+			}
+		}
+		my %hosts;
+		if ($hosts ne '-') {
+			foreach my $host (split ',', $hosts) {
+				$hosts{$host} = 1;
+			}
+		}
+
+		$re{$printer} = {
+			rooms => \%rooms,
+			hosts => \%hosts,
+		};
+	}
+
+	close PRINTERS;
+
+
+	return \%re;
+}
+
+
+
+
+=head3 is_linbo_enabled()
+
+Check if LINBO is enabled
+
+=head4 Return value
+
+True if LINBO is enabled, false otherwise
+
+=head4 Description
+
+Checks if LINBO is enabled.
+
+=cut
+
+my $is_linbo_enabled;
+sub is_linbo_enabled {
+	return $is_linbo_enabled if defined $is_linbo_enabled;
+
+	open NETWORKSETTINGS, "<$Schulkonsole::Config::_network_settings_file"
+		or return 0;
+	while (<NETWORKSETTINGS>) {
+		my ($key, $value) = /^\s*(\S+)\s*=\s*(.+)$/;
+		if ($key eq 'imaging') {
+			$is_linbo_enabled = (($value =~ /^linbo/) ? 1 : 0);
+			last;
+		}
+	}
+	close NETWORKSETTINGS;
+
+	return $is_linbo_enabled;
+}
+
+
+
+
+sub read_conf {
+	my $filename = shift;
+	my %conf;
+
+	open CONF, "<$filename"
+		or die "$0: Cannot open $filename: $!\n";
+
+	while (<CONF>) {
+		next if /^#/ or /^\[/ or /^\s*$/;
+
+		my ($key, $value) = /^(.+?)=(.*)/;
+
+		die "$0: Syntax error in $filename, line $.\n" unless $key;
+
+		$conf{$key} = $value;
+	}
+
+	close CONF;
+
+	return %conf;
+}
+
+
+
+
+
+=head3 C<expire_seconds($time_str)>
+
+Returns the number of seconds described in a string
+
+=head4 Parameters
+
+=over
+
+=item C<$time_str>
+
+A string with a number and an optional suffix describing a unit.
+Possible suffixes are: s (seconds), m (minutes), h (hours), d (days),
+w (weeks), M (months), and y (years).
+
+=back
+
+=head4 Return value
+
+The number of seconds
+
+=head4 Description
+
+Parses the string C<$time_str> and returns the number of seconds
+
+=cut
+
+sub expire_seconds {
+	my $time_str = shift;
+
+	if (my ($n, $unit) = $time_str =~ /^([+-]?\d+)([smhdwMy])$/) {
+		my %mult = (
+			s => 1,
+			m => 60,
+			h => 3600,
+			d => 86400,
+			w => 604800,
+			M => 2592000,
+			y => 31536000,
+		);
+
+		return $n * $mult{$unit};
+	} else {
+		return int($time_str);
+	}
+}
+
+
+
+
+# read preferences from file
+
+eval {
+my %preferences = read_conf($_preferences_conf_file);
+
+$_max_idle_time = $preferences{max_idle_time}
+	if (exists $preferences{max_idle_time});
+$_templatedir = $preferences{templatedir}
+	if (    exists $preferences{templatedir}
+	    and -d $preferences{templatedir});
+};
+
+
+
+
+1;

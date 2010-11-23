@@ -1,0 +1,57 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Einstellungen</gettext></title>
+<!--#include file="css.shtml.inc" -->
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-settings.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Einstellungen</gettext></h2>
+
+<p>
+<!--#if expr="$link_settings_program" -->
+<a href="settings_program"><gettext>Schulkonsole</gettext></a></br>
+<!--#endif -->
+<!--#if expr="$link_settings_users" -->
+<a href="settings_users"><gettext>Benutzerverwaltung</gettext></a></br>
+<!--#endif -->
+<!--#if expr="$link_settings_classs" -->
+<a href="settings_classs"><gettext>Klassen</gettext></a></br>
+<!--#endif -->
+<!--#if expr="$link_settings_backup" -->
+<a href="settings_backup"><gettext>Backup</gettext></a></br>
+<!--#endif -->
+</p>
+
+
+</div>
+
+<div id="info">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext>Info</gettext></h2>
+
+<p><gettext>Bearbeiten Sie hier die globalen Einstellungen f&uuml;r die
+Schulkonsole, die Benutzerverwaltung, die Klassensichtbarkeit
+und das Serverbackup.</gettext></p>
+<p><gettext>F&uuml;r eine detaillierte Beschreibung der einzelnen Punkte
+konsultieren Sie bitte die Dokumentation.</gettext></p>
+
+<!--#include file="footer_info.shtml.inc" -->
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

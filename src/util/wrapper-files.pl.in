@@ -1,0 +1,227 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+wrapper-files.pl - wrapper for writing files
+
+=head1 SYNOPSIS
+
+ my $id = $userdata{id};
+ my $password = 'secret';
+ my $app_id = Schulkonsole::Config::WRITEFILEAPP;
+
+ open SCRIPT, "| $Schulkonsole::Config::_wrapper_files";
+ print SCRIPT <<INPUT;
+ $id
+ $password
+ $app_id
+ 1
+ line1
+ line2
+
+ INPUT
+
+=head1 DESCRIPTION
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Config;
+use Schulkonsole::DB;
+
+
+
+my $id = <>;
+$id = int($id);
+my $password = <>;
+chomp $password;
+
+my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
+exit -32 unless $userdata;
+
+my $app_id = <>;
+($app_id) = $app_id =~ /^(\d+)$/;
+exit -33
+	unless defined $app_id && $Schulkonsole::Config::_root_apps[$app_id];
+
+
+
+my $permissions = Schulkonsole::Config::permissions_apps();
+my $groups = Schulkonsole::DB::user_groups(
+	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
+
+my $app;
+foreach my $group (('ALL', keys %$groups)) {
+	foreach my $name (keys %{ $$permissions{$group} }) {
+		if ($Schulkonsole::Config::_root_app_name_ids{$name} == $app_id) {
+			$app = $Schulkonsole::Config::_root_apps[$app_id];
+			last;
+		}
+	}
+}
+exit -34 unless $app;
+
+
+my $opts;
+SWITCH: {
+
+=head3 write_file
+
+numeric constant: C<Schulkonsole::Config::WRITEFILEAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item file
+
+0 = classrooms, 1 = printers, 2 = workstations, 3 = room_defaults,
+4 = backup.conf, 5 = preferences.conf
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::WRITEFILEAPP and do {
+	my $file = <>;
+	($file) = $file =~ /^(\d+)$/;
+	exit -105 unless defined $file;
+
+	my $filename;
+	my $perm;
+	SWITCHWRITEFILE: {
+	$file == 0 and do {
+		$filename = $Schulkonsole::Config::_classrooms_file;
+		last SWITCHWRITEFILE;
+	};
+	$file == 1 and do {
+		$filename = $Schulkonsole::Config::_printers_file;
+		last SWITCHWRITEFILE;
+	};
+	$file == 2 and do {
+		$filename = $Schulkonsole::Config::_workstations_file;
+		last SWITCHWRITEFILE;
+	};
+	$file == 3 and do {
+		$filename = $Schulkonsole::Config::_room_defaults_file;
+		last SWITCHWRITEFILE;
+	};
+	$file == 4 and do {
+		$filename = $Schulkonsole::Config::_backup_conf_file;
+		$perm = 0755 unless -e $filename;
+		last SWITCHWRITEFILE;
+	};
+	$file == 5 and do {
+		$filename = $Schulkonsole::Config::_preferences_conf_file;
+		$perm = 0644 unless -e $filename;
+		last SWITCHWRITEFILE;
+	};
+	}
+
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+
+	open FILE, ">$filename" or exit -106;
+	flock FILE, 2;
+	seek FILE, 0, 0;
+
+	while (<>) {
+		print FILE;
+	}
+
+	if (defined $perm) {
+		chmod $perm, $filename;
+	}
+
+	close FILE;
+
+	exit 0;
+};
+
+=head3 import_workstations
+
+numeric constant: C<Schulkonsole::Config::IMPORTWORKSTATIONSAPP>
+
+=cut
+
+$app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
+	my $sid = <>;
+	($sid) = $sid =~ /^(.+)$/;
+	exit -10 unless defined $sid;
+
+	my $pid = fork;
+	exit -44 unless defined $pid;
+
+	if (not $pid) {
+		close STDIN;
+		close STDOUT;
+		close STDERR;
+		open STDOUT, ">>/dev/null" or die;
+		open STDERR, ">>&STDOUT" or die;
+
+
+		umask(027);
+		my $lockfile = Schulkonsole::Config::lockfile('import_workstations');
+		open LOCK, ">>$lockfile" or exit -106;
+		flock LOCK, 2;
+		seek LOCK, 0, 0;
+		truncate LOCK, 0;
+		print LOCK "$$\n";
+
+		$< = $>;
+		$) = 0;
+		$( = $);
+		umask(022);
+		open APP, "$app | " or last SWITCH;
+		my $line;
+		while (<APP>) {
+			$line = $_;
+		}
+		close APP;
+		if ($?) {
+			my $error_code = $?;
+			use CGI::Session;
+
+			my $session_lockfile = Schulkonsole::Config::lockfile("cgisession_$sid");
+			open SESSIONLOCK, ">>$session_lockfile" or exit -106;
+			flock SESSIONLOCK, 2;
+
+			my $session = new CGI::Session("driver:File", $sid, { Directory => $Schulkonsole::Config::_runtimedir });
+			if ($session->param('username')) {
+				chomp $line;
+				$session->param('statusbg', $line);
+				$session->param('statusbgiserror', $error_code);
+				$session->close;
+			} else {
+				$session->delete();
+			}
+		}
+		exit $?;
+	} else {
+		exit 0;
+	}
+};
+
+=head3 import_workstations
+
+numeric constant: C<Schulkonsole::Config::IMPORTPRINTERSAPP>
+
+=cut
+
+$app_id == Schulkonsole::Config::IMPORTPRINTERSAPP and do {
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+	exec "$app" or last SWITCH;
+};
+
+}
+
+
+
+exit -2;	# program error
+

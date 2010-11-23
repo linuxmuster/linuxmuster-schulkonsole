@@ -1,0 +1,184 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+room_test_handout - hand out files in room during exam
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/room_test_handout
+
+=head1 DESCRIPTION
+
+C<room_test_handout> lets you hand out files in a selected room during an
+exam.
+The HTML template is room_test_handout.shtml.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session
+and Schulkonsole::Room::set_vars() C<room_handout>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Room;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::Session;
+
+my $this_file = 'room_test_handout';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+my $q = $sk_session->query();
+
+my $room_session = new Schulkonsole::Room($sk_session);
+
+
+if (   not $room_session
+    or not $room_session->info('is_editing')) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room/g;
+	$sk_session->redirect($url);
+}
+
+
+
+if ($q->param('handouttest')) {
+	eval {
+	Schulkonsole::Sophomorix::handout_from_room(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		$room_session->info('name'));
+
+	$sk_session->set_status_redirect($sk_session->d()->get('Ausgeteilt'), 0);
+
+	$room_session->param('test_step', Schulkonsole::Config::TEST_PASSWORD)
+		if (  $room_session->param('test_step')
+		    < Schulkonsole::Config::TEST_PASSWORD);
+
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room_test_password/g;
+	$sk_session->redirect($url);
+	};
+	if ($@) {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+} elsif ($q->param('continue')) {
+	$room_session->param('test_step', Schulkonsole::Config::TEST_PASSWORD)
+		if (  $room_session->param('test_step')
+		    < Schulkonsole::Config::TEST_PASSWORD);
+
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room_test_password/g;
+	$sk_session->redirect($url);
+}
+
+
+
+
+eval {
+my $teacher_share_files
+	= Schulkonsole::Sophomorix::ls_handout_exam(
+		$sk_session->userdata('id'),
+		$sk_session->get_password());
+
+=item C<teacher_share_files>
+
+Available files as returned by C<Schulkonsole::Sophomorix::create_file_list()>
+
+=cut
+
+$sk_session->set_var('teacher_share_files',
+	Schulkonsole::Sophomorix::create_file_list($teacher_share_files));
+};
+if ($@) {
+	if (    ref $@
+	    and $@->{code} == Schulkonsole::Error::WRAPPER_SOPHOMORIX_NO_SUCH_DIRECTORY) {
+		$sk_session->set_status(
+			$sk_session->d()->get(
+				'Verzeichnis zum Bereitstellen nicht gefunden'),
+				1);
+	} else {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+}
+
+
+
+
+my $workstations
+	= Schulkonsole::Config::workstations_room($room_session->info('name'));
+my $workstation_users = $room_session->workstation_users();
+
+
+my @array_overview_workstations;
+foreach my $workstation (sort keys %$workstations) {
+	my $first_login = 1;
+	if (    $$workstation_users{$workstation}
+	    and @{ $$workstation_users{$workstation} }) {
+		foreach my $userdata (sort { $$a{uid} cmp $$b{uid} }
+		                           @{ $$workstation_users{$workstation} }) {
+			my $overview_workstation = {
+				name => $workstation,
+				login => $$userdata{uid},
+				first => $first_login,
+			};
+			push @array_overview_workstations, $overview_workstation;
+
+			$first_login = 0;
+		}
+	}
+}
+
+=item C<overview_workstations>
+
+Users logged in on workstations in room as an array of hashes with
+the keys
+
+=over
+
+=item C<name>
+
+Name of a workstation
+
+=item C<login>
+
+Login of the user
+
+=item C<first>
+
+True if the user is the first of all users on the workstation
+
+=back
+
+=cut
+
+$sk_session->set_var('overview_workstations', \@array_overview_workstations);
+
+
+$room_session->set_vars($sk_session);
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<handouttest>
+
+Hand out files
+
+=item C<continue>
+
+Continue without handing out files
+
+=back
+

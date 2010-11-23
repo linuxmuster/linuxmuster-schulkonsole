@@ -1,0 +1,55 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Projekte</gettext></title>
+<!--#include file="css.shtml.inc" -->
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-project.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Projekte</gettext> :: <gettext>L&ouml;schen</gettext></h2>
+
+<h3><gettext>Ausgew&auml;hltes Projekt:</gettext> <!--#echo var="project" --></h3>
+
+<form method="post">
+
+<h3><gettext>Bitte best&auml;tigen</getttext></h3>
+
+<p><gettext>M&ouml;chten Sie das Projekt wirklich l&ouml;schen?</gettext></p>
+
+<p><input type="hidden" name="ok" value="1">
+<input type="submit" name="${project_gid}_drop" value="Ja">
+<input type="submit" value="Nein">
+</p>
+
+</form>
+
+
+</div>
+
+
+<div id="info">
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext>Info</gettext></h2>
+
+<p><gettext>W&auml;hlen Sie &#8222;Ja&#8220;, um das Projekt wirklich
+zu l&ouml;schen.</gettext></p>
+
+<!--#include file="footer_info.shtml.inc" -->
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

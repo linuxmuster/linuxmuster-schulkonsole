@@ -1,0 +1,33 @@
+Source: linuxmuster-schulkonsole
+Section: admin
+Priority: optional
+Maintainer: Aike Reyer <aike@users.sourceforge.net>
+Build-Depends: debhelper (>= 4.0.0), autotools-dev, libhtml-parser-perl
+Standards-Version: 3.7.2
+
+Package: linuxmuster-schulkonsole
+Architecture: all
+Pre-Depends: cyrus-common | cyrus21-common | cyrus22-common | cyrus-common-2.2
+Depends: linuxmuster-schulkonsole-wrapper (>= ${source:Version}), linuxmuster-schulkonsole-wrapper (<< ${source:Version}.1~), linuxmuster-schulkonsole-templates-paedml | linuxmuster-schulkonsole-templates-base, libcgi-pm-perl, libcgi-session-perl, liblocale-gettext-perl, libhtml-parser-perl, libdbi-perl, libdbd-odbc-perl | libdbd-pg-perl, libcrypt-passwdmd5-perl, libcrypt-smbhash-perl, libnet-cups-perl (>= 0.55), libcrypt-rijndael-perl, libnet-imap-simple-perl, libenv-bash-perl, libproc-process-perl, ${perl:Depends}, ${misc:Depends}
+Recommends: sophomorix-base, linuxmuster-base
+Description: web-based administration tool for the PaedML
+ Schulkonsole is a web-interface for PaedML systems.
+
+Package: linuxmuster-schulkonsole-templates-base
+Architecture: all
+Depends: linuxmuster-schulkonsole (= ${source:Version}), ${misc:Depends}
+Conflicts: linuxmuster-schulkonsole-templates-paedml
+Description: templates for schulkonsole
+ Schulkonsole is a web-interface for Linuxmusterloesung systems.
+ .
+ This package contains the HTML-templates
+
+Package: linuxmuster-schulkonsole-wrapper
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: linuxmuster-schulkonsole-wrapper
+Description: suid-wrappers for schulkonsole
+ Schulkonsole is a web-interface for Linuxmusterloesung systems.
+ .
+ This package contains the wrappers to allow execution of utility-programs
+ under different uid
