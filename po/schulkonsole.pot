@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: entwickler@lml.mine.nu\n"
-"POT-Creation-Date: 2010-11-03 12:15+0100\n"
+"POT-Creation-Date: 2010-11-23 16:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,35 +18,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/cgi-bin/class_collect.in:98 src/cgi-bin/project_collect.in:119
-#: src/cgi-bin/room_collect.in:96 src/cgi-bin/room_test_end.in:64
+#: src/cgi-bin/room_collect.in:91 src/cgi-bin/room_test_end.in:64
 msgid "Eingesammelt"
 msgstr ""
 
 #: src/cgi-bin/class_collect.in:102 src/cgi-bin/project_collect.in:123
-#: src/cgi-bin/room_collect.in:100
+#: src/cgi-bin/room_collect.in:95
 msgid "Eingesammelt von"
 msgstr ""
 
 #: src/cgi-bin/class_collect.in:112 src/cgi-bin/class_handoutcopy.in:99
 #: src/cgi-bin/class_passwords.in:284 src/cgi-bin/class_passwords.in:299
 #: src/cgi-bin/class_passwords.in:321 src/cgi-bin/project_collect.in:133
-#: src/cgi-bin/project_handoutcopy.in:123 src/cgi-bin/room_collect.in:123
-#: src/cgi-bin/room_handout.in:103 src/cgi-bin/user_teacherpasswords.in:129
+#: src/cgi-bin/project_handoutcopy.in:123 src/cgi-bin/room_collect.in:118
+#: src/cgi-bin/room_handout.in:99 src/cgi-bin/user_teacherpasswords.in:129
 msgid "Keine Benutzer ausgew&auml;hlt"
 msgstr ""
 
 #: src/cgi-bin/class_handoutcopy.in:87 src/cgi-bin/project_handoutcopy.in:111
-#: src/cgi-bin/room_handout.in:91 src/cgi-bin/room_test_handout.in:57
+#: src/cgi-bin/room_handout.in:87 src/cgi-bin/room_test_handout.in:58
 msgid "Ausgeteilt"
 msgstr ""
 
 #: src/cgi-bin/class_handoutcopy.in:89 src/cgi-bin/project_handoutcopy.in:113
-#: src/cgi-bin/room_handout.in:93
+#: src/cgi-bin/room_handout.in:89
 msgid "Ausgeteilt an"
 msgstr ""
 
 #: src/cgi-bin/class_handoutcopy.in:129 src/cgi-bin/project_handoutcopy.in:153
-#: src/cgi-bin/room_handout.in:125
+#: src/cgi-bin/room_handout.in:121
 msgid "Verzeichnis zum Austeilen nicht gefunden"
 msgstr ""
 
@@ -55,7 +55,7 @@ msgid "Vorlagen bereitgestellt"
 msgstr ""
 
 #: src/cgi-bin/class_handout.in:112 src/cgi-bin/project_handout.in:127
-#: src/cgi-bin/room_test_handout.in:101
+#: src/cgi-bin/room_test_handout.in:104
 msgid "Verzeichnis zum Bereitstellen nicht gefunden"
 msgstr ""
 
@@ -138,8 +138,8 @@ msgstr ""
 #: src/cgi-bin/project_shares.in:124 src/cgi-bin/quotas_classes.in:160
 #: src/cgi-bin/quotas_others.in:199 src/cgi-bin/quotas_projects.in:161
 #: src/cgi-bin/quotas_projects.in:287 src/cgi-bin/quotas_teachers.in:132
-#: src/cgi-bin/room.in:223 src/cgi-bin/room.in:262
-#: src/cgi-bin/room_shares.in:109 src/cgi-bin/settings_classs.in:92
+#: src/cgi-bin/room.in:228 src/cgi-bin/room.in:267
+#: src/cgi-bin/room_shares.in:103 src/cgi-bin/settings_classs.in:92
 msgid "&Auml;nderungen &uuml;bernommen."
 msgstr ""
 
@@ -147,7 +147,7 @@ msgstr ""
 #: src/cgi-bin/project_shares.in:127 src/cgi-bin/quotas_classes.in:163
 #: src/cgi-bin/quotas_others.in:203 src/cgi-bin/quotas_projects.in:164
 #: src/cgi-bin/quotas_projects.in:291 src/cgi-bin/quotas_teachers.in:136
-#: src/cgi-bin/room_shares.in:112 src/cgi-bin/settings_classs.in:95
+#: src/cgi-bin/room_shares.in:106 src/cgi-bin/settings_classs.in:95
 msgid "Keine &Auml;nderungen."
 msgstr ""
 
@@ -631,56 +631,56 @@ msgstr ""
 msgid "Lehrer %s unbekannt"
 msgstr ""
 
-#: src/cgi-bin/room_collect.in:110 src/cgi-bin/room_test_collect.in:79
+#: src/cgi-bin/room_collect.in:105 src/cgi-bin/room_test_collect.in:76
 msgid "Kopiert"
 msgstr ""
 
-#: src/cgi-bin/room_collect.in:112
+#: src/cgi-bin/room_collect.in:107
 msgid "Kopiert von"
 msgstr ""
 
-#: src/cgi-bin/room.in:95 src/cgi-bin/room.in:230 src/cgi-bin/room.in:288
-#: src/cgi-bin/room.in:320
+#: src/cgi-bin/room.in:100 src/cgi-bin/room.in:235 src/cgi-bin/room.in:293
+#: src/cgi-bin/room.in:325
 msgid "In diesem Raum findet kein Unterricht statt."
 msgstr ""
 
-#: src/cgi-bin/room.in:100 src/cgi-bin/room.in:235
+#: src/cgi-bin/room.in:105 src/cgi-bin/room.in:240
 msgid "Sie halten keinen Unterricht in diesem Raum."
 msgstr ""
 
-#: src/cgi-bin/room.in:267
+#: src/cgi-bin/room.in:272
 msgid "In diesem Raum wird bereits unterrichtet."
 msgstr ""
 
-#: src/cgi-bin/room.in:278
+#: src/cgi-bin/room.in:283
 msgid "Unterricht begonnen."
 msgstr ""
 
-#: src/cgi-bin/room.in:280 src/cgi-bin/room.in:356
+#: src/cgi-bin/room.in:285 src/cgi-bin/room.in:361
 msgid "Unterrichtsende um %H:%M"
 msgstr ""
 
-#: src/cgi-bin/room.in:293 src/cgi-bin/room.in:325
+#: src/cgi-bin/room.in:298 src/cgi-bin/room.in:330
 msgid "Sie d&uuml;rfen den Unterricht in diesem Raum nicht beenden."
 msgstr ""
 
-#: src/cgi-bin/room.in:300
+#: src/cgi-bin/room.in:305
 msgid "Klassenarbeitsmodus aktiv"
 msgstr ""
 
-#: src/cgi-bin/room.in:312
+#: src/cgi-bin/room.in:317
 msgid "Unterricht beendet."
 msgstr ""
 
-#: src/cgi-bin/room.in:334 shtml/messages.pl:305
+#: src/cgi-bin/room.in:339 shtml/messages.pl:305
 msgid "In diesem Raum findet eine Klassenarbeit statt."
 msgstr ""
 
-#: src/cgi-bin/room.in:348
+#: src/cgi-bin/room.in:353
 msgid "Unterrichtsende liegt in der Vergangenheit"
 msgstr ""
 
-#: src/cgi-bin/room.in:504 shtml/messages.pl:59 shtml/messages.pl:105
+#: src/cgi-bin/room.in:509 shtml/messages.pl:59 shtml/messages.pl:105
 #: shtml/messages.pl:132 shtml/messages.pl:1043 shtml/messages.pl:1044
 #: shtml/messages.pl:1045 shtml/messages.pl:1053 shtml/messages.pl:1054
 msgid "Drucker"
@@ -790,7 +790,7 @@ msgstr ""
 msgid "Daten zur Passwort&auml;nderung unvollst&auml;ndig"
 msgstr ""
 
-#: src/cgi-bin/start.in:251 lib/Schulkonsole/Error.pm:377
+#: src/cgi-bin/start.in:251 lib/Schulkonsole/Error.pm:375
 msgid "Neues Passwort nicht richtig wiederholt"
 msgstr ""
 
@@ -962,360 +962,360 @@ msgstr ""
 msgid "Es sind noch nicht alle Verkn&uuml;pfungen eindeutig festgelegt"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:373
+#: lib/Schulkonsole/Error.pm:371
 msgid "kein Fehler"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:375
+#: lib/Schulkonsole/Error.pm:373
 msgid "Authentifizierung fehlgeschlagen"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:379
+#: lib/Schulkonsole/Error.pm:377
 msgid "Raum ist unbekannt"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:381
+#: lib/Schulkonsole/Error.pm:379
 msgid ""
 "F&uuml;r Diskquota m&uuml;ssen alle oder keine Felder ausgef&uuml;llt sein"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:383
+#: lib/Schulkonsole/Error.pm:381
 msgid "Fehler im Hintergrundprozess: "
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:385
+#: lib/Schulkonsole/Error.pm:383
 msgid "Fehler in der Konfiguration"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:387
+#: lib/Schulkonsole/Error.pm:385
 msgid "Fehler im Hintergrundprozess"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:389
+#: lib/Schulkonsole/Error.pm:387
 msgid "Prepare fehlgeschlagen"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:391
+#: lib/Schulkonsole/Error.pm:389
 msgid "Execute fehlgeschlagen"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:393
+#: lib/Schulkonsole/Error.pm:391
 msgid "Fetch fehlgeschlagen"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:395
+#: lib/Schulkonsole/Error.pm:393
 msgid "Unbekannte Passwortverschluesselung"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:397
+#: lib/Schulkonsole/Error.pm:395
 msgid "Benutzer existiert nicht"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:399
+#: lib/Schulkonsole/Error.pm:397
 msgid "Keine Workstationbenutzer"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:404
+#: lib/Schulkonsole/Error.pm:402
 msgid "Kann Datei nicht oeffnen"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:406
+#: lib/Schulkonsole/Error.pm:404
 msgid "Datei hat falsches Format"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:408
+#: lib/Schulkonsole/Error.pm:406
 msgid "Wrapperaufruf fehlgeschlagen"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:410
+#: lib/Schulkonsole/Error.pm:408
 msgid "Datenuebertragung (schreiben) unterbrochen"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:412
+#: lib/Schulkonsole/Error.pm:410
 msgid "Datenuebertragung (lesen) unterbrochen"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:421
+#: lib/Schulkonsole/Error.pm:419
 msgid "Programmaufruf fehlgeschlagen"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:431
+#: lib/Schulkonsole/Error.pm:429
 msgid "Nicht autorisierter Aufrufer"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:433
+#: lib/Schulkonsole/Error.pm:431
 msgid "Wechsel zu diesem Benutzer nicht erlaubt"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:435
+#: lib/Schulkonsole/Error.pm:433
 msgid "Wechsel zu diesem Benutzer nicht moeglich"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:438
+#: lib/Schulkonsole/Error.pm:436
 msgid "Skript nicht vorhanden"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:448
+#: lib/Schulkonsole/Error.pm:446
 msgid "Skriptaufruf fehlgeschlagen"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:456
+#: lib/Schulkonsole/Error.pm:454
 msgid "Authentifizierung fehlgeschlagen nach ID"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:464
+#: lib/Schulkonsole/Error.pm:462
 msgid "Programm-ID unbekannt"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:472
+#: lib/Schulkonsole/Error.pm:470
 msgid "Nicht autorisierter Aufrufer nach ID"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:474
+#: lib/Schulkonsole/Error.pm:472
 msgid "Ungueltige Session-ID"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:476
+#: lib/Schulkonsole/Error.pm:474
 msgid "Ungueltige MAC-Adresse"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:478
+#: lib/Schulkonsole/Error.pm:476
 msgid "Keine MAC-Adressen"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:480
+#: lib/Schulkonsole/Error.pm:478
 msgid "Ungueltiger Host"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:482
+#: lib/Schulkonsole/Error.pm:480
 msgid "Keine Hosts"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:484
+#: lib/Schulkonsole/Error.pm:482
 msgid "Ungueltige Raumbezeichnung"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:486
+#: lib/Schulkonsole/Error.pm:484
 msgid "Ungueltiger Modus fuer Unterricht"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:488
+#: lib/Schulkonsole/Error.pm:486
 msgid "Ungueltige Zeitangabe fuer Unterrichtsende"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:490
+#: lib/Schulkonsole/Error.pm:488
 msgid "Raumdatei kann nicht geschrieben werden"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:492
+#: lib/Schulkonsole/Error.pm:490
 msgid "Raumdatei kann nicht gelesen werden"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:494
+#: lib/Schulkonsole/Error.pm:492
 msgid "Erwarte 0 oder 1 fuer scope"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:498
+#: lib/Schulkonsole/Error.pm:496
 msgid "Fork nicht moeglich"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:500
+#: lib/Schulkonsole/Error.pm:498
 msgid "Kann printers.conf nicht oeffnen"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:502
+#: lib/Schulkonsole/Error.pm:500
 msgid "Ungueltiger Druckername"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:504
+#: lib/Schulkonsole/Error.pm:502
 msgid "Keine Drucker"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:506
+#: lib/Schulkonsole/Error.pm:504
 msgid "Ungueltiger Druckernutzer"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:508
+#: lib/Schulkonsole/Error.pm:506
 msgid "on muss 1 oder 0 sein"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:510
+#: lib/Schulkonsole/Error.pm:508
 msgid "Ungueltiger Benutzer"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:512
+#: lib/Schulkonsole/Error.pm:510
 msgid "Keine Benutzer"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:514
+#: lib/Schulkonsole/Error.pm:512
 msgid "Ungueltige Benutzer-ID"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:516
+#: lib/Schulkonsole/Error.pm:514
 msgid "Keine Benutzer-IDs"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:518
+#: lib/Schulkonsole/Error.pm:516
 msgid "Verzeichnis nicht gefunden"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:520
+#: lib/Schulkonsole/Error.pm:518
 msgid "Ungueltiger Raumbezeichner"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:522
+#: lib/Schulkonsole/Error.pm:520
 msgid "Erwarte 1 oder 0 fuer do_copy"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:524
+#: lib/Schulkonsole/Error.pm:522
 msgid "Erwarte numerische Angabe fuer \"from\""
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:526
+#: lib/Schulkonsole/Error.pm:524
 msgid "Erwarte numerische Angabe fuer \"type\""
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:528
+#: lib/Schulkonsole/Error.pm:526
 msgid "Ungueltiger Raum"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:530
+#: lib/Schulkonsole/Error.pm:528
 msgid "Ungueltiges Projekt"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:532
+#: lib/Schulkonsole/Error.pm:530
 msgid "Ungueltige Klassen-GID"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:534
+#: lib/Schulkonsole/Error.pm:532
 msgid "Ungueltige Subklasse"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:536
+#: lib/Schulkonsole/Error.pm:534
 msgid "Erwarte 1 oder 0 fuer do_add"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:538
+#: lib/Schulkonsole/Error.pm:536
 msgid "Erwarte 0 (PDF) oder 1 (CSV) fuer filetype"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:540
+#: lib/Schulkonsole/Error.pm:538
 msgid "Erwarte 0 (reset), 1 (passwd) oder 3 (random) fuer type"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:543
+#: lib/Schulkonsole/Error.pm:541
 msgid "Ungueltiger Wert fuer password"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:545
+#: lib/Schulkonsole/Error.pm:543
 msgid "Erwarte 1 oder 0 fuer is_groups"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:547
+#: lib/Schulkonsole/Error.pm:545
 msgid "Erwarte 1 oder 0 fuer is_public"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:549
+#: lib/Schulkonsole/Error.pm:547
 msgid "Erwarte 1 oder 0 fuer is_upload"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:551
+#: lib/Schulkonsole/Error.pm:549
 msgid "Ungueltiger Wert fuer projectgid"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:553
+#: lib/Schulkonsole/Error.pm:551
 msgid "Erwarte 0, 1, 2 oder 3 fuer scope"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:555
+#: lib/Schulkonsole/Error.pm:553
 msgid "Erwarte 1 oder 0 fuer do_create"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:557
+#: lib/Schulkonsole/Error.pm:555
 msgid "Ungueltiger Wert fuer longname"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:559
+#: lib/Schulkonsole/Error.pm:557
 msgid "Benutzer \"cyrus\" gibt es nicht"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:561
+#: lib/Schulkonsole/Error.pm:559
 msgid "wrapper-cyrus gehoert nicht Benutzer \"cyrus\" oder SUID nicht gesetzt"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:563
+#: lib/Schulkonsole/Error.pm:561
 msgid "Erwarte 1 oder 0 fuer is_create"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:565
+#: lib/Schulkonsole/Error.pm:563
 msgid "Erwarte 1 oder 0 fuer is_gid"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:567
+#: lib/Schulkonsole/Error.pm:565
 msgid "Keine Datenbanken"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:569
+#: lib/Schulkonsole/Error.pm:567
 msgid "DB-Liste kann nicht gelesen werden"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:571
+#: lib/Schulkonsole/Error.pm:569
 msgid "Ungueltiger Gruppenname"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:573
+#: lib/Schulkonsole/Error.pm:571
 msgid "Ungueltiger Dateiname"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:575
+#: lib/Schulkonsole/Error.pm:573
 msgid "Erwarte 1 oder 0 fuer is_example"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:577
+#: lib/Schulkonsole/Error.pm:575
 msgid "Ungueltiger Image-Dateiname"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:579
+#: lib/Schulkonsole/Error.pm:577
 msgid "action muss 0, 1 oder 2 sein"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:582
+#: lib/Schulkonsole/Error.pm:580
 msgid "Ungueltiger Wert fuer number"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:584
+#: lib/Schulkonsole/Error.pm:582
 msgid "Prozess laeuft schon"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:586
+#: lib/Schulkonsole/Error.pm:584
 msgid "Erwarte 0, 1 oder 2 fuer mode"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:588
+#: lib/Schulkonsole/Error.pm:586
 msgid "Konnte Berechtigung nicht aendern"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:590
+#: lib/Schulkonsole/Error.pm:588
 msgid "Erwarte 1 bis 7 fuer flags"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:592
+#: lib/Schulkonsole/Error.pm:590
 msgid "Ungueltiger Wert fuer diskquota"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:594
+#: lib/Schulkonsole/Error.pm:592
 msgid "Ungueltiger Wert fuer mailquota"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:596
+#: lib/Schulkonsole/Error.pm:594
 msgid "Erwarte 1 oder 0 fuer is_open"
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:600
+#: lib/Schulkonsole/Error.pm:598
 msgid "Unbekannter Fehler "
 msgstr ""
 
-#: lib/Schulkonsole/Error.pm:611
+#: lib/Schulkonsole/Error.pm:609
 msgid ": "
 msgstr ""
 
