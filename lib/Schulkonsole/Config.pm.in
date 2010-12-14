@@ -144,7 +144,6 @@ $VERSION = 0.06;
 	WRITEFILEAPP
 	IMPORTWORKSTATIONSAPP
 	IMPORTPRINTERSAPP
-	UPDATELOGINSAPP
 	OVPNCHECKAPP
 	OVPNDOWNLOADAPP
 	OVPNCREATEAPP
@@ -485,7 +484,6 @@ use constant {
 	WRITEFILEAPP => 43,
 	IMPORTWORKSTATIONSAPP => 44,
 	IMPORTPRINTERSAPP => 45,
-	UPDATELOGINSAPP => 55
 };
 
 
@@ -1043,7 +1041,6 @@ $_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
 	write_file => WRITEFILEAPP,
 	import_workstations => IMPORTWORKSTATIONSAPP,
 	import_printers => IMPORTPRINTERSAPP,
-	update_logins => UPDATELOGINSAPP,
 	ovpn_check => OVPNCHECKAPP,
 	ovpn_download => OVPNDOWNLOADAPP,
 	ovpn_create => OVPNCREATEAPP,
@@ -1114,7 +1111,6 @@ $_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
 	1,
 	1,
 	1,
-	'/usr/share/linuxmuster/scripts/update-logins.sh',
 );
 
 
@@ -1385,7 +1381,7 @@ sub workstations_room {
 				$workstations{$workstation}{room} = $room;
 				$workstations{$workstation}{name} = $workstation;
 				$workstations{$workstation}{hw_class} = $hw_class;
-				$workstations{$workstation}{mac} = uc $mac;
+				$workstations{$workstation}{mac} = $mac;
 				$workstations{$workstation}{ip} = $ip;
 			}
 		}

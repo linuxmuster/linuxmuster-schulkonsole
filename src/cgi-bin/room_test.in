@@ -56,12 +56,10 @@ if ($q->param('starttest')) {
 		eval {
 
 			my $id = $sk_session->userdata('id');
-			my $password = $sk_session->get_password();
-			my $room = $room_session->info('name');
+			my $users = $room_session->workstation_users();
 
-			my $users = $room_session->workstation_users($id, $password, $room);
-
-			my $workstations = Schulkonsole::Config::workstations_room($room);
+			my $workstations = Schulkonsole::Config::workstations_room(
+				$room_session->info('name'));
 
 			my $blocked_hosts_internet
 				= Schulkonsole::Firewall::blocked_hosts_internet();
@@ -81,13 +79,15 @@ if ($q->param('starttest')) {
 				}
 			}
 
+			my $password = $sk_session->get_password();
 
 			Schulkonsole::Firewall::internet_off($id, $password,
 				@macs_internet) if @macs_internet;
 			Schulkonsole::Firewall::intranet_off($id, $password,
 				@macs_intranet) if @macs_intranet;
 
-			Schulkonsole::Sophomorix::reset_room($id, $password, $room);
+			Schulkonsole::Sophomorix::reset_room($id, $password,
+				$room_session->info('name'));
 
 
 			$room_session->change_workstation_passwords(

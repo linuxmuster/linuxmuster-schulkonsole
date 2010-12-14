@@ -55,17 +55,12 @@ if ($room_session->param('test_step')) {
 my $editing_userdata = $room_session->info('editing_userdata');
 my $editing_user = $$editing_userdata{uid};
 
+my $workstations
+	= Schulkonsole::Config::workstations_room($room_session->info('name'));
+my $workstation_users = $room_session->workstation_users();
 
 my $id = $sk_session->userdata('id');
 my $password = $sk_session->get_password();
-my $room = $room_session->info('name');
-
-my $workstations
-	= Schulkonsole::Config::workstations_room($room);
-
-my $workstation_users 
-	= $room_session->workstation_users($id, $password, $room);
-
 if (   $q->param('collecttop')
     or $q->param('collectbottom')) {
 	my @users;

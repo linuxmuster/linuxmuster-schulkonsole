@@ -3,7 +3,6 @@ use IPC::Open3;
 use POSIX 'sys_wait_h';
 use Schulkonsole::Error;
 use Schulkonsole::Config;
-use Schulkonsole::DB;
 
 
 package Schulkonsole::Files;
@@ -47,7 +46,6 @@ $VERSION = 0.06;
 	write_preferences_conf_file
 	import_printers
 	import_workstations
-	update_logins
 );
 
 
@@ -60,7 +58,7 @@ sub buffer_input {
 	while (<$in>) {
 		$input_buffer .= $_;
 	}
-}	
+}
 
 
 
@@ -83,7 +81,7 @@ sub start_wrapper {
 	if (   $re == $pid
 	    or $re == -1) {
 		my $error = ($? >> 8) - 256;
-			if ($error < -127) {
+		if ($error < -127) {
 			die new Schulkonsole::Error(
 				Schulkonsole::Error::WRAPPER_EXEC_FAILED,
 				$Schulkonsole::Config::_wrapper_files, $!);
@@ -191,7 +189,7 @@ sub write_file {
 	print SCRIPTOUT "$file_number\n", join('', @$lines);
 	close SCRIPTOUT;
 
-	#buffer_input(\*SCRIPTIN);
+	buffer_input(\*SCRIPTIN);
 
 	stop_wrapper($pid, undef, \*SCRIPTIN, \*SCRIPTIN);
 }
@@ -507,44 +505,6 @@ sub import_printers {
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 }
 
-
-
-
-=head3 C<update_logins($id,$password)>
-
-Update logins
-
-=head4 Parameters
-
-=over
-
-=item C<$id>
-
-The ID (not UID) of the teacher invoking this command
-
-=item C<$password>
-
-The password of the teacher invoking this command
-
-=back
-
-=head4 Description
-
-This wrapps the command C<update_logins>
-
-=cut
-
-sub update_logins {
-	my $id = shift;
-	my $password = shift;
-	my $room = shift;
-
-	my $pid = start_wrapper(Schulkonsole::Config::UPDATELOGINSAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT $room, "\n";
-}
 
 
 

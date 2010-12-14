@@ -5,7 +5,6 @@ use Schulkonsole::DB;
 use Schulkonsole::Firewall;
 use Schulkonsole::RoomSession;
 use Schulkonsole::Sophomorix;
-use Schulkonsole::Files;
 
 =head1 NAME
 
@@ -258,19 +257,19 @@ sub change_workstation_passwords {
 
 
 
-=head3 C<workstation_users($id, $password, $room)>
+=head3 C<workstation_users()>
 
 =cut
 
 my %workstation_users;
 sub workstation_users {
-	my ($this, $id, $password, $room) = @_;
+	my $this = shift;
 
 	return \%workstation_users if %workstation_users;
 
-	Schulkonsole::Files::update_logins($id, $password, $room);
 
-	my $workstations = Schulkonsole::Config::workstations_room($room);
+	my $workstations = Schulkonsole::Config::workstations_room(
+		$this->{_ROOMDATA}{name});
 
 	foreach my $workstation (keys %$workstations) {
 		my $filename = Schulkonsole::Config::workstation_file($workstation);

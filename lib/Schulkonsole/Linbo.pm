@@ -2039,7 +2039,7 @@ Check if a key corresponds to a boolean value
 =item C<$section>
 
 The section of the key:
-1 = C<[Partition]>, 2 = C<[OS]>, 3 = C<[LINBO]>
+1 = C<[Partition], 2 = C<[OS], 3 = C<[LINBO]>
 
 =item C<$key>
 
