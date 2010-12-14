@@ -78,9 +78,14 @@
 <!--#else --><input type="checkbox" id="linbo_autoinitcache" name="linbo_autoinitcache"><!--#endif --></td>
 </tr>
 <tr class="even">
-<td><label for="linbo_usemulticast"><gettext>Multicast verwenden</gettext>:</label></td>
-<td><!--#if expr="$linbo_usemulticast" --><input type="checkbox" id="linbo_usemulticast" name="linbo_usemulticast" checked>
-<!--#else --><input type="checkbox" id="linbo_usemulticast" name="linbo_usemulticast"><!--#endif --></td>
+<td><label for="linbo_downloadtype"><gettext>Downloadtype ausw&auml;hlen</gettext>:</label></td>
+<td>
+<select name="linbo_downloadtype">
+<option value="rsync"><gettext>rsync</gettext></option>
+<option value="multicast"><gettext>multicast</gettext></option>
+<option value="torrent"><gettext>torrent</gettext></option>
+</select>
+</td>
 </tr>
 </table>
 

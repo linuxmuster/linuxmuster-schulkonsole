@@ -100,11 +100,11 @@ use vars qw(%_allowed_keys);
 		group => 1,
 		cache => 1,
 		server => 1,
+		downloadtype => 1,
 		roottimeout => 2,
 		autopartition => 4,
 		autoformat => 4,
 		autoinitcache => 4,
-		usemulticast => 4,
 	},
 );
 
@@ -1216,7 +1216,7 @@ sub write_start_conf {
 	}
 	foreach my $key (('Cache', 'Server', 'Group', 'RootTimeout',
 	                  'Autopartition', 'AutoFormat', 'AutoInitCache',
-	                  'UseMultiCast',)) {
+	                  'DownloadType',)) {
 		my $key_data = $$linbo{Keys}{lc $key};
 		next unless $key_data;
 
