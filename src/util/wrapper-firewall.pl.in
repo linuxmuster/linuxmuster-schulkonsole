@@ -456,93 +456,18 @@ sub all_on {
 
 	my $oldsettings = $room_session->param('oldsettings');
 
-	my $blocked_hosts_internet
-		= Schulkonsole::Firewall::blocked_hosts_internet();
-	my $blocked_hosts_intranet
-		= Schulkonsole::Firewall::blocked_hosts_intranet();
-	my $unfiltered_hosts = Schulkonsole::Firewall::unfiltered_hosts();
-	my @internet_ons;
-	my @internet_offs;
-	my @intranet_ons;
-	my @intranet_offs;
-	my @webfilter_ons;
-	my @webfilter_offs;
-	foreach my $workstation (keys %$workstations) {
-		my ($mac) = $$workstations{$workstation}{mac} =~ /^(\w{2}(?::\w{2}){5})$/;
-		my ($host) = $$workstations{$workstation}{ip} =~ /^([\w.-]+)$/i;
-		if (    $$oldsettings{blocked_hosts_internet}
-		    and    $$oldsettings{blocked_hosts_internet}{$mac}
-		        != $$blocked_hosts_internet{$mac}) {
-			if ($$oldsettings{blocked_hosts_internet}{$mac}) {
-				push @internet_offs, $mac;
-			} else {
-				push @internet_ons, $mac;
-			}
-		}
-		if (    $$oldsettings{blocked_hosts_intranet}
-		    and    $$oldsettings{blocked_hosts_intranet}{$mac}
-		        != $$blocked_hosts_intranet{$mac}) {
-			if ($$oldsettings{blocked_hosts_intranet}{$mac}) {
-				push @intranet_offs, $mac;
-			} else {
-				push @intranet_ons, $mac;
-			}
-		}
-		if (    $$oldsettings{unfiltered_hosts}
-		    and    $$oldsettings{unfiltered_hosts}{$mac}
-		        != $$unfiltered_hosts{$mac}) {
-			if ($$oldsettings{unfiltered_hosts}{$mac}) {
-				push @webfilter_offs, $host;
-			} else {
-				push @webfilter_ons, $host;
-			}
-		}
-	}
-
 
 	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;
 	local $) = 0;
 	local $( = $);
 	umask(022);
-	if (@webfilter_offs) {
-		my $opts = "--trigger=off --hostlist=" . join(',', @webfilter_offs);
 
-		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::URLFILTERONOFFAPP]
-				. ' ' . $opts;
-	}
-	if (@webfilter_ons) {
-		my $opts = "--trigger=on --hostlist=" . join(',', @webfilter_ons);
 
-		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::URLFILTERONOFFAPP]
-				. ' ' . $opts;
-	}
-
-	if (@internet_ons) {
-		my $opts = "--trigger=on --maclist=" . join(',', @internet_ons);
-
-		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::INTERNETONOFFAPP]
-			. ' ' . $opts;
-	}
-	if (@internet_offs) {
-		my $opts = "--trigger=off --maclist=" . join(',', @internet_offs);
-
-		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::INTERNETONOFFAPP]
-			. ' ' . $opts;
-	}
-
-	if (@intranet_ons) {
-		my $opts = "--trigger=on --maclist=" . join(',', @intranet_ons);
-
-		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::INTRANETONOFFAPP]
-			. ' ' . $opts;
-	}
-	if (@intranet_offs) {
-		my $opts = "--trigger=off --maclist=" . join(',', @intranet_offs);
-
-		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::INTRANETONOFFAPP]
-			. ' ' . $opts;
-	}
+	# reset the room settings according to rooms_default in stead of restoring the old state
+	my $app = $Schulkonsole::Config::_root_apps[Schulkonsole::Config::ROOMSRESETAPP];
+	my $opts = "--room=\Q$room\E";
+	system "$app $opts";
 
 
 	if ($$oldsettings{printers_accept}) {

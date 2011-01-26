@@ -1,3 +1,10 @@
+linuxmuster-schulkonsole (0.9.25-lenny0) unstable; urgency=low
+
+  * tschmitt: firewall.pl.in, reset the room settings according to rooms_default
+    in stead of restoring the old state (closes #265).
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Wed, 26 Jan 2010 12:11:51 +0100
+
 linuxmuster-schulkonsole (0.9.24-lenny0) unstable; urgency=low
 
   * tschmitt: implemented DownloadType (rsync,multicast,torrent) in linbo start.conf editor (closes #130).
