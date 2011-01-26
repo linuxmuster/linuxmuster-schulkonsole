@@ -428,8 +428,9 @@ sub all_on {
 	my $workstations
 		= Schulkonsole::Config::workstations_room($room_session->param('name'));
 
+	my $room = $room_session->param('name');
+
 	if ($room_session->param('test_step')) {
-		my $room = $room_session->param('name');
 		my $editing_userdata = Schulkonsole::DB::get_userdata_by_id(
 				$room_session->param('user_id'));
 		my $opts = "--teacher \Q$$editing_userdata{uid}"
