@@ -323,7 +323,7 @@ $app_id == Schulkonsole::Config::LINBOIMAGEAPP and do {
 	exit -58 unless defined $image;
 
 	my $file = "$Schulkonsole::Config::_linbo_dir/$image.$image_suffix";
-	my @suffixes = ('.desc', '.info', '.list', '.reg', '');
+	my @suffixes = ('.desc', '.info', '.list', '.reg', '.torrent','');
 
 	my @errors;
 	if ($action) {
