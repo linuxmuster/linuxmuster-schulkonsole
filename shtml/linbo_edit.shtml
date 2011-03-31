@@ -143,8 +143,8 @@
 <option value="vfat"><gettext>VFAT</gettext></option>
 <option value="ntfs"><gettext>NTFS</gettext></option>
 <!--#else -->
-<option value="ext2"><gettext>EXT2</gettext></option>
 <option value="ext3"><gettext>EXT3</gettext></option>
+<option value="ext4"><gettext>EXT4</gettext></option>
 <option value="reiserfs"><gettext>ReiserFS</gettext></option>
 <!--#endif -->
 </select>
@@ -312,16 +312,16 @@
 <td><label for="${devs{n}}_fstype"><gettext>Dateisystem</gettext>:</label></td>
 <td><!--#if expr="$devs{iscache}" -->
 <input type="hidden" name="${devs{n}}_iscache" value="1"><select id="${devs{n}}_fstype" name="${devs{n}}_fstype">
-<option value="ext2"><gettext>EXT2</gettext></option>
 <option value="ext3"><gettext>EXT3</gettext></option>
+<option value="ext4"><gettext>EXT4</gettext></option>
 <option value="reiserfs"><gettext>ReiserFS</gettext></option>
 </select>
 <!--#else -->
 <select id="${devs{n}}_fstype" name="${devs{n}}_fstype">
 <option value="vfat"><gettext>VFAT</gettext></option>
 <option value="ntfs"><gettext>NTFS</gettext></option>
-<option value="ext2"><gettext>EXT2</gettext></option>
 <option value="ext3"><gettext>EXT3</gettext></option>
+<option value="ext4"><gettext>EXT4</gettext></option>
 <option value="reiserfs"><gettext>ReiserFS</gettext></option>
 </select>
 <!--#endif -->

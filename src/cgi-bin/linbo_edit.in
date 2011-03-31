@@ -217,7 +217,7 @@ Name of the selected group
 				# only linux fs allowed for cache
 				if ($$partition{id} != 0x83) {
 					$$partition{id} = 0x83;
-					$$partition{fstype} = 'ext3';
+					$$partition{fstype} = 'ext4';
 					$q->param("${n}_fstype", $$partition{fstype}) if defined $n;
 				}
 
@@ -312,7 +312,7 @@ Name of the selected group
 			};
 			$new_system eq 'cache' and do {
 				$partition{id} = 0x83;
-				$partition{fstype} = 'ext3';
+				$partition{fstype} = 'ext4';
 				$$conf{linbo}{cache} = $partition{dev};
 
 				last SWITCHNEWDEV;
