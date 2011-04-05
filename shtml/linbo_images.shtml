@@ -114,14 +114,14 @@
 <!--#if expr="$loop_images_base" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
 <!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
-	<td><label for="${images_base}_newimage"><!--#echo var="images_base" --></label></td>
-	<td><input title="Beschreibung anzeigen/editieren" type="image" src="img/edit.png" alt="Beschreibung" name="${images_base}_editdesc" value="E"></td>
-	<td><input title="Information anzeigen" type="image" src="img/showinfo.png" alt="Info" name="${images_base}_info" value="I"></td>
-	<td><input title="Liste anzeigen" type="image" src="img/list.png" alt="Liste" name="${images_base}_list" value="L"></td>
-	<td><input id="${images_base}_newimage" name="${images_base}_newimage"></td>
-	<td><input title="Image umbenennen" type="image" src="img/move.png" alt="Umbenennen" name="${images_base}_move" value="U"></td>
-	<td><input title="Image kopieren" type="image" src="img/copy.png" alt="Kopieren" name="${images_base}_copy" value="K"></td>
-	<td><input title="Image l&ouml;schen" type="image" src="img/trash.png" alt="L&ouml;schen" name="${images_base}_delete" value="L"></td>
+    <td><label for="${images_base}_newimage"><!--#echo var="images_base" --></label></td>
+    <td><input title="Beschreibung anzeigen/editieren" type="submit" class="btn-linbo-edit" alt="Beschreibung" name="${images_base}_editdesc" value="E"></td>
+    <td><input title="Information anzeigen" type="submit" class="btn-linbo-showinfo" alt="Info" name="${images_base}_info" value="I"></td>
+    <td><input title="Liste anzeigen" type="submit" class="btn-linbo-list" alt="Liste" name="${images_base}_list" value="L"></td>
+    <td><input id="${images_base}_newimage" name="${images_base}_newimage"></td>
+    <td><input title="Image umbenennen" type="submit" class="btn-linbo-move" alt="Umbenennen" name="${images_base}_move" value="U"></td>
+    <td><input title="Image kopieren" type="submit" class="btn-linbo-copy" alt="Kopieren" name="${images_base}_copy" value="K"></td>
+    <td><input title="Image l&ouml;schen" type="submit" class="btn-linbo-trash" alt="L&ouml;schen" name="${images_base}_delete" value="L"></td>
 </tr><!--#endif -->
 </table>
 
@@ -149,13 +149,13 @@
 <!--#if expr="$loop_images_diff" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
 <!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
-	<td><label for="${images_diff}_newimage"><!--#echo var="images_diff" --></label></td>
-	<td><input title="Beschreibung anzeigen/editieren" type="image" src="img/edit.png" alt="Beschreibung" name="${images_diff}_editdesc" value="E"></td>
-	<td><input title="Information anzeigen" type="image" src="img/info.png" alt="Info" name="${images_diff}_info" value="I"></td>
-	<td><input id="${images_diff}_newimage" name="${images_diff}_newimage"></td>
-	<td><input title="Image umbenennen" type="image" src="img/move.png" alt="Umbenennen" name="${images_diff}_move" value="U"></td>
-	<td><input title="Image kopieren" type="image" src="img/copy.png" alt="Kopieren" name="${images_diff}_copy" value="K"></td>
-	<td><input title="Image l&ouml;schen" type="image" src="img/trash.png" alt="L&ouml;schen" name="${images_diff}_delete" value="L"></td>
+    <td><label for="${images_diff}_newimage"><!--#echo var="images_diff" --></label></td>
+    <td><input title="Beschreibung anzeigen/editieren" type="submit" src="img/edit.png" alt="Beschreibung" name="${images_diff}_editdesc" value="E"></td>
+    <td><input title="Information anzeigen" type="submit" src="img/info.png" alt="Info" name="${images_diff}_info" value="I"></td>
+    <td><input id="${images_diff}_newimage" name="${images_diff}_newimage"></td>
+    <td><input title="Image umbenennen" type="submit" src="img/move.png" alt="Umbenennen" name="${images_diff}_move" value="U"></td>
+    <td><input title="Image kopieren" type="submit" src="img/copy.png" alt="Kopieren" name="${images_diff}_copy" value="K"></td>
+    <td><input title="Image l&ouml;schen" type="submit" src="img/trash.png" alt="L&ouml;schen" name="${images_diff}_delete" value="L"></td>
 </tr><!--#endif -->
 </table>
 
