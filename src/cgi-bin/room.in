@@ -1,4 +1,7 @@
 #! /usr/bin/perl
+#
+# $Id$
+#
 
 =head1 NAME
 
@@ -85,6 +88,9 @@ if ($room_session) {
 	
 	my $is_urlfilter_active
 		= Schulkonsole::Firewall::urlfilter_check($id, $password);
+
+	my $updated_logins
+		= Schulkonsole::Firewall::update_logins($id, $password, $room);
 	
 	
 # perform commands

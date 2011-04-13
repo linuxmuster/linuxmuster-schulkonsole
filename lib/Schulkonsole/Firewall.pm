@@ -1,3 +1,6 @@
+#
+# $Id$
+#
 use strict;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
@@ -65,6 +68,7 @@ $VERSION = 0.03;
 	internet_off
 	intranet_on
 	intranet_off
+	update_logins
 	urlfilter_check
 	urlfilter_on
 	urlfilter_off
@@ -381,6 +385,59 @@ sub intranet_off {
 
 	# set macs in list to off
 	print SCRIPTOUT "0\n", join("\n", @macs), "\n\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	umask($umask);
+}
+
+
+
+
+=head3 C<update_logins($id, $password, $room)>
+
+Updates login information for a room
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=item C<$room>
+
+The current room
+
+=back
+
+=head4 Return value
+
+True if successfull, false otherwise
+
+=head3 Description
+
+This wraps the command C<update_logins.sh>.
+
+=cut
+
+sub update_logins {
+	my $id = shift;
+	my $password = shift;
+	my $room = shift;
+
+	my $umask = umask(022);
+	my $pid = start_wrapper(Schulkonsole::Config::UPDATELOGINSAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "$room\n";
 
 	buffer_input(\*SCRIPTIN);
 

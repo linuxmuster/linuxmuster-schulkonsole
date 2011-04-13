@@ -1,4 +1,7 @@
 #! /usr/bin/perl
+#
+# $Id$
+#
 
 =head1 NAME
 
@@ -202,6 +205,25 @@ $app_id == Schulkonsole::Config::URLFILTERONOFFAPP and do {
 	local $( = $);
 	umask(022);
 	exec "$app $opts" or last SWITCH;
+};
+
+=head3 update_logins
+
+numeric constant: C<Schulkonsole::Config::UPDATELOGINSAPP>
+
+=head4 Description
+
+invokes C<update-logins.sh>
+
+=cut
+
+$app_id == Schulkonsole::Config::UPDATELOGINSAPP and do {
+	my $room = <>;
+	($room) = $room =~ /^([\w -]+)$/;
+	exit -39 unless $room;
+	# set ruid
+	local $< = $>;
+	exec "$app $room" or last SWITCH;
 };
 
 =head3 urlfilter_check

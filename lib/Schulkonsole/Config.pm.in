@@ -1,3 +1,6 @@
+#
+# $Id$
+#
 =head1 NAME
 
 Schulkonsole::Config - access to schulkonsole configuration
@@ -101,6 +104,7 @@ $VERSION = 0.06;
 
 	INTERNETONOFFAPP
 	INTRANETONOFFAPP
+	UPDATELOGINSAPP
 	URLFILTERCHECKAPP
 	URLFILTERONOFFAPP
 	ALLONAPP
@@ -198,6 +202,10 @@ C<internet_on_off>
 
 C<intranet_on_off>
 
+=item C<UPDATELOGINSAPP>
+
+C<update_logins>
+
 =item C<URLFILTERCHECKAPP>
 
 C<urlfilter_check>
@@ -225,11 +233,12 @@ C<rooms_reset>
 use constant {
 	INTERNETONOFFAPP => 0,
 	INTRANETONOFFAPP => 1,
-	URLFILTERCHECKAPP => 2,
-	URLFILTERONOFFAPP => 3,
-	ALLONAPP => 4,
-	ALLONATAPP => 5,
-	ROOMSRESETAPP => 6
+	UPDATELOGINSAPP => 2,
+	URLFILTERCHECKAPP => 3,
+	URLFILTERONOFFAPP => 4,
+	ALLONAPP => 5,
+	ALLONATAPP => 6,
+	ROOMSRESETAPP => 7,
 };
 
 =head3 Constants for wrapper-printer
@@ -253,9 +262,9 @@ C<printer_allow_deny>
 =cut
 
 use constant {
-	PRINTERINFOAPP => 7,
-	PRINTERONOFFAPP => 8,
-	PRINTERALLOWDENYAPP => 9,
+	PRINTERINFOAPP => 8,
+	PRINTERONOFFAPP => 9,
+	PRINTERALLOWDENYAPP => 10,
 };
 
 =head3 Constants for wrapper-sophomorix
@@ -375,33 +384,33 @@ C<hide_unhide_class>
 =cut
 
 use constant {
-	SHARESTATESAPP => 10,
-	SHARESONOFFAPP => 11,
-	LSHANDOUTAPP => 12,
-	LSCOLLECTAPP => 13,
-	HANDOUTAPP => 14,
-	COLLECTAPP => 15,
-	RESETROOMAPP => 16,
-	EDITOWNCLASSMEMBERSHIPAPP => 17,
-	PRINTCLASSAPP => 18,
-	PRINTTEACHERSAPP => 19,
-	SETPASSWORDSAPP => 20,
-	WWWPERMISSIONSAPP => 21,
-	PROJECTMEMBERSAPP => 22,
-	PROJECTCREATEDROPAPP => 23,
-	PROJECTJOINNOJOINAPP => 24,
-	READSOPHOMORIXFILEAPP => 25,
-	WRITESOPHOMORIXFILEAPP => 26,
-	USERSCHECKAPP => 27,
-	USERSADDAPP => 28,
-	USERSMOVEAPP => 29,
-	USERSKILLAPP => 30,
-	USERSADDMOVEKILLAPP => 31,
-	TEACHINAPP => 32,
-	CHMODAPP => 33,
-	SETQUOTAAPP => 34,
-	SETOWNPASSWORDAPP => 35,
-	HIDEUNHIDECLASSAPP => 36,
+	SHARESTATESAPP => 11,
+	SHARESONOFFAPP => 12,
+	LSHANDOUTAPP => 13,
+	LSCOLLECTAPP => 14,
+	HANDOUTAPP => 15,
+	COLLECTAPP => 16,
+	RESETROOMAPP => 17,
+	EDITOWNCLASSMEMBERSHIPAPP => 18,
+	PRINTCLASSAPP => 19,
+	PRINTTEACHERSAPP => 20,
+	SETPASSWORDSAPP => 21,
+	WWWPERMISSIONSAPP => 22,
+	PROJECTMEMBERSAPP => 23,
+	PROJECTCREATEDROPAPP => 24,
+	PROJECTJOINNOJOINAPP => 25,
+	READSOPHOMORIXFILEAPP => 26,
+	WRITESOPHOMORIXFILEAPP => 27,
+	USERSCHECKAPP => 28,
+	USERSADDAPP => 29,
+	USERSMOVEAPP => 30,
+	USERSKILLAPP => 31,
+	USERSADDMOVEKILLAPP => 32,
+	TEACHINAPP => 33,
+	CHMODAPP => 34,
+	SETQUOTAAPP => 35,
+	SETOWNPASSWORDAPP => 36,
+	HIDEUNHIDECLASSAPP => 37,
 };
 
 =head3 Constants for wrapper-cyrus
@@ -451,12 +460,12 @@ C<list_repository>
 =cut
 
 use constant {
-	CREATEDROPDBAPP => 37,
-	DROPDBUSERAPP => 38,
-	LISTDBAPP => 39,
-	LISTDBUSERAPP => 40,
-	CREATEDROPREPOSITORYAPP => 41,
-	LISTREPOSITORYAPP => 42,
+	CREATEDROPDBAPP => 38,
+	DROPDBUSERAPP => 39,
+	LISTDBAPP => 40,
+	LISTDBUSERAPP => 41,
+	CREATEDROPREPOSITORYAPP => 42,
+	LISTREPOSITORYAPP => 43,
 };
 
 
@@ -481,9 +490,9 @@ C<import_printers>
 =cut
 
 use constant {
-	WRITEFILEAPP => 43,
-	IMPORTWORKSTATIONSAPP => 44,
-	IMPORTPRINTERSAPP => 45,
+	WRITEFILEAPP => 44,
+	IMPORTWORKSTATIONSAPP => 45,
+	IMPORTPRINTERSAPP => 46,
 };
 
 
@@ -508,9 +517,9 @@ C<ovpn_download>
 =cut
 
 use constant {
-	OVPNCHECKAPP => 46,
-	OVPNDOWNLOADAPP => 47,
-	OVPNCREATEAPP => 48,
+	OVPNCHECKAPP => 47,
+	OVPNDOWNLOADAPP => 48,
+	OVPNCREATEAPP => 49,
 };
 
 
@@ -547,12 +556,12 @@ C<linbo_manage_images>
 =cut
 
 use constant {
-	LINBOWRITESTARTCONFAPP => 49,
-	LINBOCOPYSTARTCONFAPP => 50,
-	LINBOCOPYREGPATCHAPP => 51,
-	LINBODELETEAPP => 52,
-	LINBOWRITEAPP => 53,
-	LINBOIMAGEAPP => 54,
+	LINBOWRITESTARTCONFAPP => 50,
+	LINBOCOPYSTARTCONFAPP => 51,
+	LINBOCOPYREGPATCHAPP => 52,
+	LINBODELETEAPP => 53,
+	LINBOWRITEAPP => 54,
+	LINBOIMAGEAPP => 55,
 };
 
 
@@ -997,6 +1006,7 @@ $_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
 %_root_app_name_ids = (
 	internet_on_off => INTERNETONOFFAPP,
 	intranet_on_off => INTRANETONOFFAPP,
+	update_logins => UPDATELOGINSAPP,
 	urlfilter_check => URLFILTERCHECKAPP,
 	urlfilter_on_off => URLFILTERONOFFAPP,
 	all_on => ALLONAPP,
@@ -1056,6 +1066,7 @@ $_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
 @_root_apps = (
 	'/usr/share/linuxmuster/scripts/internet_on_off.sh',
 	'/usr/share/linuxmuster/scripts/intranet_on_off.sh',
+	'/usr/share/linuxmuster/scripts/update-logins.sh',
 	'/usr/share/linuxmuster/scripts/check_urlfilter.sh',
 	'/usr/share/linuxmuster/scripts/urlfilter_on_off.sh',
 	1,
