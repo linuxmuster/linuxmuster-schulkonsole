@@ -61,16 +61,16 @@ my $room_session = new Schulkonsole::Room($sk_session);
 
 
 if ($room_session) {
+
 	my $room = $room_session->info('name');
-	
-	
+	my $id = $sk_session->userdata('id');
+	my $password = $sk_session->get_password();
+
+	Schulkonsole::Firewall::update_logins($id, $password, $room);
 	
 	my $workstations = Schulkonsole::Config::workstations_room($room);
 	my $printers = Schulkonsole::Config::printers_room($room);
-	
 	my $workstation_users = $room_session->workstation_users();
-	
-	
 	my $editing_userdata = $room_session->info('editing_userdata');
 	my $editing_user = $$editing_userdata{uid};
 	
@@ -81,17 +81,8 @@ if ($room_session) {
 		}
 	}
 	
-	
-	my $id = $sk_session->userdata('id');
-	my $password = $sk_session->get_password();
-	
-	
 	my $is_urlfilter_active
 		= Schulkonsole::Firewall::urlfilter_check($id, $password);
-
-	my $updated_logins
-		= Schulkonsole::Firewall::update_logins($id, $password, $room);
-	
 	
 # perform commands
 	
