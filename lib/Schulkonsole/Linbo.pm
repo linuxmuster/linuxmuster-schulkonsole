@@ -47,6 +47,7 @@ $VERSION = 0.0917;
 	pxestarts
 	images
 
+	update_linbofs
 	read_start_conf
 	get_conf_from_query
 	write_start_conf
@@ -375,6 +376,50 @@ sub pxestarts {
 	}
 
 	return \%re;
+}
+
+
+
+
+=head2 update_linbofs($id, $password)
+
+Updates LINBO stuff
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=back
+
+=head4 Return value
+
+True if active, false otherwise
+
+=head3 Description
+
+This wraps the command C<update-linbofs.sh>.
+
+=cut
+
+sub update_linbofs {
+	my $id = shift;
+	my $password = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::UPDATELINBOFSAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 }
 
 
@@ -1318,6 +1363,9 @@ sub write_start_conf {
 	buffer_input(\*SCRIPTIN);
 
 	stop_wrapper($pid, undef, \*SCRIPTIN, \*SCRIPTIN);
+
+	# update linbofs
+	update_linbofs($id, $password);
 }
 
 
@@ -1918,6 +1966,9 @@ sub delete_image {
 	buffer_input(\*SCRIPTIN);
 
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	# update linbofs
+	update_linbofs($id, $password);
 }
 
 
@@ -1971,6 +2022,9 @@ sub move_image {
 	buffer_input(\*SCRIPTIN);
 
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	# update linbofs
+	update_linbofs($id, $password);
 }
 
 
@@ -2023,6 +2077,9 @@ sub copy_image {
 	buffer_input(\*SCRIPTIN);
 
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	# update linbofs
+	update_linbofs($id, $password);
 }
 
 

@@ -423,7 +423,7 @@ True if successfull, false otherwise
 
 =head3 Description
 
-This wraps the command C<update_logins.sh>.
+This wraps the command C<update-logins.sh>.
 
 =cut
 

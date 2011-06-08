@@ -67,6 +67,22 @@ exit -34 unless $app;
 my $opts;
 SWITCH: {
 
+=head3 update_linbofs
+
+numeric constant: C<Schulkonsole::Config::UPDATELINBOFSAPP>
+
+=head4 Description
+
+invokes C<update-linbofs.sh>
+
+=cut
+
+$app_id == Schulkonsole::Config::UPDATELINBOFSAPP and do {
+	# set ruid, so that ssh searches for .ssh/ in /root
+	local $< = $>;
+	exec "$app" or last SWITCH;
+};
+
 =head3 write_start_conf
 
 numeric constant: C<Schulkonsole::Config::LINBOWRITESTARTCONFAPP>
