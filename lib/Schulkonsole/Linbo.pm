@@ -106,6 +106,9 @@ use vars qw(%_allowed_keys);
 		autopartition => 4,
 		autoformat => 4,
 		autoinitcache => 4,
+		backgroundfontcolor => 1,
+		consolefontcolorstdout => 1,
+		consolefontcolorstderr => 1,
 	},
 );
 
@@ -1261,7 +1264,8 @@ sub write_start_conf {
 	}
 	foreach my $key (('Cache', 'Server', 'Group', 'RootTimeout',
 	                  'Autopartition', 'AutoFormat', 'AutoInitCache',
-	                  'DownloadType',)) {
+	                  'DownloadType', 'BackgroundFontColor',
+                          'ConsoleFontColorStdout', 'ConsoleFontColorStderr')) {
 		my $key_data = $$linbo{Keys}{lc $key};
 		next unless $key_data;
 

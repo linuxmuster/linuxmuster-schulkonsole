@@ -1,11 +1,14 @@
-[LINBO]            # globale Konfiguration
-Cache = /dev/$DEVICE8  # Gerätenamen der lokalen Cachpartition
-Server = $SERVER-IP # IP des Servers
-RootTimeout = 600  # automatischer Rootlogout nach 600 Sek.
-AutoPartition = no       # automatische Partitionsreparatur beim LINBO-Start
-AutoFormat = no          # automatisches Formatieren aller Partitionen beim LINBO-Start
-AutoInitCache = no       # automatisches Befüllen des Caches beim LINBO-Start
-DownloadType = rsync     # Image-Download per Rsync
+[LINBO]                        # globale Konfiguration
+Cache = /dev/$DEVICE8          # Gerätenamen der lokalen Cachpartition
+Server = $SERVER-IP            # IP des Servers
+RootTimeout = 600              # automatischer Rootlogout nach 600 Sek.
+AutoPartition = no             # automatische Partitionsreparatur beim LINBO-Start
+AutoFormat = no                # automatisches Formatieren aller Partitionen beim LINBO-Start
+AutoInitCache = no             # automatisches Befüllen des Caches beim LINBO-Start
+DownloadType = rsync           # Image-Download per Rsync
+BackgroundFontColor = white    # Bildschirmschriftfarbe (default: white)
+ConsoleFontColorStdout = white # Konsolenschriftfarbe (default: white)
+ConsoleFontColorStderr = red   # Konsolenschriftfarbe für Fehler-/Warnmeldungen (default: red)
 
 [Partition]       # Betriebssystempartition
 Dev = /dev/$DEVICE1   # Gerätename der Partition
