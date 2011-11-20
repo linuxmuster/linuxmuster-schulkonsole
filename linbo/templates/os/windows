@@ -2,6 +2,7 @@
 Name = Windows$PART        # Name des Betriebssystems
 Version =                  # Version (optional, frei waehlbar)
 Description = Windows XP $PART            # Beschreibung
+IconName = winxp.png           # Icon für die Startseite, muss unter /var/linbo/icons abgelegt sein
 Image =                                   # Dateiname des differentiellen Images
                                           # (Erweiterung .rsync)
 BaseImage = $RECHNERGRUPPE-win$PART.cloop # Dateiname des Basisimages
@@ -18,8 +19,8 @@ Append =                   # Kernel-Append-Parameter, bei Windows
 StartEnabled = yes         # "Start"-Button anzeigen
 SyncEnabled = yes          # "Sync"-Button anzeigen
 NewEnabled = yes           # "Neu+Start"-Button anzeigen
-Hidden = yes               # blendet den OS-Reiter für dieses System
-                           # aus
-Autostart = no             # yes: startet dieses System ohne Benutzer-
-                           # interaktion automatisch synchronisiert
+Hidden = yes               # blendet den OS-Reiter für dieses System aus
+Autostart = no             # yes: startet dieses System automatisch synchronisiert
+DefaultAction = sync       # Standardaktion bei Autostart: start|sync|new
+AutostartTimeout = 5       # Timeout in Sekunden für Benutzerabbruch bei Autostart
 

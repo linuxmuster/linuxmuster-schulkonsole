@@ -2,6 +2,7 @@
 Name = Debian Etch Part$PART   # Name des Betriebssystems
 Version =                  # Version (optional, frei waehlbar)
 Description = Debian Etch Part$PART   # Beschreibung
+IconName = debian.png           # Icon für die Startseite, muss unter /var/linbo/icons abgelegt sein
 Image =                                           # Dateiname des differentiellen Images
                                                   # (Erweiterung .rsync)
 BaseImage = $RECHNERGRUPPE-etch-part$PART.cloop   # Dateiname des Basisimages
@@ -14,8 +15,8 @@ Append = ro                # Kernel-Append-Parameter
 StartEnabled = yes         # "Start"-Button anzeigen
 SyncEnabled = yes          # "Sync+Start"-Button anzeigen
 NewEnabled = yes           # "Neu+Start"-Button anzeigen
-Hidden = yes               # blendet den OS-Reiter für dieses System
-                           # aus
-Autostart = no             # yes: startet dieses System ohne Benutzer-
-                           # interaktion automatisch synchronisiert
+Hidden = yes               # blendet den OS-Reiter für dieses System aus
+Autostart = no             # yes: startet dieses System automatisch synchronisiert
+DefaultAction = sync       # Standardaktion bei Autostart: start|sync|new
+AutostartTimeout = 5       # Timeout in Sekunden für Benutzerabbruch bei Autostart
 

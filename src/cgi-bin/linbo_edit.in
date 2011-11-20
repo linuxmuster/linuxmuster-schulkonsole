@@ -641,6 +641,10 @@ Value of key C<Version>
 
 Value of key C<Description>
 
+=item ${devs{os}{n}}_iconname
+
+Value of key C<IconName>
+
 =item ${devs{os}{n}}_image
 
 Value of key C<Image>
@@ -670,6 +674,14 @@ Value for key C<Hidden> from check button.
 Value from radio button. Possible values are C<${devs{os}{n}}>.
 For the OS corresponding to this value C<Autostart> is set to
 true.
+
+Value of key C<AutostartTimeout>.
+
+=item ${devs{os}{n}}_autostarttimeout
+
+Value of key C<DefaultAction>.
+
+=item ${devs{os}{n}}_defaultaction
 
 =back
 

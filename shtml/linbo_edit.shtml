@@ -198,53 +198,58 @@
 <td><label for="${devs{os}{n}}_description"><gettext>Beschreibung (optional)</gettext>:</label></td>
 <td><input id="${devs{os}{n}}_description" name="${devs{os}{n}}_description"></td>
 </tr>
+</tr>
 <tr class="odd">
+<td><label for="${devs{os}{n}}_iconname"><gettext>Icon für die Startseite, muss unter /var/linbo/icons abgelegt sein</gettext>:</label></td>
+<td><input id="${devs{os}{n}}_iconname" name="${devs{os}{n}}_iconname"></td>
+</tr>
+<tr class="even">
 <td><label for="${devs{os}{n}}_image"><gettext>Dateiname des differenziellen Image</gettext>:</label></td>
 <td><input id="${devs{os}{n}}_image" name="${devs{os}{n}}_image">.rsync</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><label for="${devs{os}{n}}_baseimage"><gettext>Dateiname des Basis-Image</gettext>:</label></td>
 <td><input id="${devs{os}{n}}_baseimage" name="${devs{os}{n}}_baseimage">.cloop</td>
 </tr>
 <!--#if expr="$devs{isgnulinux}" -->
-<tr class="odd">
+<tr class="even">
 <td><label for="${devs{os}{n}}_boot"><gettext>Partition, die Kernel und initrd enth&auml;lt</gettext>:</label></td>
 <td><input id="${devs{os}{n}}_boot" name="${devs{os}{n}}_boot"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><label for="${devs{os}{n}}_kernel"><gettext>Pfad zum kernel</gettext>:</label></td>
 <td><input id="${devs{os}{n}}_kernel" name="${devs{os}{n}}_kernel"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><label for="${devs{os}{n}}_initrd"><gettext>Relativer Pfad zur initrd</gettext>:</label></td>
 <td><input id="${devs{os}{n}}_initrd" name="${devs{os}{n}}_initrd"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><label for="${devs{os}{n}}_append"><gettext>Bootoptionen</gettext>:</label></td>
 <td><input id="${devs{os}{n}}_append" name="${devs{os}{n}}_append"></td>
 </tr>
 <!--#endif -->
-<tr class="odd">
+<tr class="even">
 <td><label for="${devs{os}{n}}_startenabled"><gettext>Start-Button f&uuml;r dieses Betriebssystem anzeigen</gettext>:</label></td>
 <td><!--#if expr="$devs{os}{startenabled}" --><input type="checkbox" id="${devs{os}{n}}_startenabled" name="${devs{os}{n}}_startenabled" checked>
 <!--#else --><input type="checkbox" id="${devs{os}{n}}_startenabled" name="${devs{os}{n}}_startenabled"><!--#endif --></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><label for="${devs{os}{n}}_syncenabled"><gettext>Sync+Start-Button f&uuml;r dieses Betriebssystem anzeigen</gettext>:</label></td>
 <td><!--#if expr="$devs{os}{syncenabled}" --><input type="checkbox" id="${devs{os}{n}}_syncenabled" name="${devs{os}{n}}_syncenabled" checked>
 <!--#else --><input type="checkbox" id="${devs{os}{n}}_syncenabled" name="${devs{os}{n}}_syncenabled"><!--#endif --></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><label for="${devs{os}{n}}_newenabled"><gettext>Neu+Start-Button f&uuml;r dieses Betriebssystem anzeigen</gettext>:</label></td>
 <td><!--#if expr="$devs{os}{newenabled}" --><input type="checkbox" id="${devs{os}{n}}_newenabled" name="${devs{os}{n}}_newenabled" checked>
 <!--#else --><input type="checkbox" id="${devs{os}{n}}_newenabled" name="${devs{os}{n}}_newenabled"><!--#endif --></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><label for="${devs{os}{n}}_hidden"><gettext>Betriebssystemreiter verstecken</gettext>:</label></td>
 <td><!--#if expr="$devs{os}{hidden}" --><input type="checkbox" id="${devs{os}{n}}_hidden" name="${devs{os}{n}}_hidden" checked>
 <!--#else --><input type="checkbox" id="${devs{os}{n}}_hidden" name="${devs{os}{n}}_hidden"><!--#endif --></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <!--#if expr="$devs{iswindows}" -->
 <td><label for="${devs{os}{n}}_kernel"><gettext>Systemstart durch</gettext>:</label></td>
 <td><select id="${devs{os}{n}}_kernel" name="${devs{os}{n}}_kernel">
@@ -253,11 +258,26 @@
 </select>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <!--#endif -->
 <td><label for="${devs{os}{n}}_autostart"><gettext>Betriebssystem automatisch starten</gettext>:</label></td>
 <td><!--#if expr="$devs{os}{autostart}" --><input type="radio" id="${devs{os}{n}}_autostart" name="autostart" value="${devs{os}{n}}" checked><!--#set var="isautostartselected" value="1" -->
 <!--#else --><input type="radio" id="${devs{os}{n}}_autostart" name="autostart" value="${devs{os}{n}}"><!--#endif --><!--#set var="isautostartpossible" value="1" --></td>
+</tr>
+</tr>
+<tr class="even">
+<td><label for="${devs{os}{n}}_autostarttimeout"><gettext>Autostart-Timeout in Sek.</gettext>:</label></td>
+<td><input id="${devs{os}{n}}_autostarttimeout" name="${devs{os}{n}}_autostarttimeout""></td>
+</tr>
+<tr class="odd">
+<td><label for="${devs{os}{n}}_defaultaction"><gettext>Standard-Autostart-Aktion ausw&auml;hlen</gettext>:</label></td>
+<td>
+<select name="${devs{os}{n}}_defaultaction">
+<option value="start"><gettext>start</gettext></option>
+<option value="sync"><gettext>sync</gettext></option>
+<option value="new"><gettext>new</gettext></option>
+</select>
+</td>
 </tr>
 </table>
 <!--#if expr="$devs{os}{isfirst}" -->

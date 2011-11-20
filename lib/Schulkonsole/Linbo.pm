@@ -84,6 +84,7 @@ use vars qw(%_allowed_keys);
 		name => 1,
 		version => 1,
 		description => 1,
+		iconname => 1,
 		image => 1,
 		baseimage => 1,
 		boot => 1,
@@ -96,6 +97,8 @@ use vars qw(%_allowed_keys);
 		newenabled => 4,
 		hidden => 4,
 		autostart => 4,
+		autostarttimeout => 2,
+		defaultaction => 1,
 	},
 	3 => {	# [LINBO]
 		group => 1,
@@ -1341,10 +1344,11 @@ sub write_start_conf {
 		} else {
 			$lines .= "[OS]\n";
 		}
-		foreach my $key (('Name', 'Version', 'Description', 'Image',
+		foreach my $key (('Name', 'Version', 'Description', 'IconName', 'Image',
 		                  'BaseImage', 'Boot', 'Root', 'Kernel', 'Initrd',
 		                  'Append', 'StartEnabled', 'SyncEnabled',
-		                  'NewEnabled', 'Hidden', 'Autostart',)) {
+		                  'NewEnabled', 'Hidden', 'Autostart',
+		                  'AutostartTimeout', 'DefaultAction')) {
 			my $key_data = $oss{$name_version}{Keys}{lc $key};
 			next unless $key_data;
 
