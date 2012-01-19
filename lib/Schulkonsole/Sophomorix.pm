@@ -218,7 +218,7 @@ sub start_wrapper {
 				$Schulkonsole::Config::_wrapper_sophomorix, $!);
 		} else {
 			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_SOPHOMORIX_ERROR_BASE + $error,
+				Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE + $error,
 				$Schulkonsole::Config::_wrapper_sophomorix);
 		}
 	}
@@ -253,7 +253,7 @@ sub stop_wrapper {
 		} else {
 			$error -= 256;
 			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_SOPHOMORIX_ERROR_BASE + $error,
+				Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE + $error,
 				$Schulkonsole::Config::_wrapper_sophomorix);
 		}
 	}

@@ -156,7 +156,7 @@ sub start_wrapper {
 				$Schulkonsole::Config::_wrapper_linbo, $!);
 		} else {
 			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_LINBO_ERROR_BASE + $error,
+				Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE + $error,
 				$Schulkonsole::Config::_wrapper_linbo);
 		}
 	}
@@ -190,7 +190,7 @@ sub stop_wrapper {
 				($input_buffer ? "Output: $input_buffer" : 'No Output'));
 		} else {
 			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_LINBO_ERROR_BASE + $error,
+				Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE + $error,
 				$Schulkonsole::Config::_wrapper_linbo);
 		}
 	}
@@ -849,7 +849,7 @@ sub check_and_prepare_start_conf {
 	}
 
 
-	die new Schulkonsole::Error(Schulkonsole::Error::LINBO_START_CONF_ERROR,
+	die new Schulkonsole::Error(Schulkonsole::Error::Linbo::START_CONF_ERROR,
 	                            \%errors)
 		if %errors;
 

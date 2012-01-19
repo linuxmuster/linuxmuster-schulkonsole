@@ -53,7 +53,7 @@ sub disk_quotas {
 				$Schulkonsole::Config::_wrapper_user, $!);
 		} else {
 			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_USER_ERROR_BASE + $error,
+				Schulkonsole::Error::User::WRAPPER_ERROR_BASE + $error,
 				$Schulkonsole::Config::_wrapper_user);
 		}
 	}
@@ -84,7 +84,7 @@ sub disk_quotas {
 				$Schulkonsole::Config::_wrapper_user, $!);
 		} else {
 			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_USER_ERROR_BASE + $error,
+				Schulkonsole::Error::User::WRAPPER_ERROR_BASE + $error,
 				$Schulkonsole::Config::_wrapper_user);
 		}
 	}

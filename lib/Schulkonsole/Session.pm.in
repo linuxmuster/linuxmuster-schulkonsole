@@ -894,15 +894,13 @@ sub standard_error_handling {
 
 		# password changed -> re-authenticate
 		if (   $error->{code}
-		       	== Schulkonsole::Error::WRAPPER_FIREWALL_UNAUTHENTICATED_ID
+		       	== Schulkonsole::Error::Firewall::WRAPPER_UNAUTHENTICATED_ID
 		    or $error->{code}
-		       	== Schulkonsole::Error::WRAPPER_PRINTER_UNAUTHENTICATED_ID
+		       	== Schulkonsole::Error::Printer::WRAPPER_UNAUTHENTICATED_ID
 		    or $error->{code}
-		       	== Schulkonsole::Error::WRAPPER_SOPHOMORIX_UNAUTHENTICATED_ID
+		       	== Schulkonsole::Error::Sophomorix::WRAPPER_UNAUTHENTICATED_ID
 		    or $error->{code}
-		       	== Schulkonsole::Error::WRAPPER_COLLAB_UNAUTHENTICATED_ID
-		    or $error->{code}
-		       	== Schulkonsole::Error::WRAPPER_FILES_UNAUTHENTICATED_ID) {
+		       	== Schulkonsole::Error::Files::WRAPPER_UNAUTHENTICATED_ID) {
 			$this->exit_with_login_page($page);
 		}
 	} else {

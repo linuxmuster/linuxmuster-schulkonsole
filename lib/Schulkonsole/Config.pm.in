@@ -88,8 +88,32 @@ $VERSION = 0.06;
 	$_wrapper_files
 	$_wrapper_linbo
 
-	%_root_app_name_ids
-	@_root_apps
+	%_id_root_app_names
+	$_cmd_internet_on_off
+	$_cmd_intranet_on_off
+	$_cmd_update_logins
+	$_cmd_update_linbofs
+	$_cmd_urlfilter_check
+	$_cmd_urlfilter_on_off
+	$_cmd_linuxmuster_reset
+	$_cmd_printer_accept
+	$_cmd_printer_reject
+	$_cmd_printer_lpadmin
+	$_cmd_sophomorix_teacher
+	$_cmd_sophomorix_room
+	$_cmd_sophomorix_print
+	$_cmd_sophomorix_passwd
+	$_cmd_sophomorix_project
+	$_cmd_sophomorix_check
+	$_cmd_sophomorix_add
+	$_cmd_sophomorix_move
+	$_cmd_sophomorix_kill
+	$_cmd_sophomorix_teachin
+	$_cmd_sophomorix_quota
+	$_cmd_sophomorix_class
+	$_cmd_import_workstations
+	$_cmd_import_printers
+	$_cmd_ovpn_client_cert
 
 	$_shell
 
@@ -124,13 +148,6 @@ $VERSION = 0.06;
 	PRINTCLASSAPP
 	PRINTTEACHERSAPP
 	SETPASSWORDSAPP
-	WWWPERMISSIONSAPP
-	CREATEDROPDBAPP
-	DROPDBUSERAPP
-	LISTDBAPP
-	LISTDBUSERAPP
-	CREATEDROPREPOSITORYAPP
-	LISTREPOSITORYAPP
 	PROJECTMEMBERSAPP
 	PROJECTCREATEDROPAPP
 	PROJECTJOINNOJOINAPP
@@ -236,15 +253,15 @@ C<rooms_reset>
 =cut
 
 use constant {
-	INTERNETONOFFAPP => 0,
-	INTRANETONOFFAPP => 1,
-	UPDATELOGINSAPP => 2,
-	UPDATELINBOFSAPP => 3,
-	URLFILTERCHECKAPP => 4,
-	URLFILTERONOFFAPP => 5,
-	ALLONAPP => 6,
-	ALLONATAPP => 7,
-	ROOMSRESETAPP => 8,
+	INTERNETONOFFAPP => 6001,
+	INTRANETONOFFAPP => 6002,
+	UPDATELOGINSAPP => 6003,
+	UPDATELINBOFSAPP => 6004,
+	URLFILTERCHECKAPP => 6005,
+	URLFILTERONOFFAPP => 6006,
+	ALLONAPP => 6007,
+	ALLONATAPP => 6008,
+	ROOMSRESETAPP => 6009,
 };
 
 =head3 Constants for wrapper-printer
@@ -263,14 +280,18 @@ C<printer_on_off>
 
 C<printer_allow_deny>
 
+=item C<PRINTERQUOTAAPP>
+
+C<printer_quota>
+
 =back
 
 =cut
 
 use constant {
-	PRINTERINFOAPP => 9,
-	PRINTERONOFFAPP => 10,
-	PRINTERALLOWDENYAPP => 11,
+	PRINTERINFOAPP => 7001,
+	PRINTERONOFFAPP => 7002,
+	PRINTERALLOWDENYAPP => 7003,
 };
 
 =head3 Constants for wrapper-sophomorix
@@ -320,10 +341,6 @@ C<print_teachers>
 =item C<SETPASSWORDSAPP>
 
 C<set_passwords>
-
-=item C<WWWPERMISSIONSAPP>
-
-C<www_permissions>
 
 =item C<PROJECTMEMBERSAPP>
 
@@ -390,33 +407,33 @@ C<hide_unhide_class>
 =cut
 
 use constant {
-	SHARESTATESAPP => 12,
-	SHARESONOFFAPP => 13,
-	LSHANDOUTAPP => 14,
-	LSCOLLECTAPP => 15,
-	HANDOUTAPP => 16,
-	COLLECTAPP => 17,
-	RESETROOMAPP => 18,
-	EDITOWNCLASSMEMBERSHIPAPP => 19,
-	PRINTCLASSAPP => 20,
-	PRINTTEACHERSAPP => 21,
-	SETPASSWORDSAPP => 22,
-	WWWPERMISSIONSAPP => 23,
-	PROJECTMEMBERSAPP => 24,
-	PROJECTCREATEDROPAPP => 25,
-	PROJECTJOINNOJOINAPP => 26,
-	READSOPHOMORIXFILEAPP => 27,
-	WRITESOPHOMORIXFILEAPP => 28,
-	USERSCHECKAPP => 29,
-	USERSADDAPP => 30,
-	USERSMOVEAPP => 31,
-	USERSKILLAPP => 32,
-	USERSADDMOVEKILLAPP => 33,
-	TEACHINAPP => 34,
-	CHMODAPP => 35,
-	SETQUOTAAPP => 36,
-	SETOWNPASSWORDAPP => 37,
-	HIDEUNHIDECLASSAPP => 38,
+	SHARESTATESAPP => 8001,
+	SHARESONOFFAPP => 8002,
+	LSHANDOUTAPP => 8003,
+	LSCOLLECTAPP => 8004,
+	HANDOUTAPP => 8005,
+	COLLECTAPP => 8006,
+	RESETROOMAPP => 8007,
+	EDITOWNCLASSMEMBERSHIPAPP => 8008,
+	PRINTCLASSAPP => 8009,
+	PRINTTEACHERSAPP => 8010,
+	SETPASSWORDSAPP => 8011,
+	WWWPERMISSIONSAPP => 8012,
+	PROJECTMEMBERSAPP => 8013,
+	PROJECTCREATEDROPAPP => 8014,
+	PROJECTJOINNOJOINAPP => 8015,
+	READSOPHOMORIXFILEAPP => 8016,
+	WRITESOPHOMORIXFILEAPP => 8017,
+	USERSCHECKAPP => 8018,
+	USERSADDAPP => 8019,
+	USERSMOVEAPP => 8020,
+	USERSKILLAPP => 8021,
+	USERSADDMOVEKILLAPP => 8022,
+	TEACHINAPP => 8023,
+	CHMODAPP => 8024,
+	SETQUOTAAPP => 8025,
+	SETOWNPASSWORDAPP => 8026,
+	HIDEUNHIDECLASSAPP => 8027,
 };
 
 =head3 Constants for wrapper-cyrus
@@ -431,47 +448,6 @@ use constant {
 
 use constant {
 	CYRUSQUOTAAPP => 0,
-};
-
-=head3 Constants for wrapper-collab
-
-=over
-
-=item C<CREATEDROPDBAPP>
-
-C<create_drop_db>
-
-=item C<DROPDBUSERAPP>
-
-C<drop_db_user>
-
-=item C<LISTDBAPP>
-
-C<list_db>
-
-=item C<LISTDBUSERAPP>
-
-C<list_db_user>
-
-=item C<CREATEDROPREPOSITORYAPP>
-
-C<create_drop_repository>
-
-=item C<LISTREPOSITORYAPP>
-
-C<list_repository>
-
-=back
-
-=cut
-
-use constant {
-	CREATEDROPDBAPP => 39,
-	DROPDBUSERAPP => 40,
-	LISTDBAPP => 41,
-	LISTDBUSERAPP => 42,
-	CREATEDROPREPOSITORYAPP => 43,
-	LISTREPOSITORYAPP => 44,
 };
 
 
@@ -496,9 +472,9 @@ C<import_printers>
 =cut
 
 use constant {
-	WRITEFILEAPP => 45,
-	IMPORTWORKSTATIONSAPP => 46,
-	IMPORTPRINTERSAPP => 47,
+	WRITEFILEAPP => 11001,
+	IMPORTWORKSTATIONSAPP => 11002,
+	IMPORTPRINTERSAPP => 11003,
 };
 
 
@@ -523,9 +499,9 @@ C<ovpn_download>
 =cut
 
 use constant {
-	OVPNCHECKAPP => 48,
-	OVPNDOWNLOADAPP => 49,
-	OVPNCREATEAPP => 50,
+	OVPNCHECKAPP => 12001,
+	OVPNDOWNLOADAPP => 12002,
+	OVPNCREATEAPP => 12003,
 };
 
 
@@ -562,12 +538,12 @@ C<linbo_manage_images>
 =cut
 
 use constant {
-	LINBOWRITESTARTCONFAPP => 51,
-	LINBOCOPYSTARTCONFAPP => 52,
-	LINBOCOPYREGPATCHAPP => 53,
-	LINBODELETEAPP => 54,
-	LINBOWRITEAPP => 55,
-	LINBOIMAGEAPP => 56,
+	LINBOWRITESTARTCONFAPP => 13001,
+	LINBOCOPYSTARTCONFAPP => 13002,
+	LINBOCOPYREGPATCHAPP => 13003,
+	LINBODELETEAPP => 13004,
+	LINBOWRITEAPP => 13005,
+	LINBOIMAGEAPP => 13006,
 };
 
 
@@ -891,20 +867,141 @@ use vars qw($_wrapper_user $_wrapper_firewall $_wrapper_ovpn $_wrapper_printer
 
 =over
 
-=item C<%_root_app_name_ids>
+=item C<%_id_root_app_names>
 
-Hash that maps the name of an application in the permissions configuration
-file to its numerical ID
+Hash that maps the numerical ID of an application in the permissions 
+configuration file to its name
 
-=item C<@_root_apps>
+=item C<$_cmd_internet_on_off>
 
-List of applications with each application on the index of its ID
+Path to command used to block/unblock access to internet C<internet_on_off.sh>
+
+=item C<$_cmd_intranet_on_off>
+
+Path to command used to block/unblock access to intranet C<intranet_on_off.sh>
+
+=item C<$_cmd_update_logins>
+
+Path to command to update logins of room C<update-logins.sh>
+
+=item C<$_cmd_update_linbofs>
+
+Path to command to update Linbo filesystem C<update-linbofs.sh>
+
+=item C<$_cmd_urlfilter_check>
+
+Path to command to check if URL filter is active C<check_urlfilter.sh>
+
+=item C<$_cmd_urlfilter_on_off>
+
+Path to command to activate/deactivate URL filter C<urlfilter_on_off.sh>
+
+=item C<$_cmd_linuxmuster_reset>
+
+Path to command to reset room settings C<linuxmuster-reset>
+
+=item C<$_cmd_printer_accept>
+
+Path to command to set printer to accept jobs C<accept>
+
+=item C<$_cmd_printer_reject>
+
+Path to command to set printer to reject jobs C<reject>
+
+=item C<$_cmd_printer_lpadmin>
+
+Path to command to administrate printers C<lpadmin>
+
+=item C<$_cmd_sophomorix_teacher>
+
+Path to Sophomorix command C<sophomorix-teacher>
+
+=item C<$_cmd_sophomorix_room>
+
+Path to Sophomorix command C<sophomorix-room>
+
+=item C<$_cmd_sophomorix_print>
+
+Path to Sophomorix command C<sophomorix-print>
+
+=item C<$_cmd_sophomorix_passwd>
+
+Path to Sophomorix command C<sophomorix-passwd>
+
+=item C<$_cmd_sophomorix_project>
+
+Path to Sophomorix command C<sophomorix-project>
+
+=item C<$_cmd_sophomorix_check>
+
+Path to Sophomorix command C<sophomorix-check>
+
+=item C<$_cmd_sophomorix_add>
+
+Path to Sophomorix command C<sophomorix-add>
+
+=item C<$_cmd_sophomorix_move>
+
+Path to Sophomorix command C<sophomorix-move>
+
+=item C<$_cmd_sophomorix_kill>
+
+Path to Sophomorix command C<sophomorix-kill>
+
+=item C<$_cmd_sophomorix_teachin>
+
+Path to Sophomorix command C<sophomorix-teach-in>
+
+=item C<$_cmd_sophomorix_quota>
+
+Path to Sophomorix command C<sophomorix-quota>
+
+=item C<$_cmd_sophomorix_class>
+
+Path to Sophomorix command C<sophomorix-class>
+
+=item C<$_cmd_import_workstations>
+
+Path to command to import workstations into room C<import_workstations>
+
+=item C<$_cmd_import_printers>
+
+Path to command to import printers into room C<import_printers>
+
+=item C<$_cmd_ovpn_client_cert>
+
+Path to command to administer OVPN certificates C<ovpn-client-cert.sh>
 
 =back
 
 =cut
 
-use vars qw(%_root_app_name_ids @_root_apps);
+use vars qw(%_id_root_app_names
+            $_cmd_internet_on_off
+            $_cmd_intranet_on_off
+            $_cmd_update_logins
+            $_cmd_update_linbofs
+            $_cmd_urlfilter_check
+            $_cmd_urlfilter_on_off
+            $_cmd_linuxmuster_reset
+            $_cmd_printer_accept
+            $_cmd_printer_reject
+            $_cmd_printer_lpadmin
+            $_cmd_sophomorix_teacher
+            $_cmd_sophomorix_room
+            $_cmd_sophomorix_print
+            $_cmd_sophomorix_passwd
+            $_cmd_sophomorix_project
+            $_cmd_sophomorix_check
+            $_cmd_sophomorix_add
+            $_cmd_sophomorix_move
+            $_cmd_sophomorix_kill
+            $_cmd_sophomorix_teachin
+            $_cmd_sophomorix_quota
+            $_cmd_sophomorix_class
+            $_cmd_import_workstations
+            $_cmd_import_printers
+            $_cmd_ovpn_client_cert);
 
 
 =head3 Other variables
@@ -1009,128 +1106,86 @@ $_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
 
 
 
-%_root_app_name_ids = (
-	internet_on_off => INTERNETONOFFAPP,
-	intranet_on_off => INTRANETONOFFAPP,
-	update_logins => UPDATELOGINSAPP,
-	update_linbofs => UPDATELINBOFSAPP,
-	urlfilter_check => URLFILTERCHECKAPP,
-	urlfilter_on_off => URLFILTERONOFFAPP,
-	all_on => ALLONAPP,
-	all_on_at => ALLONATAPP,
-	rooms_reset => ROOMSRESETAPP,
-	printer_info => PRINTERINFOAPP,
-	printer_on_off => PRINTERONOFFAPP,
-	printer_allow_deny => PRINTERALLOWDENYAPP,
-	share_states => SHARESTATESAPP,
-	shares_on_off => SHARESONOFFAPP,
-	ls_handout => LSHANDOUTAPP,
-	ls_collect => LSCOLLECTAPP,
-	handout => HANDOUTAPP,
-	collect => COLLECTAPP,
-	room_reset => RESETROOMAPP,
-	edit_own_class_membership => EDITOWNCLASSMEMBERSHIPAPP,
-	print_class => PRINTCLASSAPP,
-	print_teachers => PRINTTEACHERSAPP,
-	set_passwords => SETPASSWORDSAPP,
-	www_permissions => WWWPERMISSIONSAPP,
-	project_members => PROJECTMEMBERSAPP,
-	project_create_drop => PROJECTCREATEDROPAPP,
-	project_join_no_join => PROJECTJOINNOJOINAPP,
-	read_sophomorix_file => READSOPHOMORIXFILEAPP,
-	write_sophomorix_file => WRITESOPHOMORIXFILEAPP,
-	check_users => USERSCHECKAPP,
-	add_users => USERSADDAPP,
-	move_users => USERSMOVEAPP,
-	kill_users => USERSKILLAPP,
-	addmovekill_users => USERSADDMOVEKILLAPP,
-	teachin => TEACHINAPP,
-	'chmod' => CHMODAPP,
-	'quota' => SETQUOTAAPP,
-	'hide_unhide_class' => HIDEUNHIDECLASSAPP,
-	set_own_password => SETOWNPASSWORDAPP,
-	create_drop_db => CREATEDROPDBAPP,
-	drop_db_user => DROPDBUSERAPP,
-	list_db => LISTDBAPP,
-	list_db_user => LISTDBUSERAPP,
-	create_drop_repository => CREATEDROPREPOSITORYAPP,
-	list_repository => LISTREPOSITORYAPP,
-	write_file => WRITEFILEAPP,
-	import_workstations => IMPORTWORKSTATIONSAPP,
-	import_printers => IMPORTPRINTERSAPP,
-	ovpn_check => OVPNCHECKAPP,
-	ovpn_download => OVPNDOWNLOADAPP,
-	ovpn_create => OVPNCREATEAPP,
-	write_start_conf => LINBOWRITESTARTCONFAPP,
-	copy_start_conf => LINBOCOPYSTARTCONFAPP,
-	copy_regpatch => LINBOCOPYREGPATCHAPP,
-	linbo_delete => LINBODELETEAPP,
-	linbo_write => LINBOWRITEAPP,
-	linbo_manage_images => LINBOIMAGEAPP,
+%_id_root_app_names = (
+	INTERNETONOFFAPP() => 'internet_on_off',
+	INTRANETONOFFAPP() => 'intranet_on_off',
+	UPDATELOGINSAPP() => 'update_logins',
+	UPDATELINBOFSAPP() => 'update_linbofs',
+	URLFILTERCHECKAPP() => 'urlfilter_check',
+	URLFILTERONOFFAPP() => 'urlfilter_on_off',
+	ALLONAPP() => 'all_on',
+	ALLONATAPP() => 'all_on_at',
+	ROOMSRESETAPP() => 'rooms_reset',
+	PRINTERINFOAPP() => 'printer_info',
+	PRINTERONOFFAPP() => 'printer_on_off',
+	PRINTERALLOWDENYAPP() => 'printer_allow_deny',
+	SHARESTATESAPP() => 'share_states',
+	SHARESONOFFAPP() => 'shares_on_off',
+	LSHANDOUTAPP() => 'ls_handout',
+	LSCOLLECTAPP() => 'ls_collect',
+	HANDOUTAPP() => 'handout',
+	COLLECTAPP() => 'collect',
+	RESETROOMAPP() => 'room_reset',
+	EDITOWNCLASSMEMBERSHIPAPP() => 'edit_own_class_membership',
+	PRINTCLASSAPP() => 'print_class',
+	PRINTTEACHERSAPP() => 'print_teachers',
+	SETPASSWORDSAPP() => 'set_passwords',
+	PROJECTMEMBERSAPP() => 'project_members',
+	PROJECTCREATEDROPAPP() => 'project_create_drop',
+	PROJECTJOINNOJOINAPP() => 'project_join_no_join',
+	READSOPHOMORIXFILEAPP() => 'read_sophomorix_file',
+	WRITESOPHOMORIXFILEAPP() => 'write_sophomorix_file',
+	USERSCHECKAPP() => 'check_users',
+	USERSADDAPP() => 'add_users',
+	USERSMOVEAPP() => 'move_users',
+	USERSKILLAPP() => 'kill_users',
+	USERSADDMOVEKILLAPP() => 'addmovekill_users',
+	TEACHINAPP() => 'teachin',
+	CHMODAPP() => 'chmod',
+	SETQUOTAAPP() => 'quota',
+	HIDEUNHIDECLASSAPP() => 'hide_unhide_class',
+	SETOWNPASSWORDAPP() => 'set_own_password',
+	WRITEFILEAPP() => 'write_file',
+	IMPORTWORKSTATIONSAPP() => 'import_workstations',
+	IMPORTPRINTERSAPP() => 'import_printers',
+	OVPNCHECKAPP() => 'ovpn_check',
+	OVPNDOWNLOADAPP() => 'ovpn_download',
+	OVPNCREATEAPP() => 'ovpn_create',
+	LINBOWRITESTARTCONFAPP() => 'write_start_conf',
+	LINBOCOPYSTARTCONFAPP() => 'copy_start_conf',
+	LINBOCOPYREGPATCHAPP() => 'copy_regpatch',
+	LINBODELETEAPP() => 'linbo_delete',
+	LINBOWRITEAPP() => 'linbo_write',
+	LINBOIMAGEAPP() => 'linbo_manage_images',
 );
 
 
-@_root_apps = (
-	'/usr/share/linuxmuster/scripts/internet_on_off.sh',
-	'/usr/share/linuxmuster/scripts/intranet_on_off.sh',
-	'/usr/share/linuxmuster/scripts/update-logins.sh',
-	'/usr/share/linuxmuster-linbo/update-linbofs.sh',
-	'/usr/share/linuxmuster/scripts/check_urlfilter.sh',
-	'/usr/share/linuxmuster/scripts/urlfilter_on_off.sh',
-	1,
-	1,
-	'/usr/sbin/linuxmuster-reset',
-	1,
-	[ '/usr/sbin/accept', '/usr/sbin/reject' ],
-	'/usr/sbin/lpadmin',
-	'/usr/bin/sophomorix-teacher',
-	'/usr/bin/sophomorix-teacher',
-	'/usr/bin/sophomorix-teacher',
-	'/usr/bin/sophomorix-teacher',
-	'/usr/bin/sophomorix-teacher',
-	'/usr/bin/sophomorix-teacher',
-	'/usr/sbin/sophomorix-room',
-	'/usr/bin/sophomorix-teacher',
-	'/usr/sbin/sophomorix-print',
-	'/usr/sbin/sophomorix-print',
-	'/usr/sbin/sophomorix-passwd',
-	'/usr/sbin/sophomorix-www',
-	'/usr/sbin/sophomorix-project',
-	'/usr/sbin/sophomorix-project',
-	'/usr/sbin/sophomorix-project',
-	1,
-	1,
-	'/usr/sbin/sophomorix-check',
-	'/usr/sbin/sophomorix-add',
-	'/usr/sbin/sophomorix-move',
-	'/usr/sbin/sophomorix-kill',
-	[ '/usr/sbin/sophomorix-add', '/usr/sbin/sophomorix-move',
-	  '/usr/sbin/sophomorix-kill', ],
-	'/usr/sbin/sophomorix-teach-in',
-	1,
-	[ '/usr/sbin/sophomorix-quota', '/usr/sbin/sophomorix-class',
-	  '/usr/sbin/sophomorix-project', ],
-	'/usr/sbin/sophomorix-passwd',
-	'/usr/sbin/sophomorix-class',
-	'/usr/sbin/linuxmuster-mysql',
-	'/usr/sbin/linuxmuster-mysql',
-	'/usr/sbin/linuxmuster-mysql',
-	'/usr/sbin/linuxmuster-mysql',
-	'/usr/sbin/linuxmuster-svn',
-	'/usr/sbin/linuxmuster-svn',
-	1,
-	'/usr/sbin/import_workstations',
-	'/usr/sbin/import_printers',
-	'/usr/share/linuxmuster/scripts/ovpn-client-cert.sh',
-	'/usr/share/linuxmuster/scripts/ovpn-client-cert.sh',
-	'/usr/share/linuxmuster/scripts/ovpn-client-cert.sh',
-	1,
-	1,
-	1,
-	1,
-	1,
-	1,
-);
+
+$_cmd_import_printers = '/usr/sbin/import_printers';
+$_cmd_import_workstations = '/usr/sbin/import_workstations';
+$_cmd_internet_on_off = '/usr/share/linuxmuster/scripts/internet_on_off.sh';
+$_cmd_intranet_on_off = '/usr/share/linuxmuster/scripts/intranet_on_off.sh';
+$_cmd_linuxmuster_reset = '/usr/sbin/linuxmuster-reset';
+$_cmd_ovpn_client_cert = '/usr/share/linuxmuster/scripts/ovpn-client-cert.sh';
+$_cmd_printer_accept = '/usr/sbin/accept';
+$_cmd_printer_lpadmin = '/usr/sbin/lpadmin';
+$_cmd_printer_reject = '/usr/sbin/reject';
+$_cmd_sophomorix_add = '/usr/sbin/sophomorix-add';
+$_cmd_sophomorix_check = '/usr/sbin/sophomorix-check';
+$_cmd_sophomorix_class = '/usr/sbin/sophomorix-class';
+$_cmd_sophomorix_kill = '/usr/sbin/sophomorix-kill';
+$_cmd_sophomorix_move = '/usr/sbin/sophomorix-move';
+$_cmd_sophomorix_passwd = '/usr/sbin/sophomorix-passwd';
+$_cmd_sophomorix_print = '/usr/sbin/sophomorix-print';
+$_cmd_sophomorix_project = '/usr/sbin/sophomorix-project';
+$_cmd_sophomorix_quota = '/usr/sbin/sophomorix-quota';
+$_cmd_sophomorix_room = '/usr/sbin/sophomorix-room';
+$_cmd_sophomorix_teacher = '/usr/bin/sophomorix-teacher';
+$_cmd_sophomorix_teachin = '/usr/sbin/sophomorix-teach-in';
+$_cmd_update_linbofs = '/usr/share/linuxmuster-linbo/update-linbofs.sh';
+$_cmd_update_logins = '/usr/share/linuxmuster/scripts/update-logins.sh';
+$_cmd_urlfilter_check = '/usr/share/linuxmuster/scripts/check_urlfilter.sh';
+$_cmd_urlfilter_on_off = '/usr/share/linuxmuster/scripts/urlfilter_on_off.sh';
 
 
 

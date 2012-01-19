@@ -87,7 +87,7 @@ sub start_wrapper {
 				$Schulkonsole::Config::_wrapper_files, $!);
 		} else {
 			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_FILES_ERROR_BASE + $error,
+				Schulkonsole::Error::Files::WRAPPER_ERROR_BASE + $error,
 				$Schulkonsole::Config::_wrapper_files);
 		}
 	}
@@ -121,7 +121,7 @@ sub stop_wrapper {
 				($input_buffer ? "Output: $input_buffer" : 'No Output'));
 		} else {
 			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_FILES_ERROR_BASE + $error,
+				Schulkonsole::Error::Files::WRAPPER_ERROR_BASE + $error,
 				$Schulkonsole::Config::_wrapper_files);
 		}
 	}

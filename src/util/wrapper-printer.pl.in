@@ -27,6 +27,7 @@ use lib '@datadir@/@PACKAGE@';
 use Data::Dumper;
 use Schulkonsole::Config;
 use Schulkonsole::DB;
+use Schulkonsole::Error::Printer;
 
 
 
@@ -36,12 +37,20 @@ my $password = <>;
 chomp $password;
 
 my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
-exit -32 unless $userdata;
+exit (  Schulkonsole::Error::Printer::WRAPPER_UNAUTHENTICATED_ID
+      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+	unless $userdata;
 
 my $app_id = <>;
 ($app_id) = $app_id =~ /^(\d+)$/;
-exit -33
-	unless defined $app_id && $Schulkonsole::Config::_root_apps[$app_id];
+exit (  Schulkonsole::Error::Printer::WRAPPER_APP_ID_DOES_NOT_EXIST
+      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+	unless defined $app_id;
+
+my $app_name = $Schulkonsole::Config::_id_root_app_names{$app_id};
+exit (  Schulkonsole::Error::Printer::WRAPPER_APP_ID_DOES_NOT_EXIST
+      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+	unless defined $app_name;
 
 
 
@@ -49,16 +58,16 @@ my $permissions = Schulkonsole::Config::permissions_apps();
 my $groups = Schulkonsole::DB::user_groups(
 	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
 
-my $app;
+my $is_permission_found = 0;
 foreach my $group (('ALL', keys %$groups)) {
-	foreach my $name (keys %{ $$permissions{$group} }) {
-		if ($Schulkonsole::Config::_root_app_name_ids{$name} == $app_id) {
-			$app = $Schulkonsole::Config::_root_apps[$app_id];
-			last;
-		}
+	if ($$permissions{$group}{$app_name}) {
+		$is_permission_found = 1;
+		last;
 	}
 }
-exit -34 unless $app;
+exit (  Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_ID
+      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+	unless $is_permission_found;
 
 
 my $opts;
@@ -92,7 +101,8 @@ $app_id == Schulkonsole::Config::PRINTERINFOAPP and do {
 	);
 
 	open PRINTERSCONF, "<$Schulkonsole::Config::_cups_printers_conf_file"
-		or exit -64;
+		or exit (  Schulkonsole::Error::Printer::WRAPPER_CANNOT_OPEN_PRINTERSCONF
+		         - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE);
 
 	my $printer;
 	my %printer_info;
@@ -131,19 +141,23 @@ $app_id == Schulkonsole::Config::PRINTERONOFFAPP and do {
 		last if $printer =~ /^$/;
 
 		($printer) = $printer =~ /^(\S{0,127})$/;
-		exit -65 unless $printer;
+		exit (  Schulkonsole::Error::Printer::WRAPPER_INVALID_PRINTER_NAME
+		      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+			unless $printer;
 
 		push @printers, $printer
 	}
-	exit -66 unless @printers;
+	exit (  Schulkonsole::Error::Printer::WRAPPER_NO_PRINTERS
+	      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+		unless @printers;
 
 	if ($on) {
 		foreach my $printer (@printers) {
-			system "$$app[0] \Q$printer";
+			system "$Schulkonsole::Config::_cmd_printer_accept \Q$printer";
 		}
 	} else {
 		foreach my $printer (@printers) {
-			system "$$app[1] \Q$printer";
+			system "$Schulkonsole::Config::_cmd_printer_reject \Q$printer";
 		}
 	}
 
@@ -156,26 +170,32 @@ $app_id == Schulkonsole::Config::PRINTERALLOWDENYAPP and do {
 	while (my $printer = <>) {
 		last if $printer =~ /^$/;
 		($printer) = $printer =~ /^(\S{0,127})$/;
-		exit -65 unless $printer;
+		exit (  Schulkonsole::Error::Printer::WRAPPER_INVALID_PRINTER_NAME
+		      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+			unless $printer;
 
 		$printer_users{$printer} = [];
 		while (my $user = <>) {
 			last if $user =~ /^$/;
 			($user) = $user =~ /^(\S+)$/;
-			exit -67 unless $user;
+			exit (  Schulkonsole::Error::Printer::WRAPPER_INVALID_USER
+			      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+				unless $user;
 
 			push @{ $printer_users{$printer} }, "\Q$user";
 		}
 	}
-	exit -66 unless %printer_users;
+	exit (  Schulkonsole::Error::Printer::WRAPPER_NO_PRINTERS
+	      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+		unless %printer_users;
 
 
 	foreach my $printer (keys %printer_users) {
 		if ( @{ $printer_users{$printer} } ) {
-			system "$app -p\Q$printer\E -u deny:"
+			system "$Schulkonsole::Config::_cmd_printer_lpadmin -p\Q$printer\E -u deny:"
 				. join(',', @{ $printer_users{$printer} });
 		} else {
-			system "$app -p\Q$printer\E -u deny:none";
+			system "$Schulkonsole::Config::_cmd_printer_lpadmin -p\Q$printer\E -u deny:none";
 		}
 	}
 

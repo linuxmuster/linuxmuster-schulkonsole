@@ -29,6 +29,7 @@ use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Config;
 use Schulkonsole::DB;
+use Schulkonsole::Error::Files;
 
 
 
@@ -38,12 +39,20 @@ my $password = <>;
 chomp $password;
 
 my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
-exit -32 unless $userdata;
+exit (  Schulkonsole::Error::Files::WRAPPER_UNAUTHENTICATED_ID
+      - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE)
+	unless $userdata;
 
 my $app_id = <>;
 ($app_id) = $app_id =~ /^(\d+)$/;
-exit -33
-	unless defined $app_id && $Schulkonsole::Config::_root_apps[$app_id];
+exit (  Schulkonsole::Error::Files::WRAPPER_APP_ID_DOES_NOT_EXIST
+      - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE)
+	unless defined $app_id;
+
+my $app_name = $Schulkonsole::Config::_id_root_app_names{$app_id};
+exit (  Schulkonsole::Error::Files::WRAPPER_APP_ID_DOES_NOT_EXIST
+      - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE)
+	unless defined $app_name;
 
 
 
@@ -51,16 +60,16 @@ my $permissions = Schulkonsole::Config::permissions_apps();
 my $groups = Schulkonsole::DB::user_groups(
 	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
 
-my $app;
+my $is_permission_found = 0;
 foreach my $group (('ALL', keys %$groups)) {
-	foreach my $name (keys %{ $$permissions{$group} }) {
-		if ($Schulkonsole::Config::_root_app_name_ids{$name} == $app_id) {
-			$app = $Schulkonsole::Config::_root_apps[$app_id];
-			last;
-		}
+	if ($$permissions{$group}{$app_name}) {
+		$is_permission_found = 1;
+		last;
 	}
 }
-exit -34 unless $app;
+exit (  Schulkonsole::Error::Files::WRAPPER_UNAUTHORIZED_ID
+      - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE)
+	unless $is_permission_found;
 
 
 my $opts;
@@ -86,7 +95,9 @@ numeric constant: C<Schulkonsole::Config::WRITEFILEAPP>
 $app_id == Schulkonsole::Config::WRITEFILEAPP and do {
 	my $file = <>;
 	($file) = $file =~ /^(\d+)$/;
-	exit -105 unless defined $file;
+	exit (  Schulkonsole::Error::Files::WRAPPER_INVALID_FILENUMBER
+	      - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE)
+		unless defined $file;
 
 	my $filename;
 	my $perm;
@@ -124,7 +135,9 @@ $app_id == Schulkonsole::Config::WRITEFILEAPP and do {
 	$( = $);
 	umask(022);
 
-	open FILE, ">$filename" or exit -106;
+	open FILE, ">$filename"
+		or exit(  Schulkonsole::Error::Files::WRAPPER_ERROR_BASE
+		        - Schulkonsole::Error::Files::WRAPPER_CANNOT_OPEN_FILE);
 	flock FILE, 2;
 	seek FILE, 0, 0;
 
@@ -150,10 +163,14 @@ numeric constant: C<Schulkonsole::Config::IMPORTWORKSTATIONSAPP>
 $app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
 	my $sid = <>;
 	($sid) = $sid =~ /^(.+)$/;
-	exit -10 unless defined $sid;
+	exit (  Schulkonsole::Error::Files::WRAPPER_INVALID_SESSION_ID
+	      - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE)
+		unless defined $sid;
 
 	my $pid = fork;
-	exit -44 unless defined $pid;
+	exit (  Schulkonsole::Error::Files::WRAPPER_CANNOT_FORK
+	      - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE)
+		unless defined $pid;
 
 	if (not $pid) {
 		close STDIN;
@@ -165,7 +182,9 @@ $app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
 
 		umask(027);
 		my $lockfile = Schulkonsole::Config::lockfile('import_workstations');
-		open LOCK, ">>$lockfile" or exit -106;
+		open LOCK, ">>$lockfile"
+			or exit(  Schulkonsole::Error::Files::WRAPPER_ERROR_BASE
+			        - Schulkonsole::Error::Files::WRAPPER_CANNOT_OPEN_FILE);
 		flock LOCK, 2;
 		seek LOCK, 0, 0;
 		truncate LOCK, 0;
@@ -175,7 +194,8 @@ $app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
 		$) = 0;
 		$( = $);
 		umask(022);
-		open APP, "$app | " or last SWITCH;
+		open APP, "$Schulkonsole::Config::_cmd_import_workstations | "
+			or last SWITCH;
 		my $line;
 		while (<APP>) {
 			$line = $_;
@@ -185,11 +205,17 @@ $app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
 			my $error_code = $?;
 			use CGI::Session;
 
-			my $session_lockfile = Schulkonsole::Config::lockfile("cgisession_$sid");
-			open SESSIONLOCK, ">>$session_lockfile" or exit -106;
+			my $session_lockfile
+				= Schulkonsole::Config::lockfile("cgisession_$sid");
+			open SESSIONLOCK, ">>$session_lockfile"
+				or exit (  Schulkonsole::Error::Files::WRAPPER_CANNOT_OPEN_FILE
+				         - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE);
 			flock SESSIONLOCK, 2;
 
-			my $session = new CGI::Session("driver:File", $sid, { Directory => $Schulkonsole::Config::_runtimedir });
+			my $session = new CGI::Session("driver:File", $sid,
+			              	{
+			                	Directory => $Schulkonsole::Config::_runtimedir
+			              	});
 			if ($session->param('username')) {
 				chomp $line;
 				$session->param('statusbg', $line);
@@ -205,7 +231,7 @@ $app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
 	}
 };
 
-=head3 import_workstations
+=head3 import_printers
 
 numeric constant: C<Schulkonsole::Config::IMPORTPRINTERSAPP>
 
@@ -216,7 +242,7 @@ $app_id == Schulkonsole::Config::IMPORTPRINTERSAPP and do {
 	$) = 0;
 	$( = $);
 	umask(022);
-	exec "$app" or last SWITCH;
+	exec $Schulkonsole::Config::_cmd_import_printers or last SWITCH;
 };
 
 }

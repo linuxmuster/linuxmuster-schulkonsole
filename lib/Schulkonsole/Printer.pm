@@ -61,7 +61,7 @@ sub start_wrapper {
 				$Schulkonsole::Config::_wrapper_printer, $!);
 		} else {
 			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_PRINTER_ERROR_BASE + $error,
+				Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE + $error,
 				$Schulkonsole::Config::_wrapper_printer);
 		}
 	}
@@ -95,7 +95,7 @@ sub stop_wrapper {
 				($input_buffer ? "Output: $input_buffer" : 'No Output'));
 		} else {
 			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_PRINTER_ERROR_BASE + $error,
+				Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE + $error,
 				$Schulkonsole::Config::_wrapper_printer);
 		}
 	}

@@ -33,6 +33,7 @@ use lib '@datadir@/@PACKAGE@';
 use Sophomorix::SophomorixAPI;
 use Sophomorix::SophomorixConfig;
 use Schulkonsole::Config;
+use Schulkonsole::Error::Firewall;
 use Schulkonsole::DB;
 use Schulkonsole::RoomSession;
 use Schulkonsole::Firewall;
@@ -45,12 +46,21 @@ my $password = <>;
 chomp $password;
 
 my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
-exit -32 unless $userdata;
+exit (  Schulkonsole::Error::Firewall::WRAPPER_UNAUTHENTICATED_ID
+      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+	unless $userdata;
+
 
 my $app_id = <>;
 ($app_id) = $app_id =~ /^(\d+)$/;
-exit -33
-	unless defined $app_id && $Schulkonsole::Config::_root_apps[$app_id];
+exit (  Schulkonsole::Error::Firewall::WRAPPER_APP_ID_DOES_NOT_EXIST
+      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+	unless defined $app_id;
+
+my $app_name = $Schulkonsole::Config::_id_root_app_names{$app_id};
+exit (  Schulkonsole::Error::Firewall::WRAPPER_APP_ID_DOES_NOT_EXIST
+      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+	unless defined $app_name;
 
 
 
@@ -58,16 +68,16 @@ my $permissions = Schulkonsole::Config::permissions_apps();
 my $groups = Schulkonsole::DB::user_groups(
 	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
 
-my $app;
+my $is_permission_found = 0;
 foreach my $group (('ALL', keys %$groups)) {
-	foreach my $name (keys %{ $$permissions{$group} }) {
-		if ($Schulkonsole::Config::_root_app_name_ids{$name} == $app_id) {
-			$app = $Schulkonsole::Config::_root_apps[$app_id];
-			last;
-		}
+	if ($$permissions{$group}{$app_name}) {
+		$is_permission_found = 1;
+		last;
 	}
 }
-exit -34 unless $app;
+exit (  Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_ID
+      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+	unless $is_permission_found;
 
 
 SWITCH: {
@@ -139,12 +149,19 @@ Format of address is xx:xx:xx:xx:xx:xx where xx is a hexadecimal value.
 		last if $mac =~ /^$/;
 
 		($mac) = $mac =~ /^(\w{2}(?::\w{2}){5})$/;
-		exit -35 unless $mac;
+		exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_MAC
+		      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+			unless $mac;
 
 		push @macs, $mac;
 	}
-	exit -36 unless @macs;
+	exit (  Schulkonsole::Error::Firewall::WRAPPER_NO_MACS
+	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+		unless @macs;
 
+	my $cmd = ($app_id == Schulkonsole::Config::INTERNETONOFFAPP ?
+	             $Schulkonsole::Config::_cmd_internet_on_off
+	           : $Schulkonsole::Config::_cmd_intranet_on_off);
 	my $opts = "--trigger=$trigger --maclist=" . join(',', @macs);
 
 	# set ruid, so that ssh searches for .ssh/ in /root
@@ -152,7 +169,7 @@ Format of address is xx:xx:xx:xx:xx:xx where xx is a hexadecimal value.
 	local $) = 0;
 	local $( = $);
 	umask(022);
-	exec "$app $opts" or last SWITCH;
+	exec "$cmd $opts" or last SWITCH;
 };
 
 =head3 urlfilter_on_off
@@ -191,11 +208,15 @@ $app_id == Schulkonsole::Config::URLFILTERONOFFAPP and do {
 		last if $host =~ /^$/;
 
 		($host) = $host =~ /^([\w.-]+)$/i;
-		exit -37 unless $host;
+		exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_HOST
+		      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+			unless $host;
 
 		push @hosts, $host;
 	}
-	exit -38 unless @hosts;
+	exit (  Schulkonsole::Error::Firewall::WRAPPER_NO_HOSTS
+	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+		unless @hosts;
 
 	my $opts = "--trigger=$trigger --hostlist=" . join(',', @hosts);
 
@@ -204,7 +225,7 @@ $app_id == Schulkonsole::Config::URLFILTERONOFFAPP and do {
 	local $) = 0;
 	local $( = $);
 	umask(022);
-	exec "$app $opts" or last SWITCH;
+	exec "$Schulkonsole::Config::_cmd_urlfilter_on_off $opts" or last SWITCH;
 };
 
 =head3 update_logins
@@ -220,10 +241,12 @@ invokes C<update-logins.sh>
 $app_id == Schulkonsole::Config::UPDATELOGINSAPP and do {
 	my $room = <>;
 	($room) = $room =~ /^([\w -]+)$/;
-	exit -39 unless $room;
+	exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM
+	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+		unless $room;
 	# set ruid
 	local $< = $>;
-	exec "$app $room" or last SWITCH;
+	exec "$Schulkonsole::Config::_cmd_update_logins $room" or last SWITCH;
 };
 
 =head3 urlfilter_check
@@ -239,7 +262,7 @@ invokes C<check_urlfilter.sh>
 $app_id == Schulkonsole::Config::URLFILTERCHECKAPP and do {
 	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;
-	exec "$app" or last SWITCH;
+	exec $Schulkonsole::Config::_cmd_urlfilter_check or last SWITCH;
 };
 
 =head3 all_on
@@ -265,7 +288,9 @@ The name of the room
 $app_id == Schulkonsole::Config::ALLONAPP and do {
 	my $room = <>;
 	($room) = $room =~ /^([\w -]+)$/;
-	exit -39 unless $room;
+	exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM
+	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+		unless $room;
 
 	my $room_session = room_session($room);
 
@@ -303,11 +328,15 @@ Absolute time in seconds since the Epoch
 $app_id == Schulkonsole::Config::ALLONATAPP and do {
 	my $room = <>;
 	($room) = $room =~ /^([\w -]+)$/;
-	exit -39 unless $room;
+	exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM
+	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+		unless $room;
 
 	my $time = <>;
 	($time) = $time =~ /^(\d+)$/;
-	exit -41 unless $time;
+	exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_LESSONTIME
+	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+		unless $time;
 
 	{ # write values and close session
 	my $room_session = room_session($room);
@@ -315,7 +344,9 @@ $app_id == Schulkonsole::Config::ALLONATAPP and do {
 	}
 
 	my $pid = fork;
-	exit -44 unless defined $pid;
+	exit (  Schulkonsole::Error::Firewall::WRAPPER_CANNOT_FORK
+	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+		unless defined $pid;
 
 	if (not $pid) {
 		close STDIN;
@@ -329,11 +360,17 @@ $app_id == Schulkonsole::Config::ALLONATAPP and do {
 		my $room_session = room_session($room);
 
 		my $stored_room = $room_session->param('name');
-		exit -45 unless $stored_room;
+		exit (  Schulkonsole::Error::Firewall::WRAPPER_CANNOT_READ_ROOMFILE
+		      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+			unless $stored_room;
 		my $stored_id = $room_session->param('user_id');
-		exit -45 unless $stored_id;
+		exit (  Schulkonsole::Error::Firewall::WRAPPER_CANNOT_READ_ROOMFILE
+		      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+			unless $stored_id;
 		my $stored_time = $room_session->param('end_time');
-		exit -45 unless $stored_time;
+		exit (  Schulkonsole::Error::Firewall::WRAPPER_CANNOT_READ_ROOMFILE
+		      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+			unless $stored_time;
 		my $is_exam_mode = $room_session->param('test_step');
 
 		if (    $stored_time == $time
@@ -374,25 +411,32 @@ Resets the workstation settings in a room
 $app_id == Schulkonsole::Config::ROOMSRESETAPP and do {
 	my $scope = <>;
 	($scope) = $scope =~ /^([01])$/;
-	exit -45 unless defined $scope;
+	exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM_SCOPE
+	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+		unless defined $scope;
 
 	if ($scope == 0) {
 		my $opts = '--all';
 		$< = $>;
-		exec "$app $opts" or last SWITCH;
+		exec "$Schulkonsole::Config::_cmd_linuxmuster_reset $opts"
+			or last SWITCH;
 	} else {
 		my @rooms_reset;
 		while (<>) {
 			last if /^$/;
 			my ($room) = /^([\w -]+)$/;
-			exit -39 unless $room;
+			exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM
+			      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+				unless $room;
 			push @rooms_reset, $room;
 		}
 		my @hosts_reset;
 		while (<>) {
 			last if /^$/;
 			my ($host) = /^([\w.-]+)$/i;
-			exit -37 unless $host;
+			exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_HOST
+			      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+				unless $host;
 			push @hosts_reset, $host;
 		}
 
@@ -404,10 +448,12 @@ $app_id == Schulkonsole::Config::ROOMSRESETAPP and do {
 		            # read permissions for us
 
 		foreach my $room (@rooms_reset) {
-			system("$app --room=\Q$room\E") == 0 or $is_error++;
+			system("$Schulkonsole::Config::_cmd_linuxmuster_reset --room=\Q$room\E") == 0
+				or $is_error++;
 		}
 		foreach my $host (@hosts_reset) {
-			system("$app --host=\Q$host\E") == 0 or $is_error++;
+			system("$Schulkonsole::Config::_cmd_linuxmuster_reset --host=\Q$host\E") == 0
+				or $is_error++;
 		}
 
 		exit 0 unless $is_error;
@@ -429,7 +475,9 @@ sub room_session {
 
 	my $session = new Schulkonsole::RoomSession($room);
 
-	exit -1 unless $session;
+	exit (  Schulkonsole::Error::Firewall::WRAPPER_GENERAL_ERROR
+	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+		unless $session;
 
 	# 'unprivileged' is set in the main CGI-script
 	# do not keep a session, that we created as root
@@ -459,22 +507,19 @@ sub all_on {
 			. ' --collect --exam'
 			. " --room \Q$room";
 
-		my $app = $Schulkonsole::Config::_root_apps[Schulkonsole::Config::COLLECTAPP];
 
 		local $< = $>;
 		local $) = 0;
 		local $( = $);
 		umask(022);
-		system "$app $opts";
+		system "$Schulkonsole::Config::_cmd_sophomorix_teacher $opts";
 
-		$app = $Schulkonsole::Config::_root_apps[Schulkonsole::Config::RESETROOMAPP];
 		$opts = " --reset-room \Q$room";
-		system "$app $opts";
+		system "$Schulkonsole::Config::_cmd_sophomorix_room $opts";
 
 
-		$app = $Schulkonsole::Config::_root_apps[Schulkonsole::Config::SETPASSWORDSAPP];
 		$opts = " --hide --random --rooms \Q$room";
-		system "$app $opts";
+		system "$Schulkonsole::Config::_cmd_sophomorix_class $opts";
 	}
 
 	my $oldsettings = $room_session->param('oldsettings');
@@ -533,47 +578,41 @@ sub all_on {
 #	if (@webfilter_offs) {
 #		my $opts = "--trigger=off --hostlist=" . join(',', @webfilter_offs);
 #
-#		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::URLFILTERONOFFAPP]
-#				. ' ' . $opts;
+#		system $Schulkonsole::Config::_cmd_urlfilter_on_off	. ' ' . $opts;
 #	}
 #	if (@webfilter_ons) {
 #		my $opts = "--trigger=on --hostlist=" . join(',', @webfilter_ons);
 #
-#		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::URLFILTERONOFFAPP]
-#				. ' ' . $opts;
+#		system $Schulkonsole::Config::_cmd_urlfilter_on_off	. ' ' . $opts;
 #	}
 #
 #	if (@internet_ons) {
 #		my $opts = "--trigger=on --maclist=" . join(',', @internet_ons);
 #
-#		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::INTERNETONOFFAPP]
-#			. ' ' . $opts;
+#		system $Schulkonsole::Config::_cmd_internet_on_off	. ' ' . $opts;
 #	}
 #	if (@internet_offs) {
 #		my $opts = "--trigger=off --maclist=" . join(',', @internet_offs);
 #
-#		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::INTERNETONOFFAPP]
-#			. ' ' . $opts;
+#		system $Schulkonsole::Config::_cmd_internet_on_off	. ' ' . $opts;
 #	}
 #
 #	if (@intranet_ons) {
 #		my $opts = "--trigger=on --maclist=" . join(',', @intranet_ons);
 #
-#		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::INTRANETONOFFAPP]
-#			. ' ' . $opts;
+#		system $Schulkonsole::Config::_cmd_intranet_on_off	. ' ' . $opts;
 #	}
 #	if (@intranet_offs) {
 #		my $opts = "--trigger=off --maclist=" . join(',', @intranet_offs);
 #
-#		system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::INTRANETONOFFAPP]
-#			. ' ' . $opts;
+#		system $Schulkonsole::Config::_cmd_intranet_on_off	. ' ' . $opts;
 #	}
 
 
-	# reset the room settings according to rooms_default instead of restoring the old state from session file
-	my $app = $Schulkonsole::Config::_root_apps[Schulkonsole::Config::ROOMSRESETAPP];
+	# reset the room settings according to rooms_default instead of restoring 
+	# the old state from session file
 	my $opts = "--room=\Q$room\E";
-	system "$app $opts";
+	system "$Schulkonsole::Config::_cmd_linuxmuster_reset $opts";
 
 
 	if ($$oldsettings{printers_accept}) {
@@ -583,8 +622,9 @@ sub all_on {
 		);
 	
 		open PRINTERSCONF, "<$Schulkonsole::Config::_cups_printers_conf_file"
-			or exit -64;
-	
+			or exit (  Schulkonsole::Error::Firewall::WRAPPER_CANNOT_OPEN_PRINTERSCONF
+			         - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE);
+
 		my $printer;
 		my %printer_info;
 		while (<PRINTERSCONF>) {
@@ -607,18 +647,16 @@ sub all_on {
 		close PRINTERSCONF;
 
 
-		my $printer_on_off_app
-			= $Schulkonsole::Config::_root_apps[Schulkonsole::Config::PRINTERONOFFAPP];
 		foreach my $printer (keys %{ $$oldsettings{printers_accept} }) {
 			if (    $printer_info{$printer}
 			    and $$oldsettings{printers}{$printer}) {
 				if ($$oldsettings{printers_accept}{$printer}) {
 					if ($printer_info{$printer}{Accepting} ne 'Yes') {
-						system "$$printer_on_off_app[0] \Q$printer";
+						system "$Schulkonsole::Config::_cmd_printer_accept \Q$printer";
 					}
 				} else {
 					if ($printer_info{$printer}{Accepting} eq 'Yes') {
-						system "$$printer_on_off_app[1] \Q$printer";
+						system "$Schulkonsole::Config::_cmd_printer_reject \Q$printer";
 					}
 				}
 	
@@ -642,10 +680,10 @@ sub all_on {
 				my @deny_users = map { quotemeta } keys %deny_users;
 	
 				if ( @deny_users ) {
-					system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::PRINTERALLOWDENYAPP]
+					system $Schulkonsole::Config::_cmd_printer_lpadmin
 						. " -p\Q$printer\E -u deny:" . join(',', @deny_users);
 				} else {
-					system $Schulkonsole::Config::_root_apps[Schulkonsole::Config::PRINTERALLOWDENYAPP]
+					system $Schulkonsole::Config::_cmd_printer_lpadmin
 						. " -p\Q$printer\E -u deny:none";
 				}
 			}
@@ -670,22 +708,24 @@ sub all_on {
 				my $share_state = (($mode & 05) == 05);
 	
 				if ($$old_share_states{$login_id}) {
-					push @shares_on, "\Q$$login_userdata{uid}" unless $share_state;
+					push @shares_on, "\Q$$login_userdata{uid}"
+						unless $share_state;
 				} else {
-					push @shares_off, "\Q$$login_userdata{uid}" if $share_state;
+					push @shares_off, "\Q$$login_userdata{uid}"
+						if $share_state;
 				}
 	
 			}
 		}
 
-		my $shares_app
-		  = $Schulkonsole::Config::_root_apps[Schulkonsole::Config::SHARESONOFFAPP];
 
-		system $shares_app
-			. " --teacher \Q$$userdata{uid}\E --shares --users " . join(',', @shares_on)
+		system $Schulkonsole::Config::_cmd_sophomorix_teacher
+			. " --teacher \Q$$userdata{uid}\E --shares --users "
+			. join(',', @shares_on)
 			if @shares_on;
-		system $shares_app
-			. " --teacher \Q$$userdata{uid}\E --noshares --users " . join(',', @shares_off)
+		system $Schulkonsole::Config::_cmd_sophomorix_teacher
+			. " --teacher \Q$$userdata{uid}\E --noshares --users "
+			. join(',', @shares_off)
 			if @shares_off;
 	}
 

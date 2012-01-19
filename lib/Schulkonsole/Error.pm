@@ -1,4 +1,12 @@
 use strict;
+use Schulkonsole::Error::Cyrus;
+use Schulkonsole::Error::Files;
+use Schulkonsole::Error::Firewall;
+use Schulkonsole::Error::Linbo;
+use Schulkonsole::Error::OVPN;
+use Schulkonsole::Error::Printer;
+use Schulkonsole::Error::Sophomorix;
+use Schulkonsole::Error::User;
 
 package Schulkonsole::Error;
 require Exporter;
@@ -16,7 +24,6 @@ $VERSION = 0.06;
 	UNKNOWN_ROOM
 	QUOTA_NOT_ALL_MOUNTPOINTS
 	PUBLIC_BG_ERROR
-	LINBO_START_CONF_ERROR
 	INTERNAL_BG_ERROR
 	DB_PREPARE_FAILED
 	DB_EXECUTE_FAILED
@@ -29,133 +36,6 @@ $VERSION = 0.06;
 	WRAPPER_EXEC_FAILED
 	WRAPPER_BROKEN_PIPE_OUT
 	WRAPPER_BROKEN_PIPE_IN
-	WRAPPER_USER_ERROR_BASE
-	WRAPPER_USER_GENERAL_ERROR
-	WRAPPER_USER_PROGRAM_ERROR
-	WRAPPER_USER_UNAUTHORIZED_UID
-	WRAPPER_USER_INVALID_UID
-	WRAPPER_USER_INVALID_SCRIPT
-	WRAPPER_USER_SCRIPT_EXEC_FAILED
-	WRAPPER_USER_SETUID_FAILED
-	WRAPPER_FIREWALL_ERROR_BASE
-	WRAPPER_FIREWALL_GENERAL_ERROR
-	WRAPPER_FIREWALL_UNAUTHORIZED_UID
-	WRAPPER_FIREWALL_SCRIPT_EXEC_FAILED
-	WRAPPER_FIREWALL_UNAUTHENTICATED_ID
-	WRAPPER_FIREWALL_APP_ID_DOES_NOT_EXIST
-	WRAPPER_FIREWALL_UNAUTHORIZED_ID
-	WRAPPER_FIREWALL_INVALID_MAC
-	WRAPPER_FIREWALL_NO_MACS
-	WRAPPER_FIREWALL_INVALID_HOST
-	WRAPPER_FIREWALL_NO_HOSTS
-	WRAPPER_FIREWALL_INVALID_ROOM
-	WRAPPER_FIREWALL_INVALID_LESSONMODE
-	WRAPPER_FIREWALL_INVALID_LESSONTIME
-	WRAPPER_FIREWALL_CANNOT_WRITE_ROOMFILE
-	WRAPPER_FIREWALL_CANNOT_READ_ROOMFILE
-	WRAPPER_FIREWALL_CANNOT_FORK
-	WRAPPER_PRINTER_ERROR_BASE
-	WRAPPER_PRINTER_GENERAL_ERROR
-	WRAPPER_PRINTER_PROGRAM_ERROR
-	WRAPPER_PRINTER_UNAUTHORIZED_UID
-	WRAPPER_PRINTER_SCRIPT_EXEC_FAILED
-	WRAPPER_PRINTER_UNAUTHENTICATED_ID
-	WRAPPER_PRINTER_APP_ID_DOES_NOT_EXIST
-	WRAPPER_PRINTER_UNAUTHORIZED_ID
-	WRAPPER_PRINTER_CANNOT_OPEN_PRINTERSCONF
-	WRAPPER_PRINTER_INVALID_PRINTER_NAME
-	WRAPPER_PRINTER_NO_PRINTERS
-	WRAPPER_PRINTER_INVALID_USER
-	WRAPPER_SOPHOMORIX_ERROR_BASE
-	WRAPPER_SOPHOMORIX_GENERAL_ERROR
-	WRAPPER_SOPHOMORIX_PROGRAM_ERROR
-	WRAPPER_SOPHOMORIX_UNAUTHORIZED_UID
-	WRAPPER_SOPHOMORIX_CANNOT_FORK
-	WRAPPER_SOPHOMORIX_SCRIPT_EXEC_FAILED
-	WRAPPER_SOPHOMORIX_UNAUTHENTICATED_ID
-	WRAPPER_SOPHOMORIX_APP_ID_DOES_NOT_EXIST
-	WRAPPER_SOPHOMORIX_UNAUTHORIZED_ID
-	WRAPPER_SOPHOMORIX_ON_UNDEFINED
-	WRAPPER_SOPHOMORIX_INVALID_USER
-	WRAPPER_SOPHOMORIX_NO_USERS
-	WRAPPER_SOPHOMORIX_INVALID_USERID
-	WRAPPER_SOPHOMORIX_NO_USERIDS
-	WRAPPER_SOPHOMORIX_NO_SUCH_DIRECTORY
-	WRAPPER_SOPHOMORIX_INVALID_DO_COPY
-	WRAPPER_SOPHOMORIX_INVALID_FROM
-	WRAPPER_SOPHOMORIX_INVALID_TYPE
-	WRAPPER_SOPHOMORIX_INVALID_ROOM
-	WRAPPER_SOPHOMORIX_INVALID_PROJECT
-	WRAPPER_SOPHOMORIX_INVALID_CLASS
-	WRAPPER_SOPHOMORIX_INVALID_SUBCLASS
-	WRAPPER_SOPHOMORIX_INVALID_DO_ADD
-	WRAPPER_SOPHOMORIX_INVALID_SET_PASSWORD_TYPE
-	WRAPPER_SOPHOMORIX_INVALID_PASSWORD
-	WRAPPER_SOPHOMORIX_INVALID_IS_GROUPS
-	WRAPPER_SOPHOMORIX_INVALID_IS_PUBLIC
-	WRAPPER_SOPHOMORIX_INVALID_IS_UPLOAD
-	WRAPPER_SOPHOMORIX_INVALID_PROJECTGID
-	WRAPPER_SOPHOMORIX_INVALID_MEMBERSCOPE
-	WRAPPER_SOPHOMORIX_INVALID_DO_CREATE
-	WRAPPER_SOPHOMORIX_INVALID_LONGNAME
-	WRAPPER_SOPHOMORIX_INVALID_FILENUMBER
-	WRAPPER_SOPHOMORIX_CANNOT_OPEN_FILE
-	WRAPPER_SOPHOMORIX_PROCESS_RUNNING
-	WRAPPER_SOPHOMORIX_INVALID_MODE
-	WRAPPER_SOPHOMORIX_CHMOD_FAILED
-	WRAPPER_SOPHOMORIX_INVALID_FLAGS
-	WRAPPER_SOPHOMORIX_INVALID_DISKQUOTA
-	WRAPPER_SOPHOMORIX_INVALID_MAILQUOTA
-	WRAPPER_CYRUS_ERROR_BASE
-	WRAPPER_CYRUS_UNAUTHORIZED_UID
-	WRAPPER_CYRUS_INVALID_SCRIPT
-	WRAPPER_CYRUS_SCRIPT_EXEC_FAILED
-	WRAPPER_CYRUS_NO_CYRUS_USER
-	WRAPPER_CYRUS_INVALID_EUID
-	WRAPPER_COLLAB_ERROR_BASE
-	WRAPPER_COLLAB_GENERAL_ERROR
-	WRAPPER_COLLAB_PROGRAM_ERROR
-	WRAPPER_COLLAB_UNAUTHENTICATED_ID
-	WRAPPER_COLLAB_APP_ID_DOES_NOT_EXIST
-	WRAPPER_COLLAB_UNAUTHORIZED_ID
-	WRAPPER_COLLAB_INVALID_IS_CREATE
-	WRAPPER_COLLAB_INVALID_IS_GID
-	WRAPPER_COLLAB_NO_DB
-	WRAPPER_COLLAB_READ_DB_LIST_FAILED
-	WRAPPER_FILES_ERROR_BASE
-	WRAPPER_FILES_GENERAL_ERROR
-	WRAPPER_FILES_PROGRAM_ERROR
-	WRAPPER_FILES_UNAUTHORIZED_UID
-	WRAPPER_FILES_CANNOT_FORK
-	WRAPPER_FILES_SCRIPT_EXEC_FAILED
-	WRAPPER_FILES_UNAUTHENTICATED_ID
-	WRAPPER_FILES_APP_ID_DOES_NOT_EXIST
-	WRAPPER_FILES_UNAUTHORIZED_ID
-	WRAPPER_FILES_INVALID_FILENUMBER
-	WRAPPER_FILES_CANNOT_OPEN_FILE
-	WRAPPER_OVPN_ERROR_BASE
-	WRAPPER_OVPN_GENERAL_ERROR
-	WRAPPER_OVPN_PROGRAM_ERROR
-	WRAPPER_OVPN_UNAUTHORIZED_UID
-	WRAPPER_OVPN_SCRIPT_EXEC_FAILED
-	WRAPPER_OVPN_UNAUTHENTICATED_ID
-	WRAPPER_OVPN_APP_ID_DOES_NOT_EXIST
-	WRAPPER_OVPN_UNAUTHORIZED_ID
-	WRAPPER_OVPN_INVALID_PASSWORD
-	WRAPPER_LINBO_ERROR_BASE
-	WRAPPER_LINBO_GENERAL_ERROR
-	WRAPPER_LINBO_PROGRAM_ERROR
-	WRAPPER_LINBO_UNAUTHORIZED_UID
-	WRAPPER_LINBO_SCRIPT_EXEC_FAILED
-	WRAPPER_LINBO_UNAUTHENTICATED_ID
-	WRAPPER_LINBO_APP_ID_DOES_NOT_EXIST
-	WRAPPER_LINBO_UNAUTHORIZED_ID
-	WRAPPER_LINBO_INVALID_GROUP
-	WRAPPER_LINBO_INVALID_FILENAME
-	WRAPPER_LINBO_INVALID_IS_EXAMPLE
-	WRAPPER_LINBO_INVALID_IMAGE
-	WRAPPER_LINBO_INVALID_ACTION
-	WRAPPER_LINBO_CANNOT_OPEN_FILE
 );
 
 # package constants
@@ -171,8 +51,6 @@ use constant {
 	QUOTA_NOT_ALL_MOUNTPOINTS => 10,
 
 	PUBLIC_BG_ERROR => 20,
-
-	LINBO_START_CONF_ERROR => 50,
 
 
 	INTERNAL => 1000,
@@ -192,150 +70,6 @@ use constant {
 	WRAPPER_EXEC_FAILED => 3001,
 	WRAPPER_BROKEN_PIPE_OUT => 3002,
 	WRAPPER_BROKEN_PIPE_IN => 3003,
-
-	WRAPPER_USER_ERROR_BASE => 5000,
-	WRAPPER_USER_GENERAL_ERROR => 5000 -1,
-	WRAPPER_USER_PROGRAM_ERROR => 5000 -2,
-	WRAPPER_USER_UNAUTHORIZED_UID => 5000 -3,
-	WRAPPER_USER_INVALID_UID => 5000 -4,
-	WRAPPER_USER_INVALID_SCRIPT => 5000 -5,
-	WRAPPER_USER_SCRIPT_EXEC_FAILED => 5000 -6,
-	WRAPPER_USER_SETUID_FAILED => 5000 -9,
-
-	WRAPPER_FIREWALL_ERROR_BASE => 6000,
-	WRAPPER_FIREWALL_GENERAL_ERROR => 6000 -1,
-	WRAPPER_FIREWALL_PROGRAM_ERROR => 6000 -2,
-	WRAPPER_FIREWALL_UNAUTHORIZED_UID => 6000 -3,
-	WRAPPER_FIREWALL_SCRIPT_EXEC_FAILED => 6000 -6,
-	WRAPPER_FIREWALL_UNAUTHENTICATED_ID => 6000 -32,
-	WRAPPER_FIREWALL_APP_ID_DOES_NOT_EXIST => 6000 -33,
-	WRAPPER_FIREWALL_UNAUTHORIZED_ID => 6000 -34,
-	WRAPPER_FIREWALL_INVALID_MAC => 6000 -35,
-	WRAPPER_FIREWALL_NO_MACS => 6000 -36,
-	WRAPPER_FIREWALL_INVALID_HOST => 6000 -37,
-	WRAPPER_FIREWALL_NO_HOSTS => 6000 -38,
-	WRAPPER_FIREWALL_INVALID_ROOM => 6000 -39,
-	WRAPPER_FIREWALL_INVALID_LESSONMODE => 6000 -40,
-	WRAPPER_FIREWALL_INVALID_LESSONTIME => 6000 -41,
-	WRAPPER_FIREWALL_CANNOT_WRITE_ROOMFILE => 6000 -42,
-	WRAPPER_FIREWALL_CANNOT_READ_ROOMFILE => 6000 -43,
-	WRAPPER_FIREWALL_CANNOT_FORK => 6000 -44,
-	WRAPPER_FIREWALL_INVALID_ROOM_SCOPE => 6000 -45,
-
-	WRAPPER_PRINTER_ERROR_BASE => 7000,
-	WRAPPER_PRINTER_GENERAL_ERROR => 7000 -1,
-	WRAPPER_PRINTER_PROGRAM_ERROR => 7000 -2,
-	WRAPPER_PRINTER_UNAUTHORIZED_UID => 7000 -3,
-	WRAPPER_PRINTER_SCRIPT_EXEC_FAILED => 7000 -6,
-	WRAPPER_PRINTER_UNAUTHENTICATED_ID => 7000 -32,
-	WRAPPER_PRINTER_APP_ID_DOES_NOT_EXIST => 7000 -33,
-	WRAPPER_PRINTER_UNAUTHORIZED_ID => 7000 -34,
-	WRAPPER_PRINTER_CANNOT_OPEN_PRINTERSCONF => 7000 -64,
-	WRAPPER_PRINTER_INVALID_PRINTER_NAME => 7000 -65,
-	WRAPPER_PRINTER_NO_PRINTERS => 7000 -66,
-	WRAPPER_PRINTER_INVALID_USER => 7000 -67,
-
-	WRAPPER_SOPHOMORIX_ERROR_BASE => 8000,
-	WRAPPER_SOPHOMORIX_GENERAL_ERROR => 8000 -1,
-	WRAPPER_SOPHOMORIX_PROGRAM_ERROR => 8000 -2,
-	WRAPPER_SOPHOMORIX_UNAUTHORIZED_UID => 8000 -3,
-	WRAPPER_SOPHOMORIX_SCRIPT_EXEC_FAILED => 8000 -6,
-	WRAPPER_SOPHOMORIX_UNAUTHENTICATED_ID => 8000 -32,
-	WRAPPER_SOPHOMORIX_APP_ID_DOES_NOT_EXIST => 8000 -33,
-	WRAPPER_SOPHOMORIX_UNAUTHORIZED_ID => 8000 -34,
-	WRAPPER_SOPHOMORIX_CANNOT_FORK => 8000 -44,
-	WRAPPER_SOPHOMORIX_ON_UNDEFINED => 8000 -80,
-	WRAPPER_SOPHOMORIX_INVALID_USER => 8000 -81,
-	WRAPPER_SOPHOMORIX_NO_USERS => 8000 -82,
-	WRAPPER_SOPHOMORIX_INVALID_USERID => 8000 -83,
-	WRAPPER_SOPHOMORIX_NO_USERIDS => 8000 -84,
-	WRAPPER_SOPHOMORIX_NO_SUCH_DIRECTORY => 8000 -85,
-	WRAPPER_SOPHOMORIX_INVALID_DO_COPY => 8000 -86,
-	WRAPPER_SOPHOMORIX_INVALID_FROM => 8000 -87,
-	WRAPPER_SOPHOMORIX_INVALID_TYPE => 8000 -88,
-	WRAPPER_SOPHOMORIX_INVALID_ROOM => 8000 -89,
-	WRAPPER_SOPHOMORIX_INVALID_PROJECT => 8000 -90,
-	WRAPPER_SOPHOMORIX_INVALID_CLASS => 8000 -91,
-	WRAPPER_SOPHOMORIX_INVALID_SUBCLASS => 8000 -92,
-	WRAPPER_SOPHOMORIX_INVALID_IS_EXAM => 8000 -93,
-	WRAPPER_SOPHOMORIX_INVALID_DO_ADD => 8000 -94,
-	WRAPPER_SOPHOMORIX_INVALID_FILE_TYPE => 8000 -95,
-	WRAPPER_SOPHOMORIX_INVALID_SET_PASSWORD_TYPE => 8000 -96,
-	WRAPPER_SOPHOMORIX_INVALID_PASSWORD => 8000 -97,
-	WRAPPER_SOPHOMORIX_INVALID_IS_GROUPS => 8000 -98,
-	WRAPPER_SOPHOMORIX_INVALID_IS_PUBLIC => 8000 -99,
-	WRAPPER_SOPHOMORIX_INVALID_IS_UPLOAD => 8000 -100,
-	WRAPPER_SOPHOMORIX_INVALID_PROJECTGID => 8000 -101,
-	WRAPPER_SOPHOMORIX_INVALID_MEMBERSCOPE => 8000 -102,
-	WRAPPER_SOPHOMORIX_INVALID_DO_CREATE => 8000 -103,
-	WRAPPER_SOPHOMORIX_INVALID_LONGNAME => 8000 -104,
-	WRAPPER_SOPHOMORIX_INVALID_FILENUMBER => 8000 -105,
-	WRAPPER_SOPHOMORIX_CANNOT_OPEN_FILE => 8000 -106,
-	WRAPPER_SOPHOMORIX_PROCESS_RUNNING => 8000 -107,
-	WRAPPER_SOPHOMORIX_INVALID_MODE => 8000 -108,
-	WRAPPER_SOPHOMORIX_CHMOD_FAILED => 8000 -109,
-	WRAPPER_SOPHOMORIX_INVALID_FLAGS => 8000 -110,
-	WRAPPER_SOPHOMORIX_INVALID_DISKQUOTA => 8000 -111,
-	WRAPPER_SOPHOMORIX_INVALID_MAILQUOTA => 8000 -112,
-	WRAPPER_SOPHOMORIX_INVALID_IS_JOIN => 8000 -113,
-
-	WRAPPER_CYRUS_ERROR_BASE => 9000,
-	WRAPPER_CYRUS_UNAUTHORIZED_UID => 9000 -3,
-	WRAPPER_CYRUS_INVALID_SCRIPT => 9000 -5,
-	WRAPPER_CYRUS_SCRIPT_EXEC_FAILED => 9000 -6,
-	WRAPPER_CYRUS_NO_CYRUS_USER => 9000 -7,
-	WRAPPER_CYRUS_INVALID_EUID => 9000 -8,
-
-	WRAPPER_COLLAB_ERROR_BASE => 10000,
-	WRAPPER_COLLAB_GENERAL_ERROR => 10000 -1,
-	WRAPPER_COLLAB_PROGRAM_ERROR => 10000 -2,
-	WRAPPER_COLLAB_UNAUTHORIZED_UID => 10000 -3,
-	WRAPPER_COLLAB_SCRIPT_EXEC_FAILED => 10000 -6,
-	WRAPPER_COLLAB_UNAUTHENTICATED_ID => 10000 -32,
-	WRAPPER_COLLAB_APP_ID_DOES_NOT_EXIST => 10000 -33,
-	WRAPPER_COLLAB_UNAUTHORIZED_ID => 10000 -34,
-	WRAPPER_COLLAB_INVALID_IS_CREATE => 10000 -48,
-	WRAPPER_COLLAB_INVALID_IS_GID => 10000 -49,
-	WRAPPER_COLLAB_NO_DB => 10000 -50,
-	WRAPPER_COLLAB_READ_DB_LIST_FAILED => 10000 -51,
-
-	WRAPPER_FILES_ERROR_BASE => 11000,
-	WRAPPER_FILES_GENERAL_ERROR => 11000 -1,
-	WRAPPER_FILES_PROGRAM_ERROR => 11000 -2,
-	WRAPPER_FILES_UNAUTHORIZED_UID => 11000 -3,
-	WRAPPER_FILES_SCRIPT_EXEC_FAILED => 11000 -6,
-	WRAPPER_FILES_INVALID_SESSION_ID => 11000 -10,
-	WRAPPER_FILES_UNAUTHENTICATED_ID => 11000 -32,
-	WRAPPER_FILES_APP_ID_DOES_NOT_EXIST => 11000 -33,
-	WRAPPER_FILES_UNAUTHORIZED_ID => 11000 -34,
-	WRAPPER_FILES_CANNOT_FORK => 11000 -44,
-	WRAPPER_FILES_INVALID_FILENUMBER => 11000 -105,
-	WRAPPER_FILES_CANNOT_OPEN_FILE => 11000 -106,
-
-	WRAPPER_OVPN_ERROR_BASE => 12000,
-	WRAPPER_OVPN_GENERAL_ERROR => 12000 -1,
-	WRAPPER_OVPN_PROGRAM_ERROR => 12000 -2,
-	WRAPPER_OVPN_UNAUTHORIZED_UID => 12000 -3,
-	WRAPPER_OVPN_SCRIPT_EXEC_FAILED => 12000 -6,
-	WRAPPER_OVPN_UNAUTHENTICATED_ID => 12000 -32,
-	WRAPPER_OVPN_APP_ID_DOES_NOT_EXIST => 12000 -33,
-	WRAPPER_OVPN_UNAUTHORIZED_ID => 12000 -34,
-	WRAPPER_OVPN_INVALID_PASSWORD => 12000 -97,
-
-	WRAPPER_LINBO_ERROR_BASE => 13000,
-	WRAPPER_LINBO_GENERAL_ERROR => 13000 -1,
-	WRAPPER_LINBO_PROGRAM_ERROR => 13000 -2,
-	WRAPPER_LINBO_UNAUTHORIZED_UID => 13000 -3,
-	WRAPPER_LINBO_SCRIPT_EXEC_FAILED => 13000 -6,
-	WRAPPER_LINBO_UNAUTHENTICATED_ID => 13000 -32,
-	WRAPPER_LINBO_APP_ID_DOES_NOT_EXIST => 13000 -33,
-	WRAPPER_LINBO_UNAUTHORIZED_ID => 13000 -34,
-	WRAPPER_LINBO_INVALID_GROUP => 13000 -55,
-	WRAPPER_LINBO_INVALID_FILENAME => 13000 -56,
-	WRAPPER_LINBO_INVALID_IS_EXAMPLE => 13000 -57,
-	WRAPPER_LINBO_INVALID_IMAGE => 13000 -58,
-	WRAPPER_LINBO_INVALID_ACTION => 13000 -59,
-	WRAPPER_LINBO_CANNOT_OPEN_FILE => 13000 -106,
 };
 
 use overload
@@ -379,7 +113,7 @@ sub what {
 		and return 'F&uuml;r Diskquota m&uuml;ssen alle oder keine Felder ausgef&uuml;llt sein';
 	$this->{code} == PUBLIC_BG_ERROR
 		and return 'Fehler im Hintergrundprozess: ' . ${ $this->{info} }[0];
-	$this->{code} == LINBO_START_CONF_ERROR
+	$this->{code} == Schulkonsole::Error::Linbo::START_CONF_ERROR
 		and return "Fehler in der Konfiguration";
 	$this->{code} == INTERNAL_BG_ERROR
 		and return 'Fehler im Hintergrundprozess';
@@ -396,9 +130,9 @@ sub what {
 	$this->{code} == DB_NO_WORKSTATION_USERS
 		and return 'Keine Workstationbenutzer';
 	(   $this->{code} == CANNOT_OPEN_FILE
-	 or $this->{code} == WRAPPER_SOPHOMORIX_CANNOT_OPEN_FILE
-	 or $this->{code} == WRAPPER_FILES_CANNOT_OPEN_FILE
-	 or $this->{code} == WRAPPER_LINBO_CANNOT_OPEN_FILE)
+	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
+	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_CANNOT_OPEN_FILE
+	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE)
 		and return 'Kann Datei nicht oeffnen';
 	$this->{code} == FILE_FORMAT_ERROR
 		and return 'Datei hat falsches Format';
@@ -408,189 +142,176 @@ sub what {
 		and return 'Datenuebertragung (schreiben) unterbrochen';
 	$this->{code} == WRAPPER_BROKEN_PIPE_IN
 		and return 'Datenuebertragung (lesen) unterbrochen';
-	(   $this->{code} == WRAPPER_USER_PROGRAM_ERROR
-	 or $this->{code} == WRAPPER_FIREWALL_PROGRAM_ERROR
-	 or $this->{code} == WRAPPER_PRINTER_PROGRAM_ERROR
-	 or $this->{code} == WRAPPER_SOPHOMORIX_PROGRAM_ERROR
-	 or $this->{code} == WRAPPER_COLLAB_PROGRAM_ERROR
-	 or $this->{code} == WRAPPER_FILES_PROGRAM_ERROR
-	 or $this->{code} == WRAPPER_OVPN_PROGRAM_ERROR
-	 or $this->{code} == WRAPPER_LINBO_PROGRAM_ERROR)
+	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_PROGRAM_ERROR
+	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_PROGRAM_ERROR
+	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_PROGRAM_ERROR
+	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_PROGRAM_ERROR
+	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_PROGRAM_ERROR
+	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_PROGRAM_ERROR
+	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_PROGRAM_ERROR)
 		and return 'Programmaufruf fehlgeschlagen';
-	(   $this->{code} == WRAPPER_USER_UNAUTHORIZED_UID
-	 or $this->{code} == WRAPPER_FIREWALL_UNAUTHORIZED_UID
-	 or $this->{code} == WRAPPER_PRINTER_UNAUTHORIZED_UID
-	 or $this->{code} == WRAPPER_SOPHOMORIX_UNAUTHORIZED_UID
-	 or $this->{code} == WRAPPER_CYRUS_UNAUTHORIZED_UID
-	 or $this->{code} == WRAPPER_COLLAB_UNAUTHORIZED_UID
-	 or $this->{code} == WRAPPER_FILES_UNAUTHORIZED_UID
-	 or $this->{code} == WRAPPER_OVPN_UNAUTHORIZED_UID
-	 or $this->{code} == WRAPPER_LINBO_UNAUTHORIZED_UID)
+	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_UNAUTHORIZED_UID
+	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_UID
+	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_UID
+	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_UNAUTHORIZED_UID
+	 or $this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_UNAUTHORIZED_UID
+	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_UNAUTHORIZED_UID
+	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHORIZED_UID
+	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHORIZED_UID)
 		and return 'Nicht autorisierter Aufrufer';
-	$this->{code} == WRAPPER_USER_INVALID_UID
+	$this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_UID
 		and return 'Wechsel zu diesem Benutzer nicht erlaubt';
-	$this->{code} == WRAPPER_USER_SETUID_FAILED
+	$this->{code} == Schulkonsole::Error::User::WRAPPER_SETUID_FAILED
 		and return 'Wechsel zu diesem Benutzer nicht moeglich';
-	(   $this->{code} == WRAPPER_USER_INVALID_SCRIPT
-	 or $this->{code} == WRAPPER_CYRUS_INVALID_SCRIPT)
+	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_SCRIPT
+	 or $this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_INVALID_SCRIPT)
 		and return 'Skript nicht vorhanden';
-	(   $this->{code} == WRAPPER_USER_SCRIPT_EXEC_FAILED
-	 or $this->{code} == WRAPPER_FIREWALL_SCRIPT_EXEC_FAILED
-	 or $this->{code} == WRAPPER_PRINTER_SCRIPT_EXEC_FAILED
-	 or $this->{code} == WRAPPER_SOPHOMORIX_SCRIPT_EXEC_FAILED
-	 or $this->{code} == WRAPPER_CYRUS_SCRIPT_EXEC_FAILED
-	 or $this->{code} == WRAPPER_COLLAB_SCRIPT_EXEC_FAILED
-	 or $this->{code} == WRAPPER_FILES_SCRIPT_EXEC_FAILED
-	 or $this->{code} == WRAPPER_OVPN_SCRIPT_EXEC_FAILED
-	 or $this->{code} == WRAPPER_LINBO_SCRIPT_EXEC_FAILED)
+	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_SCRIPT_EXEC_FAILED
+	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_SCRIPT_EXEC_FAILED
+	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_SCRIPT_EXEC_FAILED
+	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_SCRIPT_EXEC_FAILED
+	 or $this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_SCRIPT_EXEC_FAILED
+	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_SCRIPT_EXEC_FAILED
+	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_SCRIPT_EXEC_FAILED
+	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_SCRIPT_EXEC_FAILED)
 		and return 'Skriptaufruf fehlgeschlagen';
-	(   $this->{code} == WRAPPER_FIREWALL_UNAUTHENTICATED_ID
-	 or $this->{code} == WRAPPER_PRINTER_UNAUTHENTICATED_ID
-	 or $this->{code} == WRAPPER_SOPHOMORIX_UNAUTHENTICATED_ID
-	 or $this->{code} == WRAPPER_COLLAB_UNAUTHENTICATED_ID
-	 or $this->{code} == WRAPPER_FILES_UNAUTHENTICATED_ID
-	 or $this->{code} == WRAPPER_OVPN_UNAUTHENTICATED_ID
-	 or $this->{code} == WRAPPER_LINBO_UNAUTHENTICATED_ID)
+	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHENTICATED_ID
+	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHENTICATED_ID
+	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_UNAUTHENTICATED_ID
+	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_UNAUTHENTICATED_ID
+	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHENTICATED_ID
+	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHENTICATED_ID)
 		and return 'Authentifizierung fehlgeschlagen nach ID';
-	(   $this->{code} == WRAPPER_FIREWALL_APP_ID_DOES_NOT_EXIST
-	 or $this->{code} == WRAPPER_PRINTER_APP_ID_DOES_NOT_EXIST
-	 or $this->{code} == WRAPPER_SOPHOMORIX_APP_ID_DOES_NOT_EXIST
-	 or $this->{code} == WRAPPER_COLLAB_APP_ID_DOES_NOT_EXIST
-	 or $this->{code} == WRAPPER_FILES_APP_ID_DOES_NOT_EXIST
-	 or $this->{code} == WRAPPER_OVPN_APP_ID_DOES_NOT_EXIST
-	 or $this->{code} == WRAPPER_LINBO_APP_ID_DOES_NOT_EXIST)
+	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_APP_ID_DOES_NOT_EXIST
+	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_APP_ID_DOES_NOT_EXIST
+	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_APP_ID_DOES_NOT_EXIST
+	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_APP_ID_DOES_NOT_EXIST
+	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_APP_ID_DOES_NOT_EXIST
+	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_APP_ID_DOES_NOT_EXIST)
 		and return 'Programm-ID unbekannt';
-	(   $this->{code} == WRAPPER_FIREWALL_UNAUTHORIZED_ID
-	 or $this->{code} == WRAPPER_PRINTER_UNAUTHORIZED_ID
-	 or $this->{code} == WRAPPER_SOPHOMORIX_UNAUTHORIZED_ID
-	 or $this->{code} == WRAPPER_COLLAB_UNAUTHORIZED_ID
-	 or $this->{code} == WRAPPER_FILES_UNAUTHORIZED_ID
-	 or $this->{code} == WRAPPER_OVPN_UNAUTHORIZED_ID
-	 or $this->{code} == WRAPPER_LINBO_UNAUTHORIZED_ID)
+	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_ID
+	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_ID
+	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_UNAUTHORIZED_ID
+	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_UNAUTHORIZED_ID
+	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHORIZED_ID
+	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHORIZED_ID)
 		and return 'Nicht autorisierter Aufrufer nach ID';
-	$this->{code} == WRAPPER_FILES_INVALID_SESSION_ID
+	$this->{code} == Schulkonsole::Error::Files::WRAPPER_INVALID_SESSION_ID
 		and return 'Ungueltige Session-ID';
-	$this->{code} == WRAPPER_FIREWALL_INVALID_MAC
+	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_MAC
 		and return 'Ungueltige MAC-Adresse';
-	$this->{code} == WRAPPER_FIREWALL_NO_MACS
+	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_NO_MACS
 		and return 'Keine MAC-Adressen';
-	$this->{code} == WRAPPER_FIREWALL_INVALID_HOST
+	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_HOST
 		and return 'Ungueltiger Host';
-	$this->{code} == WRAPPER_FIREWALL_NO_HOSTS
+	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_NO_HOSTS
 		and return 'Keine Hosts';
-	$this->{code} == WRAPPER_FIREWALL_INVALID_ROOM
+	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM
 		and return 'Ungueltige Raumbezeichnung';
-	$this->{code} == WRAPPER_FIREWALL_INVALID_LESSONMODE
+	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_LESSONMODE
 		and return 'Ungueltiger Modus fuer Unterricht';
-	$this->{code} == WRAPPER_FIREWALL_INVALID_LESSONTIME
+	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_LESSONTIME
 		and return 'Ungueltige Zeitangabe fuer Unterrichtsende';
-	$this->{code} == WRAPPER_FIREWALL_CANNOT_WRITE_ROOMFILE
+	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_WRITE_ROOMFILE
 		and return 'Raumdatei kann nicht geschrieben werden';
-	$this->{code} == WRAPPER_FIREWALL_CANNOT_READ_ROOMFILE
+	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_READ_ROOMFILE
 		and return 'Raumdatei kann nicht gelesen werden';
-	$this->{code} == WRAPPER_FIREWALL_INVALID_ROOM_SCOPE
+	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM_SCOPE
 		and return 'Erwarte 0 oder 1 fuer scope';
-	(   $this->{code} == WRAPPER_FIREWALL_CANNOT_FORK
-	 or $this->{code} == WRAPPER_SOPHOMORIX_CANNOT_FORK
-	 or $this->{code} == WRAPPER_FILES_CANNOT_FORK)
+	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_FORK
+	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_FORK
+	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_CANNOT_FORK)
 		and return 'Fork nicht moeglich';
-	$this->{code} == WRAPPER_PRINTER_CANNOT_OPEN_PRINTERSCONF
+	(   $this->{code} == Schulkonsole::Error::Printer::WRAPPER_CANNOT_OPEN_PRINTERSCONF
+	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_OPEN_PRINTERSCONF)
 		and return 'Kann printers.conf nicht oeffnen';
-	$this->{code} == WRAPPER_PRINTER_INVALID_PRINTER_NAME
+	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_INVALID_PRINTER_NAME
 		and return 'Ungueltiger Druckername';
-	$this->{code} == WRAPPER_PRINTER_NO_PRINTERS
+	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_NO_PRINTERS
 		and return 'Keine Drucker';
-	$this->{code} == WRAPPER_PRINTER_INVALID_USER
+	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_INVALID_USER
 		and return 'Ungueltiger Druckernutzer';
-	$this->{code} == WRAPPER_SOPHOMORIX_ON_UNDEFINED
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_ON_UNDEFINED
 		and return 'on muss 1 oder 0 sein';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_USER
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_USER
 		and return 'Ungueltiger Benutzer';
-	$this->{code} == WRAPPER_SOPHOMORIX_NO_USERS
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_USERS
 		and return 'Keine Benutzer';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_USERID
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_USERID
 		and return 'Ungueltige Benutzer-ID';
-	$this->{code} == WRAPPER_SOPHOMORIX_NO_USERIDS
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_USERIDS
 		and return 'Keine Benutzer-IDs';
-	$this->{code} == WRAPPER_SOPHOMORIX_NO_SUCH_DIRECTORY
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY
 		and return 'Verzeichnis nicht gefunden';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_ROOM
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_ROOM
 		and return 'Ungueltiger Raumbezeichner';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_DO_COPY
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_COPY
 		and return 'Erwarte 1 oder 0 fuer do_copy';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_FROM
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FROM
 		and return 'Erwarte numerische Angabe fuer "from"';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_TYPE
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_TYPE
 		and return 'Erwarte numerische Angabe fuer "type"';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_ROOM
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_ROOM
 		and return 'Ungueltiger Raum';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_PROJECT
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
 		and return 'Ungueltiges Projekt';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_CLASS
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
 		and return 'Ungueltige Klassen-GID';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_SUBCLASS
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_SUBCLASS
 		and return 'Ungueltige Subklasse';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_DO_ADD
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_ADD
 		and return 'Erwarte 1 oder 0 fuer do_add';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_FILE_TYPE
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE
 		and return 'Erwarte 0 (PDF) oder 1 (CSV) fuer filetype';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_SET_PASSWORD_TYPE
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_SET_PASSWORD_TYPE
 		and return 'Erwarte 0 (reset), 1 (passwd) oder 3 (random) fuer type';
-	(   $this->{code} == WRAPPER_SOPHOMORIX_INVALID_PASSWORD
-	 or $this->{code} == WRAPPER_OVPN_INVALID_PASSWORD)
+	(   $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PASSWORD
+	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_INVALID_PASSWORD)
 		and return 'Ungueltiger Wert fuer password';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_IS_GROUPS
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_IS_GROUPS
 		and return 'Erwarte 1 oder 0 fuer is_groups';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_IS_PUBLIC
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_IS_PUBLIC
 		and return 'Erwarte 1 oder 0 fuer is_public';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_IS_UPLOAD
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_IS_UPLOAD
 		and return 'Erwarte 1 oder 0 fuer is_upload';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_PROJECTGID
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECTGID
 		and return 'Ungueltiger Wert fuer projectgid';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_MEMBERSCOPE
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_MEMBERSCOPE
 		and return 'Erwarte 0, 1, 2 oder 3 fuer scope';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_DO_CREATE
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_CREATE
 		and return 'Erwarte 1 oder 0 fuer do_create';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_LONGNAME
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_LONGNAME
 		and return 'Ungueltiger Wert fuer longname';
-	$this->{code} == WRAPPER_CYRUS_NO_CYRUS_USER
+	$this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_NO_CYRUS_USER
 		and return 'Benutzer "cyrus" gibt es nicht';
-	$this->{code} == WRAPPER_CYRUS_INVALID_EUID
+	$this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_INVALID_EUID
 		and return 'wrapper-cyrus gehoert nicht Benutzer "cyrus" oder SUID nicht gesetzt';
-	$this->{code} == WRAPPER_COLLAB_INVALID_IS_CREATE
-		and return 'Erwarte 1 oder 0 fuer is_create';
-	$this->{code} == WRAPPER_COLLAB_INVALID_IS_GID
-		and return 'Erwarte 1 oder 0 fuer is_gid';
-	$this->{code} == WRAPPER_COLLAB_NO_DB
-		and return 'Keine Datenbanken';
-	$this->{code} == WRAPPER_COLLAB_READ_DB_LIST_FAILED
-		and return 'DB-Liste kann nicht gelesen werden';
-	$this->{code} == WRAPPER_LINBO_INVALID_GROUP
+	$this->{code} == Schulkonsole::Error::Linbo::WRAPPER_INVALID_GROUP
 		and return 'Ungueltiger Gruppenname';
-	$this->{code} == WRAPPER_LINBO_INVALID_FILENAME
+	$this->{code} == Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
 		and return 'Ungueltiger Dateiname';
-	$this->{code} == WRAPPER_LINBO_INVALID_IS_EXAMPLE
+	$this->{code} == Schulkonsole::Error::Linbo::WRAPPER_INVALID_IS_EXAMPLE
 		and return 'Erwarte 1 oder 0 fuer is_example';
-	$this->{code} == WRAPPER_LINBO_INVALID_IMAGE
+	$this->{code} == Schulkonsole::Error::Linbo::WRAPPER_INVALID_IMAGE
 		and return 'Ungueltiger Image-Dateiname';
-	$this->{code} == WRAPPER_LINBO_INVALID_ACTION
+	$this->{code} == Schulkonsole::Error::Linbo::WRAPPER_INVALID_ACTION
 		and return 'action muss 0, 1 oder 2 sein';
-	(   $this->{code} == WRAPPER_SOPHOMORIX_INVALID_FILENUMBER
-	 or $this->{code} == WRAPPER_FILES_INVALID_FILENUMBER)
+	(   $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENUMBER
+	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_INVALID_FILENUMBER)
 		and return 'Ungueltiger Wert fuer number';
-	$this->{code} == WRAPPER_SOPHOMORIX_PROCESS_RUNNING
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_PROCESS_RUNNING
 		and return 'Prozess laeuft schon';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_MODE
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_MODE
 		and return 'Erwarte 0, 1 oder 2 fuer mode';
-	$this->{code} == WRAPPER_SOPHOMORIX_CHMOD_FAILED
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_CHMOD_FAILED
 		and return 'Konnte Berechtigung nicht aendern';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_FLAGS
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FLAGS
 		and return 'Erwarte 1 bis 7 fuer flags';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_DISKQUOTA
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DISKQUOTA
 		and return 'Ungueltiger Wert fuer diskquota';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_MAILQUOTA
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_MAILQUOTA
 		and return 'Ungueltiger Wert fuer mailquota';
-	$this->{code} == WRAPPER_SOPHOMORIX_INVALID_IS_JOIN
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_IS_JOIN
 		and return 'Erwarte 1 oder 0 fuer is_open';
 	$this->{what}
 		and return $this->{what};

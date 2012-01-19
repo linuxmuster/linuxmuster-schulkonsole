@@ -29,6 +29,7 @@ use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Config;
 use Schulkonsole::DB;
+use Schulkonsole::Error::OVPN;
 
 
 
@@ -38,12 +39,20 @@ my $password = <>;
 chomp $password;
 
 my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
-exit -32 unless $userdata;
+exit (  Schulkonsole::Error::OVPN::WRAPPER_UNAUTHENTICATED_ID
+      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
+	unless $userdata;
 
 my $app_id = <>;
 ($app_id) = $app_id =~ /^(\d+)$/;
-exit -33
-	unless defined $app_id && $Schulkonsole::Config::_root_apps[$app_id];
+exit (  Schulkonsole::Error::OVPN::WRAPPER_APP_ID_DOES_NOT_EXIST
+      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
+	unless defined $app_id;
+
+my $app_name = $Schulkonsole::Config::_id_root_app_names{$app_id};
+exit (  Schulkonsole::Error::OVPN::WRAPPER_APP_ID_DOES_NOT_EXIST
+      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
+	unless defined $app_name;
 
 
 
@@ -51,16 +60,16 @@ my $permissions = Schulkonsole::Config::permissions_apps();
 my $groups = Schulkonsole::DB::user_groups(
 	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
 
-my $app;
+my $is_permission_found = 0;
 foreach my $group (('ALL', keys %$groups)) {
-	foreach my $name (keys %{ $$permissions{$group} }) {
-		if ($Schulkonsole::Config::_root_app_name_ids{$name} == $app_id) {
-			$app = $Schulkonsole::Config::_root_apps[$app_id];
-			last;
-		}
-	}
+    if ($$permissions{$group}{$app_name}) {
+        $is_permission_found = 1;
+        last;
+    }
 }
-exit -34 unless $app;
+exit (  Schulkonsole::Error::OVPN::WRAPPER_UNAUTHORIZED_ID
+      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
+    unless $is_permission_found;
 
 
 my $opts;
@@ -108,11 +117,14 @@ none
 	if ($app_id == Schulkonsole::Config::OVPNCREATEAPP) {
 		my $ovpn_password = <>;
 		($ovpn_password) = $ovpn_password =~ /^(.{6,})$/;
-		exit -97 unless $ovpn_password;
+		exit (  Schulkonsole::Error::OVPN::WRAPPER_INVALID_PASSWORD
+		      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
+			unless $ovpn_password;
 
 		$opts .= '--create';
 
-		open PIPE, "| $app $opts" or last SWITCH;
+		open PIPE, "| $Schulkonsole::Config::_cmd_ovpn_client_cert $opts"
+			or last SWITCH;
 		print PIPE "$ovpn_password\n";
 		close PIPE;
 
@@ -127,7 +139,7 @@ none
 	}
 
 
-	exec "$app $opts" or last SWITCH;
+	exec "$Schulkonsole::Config::_cmd_ovpn_client_cert $opts" or last SWITCH;
 };
 
 }

@@ -85,7 +85,7 @@ sub start_wrapper {
 				$Schulkonsole::Config::_wrapper_ovpn, $!);
 		} else {
 			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_OVPN_ERROR_BASE + $error,
+				Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE + $error,
 				$Schulkonsole::Config::_wrapper_ovpn);
 		}
 	}
@@ -125,7 +125,7 @@ sub stop_wrapper {
 					($input_buffer ? "Output: $input_buffer" : 'No Output'));
 			} else {
 				die new Schulkonsole::Error(
-					Schulkonsole::Error::WRAPPER_OVPN_ERROR_BASE + $error,
+					Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE + $error,
 					$Schulkonsole::Config::_wrapper_ovpn);
 			}
 		}

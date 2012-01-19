@@ -117,7 +117,7 @@ sub start_wrapper {
 				$Schulkonsole::Config::_wrapper_firewall, $!);
 		} else {
 			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_FIREWALL_ERROR_BASE + $error,
+				Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE + $error,
 				$Schulkonsole::Config::_wrapper_firewall);
 		}
 	}
@@ -158,7 +158,7 @@ sub stop_wrapper {
 				($input_buffer ? "Output: $input_buffer" : 'No Output'));
 		} else {
 			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_FIREWALL_ERROR_BASE + $error,
+				Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE + $error,
 				$Schulkonsole::Config::_wrapper_firewall,
 				($input_buffer ? "Output: $input_buffer" : 'No Output'));
 		}

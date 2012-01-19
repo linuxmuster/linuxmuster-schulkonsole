@@ -39,12 +39,20 @@ my $password = <>;
 chomp $password;
 
 my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
-exit -32 unless $userdata;
+exit (  Schulkonsole::Error::Sophomorix::WRAPPER_UNAUTHENTICATED_ID
+      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+	unless $userdata;
 
 my $app_id = <>;
 ($app_id) = $app_id =~ /^(\d+)$/;
-exit -33
-	unless defined $app_id && $Schulkonsole::Config::_root_apps[$app_id];
+exit (  Schulkonsole::Error::Sophomorix::WRAPPER_APP_ID_DOES_NOT_EXIST
+      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+	unless defined $app_id;
+
+my $app_name = $Schulkonsole::Config::_id_root_app_names{$app_id};
+exit (  Schulkonsole::Error::Sophomorix::WRAPPER_APP_ID_DOES_NOT_EXIST
+      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+	unless defined $app_name;
 
 
 
@@ -52,16 +60,16 @@ my $permissions = Schulkonsole::Config::permissions_apps();
 my $groups = Schulkonsole::DB::user_groups(
 	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
 
-my $app;
+my $is_permission_found = 0;
 foreach my $group (('ALL', keys %$groups)) {
-	foreach my $name (keys %{ $$permissions{$group} }) {
-		if ($Schulkonsole::Config::_root_app_name_ids{$name} == $app_id) {
-			$app = $Schulkonsole::Config::_root_apps[$app_id];
-			last;
-		}
+	if ($$permissions{$group}{$app_name}) {
+		$is_permission_found = 1;
+		last;
 	}
 }
-exit -34 unless $app;
+exit (  Schulkonsole::Error::Sophomorix::WRAPPER_UNAUTHORIZED_ID
+      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+	unless $is_permission_found;
 
 
 SWITCH: {
@@ -88,11 +96,15 @@ $app_id == Schulkonsole::Config::SHARESTATESAPP and do {
 	while (my $login_id = <>) {
 		last if $login_id =~ /^$/;
 		($login_id) = $login_id =~ /^(\d+)$/;
-		exit -83 unless $login_id;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_USERID
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $login_id;
 
 		push @login_ids, $login_id;
 	}
-	exit -84 unless @login_ids;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_USERIDS
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless @login_ids;
 
 	my %share_states;
 	foreach my $login_id (@login_ids) {
@@ -137,7 +149,9 @@ UIDs one per line, end with empty line
 $app_id == Schulkonsole::Config::SHARESONOFFAPP and do {
 	my $on = <>;
 	($on) = $on =~ /^(\d+)$/;
-	exit -80 unless defined $on;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_ON_UNDEFINED
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $on;
 
 
 	my @users;
@@ -145,11 +159,15 @@ $app_id == Schulkonsole::Config::SHARESONOFFAPP and do {
 	while (my $user = <>) {
 		last if $user =~ /^$/;
 		($user) = $user =~ /^(.+)$/;
-		exit -81 unless $user;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_USER
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $user;
 
 		push @users, "\Q$user";
 	}
-	exit -82 unless @users;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_USERS
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless @users;
 
 	my $opts = "--teacher \Q$$userdata{uid}\E "
 		. ($on ? '--shares' : '--noshares')
@@ -158,7 +176,7 @@ $app_id == Schulkonsole::Config::SHARESONOFFAPP and do {
 	# sophomorix-teacher cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	exec "$app $opts" or last SWITCH;
+	exec "$Schulkonsole::Config::_cmd_sophomorix_teacher $opts" or last SWITCH;
 };
 
 =head3 ls_handout
@@ -182,7 +200,9 @@ numeric constant: C<Schulkonsole::Config::LSHANDOUTAPP>
 $app_id == Schulkonsole::Config::LSHANDOUTAPP and do {
 	my $do_copy = <>;
 	($do_copy) = $do_copy =~ /^(\d+)$/;
-	exit -86 unless defined $do_copy;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_COPY
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $do_copy;
 
 
 	my $share_dir = "$$userdata{homedirectory}/";
@@ -197,7 +217,9 @@ $app_id == Schulkonsole::Config::LSHANDOUTAPP and do {
 
 	my $type = <>;
 	($type) = $type =~ /^(\d+)/;
-	exit -88 unless defined $type;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_TYPE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $type;
 
 	LSHANDOUTTYPE: {
 	($type & 1 or $type & 2) and do {
@@ -211,28 +233,37 @@ $app_id == Schulkonsole::Config::LSHANDOUTAPP and do {
 	($type & 4) and do {
 		my $project = <>;
 		($project) = $project =~ /^(.+)$/;
-		exit -90 unless $project;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $project;
 		$share_dir .= $project;
 		last LSHANDOUTTYPE;
 	};
 	($type & 8) and do {
 		my $class = <>;
 		($class) = $class =~ /^(.+)$/;
-		exit -91 unless $class;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $class;
 		$share_dir .= $class;
 		last LSHANDOUTTYPE;
 	};
 	($type & 16) and do {
 		my $subclass = <>;
 		($subclass) = $subclass =~ /^(.+)$/;
-		exit -92 unless $subclass;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_SUBCLASS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $subclass;
 		$share_dir .= $subclass;
 		last LSHANDOUTTYPE;
 	};
-	exit -87;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FROM
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	}
 
-	chdir $share_dir or exit -85;
+	chdir $share_dir
+		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY
+		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	my @files = glob '*';
 	my %files;
 	foreach my $file (@files) {
@@ -270,11 +301,15 @@ $app_id == Schulkonsole::Config::LSCOLLECTAPP and do {
 	while (my $login_id = <>) {
 		last if $login_id =~ /^$/;
 		($login_id) = $login_id =~ /^(\d+)$/;
-		exit -83 unless $login_id;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_USERID
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $login_id;
 
 		push @login_ids, $login_id;
 	}
-	exit -84 unless @login_ids;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_USERIDS
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless @login_ids;
 
 
 
@@ -356,13 +391,17 @@ else:
 $app_id == Schulkonsole::Config::HANDOUTAPP and do {
 	my $do_copy = <>;
 	($do_copy) = $do_copy =~ /^([01])$/;
-	exit -86 unless defined $do_copy;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_COPY
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $do_copy;
 
 	my $opts = "--teacher \Q$$userdata{uid}";
 	if ($do_copy) {
 		my $from = <>;
 		($from) = $from =~ /^([1248])$/;
-		exit -87 unless defined $from;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FROM
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless defined $from;
 
 		FROMHANDOUT: {
 		($from == 1 or $from == 2) and do {
@@ -372,14 +411,18 @@ $app_id == Schulkonsole::Config::HANDOUTAPP and do {
 		$from == 4 and do {
 			my $project = <>;
 			($project) = $project =~ /^(.+)$/;
-			exit -90 unless $project;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $project;
 			$opts .= " --fromproject \Q$project";
 			last FROMHANDOUT;
 		};
 		$from == 8 and do {
 			my $class = <>;
 			($class) = $class =~ /^(.+)$/;
-			exit -91 unless $class;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $class;
 			$opts .= " --fromclass \Q$class";
 			last FROMHANDOUT;
 		};
@@ -390,43 +433,57 @@ $app_id == Schulkonsole::Config::HANDOUTAPP and do {
 		while (my $user = <>) {
 			last if $user =~ /^$/;
 			($user) = $user =~ /^(.+)$/;
-			exit -81 unless $user;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_USER
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $user;
 
 			push @users, "\Q$user";
 		}
-		exit -82 unless @users;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_USERS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless @users;
 
 		$opts .= ' --users ' . join(',', @users);
 		$opts .= ' --handoutcopy';
 	} else {
 		my $type = <>;
 		($type) = $type =~ /^(\d+)/;
-		exit -88 unless defined $type;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_TYPE
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless defined $type;
 
 
 		# sophomorix-teacher allows more than one type option
 		if ($type & 2) {
 			my $room = <>;
 			($room) = $room =~ /^(.+)$/;
-			exit -89 unless $room;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_ROOM
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $room;
 			$opts .= " --room \Q$room";
 		}
 		if ($type & 4) {
 			my $project = <>;
 			($project) = $project =~ /^(.+)$/;
-			exit -90 unless $project;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $project;
 			$opts .= " --project \Q$project";
 		}
 		if ($type & 8) {
 			my $class = <>;
 			($class) = $class =~ /^(.+)$/;
-			exit -91 unless $class;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $class;
 			$opts .= " --class \Q$class";
 		};
 		if ($type & 16) {
 			my $subclass = <>;
 			($subclass) = $subclass =~ /^(.+)$/;
-			exit -92 unless $subclass;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_SUBCLASS
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $subclass;
 			$opts .= " --subclass \Q$subclass";
 		};
 
@@ -438,7 +495,7 @@ $app_id == Schulkonsole::Config::HANDOUTAPP and do {
 	# sophomorix-teacher cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	exec "$app $opts" or last SWITCH;
+	exec "$Schulkonsole::Config::_cmd_sophomorix_teacher $opts" or last SWITCH;
 };
 
 =head3 collect
@@ -474,15 +531,21 @@ numeric constant: C<Schulkonsole::Config::COLLECTAPP>
 $app_id == Schulkonsole::Config::COLLECTAPP and do {
 	my $do_copy = <>;
 	($do_copy) = $do_copy =~ /^([01])$/;
-	exit -86 unless defined $do_copy;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_COPY
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $do_copy;
 
 	my $is_exam = <>;
 	($is_exam) = $is_exam =~ /^([01])$/;
-	exit -93 unless defined $is_exam;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_IS_EXAM
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $is_exam;
 
 	my $from = <>;
 	($from) = $from =~ /^([01248])$/;
-	exit -87 unless defined $from;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FROM
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $from;
 
 	my $opts = "--teacher \Q$$userdata{uid}";
 
@@ -496,14 +559,18 @@ $app_id == Schulkonsole::Config::COLLECTAPP and do {
 		$from == 4 and do {
 			my $project = <>;
 			($project) = $project =~ /^(.+)$/;
-			exit -90 unless $project;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $project;
 			$opts .= " --fromproject \Q$project";
 			last FROMCOLLECT;
 		};
 		$from == 8 and do {
 			my $class = <>;
 			($class) = $class =~ /^(.+)$/;
-			exit -91 unless $class;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $class;
 			$opts .= " --fromclass \Q$class";
 			last FROMCOLLECT;
 		};
@@ -514,42 +581,56 @@ $app_id == Schulkonsole::Config::COLLECTAPP and do {
 		while (my $user = <>) {
 			last if $user =~ /^$/;
 			($user) = $user =~ /^(.+)$/;
-			exit -81 unless $user;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_USER
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $user;
 
 			push @users, "\Q$user";
 		}
-		exit -82 unless @users;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_USERS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless @users;
 
 		$opts .= ' --users ' . join(',', @users);
 	} else {
 		my $type = <>;
 		($type) = $type =~ /^(\d+)/;
-		exit -88 unless $type;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_TYPE
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $type;
 
 
 		# sophomorix-teacher allows more than one type option
 		if ($type & 2) {
 			my $room = <>;
 			($room) = $room =~ /^(.+)$/;
-			exit -89 unless $room;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_ROOM
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $room;
 			$opts .= " --room \Q$room";
 		}
 		if ($type & 4) {
 			my $project = <>;
 			($project) = $project =~ /^(.+)$/;
-			exit -90 unless $project;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $project;
 			$opts .= " --project \Q$project";
 		}
 		if ($type & 8) {
 			my $class = <>;
 			($class) = $class =~ /^(.+)$/;
-			exit -91 unless $class;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $class;
 			$opts .= " --class \Q$class";
 		}
 		if ($type & 16) {
 			my $subclass = <>;
 			($subclass) = $subclass =~ /^(.+)$/;
-			exit -92 unless $subclass;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_SUBCLASS
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $subclass;
 			$opts .= " --subclass \Q$subclass";
 		}
 	}
@@ -561,7 +642,7 @@ $app_id == Schulkonsole::Config::COLLECTAPP and do {
 	# sophomorix-teacher cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	exec "$app $opts" or last SWITCH;
+	exec "$Schulkonsole::Config::_cmd_sophomorix_teacher $opts" or last SWITCH;
 };
 
 =head3 room_reset
@@ -581,14 +662,16 @@ numeric constant: C<Schulkonsole::Config::RESETROOMAPP>
 $app_id == Schulkonsole::Config::RESETROOMAPP and do {
 	my $room = <>;
 	($room) = $room =~ /^(.+)$/;
-	exit -89 unless $room;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_ROOM
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless $room;
 
 	my $opts = "--reset-room \Q$room";
 
 	# sophomorix-room cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	exec "$app $opts" or last SWITCH;
+	exec "$Schulkonsole::Config::_cmd_sophomorix_teacher $opts" or last SWITCH;
 };
 
 =head3 edit_own_class_membership
@@ -610,11 +693,15 @@ numeric constant: C<Schulkonsole::Config::EDITOWNCLASSMEMBERSHIPAPP>
 $app_id == Schulkonsole::Config::EDITOWNCLASSMEMBERSHIPAPP and do {
 	my $class_gid = <>;
 	($class_gid) = $class_gid =~ /^(.+)$/;
-	exit -91 unless defined $class_gid;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $class_gid;
 
 	my $do_add = <>;
 	($do_add) = $do_add =~ /^(\d+)$/;
-	exit -94 unless defined $do_add;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_ADD
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $do_add;
 
 	my $opts = "--teacher \Q$$userdata{uid}\E "
 		. ($do_add ? '--add' : '--remove') . " \Q$class_gid";
@@ -624,7 +711,7 @@ $app_id == Schulkonsole::Config::EDITOWNCLASSMEMBERSHIPAPP and do {
 	$) = 0;
 	$( = $);
 	umask(022);
-	exec "$app $opts" or last SWITCH;
+	exec "$Schulkonsole::Config::_cmd_sophomorix_teacher $opts" or last SWITCH;
 };
 
 =head3 project_members
@@ -648,25 +735,35 @@ numeric constant: C<Schulkonsole::Config::PROJECTMEMBERSAPP>
 $app_id == Schulkonsole::Config::PROJECTMEMBERSAPP and do {
 	my $project_gid = <>;
 	($project_gid) = $project_gid =~ /^((?:p_)?[a-z0-9_-]{3,14})$/;
-	exit -101 unless defined $project_gid;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECTGID
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $project_gid;
 
 	my $do_add = <>;
 	($do_add) = $do_add =~ /^([01])$/;
-	exit -94 unless defined $do_add;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_ADD
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $do_add;
 
 	my $scope = <>;
 	($scope) = $scope =~ /^([0123])$/;
-	exit -102 unless defined $scope;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_MEMBERSCOPE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $scope;
 
 	my @users;
 	while (my $user = <>) {
 		last if $user =~ /^$/;
 		($user) = $user =~ /^(.+)$/;
-		exit -81 unless $user;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_USER
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $user;
 
 		push @users, "\Q$user";
 	}
-	exit -82 unless @users;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_USERS
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless @users;
 
 	my $opts = "--caller \Q$$userdata{uid}\E "
 		. ($do_add ? '--add' : '--remove');
@@ -697,7 +794,7 @@ $app_id == Schulkonsole::Config::PROJECTMEMBERSAPP and do {
 	$) = 0;
 	$( = $);
 	umask(022);
-	exec "$app $opts" or last SWITCH;
+	exec "$Schulkonsole::Config::_cmd_sophomorix_project $opts" or last SWITCH;
 };
 
 =head3 project_create_drop
@@ -723,18 +820,24 @@ numeric constant: C<Schulkonsole::Config::PROJECTCREATEDROPAPP>
 $app_id == Schulkonsole::Config::PROJECTCREATEDROPAPP and do {
 	my $project_gid = <>;
 	($project_gid) = $project_gid =~ /^((?:p_)?[a-z0-9_-]{3,14})$/;
-	exit -101 unless defined $project_gid;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECTGID
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $project_gid;
 
 	my $do_create = <>;
 	($do_create) = $do_create =~ /^([01])$/;
-	exit -103 unless defined $do_create;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_CREATE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $do_create;
 
 
 	my $opts = "--caller \Q$$userdata{uid}\E --project \Q$project_gid\E ";
 	if ($do_create) {
 		my $is_open = <>;
 		($is_open) = $is_open =~ /^([01])$/;
-		exit -113 unless defined $is_open;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_IS_JOIN
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless defined $is_open;
 
 		$opts .= '--create '
 		         . ($is_open ? '--join' : '--nojoin')
@@ -748,7 +851,7 @@ $app_id == Schulkonsole::Config::PROJECTCREATEDROPAPP and do {
 	$) = 0;	# sophomorix-project will re-create /etc/aliases
 	$( = $);
 	umask(022);
-	exec "$app $opts" or last SWITCH;
+	exec "$Schulkonsole::Config::_cmd_sophomorix_project $opts" or last SWITCH;
 };
 
 =head3 print_class
@@ -774,18 +877,23 @@ The filetype, 0 (PDF) or 1 (CSV)
 $app_id == Schulkonsole::Config::PRINTCLASSAPP and do {
 	my $class_gid = <>;
 	($class_gid) = $class_gid =~ /^(.+)$/;
-	exit -91 unless defined $class_gid;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $class_gid;
 
 	my $filetype = <>;
 	($filetype) = $filetype =~ /^([01])$/;
-	exit -95 unless defined $filetype;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $filetype;
 
 	my $opts = "--class \Q$class_gid\E --postfix \Q$$userdata{uid}";
 
 	# sophomorix-print cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	system("$app $opts >/dev/null 2>/dev/null") == 0 or exit ($? >> 8);
+	system("$Schulkonsole::Config::_cmd_sophomorix_print $opts >/dev/null 2>/dev/null") == 0
+		or exit ($? >> 8);
 
 	my $filename;
 	SWITCHFILETYPE: {
@@ -797,10 +905,14 @@ $app_id == Schulkonsole::Config::PRINTCLASSAPP and do {
 		$filename = "$DevelConf::druck_pfad/$class_gid-$$userdata{uid}.csv";
 		last SWITCHFILETYPE;
 	};
-	exit -95;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	}
 	
-	open DATA, "<$filename" or (print STDERR "$filename: $!\n" and exit -106);
+	open DATA, "<$filename"
+		or (    print STDERR "$filename: $!\n"
+	        and exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
+		              - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE));
 	{
 		local $/ = undef;
 		while (<DATA>) {
@@ -831,14 +943,17 @@ The filetype, 0 (PDF) or 1 (CSV)
 $app_id == Schulkonsole::Config::PRINTTEACHERSAPP and do {
 	my $filetype = <>;
 	($filetype) = $filetype =~ /^([01])$/;
-	exit -95 unless defined $filetype;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $filetype;
 
 	my $opts = "--teacher";
 
 	# sophomorix-print cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	system("$app $opts >/dev/null 2>/dev/null ") == 0 or exit ($? >> 8);
+	system("$Schulkonsole::Config::_cmd_sophomorix_print $opts >/dev/null 2>/dev/null ") == 0
+		or exit ($? >> 8);
 
 	my $filename;
 	SWITCHFILETYPE: {
@@ -850,10 +965,14 @@ $app_id == Schulkonsole::Config::PRINTTEACHERSAPP and do {
 		$filename = "$DevelConf::druck_pfad/teachers.csv";
 		last SWITCHFILETYPE;
 	};
-	exit -95;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	}
 	
-	open DATA, "<$filename" or (print STDERR "$filename: $!\n" and exit -106);
+	open DATA, "<$filename"
+		or (    print STDERR "$filename: $!\n"
+		    and exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
+		              - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE));
 	{
 		local $/ = undef;
 		while (<DATA>) {
@@ -900,11 +1019,15 @@ the rooms for which to set the workstation passwords
 $app_id == Schulkonsole::Config::SETPASSWORDSAPP and do {
 	my $type = <>;
 	($type) = $type =~ /^([012])$/;
-	exit -96 unless defined $type;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_SET_PASSWORD_TYPE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $type;
 
 	my $scope = <>;
 	($scope) = $scope =~ /^([01])$/;
-	exit -102 unless defined $scope;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_MEMBERSCOPE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $scope;
 
 
 	my $opts = '--hide ';
@@ -916,7 +1039,9 @@ $app_id == Schulkonsole::Config::SETPASSWORDSAPP and do {
 	$type == 1 and do {
 		my $password = <>;
 		($password) = $password =~ /^(.+)$/;
-		exit -97 unless $password;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PASSWORD
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $password;
 
 		$opts .= "--password \Q$password";
 		last TYPE;
@@ -931,11 +1056,15 @@ $app_id == Schulkonsole::Config::SETPASSWORDSAPP and do {
 	while (my $user = <>) {
 		last if $user =~ /^$/;
 		($user) = $user =~ /^(.+)$/;
-		exit -81 unless $user;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_USER
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $user;
 
 		push @users, "\Q$user";
 	}
-	exit -82 unless @users;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_USERS
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless @users;
 
 	if ($scope == 0) {
 		$opts .= ' --users ' . join(',', @users);
@@ -946,7 +1075,7 @@ $app_id == Schulkonsole::Config::SETPASSWORDSAPP and do {
 	# sophomorix-passwd cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	exec "$app $opts" or last SWITCH;
+	exec "$Schulkonsole::Config::_cmd_sophomorix_passwd $opts" or last SWITCH;
 };
 
 =head3 read_sophomorix_file
@@ -971,7 +1100,9 @@ number of the file to read (0 = lehrer.txt, 1 = schueler.txt,
 $app_id == Schulkonsole::Config::READSOPHOMORIXFILEAPP and do {
 	my $number = <>;
 	($number) = $number =~ /^([0-9]|1[01])$/;
-	exit -105 unless defined $number;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENUMBER
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $number;
 
 	my $filename;
 	SWITCHREADFILE: {
@@ -1032,7 +1163,9 @@ $app_id == Schulkonsole::Config::READSOPHOMORIXFILEAPP and do {
 	} # end SWITCHREADFILE
 
 
-	open FILE, "<$filename" or exit -106;
+	open FILE, "<$filename"
+		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
+		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	while (<FILE>) {
 		print;
 	}
@@ -1065,7 +1198,9 @@ the lines to be written in the file
 $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 	my $number = <>;
 	($number) = $number =~ /^([0123456])$/;
-	exit -105 unless defined $number;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENUMBER
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $number;
 
 	my $path;
 	my $filename;
@@ -1143,14 +1278,18 @@ $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 
 		if (not rename $full_filename, "$backup_path/$filename$suffix") {
 			system("mv \Q$full_filename\E \Q$backup_path/$filename$suffix")
-				== 0 or exit -107;
+				== 0
+				or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_PROCESS_RUNNING
+				         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 		}
 	} else {
 		$stat[4] = $>;
 		$stat[5] = 0;
 	}
 
-	open FILE, ">$full_filename" or exit -106;
+	open FILE, ">$full_filename"
+		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
+		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	while (<>) {
 		print FILE;
 	}
@@ -1173,7 +1312,7 @@ $app_id == Schulkonsole::Config::USERSCHECKAPP and do {
 	$< = $>;
 	$) = 0;
 	$( = $);
-	exec "$app" or last SWITCH;
+	exec $Schulkonsole::Config::_cmd_sophomorix_check or last SWITCH;
 };
 
 =head3 add_users
@@ -1195,37 +1334,45 @@ numeric constant: C<Schulkonsole::Config::USERSKILLAPP>
  or $app_id == Schulkonsole::Config::USERSKILLAPP) and do {
 
 	my $action;
+	my $cmd;
 	ACTIONNAME: {
 	$app_id == Schulkonsole::Config::USERSADDAPP and do {
 		$action = 'add';
+		$cmd = $Schulkonsole::Config::_cmd_sophomorix_add;
 		last ACTIONNAME;
 	};
 	$app_id == Schulkonsole::Config::USERSMOVEAPP and do {
 		$action = 'move';
+		$cmd = $Schulkonsole::Config::_cmd_sophomorix_move;
 		last ACTIONNAME;
 	};
 	$app_id == Schulkonsole::Config::USERSKILLAPP and do {
 		$action = 'kill';
+		$cmd = $Schulkonsole::Config::_cmd_sophomorix_kill;
 		last ACTIONNAME;
 	};
 	}
 
 
 	my $lockfile = Schulkonsole::Config::lockfile("user$action");
-	open LOCK, "+>>$lockfile" or exit -106;
+	open LOCK, "+>>$lockfile"
+		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
+		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	if (not flock(LOCK, 4 | 2)) {
-		exit -107;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_PROCESS_RUNNING
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	} else {
 		use Proc::ProcessTable;
 
 		my $process_table = new Proc::ProcessTable;
-		my $app_cmnd = $app;
+		my $app_cmnd = $cmd;
 		$app_cmnd =~ s:.*/::;
 		foreach my $process (@{ $process_table->table }) {
 			if (    $process->uid == $>
 			    and $process->fname =~ /^sophomor/
 			    and $process->cmndline =~ /$app_cmnd/) {
-				exit -107;
+				exit (  Schulkonsole::Error::Sophomorix::WRAPPER_PROCESS_RUNNING
+				      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 			}
 		}
 	}
@@ -1242,7 +1389,9 @@ numeric constant: C<Schulkonsole::Config::USERSKILLAPP>
 	print "$log_file\n";
 
 	my $pid = fork;
-	exit -44 unless defined $pid;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_FORK
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $pid;
 
 	if (not $pid) {
 		close STDIN;
@@ -1255,7 +1404,7 @@ numeric constant: C<Schulkonsole::Config::USERSKILLAPP>
 
 		$ENV{PATH} = '/bin:/sbin:/usr/sbin:/usr/bin';
 		$ENV{DEBIAN_FRONTEND} = 'teletype';
-		exec "$app" or last SWITCH;
+		exec $cmd or last SWITCH;
 	} else {
 		seek LOCK, 0, 0;
 		truncate LOCK, 0;
@@ -1273,18 +1422,22 @@ numeric constant: C<Schulkonsole::Config::USERSADDMOVEKILLAPP>
 =cut
 
 $app_id == Schulkonsole::Config::USERSADDMOVEKILLAPP and do {
-
 	my $action = 'addmovekill';
 
 	my $addmovekill_lockfile = Schulkonsole::Config::lockfile("user$action");
-	open ALLLOCK, "+>>$addmovekill_lockfile" or exit -106;
+	open ALLLOCK, "+>>$addmovekill_lockfile"
+		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
+		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	if (not flock(ALLLOCK, 4 | 2)) {
-		exit -107;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_PROCESS_RUNNING
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	}
 
 
 	my $pid = fork;
-	exit -44 unless defined $pid;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_FORK
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $pid;
 
 	if (not $pid) {
 		close STDIN;
@@ -1297,16 +1450,23 @@ $app_id == Schulkonsole::Config::USERSADDMOVEKILLAPP and do {
 
 
 		my @action = ('add', 'move', 'kill');
+		my @cmds = (
+			$Schulkonsole::Config::_cmd_sophomorix_add,
+			$Schulkonsole::Config::_cmd_sophomorix_move,
+			$Schulkonsole::Config::_cmd_sophomorix_kill,
+		);
 		USERAPPS: for my $i (0..2) {
 			my $lockfile = Schulkonsole::Config::lockfile("user$action[$i]");
-			open LOCK, "+>>$lockfile" or exit -106;
+			open LOCK, "+>>$lockfile"
+				or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
+				         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 			if (not flock(LOCK, 4 | 2)) {
 				next USERAPPS;
 			} else {
 				use Proc::ProcessTable;
 
 				my $process_table = new Proc::ProcessTable;
-				my $app_cmnd = $$app[$i];
+				my $app_cmnd = $cmds[$i];
 				$app_cmnd =~ s:.*/::;
 				foreach my $process (@{ $process_table->table }) {
 					if (    $process->uid == $>
@@ -1329,7 +1489,7 @@ $app_id == Schulkonsole::Config::USERSADDMOVEKILLAPP and do {
 			open STDOUT, ">>$log_file";	# ignore errors
 			open STDERR, ">>&STDOUT";
 
-			system "$$app[$i]";
+			system $cmds[$i];
 
 			close LOCK;
 		}
@@ -1367,7 +1527,9 @@ numeric constant: C<Schulkonsole::Config::TEACHINAPP>
 $app_id == Schulkonsole::Config::TEACHINAPP and do {
 	my $mode = <>;
 	($mode) = $mode =~ /^([012])$/;
-	exit -108 unless defined $mode;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_MODE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $mode;
 
 	$< = $>;
 	$) = 0;
@@ -1393,7 +1555,9 @@ $app_id == Schulkonsole::Config::TEACHINAPP and do {
 			chomp;
 
 			my ($username, $id) = /^(.+)\t(.*)$/;
-			exit -81 unless $username;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_USER
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $username;
 
 			if ($id) {
 				push @teachin_users, "${username}::${id}";
@@ -1401,14 +1565,16 @@ $app_id == Schulkonsole::Config::TEACHINAPP and do {
 				push @ignore_users, $username;
 			}
 		}
-		exit -82 unless (@teachin_users or @ignore_users);
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_USERS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless (@teachin_users or @ignore_users);
 
 		while (    @ignore_users
 		       and length(join(',', @ignore_users, @teachin_users)) > 800) {
 			my $end = (@ignore_users < 50) ? @ignore_users : 50;
 			$opts = '--all --ignore ' . quotemeta(join(',', @ignore_users[0..$end]));
 
-			system "$app $opts";
+			system "$Schulkonsole::Config::_cmd_sophomorix_teachin $opts";
 			@ignore_users = @ignore_users[$end + 1..$#ignore_users];
 		}
 
@@ -1416,7 +1582,7 @@ $app_id == Schulkonsole::Config::TEACHINAPP and do {
 		       and length(join(',', @teachin_users)) > 800) {
 			my $end = (@teachin_users < 20) ? @teachin_users : 20;
 			$opts = '--all --teachin ' . quotemeta(join(',', @teachin_users[0..$end]));
-			system "$app $opts";
+			system "$Schulkonsole::Config::_cmd_sophomorix_teachin $opts";
 			@teachin_users = @teachin_users[$end + 1..$#teachin_users];
 		}
 
@@ -1435,7 +1601,7 @@ $app_id == Schulkonsole::Config::TEACHINAPP and do {
 	};
 	}
 
-	exec "$app $opts" or last SWITCH;
+	exec "$Schulkonsole::Config::_cmd_sophomorix_teachin $opts" or last SWITCH;
 };
 
 =head3 chmod
@@ -1461,11 +1627,15 @@ number of the directory
 $app_id == Schulkonsole::Config::CHMODAPP and do {
 	my $number = <>;
 	($number) = $number =~ /^([01])$/;
-	exit -105 unless defined $number;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENUMBER
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $number;
 
 	my $on = <>;
 	($on) = $on =~ /^([01])$/;
-	exit -80 unless defined $on;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_ON_UNDEFINED
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $on;
 
 	my $filename;
 	my $mode;
@@ -1477,7 +1647,9 @@ $app_id == Schulkonsole::Config::CHMODAPP and do {
 	};
 	}
 
-	chmod $mode, $filename or exit -109;
+	chmod $mode, $filename
+		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CHMOD_FAILED
+		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 
 	exit 0;
 };
@@ -1507,32 +1679,45 @@ or
 $app_id == Schulkonsole::Config::SETQUOTAAPP and do {
 	my $flags = <>;
 	($flags) = $flags =~ /^(\d+)$/;
-	exit -110 unless defined $flags || $flags > 17;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FLAGS
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $flags || $flags > 17;
 
 	my $app_opts;
 	if ($flags > 15) {
 		my $gid = <>;
 		if ($flags == 16) {
 			($gid) = $gid =~ /^(.+)$/;
-			exit -91 unless $gid;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $gid;
 		} else {
 			($gid) = $gid =~ /^((?:p_)?[a-z0-9_-]{3,14})$/;
-			exit -101 unless defined $gid;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECTGID
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless defined $gid;
 		}
 
 		my $diskquota = <>;
 		($diskquota) = $diskquota =~ /^((?:\d+(?:\+\d+)*)?|quota)$/;
-		exit -111 unless defined $diskquota;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DISKQUOTA
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless defined $diskquota;
 
 		my $mailquota = <>;
 		($mailquota) = $mailquota =~ /^(\d*|-1)$/;
-		exit -112 unless defined $mailquota;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_MAILQUOTA
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless defined $mailquota;
 
-		exit -111 unless length($diskquota) || length($mailquota);
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DISKQUOTA
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless length($diskquota) || length($mailquota);
 
 
 		if ($flags == 16) {
-			$app_opts = "$$app[1] --class \Q$gid";
+			$app_opts
+				= "$Schulkonsole::Config::_cmd_sophomorix_class --class \Q$gid";
 			if (length($diskquota)) {
 				if ($diskquota eq 'quota') {
 					$app_opts .= ' --quota standard';
@@ -1544,7 +1729,7 @@ $app_id == Schulkonsole::Config::SETQUOTAAPP and do {
 				$app_opts .= " --mailquota $mailquota";
 			}
 		} else {
-			$app_opts =   $$app[2]
+			$app_opts =   $Schulkonsole::Config::_cmd_sophomorix_project
 			            . " --caller \Q$$userdata{uid}\E --project \Q$gid";
 			if (length($diskquota)) {
 				if ($diskquota eq 'quota') {
@@ -1558,7 +1743,7 @@ $app_id == Schulkonsole::Config::SETQUOTAAPP and do {
 			}
 		}
 	} else {
-		$app_opts = "$$app[0] ";
+		$app_opts = "$Schulkonsole::Config::_cmd_sophomorix_quota ";
 		$app_opts .= '--set ' if $flags & 1;
 		$app_opts .= '--teachers ' if $flags & 2;
 		$app_opts .= '--students ' if $flags & 4;
@@ -1566,7 +1751,9 @@ $app_id == Schulkonsole::Config::SETQUOTAAPP and do {
 	}
 
 	my $pid = fork;
-	exit -44 unless defined $pid;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_FORK
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $pid;
 
 	if (not $pid) {
 		close STDIN;
@@ -1588,7 +1775,9 @@ $app_id == Schulkonsole::Config::SETQUOTAAPP and do {
 		umask(022);
 
 		my $lockfile = Schulkonsole::Config::lockfile('processquota');
-		open LOCK, ">>$lockfile" or exit -106;
+		open LOCK, ">>$lockfile"
+			or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
+			         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 		flock LOCK, 2;
 		truncate LOCK, 0;
 		seek LOCK, 0, 0;
@@ -1619,14 +1808,16 @@ The new password
 $app_id == Schulkonsole::Config::SETOWNPASSWORDAPP and do {
 	my $password = <>;
 	($password) = $password =~ /^(.+)$/;
-	exit -97 unless $password;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PASSWORD
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless $password;
 
 	my $opts = "--nofirstpassupdate --user \Q$$userdata{uid}\E --pass \Q$password";
 
 	# sophomorix-passwd cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	exec "$app $opts" or last SWITCH;
+	exec "$Schulkonsole::Config::_cmd_sophomorix_passwd $opts" or last SWITCH;
 };
 
 =head3 hide_unhide_class
@@ -1656,7 +1847,9 @@ $app_id == Schulkonsole::Config::HIDEUNHIDECLASSAPP and do {
 		last if /^$/;
 
 		my ($gid) = /^(.+)$/;
-		exit -91 unless $gid;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $gid;
 
 		push @hides, $gid;
 	}
@@ -1664,7 +1857,9 @@ $app_id == Schulkonsole::Config::HIDEUNHIDECLASSAPP and do {
 		last if /^$/;
 
 		my ($gid) = /^(.+)$/;
-		exit -91 unless $gid;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $gid;
 
 		push @nohides, $gid;
 	}
@@ -1676,11 +1871,13 @@ $app_id == Schulkonsole::Config::HIDEUNHIDECLASSAPP and do {
 
 	my $opts = '--hide';
 	foreach my $gid (@hides) {
-		system("$app $opts --class \Q$gid\E") == 0 or exit ($? >> 8);
+		system("$Schulkonsole::Config::_cmd_sophomorix_class $opts --class \Q$gid\E") == 0
+			or exit ($? >> 8);
 	}
 	$opts = '--nohide';
 	foreach my $gid (@nohides) {
-		system("$app $opts --class \Q$gid\E") == 0 or exit ($? >> 8);
+		system("$Schulkonsole::Config::_cmd_sophomorix_class $opts --class \Q$gid\E") == 0
+			or exit ($? >> 8);
 	}
 
 
@@ -1714,7 +1911,9 @@ $app_id == Schulkonsole::Config::PROJECTJOINNOJOINAPP and do {
 		last if /^$/;
 
 		my ($gid) = /^(.+)$/;
-		exit -90 unless $gid;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $gid;
 
 		push @joins, $gid;
 	}
@@ -1722,7 +1921,9 @@ $app_id == Schulkonsole::Config::PROJECTJOINNOJOINAPP and do {
 		last if /^$/;
 
 		my ($gid) = /^(.+)$/;
-		exit -90 unless $gid;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $gid;
 
 		push @nojoins, $gid;
 	}
@@ -1734,11 +1935,13 @@ $app_id == Schulkonsole::Config::PROJECTJOINNOJOINAPP and do {
 
 	my $opts = "--caller \Q$$userdata{uid}\E --join";
 	foreach my $gid (@joins) {
-		system("$app $opts --project \Q$gid\E") == 0 or exit ($? >> 8);
+		system("$Schulkonsole::Config::_cmd_sophomorix_project $opts --project \Q$gid\E") == 0
+			or exit ($? >> 8);
 	}
 	$opts = "--caller \Q$$userdata{uid}\E --nojoin";
 	foreach my $gid (@nojoins) {
-		system("$app $opts --project \Q$gid\E") == 0 or exit ($? >> 8);
+		system("$Schulkonsole::Config::_cmd_sophomorix_project $opts --project \Q$gid\E") == 0
+			or exit ($? >> 8);
 	}
 
 
