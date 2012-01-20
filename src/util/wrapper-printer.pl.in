@@ -132,6 +132,31 @@ $app_id == Schulkonsole::Config::PRINTERINFOAPP and do {
 
 	exit 0;
 };
+
+=head3 printer_on_off
+
+numeric constant: C<Schulkonsole::Config::PRINTERONOFFAPP>
+
+=head4 Description
+
+Set printers to accept/reject jobs.
+
+=head4 Parameters from standard input
+
+=over
+
+=item on
+
+C<1> (accept) or C<0> (reject)
+
+=item printers
+
+Printer names, one per line, end with empty line
+
+=back
+
+=cut
+
 $app_id == Schulkonsole::Config::PRINTERONOFFAPP and do {
 	my $on = <>;
 	($on) = $on =~ /^(\d)$/;
@@ -164,6 +189,32 @@ $app_id == Schulkonsole::Config::PRINTERONOFFAPP and do {
 
 	exit 0;
 };
+
+=head3 printer_allow_deny
+
+numeric constant: C<Schulkonsole::Config::PRINTERALLOWDENYAPP>
+
+=head4 Description
+
+Set printers to deny user access to specified users
+
+=head4 Parameters from standard input
+
+=over
+
+=item printer + users
+
+Printer name followed by UIDs one per line.
+End users list with empty line.
+
+Continue with next printer name followed by UIDs.
+
+Finish with additional empty line.
+
+=back
+
+=cut
+
 $app_id == Schulkonsole::Config::PRINTERALLOWDENYAPP and do {
 	my %printer_users;
 
