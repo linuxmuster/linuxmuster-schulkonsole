@@ -1,6 +1,6 @@
 <html lang="de">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Startseite</gettext></title>
 <!--#include file="css.shtml.inc" -->
@@ -156,6 +156,41 @@
 <!--#else -->
 <p>Keine Mailquota</p>
 <!--#endif -->
+
+
+
+<!--#if expr="$printquota" -->
+<table id="printquota">
+<col width="30%">
+<col width="70%">
+
+<tr>
+
+<td><gettext>Seiten</gettext></td>
+
+<td>
+
+
+<p>
+    <gettext>Seiten:</gettext>
+    <!--#echo var="printquota{usage}" -->/<!--#echo var="printquota{limit}" -->
+    - <!--#echo var="printquota{percent}" -->%
+</p>
+
+
+<ul>
+<li>
+<span title="Druckseiten: ${printquota{usage}}/${printquota{limit}} ${printquota{percent}}%" style="width: ${printquota{percent_rounded}}%;">&nbsp;</span>
+</li>
+</ul>
+</td>
+
+</tr>
+</table>
+<!--#else -->
+<p>Keine Druckquota</p>
+<!--#endif -->
+
 
 
 

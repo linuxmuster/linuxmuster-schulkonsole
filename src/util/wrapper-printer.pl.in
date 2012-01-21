@@ -252,6 +252,50 @@ $app_id == Schulkonsole::Config::PRINTERALLOWDENYAPP and do {
 
 	exit 0;
 };
+
+=head3 own_print_quota
+
+numeric constant: C<Schulkonsole::Config::PRINTERGETOWNQUOTAAPP>
+
+=head4 Description
+
+Get users own print quota
+
+=head4 Parameters from standard input
+
+None
+
+=cut
+
+$app_id == Schulkonsole::Config::PRINTERGETOWNQUOTAAPP and do {
+	my $opt_user = "--user \Q$$userdata{uid}\E";
+
+
+	my $pages = `$Schulkonsole::Config::_cmd_linuxmuster_pk $opt_user -t`
+		or last SWITCH;
+
+	($pages) = $pages =~ /^(\d+)$/;
+	exit (  Schulkonsole::Error::Printer::WRAPPER_INVALID_PAGES
+	      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+		unless defined $pages;
+
+
+
+	my $max = `$Schulkonsole::Config::_cmd_linuxmuster_pk $opt_user -m`
+		or last SWITCH;
+
+	($max) = $max =~ /^(\d+)$/;
+	exit (  Schulkonsole::Error::Printer::WRAPPER_INVALID_MAX_PAGES
+	      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+		unless defined $max;
+
+
+
+	print "$pages\t$max\n";
+
+
+	exit 0;
+};
 }
 
 

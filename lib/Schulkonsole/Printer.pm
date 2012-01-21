@@ -20,6 +20,7 @@ $VERSION = 0.03;
 	printer_on
 	printer_off
 	printer_deny
+	own_quota
 );
 
 
@@ -321,6 +322,69 @@ sub printer_deny {
 	buffer_input(\*SCRIPTIN);
 
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+}
+
+
+
+
+
+=head2 C<own_quota($id, $password)>
+
+Get print quota of user
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=back
+
+=head3 Description
+
+This wraps the commands 
+C</usr/bin/linuxmuster-pk --user user -t> 
+to get the number of printed pages 
+and
+C</usr/bin/linuxmuster-pk --user user -m>
+maximum number of pages
+with C<user> = the UID of the user with ID C<$id>.
+
+Returns an array with number of printed pages and then the maximum number of 
+pages.
+
+=cut
+
+sub own_quota {
+	my $id = shift;
+	my $password = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::PRINTERGETOWNQUOTAAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	buffer_input(\*SCRIPTIN);
+
+	my ($pages, $max) = $input_buffer =~ /^(\d+)\t(\d+)$/;
+
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	die new Schulkonsole::Error(
+		Schulkonsole::Error::Printer::WRAPPER_UNEXPECTED_DATA,
+		$Schulkonsole::Config::_wrapper_printer)
+		unless defined $max;
+
+
+	return ($pages, $max);
 }
 
 

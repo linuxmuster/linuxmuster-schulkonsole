@@ -231,6 +231,12 @@ sub what {
 		and return 'Keine Drucker';
 	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_INVALID_USER
 		and return 'Ungueltiger Druckernutzer';
+	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_INVALID_PAGES
+		and return 'Ungueltige Daten fuer genutzte Druckquota';
+	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_INVALID_MAX_PAGES
+		and return 'Ungueltige Daten fuer Druckquota';
+	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNEXPECTED_DATA
+		and return 'Unerwartete Programmausgabe';
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_ON_UNDEFINED
 		and return 'on muss 1 oder 0 sein';
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_USER

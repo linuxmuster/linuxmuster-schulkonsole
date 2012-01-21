@@ -163,6 +163,7 @@ use Schulkonsole::Session;
 use Schulkonsole::Config;
 use Schulkonsole::Info;
 use Schulkonsole::OVPN;
+use Schulkonsole::Printer;
 use Schulkonsole::Sophomorix;
 
 my $this_file = 'start';
@@ -560,6 +561,31 @@ if (my $var_mailquotas = $sk_session->temp_param('var_mailquotas')) {
 	if ($@) {
 		$sk_session->param('nomailquota', $@);
 	}
+}
+
+
+
+eval {
+my ($usage, $limit) = Schulkonsole::Printer::own_quota($id, $password);
+
+my $usage_percent = $usage ?
+	  sprintf('%.1f', 100 * $usage / $limit)
+	: 0;
+
+my $printquota = {
+	usage => $usage,
+	limit => $limit,
+	percent => $usage_percent,
+	percent_rounded => ($usage_percent < 100.0 ?
+	                      int($usage_percent + 0.5)
+	                    : 100),
+};
+
+
+$sk_session->set_var('printquota', $printquota);
+};
+if ($@) {
+	warn "$@\n";
 }
 
 
