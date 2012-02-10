@@ -1,3 +1,11 @@
+linuxmuster-schulkonsole (0.9.32-lenny0) unstable; urgency=low
+
+  * tschmitt: added ".macct" extension to @suffixes in wrapper-linbp.pl.in so
+    these files were also moved, copied and deleted by linbo editor as their
+    corresponding image files (see #576).
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Fri, 10 Feb 2012 09:59:23 +0100
+
 linuxmuster-schulkonsole (0.9.31-lenny0) unstable; urgency=low
 
   * tschmitt: implemented new global and os related linbo start.conf options
