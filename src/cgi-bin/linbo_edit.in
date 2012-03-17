@@ -344,7 +344,7 @@ Name of the selected group
 			}; if ($@) {
 				if (    ref $@
 				    and $@->{code}
-				    	== Schulkonsole::Error::LINBO_START_CONF_ERROR) {
+				    	== Schulkonsole::Error::Linbo::START_CONF_ERROR) {
 					Schulkonsole::Linbo::handle_start_conf_errors(
 						${ $@->{info} }[0],
 						$sk_session);
