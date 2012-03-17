@@ -671,7 +671,7 @@ $app_id == Schulkonsole::Config::RESETROOMAPP and do {
 	# sophomorix-room cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	exec "$Schulkonsole::Config::_cmd_sophomorix_teacher $opts" or last SWITCH;
+	exec "$Schulkonsole::Config::_cmd_sophomorix_room $opts" or last SWITCH;
 };
 
 =head3 edit_own_class_membership
