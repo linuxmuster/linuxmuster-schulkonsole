@@ -100,8 +100,21 @@ my $_where_userdata_id = 'WHERE id = ?';
 
 
 
+sub utf8_decode_userdata {
+	my $userdata = shift;
+
+	utf8::decode($$userdata{uid});
+	utf8::decode($$userdata{gid});
+	utf8::decode($$userdata{firstname});
+	utf8::decode($$userdata{surname});
+}
+
+
 sub get_userdata {
 	my $uid = shift;
+
+
+	utf8::encode($uid);
 
 	my $sth = $_dbh->prepare($_select_userdata . $_where_userdata_uid)
 		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
@@ -112,6 +125,9 @@ sub get_userdata {
 
 	my $re = $sth->fetchrow_hashref;
 	$sth->finish;
+
+
+	utf8_decode_userdata($re);
 
 	return $re;
 }
@@ -132,6 +148,9 @@ sub get_userdata_by_id {
 	my $re = $sth->fetchrow_hashref;
 	$sth->finish;
 
+
+	utf8_decode_userdata($re);
+
 	return $re;
 }
 
@@ -142,6 +161,9 @@ sub verify_password_by_userdata {
 	my $userdata = shift;
 	my $password = shift;
 
+
+	# use octets
+	utf8::encode($password);
 
 	if ($userdata) {
 		my $userpassword = $$userdata{userpassword};
@@ -332,6 +354,7 @@ sub user_groups {
 			$prepare_user_groups, "[memberuidnumber = $memberuidnumber]");
 
 	while (my ($group, $gidnumber) = $sth->fetchrow_array) {
+		utf8::decode($group);
 		$groups{$group} = $gidnumber;
 	}
 
@@ -382,6 +405,9 @@ sub groups_projects {
 			$prepare_projectdata);
 
 	while (my $row = $sth->fetchrow_hashref) {
+		utf8::decode($$row{gid});
+		utf8::decode($$row{displayname});
+		utf8::decode($$row{longname});
 		$projects{$$row{gid}} = $row;
 	}
 
@@ -433,6 +459,8 @@ sub groups_classes {
 			$prepare_classdata);
 
 	while (my $row = $sth->fetchrow_hashref) {
+		utf8::decode($$row{gid});
+		utf8::decode($$row{displayname});
 		$classs{$$row{gid}} = $row;
 	}
 
@@ -468,6 +496,8 @@ sub classes {
 			$prepare_classdata);
 
 	while (my $row = $sth->fetchrow_hashref) {
+		utf8::decode($$row{gid});
+		utf8::decode($$row{displayname});
 		$classs{$$row{gid}} = $row;
 	}
 
@@ -504,6 +534,8 @@ sub all_classes {
 			$prepare_classdata);
 
 	while (my $row = $sth->fetchrow_hashref) {
+		utf8::decode($$row{gid});
+		utf8::decode($$row{displayname});
 		$classs{$$row{gid}} = $row;
 	}
 
@@ -552,6 +584,9 @@ sub get_classdata {
 	$sth->finish;
 
 
+	utf8::decode($$row{gid});
+	utf8::decode($$row{displayname});
+
 	return $row;
 
 }
@@ -596,6 +631,7 @@ sub get_class_userdatas {
 
 	my %re;
 	while (my $row = $sth->fetchrow_hashref) {
+		utf8_decode_userdata($row);
 		$re{$$row{uid}} = $row;
 	}
 
@@ -630,6 +666,9 @@ sub projects {
 			$prepare_projectdata);
 
 	while (my $row = $sth->fetchrow_hashref) {
+		utf8::decode($$row{gid});
+		utf8::decode($$row{displayname});
+		utf8::decode($$row{longname});
 		$projects{$$row{gid}} = $row;
 	}
 
@@ -674,6 +713,11 @@ sub get_projectdata {
 
 	my $row = $sth->fetchrow_hashref;
 	$sth->finish;
+
+
+	utf8::decode($$row{gid});
+	utf8::decode($$row{displayname});
+	utf8::decode($$row{longname});
 
 
 	return $row;
@@ -852,6 +896,7 @@ sub project_user_members {
 
 	my %re;
 	while (my $row = $sth->fetchrow_hashref) {
+		utf8_decode_userdata($row);
 		$re{$$row{uid}} = $row;
 	}
 
@@ -905,6 +950,8 @@ sub project_class_members {
 
 	my %re;
 	while (my $row = $sth->fetchrow_hashref) {
+		utf8::decode($$row{gid});
+		utf8::decode($$row{displayname});
 		$re{$$row{gid}} = $row;
 	}
 
@@ -965,6 +1012,9 @@ sub project_project_members {
 
 	my %re;
 	while (my $row = $sth->fetchrow_hashref) {
+		utf8::decode($$row{gid});
+		utf8::decode($$row{displayname});
+		utf8::decode($$row{longname});
 		$re{$$row{gid}} = $row;
 	}
 
@@ -1003,6 +1053,7 @@ sub get_teachers {
 
 	my %re;
 	while (my $row = $sth->fetchrow_hashref) {
+		utf8_decode_userdata($row);
 		$re{$$row{uid}} = $row;
 	}
 
@@ -1060,6 +1111,7 @@ sub find_teachers {
 
 	my %re;
 	while (my $row = $sth->fetchrow_hashref) {
+		utf8_decode_userdata($row);
 		$re{$$row{uid}} = $row;
 	}
 
@@ -1082,6 +1134,7 @@ sub find_teachers {
 			"[uid LIKE $pattern, firstname LIKE $pattern, surname LIKE $pattern]");
 
 	while (my $row = $sth->fetchrow_hashref) {
+		utf8_decode_userdata($row);
 		$re{$$row{uid}} = $row;
 	}
 
@@ -1143,6 +1196,7 @@ sub find_students {
 	while (my $row = $sth->fetchrow_hashref) {
 		next if $$row{uid} =~ /\$$/;
 
+		utf8_decode_userdata($row);
 		$re{$$row{uid}} = $row;
 	}
 
@@ -1197,6 +1251,8 @@ sub find_classes {
 
 	my %re;
 	while (my $row = $sth->fetchrow_hashref) {
+		utf8::decode($$row{gid});
+		utf8::decode($$row{displayname});
 		$re{$$row{gid}} = $row;
 	}
 
@@ -1252,6 +1308,9 @@ sub find_projects {
 
 	my %re;
 	while (my $row = $sth->fetchrow_hashref) {
+		utf8::decode($$row{gid});
+		utf8::decode($$row{displayname});
+		utf8::decode($$row{longname});
 		$re{$$row{gid}} = $row;
 	}
 
@@ -1284,6 +1343,10 @@ sub db_connect {
 		$_dbh = DBI->connect($conf{DSN}, $conf{Username}, $conf{Password})
 			or die DBI->errstr;
 		$_dbh->{FetchHashKeyName} = 'NAME_lc';
+
+		$_dbh->{PrintError} = 0;
+		$_dbh->do('SET NAMES \'utf8\'');
+		$_dbh->{PrintError} = 1;
 	}
 
 	return $_dbh;

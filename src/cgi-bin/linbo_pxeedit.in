@@ -24,8 +24,10 @@ provides the following variables:
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
-use Schulkonsole::Session;
+use open ':utf8';
+use Schulkonsole::Encode;
 use Schulkonsole::Linbo;
+use Schulkonsole::Session;
 
 
 my $this_file = 'linbo_pxeedit';
@@ -139,7 +141,9 @@ foreach my $param ($q->param) {
 		}
 
 		if ($command eq 'edit') {
-			if (open REGPATCH, "<$Schulkonsole::Config::_linbo_dir/$pxestart") {
+			if (open REGPATCH, '<',
+			         Schulkonsole::Encode::to_fs(
+			         	"$Schulkonsole::Config::_linbo_dir/$pxestart")) {
 				flock REGPATCH, 1;
 				seek REGPATCH, 0, 0;
 

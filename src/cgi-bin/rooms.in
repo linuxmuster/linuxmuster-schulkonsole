@@ -25,9 +25,11 @@ provides the following variables:
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
-use Schulkonsole::Session;
+use open ':utf8';
+use Schulkonsole::Encode;
 use Schulkonsole::Files;
 use Schulkonsole::Firewall;
+use Schulkonsole::Session;
 
 
 my $this_file = 'rooms';
@@ -402,7 +404,8 @@ sub read_room_defaults {
 	my %re;
 
 
-	open DEFAULTS, "<$Schulkonsole::Config::_room_defaults_file"
+	open DEFAULTS, '<',
+	     Schulkonsole::Encode::to_fs($Schulkonsole::Config::_room_defaults_file)
 		or return {};
 	flock DEFAULTS, 1;
 

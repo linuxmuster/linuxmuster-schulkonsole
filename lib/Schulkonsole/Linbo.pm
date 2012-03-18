@@ -1,8 +1,10 @@
 use strict;
+use open ':utf8';
 use IPC::Open3;
 use POSIX 'sys_wait_h';
-use Schulkonsole::Error;
 use Schulkonsole::Config;
+use Schulkonsole::Encode;
+use Schulkonsole::Error;
 use File::Basename;
 
 
@@ -146,6 +148,11 @@ sub start_wrapper {
 			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
 			$Schulkonsole::Config::_wrapper_linbo, $!);
 
+	binmode $out, ':utf8';
+	binmode $in, ':utf8';
+	binmode $err, ':utf8';
+
+
 	my $re = waitpid $pid, POSIX::WNOHANG;
 	if (   $re == $pid
 	    or $re == -1) {
@@ -250,7 +257,7 @@ sub groups {
 		my ($group) = $file =~ /^\Q${Schulkonsole::Config::_linbo_start_conf_prefix}\E([a-z\d_]+.*)/;
 		next unless $group;
 
-		$re{$group} = 1;
+		$re{ Schulkonsole::Encode::from_fs($group) } = 1;
 	}
 
 	return \%re;
@@ -282,7 +289,7 @@ sub regpatches {
 			glob("$Schulkonsole::Config::_linbo_dir/*.rsync.reg")
 		)) {
 		my ($filename) = File::Basename::fileparse($file);
-		$re{$filename} = $file;
+		$re{ Schulkonsole::Encode::from_fs($filename) } = $file;
 	}
 
 	return \%re;
@@ -313,7 +320,7 @@ sub example_regpatches {
 			glob("$Schulkonsole::Config::_linbo_dir/examples/*.reg"),
 		)) {
 		my ($filename) = File::Basename::fileparse($file);
-		$re{$filename} = $file;
+		$re{ Schulkonsole::Encode::from_fs($filename) } = $file;
 	}
 
 	return \%re;
@@ -345,7 +352,7 @@ sub images {
 			glob("$Schulkonsole::Config::_linbo_dir/*.rsync")
 		)) {
 		my ($filename) = File::Basename::fileparse($file);
-		$re{$filename} = $file;
+		$re{ Schulkonsole::Encode::from_fs($filename) } = $file;
 	}
 
 	return \%re;
@@ -378,7 +385,8 @@ sub pxestarts {
 			glob("$Schulkonsole::Config::_linbo_dir/pxegrub.lst.*")
 		)) {
 		my ($filename) = File::Basename::fileparse($file);
-		$re{$filename} = $file if $filename =~ /^pxegrub\.lst\.(?:[a-z\d_]+)$/;
+		$re{ Schulkonsole::Encode::from_fs($filename) } = $file
+			if $filename =~ /^pxegrub\.lst\.(?:[a-z\d_]+)$/;
 	}
 
 	return \%re;
@@ -2155,7 +2163,7 @@ sub get_templates_os {
 	foreach my $file (glob("$Schulkonsole::Config::_linbo_templates_os_dir/*"))
 	{
 		my ($filename) = File::Basename::fileparse($file);
-		$re{$filename} = $file;
+		$re{ Schulkonsole::Encode::from_fs($filename) } = $file;
 	}
 
 

@@ -1,6 +1,6 @@
 <html lang="de">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Drucker</gettext></title>
 <!--#include file="css.shtml.inc" -->
@@ -20,7 +20,7 @@
 
 
 <!--#if expr="$editrooms" -->
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 
 <table id="printersedit" class="liste">
 <col id="selected" width="40%">
@@ -59,7 +59,7 @@
 
 </form>
 <!--#else -->
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 
 <table id="printersedit" class="liste">
 <col id="selected" width="40%">

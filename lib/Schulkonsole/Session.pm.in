@@ -8,7 +8,7 @@ eval {
 if ($@) {
 	require Schulkonsole::Gettext;
 }
-use CGI;
+use CGI qw(-utf8);
 use CGI::Session qw(-ip_match);
 use Crypt::Rijndael;
 use Digest::MD5;
@@ -665,8 +665,12 @@ key is transmitted to the client with the next HTML-page.
 
 sub save_password {
 	my $this = shift;
-
 	my $password = shift;
+
+	$this->{password} = $password;
+
+
+	utf8::encode($password);
 
 	my $key = Digest::MD5::md5_hex(rand(10000), time, $$);
 	my $cipher = new Crypt::Rijndael($key, Crypt::Rijndael::MODE_CBC);
@@ -678,7 +682,6 @@ sub save_password {
 
 	my $encrypted_password = $cipher->encrypt($password_filled);
 
-	$this->{password} = $password;
 	$this->{key} = $key;
 	$this->{session}->param('password', $encrypted_password);
 	$this->{session}->expire('password', $Schulkonsole::Config::_max_idle_time);
@@ -713,6 +716,9 @@ sub get_password {
 	if ($key and $encrypted_password) {
 		my $cipher = new Crypt::Rijndael($key, Crypt::Rijndael::MODE_CBC);
 		my ($password) = $cipher->decrypt($encrypted_password) =~ /^(.*?)\a/;
+
+
+		utf8::decode($password);
 
 		$this->{password} = $password;
 	} else {
@@ -800,6 +806,73 @@ sub query {
 	my $this = shift;
 
 	return $this->{query};
+}
+
+
+
+=head3 C<q_param($key)>
+
+Get parameter from CGI-object of this session
+
+=head4 Parameters
+
+=over
+
+=item C<$key>
+
+parameter name
+
+=back
+
+=head4 Return value
+
+Value of parameter
+
+=head4 Description
+
+Returns parameter value of CGI-object that was created from the transmitted 
+query data at the beginning of the program run.
+
+=head3 C<q_param($key, $value)>
+
+Set parameter in CGI-object of this session
+
+=head4 Parameters
+
+=over
+
+=item C<$key>
+
+parameter name
+
+=item C<$value>
+
+parameter value
+
+=back
+
+=head4 Description
+
+Set parameter value in CGI-object that was created from the transmitted 
+query data at the beginning of the program run.
+
+=cut
+
+sub q_param {
+	my $this = shift;
+
+	my $key = shift;
+	my $value = shift;
+	utf8::encode($key);
+
+	if (defined $value) {
+		$this->{query}->param($key, $value);
+	} else {
+		my $param = $this->{query}->param($key);
+		utf8::decode($param);
+
+		return $param;
+	}
 }
 
 
@@ -998,6 +1071,8 @@ sub init {
 
 	$this->{query} = new CGI;
 
+	$this->{query}->charset('UTF-8');
+
 	umask(umask() | 077);	# session-file mode 0600
 	# create session from query to get the session id
 	$this->{session} = new CGI::Session("driver:File", $this->{query},
@@ -1112,6 +1187,9 @@ sub authenticate {
 		my $password = $q->param('password');
 
 
+		utf8::decode($username);
+		utf8::decode($password);
+
 		$this->{userdata}
 			= Schulkonsole::DB::verify_password($username, $password);
 		if (defined $this->{userdata}) { # authentication succeeded
@@ -1119,9 +1197,9 @@ sub authenticate {
 			my $session_username = $session->param('username');
 			# same session, different user
 			if (defined $session_username) {
-				if ($session_username ne $q->param('username')) {
+				if ($session_username ne $username) {
 					$session->clear;
-					$session->param('username', $q->param('username'));
+					$session->param('username', $username);
 				} elsif ($this->{session}->param('q')) {
 					# load query from before session-timeout
 					my $params = $this->{session}->param('q');
@@ -1131,7 +1209,7 @@ sub authenticate {
 					$this->{session}->clear('q');
 				}
 			} else {
-				$session->param('username', $q->param('username'));
+				$session->param('username', $username);
 			}
 
 
@@ -1210,7 +1288,7 @@ sub init_l10n
 	if (defined $ENV{HTTP_ACCEPT_LANGUAGE}) {
 		my %lang_map = (
 			de_DE => 'C',	# default language, need not translate
-			en => 'en_US',
+			en => 'en_US.UTF-8',
 			'*' => 'C',
 		);
 		foreach my $lang (sort {
@@ -1229,7 +1307,7 @@ sub init_l10n
 			}
 
 			if ($lang eq 'C') {
-				POSIX::setlocale(POSIX::LC_ALL, 'de_DE');
+				POSIX::setlocale(POSIX::LC_ALL, 'de_DE.UTF-8');
 				last;
 			}
 

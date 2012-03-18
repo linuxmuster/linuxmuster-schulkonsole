@@ -1,6 +1,6 @@
 <html lang="de">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Benutzer</gettext> - <gettext>&Auml;nderungen durchf&uuml;hren</gettext></title>
 <!--#include file="css.shtml.inc" -->
@@ -18,7 +18,7 @@
 
 <h2><gettext>Benutzerverwaltung</gettext> :: <gettext>Teach-In</gettext></h2>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 
 <p><label for="max"><gettext>Benutzer pro Seite:</gettext></label>
 <select name="max" id="max">
@@ -35,7 +35,7 @@
 <p><gettext>Seite</gettext>
 <!--#echo var="currentpage" -->/<!--#echo var="maxpage" --></p>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <p>
 <!--#if expr="$firstpage" -->
 <input type="submit" name="prev" value="zur&uuml;ck" disabled>

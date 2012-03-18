@@ -15,7 +15,7 @@ Schulkonsole::Config - access to schulkonsole configuration
  my $app_permissions = permissions_apps();
 
  my ($room, $workstation) = workstation_info('localhost', 127.0.0.1);
- open INFO, '<' . workstation_file($workstation);
+ open INFO, '<', workstation_file($workstation);
  my $workstations =  workstations_room($room);
  my $printers = printers_room($room);
  my $classrooms = classrooms();
@@ -23,6 +23,8 @@ Schulkonsole::Config - access to schulkonsole configuration
 =cut
 
 use strict;
+use utf8;
+use open ':utf8';
 
 package Schulkonsole::Config;
 require Exporter;
@@ -183,6 +185,7 @@ $VERSION = 0.06;
 );
 
 use Env::Bash;
+use Schulkonsole::Encode;
 use Schulkonsole::Error;
 
 =head1 DESCRIPTION
@@ -1016,6 +1019,10 @@ use vars qw(%_id_root_app_names
 
 =over
 
+=item C<$_sophomorix_encoding>
+
+Encoding used to write Sophomorix files
+
 =item C<$_sophomorix_conf_true>
 
 Value used for 'true' in Sophomorix configuration files
@@ -1036,7 +1043,8 @@ Value used for 'false' in backup.conf
 
 =cut
 
-use vars qw($_sophomorix_conf_true $_sophomorix_conf_false
+use vars qw($_sophomorix_encoding
+            $_sophomorix_conf_true $_sophomorix_conf_false
             $_backup_conf_true $_backup_conf_false);
 
 
@@ -1198,6 +1206,7 @@ $_cmd_urlfilter_check = '/usr/share/linuxmuster/scripts/check_urlfilter.sh';
 $_cmd_urlfilter_on_off = '/usr/share/linuxmuster/scripts/urlfilter_on_off.sh';
 
 
+$_sophomorix_encoding = 'iso-8859-15';
 
 $_sophomorix_conf_true = 'yes';
 $_sophomorix_conf_false = 'no';
@@ -1239,7 +1248,7 @@ sub permissions {
 
 	my $section = 0;
 
-	open PERMISSIONS, "<$_permissions_conf_file"
+	open PERMISSIONS, '<', Schulkonsole::Encode::to_fs($_permissions_conf_file)
 		or die "$0: Cannot open $_permissions_conf_file: $!\n";
 	while (<PERMISSIONS>) {
 		next if /^#/ or /^\s*$/;
@@ -1374,7 +1383,7 @@ sub workstation_info {
 	my $room;
 
 
-	if (open CONF, "<$_workstations_file") {
+	if (open CONF, '<', Schulkonsole::Encode::to_fs($_workstations_file)) {
 		while (<CONF>) {
 			next if /^#/ || /^\s*$/;
 
@@ -1455,7 +1464,7 @@ sub workstations_room {
 
 	my %workstations;
 
-	if (open CONF, "<$_workstations_file") {
+	if (open CONF, '<', Schulkonsole::Encode::to_fs($_workstations_file)) {
 		while (<CONF>) {
 			next if /^#/ || /^\s*$/;
 
@@ -1506,7 +1515,7 @@ sub count_unimported_unconfigured_workstations {
 	my $comment_cnt = 0;
 
 	my $unconfigured_cnt = 0;
-	if (open CONF, "<$_workstations_file") {
+	if (open CONF, '<', Schulkonsole::Encode::to_fs($_workstations_file)) {
 		while (<CONF>) {
 			if (/^#/) {
 				$comment_cnt++;
@@ -1522,7 +1531,7 @@ sub count_unimported_unconfigured_workstations {
 		close CONF;
 
 
-		open CONF, "<$_dhcpd_conf_file"
+		open CONF, '<', Schulkonsole::Encode::to_fs($_dhcpd_conf_file)
 			or die "$0: Cannot open $_dhcpd_conf_file: $!\n";
 
 		while (<CONF>) {
@@ -1574,7 +1583,8 @@ The filename
 sub lockfile {
 	my $task = shift;
 
-	return sprintf("%s/schulkonsole-%s", $_lockdir, $task);
+	return Schulkonsole::Encode::to_fs(
+	       	sprintf("%s/schulkonsole-%s", $_lockdir, $task));
 }
 
 
@@ -1604,7 +1614,8 @@ The filename
 sub workstation_file {
 	my $workstation = shift;
 
-	return sprintf($_workstation_file, $workstation);
+	return Schulkonsole::Encode::to_fs(
+	       	sprintf($_workstation_file, $workstation));
 }
 
 
@@ -1624,7 +1635,7 @@ A reference to an array of all classrooms
 sub classrooms {
 	my @re;
 
-	open CLASSROOMS, "<$_classrooms_file"
+	open CLASSROOMS, '<', Schulkonsole::Encode::to_fs($_classrooms_file)
 		or die "$0: Cannot open $_classrooms_file: $!\n";
 
 	while (<CLASSROOMS>) {
@@ -1657,7 +1668,7 @@ A reference to a hash with all rooms from the workstations file as keys
 sub rooms {
 	my %rooms;
 
-	open ROOMS, "<$_workstations_file"
+	open ROOMS, '<', Schulkonsole::Encode::to_fs($_workstations_file)
 		or die "$0: Cannot open $_workstations_file: $!\n";
 
 	while (<ROOMS>) {
@@ -1693,7 +1704,7 @@ the room of that workstation as value
 sub hosts {
 	my %hosts;
 
-	open HOSTS, "<$_workstations_file"
+	open HOSTS, '<', Schulkonsole::Encode::to_fs($_workstations_file)
 		or die "$0: Cannot open $_workstations_file: $!\n";
 
 	while (<HOSTS>) {
@@ -1729,7 +1740,7 @@ the room of that workstation as value
 sub workstations {
 	my %workstations;
 
-	open WORKSTATIONS, "<$_workstations_file"
+	open WORKSTATIONS, '<', Schulkonsole::Encode::to_fs($_workstations_file)
 		or die "$0: Cannot open $_workstations_file: $!\n";
 
 	while (<WORKSTATIONS>) {
@@ -1791,7 +1802,7 @@ sub printers_room {
 	my $room = shift;
 	my @re;
 
-	open PRINTERS, "<$_printers_file"
+	open PRINTERS, '<', Schulkonsole::Encode::to_fs($_printers_file)
 		or die "$0: Cannot open $_printers_file: $!\n";
 
 	while (my $line = <PRINTERS>) {
@@ -1838,7 +1849,7 @@ with the rooms or resp. the hosts as keys and 1 as a value.
 sub printers {
 	my %re;
 
-	open PRINTERS, "<$_printers_file"
+	open PRINTERS, '<', Schulkonsole::Encode::to_fs($_printers_file)
 		or die "$0: Cannot open $_printers_file: $!\n";
 
 	while (my $line = <PRINTERS>) {
@@ -1894,7 +1905,9 @@ my $is_linbo_enabled;
 sub is_linbo_enabled {
 	return $is_linbo_enabled if defined $is_linbo_enabled;
 
-	open NETWORKSETTINGS, "<$Schulkonsole::Config::_network_settings_file"
+	open NETWORKSETTINGS, '<',
+	     Schulkonsole::Encode::to_fs(
+	     	$Schulkonsole::Config::_network_settings_file)
 		or return 0;
 	while (<NETWORKSETTINGS>) {
 		my ($key, $value) = /^\s*(\S+)\s*=\s*(.+)$/;
@@ -1915,7 +1928,7 @@ sub read_conf {
 	my $filename = shift;
 	my %conf;
 
-	open CONF, "<$filename"
+	open CONF, '<', Schulkonsole::Encode::to_fs($filename)
 		or die "$0: Cannot open $filename: $!\n";
 
 	while (<CONF>) {

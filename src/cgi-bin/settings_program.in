@@ -25,10 +25,11 @@ provides the following variables:
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Env::Bash;
-use Sophomorix::SophomorixAPI;
-use Sophomorix::SophomorixConfig;
+use Schulkonsole::Encode;
 use Schulkonsole::Files;
 use Schulkonsole::Session;
+use Sophomorix::SophomorixAPI;
+use Sophomorix::SophomorixConfig;
 
 
 my $this_file = 'settings_program';
@@ -163,7 +164,9 @@ sub new_preferences_lines {
 	my %key_map_rev = reverse %key_map;
 
 
-	if (open CONF, "<$Schulkonsole::Config::_preferences_conf_file") {
+	if (open CONF, '<',
+	         Schulkonsole::Encode::to_fs(
+	         	$Schulkonsole::Config::_preferences_conf_file)) {
 		while (<CONF>) {
 			if (/^#/ or /^\[/ or /^\s*$/) {
 				push @lines, $_;

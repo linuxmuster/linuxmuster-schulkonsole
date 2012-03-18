@@ -24,8 +24,11 @@ wrapper-sophomorix.pl - wrapper for sophomorix access
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
+use open ':utf8';
+use open ':std';
 use POSIX;
 use Data::Dumper;
+use Encode;
 use Sophomorix::SophomorixAPI;
 use Sophomorix::SophomorixConfig;
 use Schulkonsole::Config;
@@ -110,7 +113,8 @@ $app_id == Schulkonsole::Config::SHARESTATESAPP and do {
 	foreach my $login_id (@login_ids) {
 		my $login_userdata = Schulkonsole::DB::get_userdata_by_id($login_id);
 		next unless $login_userdata;
-		my $share_dir = "$$login_userdata{homedirectory}/$Language::share_dir/";
+		my $share_dir = Schulkonsole::Encode::to_fs(
+			"$$login_userdata{homedirectory}/$Language::share_dir/");
 
 		if (-d $share_dir) {
 			my $mode = (stat $share_dir)[2];
@@ -176,7 +180,9 @@ $app_id == Schulkonsole::Config::SHARESONOFFAPP and do {
 	# sophomorix-teacher cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	exec "$Schulkonsole::Config::_cmd_sophomorix_teacher $opts" or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_sophomorix_teacher $opts")
+		or last SWITCH;
 };
 
 =head3 ls_handout
@@ -261,16 +267,16 @@ $app_id == Schulkonsole::Config::LSHANDOUTAPP and do {
 	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	}
 
-	chdir $share_dir
+	chdir Schulkonsole::Encode::to_fs($share_dir)
 		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY
 		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	my @files = glob '*';
 	my %files;
 	foreach my $file (@files) {
 		if (-d $file) {
-			$files{$file} = 'd';
+			$files{get_decoded($file)} = 'd';
 		} else {
-			$files{$file} = 0;
+			$files{get_decoded($file)} = 0;
 		}
 	}
 
@@ -318,17 +324,17 @@ $app_id == Schulkonsole::Config::LSCOLLECTAPP and do {
 		my $login_userdata = Schulkonsole::DB::get_userdata_by_id($login_id);
 		next unless $login_userdata;
 
-		my $share_dir
-			= "$$login_userdata{homedirectory}/$Language::collect_dir";
+		my $share_dir = Schulkonsole::Encode::to_fs(
+			"$$login_userdata{homedirectory}/$Language::collect_dir");
 
 		if (chdir $share_dir) {
 			my @files = glob '*';
 			my %files;
 			foreach my $file (@files) {
 				if (-d $file) {
-					$files{$file} = 'd';
+					$files{get_decoded($file)} = 'd';
 				} else {
-					$files{$file} = 0;
+					$files{get_decoded($file)} = 0;
 				}
 			}
 
@@ -495,7 +501,9 @@ $app_id == Schulkonsole::Config::HANDOUTAPP and do {
 	# sophomorix-teacher cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	exec "$Schulkonsole::Config::_cmd_sophomorix_teacher $opts" or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_sophomorix_teacher $opts")
+		or last SWITCH;
 };
 
 =head3 collect
@@ -642,7 +650,9 @@ $app_id == Schulkonsole::Config::COLLECTAPP and do {
 	# sophomorix-teacher cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	exec "$Schulkonsole::Config::_cmd_sophomorix_teacher $opts" or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_sophomorix_teacher $opts")
+		or last SWITCH;
 };
 
 =head3 room_reset
@@ -671,7 +681,9 @@ $app_id == Schulkonsole::Config::RESETROOMAPP and do {
 	# sophomorix-room cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	exec "$Schulkonsole::Config::_cmd_sophomorix_room $opts" or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_sophomorix_room $opts")
+		or last SWITCH;
 };
 
 =head3 edit_own_class_membership
@@ -711,7 +723,9 @@ $app_id == Schulkonsole::Config::EDITOWNCLASSMEMBERSHIPAPP and do {
 	$) = 0;
 	$( = $);
 	umask(022);
-	exec "$Schulkonsole::Config::_cmd_sophomorix_teacher $opts" or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_sophomorix_teacher $opts")
+		or last SWITCH;
 };
 
 =head3 project_members
@@ -794,7 +808,9 @@ $app_id == Schulkonsole::Config::PROJECTMEMBERSAPP and do {
 	$) = 0;
 	$( = $);
 	umask(022);
-	exec "$Schulkonsole::Config::_cmd_sophomorix_project $opts" or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_sophomorix_project $opts")
+		or last SWITCH;
 };
 
 =head3 project_create_drop
@@ -851,7 +867,9 @@ $app_id == Schulkonsole::Config::PROJECTCREATEDROPAPP and do {
 	$) = 0;	# sophomorix-project will re-create /etc/aliases
 	$( = $);
 	umask(022);
-	exec "$Schulkonsole::Config::_cmd_sophomorix_project $opts" or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_sophomorix_project $opts")
+		or last SWITCH;
 };
 
 =head3 print_class
@@ -892,33 +910,47 @@ $app_id == Schulkonsole::Config::PRINTCLASSAPP and do {
 	# sophomorix-print cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	system("$Schulkonsole::Config::_cmd_sophomorix_print $opts >/dev/null 2>/dev/null") == 0
+	system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_print $opts >/dev/null 2>/dev/null")) == 0
 		or exit ($? >> 8);
 
 	my $filename;
 	SWITCHFILETYPE: {
 	$filetype == 0 and do {
-		$filename = "$DevelConf::druck_pfad/$class_gid-$$userdata{uid}.pdf";
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::druck_pfad/$class_gid-$$userdata{uid}.pdf");
 		last SWITCHFILETYPE;
 	};
 	$filetype == 1 and do {
-		$filename = "$DevelConf::druck_pfad/$class_gid-$$userdata{uid}.csv";
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::druck_pfad/$class_gid-$$userdata{uid}.csv");
 		last SWITCHFILETYPE;
 	};
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE
 	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	}
 	
-	open DATA, "<$filename"
+	open DATA, '<:raw', $filename
 		or (    print STDERR "$filename: $!\n"
 	        and exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
 		              - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE));
-	{
+
+	SWITCHDATATYPE: {
+	$filetype == 0 and do {
+		binmode STDOUT, ':raw';
 		local $/ = undef;
 		while (<DATA>) {
 			print;
 		}
+		last SWITCHDATATYPE;
+	};
+	$filetype == 1 and do {
+		while (<DATA>) {
+			print get_decoded($_);
+		}
+		last SWITCHDATATYPE;
+	};
 	}
+
 	close DATA;
 
 	exit 0;
@@ -952,33 +984,47 @@ $app_id == Schulkonsole::Config::PRINTTEACHERSAPP and do {
 	# sophomorix-print cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	system("$Schulkonsole::Config::_cmd_sophomorix_print $opts >/dev/null 2>/dev/null ") == 0
+	system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_print $opts >/dev/null 2>/dev/null")) == 0
 		or exit ($? >> 8);
 
 	my $filename;
 	SWITCHFILETYPE: {
 	$filetype == 0 and do {
-		$filename = "$DevelConf::druck_pfad/teachers.pdf";
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::druck_pfad/teachers.pdf");
 		last SWITCHFILETYPE;
 	};
 	$filetype == 1 and do {
-		$filename = "$DevelConf::druck_pfad/teachers.csv";
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::druck_pfad/teachers.csv");
 		last SWITCHFILETYPE;
 	};
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE
 	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	}
 	
-	open DATA, "<$filename"
+	open DATA, '<:raw', $filename
 		or (    print STDERR "$filename: $!\n"
 		    and exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
 		              - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE));
-	{
+
+	SWITCHDATATYPE: {
+	$filetype == 0 and do {
+		binmode STDOUT, ':raw';
 		local $/ = undef;
 		while (<DATA>) {
 			print;
 		}
+		last SWITCHDATATYPE;
+	};
+	$filetype == 1 and do {
+		while (<DATA>) {
+			print get_decoded($_);
+		}
+		last SWITCHDATATYPE;
+	};
 	}
+
 	close DATA;
 
 	exit 0;
@@ -1075,7 +1121,9 @@ $app_id == Schulkonsole::Config::SETPASSWORDSAPP and do {
 	# sophomorix-passwd cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	exec "$Schulkonsole::Config::_cmd_sophomorix_passwd $opts" or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_sophomorix_passwd $opts")
+		or last SWITCH;
 };
 
 =head3 read_sophomorix_file
@@ -1107,53 +1155,65 @@ $app_id == Schulkonsole::Config::READSOPHOMORIXFILEAPP and do {
 	my $filename;
 	SWITCHREADFILE: {
 	$number == 0 and do {
-		$filename = "$DevelConf::users_pfad/lehrer.txt";
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::users_pfad/lehrer.txt");
 		last SWITCHREADFILE;
 	};
 	$number == 1 and do {
-		$filename = "$DevelConf::users_pfad/schueler.txt";
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::users_pfad/schueler.txt");
 		last SWITCHREADFILE;
 	};
 	$number == 2 and do {
-		$filename = "$DevelConf::ergebnis_pfad/sophomorix.add";
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::ergebnis_pfad/sophomorix.add");
 		last SWITCHREADFILE;
 	};
 	$number == 3 and do {
-		$filename = "$DevelConf::ergebnis_pfad/sophomorix.move";
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::ergebnis_pfad/sophomorix.move");
 		last SWITCHREADFILE;
 	};
 	$number == 4 and do {
-		$filename = "$DevelConf::ergebnis_pfad/sophomorix.kill";
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::ergebnis_pfad/sophomorix.kill");
 		last SWITCHREADFILE;
 	};
 	$number == 5 and do {
-		$filename = "$DevelConf::ergebnis_pfad/report.admin";
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::ergebnis_pfad/report.admin");
 		last SWITCHREADFILE;
 	};
 	$number == 6 and do {
-		$filename = "$DevelConf::ergebnis_pfad/report.office";
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::ergebnis_pfad/report.office");
 		last SWITCHREADFILE;
 	};
 	$number == 10 and do {
-		$filename = "$DevelConf::users_pfad/extraschueler.txt";
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::users_pfad/extraschueler.txt");
 		last SWITCHREADFILE;
 	};
 	$number == 11 and do {
-		$filename = "$DevelConf::users_pfad/extrakurse.txt";
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::users_pfad/extrakurse.txt");
 		last SWITCHREADFILE;
 	};
 	my $filename_base;
 	BASENAME: {
 		$number == 7 and do {
-			$filename_base = "$DevelConf::log_files/sophomorix-add.txt.";
+			$filename_base = Schulkonsole::Encode::to_fs(
+			                 	"$DevelConf::log_files/sophomorix-add.txt.");
 			last BASENAME;
 		};
 		$number == 8 and do {
-			$filename_base = "$DevelConf::log_files/sophomorix-move.txt.";
+			$filename_base = Schulkonsole::Encode::to_fs(
+			                 	"$DevelConf::log_files/sophomorix-move.txt.");
 			last BASENAME;
 		};
 		$number == 9 and do {
-			$filename_base = "$DevelConf::log_files/sophomorix-kill.txt.";
+			$filename_base = Schulkonsole::Encode::to_fs(
+			                 	"$DevelConf::log_files/sophomorix-kill.txt.");
 			last BASENAME;
 		};
 	}
@@ -1163,11 +1223,12 @@ $app_id == Schulkonsole::Config::READSOPHOMORIXFILEAPP and do {
 	} # end SWITCHREADFILE
 
 
-	open FILE, "<$filename"
+	open FILE, '<:raw', $filename
 		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
 		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+
 	while (<FILE>) {
-		print;
+		print get_decoded($_);
 	}
 	close FILE;
 
@@ -1251,7 +1312,7 @@ $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 	}
 
 	
-	my $full_filename = "$path/$filename";
+	my $full_filename = Schulkonsole::Encode::to_fs("$path/$filename");
 	if (-e $full_filename) {
 		@stat = stat $full_filename;
 
@@ -1260,8 +1321,8 @@ $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 
 		my $backup_path = "$DevelConf::log_pfad/history";
 
-		if (not -e $backup_path) {
-			my @dirs = split '/', $backup_path;
+		if (not -e Schulkonsole::Encode::to_fs($backup_path)) {
+			my @dirs = split '/', Schulkonsole::Encode::to_fs($backup_path);
 
 			my $dir = shift @dirs;
 			foreach my $next_dir (@dirs) {
@@ -1270,14 +1331,16 @@ $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 			}
 		} else {
 			my $cnt = 0;
-			while (-e "$backup_path/$filename$suffix") {
+			while (-e Schulkonsole::Encode::to_fs(
+			          	"$backup_path/$filename$suffix")) {
 				$cnt++;
 				$suffix = "$suffix_base-$cnt";
 			}
 		}
 
-		if (not rename $full_filename, "$backup_path/$filename$suffix") {
-			system("mv \Q$full_filename\E \Q$backup_path/$filename$suffix")
+		if (not rename Schulkonsole::Encode::to_fs($full_filename),
+		               Schulkonsole::Encode::to_fs("$backup_path/$filename$suffix")) {
+			system(Schulkonsole::Encode::to_cli("mv \Q$full_filename\E \Q$backup_path/$filename$suffix"))
 				== 0
 				or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_PROCESS_RUNNING
 				         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
@@ -1287,7 +1350,8 @@ $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 		$stat[5] = 0;
 	}
 
-	open FILE, ">$full_filename"
+	open FILE, ">:encoding($Schulkonsole::Config::_sophomorix_encoding)",
+	           $full_filename
 		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
 		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	while (<>) {
@@ -1355,7 +1419,7 @@ numeric constant: C<Schulkonsole::Config::USERSKILLAPP>
 
 
 	my $lockfile = Schulkonsole::Config::lockfile("user$action");
-	open LOCK, "+>>$lockfile"
+	open LOCK, '+>>', $lockfile
 		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
 		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	if (not flock(LOCK, 4 | 2)) {
@@ -1365,7 +1429,7 @@ numeric constant: C<Schulkonsole::Config::USERSKILLAPP>
 		use Proc::ProcessTable;
 
 		my $process_table = new Proc::ProcessTable;
-		my $app_cmnd = $cmd;
+		my $app_cmnd = Schulkonsole::Encode::to_cli($cmd);
 		$app_cmnd =~ s:.*/::;
 		foreach my $process (@{ $process_table->table }) {
 			if (    $process->uid == $>
@@ -1382,7 +1446,7 @@ numeric constant: C<Schulkonsole::Config::USERSKILLAPP>
 		localtime);
 	my $log_file = $log_file_base;
 	my $cnt = 0;
-	while (-e $log_file) {
+	while (-e Schulkonsole::Encode::to_fs($log_file)) {
 		$cnt++;
 		$log_file = sprintf "$log_file_base-%02d", $cnt;
 	}
@@ -1399,8 +1463,8 @@ numeric constant: C<Schulkonsole::Config::USERSKILLAPP>
 		$) = 0;
 		$( = $);
 		umask(022);
-		open STDOUT, ">>$log_file";	# ignore errors
-		open STDERR, ">>&STDOUT";
+		open STDOUT, '>>', Schulkonsole::Encode::to_fs($log_file);	# ignore errors
+		open STDERR, '>>&', *STDOUT;
 
 		$ENV{PATH} = '/bin:/sbin:/usr/sbin:/usr/bin';
 		$ENV{DEBIAN_FRONTEND} = 'teletype';
@@ -1425,7 +1489,7 @@ $app_id == Schulkonsole::Config::USERSADDMOVEKILLAPP and do {
 	my $action = 'addmovekill';
 
 	my $addmovekill_lockfile = Schulkonsole::Config::lockfile("user$action");
-	open ALLLOCK, "+>>$addmovekill_lockfile"
+	open ALLLOCK, '+>>', $addmovekill_lockfile
 		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
 		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	if (not flock(ALLLOCK, 4 | 2)) {
@@ -1457,7 +1521,7 @@ $app_id == Schulkonsole::Config::USERSADDMOVEKILLAPP and do {
 		);
 		USERAPPS: for my $i (0..2) {
 			my $lockfile = Schulkonsole::Config::lockfile("user$action[$i]");
-			open LOCK, "+>>$lockfile"
+			open LOCK, '+>>', $lockfile
 				or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
 				         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 			if (not flock(LOCK, 4 | 2)) {
@@ -1466,7 +1530,7 @@ $app_id == Schulkonsole::Config::USERSADDMOVEKILLAPP and do {
 				use Proc::ProcessTable;
 
 				my $process_table = new Proc::ProcessTable;
-				my $app_cmnd = $cmds[$i];
+				my $app_cmnd = Schulkonsole::Encode::to_cli($cmds[$i]);
 				$app_cmnd =~ s:.*/::;
 				foreach my $process (@{ $process_table->table }) {
 					if (    $process->uid == $>
@@ -1480,16 +1544,17 @@ $app_id == Schulkonsole::Config::USERSADDMOVEKILLAPP and do {
 			my $log_file_base = POSIX::strftime(
 				"$DevelConf::log_files/sophomorix-$action[$i].txt.%Y-%m-%d_%H-%M-%S",
 				localtime);
-			my $log_file = $log_file_base;
+			my $log_file = Schulkonsole::Encode::to_fs($log_file_base);
 			my $cnt = 0;
 			while (-e $log_file) {
 				$cnt++;
-				$log_file = sprintf "$log_file_base-%02d", $cnt;
+				$log_file = Schulkonsole::Encode::to_fs(
+				            	sprintf "$log_file_base-%02d", $cnt);
 			}
-			open STDOUT, ">>$log_file";	# ignore errors
-			open STDERR, ">>&STDOUT";
+			open STDOUT, '>>', $log_file;	# ignore errors
+			open STDERR, '>>&', *STDOUT;
 
-			system $cmds[$i];
+			system Schulkonsole::Encode::to_cli($cmds[$i]);
 
 			close LOCK;
 		}
@@ -1574,7 +1639,8 @@ $app_id == Schulkonsole::Config::TEACHINAPP and do {
 			my $end = (@ignore_users < 50) ? @ignore_users : 50;
 			$opts = '--all --ignore ' . quotemeta(join(',', @ignore_users[0..$end]));
 
-			system "$Schulkonsole::Config::_cmd_sophomorix_teachin $opts";
+			system Schulkonsole::Encode::to_cli(
+			       	"$Schulkonsole::Config::_cmd_sophomorix_teachin $opts");
 			@ignore_users = @ignore_users[$end + 1..$#ignore_users];
 		}
 
@@ -1582,7 +1648,8 @@ $app_id == Schulkonsole::Config::TEACHINAPP and do {
 		       and length(join(',', @teachin_users)) > 800) {
 			my $end = (@teachin_users < 20) ? @teachin_users : 20;
 			$opts = '--all --teachin ' . quotemeta(join(',', @teachin_users[0..$end]));
-			system "$Schulkonsole::Config::_cmd_sophomorix_teachin $opts";
+			system Schulkonsole::Encode::to_cli(
+			       	"$Schulkonsole::Config::_cmd_sophomorix_teachin $opts");
 			@teachin_users = @teachin_users[$end + 1..$#teachin_users];
 		}
 
@@ -1601,7 +1668,9 @@ $app_id == Schulkonsole::Config::TEACHINAPP and do {
 	};
 	}
 
-	exec "$Schulkonsole::Config::_cmd_sophomorix_teachin $opts" or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_sophomorix_teachin $opts")
+		or last SWITCH;
 };
 
 =head3 chmod
@@ -1641,7 +1710,7 @@ $app_id == Schulkonsole::Config::CHMODAPP and do {
 	my $mode;
 	SWITCHDIR: {
 	$number == 0 and do {
-		$filename = "$DevelConf::share_school";
+		$filename = Schulkonsole::Encode::to_fs($DevelConf::share_school);
 		$mode = $on ? 03777 : 0700;
 		last SWITCHDIR;
 	};
@@ -1760,14 +1829,15 @@ $app_id == Schulkonsole::Config::SETQUOTAAPP and do {
 		my $log_file_base = POSIX::strftime(
 			"$DevelConf::log_files/sophomorix-quota.txt.%Y-%m-%d_%H-%M-%S",
 			localtime);
-		my $log_file = $log_file_base;
+		my $log_file = Schulkonsole::Encode::to_fs($log_file_base);
 		my $cnt = 0;
 		while (-e $log_file) {
 			$cnt++;
-			$log_file = sprintf "$log_file_base-%02d", $cnt;
+			$log_file = Schulkonsole::Encode::to_fs(
+			            	sprintf "$log_file_base-%02d", $cnt);
 		}
-		open STDOUT, ">>$log_file"; # ignore errors
-		open STDERR, ">>&STDOUT";
+		open STDOUT, '>>', $log_file; # ignore errors
+		open STDERR, '>>&', *STDOUT;
 
 		$< = $>;
 		$) = 0;
@@ -1775,7 +1845,7 @@ $app_id == Schulkonsole::Config::SETQUOTAAPP and do {
 		umask(022);
 
 		my $lockfile = Schulkonsole::Config::lockfile('processquota');
-		open LOCK, ">>$lockfile"
+		open LOCK, '>>', $lockfile
 			or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
 			         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 		flock LOCK, 2;
@@ -1783,7 +1853,7 @@ $app_id == Schulkonsole::Config::SETQUOTAAPP and do {
 		seek LOCK, 0, 0;
 		print LOCK "$$\n";
 
-		exec $app_opts or last SWITCH;
+		exec Schulkonsole::Encode::to_cli($app_opts) or last SWITCH;
 	}
 
 	exit 0;
@@ -1817,7 +1887,9 @@ $app_id == Schulkonsole::Config::SETOWNPASSWORDAPP and do {
 	# sophomorix-passwd cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
-	exec "$Schulkonsole::Config::_cmd_sophomorix_passwd $opts" or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_sophomorix_passwd $opts")
+		or last SWITCH;
 };
 
 =head3 hide_unhide_class
@@ -1871,12 +1943,12 @@ $app_id == Schulkonsole::Config::HIDEUNHIDECLASSAPP and do {
 
 	my $opts = '--hide';
 	foreach my $gid (@hides) {
-		system("$Schulkonsole::Config::_cmd_sophomorix_class $opts --class \Q$gid\E") == 0
+		system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_class $opts --class \Q$gid\E")) == 0
 			or exit ($? >> 8);
 	}
 	$opts = '--nohide';
 	foreach my $gid (@nohides) {
-		system("$Schulkonsole::Config::_cmd_sophomorix_class $opts --class \Q$gid\E") == 0
+		system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_class $opts --class \Q$gid\E")) == 0
 			or exit ($? >> 8);
 	}
 
@@ -1935,12 +2007,12 @@ $app_id == Schulkonsole::Config::PROJECTJOINNOJOINAPP and do {
 
 	my $opts = "--caller \Q$$userdata{uid}\E --join";
 	foreach my $gid (@joins) {
-		system("$Schulkonsole::Config::_cmd_sophomorix_project $opts --project \Q$gid\E") == 0
+		system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_project $opts --project \Q$gid\E")) == 0
 			or exit ($? >> 8);
 	}
 	$opts = "--caller \Q$$userdata{uid}\E --nojoin";
 	foreach my $gid (@nojoins) {
-		system("$Schulkonsole::Config::_cmd_sophomorix_project $opts --project \Q$gid\E") == 0
+		system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_project $opts --project \Q$gid\E")) == 0
 			or exit ($? >> 8);
 	}
 
@@ -1953,4 +2025,23 @@ $app_id == Schulkonsole::Config::PROJECTJOINNOJOINAPP and do {
 
 
 exit -2;	# program error
+
+
+
+
+sub get_decoded {
+	my $data = shift;
+	my $utf8 = $data;
+
+	utf8::decode($utf8);
+
+	my $enc = Encode::find_encoding('iso-8859-15');
+
+	my $re = $enc->decode($data, Encode::FB_QUIET);
+
+	return $re if ($data eq '' and length($re) <= length($utf8));
+
+
+	return $utf8;
+}
 

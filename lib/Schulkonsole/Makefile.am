@@ -1,7 +1,9 @@
 perllibdir = $(pkgdatadir)/Schulkonsole
 perllib_DATA = Session.pm Config.pm
 nobase_dist_perllib_DATA = \
+	Cyrus.pm \
 	DB.pm \
+	Encode.pm \
 	Error.pm ExternalError.pm \
 	Error/Cyrus.pm \
 	Error/Files.pm \
@@ -11,11 +13,19 @@ nobase_dist_perllib_DATA = \
 	Error/Printer.pm \
 	Error/Sophomorix.pm \
 	Error/User.pm \
-	Gettext.pm Template.pm \
-	Room.pm RoomSession.pm \
+	Files.pm \
+	Firewall.pm \
+	Gettext.pm \
+	Info.pm \
+	Linbo.pm \
+	OVPN.pm \
+	Printer.pm \
+	Room.pm \
+	RoomSession.pm \
+	Sophomorix.pm \
+	SophomorixQuotas.pm \
 	TeachIn.pm \
-	Info.pm Firewall.pm Printer.pm Sophomorix.pm Cyrus.pm \
-	Files.pm SophomorixQuotas.pm OVPN.pm Linbo.pm
+	Template.pm
 
 CLEANFILES = $(perllib_DATA)
 EXTRA_DIST = Session.pm.in Config.pm.in

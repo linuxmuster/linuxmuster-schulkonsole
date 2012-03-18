@@ -30,13 +30,16 @@ wrapper-firewall.pl - wrapper for configuration of firewall
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
+use open ':utf8';
+use open ':std';
 use Sophomorix::SophomorixAPI;
 use Sophomorix::SophomorixConfig;
 use Schulkonsole::Config;
-use Schulkonsole::Error::Firewall;
 use Schulkonsole::DB;
-use Schulkonsole::RoomSession;
+use Schulkonsole::Encode;
+use Schulkonsole::Error::Firewall;
 use Schulkonsole::Firewall;
+use Schulkonsole::RoomSession;
 
 
 
@@ -169,7 +172,7 @@ Format of address is xx:xx:xx:xx:xx:xx where xx is a hexadecimal value.
 	local $) = 0;
 	local $( = $);
 	umask(022);
-	exec "$cmd $opts" or last SWITCH;
+	exec Schulkonsole::Encode::to_cli("$cmd $opts") or last SWITCH;
 };
 
 =head3 urlfilter_on_off
@@ -225,7 +228,9 @@ $app_id == Schulkonsole::Config::URLFILTERONOFFAPP and do {
 	local $) = 0;
 	local $( = $);
 	umask(022);
-	exec "$Schulkonsole::Config::_cmd_urlfilter_on_off $opts" or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_urlfilter_on_off $opts")
+		or last SWITCH;
 };
 
 =head3 update_logins
@@ -246,7 +251,9 @@ $app_id == Schulkonsole::Config::UPDATELOGINSAPP and do {
 		unless $room;
 	# set ruid
 	local $< = $>;
-	exec "$Schulkonsole::Config::_cmd_update_logins $room" or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_update_logins $room")
+		or last SWITCH;
 };
 
 =head3 urlfilter_check
@@ -262,7 +269,9 @@ invokes C<check_urlfilter.sh>
 $app_id == Schulkonsole::Config::URLFILTERCHECKAPP and do {
 	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;
-	exec $Schulkonsole::Config::_cmd_urlfilter_check or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	$Schulkonsole::Config::_cmd_urlfilter_check)
+		or last SWITCH;
 };
 
 =head3 all_on
@@ -352,8 +361,8 @@ $app_id == Schulkonsole::Config::ALLONATAPP and do {
 		close STDIN;
 		close STDOUT;
 		close STDERR;
-		open STDOUT, ">>/dev/null" or die;
-		open STDERR, ">>&STDOUT" or die;
+		open STDOUT, '>>', '/dev/null' or die;
+		open STDERR, '>>&', *STDOUT or die;
 
 		sleep $time - $^T;
 
@@ -418,7 +427,8 @@ $app_id == Schulkonsole::Config::ROOMSRESETAPP and do {
 	if ($scope == 0) {
 		my $opts = '--all';
 		$< = $>;
-		exec "$Schulkonsole::Config::_cmd_linuxmuster_reset $opts"
+		exec Schulkonsole::Encode::to_cli(
+		     	"$Schulkonsole::Config::_cmd_linuxmuster_reset $opts")
 			or last SWITCH;
 	} else {
 		my @rooms_reset;
@@ -447,12 +457,21 @@ $app_id == Schulkonsole::Config::ROOMSRESETAPP and do {
 		umask(022);	# otherwise linuxmuster-reset will create files without
 		            # read permissions for us
 
+		my $cmd_encoded
+			= Schulkonsole::Encode::to_cli(
+		      	"$Schulkonsole::Config::_cmd_linuxmuster_reset --room=");
 		foreach my $room (@rooms_reset) {
-			system("$Schulkonsole::Config::_cmd_linuxmuster_reset --room=\Q$room\E") == 0
+			system(  $cmd_encoded
+			       . Schulkonsole::Encode::to_cli("\Q$room\E")) == 0
 				or $is_error++;
 		}
+
+		$cmd_encoded
+			= Schulkonsole::Encode::to_cli(
+		      	"$Schulkonsole::Config::_cmd_linuxmuster_reset --host=");
 		foreach my $host (@hosts_reset) {
-			system("$Schulkonsole::Config::_cmd_linuxmuster_reset --host=\Q$host\E") == 0
+			system(  $cmd_encoded
+			       . Schulkonsole::Encode::to_cli("\Q$host\E")) == 0
 				or $is_error++;
 		}
 
@@ -512,14 +531,17 @@ sub all_on {
 		local $) = 0;
 		local $( = $);
 		umask(022);
-		system "$Schulkonsole::Config::_cmd_sophomorix_teacher $opts";
+		system Schulkonsole::Encode::to_cli(
+		       	"$Schulkonsole::Config::_cmd_sophomorix_teacher $opts");
 
 		$opts = " --reset-room \Q$room";
-		system "$Schulkonsole::Config::_cmd_sophomorix_room $opts";
+		system Schulkonsole::Encode::to_cli(
+		       	"$Schulkonsole::Config::_cmd_sophomorix_room $opts");
 
 
 		$opts = " --hide --random --rooms \Q$room";
-		system "$Schulkonsole::Config::_cmd_sophomorix_class $opts";
+		system Schulkonsole::Encode::to_cli(
+		       	"$Schulkonsole::Config::_cmd_sophomorix_class $opts");
 	}
 
 	my $oldsettings = $room_session->param('oldsettings');
@@ -578,41 +600,48 @@ sub all_on {
 #	if (@webfilter_offs) {
 #		my $opts = "--trigger=off --hostlist=" . join(',', @webfilter_offs);
 #
-#		system $Schulkonsole::Config::_cmd_urlfilter_on_off	. ' ' . $opts;
+#		system Schulkonsole::Encode::to_cli(
+#		       	$Schulkonsole::Config::_cmd_urlfilter_on_off . ' ' . $opts);
 #	}
 #	if (@webfilter_ons) {
 #		my $opts = "--trigger=on --hostlist=" . join(',', @webfilter_ons);
 #
-#		system $Schulkonsole::Config::_cmd_urlfilter_on_off	. ' ' . $opts;
+#		system Schulkonsole::Encode::to_cli(
+#		       	$Schulkonsole::Config::_cmd_urlfilter_on_off . ' ' . $opts);
 #	}
 #
 #	if (@internet_ons) {
 #		my $opts = "--trigger=on --maclist=" . join(',', @internet_ons);
 #
-#		system $Schulkonsole::Config::_cmd_internet_on_off	. ' ' . $opts;
+#		system Schulkonsole::Encode::to_cli(
+#		       	$Schulkonsole::Config::_cmd_internet_on_off . ' ' . $opts);
 #	}
 #	if (@internet_offs) {
 #		my $opts = "--trigger=off --maclist=" . join(',', @internet_offs);
 #
-#		system $Schulkonsole::Config::_cmd_internet_on_off	. ' ' . $opts;
+#		system Schulkonsole::Encode::to_cli(
+#		       	$Schulkonsole::Config::_cmd_internet_on_off . ' ' . $opts);
 #	}
 #
 #	if (@intranet_ons) {
 #		my $opts = "--trigger=on --maclist=" . join(',', @intranet_ons);
 #
-#		system $Schulkonsole::Config::_cmd_intranet_on_off	. ' ' . $opts;
+#		system Schulkonsole::Encode::to_cli(
+#		       	$Schulkonsole::Config::_cmd_intranet_on_off . ' ' . $opts);
 #	}
 #	if (@intranet_offs) {
 #		my $opts = "--trigger=off --maclist=" . join(',', @intranet_offs);
 #
-#		system $Schulkonsole::Config::_cmd_intranet_on_off	. ' ' . $opts;
+#		system Schulkonsole::Encode::to_cli(
+#		       	$Schulkonsole::Config::_cmd_intranet_on_off . ' ' . $opts);
 #	}
 
 
 	# reset the room settings according to rooms_default instead of restoring 
 	# the old state from session file
 	my $opts = "--room=\Q$room\E";
-	system "$Schulkonsole::Config::_cmd_linuxmuster_reset $opts";
+	system Schulkonsole::Encode::to_cli(
+	       	"$Schulkonsole::Config::_cmd_linuxmuster_reset $opts");
 
 
 	if ($$oldsettings{printers_accept}) {
@@ -621,7 +650,8 @@ sub all_on {
 			Accepting => 1,
 		);
 	
-		open PRINTERSCONF, "<$Schulkonsole::Config::_cups_printers_conf_file"
+		open PRINTERSCONF, '<', Schulkonsole::Encode::to_fs(
+		     	$Schulkonsole::Config::_cups_printers_conf_file)
 			or exit (  Schulkonsole::Error::Firewall::WRAPPER_CANNOT_OPEN_PRINTERSCONF
 			         - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE);
 
@@ -652,11 +682,13 @@ sub all_on {
 			    and $$oldsettings{printers}{$printer}) {
 				if ($$oldsettings{printers_accept}{$printer}) {
 					if ($printer_info{$printer}{Accepting} ne 'Yes') {
-						system "$Schulkonsole::Config::_cmd_printer_accept \Q$printer";
+						system Schulkonsole::Encode::to_cli(
+							"$Schulkonsole::Config::_cmd_printer_accept \Q$printer\E");
 					}
 				} else {
 					if ($printer_info{$printer}{Accepting} eq 'Yes') {
-						system "$Schulkonsole::Config::_cmd_printer_reject \Q$printer";
+						system Schulkonsole::Encode::to_cli(
+							"$Schulkonsole::Config::_cmd_printer_reject \Q$printer\E");
 					}
 				}
 	
@@ -680,11 +712,14 @@ sub all_on {
 				my @deny_users = map { quotemeta } keys %deny_users;
 	
 				if ( @deny_users ) {
-					system $Schulkonsole::Config::_cmd_printer_lpadmin
-						. " -p\Q$printer\E -u deny:" . join(',', @deny_users);
+					system Schulkonsole::Encode::to_cli(
+					       	$Schulkonsole::Config::_cmd_printer_lpadmin
+					       	. " -p\Q$printer\E -u deny:"
+					       	. join(',', @deny_users));
 				} else {
-					system $Schulkonsole::Config::_cmd_printer_lpadmin
-						. " -p\Q$printer\E -u deny:none";
+					system Schulkonsole::Encode::to_cli(
+					       	$Schulkonsole::Config::_cmd_printer_lpadmin
+					       	. " -p\Q$printer\E -u deny:none");
 				}
 			}
 		}
@@ -719,13 +754,15 @@ sub all_on {
 		}
 
 
-		system $Schulkonsole::Config::_cmd_sophomorix_teacher
-			. " --teacher \Q$$userdata{uid}\E --shares --users "
-			. join(',', @shares_on)
+		system Schulkonsole::Encode::to_cli(
+		       	$Schulkonsole::Config::_cmd_sophomorix_teacher
+		       	. " --teacher \Q$$userdata{uid}\E --shares --users "
+		       	. join(',', @shares_on))
 			if @shares_on;
-		system $Schulkonsole::Config::_cmd_sophomorix_teacher
-			. " --teacher \Q$$userdata{uid}\E --noshares --users "
-			. join(',', @shares_off)
+		system Schulkonsole::Encode::to_cli(
+		       	$Schulkonsole::Config::_cmd_sophomorix_teacher
+		       	. " --teacher \Q$$userdata{uid}\E --noshares --users "
+		       	. join(',', @shares_off))
 			if @shares_off;
 	}
 

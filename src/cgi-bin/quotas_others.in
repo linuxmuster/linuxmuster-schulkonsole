@@ -25,6 +25,8 @@ provides the following variables:
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
+use open ':utf8';
+use Schulkonsole::Encode;
 use Schulkonsole::Session;
 use Schulkonsole::Sophomorix;
 use Schulkonsole::SophomorixQuotas;
@@ -421,7 +423,8 @@ sub read_quota_conf {
 	my %re;
 
 
-	if (open QUOTACONF, "<$DevelConf::config_pfad/quota.txt") {
+	if (open QUOTACONF, '<',
+	         Schulkonsole::Encode::to_fs("$DevelConf::config_pfad/quota.txt")) {
 		flock QUOTACONF, 1;
 
 		while (<QUOTACONF>) {
@@ -447,7 +450,9 @@ sub read_quota_conf {
 	}
 
 
-	if (open MAILQUOTACONF, "<$DevelConf::config_pfad/mailquota.txt") {
+	if (open MAILQUOTACONF, '<',
+	         Schulkonsole::Encode::to_fs(
+	         	"$DevelConf::config_pfad/mailquota.txt")) {
 		flock MAILQUOTACONF, 1;
 
 		while (<MAILQUOTACONF>) {
@@ -488,7 +493,8 @@ sub new_quota_lines {
 	}
 
 	my @lines;
-	if (open QUOTACONF, "<$DevelConf::config_pfad/quota.txt") {
+	if (open QUOTACONF, '<',
+	         Schulkonsole::Encode::to_fs("$DevelConf::config_pfad/quota.txt")) {
 
 		while (my $line = <QUOTACONF>) {
 			foreach my $key (keys %new) {
@@ -534,7 +540,9 @@ sub new_mailquota_lines {
 	}
 
 	my @lines;
-	if (open QUOTACONF, "<$DevelConf::config_pfad/mailquota.txt") {
+	if (open QUOTACONF, '<',
+	         Schulkonsole::Encode::to_fs(
+	         	"$DevelConf::config_pfad/mailquota.txt")) {
 
 		while (my $line = <QUOTACONF>) {
 			foreach my $key (keys %new) {
@@ -571,7 +579,7 @@ sub new_mailquota_lines {
 sub is_passwd_user {
 	my $login = shift;
 
-	open PASSWD, "</etc/passwd" or return 0;
+	open PASSWD, '<', '/etc/passwd' or return 0;
 	while (<PASSWD>) {
 		my ($name) = split ':';
 

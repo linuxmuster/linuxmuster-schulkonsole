@@ -1,6 +1,6 @@
 <html lang="de">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>linbo</gettext></title>
 <!--#include file="css.shtml.inc" -->
@@ -23,7 +23,7 @@
 
 <h3><gettext>Bitte best&auml;tigen</gettext></h3>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <p><!--#echo var="deleteimage" --> <gettext>wirklich l&ouml;schen?</gettext></p>
 
 <p><input type="hidden" name="image" value="$deleteimage"><input type="submit" name="delete" value="Best&auml;tigen">
@@ -37,7 +37,7 @@
 
 <h3><gettext>Bitte best&auml;tigen</gettext></h3>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <p><!--#echo var="moveimage" --> <gettext>&uuml;berschreiben?</gettext></p>
 
 <p><input type="hidden" name="src" value="$src"><input type="hidden" name="dst" value="$moveimage"><input type="submit" name="move" value="&Uuml;berschreiben">
@@ -51,7 +51,7 @@
 
 <h3><gettext>Bitte best&auml;tigen</gettext></h3>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <p><!--#echo var="copyimage" --> <gettext>&uuml;berschreiben?</gettext></p>
 
 <p><input type="hidden" name="src" value="$src"><input type="hidden" name="dst" value="$copyimage"><input type="submit" name="copy" value="&Uuml;berschreiben">
@@ -64,7 +64,7 @@
 
 <h2><!--#echo var="image" -->: <gettext>Imagebeschreibung editieren</gettext></h2>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <p><textarea wrap="off" name="imagedesc" rows="20" cols="70"></textarea></p>
 <p><input type="hidden" name="filename" value="$editfilename"><input type="submit" name="edit" value="&Auml;nderungen speichern">
 <input type="submit" name="abort" value="Schlie&szlig;en"></p>
@@ -76,7 +76,7 @@
 
 <h2><!--#echo var="image" -->: <gettext>Image-Informationen</gettext></h2>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <pre id="imageinfo"><!--#echo var="imageinfo" --></pre>
 <p><input type="submit" name="abort" value="Schlie&szlig;en"></p>
 
@@ -86,7 +86,7 @@
 
 <h2><!--#echo var="image" -->: <gettext>Image-Liste</gettext></h2>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <pre id="imagelist"><!--#echo var="imagelist" --></pre>
 <p><input type="submit" name="abort" value="Schlie&szlig;en"></p>
 
@@ -95,7 +95,7 @@
 
 <h2><gettext>Basisimages</gettext></h2>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <table id="linbobaseimages" class="liste">
 
 <colgroup width="50%"></colgroup>
@@ -129,7 +129,7 @@
 
 <h2>Differenzielle Images</h2>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <table id="linboimages" class="liste">
 
 <colgroup width="50%"></colgroup>

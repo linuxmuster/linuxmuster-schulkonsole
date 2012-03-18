@@ -1,4 +1,5 @@
 use strict;
+use open ':utf8';
 use IPC::Open3;
 use POSIX 'sys_wait_h';
 use Net::IMAP::Simple;
@@ -42,6 +43,10 @@ sub disk_quotas {
 		or die new Schulkonsole::Error(
 			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
 			$Schulkonsole::Config::_wrapper_user, $!);
+
+	binmode SCRIPTOUT, ':utf8';
+	binmode SCRIPTIN, ':utf8';
+
 
 	my $re = waitpid $pid, POSIX::WNOHANG;
 	if (   $re == $pid
@@ -111,6 +116,8 @@ sub mail_quotas {
 	my $imap = new Net::IMAP::Simple($Schulkonsole::Config::_imap_host)
 		or die "Connection to $Schulkonsole::Config::_imap_host failed\n";
 
+	utf8::encode($username);
+	utf8::encode($password);
 	$imap->login($username, $password) or die($imap->errstr, "\n");
 
 	my $quotas = getallquota($imap);
@@ -183,7 +190,7 @@ sub mailaliases {
 
 	my $aliases_file = '/etc/aliases';
 
-	open ALIASES, "<$aliases_file"
+	open ALIASES, '<', $aliases_file
 		or die "$0: Cannot open $aliases_file: $!\n";
 
 	my @lines;

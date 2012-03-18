@@ -203,6 +203,9 @@ sub print_page {
 	my $filename = shift;
 	my $action = shift;
 
+
+	binmode(STDOUT, ":utf8");
+
 	$_query = $sk_session->{query};
 
 	# if we have path-info the links within the page will not work
@@ -418,13 +421,14 @@ sub start_tag_handler {
 						$name = $new_name;
 					}
 				}
+
 				my @values = $_query->param($name)
 					if ($name and defined $_query->param($name));
 				if (    @values == 1	# substitute unique values only
 				    and (   not defined $$attr_ref{type} 
 				         or $$attr_ref{type} eq 'text'
 				         or $$attr_ref{type} eq 'hidden')) {
-					$$subst{value} = CGI->escapeHTML($_query->param($name));
+					$$subst{value} = CGI->escapeHTML($values[0]);
 					print_content(substitute_token($text, $tokenpos, $subst));
 			    } else {
 					if (defined $$attr_ref{value}) {
@@ -675,9 +679,9 @@ sub end_tag_handler {
 			undef $_element_name;
 			print_content($skipped_text . $text);
 		} elsif ($tagname eq 'textarea') {
-			if ($_query->param($_element_name)) {
-				print_content(  CGI->escapeHTML($_query->param($_element_name))
-				              . $text);
+			my $element_value = $_query->param($_element_name);
+			if ($element_value) {
+				print_content(CGI->escapeHTML($element_value) . $text);
 			} else {
 				print_content($skipped_text . $text);
 			}

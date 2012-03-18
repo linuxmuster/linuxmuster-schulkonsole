@@ -75,6 +75,11 @@ sub start_wrapper {
 			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
 			$Schulkonsole::Config::_wrapper_ovpn, $!);
 
+	binmode $out, ':utf8';
+	binmode $in, ':utf8';
+	binmode $err, ':utf8';
+
+
 	my $re = waitpid $pid, POSIX::WNOHANG;
 	if (   $re == $pid
 	    or $re == -1) {

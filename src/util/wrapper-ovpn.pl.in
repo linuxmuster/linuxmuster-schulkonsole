@@ -27,8 +27,11 @@ wrapper-ovpn.pl - wrapper for configuration of ovpn
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
+use open ':utf8';
+use open ':std';
 use Schulkonsole::Config;
 use Schulkonsole::DB;
+use Schulkonsole::Encode;
 use Schulkonsole::Error::OVPN;
 
 
@@ -123,7 +126,8 @@ none
 
 		$opts .= '--create';
 
-		open PIPE, "| $Schulkonsole::Config::_cmd_ovpn_client_cert $opts"
+		open PIPE, '|-', Schulkonsole::Encode::to_fs(
+		     	"$Schulkonsole::Config::_cmd_ovpn_client_cert $opts")
 			or last SWITCH;
 		print PIPE "$ovpn_password\n";
 		close PIPE;
@@ -139,7 +143,9 @@ none
 	}
 
 
-	exec "$Schulkonsole::Config::_cmd_ovpn_client_cert $opts" or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_ovpn_client_cert $opts")
+		or last SWITCH;
 };
 
 }

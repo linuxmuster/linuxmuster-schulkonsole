@@ -24,6 +24,8 @@ wrapper-printer.pl - wrapper for printer access
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
+use open ':utf8';
+use open ':std';
 use Data::Dumper;
 use Schulkonsole::Config;
 use Schulkonsole::DB;
@@ -100,7 +102,8 @@ $app_id == Schulkonsole::Config::PRINTERINFOAPP and do {
 		Accepting => 1,
 	);
 
-	open PRINTERSCONF, "<$Schulkonsole::Config::_cups_printers_conf_file"
+	open PRINTERSCONF, '<', Schulkonsole::Encode::to_fs(
+	     	$Schulkonsole::Config::_cups_printers_conf_file)
 		or exit (  Schulkonsole::Error::Printer::WRAPPER_CANNOT_OPEN_PRINTERSCONF
 		         - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE);
 
@@ -178,11 +181,13 @@ $app_id == Schulkonsole::Config::PRINTERONOFFAPP and do {
 
 	if ($on) {
 		foreach my $printer (@printers) {
-			system "$Schulkonsole::Config::_cmd_printer_accept \Q$printer";
+			system Schulkonsole::Encode::to_cli(
+			       	"$Schulkonsole::Config::_cmd_printer_accept \Q$printer");
 		}
 	} else {
 		foreach my $printer (@printers) {
-			system "$Schulkonsole::Config::_cmd_printer_reject \Q$printer";
+			system Schulkonsole::Encode::to_cli(
+			       	"$Schulkonsole::Config::_cmd_printer_reject \Q$printer");
 		}
 	}
 
@@ -243,10 +248,12 @@ $app_id == Schulkonsole::Config::PRINTERALLOWDENYAPP and do {
 
 	foreach my $printer (keys %printer_users) {
 		if ( @{ $printer_users{$printer} } ) {
-			system "$Schulkonsole::Config::_cmd_printer_lpadmin -p\Q$printer\E -u deny:"
-				. join(',', @{ $printer_users{$printer} });
+			system Schulkonsole::Encode::to_cli(
+				  "$Schulkonsole::Config::_cmd_printer_lpadmin -p\Q$printer\E -u deny:"
+				. join(',', @{ $printer_users{$printer} }));
 		} else {
-			system "$Schulkonsole::Config::_cmd_printer_lpadmin -p\Q$printer\E -u deny:none";
+			system Schulkonsole::Encode::to_cli(
+				"$Schulkonsole::Config::_cmd_printer_lpadmin -p\Q$printer\E -u deny:none");
 		}
 	}
 
@@ -271,8 +278,9 @@ $app_id == Schulkonsole::Config::PRINTERGETOWNQUOTAAPP and do {
 	my $opt_user = "--user \Q$$userdata{uid}\E";
 
 
-	my $pages = `$Schulkonsole::Config::_cmd_linuxmuster_pk $opt_user -t`
-		or last SWITCH;
+	my $pages_cmd = Schulkonsole::Encode::to_cli(
+	          	"$Schulkonsole::Config::_cmd_linuxmuster_pk $opt_user -t");
+	my $pages = `$pages_cmd` or last SWITCH;
 
 	($pages) = $pages =~ /^(\d+)$/;
 	exit (  Schulkonsole::Error::Printer::WRAPPER_INVALID_PAGES
@@ -281,8 +289,9 @@ $app_id == Schulkonsole::Config::PRINTERGETOWNQUOTAAPP and do {
 
 
 
-	my $max = `$Schulkonsole::Config::_cmd_linuxmuster_pk $opt_user -m`
-		or last SWITCH;
+	my $max_cmd = Schulkonsole::Encode::to_cli(
+	              	"$Schulkonsole::Config::_cmd_linuxmuster_pk $opt_user -m");
+	my $max = `$max_cmd` or last SWITCH;
 
 	($max) = $max =~ /^(\d+)$/;
 	exit (  Schulkonsole::Error::Printer::WRAPPER_INVALID_MAX_PAGES

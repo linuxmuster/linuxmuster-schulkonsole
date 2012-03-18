@@ -25,8 +25,10 @@ provides the following variables:
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
-use Schulkonsole::Session;
+use open ':utf8';
+use Schulkonsole::Encode;
 use Schulkonsole::Files;
+use Schulkonsole::Session;
 
 
 my $this_file = 'rooms_classrooms';
@@ -159,7 +161,9 @@ sub new_classrooms_lines {
 
 	my @lines;
 	my %new = %$new;
-	if (open CLASSROOMS, "<$Schulkonsole::Config::_classrooms_file") {
+	if (open CLASSROOMS, '<',
+	         Schulkonsole::Encode::to_fs(
+	         	$Schulkonsole::Config::_classrooms_file)) {
 		while (<CLASSROOMS>) {
 			my ($room) = /^([^#]+?)\s*$/;
 

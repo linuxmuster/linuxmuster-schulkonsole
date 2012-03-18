@@ -206,6 +206,11 @@ sub start_wrapper {
 			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
 			$Schulkonsole::Config::_wrapper_sophomorix, $!);
 
+	binmode $out, ':utf8';
+	binmode $in, ':utf8';
+	binmode $err, ':utf8';
+
+
 	my $re = waitpid $pid, POSIX::WNOHANG;
 	if (   $re == $pid
 	    or $re == -1) {
@@ -1958,6 +1963,7 @@ sub print_class {
 	my $pid = start_wrapper(Schulkonsole::Config::PRINTCLASSAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	binmode SCRIPTIN, ':raw' if $filetype == 0;
 
 	print SCRIPTOUT "$class_gid\n$filetype\n";
 
@@ -2031,6 +2037,7 @@ sub print_teachers {
 	my $pid = start_wrapper(Schulkonsole::Config::PRINTTEACHERSAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	binmode SCRIPTIN, ':raw' if $filetype == 0;
 
 	print SCRIPTOUT "$filetype\n";
 

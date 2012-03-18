@@ -27,8 +27,11 @@ wrapper-linbo.pl - wrapper for configuration of linbo
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
+use open ':utf8';
+use open ':std';
 use Schulkonsole::Config;
 use Schulkonsole::DB;
+use Schulkonsole::Encode;
 use Schulkonsole::Error::Linbo;
 use POSIX;
 
@@ -89,7 +92,9 @@ invokes C<update-linbofs.sh>
 $app_id == Schulkonsole::Config::UPDATELINBOFSAPP and do {
 	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;
-	exec $Schulkonsole::Config::_cmd_update_linbofs or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	$Schulkonsole::Config::_cmd_update_linbofs)
+		or last SWITCH;
 };
 
 =head3 write_start_conf
@@ -117,15 +122,17 @@ $app_id == Schulkonsole::Config::LINBOWRITESTARTCONFAPP and do {
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		unless defined $group;
 
-	my $filename = $Schulkonsole::Config::_linbo_start_conf_prefix . $group;
+	my $filename = Schulkonsole::Encode::to_fs(
+	   	$Schulkonsole::Config::_linbo_start_conf_prefix . $group);
 	if (-e $filename) {
 		# backup old file
 		my $time = POSIX::strftime("%Y-%m-%d-%H%M", localtime($^T));
-		my $old_filename = $filename . '-' . $time;
+		my $old_filename = Schulkonsole::Encode::to_fs($filename . '-' . $time);
 		my $cnt = 0;
 		while (-e $old_filename) {
 			$cnt++;
-			$old_filename = $filename . '-' . $time . '-' . $cnt;
+			$old_filename = Schulkonsole::Encode::to_fs(
+			                	$filename . '-' . $time . '-' . $cnt);
 		}
 
 		rename $filename, $old_filename;
@@ -137,7 +144,7 @@ $app_id == Schulkonsole::Config::LINBOWRITESTARTCONFAPP and do {
 	$( = $);
 	umask(022);
 
-	open FILE, ">$filename"
+	open FILE, '>', $filename
 		or exit (  Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE
 		         - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
 	flock FILE, 2;
@@ -184,16 +191,20 @@ $app_id == Schulkonsole::Config::LINBOCOPYSTARTCONFAPP and do {
 		unless defined $dest;
 
 
-	my $src_filename = $Schulkonsole::Config::_linbo_start_conf_prefix . $src;
-	my $dest_filename = $Schulkonsole::Config::_linbo_start_conf_prefix . $dest;
+	my $src_filename = Schulkonsole::Encode::to_fs(
+		$Schulkonsole::Config::_linbo_start_conf_prefix . $src);
+	my $dest_filename = Schulkonsole::Encode::to_fs(
+		$Schulkonsole::Config::_linbo_start_conf_prefix . $dest);
 	if (-e $dest_filename) {
 		# backup old file
 		my $time = POSIX::strftime("%Y-%m-%d-%H%M", localtime($^T));
-		my $old_filename = $dest_filename . '-' . $time;
+		my $old_filename = Schulkonsole::Encode::to_fs(
+		                   	$dest_filename . '-' . $time);
 		my $cnt = 0;
 		while (-e $old_filename) {
 			$cnt++;
-			$old_filename = $dest_filename . '-' . $time . '-' . $cnt;
+			$old_filename = Schulkonsole::Encode::to_fs(
+			                	$dest_filename . '-' . $time . '-' . $cnt);
 		}
 
 		rename $dest_filename, $old_filename;
@@ -205,13 +216,13 @@ $app_id == Schulkonsole::Config::LINBOCOPYSTARTCONFAPP and do {
 	$( = $);
 	umask(022);
 
-	open SRC, "<$src_filename"
+	open SRC, '<', $src_filename
 		or exit (  Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE
 		         - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
 	flock SRC, 1;
 	seek SRC, 0, 0;
 
-	open DEST, ">$dest_filename"
+	open DEST, '>', $dest_filename
 		or exit (  Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE
 		         - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
 	flock DEST, 2;
@@ -268,24 +279,25 @@ $app_id == Schulkonsole::Config::LINBOCOPYREGPATCHAPP and do {
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		unless defined $image;
 
-	my $src_filename = ($is_example ?
+	my $src_filename = Schulkonsole::Encode::to_fs(($is_example ?
 		  "$Schulkonsole::Config::_linbo_dir/examples"
 		: $Schulkonsole::Config::_linbo_dir)
-		. "/$regpatch";
-	my $dest_filename = "$Schulkonsole::Config::_linbo_dir/$image.reg";
+		. "/$regpatch");
+	my $dest_filename = Schulkonsole::Encode::to_fs(
+	                    	"$Schulkonsole::Config::_linbo_dir/$image.reg");
 
 	$< = $>;
 	$) = 0;
 	$( = $);
 	umask(022);
 
-	open SRC, "<$src_filename"
+	open SRC, '<', $src_filename
 		or exit (  Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE
 		         - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
 	flock SRC, 1;
 	seek SRC, 0, 0;
 
-	open DEST, ">$dest_filename"
+	open DEST, '>', $dest_filename
 		or exit (  Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE
 		         - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
 	flock DEST, 2;
@@ -329,7 +341,8 @@ $app_id == Schulkonsole::Config::LINBODELETEAPP and do {
 		unless defined $filename;
 
 
-	my $file = "$Schulkonsole::Config::_linbo_dir/$filename";
+	my $file = Schulkonsole::Encode::to_fs(
+	           	"$Schulkonsole::Config::_linbo_dir/$filename");
 
 	unlink $file;
 
@@ -390,16 +403,18 @@ $app_id == Schulkonsole::Config::LINBOIMAGEAPP and do {
 			= "$Schulkonsole::Config::_linbo_dir/$new_image.$image_suffix";
 		if ($action == 1) {
 			foreach my $suffix (@suffixes) {
-				rename "$file$suffix", "$new_file$suffix";
+				rename Schulkonsole::Encode::to_fs("$file$suffix"),
+				       Schulkonsole::Encode::to_fs("$new_file$suffix");
 			}
 		} else {
 			foreach my $suffix (@suffixes) {
-				system "cp -p \Q$file$suffix\E \Q$new_file$suffix\E";
+				system Schulkonsole::Encode::to_cli(
+				       	"cp -p \Q$file$suffix\E \Q$new_file$suffix\E");
 			}
 		}
 	} else {
 		foreach my $suffix (@suffixes) {
-			unlink "$file$suffix";
+			unlink Schulkonsole::Encode::to_fs("$file$suffix");
 		}
 	}
 
@@ -431,7 +446,8 @@ $app_id == Schulkonsole::Config::LINBOWRITEAPP and do {
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		unless defined $filename;
 
-	my $file = "$Schulkonsole::Config::_linbo_dir/$filename";
+	my $file = Schulkonsole::Encode::to_fs(
+	           	"$Schulkonsole::Config::_linbo_dir/$filename");
 
 
 	$< = $>;
@@ -439,7 +455,7 @@ $app_id == Schulkonsole::Config::LINBOWRITEAPP and do {
 	$( = $);
 	umask(022);
 
-	open FILE, ">$file" or exit -106;
+	open FILE, '>', $file or exit -106;
 	flock FILE, 2;
 	seek FILE, 0, 0;
 

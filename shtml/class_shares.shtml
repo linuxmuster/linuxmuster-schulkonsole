@@ -1,6 +1,6 @@
 <html lang="de">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Klassen</gettext>: <!--#echo var="class" --> - <gettext>Tauschen</gettext></title>
 <!--#include file="css.shtml.inc" -->
@@ -17,7 +17,7 @@
 <div id="content">
 
 <!--#if expr="$classes" -->
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <p class="selectdomain">
 <select name="classes">
 <optgroup label="Klassen">
@@ -39,7 +39,7 @@
 <h3><gettext>Ausgew&auml;hlte Klasse:</gettext> <!--#echo var="class" --></h3>
 
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <table id="classshares" class="liste">
 <tr>
 <th><gettext>Login</gettext></th>

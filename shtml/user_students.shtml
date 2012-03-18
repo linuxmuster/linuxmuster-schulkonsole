@@ -1,6 +1,6 @@
 <html lang="de">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Benutzer</gettext> - <gettext>Sch&uuml;lerliste pflegen</gettext></title>
 <!--#include file="css.shtml.inc" -->
@@ -18,7 +18,7 @@
 
 <h2><gettext>Benutzerverwaltung</gettext> :: <gettext>Sch&uuml;lerliste pflegen</gettext></h2>
 
-<form method="post" enctype="multipart/form-data">
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
 <h3><label for="studentsfilename"><gettext>Datei importieren</gettext></label></h3>
 <p>
 <input type="file" id="studentsfilename" name="studentsfilename">
@@ -28,7 +28,7 @@
 
 <hr>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <h3><label for="students"><gettext>Editieren</gettext></label></h3>
 
 <p>

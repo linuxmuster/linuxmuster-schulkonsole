@@ -51,7 +51,9 @@ my $q = $sk_session->query();
 
 my $projects = Schulkonsole::Info::groups_projects($sk_session->groups());
 foreach my $project (keys %$projects) {
-    if ($q->param("${project}_members")) {
+	my $param = "${project}_members";
+	utf8::encode($param);
+    if ($q->param($param)) {
 		$sk_session->param('project', $project);
 
 		my $url = $q->url( -absolute => 1 );
@@ -61,6 +63,7 @@ foreach my $project (keys %$projects) {
 }
 
 my $project = $q->param('projects');
+utf8::decode($project);
 if (    $project
     and $$projects{$project}) {
 	$sk_session->param('project', $project);
@@ -79,6 +82,7 @@ eval {
 COMMANDS: {
 if ($q->param('createproject')) {
 	my $projectname = $q->param('projectname');
+	utf8::decode($projectname);
 	if (not $projectname) {
 		$sk_session->mark_input_error('projectname');
 		$sk_session->set_status($sk_session->d()->get(
@@ -131,6 +135,7 @@ if ($q->param('createproject')) {
 		
 
 } elsif (my ($new_project) = $q->param('project_add')) {
+	utf8::decode($new_project);
 	if ($$all_projects{$new_project}{joinable}) {
 		Schulkonsole::Sophomorix::add_to_project(
 			$sk_session->userdata('id'),
@@ -155,7 +160,10 @@ if ($q->param('createproject')) {
 
 } else {
 	foreach my $old_project (keys %$projects) {
-		if ($q->param("${old_project}_remove")) {
+		my $param_remove = "${old_project}_remove";
+		utf8::encode($param_remove);
+
+		$q->param($param_remove) and do {
 			if ($$all_projects{$old_project}{joinable}) {
 				$sk_session->set_status(
 					sprintf($sk_session->d()->get(
@@ -203,7 +211,13 @@ if ($q->param('createproject')) {
 			}
 
 			last;	# template uses submit buttons
-		} elsif ($q->param("${old_project}_drop")) {
+		};
+
+
+		my $param_drop = "${old_project}_drop";
+		utf8::encode($param_drop);
+
+		$q->param($param_drop) and do {
 			my $is_admin = Schulkonsole::DB::is_project_admin(
 			              	$$projects{$old_project}{id},
 			              	$sk_session->userdata('uidnumber'));
@@ -267,7 +281,7 @@ project_drop_verify.shtml)
 			}
 
 			last;	# template uses submit buttons
-		}
+		};
 	}
 }
 } # end COMMANDS

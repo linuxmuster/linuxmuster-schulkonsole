@@ -25,10 +25,12 @@ provides the following variables:
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
+use open ':utf8';
 use Net::CUPS;
 use Net::CUPS::Destination;
-use Schulkonsole::Session;
+use Schulkonsole::Encode;
 use Schulkonsole::Files;
+use Schulkonsole::Session;
 
 
 my $this_file = 'printers_edit';
@@ -305,7 +307,9 @@ sub new_printer_lines_room {
 
 	my @lines;
 	my $done = 0;
-	if (open PRINTERS, "<$Schulkonsole::Config::_printers_file") {
+	if (open PRINTERS, '<',
+	         Schulkonsole::Encode::to_fs($Schulkonsole::Config::_printers_file))
+	{
 
 		while (<PRINTERS>) {
 			my ($conf_printer, $conf_rooms, $conf_hosts) = split /\s+/;
@@ -344,7 +348,9 @@ sub new_printer_lines_host {
 
 	my @lines;
 	my $done = 0;
-	if (open PRINTERS, "<$Schulkonsole::Config::_printers_file") {
+	if (open PRINTERS, '<',
+	         Schulkonsole::Encode::to_fs($Schulkonsole::Config::_printers_file))
+	{
 
 		while (<PRINTERS>) {
 			my ($conf_printer, $conf_rooms, $conf_hosts) = split /\s+/;

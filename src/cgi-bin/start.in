@@ -213,6 +213,12 @@ COMMANDS: {
 	my $newpassword = $q->param('newpassword');
 	my $newpasswordagain = $q->param('newpasswordagain');
 
+
+	utf8::decode($oldpassword);
+	utf8::decode($newpassword);
+	utf8::decode($newpasswordagain);
+
+
 	my $error_cnt = 0;
 	if (not $oldpassword) {
 		$error_cnt++;
@@ -326,6 +332,9 @@ defined $q->param('printjobs') and do {
 		last COMMANDS;
 	}
 
+
+	utf8::decode($ovpn_password);
+
 	if (length $ovpn_password < 6) {
 		$sk_session->set_status($sk_session->d()->get(
 				'OpenVPN-Passwort muss mindestens sechs Zeichen haben'), 1);
@@ -342,6 +351,9 @@ defined $q->param('printjobs') and do {
 
 		last COMMANDS;
 	}
+
+
+	utf8::decode($ovpn_password_again);
 
 	if ($ovpn_password ne $ovpn_password_again) {
 		$sk_session->set_status($sk_session->d()->get(

@@ -24,12 +24,14 @@ provides the following variables:
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
+use open ':utf8';
 use Env::Bash;
-use Sophomorix::SophomorixAPI;
-use Sophomorix::SophomorixConfig;
+use Schulkonsole::Encode;
 use Schulkonsole::Files;
 use Schulkonsole::Session;
 use Schulkonsole::Sophomorix;
+use Sophomorix::SophomorixAPI;
+use Sophomorix::SophomorixConfig;
 
 
 my $this_file = 'settings_users';
@@ -471,7 +473,8 @@ standard-schueler in F<quota.txt>
 	);
 
 
-	if (open QUOTACONF, "<$DevelConf::config_pfad/quota.txt") {
+	if (open QUOTACONF, '<',
+	         Schulkonsole::Encode::to_fs("$DevelConf::config_pfad/quota.txt")) {
 		flock QUOTACONF, 1;
 
 		my %quotas;
@@ -573,7 +576,9 @@ sub new_sophomorix_lines {
 		activatequota => 'use_quota',
 	);
 
-	if (open SOPHOMORIXCONF, "<$DevelConf::config_pfad/sophomorix.conf") {
+	if (open SOPHOMORIXCONF, '<',
+	         Schulkonsole::Encode::to_fs(
+	         	"$DevelConf::config_pfad/sophomorix.conf")) {
 		my @lines;
 		my %new = %$new;
 
@@ -661,7 +666,8 @@ sub new_quota_lines {
 	}
 
 	my @lines;
-	if (open QUOTACONF, "<$DevelConf::config_pfad/quota.txt") {
+	if (open QUOTACONF, '<',
+	         Schulkonsole::Encode::to_fs("$DevelConf::config_pfad/quota.txt")) {
 
 		while (my $line = <QUOTACONF>) {
 			foreach my $new_key (keys %new) {

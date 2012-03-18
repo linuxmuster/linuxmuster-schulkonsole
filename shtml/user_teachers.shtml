@@ -1,6 +1,6 @@
 <html lang="de">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Benutzer</gettext> - <gettext>Lehrerliste pflegen</gettext></title>
 <!--#include file="css.shtml.inc" -->
@@ -19,7 +19,7 @@
 <h2><gettext>Benutzerverwaltung</gettext> :: <gettext>Lehrerliste pflegen</gettext></h2>
 
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <h3><gettext>Lehrer hinzuf&uuml;gen</gettext></h3>
 
 <table id="teachersadd" class="liste">
@@ -46,7 +46,7 @@
 
 <!--#if expr="$teachersuploadallowed" -->
 
-<form method="post" enctype="multipart/form-data">
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
 <h3><label for="teachersfilename"><gettext>Datei importieren</gettext></label></h3>
 <p>
 <input type="file" id="teachersfilename" name="teachersfilename">
@@ -58,7 +58,7 @@
 
 <!--#if expr="$error_teachers" -->
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 
 
 <h3><gettext>Fehler korrigieren</gettext></h3>
@@ -91,7 +91,7 @@
 
 <!--#if expr="$teachers" -->
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 
 <h3><gettext>Editieren</gettext></h3>
 
@@ -125,7 +125,7 @@
 <hr>
 
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <h3><gettext>Lehrer entfernen</gettext></h3>
 
 <table id="teachersdelete" class="liste">

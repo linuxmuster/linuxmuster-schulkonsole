@@ -16,6 +16,7 @@ C<logout> ends a session and redirects to the start page.
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Encode;
 use Schulkonsole::Session;
 
 my $this_file = 'logout';
@@ -39,11 +40,13 @@ if (not $pid) {
 	my @lockfiles = glob($session_lockfiles_prefix . '*');
 
 	foreach my $lockfile (@lockfiles) {
-		my ($sid) = $lockfile =~ /^${session_lockfiles_prefix}_(.+)$/;
-		my $session_file = "$Schulkonsole::Config::_runtimedir/cgisess_$sid";
-		if (open LOCK, "<$lockfile") {
+		if (open LOCK, '<', $lockfile) {
 			if (flock LOCK, (2 | 4)) {
-				if (open SESSION, "<$session_file") {
+				my ($sid) = $lockfile =~ /^${session_lockfiles_prefix}_(.+)$/;
+				my $session_file = Schulkonsole::Encode::to_fs(
+					"$Schulkonsole::Config::_runtimedir/cgisess_$sid");
+
+				if (open SESSION, '<', $session_file) {
 					my @stats = stat SESSION;
 					if ($stats[9] < $^T - Schulkonsole::Config::expire_seconds(
 					    		$Schulkonsole::Config::_session_expire_time)) {

@@ -1,6 +1,6 @@
 <html lang="de">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Projekte</gettext>: <!--#echo var="project" --> - <gettext>Austeilen</gettext></title>
 <!--#include file="css.shtml.inc" -->
@@ -17,7 +17,7 @@
 <div id="content">
 
 <!--#if expr="$projects" -->
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <p class="selectdomain"> <select name="projects">
 <optgroup label="Projekte">
 <!--#if expr="$loop_projects" --> <option value="$projects{gid}"><!--#echo var="projects{name}" --></option>
@@ -38,7 +38,7 @@
 <h3><gettext>Ausgew&auml;hltes Projekt:</gettext> <!--#echo var="project" --></h3>
 
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 
 
 <h3><gettext>Auszuteilende Dateien</gettext></h3>

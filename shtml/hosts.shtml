@@ -1,6 +1,6 @@
 <html lang="de">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Hosts</gettext></title>
 <!--#include file="css.shtml.inc" -->
@@ -19,7 +19,7 @@
 <!--#if expr="$isimporting" -->
 <!--#else -->
 <!--#if expr="$unconfigured" -->
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <p class="important"><gettext>Die Liste der konfigurierten Hosts stimmt nicht mit den
 tats&auml;chlich im System vorhandenen Hosts &uuml;berein.</gettext></p>
 
@@ -27,7 +27,7 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.</gettext></p>
 </form>
 <!--#else -->
 <!--#if expr="$unimported" -->
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <p class="important"><gettext>Es wurden noch nicht alle Hosts in das System &uuml;bernommen.
 </gettext></p>
 
@@ -40,7 +40,7 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.</gettext></p>
 
 <h2><gettext>Hosts</gettext></h2>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 
 
 <table id="hosts" class="liste">

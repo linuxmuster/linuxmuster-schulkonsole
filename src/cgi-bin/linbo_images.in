@@ -25,8 +25,10 @@ provides the following variables:
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
-use Schulkonsole::Session;
+use open ':utf8';
+use Schulkonsole::Encode;
 use Schulkonsole::Linbo;
+use Schulkonsole::Session;
 
 
 my $this_file = 'linbo_images';
@@ -214,8 +216,9 @@ foreach my $param ($q->param) {
 				= "$Schulkonsole::Config::_linbo_dir/$image_desc";
 
 			if (-e $image_desc_full_path) {
-				if (open DESC,
-				         "<$Schulkonsole::Config::_linbo_dir/$image_desc") {
+				if (open DESC, '<',
+				         Schulkonsole::Encode::to_fs(
+				         	"$Schulkonsole::Config::_linbo_dir/$image_desc")) {
 					flock DESC, 1;
 					seek DESC, 0, 0;
 
@@ -250,7 +253,8 @@ The query parameter C<imagedesc> contains the contents of the file.
 			my $image_info_full_path
 				= "$Schulkonsole::Config::_linbo_dir/$image_info";
 
-			if (open INFO, "<$Schulkonsole::Config::_linbo_dir/$image_info") {
+			if (open INFO, '<',
+			         Schulkonsole::Encode::to_fs($image_info_full_path)) {
 				flock INFO, 1;
 
 				my $lines;

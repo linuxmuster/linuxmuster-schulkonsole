@@ -1,6 +1,6 @@
 <html lang="de">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>aktueller Raum</gettext>: <!--#echo var="room" --></title>
 <!--#include file="css.shtml.inc" -->
@@ -16,7 +16,7 @@
 
 <div id="content">
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <p style="float: right;">
 <select name="rooms">
 <optgroup label="R&auml;ume">
@@ -34,7 +34,7 @@
 <!--#if expr="$room" -->
 <h2><gettext>Aktueller Raum</gettext>: <!--#echo var="room" --></h2>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <p>
 <gettext>Nutzung:</gettext>
 
@@ -124,7 +124,7 @@
 
 <h3><gettext>&Uuml;bersicht PCs</gettext></h3>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <table id="roomoverview" class="liste">
 <tr>
 <th><gettext>Hostname</gettext></th>
@@ -257,7 +257,7 @@
 
 <h3><gettext>&Uuml;bersicht Drucker</gettext></h3>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <table id="printersoverview" class="liste">
 <colgroup span="2" width="40%"></colgroup>
 <tr>
@@ -303,7 +303,7 @@
 
 <h3><gettext>&Uuml;bersicht PCs</gettext></h3>
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <table id="roomoverview" class="liste">
 <tr>
 <th><gettext>Hostname</gettext></th>

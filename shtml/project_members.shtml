@@ -1,6 +1,6 @@
 <html lang="de">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Projekte</gettext>: <!--#echo var="project" --> - <gettext>Mitglieder</gettext></title>
 <!--#include file="css.shtml.inc" -->
@@ -17,7 +17,7 @@
 <div id="content">
 
 <!--#if expr="$projects" -->
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <p class="selectdomain"> <select name="projects">
 <optgroup label="Projekte">
 <!--#if expr="$loop_projects" --> <option value="$projects{gid}"><!--#echo var="projects{name}" --></option>
@@ -39,7 +39,7 @@
 
 <!--#if expr="$isadmin" -->
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 <p><label for="projectisopen">Offenes Projekt</label>
 <!--#if expr="$isopen" -->
 <input type="checkbox" id="projectisopen" name="projectisopen" checked><br>
@@ -52,7 +52,7 @@
 
 <h3><gettext>Mitglieder hinzuf&uuml;gen</gettext></h3>
 
-<form method="post" action="project_addmembers">
+<form method="post" accept-charset="UTF-8" action="project_addmembers">
 <p>
 <label for="query"><gettext>Suche:</gettext></label>
 <input id="query" name="query">
@@ -69,7 +69,7 @@
 <!--#endif -->
 
 
-<form method="post">
+<form method="post" accept-charset="UTF-8">
 
 <h3><gettext>Mitglieder im Projekt</gettext></h3>
 

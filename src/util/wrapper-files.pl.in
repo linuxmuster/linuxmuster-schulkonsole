@@ -10,7 +10,7 @@ wrapper-files.pl - wrapper for writing files
  my $password = 'secret';
  my $app_id = Schulkonsole::Config::WRITEFILEAPP;
 
- open SCRIPT, "| $Schulkonsole::Config::_wrapper_files";
+ open SCRIPT, '|-', $Schulkonsole::Config::_wrapper_files;
  print SCRIPT <<INPUT;
  $id
  $password
@@ -27,8 +27,11 @@ wrapper-files.pl - wrapper for writing files
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
+use open ':utf8';
+use open ':std';
 use Schulkonsole::Config;
 use Schulkonsole::DB;
+use Schulkonsole::Encode;
 use Schulkonsole::Error::Files;
 
 
@@ -103,28 +106,34 @@ $app_id == Schulkonsole::Config::WRITEFILEAPP and do {
 	my $perm;
 	SWITCHWRITEFILE: {
 	$file == 0 and do {
-		$filename = $Schulkonsole::Config::_classrooms_file;
+		$filename = Schulkonsole::Encode::to_fs(
+		            	$Schulkonsole::Config::_classrooms_file);
 		last SWITCHWRITEFILE;
 	};
 	$file == 1 and do {
-		$filename = $Schulkonsole::Config::_printers_file;
+		$filename = Schulkonsole::Encode::to_fs(
+		            	$Schulkonsole::Config::_printers_file);
 		last SWITCHWRITEFILE;
 	};
 	$file == 2 and do {
-		$filename = $Schulkonsole::Config::_workstations_file;
+		$filename = Schulkonsole::Encode::to_fs(
+		            	$Schulkonsole::Config::_workstations_file);
 		last SWITCHWRITEFILE;
 	};
 	$file == 3 and do {
-		$filename = $Schulkonsole::Config::_room_defaults_file;
+		$filename = Schulkonsole::Encode::to_fs(
+		            	$Schulkonsole::Config::_room_defaults_file);
 		last SWITCHWRITEFILE;
 	};
 	$file == 4 and do {
-		$filename = $Schulkonsole::Config::_backup_conf_file;
+		$filename = Schulkonsole::Encode::to_fs(
+		            	$Schulkonsole::Config::_backup_conf_file);
 		$perm = 0755 unless -e $filename;
 		last SWITCHWRITEFILE;
 	};
 	$file == 5 and do {
-		$filename = $Schulkonsole::Config::_preferences_conf_file;
+		$filename = Schulkonsole::Encode::to_fs(
+		            	$Schulkonsole::Config::_preferences_conf_file);
 		$perm = 0644 unless -e $filename;
 		last SWITCHWRITEFILE;
 	};
@@ -135,7 +144,7 @@ $app_id == Schulkonsole::Config::WRITEFILEAPP and do {
 	$( = $);
 	umask(022);
 
-	open FILE, ">$filename"
+	open FILE, '>', $filename
 		or exit(  Schulkonsole::Error::Files::WRAPPER_ERROR_BASE
 		        - Schulkonsole::Error::Files::WRAPPER_CANNOT_OPEN_FILE);
 	flock FILE, 2;
@@ -182,7 +191,7 @@ $app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
 
 		umask(027);
 		my $lockfile = Schulkonsole::Config::lockfile('import_workstations');
-		open LOCK, ">>$lockfile"
+		open LOCK, '>>', Schulkonsole::Encode::to_fs($lockfile)
 			or exit(  Schulkonsole::Error::Files::WRAPPER_ERROR_BASE
 			        - Schulkonsole::Error::Files::WRAPPER_CANNOT_OPEN_FILE);
 		flock LOCK, 2;
@@ -194,7 +203,9 @@ $app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
 		$) = 0;
 		$( = $);
 		umask(022);
-		open APP, "$Schulkonsole::Config::_cmd_import_workstations | "
+		open APP, '|-',
+		     Schulkonsole::Encode::to_fs(
+		     	$Schulkonsole::Config::_cmd_import_workstations)
 			or last SWITCH;
 		my $line;
 		while (<APP>) {
@@ -207,14 +218,15 @@ $app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
 
 			my $session_lockfile
 				= Schulkonsole::Config::lockfile("cgisession_$sid");
-			open SESSIONLOCK, ">>$session_lockfile"
+			open SESSIONLOCK, '>>', $session_lockfile
 				or exit (  Schulkonsole::Error::Files::WRAPPER_CANNOT_OPEN_FILE
 				         - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE);
 			flock SESSIONLOCK, 2;
 
 			my $session = new CGI::Session("driver:File", $sid,
 			              	{
-			                	Directory => $Schulkonsole::Config::_runtimedir
+			                	Directory => Schulkonsole::Encode::to_fs(
+			              			$Schulkonsole::Config::_runtimedir)
 			              	});
 			if ($session->param('username')) {
 				chomp $line;
@@ -242,7 +254,9 @@ $app_id == Schulkonsole::Config::IMPORTPRINTERSAPP and do {
 	$) = 0;
 	$( = $);
 	umask(022);
-	exec $Schulkonsole::Config::_cmd_import_printers or last SWITCH;
+	exec Schulkonsole::Encode::to_cli(
+	     	$Schulkonsole::Config::_cmd_import_printers)
+		or last SWITCH;
 };
 
 }
