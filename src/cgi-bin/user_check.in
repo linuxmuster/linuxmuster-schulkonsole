@@ -56,14 +56,11 @@ my $password = $sk_session->get_password();
 
 
 my $process_table = new Proc::ProcessTable;
-my $app_add
-	= $Schulkonsole::Config::_root_apps[Schulkonsole::Config::USERSADDAPP];
+my $app_add = $Schulkonsole::Config::_cmd_sophomorix_add;
 $app_add =~ s:.*/::;
-my $app_move
-	= $Schulkonsole::Config::_root_apps[Schulkonsole::Config::USERSMOVEAPP];
+my $app_move = $Schulkonsole::Config::_cmd_sophomorix_move;
 $app_move =~ s:.*/::;
-my $app_kill
-	= $Schulkonsole::Config::_root_apps[Schulkonsole::Config::USERSKILLAPP];
+my $app_kill = $Schulkonsole::Config::_cmd_sophomorix_kill;
 $app_kill =~ s:.*/::;
 
 my %running;

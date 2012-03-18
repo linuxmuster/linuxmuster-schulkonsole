@@ -175,8 +175,6 @@ $VERSION = 0.05;
 	change_password
 
 	hide_unhide_classes
-
-	is_locked
 );
 
 
@@ -4670,90 +4668,6 @@ sub change_room_password {
 
 
 
-
-
-
-=head3 C<is_locked($app_id)>
-
-Check if Sophomorix is locked
-
-=head4 Parameters
-
-=over
-
-=item C<$app_id>
-
-The Schulkonsole's ID of the application to check
-
-=backA
-
-=head4 Return value
-
-1 if locked, 0 otherwise
-
-=head4 Description
-
-Checks if the application with ID C<$app_id> is locked by Sophomorix
-
-=cut
-
-sub is_locked {
-	my $app_id = shift;
-	my $app = $Schulkonsole::Config::_root_apps[$app_id];
-
-
-	open SOPHOMORIXLOCK, "<$DevelConf::lock_file" or return 0;
-	flock SOPHOMORIXLOCK, 2;
-	seek SOPHOMORIXLOCK, 0, 0;
-
-	while (<SOPHOMORIXLOCK>) {
-		my ($lock, $date, $create, $sophomorix_app, $pid) = split '::';
-
-		return 1 if $sophomorix_app eq $app;
-	}
-
-
-	close SOPHOMORIXLOCK;
-
-
-	return 0;
-}
-
-
-
-=head3 C<locks()>
-
-Get Sophomorix locks
-
-=head4 Return value
-
-A hash with Sophomorix commands as keys and PIDs as values
-
-=head4 Description
-
-Returns all Sophomorix locks in a hash
-
-=cut
-
-sub locks {
-	my %re;
-
-	open SOPHOMORIXLOCK, "<$DevelConf::lock_file" or return 0;
-	flock SOPHOMORIXLOCK, 2;
-	seek SOPHOMORIXLOCK, 0, 0;
-
-	while (<SOPHOMORIXLOCK>) {
-		my ($lock, $date, $create, $sophomorix_app, $pid) = split '::';
-
-		$re{$sophomorix_app} = $pid;
-	}
-
-
-	close SOPHOMORIXLOCK;
-
-
-	return %re;
-}
 
 
 
