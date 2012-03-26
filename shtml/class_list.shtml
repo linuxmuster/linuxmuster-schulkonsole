@@ -44,6 +44,7 @@
 <th><gettext>Name</gettext></th>
 <th><gettext>Festplattenquota</gettext></th>
 <th><gettext>E-Mailquota</gettext></th>
+<th><gettext>Ausdrucke</gettext></th>
 <th><gettext>Subklasse</gettext></th>
 <th><gettext>Projekte</gettext></th>
 </tr>
@@ -109,6 +110,9 @@
 </li>
 </ul>
 <!--#else -->-<!--#endif --></td>
+<td><!--#if expr="$students{printquotas}{limit}" -->
+	<!--#echo var="students{printquotas}{usage}" --> von <!--#echo var="students{printquotas}{limit}" -->
+<!--#else -->-<!--#endif --></td>
 <td><!--#echo var="students{subclass}" --></td>
 <td><!--#echo var="students{projects_str}" --></td>
 </tr>
@@ -118,6 +122,7 @@
 <th><gettext>Name</gettext></th>
 <th><gettext>Festplattenquota</gettext></th>
 <th><gettext>E-Mailquota</gettext></th>
+<th><gettext>Ausdrucke</gettext></th>
 <th><gettext>Subklasse</gettext></th>
 <th><gettext>Projekte</gettext></th>
 </tr>

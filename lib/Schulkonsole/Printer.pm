@@ -21,6 +21,7 @@ $VERSION = 0.03;
 	printer_off
 	printer_deny
 	own_quota
+	quota
 );
 
 
@@ -385,11 +386,99 @@ sub own_quota {
 
 	die new Schulkonsole::Error(
 		Schulkonsole::Error::Printer::WRAPPER_UNEXPECTED_DATA,
-		$Schulkonsole::Config::_wrapper_printer)
+		$Schulkonsole::Config::_wrapper_printer,
+	    $input_buffer)
 		unless defined $max;
 
 
 	return ($pages, $max);
+}
+
+
+
+
+
+=head2 C<quota($id, $password, @users)>
+
+Get print quota of users
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=item C<@users>
+
+List of UIDs to get quota from
+
+=back
+
+=head3 Description
+
+This wraps the commands 
+C</usr/bin/linuxmuster-pk --user user -t> 
+to get the number of printed pages 
+and
+C</usr/bin/linuxmuster-pk --user user -m>
+maximum number of pages
+invoked for each UID from C<@users> as C<user> 
+
+=head4 Return value
+
+A reference to a hash of the form C<< $user => quota >>, where C<$user> are 
+the users of C<@users> and C<quota> is a hash with the keys C<usage> for the 
+number of printed pages and C<limit> for the maximum allowed number of 
+printed pages.
+
+=cut
+
+sub quota {
+	my $id = shift;
+	my $password = shift;
+	my @users = @_;
+
+
+	return {} unless @users;
+
+
+	my $pid = start_wrapper(Schulkonsole::Config::PRINTERGETQUOTAAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	print SCRIPTOUT join("\n", @users), "\n\n";
+
+	my %re;
+	while (<SCRIPTIN>) {
+		$input_buffer .= $_;
+
+		my ($user, $pages, $max) = /^(.+)\t(\d+)\t(\d+)$/;
+
+		die new Schulkonsole::Error(
+			Schulkonsole::Error::Printer::WRAPPER_UNEXPECTED_DATA,
+			$Schulkonsole::Config::_wrapper_printer,
+			$input_buffer)
+			unless defined $max;
+
+
+		$re{$user} = {
+			usage => $pages,
+			limit => $max,
+		};
+	}
+
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	return \%re;
 }
 
 

@@ -17,10 +17,11 @@ The HTML template is class_list.shtml.
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
-use Schulkonsole::Session;
+use Schulkonsole::Cyrus;
 use Schulkonsole::DB;
 use Schulkonsole::Info;
-use Schulkonsole::Cyrus;
+use Schulkonsole::Printer;
+use Schulkonsole::Session;
 
 my $this_file = 'class_list';
 
@@ -71,9 +72,13 @@ provides the following variables:
 =cut
 
 
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
 
 my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
 my $user_quotaroots = Schulkonsole::Cyrus::quota(keys %$class_userdatas);
+my $user_quotaprints = Schulkonsole::Printer::quota($id, $password,
+                                                    keys %$class_userdatas);
 
 my @students;
 foreach my $user (sort {
@@ -93,6 +98,20 @@ foreach my $user (sort {
 	} else {
 		$quotaemail_percent = '0.0';
 	}
+
+
+	my $quotaprint_usage;
+	my $quotaprint_limit;
+	my $quotaprint_percent;
+	if ($$user_quotaprints{$user}) {
+		$quotaprint_usage = $$user_quotaprints{$user}{usage};
+		$quotaprint_limit = $$user_quotaprints{$user}{limit};
+		$quotaprint_percent = sprintf("%.1f", 100 *
+		                              $quotaprint_usage / $quotaprint_limit);
+	} else {
+		$quotaprint_percent = '0.0';
+	}
+
 
 	my $disk_quotas =
 		Schulkonsole::Info::disk_quotas($$class_userdatas{$user}{uidnumber});
@@ -175,13 +194,29 @@ foreach my $user (sort {
 		push @array_diskquotas, $diskquota;
 	}
 
-	my $mailquotas =  { usage => $quotaemail_usage,
-	                    limit => $quotaemail_limit,
-	                    percent => $quotaemail_percent,
-						percent_rounded => ($quotaemail_percent < 100.0 ?
-						                      int($quotaemail_percent + 0.5)
-						                    : 100),
-	                    'warn' => ($quotaemail_usage > $quotaemail_limit) };
+
+	my $mailquotas =  {
+		usage => $quotaemail_usage,
+		limit => $quotaemail_limit,
+		percent => $quotaemail_percent,
+		percent_rounded => ($quotaemail_percent < 100.0 ?
+		                      int($quotaemail_percent + 0.5)
+		                    : 100),
+		'warn' => ($quotaemail_usage > $quotaemail_limit)
+	};
+
+
+	my $printquotas = {
+		usage => $quotaprint_usage,
+		limit => $quotaprint_limit,
+		percent => $quotaprint_percent,
+		percent_rounded => ($quotaprint_percent < 100.0 ?
+		                      int($quotaprint_percent + 0.5)
+		                    : 100),
+	};
+
+
+
 
 
 	my $groups = Schulkonsole::DB::user_groups(
@@ -202,6 +237,7 @@ foreach my $user (sort {
 		surname => $$class_userdatas{$user}{surname},
 		diskquotas => \@array_diskquotas,
 		mailquotas => $mailquotas,
+		printquotas => $printquotas,
 		subclass => $$class_userdatas{$user}{subclass},
 		projects_str => $projects_str,
 	};
@@ -315,6 +351,30 @@ The user's INBOX usage in percent rounded to an integer
 =item C<warn>
 
 True if user is over quota
+
+=back
+
+=item C<printquotas>
+
+The user's print quota in a hash with the keys
+
+=over
+
+=item C<usage>
+
+The user's printed pages
+
+=item C<limit>
+
+The user's maximum allowed pages
+
+=item C<percent>
+
+The user's print quota usage in percent
+
+=item C<percent_rounded>
+
+The user's print quota usage in percent rounded to an integer
 
 =back
 

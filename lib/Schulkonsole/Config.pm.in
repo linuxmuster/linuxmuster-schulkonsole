@@ -141,6 +141,7 @@ $VERSION = 0.06;
 	PRINTERONOFFAPP
 	PRINTERALLOWDENYAPP
 	PRINTERGETOWNQUOTAAPP
+	PRINTERGETQUOTAAPP
 	SHARESTATESAPP
 	SHARESONOFFAPP
 	LSHANDOUTAPP
@@ -287,7 +288,11 @@ C<printer_allow_deny>
 
 =item C<PRINTERGETOWNQUOTAAPP>
 
-C<printer_quota>
+C<own_print_quota>
+
+=item C<PRINTERGETQUOTAAPP>
+
+C<print_quota>
 
 =back
 
@@ -298,6 +303,7 @@ use constant {
 	PRINTERONOFFAPP => 7002,
 	PRINTERALLOWDENYAPP => 7003,
 	PRINTERGETOWNQUOTAAPP => 7004,
+	PRINTERGETQUOTAAPP => 7005,
 };
 
 =head3 Constants for wrapper-sophomorix
@@ -1136,6 +1142,7 @@ $_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
 	PRINTERONOFFAPP() => 'printer_on_off',
 	PRINTERALLOWDENYAPP() => 'printer_allow_deny',
 	PRINTERGETOWNQUOTAAPP() => 'own_print_quota',
+	PRINTERGETQUOTAAPP() => 'print_quota',
 	SHARESTATESAPP() => 'share_states',
 	SHARESONOFFAPP() => 'shares_on_off',
 	LSHANDOUTAPP() => 'ls_handout',

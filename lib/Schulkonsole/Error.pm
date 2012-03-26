@@ -241,7 +241,8 @@ sub what {
 		and return 'on muss 1 oder 0 sein';
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_USER
 		and return 'Ungueltiger Benutzer';
-	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_USERS
+	(   $this->{code} == Schulkonsole::Error::Printer::WRAPPER_NO_USERS
+	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_USERS)
 		and return 'Keine Benutzer';
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_USERID
 		and return 'Ungueltige Benutzer-ID';
