@@ -1,3 +1,139 @@
+linuxmuster-schulkonsole (0.10.1-lenny0) unstable; urgency=low
+
+  * Aike:
+    * shtml/class_list.shtml,
+      src/cgi-bin/class_list.in,
+      lib/Schulkonsole/Config.pm.in,
+      lib/Schulkonsole/Error.pm,
+      lib/Schulkonsole/Error/Printer.pm,
+      lib/Schulkonsole/Printer.pm,
+      src/util/wrapper-printer.pl.in,
+      doc/etc/schulkonsole/permissions.conf:
+      Abfrage der Druckquota in Klassenliste hinzugefügt.
+    * shtml/css.shtml.inc:
+      Unterstützung für Internet Explorer Version < 7 entfernt.
+    * lib/Schulkonsole/Config.pm.in,
+      lib/Schulkonsole/Cyrus.pm,
+      lib/Schulkonsole/DB.pm,
+      lib/Schulkonsole/Encode.pm,
+      lib/Schulkonsole/Files.pm,
+      lib/Schulkonsole/Firewall.pm,
+      lib/Schulkonsole/Info.pm,
+      lib/Schulkonsole/Linbo.pm,
+      lib/Schulkonsole/OVPN.pm,
+      lib/Schulkonsole/Printer.pm,
+      lib/Schulkonsole/Session.pm.in,
+      lib/Schulkonsole/Sophomorix.pm,
+      lib/Schulkonsole/Template.pm,
+      lib/Schulkonsole/Makefile.am,
+      shtml/class.shtml,
+      shtml/class_collect.shtml,
+      shtml/class_handout.shtml,
+      shtml/class_handoutcopy.shtml,
+      shtml/class_list.shtml,
+      shtml/class_passwords.shtml,
+      shtml/class_shares.shtml,
+      shtml/example.shtml,
+      shtml/hosts.shtml,
+      shtml/linbo.shtml,
+      shtml/linbo_edit.shtml,
+      shtml/linbo_images.shtml,
+      shtml/linbo_new.shtml,
+      shtml/linbo_pxeedit.shtml,
+      shtml/linbo_regpatchedit.shtml,
+      shtml/login.shtml,
+      shtml/logout.shtml,
+      shtml/printers.shtml,
+      shtml/printers_edit.shtml,
+      shtml/project.shtml,
+      shtml/project_addmembers.shtml,
+      shtml/project_collect.shtml,
+      shtml/project_drop_verify.shtml,
+      shtml/project_handout.shtml,
+      shtml/project_handoutcopy.shtml,
+      shtml/project_members.shtml,
+      shtml/project_shares.shtml,
+      shtml/quotas.shtml,
+      shtml/quotas_classes.shtml,
+      shtml/quotas_others.shtml,
+      shtml/quotas_projects.shtml,
+      shtml/quotas_teachers.shtml,
+      shtml/room.shtml,
+      shtml/room_collect.shtml,
+      shtml/room_end_lesson_verify.shtml,
+      shtml/room_handout.shtml,
+      shtml/room_shares.shtml,
+      shtml/room_test.shtml,
+      shtml/room_test_collect.shtml,
+      shtml/room_test_end.shtml,
+      shtml/room_test_handout.shtml,
+      shtml/room_test_password.shtml,
+      shtml/rooms.shtml,
+      shtml/rooms_classrooms.shtml,
+      shtml/settings.shtml,
+      shtml/settings_backup.shtml,
+      shtml/settings_classs.shtml,
+      shtml/settings_program.shtml,
+      shtml/settings_users.shtml,
+      shtml/showpassword.shtml,
+      shtml/start.shtml,
+      shtml/user.shtml,
+      shtml/user_check.shtml,
+      shtml/user_commit.shtml,
+      shtml/user_extra.shtml,
+      shtml/user_reports.shtml,
+      shtml/user_students.shtml,
+      shtml/user_teacherpasswords.shtml,
+      shtml/user_teachers.shtml,
+      shtml/user_teachin.shtml,
+      src/cgi-bin/class.in,
+      src/cgi-bin/class_passwords.in,
+      src/cgi-bin/hosts.in,
+      src/cgi-bin/linbo_images.in,
+      src/cgi-bin/linbo_pxeedit.in,
+      src/cgi-bin/linbo_regpatchedit.in,
+      src/cgi-bin/logout.in,
+      src/cgi-bin/printers_edit.in,
+      src/cgi-bin/project.in,
+      src/cgi-bin/quotas_others.in,
+      src/cgi-bin/rooms.in,
+      src/cgi-bin/rooms_classrooms.in,
+      src/cgi-bin/settings.in,
+      src/cgi-bin/settings_backup.in,
+      src/cgi-bin/settings_program.in,
+      src/cgi-bin/settings_users.in,
+      src/cgi-bin/start.in,
+      src/cgi-bin/user_teacherpasswords.in,
+      src/util/wrapper-files.pl.in,
+      src/util/wrapper-firewall.pl.in,
+      src/util/wrapper-linbo.pl.in,
+      src/util/wrapper-ovpn.pl.in,
+      src/util/wrapper-printer.pl.in,
+      src/util/wrapper-sophomorix.pl.in:
+      verwende UTF-8 für 
+      - Lesen von Formularwerten
+      - Ausgabe von HTML-Seiten
+      - Kommunikation mit Wrappern
+      - Datenbankverbindung
+      - Lesen/Schreiben von Dateien
+      - Dateisystem
+      - Aufruf von Befehlen mit system()/exec().
+    * lib/Schulkonsole/Config.pm.in,
+      src/util/wrapper-sophomorix.pl.in:
+      - Lese Sophomorix-Dateien zeilenweise und rate Kodierung ISO-8859-15/UTF-8,
+      - Schreibe Sophomorix-Dateien in ISO-8859-15.
+    * shtml/user_teacherpasswords.shtml: if mit endif abgeschlossen.
+    * src/cgi-bin/user_check.in,
+      src/cgi-bin/user_commit.in:
+      Befehle nicht mehr in Liste sondern in Variablen konfiguriert.
+    * lib/Schulkonsole/Sophomorix.pm: unbenutzte Subroutinen is_locked() und locks() entfernt.
+    * src/util/wrapper-sophomorix.pl.in:
+      Verwende $_cmd_sophomorix_room in room_reset (nicht $_cmd_sophomorix_teacher).
+    * lib/Schulkonsole/SophomorixQuotas.pm: entferne unnötige use-Direktiven.
+    * src/cgi-bin/linbo_edit.in: Fehlerkonstante korrigiert.
+
+ -- Thomas Schmitt <schmitt@lmz-bw.de>  Mon, 26 Mar 2011 17:22:00 +0200
+
 linuxmuster-schulkonsole (0.10.0-lenny0) unstable; urgency=low
 
   * Aike: Erste Implementierung der Druckquota, div. Architekturanpassungen.
