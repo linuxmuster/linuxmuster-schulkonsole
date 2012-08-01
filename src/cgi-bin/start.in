@@ -633,10 +633,7 @@ A comma separated list of the user's mailaliases
 
 $sk_session->set_var('mailaliases', $var_mailaliases);
 
-
-
-my ($hostname) = gethostbyname(Sys::Hostname::hostname());
-my ($maildomain) = $hostname =~ /^.*?\.(.+)$/;
+my ($maildomain) = `cat /etc/mailname`;
 
 my @array_mailaddresss;
 foreach my $mailalias (sort $uid, @mailaliass) {
