@@ -3,7 +3,7 @@ use DBI;
 use Crypt::PasswdMD5;
 use Crypt::SmbHash;
 use Digest::MD5;
-use Digest::SHA1;
+use Digest::SHA;
 use MIME::Base64;
 use Schulkonsole::Error;
 use Schulkonsole::Config;
@@ -193,7 +193,7 @@ sub verify_password_by_userdata {
 		$userpassword =~ s/^\{SSHA\}//i and do {
 			my ($salt) = substr(
 				MIME::Base64::decode_base64($userpassword), 20);
-			my $sha1digest = Digest::SHA1->new;
+			my $sha1digest = Digest::SHA->new;
 			$sha1digest->add($password);
 			$sha1digest->add($salt);
 			my $b64hash = MIME::Base64::encode_base64($sha1digest->digest . $salt);
