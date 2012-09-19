@@ -1,7 +1,7 @@
 Einige Dateien, die noetig sind um Schulkonsole zu erstellen, sind nicht
 im Subversionrepository enthalten. Diese Dateien koennen automatisch generiert
-werden. Dazu muss automake 1.9 und autoconf 2.59 installiert sein (oder
-kompatible neuere Versionen dieser Programme).
+werden. Dazu müssen die Pakete automake (>=1.9), autoconf (>=2.59) und libtool
+installiert sein).
 Nach dem Aufruf von "autoreconf --install" kann der generischen Anleitung
 in der dann installierten Datei INSTALL gefolgt werden.
 
