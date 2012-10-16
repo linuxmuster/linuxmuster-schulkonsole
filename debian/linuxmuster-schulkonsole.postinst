@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 #
 # $Id$
 #
@@ -8,6 +8,13 @@ conffile="/etc/linuxmuster/schulkonsole/permissions.conf"
 
 case "$1" in
 	configure)
+	 # check for runtimedir and create it if necessary
+	 if [ ! -d /var/run/schulkonsole ]; then
+	  rtdir=/var/run/schulkonsole
+	  mkdir -p $rtdir
+	  chown www-data $rtdir
+	  chmod 700 $rtdir
+	 fi
 	 # check for update_logins for teachers in permissions.conf and add it if necessary
 	 if ! grep ^teachers $conffile | grep -q update_logins; then
 	  echo "Adding update_logins to permissions.conf."
