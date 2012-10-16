@@ -285,7 +285,7 @@ sub print_page {
 		marked_sections => 1,
 		attr_encoded => 1,
 	);
-	$p->report_tags('div', 'label', 'form', 'input', 'textarea', 'select',
+	$p->report_tags('body', 'div', 'label', 'form', 'input', 'textarea', 'select',
 	                'option', 'optgroup',
 	                'th', 'title', 'meta', 'html', 'span', 'a', 'gettext');
 
@@ -380,7 +380,6 @@ sub start_tag_handler {
 	my $action = shift;
 	my $tokenpos = shift;
 
-
 	if ($_in_gettext) {
 		$_skip_buffer .= $skipped_text . $text;
 	} else {
@@ -388,6 +387,8 @@ sub start_tag_handler {
 
 		if ($tagname eq 'gettext') {
 			$_in_gettext = 1;
+        } elsif ($tagname eq 'body') {
+            print_content("<body id=\"$action\">");
 		} elsif ($tagname eq 'form') {
 			my $anchor = $1 if $$attr_ref{action} =~ s/(#[^#]*)//;
 			if (not $$attr_ref{action}) {

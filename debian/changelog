@@ -7,6 +7,14 @@ linuxmuster-schulkonsole (0.10.1-2) precise; urgency=low
 
 linuxmuster-schulkonsole (0.10.1-1) unstable; urgency=low
 
+    * Branch fuer neues template /fs
+    * Doppeltes menu div in login.shtml entfernt
+    * Template.pm angepasst, so dass das body tag die id der action erhält
+
+ -- Frank Schiebel <frank@linuxmuster.net>  Tue, 25 Sep 2012 16:43:00 +0200
+
+linuxmuster-schulkonsole (0.10.1-1) unstable; urgency=low
+
   * tschmitt:
     * Added dependency to libproc-processtable-perl to control (needed
       for precise).
