@@ -32,7 +32,7 @@ EXTRA_DIST = Session.pm.in Config.pm.in
 
 
 pkglibexecdir = $(libexecdir)/@PACKAGE@
-pkgruntimedir = /var/run/@PACKAGE@
+pkgruntimedir = /var/lib/@PACKAGE@
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
