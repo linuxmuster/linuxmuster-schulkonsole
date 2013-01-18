@@ -124,17 +124,19 @@ none
 		      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
 			unless $ovpn_password;
 
-		$opts .= '--create';
+		# give password on cmdline because read does not handle pipes
+		$opts .= "--create --password=$ovpn_password";
+#		$opts .= '--create';
 
-		open PIPE, '|-', Schulkonsole::Encode::to_fs(
-		     	"$Schulkonsole::Config::_cmd_ovpn_client_cert $opts")
-			or last SWITCH;
-		print PIPE "$ovpn_password\n";
-		close PIPE;
+#		open PIPE, '|-', Schulkonsole::Encode::to_fs(
+#		     	"$Schulkonsole::Config::_cmd_ovpn_client_cert $opts")
+#			or last SWITCH;
+#		print PIPE "$ovpn_password\n";
+#		close PIPE;
 
-		last SWITCH if $?;
+#		last SWITCH if $?;
 
-		exit 0;
+#		exit 0;
 
 	} elsif ($app_id == Schulkonsole::Config::OVPNDOWNLOADAPP) {
 		$opts .= '--download';
