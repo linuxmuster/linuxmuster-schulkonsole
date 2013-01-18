@@ -1,11 +1,19 @@
 #!/bin/bash
 #
-# tschmitt 20121024
+# thomas@linuxmuster.net
+# 18.01.2013
+# GPL v3
 #
 
 set -e
 
-conffile="/etc/linuxmuster/schulkonsole/permissions.conf"
+exdir="/usr/share/doc/linuxmuster-schulkonsole/examples"
+confdir="/etc/linuxmuster/schulkonsole"
+bindir="/usr/bin"
+permfile="$confdir/permissions.conf"
+permfile_ex="$exdir/$(basename $permfile)"
+pkdummy="$bindir/linuxmuster-pk"
+pkdummy_ex="$exdir/$(basename $pkdummy)"
 rtdir="/var/lib/schulkonsole"
 
 case "$1" in
@@ -16,20 +24,18 @@ case "$1" in
 	  chown www-data $rtdir
 	  chmod 700 $rtdir
 	 fi
-	 # check for update_logins for teachers in permissions.conf and add it if necessary
-	 if ! grep ^teachers $conffile | grep -q update_logins; then
-	  echo "Adding update_logins to permissions.conf."
-	  cp $conffile $conffile.dpkg-bak
-	  backed_up=yes
-	  sed -e "/^\[[Ee][Xx][Tt][Ee][Rr][Nn][Aa][Ll] [Pp][Rr][Oo][Gg][Rr][Aa][Mm][Ss]\]/a\
-teachers=update_logins" -i $conffile
+	 # check for up-to-date permissions.conf
+	 if ! grep -q own_print_quota "$permfile"; then
+	  echo "Providing an up-to-date $permfile."
+	  echo "Original file is saved to $permfile.dpkg-bak."
+	  cp "$permfile_ex" "$permfile"
+	  chmod 644 "$permfile"
 	 fi
-	 # check for update_linbofs for domadmins in permissions.conf and add it if necessary
-	 if ! grep ^domadmins $conffile | grep -q update_linbofs; then
-	  echo "Adding update_linbofs to permissions.conf."
-	  [ -z "$backed_up" ] && cp $conffile $conffile.dpkg-bak
-	  sed -e "/^\[[Ee][Xx][Tt][Ee][Rr][Nn][Aa][Ll] [Pp][Rr][Oo][Gg][Rr][Aa][Mm][Ss]\]/a\
-domadmins=update_linbofs" -i $conffile
+	 # providing a dummy linuxmuster-pk
+	 if [ ! -e "$pkdummy" ]; then
+	  echo "Providing a dummy linuxmuster-pk script."
+	  cp "$pkdummy_ex" "$pkdummy"
+	  chmod 755 "$pkdummy"
 	 fi
 	;;
 

@@ -1,3 +1,14 @@
+linuxmuster-schulkonsole (0.10.4-0) precise; urgency=low
+
+  * tschmitt:
+    * added examples.
+    * postinst: tests for own_print_quota entry in permissions.conf, updates
+      it if missing.
+    * providing a dummy linuxmuster-pk script to make class_list functional for
+      testing purposes (closes #21).
+
+ -- Thomas Schmitt <tschmitt@linuxmuster.de>  Fri, 18 Jan 2013 14:58:00 +0100
+
 linuxmuster-schulkonsole (0.10.3-0) precise; urgency=low
 
   * tschmitt:
