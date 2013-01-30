@@ -1900,7 +1900,7 @@ Check if LINBO is enabled
 
 =head4 Return value
 
-True if LINBO is enabled, false otherwise
+True if LINBODIR exists, false otherwise
 
 =head4 Description
 
@@ -1912,19 +1912,12 @@ my $is_linbo_enabled;
 sub is_linbo_enabled {
 	return $is_linbo_enabled if defined $is_linbo_enabled;
 
-	open NETWORKSETTINGS, '<',
-	     Schulkonsole::Encode::to_fs(
-	     	$Schulkonsole::Config::_network_settings_file)
-		or return 0;
-	while (<NETWORKSETTINGS>) {
-		my ($key, $value) = /^\s*(\S+)\s*=\s*(.+)$/;
-		if ($key eq 'imaging') {
-			$is_linbo_enabled = (($value =~ /^linbo/) ? 1 : 0);
-			last;
-		}
-	}
-	close NETWORKSETTINGS;
-
+        if ( -d $_linbo_dir ) {
+                $is_linbo_enabled = 1;
+        } else {
+                $is_linbo_enabled = 0;
+        };
+	
 	return $is_linbo_enabled;
 }
 
