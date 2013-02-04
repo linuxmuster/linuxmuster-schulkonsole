@@ -1,3 +1,19 @@
+linuxmuster-schulkonsole (0.10.6-2) precise; urgency=low
+
+  * tschmitt:
+    * updated db.conf example file.
+    * debian/postinst: added check for valid configfile db.conf.
+    * removed dummy linuxmuster-pk script again.
+
+ -- Thomas Schmitt <thomas@linuxmuster.net>  Mon, 04 Feb 2013 12:33:17 +0100
+
+linuxmuster-schulkonsole (0.10.6-1) precise; urgency=low
+
+  * tschmitt:
+    * debian/control: added linuxmuster-schulkonsole-template and linuxmuster-pk to depends.
+
+ -- Thomas Schmitt <thomas@linuxmuster.net>  Fri, 01 Feb 2013 17:21:51 +0100
+
 linuxmuster-schulkonsole (0.10.6-0) precise; urgency=low
 
   * tschmitt:

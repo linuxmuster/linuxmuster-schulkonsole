@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # thomas@linuxmuster.net
-# 18.01.2013
+# 04.02.2013
 # GPL v3
 #
 
@@ -10,10 +10,10 @@ set -e
 exdir="/usr/share/doc/linuxmuster-schulkonsole/examples"
 confdir="/etc/linuxmuster/schulkonsole"
 bindir="/usr/bin"
+dbconf="$confdir/db.conf"
+dbconf_ex="$exdir/$(basename $dbconf)"
 permfile="$confdir/permissions.conf"
 permfile_ex="$exdir/$(basename $permfile)"
-pkdummy="$bindir/linuxmuster-pk"
-pkdummy_ex="$exdir/$(basename $pkdummy)"
 rtdir="/var/lib/schulkonsole"
 
 case "$1" in
@@ -30,12 +30,21 @@ case "$1" in
 	  echo "Original file is saved to $permfile.dpkg-bak."
 	  cp "$permfile_ex" "$permfile"
 	  chmod 644 "$permfile"
+	  chown www-data:www-data "$permfile"
 	 fi
-	 # providing a dummy linuxmuster-pk
-	 if [ ! -e "$pkdummy" ]; then
-	  echo "Providing a dummy linuxmuster-pk script."
-	  cp "$pkdummy_ex" "$pkdummy"
-	  chmod 755 "$pkdummy"
+	 # check for valid db.conf
+	 [ -s "$dbconf" ] || cp "$dbconf_ex" "$dbconf"
+	 dbuser=`grep ^Username $dbconf | awk -F\= '{ print $2 }'`
+	 dbpwd=`grep ^Password $dbconf | awk -F\= '{ print $2 }'`
+	 if [ "$dbuser" != "ldap" -o -z "$dbpwd" ]; then
+	  echo "Providing a random password for postgresql user ldap."
+	  echo "Warning: Backing up $dbconf to $dbconf.dpkg-bak!"
+	  cp "$dbconf" "$dbconf.dpkg-bak"
+	  ldapdbpw=`pwgen -s 8 1`
+	  psql -U postgres -d template1 -qc "ALTER USER ldap WITH PASSWORD '"$ldapdbpw"';"
+	  sed -e "s/^Password=.*/Password=$ldapdbpw/" -i "$dbconf"
+	  chown www-data:www-data "$dbconf"
+	  chmod 400 "$dbconf"
 	 fi
 	;;
 
