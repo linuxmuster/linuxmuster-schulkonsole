@@ -1,18 +1,12 @@
-linuxmuster-schulkonsole (0.10.6-2) precise; urgency=low
+linuxmuster-schulkonsole (0.10.7-0) precise; urgency=low
 
   * tschmitt:
     * updated db.conf example file.
     * debian/postinst: added check for valid configfile db.conf.
     * removed dummy linuxmuster-pk script again.
+    * removed all references to printquota from class_list.shtml and cgi-bin/class_list.in.
 
- -- Thomas Schmitt <thomas@linuxmuster.net>  Mon, 04 Feb 2013 12:33:17 +0100
-
-linuxmuster-schulkonsole (0.10.6-1) precise; urgency=low
-
-  * tschmitt:
-    * debian/control: added linuxmuster-schulkonsole-template and linuxmuster-pk to depends.
-
- -- Thomas Schmitt <thomas@linuxmuster.net>  Fri, 01 Feb 2013 17:21:51 +0100
+ -- Thomas Schmitt <thomas@linuxmuster.net>  Tue, 05 Feb 2013 11:23:38 +0100
 
 linuxmuster-schulkonsole (0.10.6-0) precise; urgency=low
 

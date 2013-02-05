@@ -77,6 +77,8 @@ my $password = $sk_session->get_password();
 
 my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
 my $user_quotaroots = Schulkonsole::Cyrus::quota(keys %$class_userdatas);
+my $user_quotaprints = Schulkonsole::Printer::quota($id, $password,
+                                                    keys %$class_userdatas);
 
 my @students;
 foreach my $user (sort {
@@ -95,6 +97,19 @@ foreach my $user (sort {
 		                              $quotaemail_usage / $quotaemail_limit);
 	} else {
 		$quotaemail_percent = '0.0';
+	}
+
+
+	my $quotaprint_usage;
+	my $quotaprint_limit;
+	my $quotaprint_percent;
+	if ($$user_quotaprints{$user}) {
+		$quotaprint_usage = $$user_quotaprints{$user}{usage};
+		$quotaprint_limit = $$user_quotaprints{$user}{limit};
+		$quotaprint_percent = sprintf("%.1f", 100 *
+		                              $quotaprint_usage / $quotaprint_limit);
+	} else {
+		$quotaprint_percent = '0.0';
 	}
 
 
@@ -191,6 +206,16 @@ foreach my $user (sort {
 	};
 
 
+	my $printquotas = {
+		usage => $quotaprint_usage,
+		limit => $quotaprint_limit,
+		percent => $quotaprint_percent,
+		percent_rounded => ($quotaprint_percent < 100.0 ?
+		                      int($quotaprint_percent + 0.5)
+		                    : 100),
+	};
+
+
 
 
 
@@ -212,6 +237,7 @@ foreach my $user (sort {
 		surname => $$class_userdatas{$user}{surname},
 		diskquotas => \@array_diskquotas,
 		mailquotas => $mailquotas,
+		printquotas => $printquotas,
 		subclass => $$class_userdatas{$user}{subclass},
 		projects_str => $projects_str,
 	};
