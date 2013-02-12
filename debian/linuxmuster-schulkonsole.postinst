@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # thomas@linuxmuster.net
-# 04.02.2013
+# 12.02.2013
 # GPL v3
 #
 
@@ -18,6 +18,8 @@ rtdir="/var/lib/schulkonsole"
 
 case "$1" in
 	configure)
+	 # read linuxmuster.net environment
+	 . /usr/share/linuxmuster/config/dist.conf
 	 # check for runtimedir and create it if necessary
 	 if [ ! -d "$rtdir" ]; then
 	  mkdir -p $rtdir
@@ -32,19 +34,23 @@ case "$1" in
 	  chmod 644 "$permfile"
 	  chown www-data:www-data "$permfile"
 	 fi
-	 # check for valid db.conf
-	 [ -s "$dbconf" ] || cp "$dbconf_ex" "$dbconf"
-	 dbuser=`grep ^Username $dbconf | awk -F\= '{ print $2 }'`
-	 dbpwd=`grep ^Password $dbconf | awk -F\= '{ print $2 }'`
-	 if [ "$dbuser" != "ldap" -o -z "$dbpwd" ]; then
-	  echo "Providing a random password for postgresql user ldap."
-	  echo "Warning: Backing up $dbconf to $dbconf.dpkg-bak!"
-	  cp "$dbconf" "$dbconf.dpkg-bak"
-	  ldapdbpw=`pwgen -s 8 1`
-	  psql -U postgres -d template1 -qc "ALTER USER ldap WITH PASSWORD '"$ldapdbpw"';"
-	  sed -e "s/^Password=.*/Password=$ldapdbpw/" -i "$dbconf"
-	  chown www-data:www-data "$dbconf"
-	  chmod 400 "$dbconf"
+	 
+	 # only on configured system
+	 if [ -e "$INSTALLED" ]; then
+	  # check for valid db.conf
+	  [ -s "$dbconf" ] || cp "$dbconf_ex" "$dbconf"
+	  dbuser=`grep ^Username $dbconf | awk -F\= '{ print $2 }'`
+	  dbpwd=`grep ^Password $dbconf | awk -F\= '{ print $2 }'`
+	  if [ "$dbuser" != "ldap" -o -z "$dbpwd" ]; then
+	   echo "Providing a random password for postgresql user ldap."
+	   echo "Warning: Backing up $dbconf to $dbconf.dpkg-bak!"
+	   cp "$dbconf" "$dbconf.dpkg-bak"
+	   ldapdbpw=`pwgen -s 8 1`
+	   psql -U postgres -d template1 -qc "ALTER USER ldap WITH PASSWORD '"$ldapdbpw"';"
+	   sed -e "s/^Password=.*/Password=$ldapdbpw/" -i "$dbconf"
+	   chown www-data:www-data "$dbconf"
+	   chmod 400 "$dbconf"
+	  fi
 	 fi
 	;;
 
