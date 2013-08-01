@@ -65,6 +65,7 @@ my $password = $sk_session->get_password();
 
 
 my @mountpoints;
+my %mountpoints_seen;
 if (    @Conf::quota_filesystems
     and $Conf::quota_filesystems[0] ne 'auto') {
 	@mountpoints = @Conf::quota_filesystems;
@@ -74,7 +75,10 @@ if (    @Conf::quota_filesystems
 	Quota::setmntent();
 	while (my ($dev, $path, $type, $opts) = Quota::getmntent()) {
 		if ($opts =~ /usrquota/) {
+		    if (not exists $mountpoints_seen{$dev}){
 			push @mountpoints, $path;
+			$mountpoints_seen{$dev}="$path";
+		    }
 		}
 	}
 	Quota::endmntent();

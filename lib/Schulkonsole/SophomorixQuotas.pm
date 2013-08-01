@@ -47,6 +47,7 @@ our $diskquota_undefined = 'quota';
 our $mailquota_undefined = 'mailquota';
 
 my @mountpoints;
+my %mountpoints_seen;
 
 
 =head2 Functions
@@ -77,7 +78,10 @@ sub mountpoints {
 		Quota::setmntent();
 		while (my ($dev, $path, $type, $opts) = Quota::getmntent()) {
 			if ($opts =~ /usrquota/) {
+			    if (not exists $mountpoints_seen{$dev}){
 				push @mountpoints, $path;
+				$mountpoints_seen{$dev}="$path";
+			    }
 			}
 		}
 		Quota::endmntent();
