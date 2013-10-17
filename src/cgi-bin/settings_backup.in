@@ -62,9 +62,9 @@ my $password = $sk_session->get_password();
 # boolean values in backup.conf are represented with $backup_true and
 # $backup_false in backup.conf
 
-=item C<ipcop>
+=item C<firewall>
 
-True if ipcop in F<backup.conf> is true
+True if firewall in F<backup.conf> is true
 
 =item C<verify>
 
@@ -77,7 +77,7 @@ True if unmount in F<backup.conf> is true
 =cut
 
 my %backup_conf_bool_in_form = (
-	ipcop => 1,
+	firewall => 1,
 	verify => 1,
 	unmount => 1,
 );
@@ -274,9 +274,9 @@ corresponds to mountpoint in F<backup.conf>
 
 corresponds to restoremethod in F<backup.conf>
 
-=item C<ipcop>
+=item C<firewall>
 
-true or false, corresponds to ipcop in F<backup.conf>
+true or false, corresponds to firewall in F<backup.conf>
 
 =item C<verify>
 
@@ -329,7 +329,7 @@ corresponds to keepinc in F<backup.conf>
 		mountpoint => $backup_env{mountpoint},
 		restoremethod => $backup_env{restoremethod},
 
-		ipcop => ($backup_env{ipcop} eq $backup_true ? 1 : 0),
+		firewall => ($backup_env{firewall} eq $backup_true ? 1 : 0),
 
 		verify => ($backup_env{verify} eq $backup_true ? 1 : 0),
 		isoprefix => $backup_env{isoprefix},
@@ -361,7 +361,7 @@ sub new_backup_lines {
 		mountpoint => 'mountpoint',
 		restoremethod => 'restoremethod',
 
-		ipcop => 'ipcop',
+		firewall => 'firewall',
 
 		verify => 'verify',
 		isoprefix => 'isoprefix',
