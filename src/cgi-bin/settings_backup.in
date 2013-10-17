@@ -74,12 +74,17 @@ True if verify in F<backup.conf> is true
 
 True if unmount in F<backup.conf> is true
 
+=itm C<cronbackup>
+
+True if cronbackup in F<backup.conf> is true
+
 =cut
 
 my %backup_conf_bool_in_form = (
 	firewall => 1,
 	verify => 1,
 	unmount => 1,
+	cronbackup => 1,
 );
 
 
@@ -322,6 +327,10 @@ corresponds to keepdiff in F<backup.conf>
 
 corresponds to keepinc in F<backup.conf>
 
+=item C<cronbackup>
+
+true or false, corresponds to cronbackup in F<backup.conf>
+
 =cut
 
 	return (
@@ -345,6 +354,7 @@ corresponds to keepinc in F<backup.conf>
 		keepfull => int($backup_env{keepfull}),
 		keepdiff => int($backup_env{keepdiff}),
 		keepinc => int($backup_env{keepinc}),
+		cronbackup => ($backup_env{cronbackup} eq $backup_true ? 1 : 0),
 	);
 }
 
@@ -377,6 +387,7 @@ sub new_backup_lines {
 		keepfull => 'keepfull',
 		keepdiff => 'keepdiff',
 		keepinc => 'keepinc',
+		cronbackup => 'cronbackup',
 	);
 
 
