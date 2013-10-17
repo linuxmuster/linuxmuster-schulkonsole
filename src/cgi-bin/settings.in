@@ -792,7 +792,7 @@ corresponds to cronbackup in F<backup.conf>
 		keepfull => int($backup_env{keepfull}),
 		keepdiff => int($backup_env{keepdiff}),
 		keepinc => int($backup_env{keepinc}),
-		cronbackup => ($backup_env{cronbackup} eq $backup_true ? 1 : 0,
+		cronbackup => ($backup_env{cronbackup} eq $backup_true ? 1 : 0),
 	);
 }
 

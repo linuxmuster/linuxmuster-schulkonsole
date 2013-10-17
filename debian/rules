@@ -37,6 +37,8 @@ config.status: configure
 	# Add here commands to configure the package.
 	./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --libexecdir=\$${prefix}/lib --sysconfdir=/etc/linuxmuster CFLAGS="$(CFLAGS)"
 
+configure:
+	autoreconf -i
 
 build: build-stamp
 
