@@ -148,13 +148,13 @@ sub start_lesson {
 	$this->param('start_time',$^T);
 
 
-
 	my $blocked_hosts_internet_all
 		= Schulkonsole::Firewall::blocked_hosts_internet();
 	my $blocked_hosts_intranet_all
 		= Schulkonsole::Firewall::blocked_hosts_intranet();
 	my $unfiltered_hosts_all = Schulkonsole::Firewall::unfiltered_hosts();
 
+	my $lml_majorversion = "$Schulkonsole::Config::_lml_majorversion";
 	my %blocked_hosts_internet;
 	my %blocked_hosts_intranet;
 	my %unfiltered_hosts;
@@ -165,15 +165,23 @@ sub start_lesson {
 		my ($mac) = $$workstations{$workstation}{mac} =~ /^(\w{2}(?::\w{2}){5})$/;
 		my ($host) = $$workstations{$workstation}{ip} =~ /^([\w.-]+)$/i;
 
-		$blocked_hosts_internet{$mac} = 1
-			if ($$blocked_hosts_internet_all{$mac});
-		$blocked_hosts_intranet{$mac} = 1
-			if ($$blocked_hosts_intranet_all{$mac});
-		$unfiltered_hosts{$mac} = 1
-			if ($$unfiltered_hosts_all{$mac});
+		if ($lml_majorversion >= 6.1) {
+			$blocked_hosts_internet{$mac} = 1
+				if ($$blocked_hosts_internet_all{$host});
+			$blocked_hosts_intranet{$mac} = 1
+				if ($$blocked_hosts_intranet_all{$host});
+			$unfiltered_hosts{$mac} = 1
+				if ($$unfiltered_hosts_all{$host});
+		} else {
+			$blocked_hosts_internet{$mac} = 1
+				if ($$blocked_hosts_internet_all{$mac});
+			$blocked_hosts_intranet{$mac} = 1
+				if ($$blocked_hosts_intranet_all{$mac});
+			$unfiltered_hosts{$mac} = 1
+				if ($$unfiltered_hosts_all{$mac});
+		}
 	}
 
-	
 
 	my $printers
 		= Schulkonsole::Config::printers_room($this->{_ROOMDATA}{name});

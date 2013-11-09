@@ -51,6 +51,7 @@ $VERSION = 0.06;
 
 	expire_seconds
 
+	$_lml_majorversion
 	$_sysconfdir
 	$_templatedir
 	$_runtimedir
@@ -709,6 +710,10 @@ use vars qw($_workstations_file $_room_defaults_file $_classrooms_file
 
 =over
 
+=item C<$_lml_majorversion>
+
+Major version of linuxmuster.net distribution
+
 =item C<$_lml_cache_dir>
 
 Directory where Linuxmusterloesung caches information
@@ -742,7 +747,8 @@ True if linuxmuster is started at boot time
 
 =cut
 
-use vars qw($_lml_cache_dir
+use vars qw($_lml_majorversion
+            $_lml_cache_dir
             $_blocked_hosts_internet_file $_blocked_hosts_intranet_file
             $_unfiltered_hosts_file $_cups_printers_conf_file
             $_workstation_file
@@ -1071,6 +1077,7 @@ my $lml_config_file = '/usr/share/linuxmuster/config/dist.conf';
 my %lml_env;
 
 tie %lml_env, 'Env::Bash', Source => $lml_config_file;
+$_lml_majorversion = $lml_env{DISTMAJORVERSION};
 $_lml_cache_dir = $lml_env{CACHEDIR};
 $_blocked_hosts_internet_file = $lml_env{BLOCKEDHOSTSINTERNET};
 $_blocked_hosts_intranet_file = $lml_env{BLOCKEDHOSTSINTRANET};

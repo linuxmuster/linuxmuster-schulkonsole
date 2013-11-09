@@ -41,7 +41,7 @@ use Schulkonsole::Error::Firewall;
 use Schulkonsole::Firewall;
 use Schulkonsole::RoomSession;
 
-
+my $lml_majorversion = "$Schulkonsole::Config::_lml_majorversion";
 
 my $id = <>;
 $id = int($id);
@@ -151,7 +151,11 @@ Format of address is xx:xx:xx:xx:xx:xx where xx is a hexadecimal value.
 	while (my $mac = <>) {
 		last if $mac =~ /^$/;
 
-		($mac) = $mac =~ /^(\w{2}(?::\w{2}){5})$/;
+		if ($lml_majorversion >= 6.1) {
+			($mac) = $mac =~ /^([\w.-]+)$/i;
+		} else {
+			($mac) = $mac =~ /^(\w{2}(?::\w{2}){5})$/;
+		}
 		exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_MAC
 		      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
 			unless $mac;
@@ -165,7 +169,13 @@ Format of address is xx:xx:xx:xx:xx:xx where xx is a hexadecimal value.
 	my $cmd = ($app_id == Schulkonsole::Config::INTERNETONOFFAPP ?
 	             $Schulkonsole::Config::_cmd_internet_on_off
 	           : $Schulkonsole::Config::_cmd_intranet_on_off);
-	my $opts = "--trigger=$trigger --maclist=" . join(',', @macs);
+
+	my $opts
+	if ($lml_majorversion >= 6.1) {
+		$opts = "--trigger=$trigger --hostlist=" . join(',', @macs);
+	} else {
+		$opts = "--trigger=$trigger --maclist=" . join(',', @macs);
+	}
 
 	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;

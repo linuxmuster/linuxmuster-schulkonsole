@@ -22,6 +22,7 @@ Schulkonsole::Session and Schulkonsole::Room::set_vars().
 
 use strict;
 use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Config;
 use Schulkonsole::Room;
 use Schulkonsole::Session;
 use Schulkonsole::Sophomorix;
@@ -57,6 +58,8 @@ if ($q->param('starttest')) {
 
 			my $id = $sk_session->userdata('id');
 			my $users = $room_session->workstation_users();
+			
+			my $lml_majorversion = "$Schulkonsole::Config::_lml_majorversion";
 
 			my $workstations = Schulkonsole::Config::workstations_room(
 				$room_session->info('name'));
@@ -71,7 +74,11 @@ if ($q->param('starttest')) {
 			foreach my $host (keys %$workstations) {
 				if ($host ne
 				    	$sk_session->{template_vars}{remote_workstation}) {
-					my $mac = $$workstations{$host}{mac};
+				    	if ($lml_majorversion >= 6.1) {
+						my $mac = $$workstations{$host}{ip};
+					} else {
+						my $mac = $$workstations{$host}{mac};
+					}
 					push @macs_internet, $mac
 						unless $$blocked_hosts_internet{$mac};
 					push @macs_intranet, $mac

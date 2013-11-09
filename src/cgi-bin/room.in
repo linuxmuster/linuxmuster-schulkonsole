@@ -31,6 +31,7 @@ use strict;
 use lib '@datadir@/@PACKAGE@';
 use Time::Local;
 use POSIX;
+use Schulkonsole::Config;
 use Schulkonsole::Session;
 use Schulkonsole::Room;
 use Schulkonsole::Firewall;
@@ -38,7 +39,7 @@ use Schulkonsole::Printer;
 use Schulkonsole::Sophomorix;
 
 my $this_file = 'room';
-
+my $lml_majorversion = "$Schulkonsole::Config::_lml_majorversion";
 
 my $sk_session = new Schulkonsole::Session($this_file);
 if (not $sk_session->get_password()) {
@@ -124,11 +125,18 @@ if ($room_session) {
 		my @activate_shares;
 		my @deactivate_shares;
 	
-		foreach my $host (keys %$workstations) {
+	my $mac;
+	foreach my $host (keys %$workstations) {
 			my $is_editing_host
 				= ($host eq $sk_session->{template_vars}{remote_workstation});
 	
-			my $mac = $$workstations{$host}{mac};
+	
+			if ($lml_majorversion >= 6.1) {
+				$mac = $$workstations{$host}{ip};
+			} else {
+				$mac = $$workstations{$host}{mac};
+			}
+
 			if ($q->param("$host;internet")) {
 				push @unblock_hosts_internet, $mac
 					if $$blocked_hosts_internet{$mac};
@@ -382,9 +390,14 @@ if ($room_session) {
 		@login_ids);
 	
 	
+	my $mac;
 	my @array_overview_workstations;
 	foreach my $workstation (sort keys %$workstations) {
-		my $mac = $$workstations{$workstation}{mac};
+		if ($lml_majorversion >= 6.1) {
+			$mac = $$workstations{$workstation}{ip};
+		} else {
+			$mac = $$workstations{$workstation}{mac};
+		}
 		my $first_login = 1;
 		if (    $$workstation_users{$workstation}
 		    and @{ $$workstation_users{$workstation} }) {
