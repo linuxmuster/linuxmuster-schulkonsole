@@ -1,6 +1,7 @@
 #! /usr/bin/perl
 #
-# $Id$
+# thomas@linuxmuster.net
+# 22.11.2013
 #
 
 =head1 NAME
@@ -170,7 +171,7 @@ Format of address is xx:xx:xx:xx:xx:xx where xx is a hexadecimal value.
 	             $Schulkonsole::Config::_cmd_internet_on_off
 	           : $Schulkonsole::Config::_cmd_intranet_on_off);
 
-	my $opts
+	my $opts;
 	if ($lml_majorversion >= 6.1) {
 		$opts = "--trigger=$trigger --hostlist=" . join(',', @macs);
 	} else {
