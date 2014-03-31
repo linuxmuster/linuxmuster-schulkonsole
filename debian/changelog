@@ -1,3 +1,13 @@
+linuxmuster-schulkonsole (0.10.11-0) precise; urgency=low
+
+  * tschmitt:
+   * removed settings_backup from permissions.conf (closes #283).
+   * added .opsi and .postsync to @suffixes in wrapper-linbo.pl.in and
+     removed obsolete .list suffix (closes #291).
+   * added global parameter KernelOptions to linbo editor (closes #290).
+
+ -- Thomas Schmitt <thomas@linuxmuster.net>  Mon, 31 Mar 2014 19:01:05 +0200
+
 linuxmuster-schulkonsole (0.10.10-0) precise; urgency=low
 
   * tschmitt:

@@ -114,6 +114,7 @@ use vars qw(%_allowed_keys);
 		backgroundfontcolor => 1,
 		consolefontcolorstdout => 1,
 		consolefontcolorstderr => 1,
+		kerneloptions => 1,
 	},
 );
 
@@ -1276,7 +1277,7 @@ sub write_start_conf {
 	foreach my $key (('Cache', 'Server', 'Group', 'RootTimeout',
 	                  'Autopartition', 'AutoFormat', 'AutoInitCache',
 	                  'DownloadType', 'BackgroundFontColor',
-                          'ConsoleFontColorStdout', 'ConsoleFontColorStderr')) {
+                      'ConsoleFontColorStdout', 'ConsoleFontColorStderr', 'KernelOptions')) {
 		my $key_data = $$linbo{Keys}{lc $key};
 		next unless $key_data;
 

@@ -9,6 +9,7 @@ DownloadType = rsync           # Image-Download per Rsync
 BackgroundFontColor = white    # Bildschirmschriftfarbe (default: white)
 ConsoleFontColorStdout = white # Konsolenschriftfarbe (default: white)
 ConsoleFontColorStderr = red   # Konsolenschriftfarbe für Fehler-/Warnmeldungen (default: red)
+KernelOptions =                # LINBO-Kernel-Parameter (z. B. acpi=off), m. Leerz. getrennt
 
 [Partition]       # Betriebssystempartition
 Dev = /dev/$DEVICE1   # Gerätename der Partition
