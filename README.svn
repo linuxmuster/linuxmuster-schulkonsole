@@ -13,6 +13,7 @@ Um ein Debianpaket zu erstellen:
   Hauptversionsnummer des Debianpakets ist (die vor dem -)
 - fuer eine zu veroeffentlichende Version mit "dch" (oder von Hand) in
   debian/changelog den Verantwortlichen fuer die Veroeffentlichung eintragen
+- Versionsnummer in configure.ac anpassen (?)
 - mit dpkg-buildpackage -rfakeroot -i".svn|README.svn" das Paket erstellen.
   Durch die Option -i werden Dateien und Verzeichnisse, auf die das als
   Parameter uebergebene Perl-Muster passt, aus der erstellten diff.gz-Datei
