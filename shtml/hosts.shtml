@@ -52,7 +52,7 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.</gettext></p>
 <th><gettext>IP</gettext></th>
 <th><gettext>PXE</gettext></th>
 <th><gettext>Optionen</gettext></th>
-<th title="l&ouml;schen"><gettext>X</gettext></th>
+<th class="wsdel" title="l&ouml;schen"><gettext>X</gettext></th>
 </tr>
 <!--#if expr="$loop_workstations" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
@@ -62,17 +62,19 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.</gettext></p>
 <td><input name="${workstations}_groups" size="8"></td>
 <td><input name="${workstations}_mac" size="18" maxlength="17"></td>
 <td><input name="${workstations}_ip" size="17" maxlength="15"></td>
-<td><select name="${workstations}_pxe">
-<option value="1"><gettext>An</gettext></option>
+<td><select class="wspxe" name="${workstations}_pxe">
+<option value="1"><gettext>PXE</gettext></option>
+<option value="2"><gettext>PXE mit Opsi</gettext></option>
+<option value="3"><gettext>Opsi PXE</gettext></option>
 <option value="0"><gettext>Aus</gettext></option>
 </select></td>
-<td><select name="${workstations}_opts">
+<td><select class="wsopts" name="${workstations}_opts">
 <option value="">-</option>
 <option value="noudma">noudma</option>
 <option value="unicast">unicast</option>
 <option value="noudma,unicast">noudma+unicast</option>
 </select></td>
-<td><input title="l&ouml;schen" type="checkbox" name="${workstations}_delete"></td>
+<td><input class="wsdel" title="l&ouml;schen" type="checkbox" name="${workstations}_delete"></td>
 </tr>
 <!--#endif -->
 <!--#if expr="$loop_add" -->
@@ -84,7 +86,9 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.</gettext></p>
 <td><input name="${add}_addmac" size="18" maxlength="17"></td>
 <td><input name="${add}_addip" size="17" maxlength="15"></td>
 <td><select name="${add}_addpxe">
-<option value="1"><gettext>An</gettext></option>
+<option value="1"><gettext>PXE</gettext></option>
+<option value="2"><gettext>PXE mit Opsi</gettext></option>
+<option value="3"><gettext>Opsi PXE</gettext></option>
 <option value="0"><gettext>Aus</gettext></option>
 </select></td>
 <td><select name="${add}_addopts">
@@ -124,7 +128,8 @@ gel&ouml;scht.</gettext></p>
 
 </div>
 
-<div id="info">
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
 <!--#include file="status.shtml.inc" -->
 

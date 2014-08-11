@@ -77,7 +77,8 @@
 </div>
 
 
-<div id="info">
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
 <!--#include file="status.shtml.inc" -->
 

@@ -9,16 +9,18 @@ erzeugt und der Paketbau vorbereitet:
 1) autoreconf --install
 2) ./configure
 
-Mit dem iBefehl "make schulkonsole.pot-update" im Verzeichnis
-"po" werden alle Srings, die vie Gettext übersetzt werden
-können aus den Quelltexten extrahiert und die Datei
-"po/schulkonsole.pot" erzeugt, die als Basis fütr weitere
+Mit dem Befehl "make schulkonsole.pot-update" im Verzeichnis
+"po" werden alle Srings, die via Gettext übersetzt werden
+können aus den Schuko-Quelltexten extrahiert und die Datei
+"po/schulkonsole.pot" erzeugt, die als Basis für weitere
 Übersetzungen dienen kann.
+
 3) cd po
 4) make schulkonsole.pot-update
 
 Nun werden die lokalisationsdateien erzeugt, die den
 Übesetzern als Basis dienen
+
 5) msginit --locale=en --input=schulkonsole.pot
 6) msginit --locale=de --input=schulkonsole.pot
 
@@ -28,7 +30,7 @@ eingetragen werden.
 8) Anschließend muss dafür gesorgt werden, dass die daraus
 entstehenden *.mo Dateien auch in das Paket wandern, dazu
 muss die folgende Zeile in
-"debian/linuxmsuster-schulkonsole.install"
+"debian/linuxmuster-schulkonsole.install"
 eingefügt werden:
 
 debian/tmp/usr/share/locale/*
@@ -44,4 +46,4 @@ Neue Stringdatei erzeugen
 make schulkonsole.pot-update
 
 Dann mit "msgmerge" die alten und die neuen Strings unter
-Erhalt der bisherigen Übersetzungen zusammenwürfeln.
+erhalt der bisherigen Übersetzungen zusammenwürfeln.

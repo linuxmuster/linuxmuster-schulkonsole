@@ -1,7 +1,8 @@
 Einige Dateien, die noetig sind um Schulkonsole zu erstellen, sind nicht
-im Subversionrepository enthalten. Diese Dateien koennen automatisch generiert
+im Repository enthalten. Diese Dateien koennen automatisch generiert
 werden. Dazu müssen die Pakete automake (>=1.9), autoconf (>=2.59) und libtool
 installiert sein).
+
 Nach dem Aufruf von "autoreconf --install" kann der generischen Anleitung
 in der dann installierten Datei INSTALL gefolgt werden.
 
@@ -13,7 +14,8 @@ Um ein Debianpaket zu erstellen:
   Hauptversionsnummer des Debianpakets ist (die vor dem -)
 - fuer eine zu veroeffentlichende Version mit "dch" (oder von Hand) in
   debian/changelog den Verantwortlichen fuer die Veroeffentlichung eintragen
-- mit dpkg-buildpackage -rfakeroot -i".svn|README.svn" das Paket erstellen.
+- Wenn nötig Versionsnummer in configure.ac anpassen
+- mit dpkg-buildpackage -rfakeroot -i".git" das Paket erstellen.
   Durch die Option -i werden Dateien und Verzeichnisse, auf die das als
   Parameter uebergebene Perl-Muster passt, aus der erstellten diff.gz-Datei
   ausgeschlossen.
