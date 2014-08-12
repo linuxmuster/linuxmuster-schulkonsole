@@ -1,0 +1,8 @@
+Um die Templates zu manipulieren, kann man die cmd.ex anpassen
+(enthält ex Kommandos) und dann mit einem Befehl wie:
+
+for i in *.shtml; do vim -esn < cmd.ex $i; done
+
+auf die shtml-Dateien loslassen.
+
+

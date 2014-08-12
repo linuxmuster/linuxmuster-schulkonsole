@@ -26,9 +26,9 @@
 <p>
 <select name="printjobs" multiple>
 <!--#if expr="$loop_printjobs" -->
-	<option value="$printjobs{id}">
-		<!--#echo var="printjobs{id}" --> <!--#echo var="printjobs{title}" -->
-	</option>
+    <option value="$printjobs{id}">
+        <!--#echo var="printjobs{id}" --> <!--#echo var="printjobs{title}" -->
+    </option>
 <!--#endif -->
 </select>
 </p>
@@ -82,18 +82,18 @@
 
 <p>
 <!--#echo var="diskquotas{path}" -->:<br>
-	<gettext>Speicherplatz/KB:</gettext>
-	<!--#echo var="diskquotas{blocks_usage}" -->/<!--#echo var="diskquotas{blocks_soft}" -->
-	- max: <!--#echo var="diskquotas{blocks_hard}" -->
-	- <!--#echo var="diskquotas{blocks_percent}" -->%<br>
-	<!--#if expr="$diskquotas{blocks_grace}" -->
-	<gettext>verbleibende Zeit:</gettext> <!--#echo var="diskquotas{blocks_grace}" --><br><!--#endif -->
-	<gettext>Dateien:</gettext>
-	<!--#echo var="diskquotas{files_usage}" -->/<!--#echo var="diskquotas{files_soft}" -->
-	- max: <!--#echo var="diskquotas{files_hard}" -->
-	- <!--#echo var="diskquotas{files_percent}" -->%<br>
-	<!--#if expr="$diskquotas{files_grace}" -->
-	<gettext>verbleibende Zeit:</gettext> <!--#echo var="diskquotas{files_grace}" --><br><!--#endif --><br>
+    <gettext>Speicherplatz/KB:</gettext>
+    <!--#echo var="diskquotas{blocks_usage}" -->/<!--#echo var="diskquotas{blocks_soft}" -->
+    - max: <!--#echo var="diskquotas{blocks_hard}" -->
+    - <!--#echo var="diskquotas{blocks_percent}" -->%<br>
+    <!--#if expr="$diskquotas{blocks_grace}" -->
+    <gettext>verbleibende Zeit:</gettext> <!--#echo var="diskquotas{blocks_grace}" --><br><!--#endif -->
+    <gettext>Dateien:</gettext>
+    <!--#echo var="diskquotas{files_usage}" -->/<!--#echo var="diskquotas{files_soft}" -->
+    - max: <!--#echo var="diskquotas{files_hard}" -->
+    - <!--#echo var="diskquotas{files_percent}" -->%<br>
+    <!--#if expr="$diskquotas{files_grace}" -->
+    <gettext>verbleibende Zeit:</gettext> <!--#echo var="diskquotas{files_grace}" --><br><!--#endif --><br>
 </p>
 
 <ul>
@@ -234,8 +234,8 @@
 
 
 </div>
-
-<div id="info">
+<div id="info" style="display: block;">
+<a class="hideinfo" href="#" onclick="toggle_visibility('info');">^</a>
 
 <!--#include file="status.shtml.inc" -->
 
