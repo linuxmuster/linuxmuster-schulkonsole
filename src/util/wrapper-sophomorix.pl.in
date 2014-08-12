@@ -110,15 +110,20 @@ $app_id == Schulkonsole::Config::SHARESTATESAPP and do {
 		unless @login_ids;
 
 	my %share_states;
+        # this is badly hard coded...
+	my $acl_list=`getfacl /home/share 2> /dev/null`;
+
 	foreach my $login_id (@login_ids) {
 		my $login_userdata = Schulkonsole::DB::get_userdata_by_id($login_id);
 		next unless $login_userdata;
-		my $share_dir = Schulkonsole::Encode::to_fs(
-			"$$login_userdata{homedirectory}/$Language::share_dir/");
+	
+	        my $login_name= $$login_userdata{uid};
+		my $denystring="user:".$login_name.":---";
 
-		if (-d $share_dir) {
-			my $mode = (stat $share_dir)[2];
-			$share_states{$login_id} = (($mode & 05) == 05);
+                if ( $acl_list =~ m/$denystring/ ) {
+			$share_states{$login_id} = '';
+		} else {
+			$share_states{$login_id} = 1;
 		}
 	}
 
