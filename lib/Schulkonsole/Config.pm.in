@@ -1525,7 +1525,7 @@ are not actually present in the system and vice versa.
 =cut
 
 sub count_unimported_unconfigured_workstations {
-	my %workstations;
+	my %macs;
 	my $comment_cnt = 0;
 
 	my $unconfigured_cnt = 0;
@@ -1539,7 +1539,7 @@ sub count_unimported_unconfigured_workstations {
 
 			my ($conf_room, $workstation, $hw_class, $mac, $ip) = split ';';
 
-			$workstations{"\L$workstation"} = 1 if $workstation;
+			$macs{"\L$mac"} = 1 if $mac;
 		}
 
 		close CONF;
@@ -1551,10 +1551,10 @@ sub count_unimported_unconfigured_workstations {
 		while (<CONF>) {
 			s/#.*//;
 
-			if (my ($workstation) = /option\s+host-name\s+"(.+)"/) {
-				$workstation = lc $workstation;
-				if ($workstations{$workstation}) {
-					delete $workstations{$workstation}
+			if (my ($mac) = /hardware\s+ethernet\s+([0-9A-Fa-f:]+)/) {
+				$mac = lc $mac;
+				if ($macs{$mac}) {
+					delete $macs{$mac}
 				} else {
 					$unconfigured_cnt++;
 				}
@@ -1566,7 +1566,7 @@ sub count_unimported_unconfigured_workstations {
 	}
 
 
-	my $unimported_cnt = keys %workstations;
+	my $unimported_cnt = keys %macs;
 	return (wantarray ? ($unimported_cnt, $unconfigured_cnt, $comment_cnt) :
 	                    $unimported_cnt || $unconfigured_cnt );
 }
