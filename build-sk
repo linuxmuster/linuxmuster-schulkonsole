@@ -14,7 +14,8 @@ mv configure.ac.tmp configure.ac
 
 
 # paket bauen
+[ -x ./configure ] || autoreconf --install
 ./configure
 make dist
 mv schulkonsole-$BUILD_VERSION.tar.gz ../linuxmuster-schulkonsole_$BUILD_VERSION.orig.tar.gz
-dpkg-buildpackage  -i.git
+dpkg-buildpackage -rfakeroot -tc -sa -us -uc -i".git" -I".git"
