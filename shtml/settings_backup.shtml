@@ -43,12 +43,12 @@
 </td>
 </tr>
 <tr class="odd">
-<td><gettext>IPCop-Einstellungen sichern?</gettext></td>
+<td><gettext>Firewall-Einstellungen sichern?</gettext></td>
 <td>
-<input type="radio" name="ipcop" id="ipcoptrue" value="1">
-<label for="ipcoptrue"><gettext>Ja</gettext></label><br>
-<input type="radio" name="ipcop" id="ipcopfalse" value="0">
-<label for="ipcopfalse"><gettext>Nein</gettext></label>
+<input type="radio" name="firewall" id="firewalltrue" value="1">
+<label for="firewalltrue"><gettext>Ja</gettext></label><br>
+<input type="radio" name="ipcop" id="firewallfalse" value="0">
+<label for="firewallfalse"><gettext>Nein</gettext></label>
 </td>
 <tr class="even">
 <td><gettext>Backup verifizieren?</gettext></td>
@@ -92,22 +92,28 @@
 <label for="unmountfalse"><gettext>Nein</gettext></label>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><label for="keepfull"><gettext>Anzahl der vorgehaltenen Vollbackups</gettext></label></td>
 <td><input type="text" size="2", maxlength="1" name="keepfull" id="keepfull"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><label for="keepdiff"><gettext>Anzahl der vorgehaltenen differentiellen Backups</gettext></label></td>
 <td><input type="text" size="3", maxlength="2" name="keepdiff" id="keepdiff"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><label for="keepinc"><gettext>Anzahl der vorgehaltenen inkrementellen Backups</gettext></label></td>
 <td><input type="text" size="3", maxlength="2" name="keepinc" id="keepinc"></td>
 </tr>
+<tr class="odd">
+<td><gettext>Vollautomatische Backups durchf&uuml;hren?</gettext></label></td>
+<td>
+<input type="radio" name="cronbackup" id="cronbackuptrue" value="1">
+<label for="cronbackuptrue"><gettext>Ja</gettext></label><br>
+<input type="radio" name="cronbackup" id="cronbackupfalse" value="0">
+<label for="cronbackupfalse"><gettext>Nein</gettext></label>
+</td>
+</tr>
 </table>
-
-<p><a href="$backupcron_link"><gettext>Zeitplanung vollautomatischer Backups</gettext></a></p>
-
 
 <p>
 <input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
