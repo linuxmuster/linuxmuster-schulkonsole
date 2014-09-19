@@ -1,12 +1,15 @@
-linuxmuster-schulkonsole (0.10.13-0) precise; urgency=low
+linuxmuster-schulkonsole (0.10.12-0) babo; urgency=low
 
-  * Added english localisation
-  * Added PXE options to hosts page
-  * Info block on the right can be hidden by clicking on the small up-arrow to 
-    make all elements visible on small screens
-  * changed wrapper-sophomorix.pl.in (closes #320).
+  * thomas@linuxmuster.net:
+   * added Yannik's patch for multiple hosts with same name (closes #370).
+  * frank@linuxmuster.net:
+   * Added english localisation
+   * Added PXE options to hosts page
+   * Info block on the right can be hidden by clicking on the small up-arrow to 
+     make all elements visible on small screens
+   * changed wrapper-sophomorix.pl.in (closes #320).
 
- -- Frank Schiebel <frank@linuxmuster.net>  Tue, 12 Aug 2014 10:48:00 +0200
+ -- Thomas Schmitt <thomas@linuxmuster.net>  Fri, 19 Sep 2014 12:45:00 +0200
 
 linuxmuster-schulkonsole (0.10.11-0) precise; urgency=low
 
