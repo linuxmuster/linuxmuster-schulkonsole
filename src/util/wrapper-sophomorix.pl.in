@@ -1270,18 +1270,21 @@ $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 
 	my $path;
 	my $filename;
+	my $encoding = "utf8";
 	my @stat;
 	SWITCHWRITEFILE: {
 	$number == 0 and do {
 		$path = $DevelConf::users_pfad;
 		$filename = 'lehrer.txt';
 		$stat[2] = 0600;	# set default permissions for this file
+		$encoding = $Conf::encoding_teachers;
 		last SWITCHWRITEFILE;
 	};
 	$number == 1 and do {
 		$path = $DevelConf::users_pfad;
 		$filename = 'schueler.txt';
 		$stat[2] = 0600;
+		$encoding = $Conf::encoding_students;
 		last SWITCHWRITEFILE;
 	};
 	$number == 2 and do {
@@ -1306,12 +1309,14 @@ $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 		$path = $DevelConf::users_pfad;
 		$filename = 'extraschueler.txt';
 		$stat[2] = 0600;
+		$encoding = $Conf::encoding_students_extra;
 		last SWITCHWRITEFILE;
 	};
 	$number == 6 and do {
 		$path = $DevelConf::users_pfad;
 		$filename = 'extrakurse.txt';
 		$stat[2] = 0600;
+		$encoding = $Conf::encoding_courses_extra;
 		last SWITCHWRITEFILE;
 	};
 	}
@@ -1355,7 +1360,7 @@ $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 		$stat[5] = 0;
 	}
 
-	open FILE, ">:encoding($Schulkonsole::Config::_sophomorix_encoding)",
+	open FILE, ">:encoding($encoding)",
 	           $full_filename
 		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
 		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
