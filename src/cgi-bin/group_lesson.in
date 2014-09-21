@@ -1,0 +1,322 @@
+#! /usr/bin/perl
+#
+# $Id$
+#
+
+=head1 NAME
+
+group_lesson - overview of class/project lessons
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/group_lesson
+
+=head1 DESCRIPTION
+
+C<group_lesson> lets you select a class/project, start a lesson in a class/project
+and control WLAN access for the selected class/project.
+The HTML template is group_lesson.shtml.
+
+=cut
+
+use strict;
+use lib '@datadir@/@PACKAGE@';
+use Time::Local;
+use POSIX;
+use Schulkonsole::Config;
+use Schulkonsole::Session;
+use Schulkonsole::Radius;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::Info;
+use Schulkonsole::Lesson;
+use Data::Dumper;
+
+my $this_file = 'group_lesson';
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+my $class = $q->param('classes');
+if (    $class
+    and $$classs{$class}) {
+        $sk_session->param('class', $class);
+}
+$class = $sk_session->param('class');
+
+if (   not $class
+    or not $$classs{$class}) {
+        my $url = $q->url( -absolute => 1 );
+        $url =~ s/$this_file$/class/g;
+        $sk_session->redirect($url);
+}
+
+$sk_session->param('group',$class);
+
+=head2 Form fields
+
+none
+
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<group_lesson>
+provides the following variables:
+
+=over
+
+=cut
+
+my $group_session = new Schulkonsole::Lesson($sk_session);
+
+
+if ($group_session) {
+
+	my $group = $group_session->info('name');
+	my $id = $sk_session->userdata('id');
+	my $password = $sk_session->get_password();
+
+	my $editing_userdata = $group_session->info('editing_userdata');
+	my $editing_user = $$editing_userdata{uid};
+	
+# perform commands
+	
+	
+	COMMANDS: { eval {
+	if ($q->param('acceptlesson')) {
+		if (not $group_session->info('is_editing')) {
+			if (not $group_session->param('edit')) {
+				$sk_session->set_status(
+					$sk_session->d()->get(
+						"In dieser Klasse/diesem Projekt findet kein Unterricht statt."),
+					1);
+			} else {
+				$sk_session->set_status(
+					$sk_session->d()->get(
+						"Sie halten keinen Unterricht in dieser Klasse/diesem Projekt."),
+					1);
+			}
+			last COMMANDS;
+		}
+	
+		my $allowed_groups_wlan = Schulkonsole::Radius::allowed_groups_wlan();
+
+		if ($q->param("group;wlan")) {
+                    if (not $$allowed_groups_wlan{$group}) {
+                        Schulkonsole::Radius::wlan_on($id, $password, $group);
+                    }
+		} else {
+                    if ($$allowed_groups_wlan{$group}) {
+                        Schulkonsole::Radius::wlan_off($id, $password, $group);
+                    }
+		}
+	
+		$sk_session->set_status(
+			$sk_session->d()->get("&Auml;nderungen &uuml;bernommen."), 0);
+	
+	} elsif ($q->param('start_lesson')) {
+		if ($group_session->param('edit')) {
+			$sk_session->set_status(
+				$sk_session->d()->get("In dieser Klasse/diesem Projekt wird bereits unterrichtet."),
+				1);
+			last COMMANDS;
+		}
+	
+	
+		$group_session->start_lesson($id, $password);
+	
+		$editing_user = $sk_session->userdata('uid');
+	
+	
+		$sk_session->set_status($sk_session->d()->get("Unterricht begonnen.")
+			. ' ' . POSIX::strftime(
+			  	$sk_session->d()->get("Unterrichtsende um %H:%M"),
+			  	localtime($group_session->param('end_time'))),
+			0);
+	} elsif ($q->param('end_lesson_now')) {
+		if (not $group_session->info('is_allowed_stopedit')) {
+			if (not $group_session->param('edit')) {
+				$sk_session->set_status(
+					$sk_session->d()->get(
+						"In dieser Klasse/diesem Projekt findet kein Unterricht statt."),
+				1);
+			} else {
+				$sk_session->set_status(
+					$sk_session->d()->get(
+						"Sie d&uuml;rfen den Unterricht in dieser Klasse/diesem Projekt nicht beenden."),
+					1);
+			}
+			last COMMANDS;
+		}
+	
+		$group_session->end_lesson_now($id, $password);
+	
+		$sk_session->set_status(
+			$sk_session->d()->get('Unterricht beendet.'), 0);
+	
+	
+	} elsif ($q->param('end_lesson_at')) {
+		if (not $group_session->info('is_editing')) {
+			if (not $group_session->param('edit')) {
+				$sk_session->set_status(
+					$sk_session->d()->get(
+						'In dieser Klasse/diesem Projekt findet kein Unterricht statt.'),
+					1);
+			} else {
+				$sk_session->set_status(
+					$sk_session->d()->get(
+						'Sie d&uuml;rfen den Unterricht in dieser Klasse/diesem Projekt nicht beenden.'),
+					1);
+			}
+			last COMMANDS;
+		}
+
+		my @end_time = localtime($^T);
+		$end_time[2] = $q->param('lesson_end_hours');
+		$end_time[1] = $q->param('lesson_end_minutes');
+		$end_time[0] = 0;
+	
+		my $end_time = Time::Local::timelocal(@end_time);
+	
+		if ($end_time < $^T) {
+			$sk_session->set_status(
+				$sk_session->d()->get("Unterrichtsende liegt in der Vergangenheit"),
+				1);
+		} else {
+			$group_session->end_lesson_at($id, $password, $end_time);
+			$group_session = new Schulkonsole::Lesson($sk_session);
+	
+			$sk_session->set_status(
+				POSIX::strftime(
+					$sk_session->d()->get("Unterrichtsende um %H:%M"), @end_time),
+				0);
+		}
+	}
+	
+	}; } # end COMMANDS
+	if ($@) {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+	
+	
+	
+	# collect data for output
+	my $allowed_groups_wlan =
+		Schulkonsole::Radius::allowed_groups_wlan();
+        my $group_name = $group;
+        my $group_wlan = $$allowed_groups_wlan{$group}? 1 : 0;
+        if ($group_wlan) {
+            $sk_session->set_var('group_wlan', 'on');
+        }
+	
+=item C<group_name>
+	
+Group name.
+
+=item C<group_wlan>
+	
+True if the wlan access is on
+	
+=back
+	
+=cut
+
+#	if ($@) {
+#		$sk_session->standard_error_handling($this_file, $@);
+#	}
+	
+	$group_session->set_vars($sk_session);
+	
+	# pre-set form fields with suggested values for lesson end time
+	my $start_time = $group_session->param('start_time');
+	if ($start_time) {
+		my @suggested_end_time = localtime($start_time + 90 * 60);
+		$q->param('lesson_end_hours', $suggested_end_time[2]);
+		$q->param('lesson_end_minutes', int($suggested_end_time[1] / 5) * 5);
+	}
+}
+
+
+my @classs;
+foreach my $class (sort {
+    $$classs{$a}{displayname} cmp $$classs{$b}{displayname} } keys %$classs) {
+        push @classs, { gid => $class,
+                        name => $$classs{$class}{displayname} };
+}
+
+=item C<classes>
+
+An array of hashes of the classes of which the current user is a member
+with the keys
+
+=over
+
+=item C<gid>
+
+The GID of the class
+
+=item C<name>
+
+The name of the class
+
+=back
+
+=cut
+
+$sk_session->set_var('classes', \@classs);
+
+
+=item C<class>
+
+The name of the class
+
+=cut
+
+$sk_session->set_var('class', $sk_session->param('group'));
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<end_lesson_now>
+
+End lesson at once (reset network and share settings)
+
+=item C<end_lesson_at>
+
+Set a time to end the lesson (reset network and share settings)
+
+=item C<start_lesson>
+
+Start a lesson in the room (and allow changes to network and share settings)
+
+=item C<acceptlesson>
+
+Accept new wlan settings
+
+=over
+
+=item C<group;wlan>
+
+Checkbox created for template variable C<group_wlan>.
+True if the group shall access the wlan
+
+=back
+

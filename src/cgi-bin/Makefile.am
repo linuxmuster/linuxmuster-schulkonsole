@@ -15,7 +15,8 @@ pkglibexec_SCRIPTS=example start logout \
 	rooms rooms_classrooms \
 	printers printers_edit hosts \
 	quotas quotas_teachers quotas_classes quotas_projects quotas_others \
-	linbo linbo_edit linbo_new linbo_regpatchedit linbo_pxeedit linbo_images
+	linbo linbo_edit linbo_new linbo_regpatchedit linbo_pxeedit linbo_images \
+	group_lesson project_lesson
 
 CLEANFILES = $(pkglibexec_SCRIPTS)
 EXTRA_DIST = example.in start.in logout.in \
@@ -37,7 +38,8 @@ EXTRA_DIST = example.in start.in logout.in \
 	quotas.in \
 	quotas_teachers.in quotas_classes.in quotas_projects.in quotas_others.in \
 	linbo.in linbo_edit.in linbo_new.in linbo_regpatchedit.in \
-	linbo_pxeedit.in linbo_images.in
+	linbo_pxeedit.in linbo_images.in \
+	group_lesson.in project_lesson.in
 
 
 do_subst = sed \

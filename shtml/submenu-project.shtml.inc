@@ -16,7 +16,10 @@
 	<a class="separator" href="project_collect"><gettext>Einsammeln</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_project_shares" -->
-	<a class="end" href="project_shares"><gettext>Tauschen</gettext></a>
+	<a class="separator" href="project_shares"><gettext>Tauschen</gettext></a>
+<!--#endif -->
+<!--#if expr="$link_project_lesson" -->
+        <a class="end" href="project_lesson"><gettext>Unterricht</gettext></a>
 <!--#endif -->
 <!--#else -->
 <!--#if expr="$link_project_handoutcopy" -->
@@ -30,6 +33,9 @@
 <!--#endif -->
 <!--#if expr="$link_project_shares" -->
 	<span class="disabled"><gettext>Tauschen</gettext></span>
+<!--#endif -->
+<!--#if expr="$link_project_lesson" -->
+        <span class="disabled"><gettext>Unterricht</gettext></span>
 <!--#endif -->
 <!--#endif -->
 <!--#else -->
@@ -46,7 +52,10 @@
 	<span class="disabledseparator"><gettext>Einsammeln</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_project_shares" -->
-	<span class="disabledend"><gettext>Tauschen</gettext></span>
+	<span class="disabledseparator"><gettext>Tauschen</gettext></span>
+<!--#endif -->
+<!--#if expr="$link_project_lesson" -->
+        <span class="disabledend"><gettext>Unterricht</gettext></span>
 <!--#endif -->
 <!--#endif -->
 

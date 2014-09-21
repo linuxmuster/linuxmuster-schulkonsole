@@ -69,6 +69,8 @@ $VERSION = 0.06;
 	$_blocked_hosts_intranet_file
 	$_unfiltered_hosts_file
 	$_cups_printers_conf_file
+	$_group_defaults_file
+	$_allowed_groups_wlan_file
 
 	$_login_template
 
@@ -90,6 +92,7 @@ $VERSION = 0.06;
 	$_wrapper_collab
 	$_wrapper_files
 	$_wrapper_linbo
+	$_wrapper_radius
 
 	%_id_root_app_names
 	$_cmd_internet_on_off
@@ -118,6 +121,8 @@ $VERSION = 0.06;
 	$_cmd_import_workstations
 	$_cmd_import_printers
 	$_cmd_ovpn_client_cert
+	$_cmd_wlan_on_off
+	$_cmd_linuxmuster_wlan_reset
 
 	$_shell
 
@@ -138,6 +143,9 @@ $VERSION = 0.06;
 	URLFILTERONOFFAPP
 	ALLONAPP
 	ALLONATAPP
+	WLANONOFFAPP
+	WLANRESETATAPP
+	WLANRESETAPP
 	PRINTERINFOAPP
 	PRINTERONOFFAPP
 	PRINTERALLOWDENYAPP
@@ -255,6 +263,18 @@ C<all_on_at>
 
 C<rooms_reset>
 
+=item C<WLANONOFFAPP>
+
+C<wlan_on_off>
+
+=item C<WLANRESETATAPP>
+
+C<wlan_reset_at>
+
+=item C<WLANRESETAPP>
+
+C<wlan_reset>
+
 =back
 
 =cut
@@ -269,6 +289,9 @@ use constant {
 	ALLONAPP => 6007,
 	ALLONATAPP => 6008,
 	ROOMSRESETAPP => 6009,
+	WLANONOFFAPP => 6010,
+	WLANRESETATAPP => 6011,
+	WLANRESETAPP => 6012,
 };
 
 =head3 Constants for wrapper-printer
@@ -693,6 +716,14 @@ The LINBO template for section [Partition]
 
 Setup for automated backup
 
+=item C<$_group_defaults_file>
+
+This file defines the default wlan settings
+
+=item C<$_allowed_groups_wlan_file>
+
+This file defines the actual allowed wlan classes/projects
+
 =back
 
 =cut
@@ -703,7 +734,8 @@ use vars qw($_workstations_file $_room_defaults_file $_classrooms_file
             $_linbo_dir $_linbo_start_conf_prefix
             $_linbo_templates_dir $_linbo_templates_os_dir
             $_linbo_template_partition
-            $_backup_conf_file $_dhcpd_conf_file);
+            $_backup_conf_file $_dhcpd_conf_file
+            $_group_defaults_file $_allowed_groups_wlan_file);
 
 
 =head3 Files with status information
@@ -874,11 +906,19 @@ Path to wrapper to write linbo configuration files
 
 =back
 
+Path to wrapper to write files with root permissions
+
+=item C<$_wrapper_radius>
+
+Path to wrapper to write radius configuration files
+
+=back
+
 =cut
 
 use vars qw($_wrapper_user $_wrapper_firewall $_wrapper_ovpn $_wrapper_printer
             $_wrapper_sophomorix $_wrapper_cyrus $_wrapper_collab
-            $_wrapper_files $_wrapper_linbo);
+            $_wrapper_files $_wrapper_linbo $_wrapper_radius);
 
 
 =head3 Variables used by wrappers
@@ -994,6 +1034,14 @@ Path to command to import printers into room C<import_printers>
 
 Path to command to administer OVPN certificates C<ovpn-client-cert.sh>
 
+=item C<$_cmd_wlan_on_off>
+
+Path to command to administer wlan configuration C<wlan_on_off>
+
+=item C<$_cmd_linuxmuster_wlan_reset>
+
+Path to command to reset group settings C<group-reset>
+
 =back
 
 =cut
@@ -1024,7 +1072,9 @@ use vars qw(%_id_root_app_names
             $_cmd_sophomorix_class
             $_cmd_import_workstations
             $_cmd_import_printers
-            $_cmd_ovpn_client_cert);
+            $_cmd_ovpn_client_cert
+            $_cmd_wlan_on_off
+            $_cmd_linuxmuster_wlan_reset);
 
 
 =head3 Other variables
@@ -1087,6 +1137,8 @@ $_linbo_dir = $lml_env{LINBODIR};
 $_linbo_templates_dir = '@datadir@/@PACKAGE@/linbo/templates';
 $_linbo_templates_os_dir = "$_linbo_templates_dir/os";
 $_linbo_template_partition = "$_linbo_templates_dir/part/start.conf.partition";
+$_group_defaults_file = '/etc/linuxmuster/group_defaults';
+$_allowed_groups_wlan_file = '/etc/freeradius/users';
 
 $_backup_conf_file = $lml_env{SYSCONFDIR} . '/backup.conf';
 $_linbo_start_conf_prefix = $_linbo_dir . '/start.conf.';
@@ -1126,6 +1178,7 @@ $_wrapper_cyrus = '@pkglibexecdir@/bin/wrapper-cyrus';
 $_wrapper_collab = '@pkglibexecdir@/bin/wrapper-collab';
 $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 $_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
+$_wrapper_radius = '@pkglibexecdir@/bin/wrapper-radius';
 
 
 
@@ -1133,6 +1186,9 @@ $_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
 %_id_root_app_names = (
 	INTERNETONOFFAPP() => 'internet_on_off',
 	INTRANETONOFFAPP() => 'intranet_on_off',
+	WLANONOFFAPP() => 'wlan_on_off',
+	WLANRESETATAPP() => 'wlan_reset_at',
+	WLANRESETAPP() => 'wlan_reset',
 	UPDATELOGINSAPP() => 'update_logins',
 	UPDATELINBOFSAPP() => 'update_linbofs',
 	URLFILTERCHECKAPP() => 'urlfilter_check',
@@ -1213,6 +1269,8 @@ $_cmd_update_linbofs = '/usr/share/linuxmuster-linbo/update-linbofs.sh';
 $_cmd_update_logins = '/usr/share/linuxmuster/scripts/update-logins.sh';
 $_cmd_urlfilter_check = '/usr/share/linuxmuster/scripts/check_urlfilter.sh';
 $_cmd_urlfilter_on_off = '/usr/share/linuxmuster/scripts/urlfilter_on_off.sh';
+$_cmd_wlan_on_off = '/usr/share/linuxmuster/scripts/wlan_on_off.sh';
+$_cmd_linuxmuster_wlan_reset = '/usr/sbin/linuxmuster-wlan-reset';
 
 
 $_sophomorix_conf_true = 'yes';

@@ -21,7 +21,10 @@
 	<a class="separator" href="class_shares"><gettext>Tauschen</gettext></a>
 <!--#endif -->
 <!--#if expr="$link_room_test" -->
-	<a class="end" href="room_test"><gettext>Klassenarbeit</gettext></a>
+	<a class="separator" href="room_test"><gettext>Klassenarbeit</gettext></a>
+<!--#endif -->
+<!--#if expr="$link_group_lesson" -->
+	<a class="end" href="group_lesson"><gettext>Unterricht</gettext></a>
 <!--#endif -->
 <!--#else -->
 <!--#if expr="$link_class_list" -->
@@ -43,7 +46,10 @@
 	<span class="disabledseparator"><gettext>Tauschen</gettext></span>
 <!--#endif -->
 <!--#if expr="$link_room_test" -->
-	<span class="disabledend"><gettext>Klassenarbeit</gettext></span>
+	<span class="disabledseparator"><gettext>Klassenarbeit</gettext></span>
+<!--#endif -->
+<!--#if expr="$link_group_lesson" -->
+	<span class="disabledend"><gettext>Unterricht</gettext></span>
 <!--#endif -->
 <!--#endif -->
 
