@@ -1031,10 +1031,6 @@ use vars qw(%_id_root_app_names
 
 =over
 
-=item C<$_sophomorix_encoding>
-
-Encoding used to write Sophomorix files
-
 =item C<$_sophomorix_conf_true>
 
 Value used for 'true' in Sophomorix configuration files
@@ -1055,8 +1051,7 @@ Value used for 'false' in backup.conf
 
 =cut
 
-use vars qw($_sophomorix_encoding
-            $_sophomorix_conf_true $_sophomorix_conf_false
+use vars qw($_sophomorix_conf_true $_sophomorix_conf_false
             $_backup_conf_true $_backup_conf_false);
 
 
@@ -1219,8 +1214,6 @@ $_cmd_update_logins = '/usr/share/linuxmuster/scripts/update-logins.sh';
 $_cmd_urlfilter_check = '/usr/share/linuxmuster/scripts/check_urlfilter.sh';
 $_cmd_urlfilter_on_off = '/usr/share/linuxmuster/scripts/urlfilter_on_off.sh';
 
-
-$_sophomorix_encoding = 'iso-8859-15';
 
 $_sophomorix_conf_true = 'yes';
 $_sophomorix_conf_false = 'no';
