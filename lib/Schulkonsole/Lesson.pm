@@ -37,6 +37,7 @@ sub new {
 	my $session = shift;
 
 	my $group;
+	my $groupkind;
 	my $id;
 
 	my $q = $session->query();
@@ -46,15 +47,18 @@ sub new {
 	if (    $group
 	    and $$classs{$group}) {
 		$session->param('group', $group);
+		$session->param('groupkind', 'Klasse');
 	}
 
 	my $projects = Schulkonsole::Info::groups_projects($session->groups());
         if ( $group
             and $$projects{$group}) {
                 $session->param('group', $group);
+                $session->param('groupkind', 'Projekt');
         }
         
 	$group = $session->param('group');
+	$groupkind = $session->param('groupkind');
 
 	return undef unless $group;
 
@@ -62,7 +66,7 @@ sub new {
 
 	$id = $session->userdata('id');
 
-	my $this = new Schulkonsole::LessonSession($group);
+	my $this = new Schulkonsole::LessonSession($group,$groupkind);
 
 	$this->param('unprivileged', 1);
 

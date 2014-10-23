@@ -23,8 +23,8 @@
 <!--#if expr="$link_room_test" -->
 	<a class="separator" href="room_test"><gettext>Klassenarbeit</gettext></a>
 <!--#endif -->
-<!--#if expr="$link_group_lesson" -->
-	<a class="end" href="group_lesson"><gettext>Unterricht</gettext></a>
+<!--#if expr="$link_class_lesson" -->
+	<a class="end" href="class_lesson"><gettext>Unterricht</gettext></a>
 <!--#endif -->
 <!--#else -->
 <!--#if expr="$link_class_list" -->
@@ -48,7 +48,7 @@
 <!--#if expr="$link_room_test" -->
 	<span class="disabledseparator"><gettext>Klassenarbeit</gettext></span>
 <!--#endif -->
-<!--#if expr="$link_group_lesson" -->
+<!--#if expr="$link_class_lesson" -->
 	<span class="disabledend"><gettext>Unterricht</gettext></span>
 <!--#endif -->
 <!--#endif -->

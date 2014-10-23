@@ -7,10 +7,10 @@ dist_shtml_DATA = example.shtml login.shtml logout.shtml start.shtml \
 	room_end_lesson_verify.shtml \
 	class.shtml class_list.shtml class_passwords.shtml showpassword.shtml \
 	class_handoutcopy.shtml class_handout.shtml class_collect.shtml \
-	class_shares.shtml \
+	class_shares.shtml class_lesson.shtml \
 	project.shtml project_members.shtml project_addmembers.shtml \
 	project_handoutcopy.shtml project_handout.shtml project_collect.shtml \
-	project_shares.shtml project_drop_verify.shtml \
+	project_shares.shtml project_drop_verify.shtml project_lesson.shtml \
 	settings.shtml settings_program.shtml settings_users.shtml \
 	settings_classs.shtml settings_backup.shtml \
 	user.shtml user_students.shtml user_teachers.shtml user_extra.shtml \
@@ -24,7 +24,6 @@ dist_shtml_DATA = example.shtml login.shtml logout.shtml start.shtml \
 	linbo.shtml \
 	linbo_edit.shtml linbo_images.shtml linbo_new.shtml linbo_pxeedit.shtml \
 	linbo_regpatchedit.shtml \
-	group_lesson.shtml project_lesson.shtml \
 	submenu-room.shtml.inc submenu-class.shtml.inc \
 	submenu-project.shtml.inc submenu-user.shtml.inc \
 	submenu-settings.shtml.inc submenu-quotas.shtml.inc \

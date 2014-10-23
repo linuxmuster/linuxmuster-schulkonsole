@@ -34,9 +34,11 @@ $VERSION = 0.03;
 sub new {
 	my $class = shift;
 	my $group = shift;
+	my $groupkind = shift;
 
 	my $this = {
 		group => $group,
+		groupkind => $groupkind,
 	};
 
 	bless $this, $class;

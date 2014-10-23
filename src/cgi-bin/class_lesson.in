@@ -5,22 +5,22 @@
 
 =head1 NAME
 
-group_lesson - overview of class/project lessons
+class_lesson - overview of class lessons
 
 =head1 SYNOPSIS
 
- https://server/schulkonsole/group_lesson
+ https://server/schulkonsole/class_lesson
 
 =head1 DESCRIPTION
 
-C<group_lesson> lets you select a class/project, start a lesson in a class/project
-and control WLAN access for the selected class/project.
-The HTML template is group_lesson.shtml.
+C<class_lesson> lets you select a class, start a lesson in a class
+and control WLAN access for the selected class.
+The HTML template is class_lesson.shtml.
 
 =cut
 
 use strict;
-use lib '@datadir@/@PACKAGE@';
+use lib '@datadir@/@package@';
 use Time::Local;
 use POSIX;
 use Schulkonsole::Config;
@@ -31,7 +31,7 @@ use Schulkonsole::Info;
 use Schulkonsole::Lesson;
 use Data::Dumper;
 
-my $this_file = 'group_lesson';
+my $this_file = 'class_lesson';
 
 my $sk_session = new Schulkonsole::Session($this_file);
 if (not $sk_session->get_password()) {
@@ -64,6 +64,7 @@ if (   not $class
 }
 
 $sk_session->param('group',$class);
+$sk_session->param('groupkind','Klasse');
 
 =head2 Form fields
 
@@ -72,7 +73,7 @@ none
 
 =head2 Template variables
 
-Additionally to the variables of Schulkonsole::Session C<group_lesson>
+Additionally to the variables of Schulkonsole::Session C<class_lesson>
 provides the following variables:
 
 =over
@@ -100,12 +101,12 @@ if ($group_session) {
 			if (not $group_session->param('edit')) {
 				$sk_session->set_status(
 					$sk_session->d()->get(
-						"In dieser Klasse/diesem Projekt findet kein Unterricht statt."),
+						"In dieser Klasse Projekt findet kein Unterricht statt."),
 					1);
 			} else {
 				$sk_session->set_status(
 					$sk_session->d()->get(
-						"Sie halten keinen Unterricht in dieser Klasse/diesem Projekt."),
+						"Sie halten keinen Unterricht in dieser Klasse."),
 					1);
 			}
 			last COMMANDS;
@@ -129,7 +130,7 @@ if ($group_session) {
 	} elsif ($q->param('start_lesson')) {
 		if ($group_session->param('edit')) {
 			$sk_session->set_status(
-				$sk_session->d()->get("In dieser Klasse/diesem Projekt wird bereits unterrichtet."),
+				$sk_session->d()->get("In dieser Klasse wird bereits unterrichtet."),
 				1);
 			last COMMANDS;
 		}
@@ -150,12 +151,12 @@ if ($group_session) {
 			if (not $group_session->param('edit')) {
 				$sk_session->set_status(
 					$sk_session->d()->get(
-						"In dieser Klasse/diesem Projekt findet kein Unterricht statt."),
+						"In dieser Klasse findet kein Unterricht statt."),
 				1);
 			} else {
 				$sk_session->set_status(
 					$sk_session->d()->get(
-						"Sie d&uuml;rfen den Unterricht in dieser Klasse/diesem Projekt nicht beenden."),
+						"Sie d&uuml;rfen den Unterricht in dieser Klasse nicht beenden."),
 					1);
 			}
 			last COMMANDS;
@@ -172,12 +173,12 @@ if ($group_session) {
 			if (not $group_session->param('edit')) {
 				$sk_session->set_status(
 					$sk_session->d()->get(
-						'In dieser Klasse/diesem Projekt findet kein Unterricht statt.'),
+						'In dieser Klasse findet kein Unterricht statt.'),
 					1);
 			} else {
 				$sk_session->set_status(
 					$sk_session->d()->get(
-						'Sie d&uuml;rfen den Unterricht in dieser Klasse/diesem Projekt nicht beenden.'),
+						'Sie d&uuml;rfen den Unterricht in dieser Klasse nicht beenden.'),
 					1);
 			}
 			last COMMANDS;

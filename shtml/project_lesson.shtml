@@ -18,7 +18,8 @@
 
 <!--#if expr="$projects" -->
 <form method="post" accept-charset="UTF-8">
-<p class="selectdomain"> <select name="projects">
+<p class="selectdomain"> 
+<select name="projects">
 <optgroup label="Projekte">
 <!--#if expr="$loop_projects" --> <option value="$projects{gid}"><!--#echo var="projects{name}" --></option>
 <!--#endif -->

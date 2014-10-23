@@ -20,7 +20,7 @@ The HTML template is project_lesson.shtml.
 =cut
 
 use strict;
-use lib '@datadir@/@PACKAGE@';
+use lib '@datadir/@package@';
 use Time::Local;
 use POSIX;
 use Schulkonsole::Config;
@@ -49,7 +49,6 @@ if (not $sk_session->get_password()) {
 my $q = $sk_session->query();
 
 my $projects = Schulkonsole::Info::groups_projects($sk_session->groups());
-my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
 
 my $project = $q->param('projects');
 if (    $project
