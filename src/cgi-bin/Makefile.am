@@ -1,4 +1,4 @@
-pkglibexecdir = $(libexecdir)/@PACKAGE@/cgi-in
+pkglibexecdir = $(libexecdir)/@PACKAGE@/cgi-bin
 pkglibexec_SCRIPTS=example start logout \
 	room room_shares room_handout room_collect \
 	room_test room_test_handout room_test_password room_test_collect \
