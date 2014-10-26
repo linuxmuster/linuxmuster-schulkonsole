@@ -20,7 +20,7 @@ The HTML template is class_lesson.shtml.
 =cut
 
 use strict;
-use lib '@datadir@/@package@';
+use lib '@datadir@/@PACKAGE@';
 use Time::Local;
 use POSIX;
 use Schulkonsole::Config;
