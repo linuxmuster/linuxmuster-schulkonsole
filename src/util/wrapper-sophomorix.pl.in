@@ -35,6 +35,14 @@ use Schulkonsole::Config;
 use Schulkonsole::DB;
 
 
+# --encoding-*-*
+my %supported_encodings = qw(
+    ascii    ascii
+    8859-1   iso-8859-1
+    8859-15  iso-8859-15
+    win1252  cp1252
+    utf8     utf8
+);
 
 my $id = <>;
 $id = int($id);
@@ -1248,6 +1256,12 @@ $app_id == Schulkonsole::Config::READSOPHOMORIXFILEAPP and do {
 	
 	} # end SWITCHREADFILE
 
+	if (not exists $supported_encodings{$encoding}){
+		$encoding = "utf8";
+	}
+	else {
+		$encoding = $supported_encodings{$encoding};
+	}
 
 	open FILE, "<:encoding($encoding)", $filename
 		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
@@ -1395,6 +1409,13 @@ $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 	} else {
 		$stat[4] = $>;
 		$stat[5] = 0;
+	}
+
+	if (not exists $supported_encodings{$encoding}){
+		$encoding = "utf8";
+	}
+	else {
+		$encoding = $supported_encodings{$encoding};
 	}
 
 	open FILE, ">:encoding($encoding)",
