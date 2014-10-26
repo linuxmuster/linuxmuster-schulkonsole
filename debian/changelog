@@ -1,3 +1,31 @@
+linuxmuster-schulkonsole (0.10.16-0) babo; urgency=low
+
+  * fschuett:
+   * wrapper-sophomorix.pl.in: changed back to sophomorix encoding iso-8859-15 (closes #383).
+
+ -- Thomas Schmitt <thomas@linuxmuster.net>  Fir, 24 Okt 2014 18:18:55 +0200
+
+linuxmuster-schulkonsole (0.10.15-0) babo; urgency=low
+
+  * fschuett:
+   * pull request #10, uses encoding logic von soph-check (closes #383).
+
+ -- Thomas Schmitt <thomas@linuxmuster.net>  Fri, 17 Okt 2014 16:48:00 +0200
+
+linuxmuster-schulkonsole (0.10.14-0) babo; urgency=low
+
+  * thomas@linuxmuster.net:
+   * merged Frank Schuette's fix for encoding... not defined in sophomorix.conf (tickets #381,#382).
+
+ -- Thomas Schmitt <thomas@linuxmuster.net>  Wed, 24 Sep 2014 18:42:00 +0200
+
+linuxmuster-schulkonsole (0.10.13-0) babo; urgency=low
+
+  * thomas@linuxmuster.net:
+   * merged Frank Schuette's pull request fixes utf8 support (closes #375).
+
+ -- Thomas Schmitt <thomas@linuxmuster.net>  Mon, 22 Sep 2014 19:40:00 +0200
+
 linuxmuster-schulkonsole (0.10.12-0) babo; urgency=low
 
   * thomas@linuxmuster.net:
