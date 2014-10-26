@@ -1270,7 +1270,7 @@ $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 
 	my $path;
 	my $filename;
-	my $encoding = "iso-8859-15";
+	my $encoding = "utf8";
 	my @stat;
 	SWITCHWRITEFILE: {
 	$number == 0 and do {
