@@ -21,8 +21,9 @@ $VERSION = 0.06;
 @EXPORT_OK = qw(
 );
 
+my @passwort_zeichen = Sophomorix::SophomorixBase::get_passwd_charlist();
 
-my @passwort_zeichen = &get_passwd_charlist();
+
 
 
 =head1 DESCRIPTION
@@ -454,7 +455,7 @@ sub set_vars {
 
 sub random_password {
 	my $len = shift;
-	my $re = &get_random_password(10,'',@passwort_zeichen);
+	my $re = Sophomorix::SophomorixBase::get_random_password(10,undef,@passwort_zeichen);
 	return $re;
 }
 
