@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: entwickler@lml.mine.nu\n"
-"POT-Creation-Date: 2014-10-26 21:00+0100\n"
+"POT-Creation-Date: 2014-08-07 16:17+0200\n"
 "PO-Revision-Date: 2014-04-06 14:22+0200\n"
 "Last-Translator: root <root@linuxmuster.lokal>\n"
 "Language-Team: English\n"
@@ -407,7 +407,7 @@ msgstr "%s is not a registry patch"
 
 #: src/cgi-bin/printers_edit.in:239 src/cgi-bin/printers_edit.in:271
 #: src/cgi-bin/rooms_classrooms.in:90 src/cgi-bin/rooms.in:173
-#: src/cgi-bin/settings_backup.in:209 src/cgi-bin/settings.in:408
+#: src/cgi-bin/settings_backup.in:204 src/cgi-bin/settings.in:403
 #: src/cgi-bin/settings_program.in:97 src/cgi-bin/settings_users.in:279
 #: src/cgi-bin/user_teachers.in:224
 msgid "&Auml;nderungen &uuml;bernommen"
@@ -535,8 +535,8 @@ msgid "Sie sind kein Projektleiter von %s"
 msgstr "You are not the project leader of %s"
 
 #: src/cgi-bin/project.in:238 src/cgi-bin/room_test_end.in:82
-#: shtml/messages.pl:1346 shtml/messages.pl:1351 shtml/messages.pl:1356
-#: shtml/messages.pl:1405 shtml/messages.pl:1420
+#: shtml/messages.pl:1343 shtml/messages.pl:1348 shtml/messages.pl:1353
+#: shtml/messages.pl:1402 shtml/messages.pl:1417
 msgid "Bitte best&auml;tigen"
 msgstr "Please confirm"
 
@@ -680,8 +680,8 @@ msgid "Unterrichtsende liegt in der Vergangenheit"
 msgstr "Lessons end is in the past"
 
 #: src/cgi-bin/room.in:519 shtml/messages.pl:61 shtml/messages.pl:107
-#: shtml/messages.pl:134 shtml/messages.pl:1050 shtml/messages.pl:1051
-#: shtml/messages.pl:1052 shtml/messages.pl:1060 shtml/messages.pl:1061
+#: shtml/messages.pl:134 shtml/messages.pl:1047 shtml/messages.pl:1048
+#: shtml/messages.pl:1049 shtml/messages.pl:1057 shtml/messages.pl:1058
 msgid "Drucker"
 msgstr "Printer"
 
@@ -705,21 +705,21 @@ msgstr "No work station password entered."
 msgid "Workstationpasswort ge&auml;ndert."
 msgstr "Work station password changed."
 
-#: src/cgi-bin/settings_backup.in:120 src/cgi-bin/settings.in:264
+#: src/cgi-bin/settings_backup.in:115 src/cgi-bin/settings.in:259
 msgid "Restoremethode muss hd oder nfs sein"
 msgstr "Restore method must be hd or nfs"
 
-#: src/cgi-bin/settings_backup.in:148 src/cgi-bin/settings.in:292
+#: src/cgi-bin/settings_backup.in:143 src/cgi-bin/settings.in:287
 msgid "Erlaubte Werte f&uuml;r Kompressionsgrad sind 0 bis 9"
 msgstr "Allowed values for the rate of compression are from 0 to 9"
 
-#: src/cgi-bin/settings_backup.in:156 src/cgi-bin/settings.in:300
+#: src/cgi-bin/settings_backup.in:151 src/cgi-bin/settings.in:295
 msgid "Erwarte Zahl zwischen 1 und 9 bei Anzahl der vorgehaltenen Vollbackups"
 msgstr ""
 "Expected figure between 1 and 9 with regard to the number of previous full "
 "backups"
 
-#: src/cgi-bin/settings_backup.in:164 src/cgi-bin/settings.in:308
+#: src/cgi-bin/settings_backup.in:159 src/cgi-bin/settings.in:303
 msgid ""
 "Erwarte Zahl gr&ouml;&szlig;er gleich 1 bei Anzahl der vorgehaltenen "
 "differentiellen Backups"
@@ -727,7 +727,7 @@ msgstr ""
 "Erwarte Zahl gr&ouml;&szlig;er gleich 1 bei Anzahl der vorgehaltenen "
 "differentiellen Backups"
 
-#: src/cgi-bin/settings_backup.in:172 src/cgi-bin/settings.in:316
+#: src/cgi-bin/settings_backup.in:167 src/cgi-bin/settings.in:311
 msgid ""
 "Erwarte Zahl gr&ouml;&szlig;er gleich 1 bei Anzahl der vorgehaltenen "
 "inkrementellen Backups"
@@ -735,35 +735,35 @@ msgstr ""
 "Erwarte Zahl gr&ouml;&szlig;er gleich 1 bei Anzahl der vorgehaltenen "
 "inkrementellen Backups"
 
-#: src/cgi-bin/settings_backup.in:337 src/cgi-bin/settings.in:775
+#: src/cgi-bin/settings_backup.in:328 src/cgi-bin/settings.in:766
 msgid "backupdevice"
 msgstr "backup device"
 
-#: src/cgi-bin/settings.in:197 src/cgi-bin/settings_users.in:164
+#: src/cgi-bin/settings.in:192 src/cgi-bin/settings_users.in:164
 msgid "Geben Sie eine g&uuml;ltige 4-stellige Jahreszahl ein"
 msgstr "Enter a valid 4-figure year"
 
-#: src/cgi-bin/settings.in:205 src/cgi-bin/settings_users.in:172
+#: src/cgi-bin/settings.in:200 src/cgi-bin/settings_users.in:172
 msgid "Die Passwortl&auml;nge muss eine Zahl > 0 sein"
 msgstr "The password length must be a number > 0"
 
-#: src/cgi-bin/settings.in:213 src/cgi-bin/settings_users.in:180
+#: src/cgi-bin/settings.in:208 src/cgi-bin/settings_users.in:180
 msgid "Der Duldungszeitraum muss eine Zahl sein"
 msgstr "The duration of tolerance must be a number"
 
-#: src/cgi-bin/settings.in:221 src/cgi-bin/settings_users.in:188
+#: src/cgi-bin/settings.in:216 src/cgi-bin/settings_users.in:188
 msgid "Der Deaktivierungszeitraum muss eine Zahl sein"
 msgstr "The duration of deactivation must be a number"
 
-#: src/cgi-bin/settings.in:235 src/cgi-bin/settings_users.in:202
+#: src/cgi-bin/settings.in:230 src/cgi-bin/settings_users.in:202
 msgid "Quota muss eine Zahl sein"
 msgstr "Quota must be a number"
 
-#: src/cgi-bin/settings.in:577 src/cgi-bin/settings_users.in:426
+#: src/cgi-bin/settings.in:572 src/cgi-bin/settings_users.in:426
 msgid "birthlimitlow"
 msgstr "birthlimitlow"
 
-#: src/cgi-bin/settings.in:696 src/cgi-bin/settings_users.in:545
+#: src/cgi-bin/settings.in:691 src/cgi-bin/settings_users.in:545
 msgid "activateglobalshares"
 msgstr "activateglobalshares"
 
@@ -1359,16 +1359,16 @@ msgstr "Student"
 #: shtml/messages.pl:633 shtml/messages.pl:649 shtml/messages.pl:679
 #: shtml/messages.pl:696 shtml/messages.pl:707 shtml/messages.pl:710
 #: shtml/messages.pl:717 shtml/messages.pl:721 shtml/messages.pl:729
-#: shtml/messages.pl:765 shtml/messages.pl:777 shtml/messages.pl:819
-#: shtml/messages.pl:829 shtml/messages.pl:841 shtml/messages.pl:874
-#: shtml/messages.pl:887 shtml/messages.pl:912 shtml/messages.pl:931
-#: shtml/messages.pl:958 shtml/messages.pl:989 shtml/messages.pl:1000
-#: shtml/messages.pl:1037 shtml/messages.pl:1049 shtml/messages.pl:1059
-#: shtml/messages.pl:1077 shtml/messages.pl:1110 shtml/messages.pl:1121
-#: shtml/messages.pl:1136 shtml/messages.pl:1150 shtml/messages.pl:1164
-#: shtml/messages.pl:1206 shtml/messages.pl:1216 shtml/messages.pl:1343
-#: shtml/messages.pl:1381 shtml/messages.pl:1402 shtml/messages.pl:1417
-#: shtml/messages.pl:1491
+#: shtml/messages.pl:765 shtml/messages.pl:777 shtml/messages.pl:816
+#: shtml/messages.pl:826 shtml/messages.pl:838 shtml/messages.pl:871
+#: shtml/messages.pl:884 shtml/messages.pl:909 shtml/messages.pl:928
+#: shtml/messages.pl:955 shtml/messages.pl:986 shtml/messages.pl:997
+#: shtml/messages.pl:1034 shtml/messages.pl:1046 shtml/messages.pl:1056
+#: shtml/messages.pl:1074 shtml/messages.pl:1107 shtml/messages.pl:1118
+#: shtml/messages.pl:1133 shtml/messages.pl:1147 shtml/messages.pl:1161
+#: shtml/messages.pl:1203 shtml/messages.pl:1213 shtml/messages.pl:1340
+#: shtml/messages.pl:1378 shtml/messages.pl:1399 shtml/messages.pl:1414
+#: shtml/messages.pl:1488
 msgid "Schulkonsole"
 msgstr "School console"
 
@@ -1391,15 +1391,15 @@ msgstr "Hello "
 #: shtml/messages.pl:608 shtml/messages.pl:629 shtml/messages.pl:646
 #: shtml/messages.pl:674 shtml/messages.pl:694 shtml/messages.pl:705
 #: shtml/messages.pl:714 shtml/messages.pl:726 shtml/messages.pl:762
-#: shtml/messages.pl:774 shtml/messages.pl:816 shtml/messages.pl:826
-#: shtml/messages.pl:838 shtml/messages.pl:870 shtml/messages.pl:883
-#: shtml/messages.pl:904 shtml/messages.pl:926 shtml/messages.pl:954
-#: shtml/messages.pl:985 shtml/messages.pl:996 shtml/messages.pl:1031
-#: shtml/messages.pl:1047 shtml/messages.pl:1057 shtml/messages.pl:1072
-#: shtml/messages.pl:1104 shtml/messages.pl:1119 shtml/messages.pl:1132
-#: shtml/messages.pl:1146 shtml/messages.pl:1160 shtml/messages.pl:1201
-#: shtml/messages.pl:1214 shtml/messages.pl:1339 shtml/messages.pl:1378
-#: shtml/messages.pl:1398 shtml/messages.pl:1415 shtml/messages.pl:1438
+#: shtml/messages.pl:774 shtml/messages.pl:813 shtml/messages.pl:823
+#: shtml/messages.pl:835 shtml/messages.pl:867 shtml/messages.pl:880
+#: shtml/messages.pl:901 shtml/messages.pl:923 shtml/messages.pl:951
+#: shtml/messages.pl:982 shtml/messages.pl:993 shtml/messages.pl:1028
+#: shtml/messages.pl:1044 shtml/messages.pl:1054 shtml/messages.pl:1069
+#: shtml/messages.pl:1101 shtml/messages.pl:1116 shtml/messages.pl:1129
+#: shtml/messages.pl:1143 shtml/messages.pl:1157 shtml/messages.pl:1198
+#: shtml/messages.pl:1211 shtml/messages.pl:1336 shtml/messages.pl:1375
+#: shtml/messages.pl:1395 shtml/messages.pl:1412 shtml/messages.pl:1435
 msgid "Info"
 msgstr "Info"
 
@@ -1416,10 +1416,10 @@ msgstr "That is an example page."
 #: shtml/messages.pl:554 shtml/messages.pl:570 shtml/messages.pl:574
 #: shtml/messages.pl:579 shtml/messages.pl:583 shtml/messages.pl:623
 #: shtml/messages.pl:664 shtml/messages.pl:688 shtml/messages.pl:741
-#: shtml/messages.pl:747 shtml/messages.pl:850 shtml/messages.pl:858
-#: shtml/messages.pl:894 shtml/messages.pl:1126 shtml/messages.pl:1170
-#: shtml/messages.pl:1175 shtml/messages.pl:1180 shtml/messages.pl:1186
-#: shtml/messages.pl:1192 shtml/messages.pl:1197
+#: shtml/messages.pl:747 shtml/messages.pl:847 shtml/messages.pl:855
+#: shtml/messages.pl:891 shtml/messages.pl:1123 shtml/messages.pl:1167
+#: shtml/messages.pl:1172 shtml/messages.pl:1177 shtml/messages.pl:1183
+#: shtml/messages.pl:1189 shtml/messages.pl:1194
 msgid "Login"
 msgstr "Login"
 
@@ -1427,8 +1427,8 @@ msgstr "Login"
 msgid "Anmeldung"
 msgstr "Login"
 
-#: shtml/messages.pl:9 shtml/messages.pl:388 shtml/messages.pl:919
-#: shtml/messages.pl:943
+#: shtml/messages.pl:9 shtml/messages.pl:388 shtml/messages.pl:916
+#: shtml/messages.pl:940
 msgid "Benutzername"
 msgstr "Username"
 
@@ -1488,15 +1488,15 @@ msgstr "New password"
 msgid "nochmal"
 msgstr "again"
 
-#: shtml/messages.pl:28 shtml/messages.pl:274 shtml/messages.pl:1509
-#: shtml/messages.pl:1510 shtml/messages.pl:1514
+#: shtml/messages.pl:28 shtml/messages.pl:274 shtml/messages.pl:1506
+#: shtml/messages.pl:1507 shtml/messages.pl:1511
 msgid "Passwort &auml;ndern"
 msgstr "Change password"
 
-#: shtml/messages.pl:30 shtml/messages.pl:59 shtml/messages.pl:1111
-#: shtml/messages.pl:1112 shtml/messages.pl:1122 shtml/messages.pl:1124
-#: shtml/messages.pl:1137 shtml/messages.pl:1139 shtml/messages.pl:1151
-#: shtml/messages.pl:1153 shtml/messages.pl:1165 shtml/messages.pl:1167
+#: shtml/messages.pl:30 shtml/messages.pl:59 shtml/messages.pl:1108
+#: shtml/messages.pl:1109 shtml/messages.pl:1119 shtml/messages.pl:1121
+#: shtml/messages.pl:1134 shtml/messages.pl:1136 shtml/messages.pl:1148
+#: shtml/messages.pl:1150 shtml/messages.pl:1162 shtml/messages.pl:1164
 msgid "Quota"
 msgstr "Quota"
 
@@ -1545,8 +1545,8 @@ msgstr "Pages:"
 #: shtml/messages.pl:634 shtml/messages.pl:636 shtml/messages.pl:639
 #: shtml/messages.pl:650 shtml/messages.pl:652 shtml/messages.pl:655
 #: shtml/messages.pl:680 shtml/messages.pl:682 shtml/messages.pl:685
-#: shtml/messages.pl:697 shtml/messages.pl:698 shtml/messages.pl:1115
-#: shtml/messages.pl:1152 shtml/messages.pl:1498 shtml/messages.pl:1502
+#: shtml/messages.pl:697 shtml/messages.pl:698 shtml/messages.pl:1112
+#: shtml/messages.pl:1149 shtml/messages.pl:1495 shtml/messages.pl:1499
 msgid "Projekte"
 msgstr "Projects"
 
@@ -1628,9 +1628,9 @@ msgstr "Current Room"
 #: shtml/messages.pl:418 shtml/messages.pl:429 shtml/messages.pl:431
 #: shtml/messages.pl:434 shtml/messages.pl:459 shtml/messages.pl:461
 #: shtml/messages.pl:464 shtml/messages.pl:712 shtml/messages.pl:767
-#: shtml/messages.pl:769 shtml/messages.pl:1114 shtml/messages.pl:1138
-#: shtml/messages.pl:1140 shtml/messages.pl:1493 shtml/messages.pl:1497
-#: shtml/messages.pl:1501
+#: shtml/messages.pl:769 shtml/messages.pl:1111 shtml/messages.pl:1135
+#: shtml/messages.pl:1137 shtml/messages.pl:1490 shtml/messages.pl:1494
+#: shtml/messages.pl:1498
 msgid "Klassen"
 msgstr "Classes"
 
@@ -1641,19 +1641,19 @@ msgstr "Classes"
 msgid "Einstellungen"
 msgstr "Settings"
 
-#: shtml/messages.pl:58 shtml/messages.pl:820 shtml/messages.pl:830
-#: shtml/messages.pl:842 shtml/messages.pl:875 shtml/messages.pl:888
-#: shtml/messages.pl:913 shtml/messages.pl:932 shtml/messages.pl:959
-#: shtml/messages.pl:975 shtml/messages.pl:983 shtml/messages.pl:990
+#: shtml/messages.pl:58 shtml/messages.pl:817 shtml/messages.pl:827
+#: shtml/messages.pl:839 shtml/messages.pl:872 shtml/messages.pl:885
+#: shtml/messages.pl:910 shtml/messages.pl:929 shtml/messages.pl:956
+#: shtml/messages.pl:972 shtml/messages.pl:980 shtml/messages.pl:987
 msgid "Benutzer"
 msgstr "User"
 
-#: shtml/messages.pl:60 shtml/messages.pl:81 shtml/messages.pl:1001
-#: shtml/messages.pl:1038 shtml/messages.pl:1043 shtml/messages.pl:1053
+#: shtml/messages.pl:60 shtml/messages.pl:81 shtml/messages.pl:998
+#: shtml/messages.pl:1035 shtml/messages.pl:1040 shtml/messages.pl:1050
 msgid "R&auml;ume"
 msgstr "Rooms"
 
-#: shtml/messages.pl:62 shtml/messages.pl:1078 shtml/messages.pl:1083
+#: shtml/messages.pl:62 shtml/messages.pl:1075 shtml/messages.pl:1080
 msgid "Hosts"
 msgstr "Hosts"
 
@@ -1814,19 +1814,19 @@ msgstr "Overview PCs"
 
 #: shtml/messages.pl:102 shtml/messages.pl:129 shtml/messages.pl:159
 #: shtml/messages.pl:183 shtml/messages.pl:209 shtml/messages.pl:253
-#: shtml/messages.pl:290 shtml/messages.pl:1085
+#: shtml/messages.pl:290 shtml/messages.pl:1082
 msgid "Hostname"
 msgstr "Host name"
 
-#: shtml/messages.pl:104 shtml/messages.pl:131 shtml/messages.pl:1004
+#: shtml/messages.pl:104 shtml/messages.pl:131 shtml/messages.pl:1001
 msgid "Internet"
 msgstr "Internet"
 
-#: shtml/messages.pl:105 shtml/messages.pl:132 shtml/messages.pl:1005
+#: shtml/messages.pl:105 shtml/messages.pl:132 shtml/messages.pl:1002
 msgid "Intranet"
 msgstr "Intranet"
 
-#: shtml/messages.pl:106 shtml/messages.pl:133 shtml/messages.pl:1006
+#: shtml/messages.pl:106 shtml/messages.pl:133 shtml/messages.pl:1003
 msgid "Webfilter"
 msgstr "Web filter"
 
@@ -1839,7 +1839,7 @@ msgstr "Exchange<br>global"
 #: shtml/messages.pl:188 shtml/messages.pl:212 shtml/messages.pl:372
 #: shtml/messages.pl:405 shtml/messages.pl:447 shtml/messages.pl:470
 #: shtml/messages.pl:626 shtml/messages.pl:668 shtml/messages.pl:691
-#: shtml/messages.pl:897
+#: shtml/messages.pl:894
 msgid "Schnellauswahl"
 msgstr "Quick selection"
 
@@ -1848,30 +1848,30 @@ msgstr "Quick selection"
 #: shtml/messages.pl:163 shtml/messages.pl:189 shtml/messages.pl:213
 #: shtml/messages.pl:406 shtml/messages.pl:448 shtml/messages.pl:471
 #: shtml/messages.pl:627 shtml/messages.pl:669 shtml/messages.pl:692
-#: shtml/messages.pl:1009 shtml/messages.pl:1011 shtml/messages.pl:1013
-#: shtml/messages.pl:1016 shtml/messages.pl:1018 shtml/messages.pl:1020
-#: shtml/messages.pl:1023 shtml/messages.pl:1025 shtml/messages.pl:1027
-#: shtml/messages.pl:1095 shtml/messages.pl:1099
+#: shtml/messages.pl:1006 shtml/messages.pl:1008 shtml/messages.pl:1010
+#: shtml/messages.pl:1013 shtml/messages.pl:1015 shtml/messages.pl:1017
+#: shtml/messages.pl:1020 shtml/messages.pl:1022 shtml/messages.pl:1024
+#: shtml/messages.pl:1092 shtml/messages.pl:1096
 msgid "Aus"
 msgstr "Off"
 
 #: shtml/messages.pl:111 shtml/messages.pl:113 shtml/messages.pl:115
 #: shtml/messages.pl:118 shtml/messages.pl:126 shtml/messages.pl:373
-#: shtml/messages.pl:898 shtml/messages.pl:1008 shtml/messages.pl:1010
-#: shtml/messages.pl:1012 shtml/messages.pl:1015 shtml/messages.pl:1017
-#: shtml/messages.pl:1019 shtml/messages.pl:1022 shtml/messages.pl:1024
-#: shtml/messages.pl:1026
+#: shtml/messages.pl:895 shtml/messages.pl:1005 shtml/messages.pl:1007
+#: shtml/messages.pl:1009 shtml/messages.pl:1012 shtml/messages.pl:1014
+#: shtml/messages.pl:1016 shtml/messages.pl:1019 shtml/messages.pl:1021
+#: shtml/messages.pl:1023
 msgid "An"
 msgstr "On"
 
 #: shtml/messages.pl:119 shtml/messages.pl:127 shtml/messages.pl:214
 #: shtml/messages.pl:472 shtml/messages.pl:693 shtml/messages.pl:725
-#: shtml/messages.pl:761 shtml/messages.pl:773 shtml/messages.pl:815
-#: shtml/messages.pl:952 shtml/messages.pl:1030 shtml/messages.pl:1046
-#: shtml/messages.pl:1066 shtml/messages.pl:1071 shtml/messages.pl:1102
-#: shtml/messages.pl:1130 shtml/messages.pl:1144 shtml/messages.pl:1158
-#: shtml/messages.pl:1173 shtml/messages.pl:1178 shtml/messages.pl:1184
-#: shtml/messages.pl:1190 shtml/messages.pl:1195 shtml/messages.pl:1200
+#: shtml/messages.pl:761 shtml/messages.pl:773 shtml/messages.pl:812
+#: shtml/messages.pl:949 shtml/messages.pl:1027 shtml/messages.pl:1043
+#: shtml/messages.pl:1063 shtml/messages.pl:1068 shtml/messages.pl:1099
+#: shtml/messages.pl:1127 shtml/messages.pl:1141 shtml/messages.pl:1155
+#: shtml/messages.pl:1170 shtml/messages.pl:1175 shtml/messages.pl:1181
+#: shtml/messages.pl:1187 shtml/messages.pl:1192 shtml/messages.pl:1197
 msgid "&Auml;nderungen &uuml;bernehmen"
 msgstr "Apply changes"
 
@@ -1887,12 +1887,12 @@ msgstr "Overview printer"
 #: shtml/messages.pl:575 shtml/messages.pl:580 shtml/messages.pl:584
 #: shtml/messages.pl:588 shtml/messages.pl:590 shtml/messages.pl:593
 #: shtml/messages.pl:595 shtml/messages.pl:624 shtml/messages.pl:665
-#: shtml/messages.pl:689 shtml/messages.pl:895 shtml/messages.pl:899
-#: shtml/messages.pl:1127 shtml/messages.pl:1181 shtml/messages.pl:1187
+#: shtml/messages.pl:689 shtml/messages.pl:892 shtml/messages.pl:896
+#: shtml/messages.pl:1124 shtml/messages.pl:1178 shtml/messages.pl:1184
 msgid "Name"
 msgstr "Name"
 
-#: shtml/messages.pl:122 shtml/messages.pl:138 shtml/messages.pl:978
+#: shtml/messages.pl:122 shtml/messages.pl:138 shtml/messages.pl:975
 msgid "Status"
 msgstr "Status"
 
@@ -1942,9 +1942,9 @@ msgstr ""
 #: shtml/messages.pl:148 shtml/messages.pl:150 shtml/messages.pl:164
 #: shtml/messages.pl:392 shtml/messages.pl:397 shtml/messages.pl:407
 #: shtml/messages.pl:613 shtml/messages.pl:618 shtml/messages.pl:628
-#: shtml/messages.pl:1443 shtml/messages.pl:1445 shtml/messages.pl:1449
-#: shtml/messages.pl:1455 shtml/messages.pl:1462 shtml/messages.pl:1469
-#: shtml/messages.pl:1473 shtml/messages.pl:1478
+#: shtml/messages.pl:1440 shtml/messages.pl:1442 shtml/messages.pl:1446
+#: shtml/messages.pl:1452 shtml/messages.pl:1459 shtml/messages.pl:1466
+#: shtml/messages.pl:1470 shtml/messages.pl:1475
 msgid "Austeilen"
 msgstr "Distribute"
 
@@ -1998,19 +1998,19 @@ msgstr ""
 #: shtml/messages.pl:193 shtml/messages.pl:430 shtml/messages.pl:435
 #: shtml/messages.pl:437 shtml/messages.pl:442 shtml/messages.pl:452
 #: shtml/messages.pl:651 shtml/messages.pl:656 shtml/messages.pl:658
-#: shtml/messages.pl:663 shtml/messages.pl:673 shtml/messages.pl:1444
-#: shtml/messages.pl:1446 shtml/messages.pl:1450 shtml/messages.pl:1457
-#: shtml/messages.pl:1464 shtml/messages.pl:1471 shtml/messages.pl:1475
-#: shtml/messages.pl:1480 shtml/messages.pl:1511 shtml/messages.pl:1512
-#: shtml/messages.pl:1515
+#: shtml/messages.pl:663 shtml/messages.pl:673 shtml/messages.pl:1441
+#: shtml/messages.pl:1443 shtml/messages.pl:1447 shtml/messages.pl:1454
+#: shtml/messages.pl:1461 shtml/messages.pl:1468 shtml/messages.pl:1472
+#: shtml/messages.pl:1477 shtml/messages.pl:1508 shtml/messages.pl:1509
+#: shtml/messages.pl:1512
 msgid "Einsammeln"
 msgstr "Collect"
 
 #: shtml/messages.pl:179 shtml/messages.pl:190 shtml/messages.pl:309
 #: shtml/messages.pl:439 shtml/messages.pl:449 shtml/messages.pl:660
 #: shtml/messages.pl:670 shtml/messages.pl:702 shtml/messages.pl:791
-#: shtml/messages.pl:795 shtml/messages.pl:805 shtml/messages.pl:812
-#: shtml/messages.pl:1305 shtml/messages.pl:1308
+#: shtml/messages.pl:795 shtml/messages.pl:805 shtml/messages.pl:1302
+#: shtml/messages.pl:1305
 msgid "1"
 msgstr "1"
 
@@ -2121,8 +2121,8 @@ msgid ""
 "beendet."
 msgstr "The exam ends with collection of the files."
 
-#: shtml/messages.pl:240 shtml/messages.pl:310 shtml/messages.pl:1348
-#: shtml/messages.pl:1407 shtml/messages.pl:1422
+#: shtml/messages.pl:240 shtml/messages.pl:310 shtml/messages.pl:1345
+#: shtml/messages.pl:1404 shtml/messages.pl:1419
 msgid "Best&auml;tigen"
 msgstr "Confirm"
 
@@ -2145,8 +2145,8 @@ msgstr ""
 "In case you did not want to end, you can return to the previouspage\n"
 "with the link &#8222;Collect&#8220;."
 
-#: shtml/messages.pl:255 shtml/messages.pl:295 shtml/messages.pl:967
-#: shtml/messages.pl:973 shtml/messages.pl:981
+#: shtml/messages.pl:255 shtml/messages.pl:295 shtml/messages.pl:964
+#: shtml/messages.pl:970 shtml/messages.pl:978
 msgid "Aktualisieren"
 msgstr "Update"
 
@@ -2162,8 +2162,8 @@ msgstr "All"
 msgid "bereitstellen"
 msgstr "supply"
 
-#: shtml/messages.pl:260 shtml/messages.pl:941 shtml/messages.pl:942
-#: shtml/messages.pl:950 shtml/messages.pl:951
+#: shtml/messages.pl:260 shtml/messages.pl:938 shtml/messages.pl:939
+#: shtml/messages.pl:947 shtml/messages.pl:948
 msgid "weiter"
 msgstr "further"
 
@@ -2334,8 +2334,8 @@ msgstr ""
 "With the button &#8222;Remove&#8220; you can remove yourself from a class,\n"
 "when you no longer instruct this class."
 
-#: shtml/messages.pl:331 shtml/messages.pl:336 shtml/messages.pl:1453
-#: shtml/messages.pl:1460
+#: shtml/messages.pl:331 shtml/messages.pl:336 shtml/messages.pl:1450
+#: shtml/messages.pl:1457
 msgid "Klassenliste"
 msgstr "Class list"
 
@@ -2369,28 +2369,28 @@ msgid ""
 msgstr ""
 "Here you can see information on the students of the current selected class "
 
-#: shtml/messages.pl:360 shtml/messages.pl:365 shtml/messages.pl:1454
-#: shtml/messages.pl:1461
+#: shtml/messages.pl:360 shtml/messages.pl:365 shtml/messages.pl:1451
+#: shtml/messages.pl:1458
 msgid "Passw&ouml;rter"
 msgstr "Passwords"
 
-#: shtml/messages.pl:367 shtml/messages.pl:892
+#: shtml/messages.pl:367 shtml/messages.pl:889
 msgid "Passwortliste als PDF"
 msgstr "Password list as PDF"
 
-#: shtml/messages.pl:368 shtml/messages.pl:893
+#: shtml/messages.pl:368 shtml/messages.pl:890
 msgid "Passwortliste als CSV"
 msgstr "Password list as CSV"
 
-#: shtml/messages.pl:371 shtml/messages.pl:896
+#: shtml/messages.pl:371 shtml/messages.pl:893
 msgid "Erstpasswort anzeigen"
 msgstr "Show first password"
 
-#: shtml/messages.pl:376 shtml/messages.pl:900
+#: shtml/messages.pl:376 shtml/messages.pl:897
 msgid "Passwort auf Erstpasswort setzen"
 msgstr "Set password to first password"
 
-#: shtml/messages.pl:377 shtml/messages.pl:901
+#: shtml/messages.pl:377 shtml/messages.pl:898
 msgid "Passwort und Erstpasswort setzen (Zufallswert)"
 msgstr "Set password and first password (random value)"
 
@@ -2404,11 +2404,11 @@ msgid ""
 "der Klasse &auml;ndern."
 msgstr "You can change the classroom's students' passwords here."
 
-#: shtml/messages.pl:381 shtml/messages.pl:906
+#: shtml/messages.pl:381 shtml/messages.pl:903
 msgid "Sie haben folgende Funktionen zur Verf&uuml;gung:"
 msgstr "You have the following functions available:"
 
-#: shtml/messages.pl:382 shtml/messages.pl:907
+#: shtml/messages.pl:382 shtml/messages.pl:904
 msgid "Setzen des Passwortes auf das Erstpasswort"
 msgstr "Setting of the password to the first password"
 
@@ -2470,9 +2470,9 @@ msgstr ""
 
 #: shtml/messages.pl:414 shtml/messages.pl:419 shtml/messages.pl:424
 #: shtml/messages.pl:635 shtml/messages.pl:640 shtml/messages.pl:645
-#: shtml/messages.pl:1456 shtml/messages.pl:1463 shtml/messages.pl:1470
-#: shtml/messages.pl:1474 shtml/messages.pl:1479 shtml/messages.pl:1507
-#: shtml/messages.pl:1508 shtml/messages.pl:1513
+#: shtml/messages.pl:1453 shtml/messages.pl:1460 shtml/messages.pl:1467
+#: shtml/messages.pl:1471 shtml/messages.pl:1476 shtml/messages.pl:1504
+#: shtml/messages.pl:1505 shtml/messages.pl:1510
 msgid "Bereitstellen"
 msgstr "Supply"
 
@@ -2536,9 +2536,9 @@ msgstr ""
 "&#8222;_collected -&gt; collected-class&#8220;."
 
 #: shtml/messages.pl:460 shtml/messages.pl:465 shtml/messages.pl:681
-#: shtml/messages.pl:686 shtml/messages.pl:1442 shtml/messages.pl:1448
-#: shtml/messages.pl:1458 shtml/messages.pl:1465 shtml/messages.pl:1472
-#: shtml/messages.pl:1476 shtml/messages.pl:1481
+#: shtml/messages.pl:686 shtml/messages.pl:1439 shtml/messages.pl:1445
+#: shtml/messages.pl:1455 shtml/messages.pl:1462 shtml/messages.pl:1469
+#: shtml/messages.pl:1473 shtml/messages.pl:1478
 msgid "Tauschen"
 msgstr "Exchange"
 
@@ -2640,8 +2640,8 @@ msgstr ""
 "&#8222;Open&#8220; project means that other teacherscan sign into the "
 "project."
 
-#: shtml/messages.pl:501 shtml/messages.pl:506 shtml/messages.pl:1468
-#: shtml/messages.pl:1477
+#: shtml/messages.pl:501 shtml/messages.pl:506 shtml/messages.pl:1465
+#: shtml/messages.pl:1474
 msgid "Mitglieder"
 msgstr "Members"
 
@@ -2651,9 +2651,9 @@ msgstr "Members"
 msgid "Ausgew&auml;hltes Projekt:"
 msgstr "Selected project:"
 
-#: shtml/messages.pl:508 shtml/messages.pl:837 shtml/messages.pl:880
-#: shtml/messages.pl:882 shtml/messages.pl:1241 shtml/messages.pl:1335
-#: shtml/messages.pl:1361 shtml/messages.pl:1410 shtml/messages.pl:1425
+#: shtml/messages.pl:508 shtml/messages.pl:834 shtml/messages.pl:877
+#: shtml/messages.pl:879 shtml/messages.pl:1238 shtml/messages.pl:1332
+#: shtml/messages.pl:1358 shtml/messages.pl:1407 shtml/messages.pl:1422
 msgid "&Auml;nderungen speichern"
 msgstr "Save changes"
 
@@ -2673,7 +2673,7 @@ msgstr "Search"
 msgid "student"
 msgstr "student"
 
-#: shtml/messages.pl:513 shtml/messages.pl:601 shtml/messages.pl:1185
+#: shtml/messages.pl:513 shtml/messages.pl:601 shtml/messages.pl:1182
 msgid "Sch&uuml;ler"
 msgstr "Students"
 
@@ -2681,9 +2681,9 @@ msgstr "Students"
 msgid "teacher"
 msgstr "teacher"
 
-#: shtml/messages.pl:515 shtml/messages.pl:603 shtml/messages.pl:1113
-#: shtml/messages.pl:1123 shtml/messages.pl:1125 shtml/messages.pl:1496
-#: shtml/messages.pl:1500
+#: shtml/messages.pl:515 shtml/messages.pl:603 shtml/messages.pl:1110
+#: shtml/messages.pl:1120 shtml/messages.pl:1122 shtml/messages.pl:1493
+#: shtml/messages.pl:1497
 msgid "Lehrer"
 msgstr "Teacher"
 
@@ -2693,7 +2693,7 @@ msgstr "class"
 
 #: shtml/messages.pl:517 shtml/messages.pl:546 shtml/messages.pl:558
 #: shtml/messages.pl:572 shtml/messages.pl:576 shtml/messages.pl:605
-#: shtml/messages.pl:920 shtml/messages.pl:945 shtml/messages.pl:1141
+#: shtml/messages.pl:917 shtml/messages.pl:942 shtml/messages.pl:1138
 msgid "Klasse"
 msgstr "Class"
 
@@ -2701,7 +2701,7 @@ msgstr "Class"
 msgid "project"
 msgstr "project"
 
-#: shtml/messages.pl:519 shtml/messages.pl:607 shtml/messages.pl:1155
+#: shtml/messages.pl:519 shtml/messages.pl:607 shtml/messages.pl:1152
 msgid "Projekt"
 msgstr "Project"
 
@@ -2871,12 +2871,12 @@ msgid "M&ouml;chten Sie das Projekt wirklich l&ouml;schen?"
 msgstr "Are you sure that you want to delete the project?"
 
 #: shtml/messages.pl:703 shtml/messages.pl:792 shtml/messages.pl:796
-#: shtml/messages.pl:806 shtml/messages.pl:813
+#: shtml/messages.pl:806
 msgid "Ja"
 msgstr "Yes"
 
 #: shtml/messages.pl:704 shtml/messages.pl:793 shtml/messages.pl:797
-#: shtml/messages.pl:807 shtml/messages.pl:814
+#: shtml/messages.pl:807
 msgid "Nein"
 msgstr "No"
 
@@ -2889,15 +2889,15 @@ msgstr ""
 "the project."
 
 #: shtml/messages.pl:711 shtml/messages.pl:731 shtml/messages.pl:733
-#: shtml/messages.pl:821 shtml/messages.pl:832 shtml/messages.pl:844
-#: shtml/messages.pl:877 shtml/messages.pl:890 shtml/messages.pl:915
-#: shtml/messages.pl:934 shtml/messages.pl:961 shtml/messages.pl:992
-#: shtml/messages.pl:1492
+#: shtml/messages.pl:818 shtml/messages.pl:829 shtml/messages.pl:841
+#: shtml/messages.pl:874 shtml/messages.pl:887 shtml/messages.pl:912
+#: shtml/messages.pl:931 shtml/messages.pl:958 shtml/messages.pl:989
+#: shtml/messages.pl:1489
 msgid "Benutzerverwaltung"
 msgstr "User administration"
 
 #: shtml/messages.pl:713 shtml/messages.pl:779 shtml/messages.pl:781
-#: shtml/messages.pl:782 shtml/messages.pl:1494
+#: shtml/messages.pl:782 shtml/messages.pl:1491
 msgid "Backup"
 msgstr "Backup"
 
@@ -2912,7 +2912,7 @@ msgstr ""
 "backup here."
 
 #: shtml/messages.pl:716 shtml/messages.pl:728 shtml/messages.pl:764
-#: shtml/messages.pl:776 shtml/messages.pl:818
+#: shtml/messages.pl:776 shtml/messages.pl:815
 msgid ""
 "F&uuml;r eine detaillierte Beschreibung der einzelnen Punkte\n"
 "konsultieren Sie bitte die Dokumentation."
@@ -3039,8 +3039,7 @@ msgid "nfs"
 msgstr "nfs"
 
 #: shtml/messages.pl:790
-#, fuzzy
-msgid "Firewall-Einstellungen sichern?"
+msgid "IPCop-Einstellungen sichern?"
 msgstr "Save IPCop settings?"
 
 #: shtml/messages.pl:794
@@ -3088,16 +3087,16 @@ msgid "Anzahl der vorgehaltenen inkrementellen Backups"
 msgstr "Number of previous incremental backups"
 
 #: shtml/messages.pl:811
-msgid "Vollautomatische Backups durchf&uuml;hren?"
-msgstr ""
+msgid "Zeitplanung vollautomatischer Backups"
+msgstr "Scheduling of fully automated backups"
 
-#: shtml/messages.pl:817
+#: shtml/messages.pl:814
 msgid ""
 "Bearbeiten Sie hier die globalen Einstellungen f&uuml;r\n"
 "das Serverbackup."
 msgstr "Edit the global settings for the server backup here."
 
-#: shtml/messages.pl:822
+#: shtml/messages.pl:819
 msgid ""
 "Bearbeiten Sie zun&auml;chst die\n"
 "<a href=\"user_students\">Sch&uuml;ler-</a>\n"
@@ -3107,7 +3106,7 @@ msgstr ""
 "<a href=\"user_students\">student</a>\n"
 "and <a href=\"user_teachers\">teacher lists</a>."
 
-#: shtml/messages.pl:823
+#: shtml/messages.pl:820
 msgid ""
 "Bearbeiten Sie zun&auml;chst die\n"
 "<a href=\"user_students\">Sch&uuml;lerlisten</a>."
@@ -3115,7 +3114,7 @@ msgstr ""
 "First, edit the\n"
 "<a href=\"user_students\">student lists</a>."
 
-#: shtml/messages.pl:824
+#: shtml/messages.pl:821
 msgid ""
 "Mit der <a href=\"user_check\">&Uuml;berpr&uuml;fung der Benutzerlisten</a> "
 "werden die Daten zur &Uuml;bertragung ins System vorbereitet."
@@ -3123,7 +3122,7 @@ msgstr ""
 "With the <a href=\"user_check\">review of user lists</a>, data is processed "
 "for transfer into the system."
 
-#: shtml/messages.pl:825
+#: shtml/messages.pl:822
 msgid ""
 "Auf der Seite zur\n"
 "<a href=\"user_commit\">&Uuml;bernahme der Benutzerdaten</a> k&ouml;nnen "
@@ -3136,12 +3135,12 @@ msgstr ""
 "start the transfer into the system and see information regarding the \n"
 "process."
 
-#: shtml/messages.pl:827
+#: shtml/messages.pl:824
 msgid ""
 "Hier legen Sie Benutzer an und pflegen die Sch&uuml;ler- und Lehrerlisten."
 msgstr "Create users and maintain the student and teacher lists here."
 
-#: shtml/messages.pl:828
+#: shtml/messages.pl:825
 msgid ""
 "Benutzer und Kurse, die nicht aus dem Schulverwaltungsprogramm exportiert "
 "werden k&ouml;nnen,\n"
@@ -3151,24 +3150,24 @@ msgstr ""
 "administrative\n"
 "program in the, &#8222;Extra lists&#8220;."
 
-#: shtml/messages.pl:831 shtml/messages.pl:833 shtml/messages.pl:876
-#: shtml/messages.pl:1483
+#: shtml/messages.pl:828 shtml/messages.pl:830 shtml/messages.pl:873
+#: shtml/messages.pl:1480
 msgid "Sch&uuml;lerliste pflegen"
 msgstr "maintain student list"
 
-#: shtml/messages.pl:834 shtml/messages.pl:852
+#: shtml/messages.pl:831 shtml/messages.pl:849
 msgid "Datei importieren"
 msgstr "import file"
 
-#: shtml/messages.pl:835 shtml/messages.pl:853
+#: shtml/messages.pl:832 shtml/messages.pl:850
 msgid "Hochladen"
 msgstr "upload"
 
-#: shtml/messages.pl:836 shtml/messages.pl:860
+#: shtml/messages.pl:833 shtml/messages.pl:857
 msgid "Editieren"
 msgstr "edit"
 
-#: shtml/messages.pl:839
+#: shtml/messages.pl:836
 msgid ""
 "Hier k&ouml;nnen Sie die aus dem Schulverwaltungsprogramm exportierte Datei\n"
 "&#8222;schueler.txt&#8220; ins System hochladen."
@@ -3176,7 +3175,7 @@ msgstr ""
 "You can upload the file exported from the school administrative program\n"
 "&#8222;schueler.txt&#8220; to the system here."
 
-#: shtml/messages.pl:840
+#: shtml/messages.pl:837
 msgid ""
 "Zudem haben Sie hier die M&ouml;glichkeit, &Auml;nderungen an den Sch&uuml;"
 "lerdaten\n"
@@ -3186,46 +3185,46 @@ msgstr ""
 "studentdata\n"
 "here."
 
-#: shtml/messages.pl:843 shtml/messages.pl:845 shtml/messages.pl:1484
+#: shtml/messages.pl:840 shtml/messages.pl:842 shtml/messages.pl:1481
 msgid "Lehrerliste pflegen"
 msgstr "Maintain teacher list"
 
-#: shtml/messages.pl:846
+#: shtml/messages.pl:843
 msgid "Lehrer hinzuf&uuml;gen"
 msgstr "Add teacher"
 
-#: shtml/messages.pl:847 shtml/messages.pl:855 shtml/messages.pl:861
-#: shtml/messages.pl:867
+#: shtml/messages.pl:844 shtml/messages.pl:852 shtml/messages.pl:858
+#: shtml/messages.pl:864
 msgid "Nachname"
 msgstr "Last name"
 
-#: shtml/messages.pl:848 shtml/messages.pl:856 shtml/messages.pl:862
-#: shtml/messages.pl:868
+#: shtml/messages.pl:845 shtml/messages.pl:853 shtml/messages.pl:859
+#: shtml/messages.pl:865
 msgid "Vorname"
 msgstr "First name"
 
-#: shtml/messages.pl:849 shtml/messages.pl:857 shtml/messages.pl:863
+#: shtml/messages.pl:846 shtml/messages.pl:854 shtml/messages.pl:860
 msgid "Geburtsdatum"
 msgstr "Date of birth"
 
-#: shtml/messages.pl:851 shtml/messages.pl:859 shtml/messages.pl:865
-#: shtml/messages.pl:869
+#: shtml/messages.pl:848 shtml/messages.pl:856 shtml/messages.pl:862
+#: shtml/messages.pl:866
 msgid "&Auml;nderungen in Lehrerliste speichern"
 msgstr "Save changes to teacher list"
 
-#: shtml/messages.pl:854
+#: shtml/messages.pl:851
 msgid "Fehler korrigieren"
 msgstr "Correct mistake"
 
-#: shtml/messages.pl:864
+#: shtml/messages.pl:861
 msgid "K&uuml;rzel"
 msgstr "short"
 
-#: shtml/messages.pl:866
+#: shtml/messages.pl:863
 msgid "Lehrer entfernen"
 msgstr "Delete teacher"
 
-#: shtml/messages.pl:871
+#: shtml/messages.pl:868
 msgid ""
 "Hier k&ouml;nnen Sie, falls noch nicht geschehen, die Datei mit den "
 "Lehrerdaten\n"
@@ -3238,7 +3237,7 @@ msgstr ""
 "long as\n"
 "no &#8222;lehrer.txt&#8220; exists in the system."
 
-#: shtml/messages.pl:872
+#: shtml/messages.pl:869
 msgid ""
 "Die weitere Datenpflege nehmen Sie dann &uuml;ber diese\n"
 "Seite vor."
@@ -3246,7 +3245,7 @@ msgstr ""
 "Afterwards, carry out further data maintenance with\n"
 "this page."
 
-#: shtml/messages.pl:873
+#: shtml/messages.pl:870
 msgid ""
 "Wichtig: Bei der Eingabe des Lehrerlogins werden nur Kleinbuchstaben und "
 "keine\n"
@@ -3259,23 +3258,23 @@ msgstr ""
 "must have\n"
 "at least 2 characters and is allowed to have 16 characters at most."
 
-#: shtml/messages.pl:878 shtml/messages.pl:1485
+#: shtml/messages.pl:875 shtml/messages.pl:1482
 msgid "Extralisten pflegen"
 msgstr "Maintain extra lists"
 
-#: shtml/messages.pl:879
+#: shtml/messages.pl:876
 msgid "Extrasch&uuml;ler editieren"
 msgstr "Edit extra students"
 
-#: shtml/messages.pl:881
+#: shtml/messages.pl:878
 msgid "Extrakurse editieren"
 msgstr "Edit extra course"
 
-#: shtml/messages.pl:884
+#: shtml/messages.pl:881
 msgid "Hier pflegen Sie Extrasch&uuml;ler und Extrakurse."
 msgstr "Maintain extra students and courses here."
 
-#: shtml/messages.pl:885
+#: shtml/messages.pl:882
 msgid ""
 "Editieren Sie die Listen in den entsprechenden Textfeldern.\n"
 "Ge&auml;nderte Daten werden &uuml;ber die Schaltfl&auml;che\n"
@@ -3289,7 +3288,7 @@ msgstr ""
 "&#8222;&Save changes&#8220;.\n"
 "Then, continue with the menu item &#8222;Check user lists&#8220;."
 
-#: shtml/messages.pl:886
+#: shtml/messages.pl:883
 msgid ""
 "Kommentarzeilen beginnen mit einem Gatter (#) und werden nicht\n"
 "ausgewertet."
@@ -3297,34 +3296,34 @@ msgstr ""
 "Comment lines begin with a number sign (#) and are not\n"
 "evaluated."
 
-#: shtml/messages.pl:889 shtml/messages.pl:891 shtml/messages.pl:1488
+#: shtml/messages.pl:886 shtml/messages.pl:888 shtml/messages.pl:1485
 msgid "Lehrerpassw&ouml;rter"
 msgstr "Teacher passwords"
 
-#: shtml/messages.pl:902
+#: shtml/messages.pl:899
 msgid "Passwort und Ertspasswort setzen (Eingabewert)"
 msgstr "Set password and first password (input value)"
 
-#: shtml/messages.pl:903
+#: shtml/messages.pl:900
 msgid "keine Lehrer"
 msgstr "No teacher"
 
-#: shtml/messages.pl:905
+#: shtml/messages.pl:902
 msgid ""
 "Hier k&ouml;nnen Sie die Passw&ouml;rter der Lehrkr&auml;fte &auml;ndern."
 msgstr "You can change the passwords of the teaching staff here."
 
-#: shtml/messages.pl:908
+#: shtml/messages.pl:905
 msgid ""
 "Setzen des Passwortes und des Erstpasswortes auf einen zuf&auml;lligen Wert"
 msgstr "Setting of password and first password to a random value"
 
-#: shtml/messages.pl:909
+#: shtml/messages.pl:906
 msgid ""
 "Setzen des Passwortes und des Erstpasswortes auf einen eingegebenen Wert"
 msgstr "Setting of password and first password to an entered value"
 
-#: shtml/messages.pl:910
+#: shtml/messages.pl:907
 msgid ""
 "Sie k&ouml;nnen sich das Passwort eines Lehrers nach der\n"
 "Vergabe anzeigen lassen."
@@ -3332,7 +3331,7 @@ msgstr ""
 "You can display the password of a teacher after\n"
 " allocation."
 
-#: shtml/messages.pl:911
+#: shtml/messages.pl:908
 msgid ""
 "Au&szlig;erdem k&ouml;nnen Sie\n"
 "sich die Passwortliste der Lehrkr&auml;fte im PDF- oder CSV-Format "
@@ -3344,28 +3343,28 @@ msgstr ""
 "print\n"
 "them afterwards."
 
-#: shtml/messages.pl:914 shtml/messages.pl:916 shtml/messages.pl:1486
+#: shtml/messages.pl:911 shtml/messages.pl:913 shtml/messages.pl:1483
 msgid "Benutzerlisten pr&uuml;fen"
 msgstr "Check user lists"
 
-#: shtml/messages.pl:917
+#: shtml/messages.pl:914
 msgid "Benutzerlisten &uuml;berpr&uuml;fen"
 msgstr "Check user lists"
 
-#: shtml/messages.pl:918
+#: shtml/messages.pl:915
 msgid "Folgende Benutzer werden automatisch entfernt:"
 msgstr "The following users are being automatically deleted:"
 
-#: shtml/messages.pl:921 shtml/messages.pl:946 shtml/messages.pl:969
-#: shtml/messages.pl:984
+#: shtml/messages.pl:918 shtml/messages.pl:943 shtml/messages.pl:966
+#: shtml/messages.pl:981
 msgid "Bezeichner"
 msgstr "Identifier"
 
-#: shtml/messages.pl:922
+#: shtml/messages.pl:919
 msgid "Die Daten mancher Benutzer wurden ge&auml;ndert."
 msgstr "The data of some users were changed."
 
-#: shtml/messages.pl:923
+#: shtml/messages.pl:920
 msgid ""
 "Bearbeiten Sie die\n"
 "<a href=\"user_teachin\">Verkn&uuml;pfungen</a>\n"
@@ -3376,25 +3375,25 @@ msgstr ""
 "<a href=\"user_teachin\">Connections</a>\n"
 "of old users with new users for the <a href=\"user_teachin\">Teach in</a>."
 
-#: shtml/messages.pl:924
+#: shtml/messages.pl:921
 msgid ""
 "Sie k&ouml;nnen jetzt die <a href=\"user_commit\">Benutzerdaten\n"
 "&uuml;bernehmen</a>."
 msgstr "You can now apply the <a href=\"user_commit\">User data</a>."
 
-#: shtml/messages.pl:925
+#: shtml/messages.pl:922
 msgid ""
 "Bei der &Uuml;berpr&uuml;fung der Benutzerdaten wurde Folgendes\n"
 "ausgegeben:"
 msgstr "With the review of user data, the following was outputted:"
 
-#: shtml/messages.pl:927
+#: shtml/messages.pl:924
 msgid ""
 "Hier &uuml;berpr&uuml;fen Sie die zuvor eingepflegten Benutzerdaten auf\n"
 "Konsistenz."
 msgstr "Reivew the previously updated user data for consistency here."
 
-#: shtml/messages.pl:928
+#: shtml/messages.pl:925
 msgid ""
 "Nach Ende der &Uuml;berpr&uuml;fung sehen Sie die Konsolenausgabe von\n"
 "&#8222;sophomorix-check&#8220; mit Hinweisen auf die weitere Verfahrensweise."
@@ -3402,7 +3401,7 @@ msgstr ""
 "After finishing the review, see the console output from\n"
 "&#8222;sophomorix-check&#8220; with tips on the further procedure."
 
-#: shtml/messages.pl:929
+#: shtml/messages.pl:926
 msgid ""
 "War der Check erfolgreich, gelangen Sie &uuml;ber den Link &#8222;"
 "Benutzerdaten\n"
@@ -3411,7 +3410,7 @@ msgstr ""
 "If the check was successful, go to the link, &#8222;Apply\n"
 "user data&#8220;, and onto the next step."
 
-#: shtml/messages.pl:930
+#: shtml/messages.pl:927
 msgid ""
 "Wurden &Auml;nderungen an den Benutzerdaten festgestellt, die eine weitere\n"
 "&Uuml;berpr&uuml;fung notwendig machen, wird ein &#8222;Teach-In&#8220; "
@@ -3420,44 +3419,44 @@ msgstr ""
 "If changes to user data were found that require\n"
 "further review, a &#8222;Teach in&#8220; is recommended."
 
-#: shtml/messages.pl:933 shtml/messages.pl:960 shtml/messages.pl:962
+#: shtml/messages.pl:930 shtml/messages.pl:957 shtml/messages.pl:959
 msgid "&Auml;nderungen durchf&uuml;hren"
 msgstr "Implement changes"
 
-#: shtml/messages.pl:935
+#: shtml/messages.pl:932
 msgid "Teach-In"
 msgstr "Teach in"
 
-#: shtml/messages.pl:936
+#: shtml/messages.pl:933
 msgid "Benutzer pro Seite:"
 msgstr "User per page:"
 
-#: shtml/messages.pl:937
+#: shtml/messages.pl:934
 msgid "&auml;ndern"
 msgstr "change"
 
-#: shtml/messages.pl:938
+#: shtml/messages.pl:935
 msgid "Seite"
 msgstr "page"
 
-#: shtml/messages.pl:939 shtml/messages.pl:940 shtml/messages.pl:948
-#: shtml/messages.pl:949
+#: shtml/messages.pl:936 shtml/messages.pl:937 shtml/messages.pl:945
+#: shtml/messages.pl:946
 msgid "zur&uuml;ck"
 msgstr "return"
 
-#: shtml/messages.pl:944
+#: shtml/messages.pl:941
 msgid "verkn&uuml;pfen mit"
 msgstr "connect with"
 
-#: shtml/messages.pl:947
+#: shtml/messages.pl:944
 msgid "::"
 msgstr "::"
 
-#: shtml/messages.pl:953
+#: shtml/messages.pl:950
 msgid "Beenden"
 msgstr "End"
 
-#: shtml/messages.pl:955
+#: shtml/messages.pl:952
 msgid ""
 "W&auml;hrend der Teach-In-Sitzung m&uuml;ssen Sie nicht eindeutig\n"
 "zuordenbare Benutzerdaten mit den richtigen Benutzernamen verkn&uuml;pfen."
@@ -3465,7 +3464,7 @@ msgstr ""
 "During the Teach in session, you don't have to clearly connect\n"
 "the assigned user data with the correct user name."
 
-#: shtml/messages.pl:956
+#: shtml/messages.pl:953
 msgid ""
 "Best&auml;tigen Sie alle &Auml;nderungen einer Seite jedes Mal &uuml;ber\n"
 "die Schaltfl&auml;che &#8222;&Auml;nderungen &uuml;bernehmen&#8220;."
@@ -3473,7 +3472,7 @@ msgstr ""
 "Confirm all changes to a page every time with\n"
 "the button &#8222;Apply changes&#8220;."
 
-#: shtml/messages.pl:957
+#: shtml/messages.pl:954
 msgid ""
 "Beenden Sie die Teach-In-Sitzung erst, wenn Sie alle Seiten\n"
 "gepr&uuml;ft haben."
@@ -3481,55 +3480,55 @@ msgstr ""
 "End the teach in session, when you have checked\n"
 "all pages."
 
-#: shtml/messages.pl:963
+#: shtml/messages.pl:960
 msgid "Benutzer anlegen/versetzen/l&ouml;schen l&auml;uft."
 msgstr "Create/move/delete user is running."
 
-#: shtml/messages.pl:964
+#: shtml/messages.pl:961
 msgid "Benutzer anlegen/versetzen/l&ouml;schen"
 msgstr "Create/move/delete user"
 
-#: shtml/messages.pl:965
+#: shtml/messages.pl:962
 msgid "Anlegen l&auml;uft."
 msgstr "Create is running."
 
-#: shtml/messages.pl:966
+#: shtml/messages.pl:963
 msgid "Benutzer anlegen"
 msgstr "Create user"
 
-#: shtml/messages.pl:968 shtml/messages.pl:974 shtml/messages.pl:982
+#: shtml/messages.pl:965 shtml/messages.pl:971 shtml/messages.pl:979
 msgid "Letzte Logdatei ansehen"
 msgstr "View last log file"
 
-#: shtml/messages.pl:970 shtml/messages.pl:1338
+#: shtml/messages.pl:967 shtml/messages.pl:1335
 msgid "Gruppe"
 msgstr "Group"
 
-#: shtml/messages.pl:971
+#: shtml/messages.pl:968
 msgid "Versetzen l&auml;uft."
 msgstr "Move is running."
 
-#: shtml/messages.pl:972
+#: shtml/messages.pl:969
 msgid "Benutzer versetzen"
 msgstr "Move user"
 
-#: shtml/messages.pl:976
+#: shtml/messages.pl:973
 msgid "von"
 msgstr "from"
 
-#: shtml/messages.pl:977
+#: shtml/messages.pl:974
 msgid "nach"
 msgstr "to"
 
-#: shtml/messages.pl:979
+#: shtml/messages.pl:976
 msgid "L&ouml;schen l&auml;uft."
 msgstr "Delete is running."
 
-#: shtml/messages.pl:980
+#: shtml/messages.pl:977
 msgid "Benutzer l&ouml;schen"
 msgstr "Delete user"
 
-#: shtml/messages.pl:986
+#: shtml/messages.pl:983
 msgid ""
 "Auf dieser Seite bekommen Sie zun&auml;chst einen &Uuml;berblick &uuml;ber "
 "die\n"
@@ -3538,7 +3537,7 @@ msgstr ""
 "On this page, you will first get an overview\n"
 "of the implemented changes."
 
-#: shtml/messages.pl:987
+#: shtml/messages.pl:984
 msgid ""
 "Sie k&ouml;nnen die anstehenden Aktionen entweder in einem Durchgang oder "
 "nacheinander\n"
@@ -3546,7 +3545,7 @@ msgid ""
 msgstr ""
 "You can let the pending actions run either in a gateway or successively."
 
-#: shtml/messages.pl:988
+#: shtml/messages.pl:985
 msgid ""
 "Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund "
 "ausgef&uuml;hrt\n"
@@ -3560,23 +3559,23 @@ msgstr ""
 "and does not create output on the school console. You can view the current\n"
 "output of the respective process with the button &#8222;View log file&#8220;."
 
-#: shtml/messages.pl:991 shtml/messages.pl:993 shtml/messages.pl:1489
+#: shtml/messages.pl:988 shtml/messages.pl:990 shtml/messages.pl:1486
 msgid "Berichte"
 msgstr "Reports"
 
-#: shtml/messages.pl:994
+#: shtml/messages.pl:991
 msgid "Administrator-Report"
 msgstr "Administrator report"
 
-#: shtml/messages.pl:995
+#: shtml/messages.pl:992
 msgid "Report f&uuml;r das Sekretariat"
 msgstr "Report for the secretary's office"
 
-#: shtml/messages.pl:997
+#: shtml/messages.pl:994
 msgid "Hier rufen Sie die Berichte der jeweils letzten Aktion ab."
 msgstr "Retrieve the reports of the last current action here."
 
-#: shtml/messages.pl:998
+#: shtml/messages.pl:995
 msgid ""
 "Unter &#8222;Administrator-Report&#8220; erhalten Sie ein Protokoll des "
 "letzten Durchlaufs\n"
@@ -3585,7 +3584,7 @@ msgstr ""
 "Under &#8222;Administrator Report&#8220; obtain a protocolof the last run\n"
 "of &#8222;Create/move/delete&#8220;."
 
-#: shtml/messages.pl:999
+#: shtml/messages.pl:996
 msgid ""
 "Unter &#8222;Report f&uuml;r das Sekretariat&#8220; finden Sie Angaben zu "
 "Datens&auml;tzen,\n"
@@ -3599,33 +3598,33 @@ msgstr ""
 "potentially\n"
 "be corrected in the school administration program."
 
-#: shtml/messages.pl:1002 shtml/messages.pl:1504
+#: shtml/messages.pl:999 shtml/messages.pl:1501
 msgid "Standardeinstellungen"
 msgstr "Standard settings"
 
-#: shtml/messages.pl:1003
+#: shtml/messages.pl:1000
 msgid "Standardeinstellungen f&uuml;r R&auml;ume"
 msgstr "Standard settings for rooms"
 
-#: shtml/messages.pl:1007
+#: shtml/messages.pl:1004
 msgid "default"
 msgstr "default"
 
-#: shtml/messages.pl:1014 shtml/messages.pl:1021
+#: shtml/messages.pl:1011 shtml/messages.pl:1018
 msgid "Ausnahme hinzuf&uuml;gen"
 msgstr "add exception"
 
-#: shtml/messages.pl:1028 shtml/messages.pl:1029
+#: shtml/messages.pl:1025 shtml/messages.pl:1026
 msgid "Auswahl zur&uuml;cksetzen"
 msgstr "reset selection"
 
-#: shtml/messages.pl:1032
+#: shtml/messages.pl:1029
 msgid ""
 "Legen Sie hier die Standardeinstellungen f&uuml;r die Workstations\n"
 "in den R&auml;umen fest."
 msgstr "Set the standard settings for workstations in the rooms here."
 
-#: shtml/messages.pl:1033
+#: shtml/messages.pl:1030
 msgid ""
 "Um eine Ausnahme f&uuml;r eine Workstation anzulegen, muss ein\n"
 "Eintrag f&uuml;r den Raum hinzugef&uuml;gt worden sein"
@@ -3633,7 +3632,7 @@ msgstr ""
 "To apply an exception for a work station, \n"
 "you must have added an entry for the room."
 
-#: shtml/messages.pl:1034
+#: shtml/messages.pl:1031
 msgid ""
 "Um einen Eintrag zu l&ouml;schen, setzen Sie das H&auml;kchen in\n"
 "der entsprechenden Checkbox am Zeilenende."
@@ -3641,7 +3640,7 @@ msgstr ""
 "To delete an entry, check the appropriate check box\n"
 "at the end of the line."
 
-#: shtml/messages.pl:1035
+#: shtml/messages.pl:1032
 msgid ""
 "Schliessen Sie die Aktion mit\n"
 "&#8222;&Auml;nderungen &uuml;bernehmen&#8220; ab."
@@ -3649,7 +3648,7 @@ msgstr ""
 "Complete the action with\n"
 "&#8222;&Apply changes&#8220;."
 
-#: shtml/messages.pl:1036
+#: shtml/messages.pl:1033
 msgid ""
 "Um die Rechner in einem Raum oder einzelne Rechner\n"
 "zur&uuml;ckzusetzen, setzen Sie das H&auml;kchen in der entsprechenden\n"
@@ -3660,11 +3659,11 @@ msgstr ""
 "computer, check the appropriate check box and choose the action,\n"
 "&#8222;Reset selection&#8220;."
 
-#: shtml/messages.pl:1039 shtml/messages.pl:1505
+#: shtml/messages.pl:1036 shtml/messages.pl:1502
 msgid "EDV-R&auml;ume"
 msgstr "EDV rooms"
 
-#: shtml/messages.pl:1040
+#: shtml/messages.pl:1037
 msgid ""
 "Die Liste der konfigurierten Hosts und ihrer R&auml;me stimmt nicht\n"
 "mit den tats&auml;chlich im System vorhandenen Hosts &uuml;berein."
@@ -3672,19 +3671,19 @@ msgstr ""
 "The list of the configured hosts and their rooms does not\n"
 "match with the available hosts actually in the system."
 
-#: shtml/messages.pl:1041 shtml/messages.pl:1042
+#: shtml/messages.pl:1038 shtml/messages.pl:1039
 msgid "Bitte &uuml;berpr&uuml;fen Sie die <a href=\"hosts\">Hosts-Liste</a>."
 msgstr "Please check the <a href=\"hosts\">Host's list</a>."
 
-#: shtml/messages.pl:1044
+#: shtml/messages.pl:1041
 msgid "Raumbezeichnung"
 msgstr "Room designation"
 
-#: shtml/messages.pl:1045
+#: shtml/messages.pl:1042
 msgid "Computerraum"
 msgstr "Computer room"
 
-#: shtml/messages.pl:1048
+#: shtml/messages.pl:1045
 msgid ""
 "Legen Sie hier fest, welche R&auml;ume von der Schulkonsole als "
 "Computerraum\n"
@@ -3693,38 +3692,38 @@ msgstr ""
 "Set which rooms should be administrated from the school console as\n"
 "computer rooms under &#8222;Current room&#8220;."
 
-#: shtml/messages.pl:1054
+#: shtml/messages.pl:1051
 msgid "Rechner"
 msgstr "Computer"
 
-#: shtml/messages.pl:1055 shtml/messages.pl:1056
+#: shtml/messages.pl:1052 shtml/messages.pl:1053
 msgid "Bearbeiten"
 msgstr "Edit"
 
-#: shtml/messages.pl:1058
+#: shtml/messages.pl:1055
 msgid ""
 "Legen Sie hier fest, welche R&auml;ume bzw. einzelne Rechner Zugriff auf "
 "welche Drucker haben."
 msgstr ""
 "Here, set which rooms, or which computers, have access to which printers."
 
-#: shtml/messages.pl:1062 shtml/messages.pl:1067
+#: shtml/messages.pl:1059 shtml/messages.pl:1064
 msgid "ausgew&auml;hlt"
 msgstr "Selected"
 
-#: shtml/messages.pl:1063 shtml/messages.pl:1068
+#: shtml/messages.pl:1060 shtml/messages.pl:1065
 msgid "abgew&auml;hlt"
 msgstr "Deselected"
 
-#: shtml/messages.pl:1064 shtml/messages.pl:1069
+#: shtml/messages.pl:1061 shtml/messages.pl:1066
 msgid "&lt;&lt;"
 msgstr "&lt;&lt;"
 
-#: shtml/messages.pl:1065 shtml/messages.pl:1070
+#: shtml/messages.pl:1062 shtml/messages.pl:1067
 msgid "&gt;&gt;"
 msgstr "&gt;&gt;"
 
-#: shtml/messages.pl:1073
+#: shtml/messages.pl:1070
 msgid ""
 "W&auml;hlen Sie unter &#8222;abgew&auml;hlt&#8220; die R&auml;ume oder "
 "Rechner aus,\n"
@@ -3733,7 +3732,7 @@ msgstr ""
 "Under &#8222;Deselected&#8220; select the rooms or computers that\n"
 "should receive access to this printer."
 
-#: shtml/messages.pl:1074
+#: shtml/messages.pl:1071
 msgid ""
 "&Uuml;bernehmen Sie die Auswahl durch Bet&auml;tigen der Schaltfl&auml;che\n"
 "&#8222;&lt;&lt;&#8220;."
@@ -3741,17 +3740,17 @@ msgstr ""
 "Apply the selection by pressing the button,\n"
 "&#8222;&lt;&lt;&#8220;."
 
-#: shtml/messages.pl:1075
+#: shtml/messages.pl:1072
 msgid "Mehrfachauswahl mit gedr&uuml;ckter Strg-Taste ist m&ouml;glich."
 msgstr "Multiple selection is possible by keeping the CTRL key pressed down."
 
-#: shtml/messages.pl:1076 shtml/messages.pl:1109
+#: shtml/messages.pl:1073 shtml/messages.pl:1106
 msgid ""
 "Schliessen Sie die Aktion mit &#8222;&Auml;nderungen &uuml;bernehmen&#8220;  "
 "ab."
 msgstr "Complete the action with &#8222;&Apply Changes&#8220;."
 
-#: shtml/messages.pl:1079
+#: shtml/messages.pl:1076
 msgid ""
 "Die Liste der konfigurierten Hosts stimmt nicht mit den\n"
 "tats&auml;chlich im System vorhandenen Hosts &uuml;berein."
@@ -3759,55 +3758,55 @@ msgstr ""
 "The list of the configured hosts does not match\n"
 "with the available hosts actually in the system."
 
-#: shtml/messages.pl:1080 shtml/messages.pl:1082
+#: shtml/messages.pl:1077 shtml/messages.pl:1079
 msgid "Hosts jetzt &uuml;bernehmen"
 msgstr "Apply hosts now"
 
-#: shtml/messages.pl:1081
+#: shtml/messages.pl:1078
 msgid "Es wurden noch nicht alle Hosts in das System &uuml;bernommen.\n"
 msgstr "Not all hosts were applied into the system.\n"
 
-#: shtml/messages.pl:1084
+#: shtml/messages.pl:1081
 msgid "Raum"
 msgstr "Room"
 
-#: shtml/messages.pl:1086
+#: shtml/messages.pl:1083
 msgid "Gruppen"
 msgstr "Groups"
 
-#: shtml/messages.pl:1087
+#: shtml/messages.pl:1084
 msgid "MAC"
 msgstr "MAC"
 
-#: shtml/messages.pl:1088
+#: shtml/messages.pl:1085
 msgid "IP"
 msgstr "IP"
 
-#: shtml/messages.pl:1089 shtml/messages.pl:1092 shtml/messages.pl:1096
+#: shtml/messages.pl:1086 shtml/messages.pl:1089 shtml/messages.pl:1093
 msgid "PXE"
 msgstr "PXE"
 
-#: shtml/messages.pl:1090
+#: shtml/messages.pl:1087
 msgid "Optionen"
 msgstr "Options"
 
-#: shtml/messages.pl:1091
+#: shtml/messages.pl:1088
 msgid "X"
 msgstr "X"
 
-#: shtml/messages.pl:1093 shtml/messages.pl:1097
+#: shtml/messages.pl:1090 shtml/messages.pl:1094
 msgid "PXE mit Opsi"
 msgstr ""
 
-#: shtml/messages.pl:1094 shtml/messages.pl:1098
+#: shtml/messages.pl:1091 shtml/messages.pl:1095
 msgid "Opsi PXE"
 msgstr ""
 
-#: shtml/messages.pl:1100
+#: shtml/messages.pl:1097
 msgid "Zeilen hinzuf&uuml;gen"
 msgstr "Add Lines"
 
-#: shtml/messages.pl:1101
+#: shtml/messages.pl:1098
 msgid ""
 "<strong>Hinweis:</strong> Die Host-Liste enth&auml;t manuell\n"
 "hinzugef&uuml;gte Kommentarzeilen. Diese werden beim Speichern\n"
@@ -3816,42 +3815,42 @@ msgstr ""
 "<strong>Tip:</strong> the host list contains manually added\n"
 "comment lines.  These are deleted when saving."
 
-#: shtml/messages.pl:1103
+#: shtml/messages.pl:1100
 msgid "Zur&uuml;cksetzen"
 msgstr "Reset"
 
-#: shtml/messages.pl:1105
+#: shtml/messages.pl:1102
 msgid ""
 "Hier k&ouml;nnen Sie die Liste der importierten Arbeitsstationen  bearbeiten."
 msgstr "You can edit the list of the imported workstations here."
 
-#: shtml/messages.pl:1106
+#: shtml/messages.pl:1103
 msgid "&Auml;ndern Sie einfach die entsprechenden Felder in der Liste."
 msgstr "Simply change the corresponding fields in the list."
 
-#: shtml/messages.pl:1107
+#: shtml/messages.pl:1104
 msgid ""
 "F&uuml;r einen neuen Rechner f&uuml;llen Sie die n&auml;chste freie Zeile "
 "aus."
 msgstr "For a new computer, fill out the next free line."
 
-#: shtml/messages.pl:1108
+#: shtml/messages.pl:1105
 msgid ""
 "Um einen Eintrag zu l&ouml;schen, setzen Sie das H&auml;kchen in der "
 "entsprechenden Checkbox am Zeilenende."
 msgstr ""
 "To delete an entry, check the appropriate check box at the end of theline."
 
-#: shtml/messages.pl:1116 shtml/messages.pl:1166 shtml/messages.pl:1168
-#: shtml/messages.pl:1499 shtml/messages.pl:1503
+#: shtml/messages.pl:1113 shtml/messages.pl:1163 shtml/messages.pl:1165
+#: shtml/messages.pl:1496 shtml/messages.pl:1500
 msgid "Sonderquota"
 msgstr "Special quota"
 
-#: shtml/messages.pl:1117
+#: shtml/messages.pl:1114
 msgid "Quota sind nicht aktiviert."
 msgstr "Quota is not activated."
 
-#: shtml/messages.pl:1118
+#: shtml/messages.pl:1115
 msgid ""
 "Gehen Sie auf <a href=\"settings\">Einstellungen</a> um Quota zu\n"
 "aktivieren."
@@ -3859,7 +3858,7 @@ msgstr ""
 "Go to <a href=\"settings\">Settings</a>\n"
 "to activate quota."
 
-#: shtml/messages.pl:1120
+#: shtml/messages.pl:1117
 msgid ""
 "W&auml;hlen Sie aus in welchem Bereich Sie Quota-Anpassungen\n"
 "vornehmen wollen."
@@ -3867,23 +3866,23 @@ msgstr ""
 "Select the field in which you want to make\n"
 "quota adjustments."
 
-#: shtml/messages.pl:1128 shtml/messages.pl:1142 shtml/messages.pl:1156
-#: shtml/messages.pl:1171 shtml/messages.pl:1176 shtml/messages.pl:1182
-#: shtml/messages.pl:1188 shtml/messages.pl:1193 shtml/messages.pl:1198
+#: shtml/messages.pl:1125 shtml/messages.pl:1139 shtml/messages.pl:1153
+#: shtml/messages.pl:1168 shtml/messages.pl:1173 shtml/messages.pl:1179
+#: shtml/messages.pl:1185 shtml/messages.pl:1190 shtml/messages.pl:1195
 msgid "Diskquota"
 msgstr "Disk quota"
 
-#: shtml/messages.pl:1129 shtml/messages.pl:1143 shtml/messages.pl:1157
-#: shtml/messages.pl:1172 shtml/messages.pl:1177 shtml/messages.pl:1183
-#: shtml/messages.pl:1189 shtml/messages.pl:1194 shtml/messages.pl:1199
+#: shtml/messages.pl:1126 shtml/messages.pl:1140 shtml/messages.pl:1154
+#: shtml/messages.pl:1169 shtml/messages.pl:1174 shtml/messages.pl:1180
+#: shtml/messages.pl:1186 shtml/messages.pl:1191 shtml/messages.pl:1196
 msgid "Mailquota"
 msgstr "Mail quota"
 
-#: shtml/messages.pl:1131
+#: shtml/messages.pl:1128
 msgid "Es gibt keine Lehrer."
 msgstr "There is no teacher."
 
-#: shtml/messages.pl:1133
+#: shtml/messages.pl:1130
 msgid ""
 "Hier k&ouml;nnen Sie die Disk- und Mailquota f&uuml;r Lehrer/innen "
 "individuell anpassen. Die\n"
@@ -3892,73 +3891,73 @@ msgstr ""
 "Here you can adjust the disk and mail quotas for teachers individually.\n"
 "The representation of the disk quota depends on your partition."
 
-#: shtml/messages.pl:1134 shtml/messages.pl:1148
+#: shtml/messages.pl:1131 shtml/messages.pl:1145
 msgid ""
 "Leere Felder bedeuten, dass in dem Fall die Standardeinstellungen gelten."
 msgstr "Empty fields mean that the standard settings apply in this case."
 
-#: shtml/messages.pl:1135 shtml/messages.pl:1149 shtml/messages.pl:1163
-#: shtml/messages.pl:1205
+#: shtml/messages.pl:1132 shtml/messages.pl:1146 shtml/messages.pl:1160
+#: shtml/messages.pl:1202
 msgid "Alle Werte sind in Megabyte (MB) einzugeben."
 msgstr "All values are to be entered in Megabytes (MB)."
 
-#: shtml/messages.pl:1145
+#: shtml/messages.pl:1142
 msgid "Es gibt keine Klassen."
 msgstr "There are not any classes."
 
-#: shtml/messages.pl:1147
+#: shtml/messages.pl:1144
 msgid ""
 "Hier &auml;ndern Sie die Quotawerte aller Sch&uuml;ler/innen einer Klasse."
 msgstr "Change the quota values of all students in a class here."
 
-#: shtml/messages.pl:1154
+#: shtml/messages.pl:1151
 msgid "Projekte (Zusatzquota)"
 msgstr "Project (Additional Quota)"
 
-#: shtml/messages.pl:1159
+#: shtml/messages.pl:1156
 msgid "Es gibt keine Projekte."
 msgstr "There are not any projects."
 
-#: shtml/messages.pl:1161
+#: shtml/messages.pl:1158
 msgid ""
 "Hier k&ouml;nnen Sie den Mitgliedern eines Projekts zus&auml;tzliche Quota "
 "zuweisen."
 msgstr "You can assign the members of a project additional quotas here."
 
-#: shtml/messages.pl:1162
+#: shtml/messages.pl:1159
 msgid ""
 "Leere Felder bedeuten, dass f&uuml;r dieses Projekt bisher keine Zusatzquota "
 "vergeben wurden."
 msgstr ""
 "Empty fields mean that for this project no quotas were assigned thus far."
 
-#: shtml/messages.pl:1169
+#: shtml/messages.pl:1166
 msgid "Neu anlegen"
 msgstr "Create new"
 
-#: shtml/messages.pl:1174
+#: shtml/messages.pl:1171
 msgid "Webspace"
 msgstr "Web space"
 
-#: shtml/messages.pl:1179
+#: shtml/messages.pl:1176
 msgid "Administratoren"
 msgstr "Administrators"
 
-#: shtml/messages.pl:1191
+#: shtml/messages.pl:1188
 msgid "Workstationaccounts"
 msgstr "Workstation accounts"
 
-#: shtml/messages.pl:1196
+#: shtml/messages.pl:1193
 msgid "Systembenutzer"
 msgstr "System user"
 
-#: shtml/messages.pl:1202
+#: shtml/messages.pl:1199
 msgid ""
 "Hier &auml;ndern Sie die Quotawerte spezieller Benutzer und einzelner "
 "Sch&uuml;ler/innen."
 msgstr "Change the quota values of special users and individual students."
 
-#: shtml/messages.pl:1203
+#: shtml/messages.pl:1200
 msgid ""
 "Unter &#8222;Neu anlegen&#8220; k&ouml;nnen Sie einem bisher hier nicht "
 "aufgef&uuml;hrten Benutzer\n"
@@ -3970,7 +3969,7 @@ msgstr ""
 "listed here until now. In addition, enter the login and adjust the quota "
 "values respectively."
 
-#: shtml/messages.pl:1204
+#: shtml/messages.pl:1201
 msgid ""
 "Unter &#8222;Webspace&#8220; legen Sie fest, wieviel Platz alle ver&ouml;"
 "ffentlichten Webseiten\n"
@@ -3984,339 +3983,339 @@ msgstr ""
 "data&#8220; to\n"
 "&#8222;/var&#8220;."
 
-#: shtml/messages.pl:1207 shtml/messages.pl:1208 shtml/messages.pl:1217
-#: shtml/messages.pl:1344 shtml/messages.pl:1382 shtml/messages.pl:1403
-#: shtml/messages.pl:1418
+#: shtml/messages.pl:1204 shtml/messages.pl:1205 shtml/messages.pl:1214
+#: shtml/messages.pl:1341 shtml/messages.pl:1379 shtml/messages.pl:1400
+#: shtml/messages.pl:1415
 msgid "linbo"
 msgstr "linbo"
 
-#: shtml/messages.pl:1209 shtml/messages.pl:1517
+#: shtml/messages.pl:1206 shtml/messages.pl:1514
 msgid "Gruppenkonfiguration editieren"
 msgstr "Edit group configuration"
 
-#: shtml/messages.pl:1210 shtml/messages.pl:1396 shtml/messages.pl:1518
+#: shtml/messages.pl:1207 shtml/messages.pl:1393 shtml/messages.pl:1515
 msgid "Gruppenkonfiguration erstellen"
 msgstr "Create group configuration"
 
-#: shtml/messages.pl:1211 shtml/messages.pl:1519
+#: shtml/messages.pl:1208 shtml/messages.pl:1516
 msgid "Registrypatch editieren"
 msgstr "Edit registry patch"
 
-#: shtml/messages.pl:1212 shtml/messages.pl:1520
+#: shtml/messages.pl:1209 shtml/messages.pl:1517
 msgid "PXE-Start"
 msgstr "PXE start"
 
-#: shtml/messages.pl:1213 shtml/messages.pl:1521
+#: shtml/messages.pl:1210 shtml/messages.pl:1518
 msgid "Imageverwaltung"
 msgstr "Image administration"
 
-#: shtml/messages.pl:1215
+#: shtml/messages.pl:1212
 msgid "W&auml;hlen Sie ein Untermen&uuml;."
 msgstr "Choose a submenu."
 
-#: shtml/messages.pl:1218
+#: shtml/messages.pl:1215
 msgid "Datei w&auml;hlen"
 msgstr "Choose file"
 
-#: shtml/messages.pl:1219
+#: shtml/messages.pl:1216
 msgid "Konfigurationsdateien editieren"
 msgstr "Edit configuration files"
 
-#: shtml/messages.pl:1220
+#: shtml/messages.pl:1217
 msgid "[LINBO] - globale Konfiguration"
 msgstr "[LINBO] - global configuration"
 
-#: shtml/messages.pl:1221 shtml/messages.pl:1222
+#: shtml/messages.pl:1218 shtml/messages.pl:1219
 msgid "Cache-Partition auf dem Arbeitsplatzrechner"
 msgstr "Cache partition on the workspace computer"
 
-#: shtml/messages.pl:1223
+#: shtml/messages.pl:1220
 msgid "IP des TFTP-Servers, der Images vorh&auml;lt"
 msgstr "IP of the TFTP Server, that has images available"
 
-#: shtml/messages.pl:1224
+#: shtml/messages.pl:1221
 msgid "Rechnergruppenname"
 msgstr "Computer group name"
 
-#: shtml/messages.pl:1225
+#: shtml/messages.pl:1222
 msgid "automatischer Rootlogout nach"
 msgstr "Automatic root logout after"
 
-#: shtml/messages.pl:1226
+#: shtml/messages.pl:1223
 msgid "Sekunden"
 msgstr "seconds"
 
-#: shtml/messages.pl:1227
+#: shtml/messages.pl:1224
 msgid "Automatische Partitionsreparatur"
 msgstr "Automatic repair of partition"
 
-#: shtml/messages.pl:1228
+#: shtml/messages.pl:1225
 msgid "Automatisches Formatieren"
 msgstr "Automatic formatting"
 
-#: shtml/messages.pl:1229
+#: shtml/messages.pl:1226
 msgid "Automatisches Einrichten des Caches"
 msgstr "Automatic set up of the cache"
 
-#: shtml/messages.pl:1230
+#: shtml/messages.pl:1227
 msgid "Downloadtype ausw&auml;hlen"
 msgstr "Select download type"
 
-#: shtml/messages.pl:1231
+#: shtml/messages.pl:1228
 msgid "rsync"
 msgstr "rsync"
 
-#: shtml/messages.pl:1232
+#: shtml/messages.pl:1229
 msgid "multicast"
 msgstr "multicast"
 
-#: shtml/messages.pl:1233
+#: shtml/messages.pl:1230
 msgid "torrent"
 msgstr "torrent"
 
-#: shtml/messages.pl:1234
+#: shtml/messages.pl:1231
 msgid "Bildschirmschriftfarbe"
 msgstr "Display font color"
 
-#: shtml/messages.pl:1235 shtml/messages.pl:1237
+#: shtml/messages.pl:1232 shtml/messages.pl:1234
 msgid "white"
 msgstr "white"
 
-#: shtml/messages.pl:1236
+#: shtml/messages.pl:1233
 msgid "Konsolenschriftfarbe"
 msgstr "Console font color"
 
-#: shtml/messages.pl:1238
+#: shtml/messages.pl:1235
 msgid "Konsolenschriftfarbe f&uuml;r Fehler- und Warnmeldungen"
 msgstr "Console font color for mistake and warning notifications"
 
-#: shtml/messages.pl:1239
+#: shtml/messages.pl:1236
 msgid "red"
 msgstr "red"
 
-#: shtml/messages.pl:1240
+#: shtml/messages.pl:1237
 msgid "LINBO-Kerneloptionen"
 msgstr "LINBO kernel options"
 
-#: shtml/messages.pl:1242 shtml/messages.pl:1328
+#: shtml/messages.pl:1239 shtml/messages.pl:1325
 msgid "Neues System hinzuf&uuml;gen"
 msgstr "Add new system"
 
-#: shtml/messages.pl:1243 shtml/messages.pl:1251 shtml/messages.pl:1289
-#: shtml/messages.pl:1318 shtml/messages.pl:1329
+#: shtml/messages.pl:1240 shtml/messages.pl:1248 shtml/messages.pl:1286
+#: shtml/messages.pl:1315 shtml/messages.pl:1326
 msgid "MS Windows"
 msgstr "MS Windows"
 
-#: shtml/messages.pl:1244 shtml/messages.pl:1252 shtml/messages.pl:1290
-#: shtml/messages.pl:1319 shtml/messages.pl:1330
+#: shtml/messages.pl:1241 shtml/messages.pl:1249 shtml/messages.pl:1287
+#: shtml/messages.pl:1316 shtml/messages.pl:1327
 msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
-#: shtml/messages.pl:1245 shtml/messages.pl:1291 shtml/messages.pl:1299
-#: shtml/messages.pl:1320 shtml/messages.pl:1331
+#: shtml/messages.pl:1242 shtml/messages.pl:1288 shtml/messages.pl:1296
+#: shtml/messages.pl:1317 shtml/messages.pl:1328
 msgid "Daten"
 msgstr "Data"
 
-#: shtml/messages.pl:1246 shtml/messages.pl:1292 shtml/messages.pl:1300
-#: shtml/messages.pl:1321 shtml/messages.pl:1332
+#: shtml/messages.pl:1243 shtml/messages.pl:1289 shtml/messages.pl:1297
+#: shtml/messages.pl:1318 shtml/messages.pl:1329
 msgid "Swap"
 msgstr "Swap"
 
-#: shtml/messages.pl:1247 shtml/messages.pl:1293 shtml/messages.pl:1301
-#: shtml/messages.pl:1322 shtml/messages.pl:1333
+#: shtml/messages.pl:1244 shtml/messages.pl:1290 shtml/messages.pl:1298
+#: shtml/messages.pl:1319 shtml/messages.pl:1330
 msgid "Cache"
 msgstr "Cache"
 
-#: shtml/messages.pl:1248 shtml/messages.pl:1294 shtml/messages.pl:1323
-#: shtml/messages.pl:1334
+#: shtml/messages.pl:1245 shtml/messages.pl:1291 shtml/messages.pl:1320
+#: shtml/messages.pl:1331
 msgid "erweitert"
 msgstr "enhanced"
 
-#: shtml/messages.pl:1249
+#: shtml/messages.pl:1246
 msgid "Systeme"
 msgstr "Systems"
 
-#: shtml/messages.pl:1250 shtml/messages.pl:1298
+#: shtml/messages.pl:1247 shtml/messages.pl:1295
 msgid "System"
 msgstr "System"
 
-#: shtml/messages.pl:1253 shtml/messages.pl:1262 shtml/messages.pl:1303
+#: shtml/messages.pl:1250 shtml/messages.pl:1259 shtml/messages.pl:1300
 msgid "Devicename der Partition"
 msgstr "Device name of partition"
 
-#: shtml/messages.pl:1254 shtml/messages.pl:1263 shtml/messages.pl:1304
+#: shtml/messages.pl:1251 shtml/messages.pl:1260 shtml/messages.pl:1301
 msgid "Partitionsgr&ouml;&szlig;e in KB"
 msgstr "Size of partition in KB"
 
-#: shtml/messages.pl:1255 shtml/messages.pl:1264 shtml/messages.pl:1307
+#: shtml/messages.pl:1252 shtml/messages.pl:1261 shtml/messages.pl:1304
 msgid "Dateisystem"
 msgstr "File system"
 
-#: shtml/messages.pl:1256 shtml/messages.pl:1312
+#: shtml/messages.pl:1253 shtml/messages.pl:1309
 msgid "VFAT"
 msgstr "VFAT"
 
-#: shtml/messages.pl:1257 shtml/messages.pl:1313
+#: shtml/messages.pl:1254 shtml/messages.pl:1310
 msgid "NTFS"
 msgstr "NTFS"
 
-#: shtml/messages.pl:1258 shtml/messages.pl:1309 shtml/messages.pl:1314
+#: shtml/messages.pl:1255 shtml/messages.pl:1306 shtml/messages.pl:1311
 msgid "EXT3"
 msgstr "EXT3"
 
-#: shtml/messages.pl:1259 shtml/messages.pl:1310 shtml/messages.pl:1315
+#: shtml/messages.pl:1256 shtml/messages.pl:1307 shtml/messages.pl:1312
 msgid "EXT4"
 msgstr "EXT4"
 
-#: shtml/messages.pl:1260 shtml/messages.pl:1311 shtml/messages.pl:1316
+#: shtml/messages.pl:1257 shtml/messages.pl:1308 shtml/messages.pl:1313
 msgid "ReiserFS"
 msgstr "ReiserFS"
 
-#: shtml/messages.pl:1261
+#: shtml/messages.pl:1258
 msgid "Partition bootbar:"
 msgstr "Partition bootable:"
 
-#: shtml/messages.pl:1265
+#: shtml/messages.pl:1262
 msgid "Partition bootbar"
 msgstr "Partition bootable"
 
-#: shtml/messages.pl:1266
+#: shtml/messages.pl:1263
 msgid "Name des Betriebssystems"
 msgstr "Name of operating system"
 
-#: shtml/messages.pl:1267
+#: shtml/messages.pl:1264
 msgid "Betriebssystemversion (optional)"
 msgstr "Version of operating system (optional)"
 
-#: shtml/messages.pl:1268
+#: shtml/messages.pl:1265
 msgid "Beschreibung (optional)"
 msgstr "Description (optional)"
 
-#: shtml/messages.pl:1269
+#: shtml/messages.pl:1266
 msgid "Dateiname des Icons f&uuml;r den Startbutton"
 msgstr "File name of icons for start button"
 
-#: shtml/messages.pl:1270
+#: shtml/messages.pl:1267
 msgid "Dateiname des differenziellen Image"
 msgstr "File name of differential image"
 
-#: shtml/messages.pl:1271
+#: shtml/messages.pl:1268
 msgid "Dateiname des Basis-Image"
 msgstr "File name of basis image"
 
-#: shtml/messages.pl:1272
+#: shtml/messages.pl:1269
 msgid "Partition, die Kernel und initrd enth&auml;lt"
 msgstr "Partition that contains kernel and initrd"
 
-#: shtml/messages.pl:1273
+#: shtml/messages.pl:1270
 msgid "Pfad zum kernel"
 msgstr "Path to kernel"
 
-#: shtml/messages.pl:1274
+#: shtml/messages.pl:1271
 msgid "Relativer Pfad zur initrd"
 msgstr "Relative path to initrd"
 
-#: shtml/messages.pl:1275
+#: shtml/messages.pl:1272
 msgid "Bootoptionen"
 msgstr "Boot options"
 
-#: shtml/messages.pl:1276
+#: shtml/messages.pl:1273
 msgid "Start-Button f&uuml;r dieses Betriebssystem anzeigen"
 msgstr "Show start button for this operating system"
 
-#: shtml/messages.pl:1277
+#: shtml/messages.pl:1274
 msgid "Sync+Start-Button f&uuml;r dieses Betriebssystem anzeigen"
 msgstr "Show sync+start button for this operating system"
 
-#: shtml/messages.pl:1278
+#: shtml/messages.pl:1275
 msgid "Neu+Start-Button f&uuml;r dieses Betriebssystem anzeigen"
 msgstr "Show new+start button for this operating system"
 
-#: shtml/messages.pl:1279
+#: shtml/messages.pl:1276
 msgid "Betriebssystemreiter verstecken"
 msgstr "Hide operating system tab"
 
-#: shtml/messages.pl:1280
+#: shtml/messages.pl:1277
 msgid "Systemstart durch"
 msgstr "System start executed"
 
-#: shtml/messages.pl:1281
+#: shtml/messages.pl:1278
 msgid "grub.exe"
 msgstr "grub.exe"
 
-#: shtml/messages.pl:1282
+#: shtml/messages.pl:1279
 msgid "reboot"
 msgstr "reboot"
 
-#: shtml/messages.pl:1283
+#: shtml/messages.pl:1280
 msgid "Betriebssystem automatisch starten"
 msgstr "Start operating system automatically"
 
-#: shtml/messages.pl:1284
+#: shtml/messages.pl:1281
 msgid "Autostart-Timeout in Sek."
 msgstr "Autostart timeout in sec."
 
-#: shtml/messages.pl:1285
+#: shtml/messages.pl:1282
 msgid "Standard-Autostart-Aktion ausw&auml;hlen"
 msgstr "Select standard autostart action"
 
-#: shtml/messages.pl:1286
+#: shtml/messages.pl:1283
 msgid "start"
 msgstr "start"
 
-#: shtml/messages.pl:1287
+#: shtml/messages.pl:1284
 msgid "sync"
 msgstr "sync"
 
-#: shtml/messages.pl:1288
+#: shtml/messages.pl:1285
 msgid "new"
 msgstr "new"
 
-#: shtml/messages.pl:1295 shtml/messages.pl:1324
+#: shtml/messages.pl:1292 shtml/messages.pl:1321
 msgid "System &auml;ndern"
 msgstr "Change system"
 
-#: shtml/messages.pl:1296
+#: shtml/messages.pl:1293
 msgid "Betriebssystem l&ouml;schen"
 msgstr "Delete operating system"
 
-#: shtml/messages.pl:1297
+#: shtml/messages.pl:1294
 msgid "Betriebssystem hinzuf&uuml;gen"
 msgstr "Add operating system"
 
-#: shtml/messages.pl:1302
+#: shtml/messages.pl:1299
 msgid "erweiterte Partition"
 msgstr "enhanced partition"
 
-#: shtml/messages.pl:1306
+#: shtml/messages.pl:1303
 msgid "swap"
 msgstr "swap"
 
-#: shtml/messages.pl:1317
+#: shtml/messages.pl:1314
 msgid "System l&ouml;schen"
 msgstr "Delete system"
 
-#: shtml/messages.pl:1325
+#: shtml/messages.pl:1322
 msgid "kein Betriebssystem automatisch starten"
 msgstr "Do not start any operating system automatically"
 
-#: shtml/messages.pl:1326 shtml/messages.pl:1327
+#: shtml/messages.pl:1323 shtml/messages.pl:1324
 msgid "none"
 msgstr "none"
 
-#: shtml/messages.pl:1336
+#: shtml/messages.pl:1333
 msgid "Bitte Rechnergruppe ausw&auml;hlen"
 msgstr "Please select computer group"
 
-#: shtml/messages.pl:1337
+#: shtml/messages.pl:1334
 msgid "&Uuml;bersicht der Rechnergruppen"
 msgstr "Overview of Computer Group"
 
-#: shtml/messages.pl:1340
+#: shtml/messages.pl:1337
 msgid "Klicken Sie auf einen Gruppennamen, um den Editor zu &ouml;ffnen."
 msgstr "Click the group name to open the editor."
 
-#: shtml/messages.pl:1341
+#: shtml/messages.pl:1338
 msgid ""
 "Beachten Sie, da&szlig; sich im Editor der Radio-Button zur Deaktivierung "
 "des Autostarts am Seitenende befindet."
@@ -4324,7 +4323,7 @@ msgstr ""
 "Note that in the editor, the radio button for deactivation of autostart is "
 "at the end of the page."
 
-#: shtml/messages.pl:1342
+#: shtml/messages.pl:1339
 msgid ""
 "</p>\n"
 "<p><getext>Beachten Sie au&szlig;erdem, da&szlig; beim reboot-workaround in "
@@ -4337,81 +4336,81 @@ msgstr ""
 "Linbo start file under &quot;pxelinux.cfg/&lt;gruppe&gt;&quot;, the entry, "
 "&quot;DEFAULT reboot&quot; is activated and the computer will start with PXE."
 
-#: shtml/messages.pl:1345
+#: shtml/messages.pl:1342
 msgid "Imagedatei l&ouml;schen"
 msgstr "Delete image file"
 
-#: shtml/messages.pl:1347 shtml/messages.pl:1406 shtml/messages.pl:1421
+#: shtml/messages.pl:1344 shtml/messages.pl:1403 shtml/messages.pl:1418
 msgid "wirklich l&ouml;schen?"
 msgstr "Are you sure you want to delete?"
 
-#: shtml/messages.pl:1349 shtml/messages.pl:1354 shtml/messages.pl:1359
-#: shtml/messages.pl:1408 shtml/messages.pl:1423
+#: shtml/messages.pl:1346 shtml/messages.pl:1351 shtml/messages.pl:1356
+#: shtml/messages.pl:1405 shtml/messages.pl:1420
 msgid "Abbrechen"
 msgstr "Cancel"
 
-#: shtml/messages.pl:1350
+#: shtml/messages.pl:1347
 msgid "Imagedatei umbenennen"
 msgstr "Rename image file"
 
-#: shtml/messages.pl:1352 shtml/messages.pl:1357
+#: shtml/messages.pl:1349 shtml/messages.pl:1354
 msgid "&uuml;berschreiben?"
 msgstr "Overwrite?"
 
-#: shtml/messages.pl:1353 shtml/messages.pl:1358
+#: shtml/messages.pl:1350 shtml/messages.pl:1355
 msgid "&Uuml;berschreiben"
 msgstr "Overwrite"
 
-#: shtml/messages.pl:1355
+#: shtml/messages.pl:1352
 msgid "Imagedatei kopieren"
 msgstr "Copy image file"
 
-#: shtml/messages.pl:1360
+#: shtml/messages.pl:1357
 msgid "Imagebeschreibung editieren"
 msgstr "Edit image file"
 
-#: shtml/messages.pl:1362 shtml/messages.pl:1364 shtml/messages.pl:1366
-#: shtml/messages.pl:1411 shtml/messages.pl:1426
+#: shtml/messages.pl:1359 shtml/messages.pl:1361 shtml/messages.pl:1363
+#: shtml/messages.pl:1408 shtml/messages.pl:1423
 msgid "Schlie&szlig;en"
 msgstr "Close"
 
-#: shtml/messages.pl:1363
+#: shtml/messages.pl:1360
 msgid "Image-Informationen"
 msgstr "Image information"
 
-#: shtml/messages.pl:1365
+#: shtml/messages.pl:1362
 msgid "Image-Liste"
 msgstr "Image list"
 
-#: shtml/messages.pl:1367
+#: shtml/messages.pl:1364
 msgid "Basisimages"
 msgstr "Basis images"
 
-#: shtml/messages.pl:1368 shtml/messages.pl:1373
+#: shtml/messages.pl:1365 shtml/messages.pl:1370
 msgid "E"
 msgstr "E"
 
-#: shtml/messages.pl:1369 shtml/messages.pl:1374
+#: shtml/messages.pl:1366 shtml/messages.pl:1371
 msgid "I"
 msgstr "I"
 
-#: shtml/messages.pl:1370 shtml/messages.pl:1375
+#: shtml/messages.pl:1367 shtml/messages.pl:1372
 msgid "U"
 msgstr "U"
 
-#: shtml/messages.pl:1371 shtml/messages.pl:1376
+#: shtml/messages.pl:1368 shtml/messages.pl:1373
 msgid "K"
 msgstr "K"
 
-#: shtml/messages.pl:1372 shtml/messages.pl:1377
+#: shtml/messages.pl:1369 shtml/messages.pl:1374
 msgid "L"
 msgstr "L"
 
-#: shtml/messages.pl:1379
+#: shtml/messages.pl:1376
 msgid "Wenn Sie die Maus auf die Symbole bewegen, werden Hilfetexte angezeigt."
 msgstr "When you move the mouse over the symbol, help texts are shown."
 
-#: shtml/messages.pl:1380
+#: shtml/messages.pl:1377
 msgid ""
 "Zum Umbennenen und Kopieren von Images, m&uuml;ssen Sie einen neuen "
 "Dateinamen eingeben.\n"
@@ -4420,63 +4419,63 @@ msgstr ""
 "To rename and copy images, you must enter a new file name.\n"
 "File extensions (.cloop/.rsync) can be omitted."
 
-#: shtml/messages.pl:1383
+#: shtml/messages.pl:1380
 msgid "Bestehende Gruppenkonfiguration einer Rechnergruppe kopieren"
 msgstr "Copy existing group configuration of a computer group"
 
-#: shtml/messages.pl:1384
+#: shtml/messages.pl:1381
 msgid "kopieren nach"
 msgstr "copy to"
 
-#: shtml/messages.pl:1385
+#: shtml/messages.pl:1382
 msgid "Assistent zur Erstellung einer neuen Rechnergruppe"
 msgstr "Assistant for the creation of a new computer group"
 
-#: shtml/messages.pl:1386
+#: shtml/messages.pl:1383
 msgid "Rechnergruppe"
 msgstr "Computer group"
 
-#: shtml/messages.pl:1387
+#: shtml/messages.pl:1384
 msgid "Festplattengr&ouml;&szlig;e in MB"
 msgstr "Size of hard drive in MB"
 
-#: shtml/messages.pl:1388
+#: shtml/messages.pl:1385
 msgid "Festplattencontroller (ab LINBO 1.1.0 immer SATA (sda))"
 msgstr "Hard drive controller (from LINBO 1.1.0 onwards, always SATA (sda))"
 
-#: shtml/messages.pl:1389
+#: shtml/messages.pl:1386
 msgid "SATA"
 msgstr "SATA"
 
-#: shtml/messages.pl:1390
+#: shtml/messages.pl:1387
 msgid "Partition"
 msgstr "Partition"
 
-#: shtml/messages.pl:1391
+#: shtml/messages.pl:1388
 msgid "Partitionsgr&ouml;&szlig;en in MB"
 msgstr "Size of partition in MB"
 
-#: shtml/messages.pl:1392
+#: shtml/messages.pl:1389
 msgid "Betriebssystem 1 (Partition 1)"
 msgstr "Operating system 1 (Partition 1)"
 
-#: shtml/messages.pl:1393
+#: shtml/messages.pl:1390
 msgid "Betriebssystem 2 (Partition 2)"
 msgstr "Operating system 2 (Partition 2)"
 
-#: shtml/messages.pl:1394
+#: shtml/messages.pl:1391
 msgid "Betriebssystem 3 (Partition 5)"
 msgstr "Operating system 3 (Partition 5)"
 
-#: shtml/messages.pl:1395
+#: shtml/messages.pl:1392
 msgid "Betriebssystem 4 (Partition 6)"
 msgstr "Operating system 4 (Partition 6)"
 
-#: shtml/messages.pl:1397
+#: shtml/messages.pl:1394
 msgid "Keine Templates vorhanden."
 msgstr "No templates are available."
 
-#: shtml/messages.pl:1399
+#: shtml/messages.pl:1396
 msgid ""
 "Kopieren Sie hier die Konfiguration einer bestehenden Rechnergruppe\n"
 "oder erstellen Sie eine neue Gruppenkonfiguration."
@@ -4484,7 +4483,7 @@ msgstr ""
 "Copy the configuration of an existing computer group or, create\n"
 "a new group configuration here."
 
-#: shtml/messages.pl:1400
+#: shtml/messages.pl:1397
 msgid ""
 "Beachten Sie, dass ab LINBO 1.1.0 IDE-Platten wie SATA-Platten angesprochen "
 "werden.\n"
@@ -4494,7 +4493,7 @@ msgstr ""
 "activated.\n"
 "Therefore, no other selection is possible in the dropdown menu."
 
-#: shtml/messages.pl:1401
+#: shtml/messages.pl:1398
 msgid ""
 "Ist die neue Gruppenkonfiguration erstellt, k&ouml;nnen Sie im "
 "Untermen&uuml; &#8222;Gruppenkonfiguration editieren&#8220;\n"
@@ -4504,68 +4503,68 @@ msgstr ""
 "to the new configuration\n"
 "in the submenu &#8222;Edit group configuration&#8220; if necessary."
 
-#: shtml/messages.pl:1404 shtml/messages.pl:1409 shtml/messages.pl:1412
+#: shtml/messages.pl:1401 shtml/messages.pl:1406 shtml/messages.pl:1409
 msgid "PXE-Start-Dateien der Rechnergruppen editieren"
 msgstr "Edit PXE start files of computer groups"
 
-#: shtml/messages.pl:1413 shtml/messages.pl:1428
+#: shtml/messages.pl:1410 shtml/messages.pl:1425
 msgid "l&ouml;schen"
 msgstr "delete"
 
-#: shtml/messages.pl:1414
+#: shtml/messages.pl:1411
 msgid "Es sind keine PXE-Start-Dateien vorhanden."
 msgstr "No PXE start files available."
 
-#: shtml/messages.pl:1416
+#: shtml/messages.pl:1413
 msgid "."
 msgstr "."
 
-#: shtml/messages.pl:1419 shtml/messages.pl:1424 shtml/messages.pl:1427
+#: shtml/messages.pl:1416 shtml/messages.pl:1421 shtml/messages.pl:1424
 msgid "Registrypatch-Dateien der Rechnergruppen editieren"
 msgstr "Edit registry patch files of the computer group"
 
-#: shtml/messages.pl:1429
+#: shtml/messages.pl:1426
 msgid "Es sind keine Registrypatch-Dateien vorhanden."
 msgstr "There are not any registry patch files available."
 
-#: shtml/messages.pl:1430
+#: shtml/messages.pl:1427
 msgid "Registrypatch-Datei erstellen"
 msgstr "Create registry patch file"
 
-#: shtml/messages.pl:1431
+#: shtml/messages.pl:1428
 msgid "F&uuml;r"
 msgstr "for"
 
-#: shtml/messages.pl:1432
+#: shtml/messages.pl:1429
 msgid "Registrypatch-Datei erstellen aus"
 msgstr "Create registry patch file from"
 
-#: shtml/messages.pl:1433
+#: shtml/messages.pl:1430
 msgid "Verwendete Dateien"
 msgstr "Files used"
 
-#: shtml/messages.pl:1434
+#: shtml/messages.pl:1431
 msgid "Beispieldateien"
 msgstr "Example files"
 
-#: shtml/messages.pl:1435
+#: shtml/messages.pl:1432
 msgid "Es sind keine Templateedateien vorhanden."
 msgstr "There are not any template files available."
 
-#: shtml/messages.pl:1436
+#: shtml/messages.pl:1433
 msgid "Es gibt keine Imagedateien ohne Registrypatch."
 msgstr "There are not any image files without a registry patch."
 
-#: shtml/messages.pl:1437
+#: shtml/messages.pl:1434
 msgid "Es gibt keine Imagedateien."
 msgstr "There are not any image files."
 
-#: shtml/messages.pl:1439
+#: shtml/messages.pl:1436
 msgid ""
 "Klicken Sie auf den Namen einer Registrypatch-Datei, um sie zu editieren."
 msgstr "Click on the name of the registry patch file to edit it."
 
-#: shtml/messages.pl:1440
+#: shtml/messages.pl:1437
 msgid ""
 "Wollen Sie eine neue Registrypatch-Datei erstellen, w&auml;hlen Sie zun&auml;"
 "chst die Image-Datei\n"
@@ -4579,24 +4578,21 @@ msgstr ""
 "patch file,\n"
 "which should serve as a template for the new file."
 
-#: shtml/messages.pl:1441 shtml/messages.pl:1452 shtml/messages.pl:1467
-#: shtml/messages.pl:1482 shtml/messages.pl:1490 shtml/messages.pl:1495
-#: shtml/messages.pl:1516
+#: shtml/messages.pl:1438 shtml/messages.pl:1449 shtml/messages.pl:1464
+#: shtml/messages.pl:1479 shtml/messages.pl:1487 shtml/messages.pl:1492
+#: shtml/messages.pl:1513
 msgid "Start"
 msgstr "Start"
 
-#: shtml/messages.pl:1447 shtml/messages.pl:1451 shtml/messages.pl:1459
-#: shtml/messages.pl:1466
+#: shtml/messages.pl:1444 shtml/messages.pl:1448 shtml/messages.pl:1456
+#: shtml/messages.pl:1463
 msgid "Klassenarbeit"
 msgstr "Exam"
 
-#: shtml/messages.pl:1487
+#: shtml/messages.pl:1484
 msgid "Benutzerdaten &uuml;bernehmen"
 msgstr "Apply user data"
 
-#: shtml/messages.pl:1506
+#: shtml/messages.pl:1503
 msgid "Klassenarbeit:"
 msgstr "Exam:"
-
-#~ msgid "Zeitplanung vollautomatischer Backups"
-#~ msgstr "Scheduling of fully automated backups"
