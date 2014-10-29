@@ -5,6 +5,7 @@ use Schulkonsole::DB;
 use Schulkonsole::Firewall;
 use Schulkonsole::RoomSession;
 use Schulkonsole::Sophomorix;
+use Sophomorix::SophomorixBase;
 
 =head1 NAME
 
@@ -19,6 +20,8 @@ $VERSION = 0.06;
 @ISA = qw(Exporter Schulkonsole::RoomSession);
 @EXPORT_OK = qw(
 );
+
+my @passwort_zeichen = Sophomorix::SophomorixBase::get_passwd_charlist();
 
 
 
@@ -452,14 +455,7 @@ sub set_vars {
 
 sub random_password {
 	my $len = shift;
-	my $re;
-
-	my @chrs = ('a' .. 'z', 'A' .. 'Z', '0' .. '9', '-', '.', '/');
-
-	for (my $i = 0; $i < $len; $i++) {
-		$re .= $chrs[int(rand $#chrs + 1)];
-	}
-
+	my $re = Sophomorix::SophomorixBase::get_random_password(10,undef,@passwort_zeichen);
 	return $re;
 }
 
