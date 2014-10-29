@@ -35,6 +35,14 @@ use Schulkonsole::Config;
 use Schulkonsole::DB;
 
 
+# --encoding-*-*
+my %supported_encodings = qw(
+    ascii    ascii
+    8859-1   iso-8859-1
+    8859-15  iso-8859-15
+    win1252  cp1252
+    utf8     utf8
+);
 
 my $id = <>;
 $id = int($id);
@@ -1158,15 +1166,26 @@ $app_id == Schulkonsole::Config::READSOPHOMORIXFILEAPP and do {
 		unless defined $number;
 
 	my $filename;
+	my $encoding = "utf8";
 	SWITCHREADFILE: {
 	$number == 0 and do {
 		$filename = Schulkonsole::Encode::to_fs(
 		            	"$DevelConf::users_pfad/lehrer.txt");
+		if (defined $Conf::encoding_teachers) {
+			$encoding = $Conf::encoding_teachers;
+		} elsif (defined $DevelConf::encoding_teachers) {
+			$encoding = $DevelConf::encoding_teachers;
+		}
 		last SWITCHREADFILE;
 	};
 	$number == 1 and do {
 		$filename = Schulkonsole::Encode::to_fs(
 		            	"$DevelConf::users_pfad/schueler.txt");
+		if (defined $Conf::encoding_students) {
+			$encoding = $Conf::encoding_students;
+		} elsif (defined $DevelConf::encoding_students) {
+			$encoding = $DevelConf::encoding_students;
+		}
 		last SWITCHREADFILE;
 	};
 	$number == 2 and do {
@@ -1197,11 +1216,21 @@ $app_id == Schulkonsole::Config::READSOPHOMORIXFILEAPP and do {
 	$number == 10 and do {
 		$filename = Schulkonsole::Encode::to_fs(
 		            	"$DevelConf::users_pfad/extraschueler.txt");
+		if (defined $Conf::encoding_students_extra) {
+			$encoding = $Conf::encoding_students_extra;
+		} elsif (defined $DevelConf::encoding_students_extra) {
+			$encoding = $DevelConf::encoding_students_extra;
+		}
 		last SWITCHREADFILE;
 	};
 	$number == 11 and do {
 		$filename = Schulkonsole::Encode::to_fs(
 		            	"$DevelConf::users_pfad/extrakurse.txt");
+		if (defined $Conf::encoding_courses_extra) {
+			$encoding = $Conf::encoding_courses_extra;
+		} elsif (defined $DevelConf::encoding_courses_extra) {
+			$encoding = $DevelConf::encoding_courses_extra;
+		}
 		last SWITCHREADFILE;
 	};
 	my $filename_base;
@@ -1227,8 +1256,14 @@ $app_id == Schulkonsole::Config::READSOPHOMORIXFILEAPP and do {
 	
 	} # end SWITCHREADFILE
 
+	if (not exists $supported_encodings{$encoding}){
+		$encoding = "utf8";
+	}
+	else {
+		$encoding = $supported_encodings{$encoding};
+	}
 
-	open FILE, '<:raw', $filename
+	open FILE, "<:encoding($encoding)", $filename
 		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
 		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 
@@ -1270,7 +1305,7 @@ $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 
 	my $path;
 	my $filename;
-	my $encoding = "iso-8859-15";
+	my $encoding = "utf8";
 	my @stat;
 	SWITCHWRITEFILE: {
 	$number == 0 and do {
@@ -1374,6 +1409,13 @@ $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 	} else {
 		$stat[4] = $>;
 		$stat[5] = 0;
+	}
+
+	if (not exists $supported_encodings{$encoding}){
+		$encoding = "utf8";
+	}
+	else {
+		$encoding = $supported_encodings{$encoding};
 	}
 
 	open FILE, ">:encoding($encoding)",
