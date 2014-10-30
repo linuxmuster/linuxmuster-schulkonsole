@@ -80,7 +80,7 @@ sub read_session_data {
 	my $this = shift;
 
 	my $filename = "$Schulkonsole::Config::_runtimedir/group_lesson_"
-		. Digest::MD5::md5_hex($this->{group_lesson});
+		. Digest::MD5::md5_hex($this->{group});
 
 	$this->{filename} = $filename;
 
