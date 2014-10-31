@@ -1,6 +1,6 @@
 shtmldir = $(datarootdir)/schulkonsole/shtml
 dist_shtml_DATA = example.shtml login.shtml logout.shtml start.shtml \
-	menu.shtml.inc header.shtml.inc footer.shtml.inc status.shtml.inc \
+	menu.shtml.inc status.shtml.inc \
 	room.shtml room_handout.shtml room_collect.shtml room_shares.shtml \
 	room_test.shtml room_test_end.shtml \
 	room_test_handout.shtml room_test_password.shtml room_test_collect.shtml \
@@ -29,9 +29,6 @@ dist_shtml_DATA = example.shtml login.shtml logout.shtml start.shtml \
 	submenu-settings.shtml.inc submenu-quotas.shtml.inc \
 	submenu-rooms.shtml.inc subsubmenu-room_test.shtml.inc \
 	submenu-linbo.shtml.inc \
-	css.shtml.inc \
-	footer_submenu.shtml.inc \
-	footer_info.shtml.inc \
 	schulkonsole.js
 
 CLEANFILES = messages.pl

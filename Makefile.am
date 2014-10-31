@@ -1,4 +1,4 @@
-SUBDIRS = po src shtml css lib bin img linbo
+SUBDIRS = po src shtml lib bin linbo
 EXTRA_DIST = config/config.guess config/config.rpath config/config.sub \
 	config/depcomp config/install-sh config/missing config/mkinstalldirs \
 	m4/ChangeLog \
