@@ -13,15 +13,6 @@ Recommends: sophomorix-base, linuxmuster-base
 Description: web-based administration tool for linuxmuster.net
  Schulkonsole is a web-interface for linuxmuster.net systems.
 
-Package: linuxmuster-schulkonsole-templates-base
-Architecture: all
-Depends: linuxmuster-schulkonsole (= ${source:Version}), ${misc:Depends}
-Conflicts: linuxmuster-schulkonsole-templates-paedml
-Description: templates for schulkonsole
- Schulkonsole is a web-interface for linuxmuster.net.
- .
- This package contains the HTML-templates
-
 Package: linuxmuster-schulkonsole-wrapper
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}

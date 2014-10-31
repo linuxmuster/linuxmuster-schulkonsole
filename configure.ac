@@ -9,11 +9,9 @@ AC_CONFIG_FILES([Makefile
 	src/cgi-bin/Makefile
 	src/util/Makefile
 	shtml/Makefile
-	css/Makefile
 	lib/Makefile
 	lib/Schulkonsole/Makefile
 	bin/Makefile
-	img/Makefile
 	linbo/Makefile
 	linbo/templates/Makefile
 	linbo/templates/os/Makefile
