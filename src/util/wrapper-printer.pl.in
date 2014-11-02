@@ -179,6 +179,7 @@ $app_id == Schulkonsole::Config::PRINTERONOFFAPP and do {
 	      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
 		unless @printers;
 
+	$< = $>;
 	if ($on) {
 		foreach my $printer (@printers) {
 			system Schulkonsole::Encode::to_cli(
@@ -245,7 +246,7 @@ $app_id == Schulkonsole::Config::PRINTERALLOWDENYAPP and do {
 	      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
 		unless %printer_users;
 
-
+	$< = $>;
 	foreach my $printer (keys %printer_users) {
 		if ( @{ $printer_users{$printer} } ) {
 			system Schulkonsole::Encode::to_cli(
