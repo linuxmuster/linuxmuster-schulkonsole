@@ -92,46 +92,9 @@ none
 =cut
 
 $app_id == Schulkonsole::Config::PRINTERINFOAPP and do {
-	my %value_type = (
-		AllowUser => 2,
-		DenyUser => 2,
-		State => 1,
-		StateMessage => 1,
-		Info => 1,
-		Location => 1,
-		Accepting => 1,
-	);
-
-	open PRINTERSCONF, '<', Schulkonsole::Encode::to_fs(
-	     	$Schulkonsole::Config::_cups_printers_conf_file)
-		or exit (  Schulkonsole::Error::Printer::WRAPPER_CANNOT_OPEN_PRINTERSCONF
-		         - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE);
-
-	my $printer;
-	my %printer_info;
-	while (<PRINTERSCONF>) {
-		if (/^<.*Printer\s+(.+)>/) {
-			$printer = $1;
-		} elsif (m:^</:) {
-			$printer = undef;
-		} elsif (    my ($name, $value) = /^(\S+)\s+(.*)$/
-		         and $printer) {
-			if ($value_type{$name}) {
-				if ($value_type{$name} == 2) {
-					$printer_info{$printer}{$name}{$value} = 1;
-				} else {
-					$printer_info{$printer}{$name} = $value;
-				}
-			}
-		}
-	}
-
-	close PRINTERSCONF;
-
-	my $data = Data::Dumper->new([ \%printer_info ]);
-	$data->Terse(1);
-	$data->Indent(0);
-	print $data->Dump;
+	$< = $>;
+	system Schulkonsole::Encode::to_cli(
+	       	"$Schulkonsole::Config::_cmd_printer_info -l -p");
 
 	exit 0;
 };
