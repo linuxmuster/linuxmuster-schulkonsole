@@ -1063,7 +1063,53 @@ sub get_teachers {
 }
 
 
+=head3 C<prepare_user_pattern($query)>
 
+Returns three patterns for uid, firstname, lastname
+
+=head4 Return value
+
+Three references e.g. to uid, firstname, lastname
+
+=head4 Description
+
+Returns search patterns for a user.
+
+=cut
+sub  trim { my $s = shift; $s =~ s/^\s+|\s+$//g; return $s };
+
+sub prepare_user_pattern {
+        my $query = shift;
+
+        my $uid;
+        my $firstname;
+        my $lastname;
+        my $mode = 'indifferent';
+
+        $query =~ tr/*/%/;
+        $query = trim($query);
+
+        $uid = "\%\L$query\E\%";
+        if ($query =~ /,/) {
+            my @names = split(',', $query);
+            $names[0] = trim($names[0]) if($names[0]);
+            $names[1] = trim($names[1]) if($names[1]);
+            $firstname = "\%\L$names[1]\E\%" if ($names[1]);
+            $lastname = "\%\L$names[0]\E\%" if ($names[0]);
+            $mode = 'name';
+        } elsif ($query =~ ' ') {
+            my @names = split(' ', $query);
+            $names[0] = trim($names[0]) if($names[0]);
+            $names[1] = trim($names[1]) if($names[1]);
+            $firstname = "\%\L$names[0]\E\%" if ($names[0]);
+            $lastname = "\%\L$names[1]\E\%" if ($names[1]);
+            $mode = 'name';
+        }
+        $firstname = "\%\L$query\E\%" unless $firstname;
+        $lastname = "\%\L$query\E\%" unless $lastname;
+
+        return ($uid, $firstname, $lastname, $mode);
+}
 
 =head3 C<find_teachers($query)>
 
@@ -1092,22 +1138,34 @@ Returns the teachers on which the pattern of query matches.
 sub find_teachers {
 	my $query = shift;
 
-	$query =~ tr/*/%/;
-	my $pattern = "\%\L$query\E\%";
+        my ($uid, $firstname, $lastname, $mode) = prepare_user_pattern($query);
 
 	my $prepare_userdata = $_select_basic_userdata
-		. 'WHERE gid = \'teachers\' '
+		. 'WHERE gid = \'teachers\' ';
+        if ($mode =~ 'indifferent') {
+                $prepare_userdata = $prepare_userdata
 		. 'AND (   uid LIKE ?'
 		.     ' OR LOWER(firstname) LIKE ?'
 		.     ' OR LOWER(surname) LIKE ?)';
+        } else {
+                $prepare_userdata = $prepare_userdata
+                . 'AND LOWER(firstname) LIKE ?'
+                . ' AND LOWER(surname) LIKE ?';
+        }
 	my $sth = $_dbh->prepare($prepare_userdata)
 		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
 			$prepare_userdata);
-	$sth->execute($pattern, $pattern, $pattern)
+	if ($mode =~ 'indifferent') {
+            $sth->execute($uid, $firstname, $lastname)
 		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
 			$prepare_userdata,
-			"[uid LIKE $pattern, firstname LIKE $pattern, surname LIKE $pattern]");
-
+			"[uid LIKE $uid, firstname LIKE $firstname, surname LIKE $lastname]");
+        } else {
+            $sth->execute($firstname, $lastname)
+                or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+                        $prepare_userdata,
+                        "[firstname LIKE $firstname, surname LIKE $lastname]");
+        }
 
 	my %re;
 	while (my $row = $sth->fetchrow_hashref) {
@@ -1121,17 +1179,31 @@ sub find_teachers {
 		. '  ON userdata.uidnumber = groups_users.memberuidnumber '
 		. 'JOIN groups'
 		. '  ON groups_users.gidnumber = groups.gidnumber '
-		. 'WHERE groups.gid = \'teachers\' '
+		. 'WHERE groups.gid = \'teachers\' ';
+        if ($mode =~ 'indifferent') {
+            $prepare_userdata = $prepare_userdata
 		. 'AND (   userdata.uid LIKE ?'
 		.     ' OR LOWER(userdata.firstname) LIKE ?'
 		.     ' OR LOWER(userdata.surname) LIKE ?)';
+        } else {
+            $prepare_userdata = $prepare_userdata
+                . 'AND LOWER(userdata.firstname) LIKE ?'
+                . ' AND LOWER(userdata.surname) LIKE ?';
+        }
 	$sth = $_dbh->prepare($prepare_userdata)
 		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
 			$prepare_userdata);
-	$sth->execute($pattern, $pattern, $pattern)
+        if ($mode =~ 'indifferent') {
+            $sth->execute($uid, $firstname, $lastname)
 		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
 			$prepare_userdata,
-			"[uid LIKE $pattern, firstname LIKE $pattern, surname LIKE $pattern]");
+			"[uid LIKE $uid, firstname LIKE $firstname, surname LIKE $lastname]");
+        } else {
+            $sth->execute($firstname, $lastname)
+                or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+                        $prepare_userdata,
+                        "[firstname LIKE $firstname, surname LIKE $lastname]");
+        }
 
 	while (my $row = $sth->fetchrow_hashref) {
 		utf8_decode_userdata($row);
@@ -1173,26 +1245,37 @@ Returns the students on which the pattern of query matches.
 sub find_students {
 	my $query = shift;
 
-	$query =~ tr/*/%/;
-	my $pattern = "\%\L$query\E\%";
-
+        my ($uid, $firstname, $lastname, $mode) = prepare_user_pattern($query);
 	# a student's initial group is an adminclass
 	my $prepare_userdata = $_select_basic_userdata
 		. 'RIGHT JOIN classdata ON userdata.gidnumber = classdata.gidnumber '
-		. 'WHERE classdata.type = \'adminclass\' '
+		. 'WHERE classdata.type = \'adminclass\' ';
+        if ($mode =~ 'indifferent') {
+            $prepare_userdata = $prepare_userdata
 		. 'AND (   userdata.uid LIKE ?'
 		.     ' OR LOWER(userdata.firstname) LIKE ?'
 		.     ' OR LOWER(userdata.surname) LIKE ?)';
+        } else {
+            $prepare_userdata = $prepare_userdata
+                . 'AND LOWER(userdata.firstname) LIKE ?'
+                . ' AND LOWER(userdata.surname) LIKE ?';
+        }
 	my $sth = $_dbh->prepare($prepare_userdata)
 		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
 			$prepare_userdata);
-	$sth->execute($pattern, $pattern, $pattern)
+        if ($mode =~ 'indifferent') {
+	$sth->execute($uid, $firstname, $lastname)
 		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
 			$prepare_userdata,
-			"[uid LIKE $pattern, firstname LIKE $pattern, surname LIKE $pattern]");
+			"[uid LIKE $uid, firstname LIKE $firstname, surname LIKE $lastname]");
+        } else {
+            $sth->execute($firstname, $lastname)
+                or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+                        $prepare_userdata,
+                        "[firstname LIKE $firstname, surname LIKE $lastname]");
+        }
 
-
-	my %re;
+        my %re;
 	while (my $row = $sth->fetchrow_hashref) {
 		next if $$row{uid} =~ /\$$/;
 
