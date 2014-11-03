@@ -355,10 +355,10 @@ The password of the user invoking the command
 =head3 Description
 
 This wraps the commands 
-C</usr/bin/linuxmuster-pk --user user -t> 
+C</usr/bin/linuxmuster-pk --user=user -t> 
 to get the number of printed pages 
 and
-C</usr/bin/linuxmuster-pk --user user -m>
+C</usr/bin/linuxmuster-pk --user=user -m>
 maximum number of pages
 with C<user> = the UID of the user with ID C<$id>.
 
@@ -423,10 +423,10 @@ List of UIDs to get quota from
 =head3 Description
 
 This wraps the commands 
-C</usr/bin/linuxmuster-pk --user user -t> 
+C</usr/bin/linuxmuster-pk --user=user -t> 
 to get the number of printed pages 
 and
-C</usr/bin/linuxmuster-pk --user user -m>
+C</usr/bin/linuxmuster-pk --user=user -m>
 maximum number of pages
 invoked for each UID from C<@users> as C<user> 
 
