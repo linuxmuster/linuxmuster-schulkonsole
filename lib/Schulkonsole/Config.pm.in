@@ -102,6 +102,7 @@ $VERSION = 0.06;
 	$_cmd_printer_accept
 	$_cmd_printer_reject
 	$_cmd_printer_lpadmin
+	$_cmd_printer_info
 	$_cmd_linuxmuster_pk
 	$_cmd_sophomorix_teacher
 	$_cmd_sophomorix_room
@@ -930,6 +931,10 @@ Path to command to set printer to reject jobs C<reject>
 
 Path to command to administrate printers C<lpadmin>
 
+=item C<$_cmd_printer_info>
+
+Path to command to read printer infos C<lpstat>
+
 =item C<$_cmd_linuxmuster_pk>
 
 Path to command to query printer quotas C<linuxmuster-pk>
@@ -1009,6 +1014,7 @@ use vars qw(%_id_root_app_names
             $_cmd_printer_accept
             $_cmd_printer_reject
             $_cmd_printer_lpadmin
+            $_cmd_printer_info
             $_cmd_linuxmuster_pk
             $_cmd_sophomorix_teacher
             $_cmd_sophomorix_room
@@ -1196,6 +1202,7 @@ $_cmd_ovpn_client_cert = '/usr/share/linuxmuster/scripts/ovpn-client-cert.sh';
 $_cmd_printer_accept = '/usr/sbin/accept';
 $_cmd_printer_lpadmin = '/usr/sbin/lpadmin';
 $_cmd_printer_reject = '/usr/sbin/reject';
+$_cmd_printer_info = '/usr/bin/lpstat';
 $_cmd_linuxmuster_pk = '/usr/bin/linuxmuster-pk';
 $_cmd_sophomorix_add = '/usr/sbin/sophomorix-add';
 $_cmd_sophomorix_check = '/usr/sbin/sophomorix-check';

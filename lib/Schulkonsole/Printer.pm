@@ -153,9 +153,11 @@ usernames as keys.
 
 =head3 Description
 
-Read the file printers.conf and return the information.
+Execute the command lpstat, parse and return the information.
 
 =cut
+
+sub  trim { my $s = shift; $s =~ s/^\s+|\s+$//g; return $s };
 
 sub printer_info {
 	my $id = shift;
@@ -165,16 +167,51 @@ sub printer_info {
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	my $in;
+	my %printers = ();
+	my %printer = ();
+	my $pname;
 	while (<SCRIPTIN>) {
-		$in .= $_;
+		chomp;
+		if (/^printer /){
+			if ($pname) {
+				$printers{$pname}={%printer};
+			}
+			%printer = ();
+			my @line = split(' ');
+			$pname = $line[1];
+			if ($line[3] =~ /idle/) {
+				$printer{'State'}='Idle';
+			} else {
+				$printer{'State'}='Busy';
+			}
+			$printer{'Accepting'}='Yes';
+		} elsif (/^\tDescription:/) {
+			my @line = split(':');
+			$printer{'Info'}=trim($line[1]);
+		} elsif (/^\tLocation:/) {
+			my @line = split(':');
+			$printer{'Location'}=trim($line[1]);
+		} elsif (/^\tRejecting Jobs/) {
+			$printer{'Accepting'}='No';
+		} elsif (/^\tUsers allowed:/) {
+			$_ = <SCRIPTIN>;
+			chomp;
+			if (/\(all\)/) {
+				$printer{'Deny'}='None';
+			} elsif (/\(none\)/) {
+				$printer{'Deny'}='All';
+			} else {
+				$printer{'Allow'}=trim($_);
+			}
+		}
+	}
+	if ($pname) {
+		$printers{$pname}={%printer};
 	}
 
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	my $compartment = new Safe;
-
-	return $compartment->reval($in);
+	return \%printers;
 }
 
 
