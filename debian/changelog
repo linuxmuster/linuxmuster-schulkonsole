@@ -1,3 +1,14 @@
+linuxmuster-schulkonsole (0.10.18-0) babo-testing; urgency=low
+
+  * merged pull request #13 - #17
+  * Fix for #244 find for exact match and search enhancement
+  * Fix for #185 wrong table title
+  * Fix for #402 removed obsolete linuxmuster-schulkonsole-templates-base
+  * Fix for #403 error with wrapper-printer (needs modification of linuxmuster-pk)
+  * Fix for #197 problem with printer enabling/disabling from schulkonsole
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Wed, 05 Nov 2014 17:19:38 +0100
+
 linuxmuster-schulkonsole (0.10.17-0) babo; urgency=low
 
   * fschuett: wrapper-sophomorix.pl.in: default utf8, encoding used for reading and writing now.
