@@ -107,6 +107,7 @@ use vars qw(%_allowed_keys);
 		cache => 1,
 		server => 1,
 		downloadtype => 1,
+		systemtype => 1,
 		roottimeout => 2,
 		autopartition => 4,
 		autoformat => 4,
@@ -383,7 +384,7 @@ sub pxestarts {
 	my %re;
 
 	foreach my $file ((
-			glob("$Schulkonsole::Config::_linbo_dir/pxegrub.lst.*")
+			glob("$Schulkonsole::Config::_linbo_dir/pxelinux.cfg/*")
 		)) {
 		my ($filename) = File::Basename::fileparse($file);
 		$re{ Schulkonsole::Encode::from_fs($filename) } = $file
@@ -1274,7 +1275,7 @@ sub write_start_conf {
 	} else {
 		$lines .= "[LINBO]\n";
 	}
-	foreach my $key (('Cache', 'Server', 'Group', 'RootTimeout',
+	foreach my $key (('Cache', 'Server', 'Group', 'SystemType', 'RootTimeout',
 	                  'Autopartition', 'AutoFormat', 'AutoInitCache',
 	                  'DownloadType', 'BackgroundFontColor',
                       'ConsoleFontColorStdout', 'ConsoleFontColorStderr', 'KernelOptions')) {
