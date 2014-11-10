@@ -923,6 +923,7 @@ $app_id == Schulkonsole::Config::PRINTCLASSAPP and do {
 	# sophomorix-print cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
+	$ENV{HOME}="/root" if not defined $ENV{HOME};
 	system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_print $opts >/dev/null 2>/dev/null")) == 0
 		or exit ($? >> 8);
 
