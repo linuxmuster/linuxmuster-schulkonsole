@@ -386,9 +386,9 @@ sub pxestarts {
 	foreach my $file ((
 			glob("$Schulkonsole::Config::_linbo_dir/pxelinux.cfg/*")
 		)) {
+		next if -l$file;
 		my ($filename) = File::Basename::fileparse($file);
-		$re{ Schulkonsole::Encode::from_fs($filename) } = $file
-			if $filename =~ /^pxegrub\.lst\.(?:[a-z\d_]+)$/;
+		$re{ Schulkonsole::Encode::from_fs($filename) } = $file;
 	}
 
 	return \%re;
