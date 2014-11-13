@@ -50,6 +50,7 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.</gettext></p>
 <th><!--#if expr="${sortingAddition}_mac" --><a href="?sort=mac&desc=1"><!--#else --><a href="?sort=mac"><!--#endif --><gettext>MAC</gettext></a></th>
 <th><!--#if expr="${sortingAddition}_ip" --><a href="?sort=ip&desc=1"><!--#else --><a href="?sort=ip"><!--#endif --><gettext>IP</gettext></a></th>
 <th><!--#if expr="${sortingAddition}_pxe" --><a href="?sort=pxe&desc=1"><!--#else --><a href="?sort=pxe"><!--#endif --><gettext>PXE</gettext></a></th>
+<th><!--#if expr="${sortingAddition}_opts" --><a href="?sort=opts&desc=1"><!--#else --><a href="?sort=opts"><!--#endif --><gettext>Optionen</gettext></a></th>
 <th class="wsdel" title="l&ouml;schen"><gettext>X</gettext></th>
 </tr>
 <!--#if expr="$loop_workstations" -->
