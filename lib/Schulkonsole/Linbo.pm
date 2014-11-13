@@ -59,6 +59,7 @@ $VERSION = 0.0917;
 	check_and_prepare_start_conf
 	handle_start_conf_errors
 	write_file
+	write_pxe_file
 	delete_file
 	delete_image
 	move_image
@@ -386,7 +387,7 @@ sub pxestarts {
 	foreach my $file ((
 			glob("$Schulkonsole::Config::_linbo_dir/pxelinux.cfg/*")
 		)) {
-		next if -l$file;
+		next if -l$file or -d$file;
 		my ($filename) = File::Basename::fileparse($file);
 		$re{ Schulkonsole::Encode::from_fs($filename) } = $file;
 	}
@@ -1918,7 +1919,7 @@ The lines to be written
 =head3 Description
 
 Writes C<$lines> into C<$filename> in C</var/linbo/>. Filename has to
-match C<*.cloop.reg>, C<*.rsync.reg>, or C<pxegrub\.lst\.(?:[a-z\d_]+)>.
+match C<*.cloop.reg>, C<*.rsync.reg>>.
 
 =cut
 
@@ -1930,6 +1931,56 @@ sub write_file {
 
 
 	my $pid = start_wrapper(Schulkonsole::Config::LINBOWRITEAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "$filename\n$lines";
+	close \*SCRIPTOUT;
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, undef, \*SCRIPTIN, \*SCRIPTIN);
+}
+
+
+
+
+=head2 write_pxe_file($id, $password, $filename, $lines)
+
+Writes a LINBO file
+
+=head3 Parameters
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$filename>
+
+The basename of the file
+
+=item C<$lines>
+
+The lines to be written
+
+=head3 Description
+
+Writes C<$lines> into C<$filename> in C</var/linbo/pxelinux.cfg>.
+
+=cut
+
+sub write_pxe_file {
+	my $id = shift;
+	my $password = shift;
+	my $filename = shift;
+	my $lines = shift;
+
+CGI::Inspect::inspect();
+	my $pid = start_wrapper(Schulkonsole::Config::LINBOWRITEPXEAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
