@@ -227,12 +227,26 @@ if ($@) {
     $sk_session->standard_error_handling($this_file, $@);
 }
 
+# sorting for workstations_array
+my $sort;
+my %sortingAddition = ('room' => 0, 'name' => 0, 'groups' => 0, 'mac' => 0, 'ip' => 0, 'pxe' => 0);
+
+if($q->param('sort')) {
+  $sort = $q->param('sort');
+  
+  if(not $q->param('desc')) {
+    $sortingAddition{$sort} = 1;
+  }
+}
+else {
+  $sort = 'room';
+}
 
 my $workstations = Schulkonsole::Config::workstations();
 my @workstations_array;
 foreach my $workstation (sort {
-           $$workstations{$a}{room} cmp $$workstations{$b}{room}
-        or $a cmp $b }
+           $$workstations{(($q->param('desc')) ? $b : $a)}{$sort} cmp $$workstations{(($q->param('desc')) ? $a : $b)}{$sort}
+        or (($q->param('desc')) ? $b : $a) cmp (($q->param('desc')) ? $a : $b) }
     keys %$workstations) {
 
     push @workstations_array, $workstation;
@@ -253,6 +267,14 @@ foreach my $workstation (sort {
         unless defined $q->param("${workstation}_opts");
 
 }
+
+=item C<sortingAddition>
+
+A hash with the sorting order asc=0|desc=1 of the hosts table colums
+
+=cut
+
+$sk_session->set_var('sortingAddition', \%sortingAddition);
 
 =item C<workstations>
 
@@ -299,8 +321,6 @@ True if the workstations file contains comments
 
 $sk_session->set_var('comments', $comments);
 
-
-
 =item C<isimporting>
 
 True if import_workstations is running
@@ -314,8 +334,6 @@ if (open LOCK, '<', $lockfile_import_workstations) {
         $sk_session->set_var('isimporting', 1);
     }
 }
-
-
 
 
 
