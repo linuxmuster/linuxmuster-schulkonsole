@@ -1979,7 +1979,6 @@ sub write_pxe_file {
 	my $filename = shift;
 	my $lines = shift;
 
-CGI::Inspect::inspect();
 	my $pid = start_wrapper(Schulkonsole::Config::LINBOWRITEPXEAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
