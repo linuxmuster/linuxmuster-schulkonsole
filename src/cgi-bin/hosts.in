@@ -31,13 +31,7 @@ use Schulkonsole::Session;
 use Env::Bash;
 
 
-
 my $this_file = 'hosts';
-
-# valid values for pxe boot
-my $pxe_off = '0';
-my $pxe_on = '1';
-
 
 my $sk_session = new Schulkonsole::Session($this_file);
 if (not $sk_session->get_password()) {
@@ -227,12 +221,34 @@ if ($@) {
     $sk_session->standard_error_handling($this_file, $@);
 }
 
+# sorting for workstations_array
+my $sort_asc  = '&#9660; ';
+my $sort_desc = '&#9650; ';
+my @cols = ('room','name','groups','mac','ip','pxe','opts');
+
+my $sortcol = $q->param('sort');
+$sortcol = 'room' unless $sortcol;
+my $desc = 1 if $sortcol =~ /_desc$/;
+$sortcol =~ s/_desc$//;
+my %newsort;
+my %sort;
+
+foreach my $col (@cols) {
+  if(($sortcol eq $col)) {
+      $newsort{$col} = "?sort=${col}" . ($desc ? '' : '_desc');
+      $sort{$col} = ($desc ? $sort_desc : $sort_asc);
+  }
+  else {
+      $newsort{$col} = "?sort=$col";
+      $sort{$col} = '';
+  }
+}
 
 my $workstations = Schulkonsole::Config::workstations();
 my @workstations_array;
 foreach my $workstation (sort {
-           $$workstations{$a}{room} cmp $$workstations{$b}{room}
-        or $a cmp $b }
+           $$workstations{($desc ? $b : $a)}{$sortcol} cmp $$workstations{($desc ? $a : $b)}{$sortcol}
+        or ($desc ? $b : $a) cmp ($desc ? $a : $b) }
     keys %$workstations) {
 
     push @workstations_array, $workstation;
@@ -253,6 +269,22 @@ foreach my $workstation (sort {
         unless defined $q->param("${workstation}_opts");
 
 }
+
+=item C<newsort>
+
+A hash with the params to specify next sorting order
+
+=cut
+
+$sk_session->set_var('newsort', \%newsort);
+
+=item C<sort>
+
+A hash with the actual sorting order symbol for table header display
+
+=cut
+
+$sk_session->set_var('sort', \%sort);
 
 =item C<workstations>
 
@@ -299,8 +331,6 @@ True if the workstations file contains comments
 
 $sk_session->set_var('comments', $comments);
 
-
-
 =item C<isimporting>
 
 True if import_workstations is running
@@ -314,8 +344,6 @@ if (open LOCK, '<', $lockfile_import_workstations) {
         $sk_session->set_var('isimporting', 1);
     }
 }
-
-
 
 
 

@@ -42,16 +42,15 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.</gettext></p>
 
 <form method="post" accept-charset="UTF-8">
 
-
 <table id="hosts" class="liste">
 <tr>
-<th><gettext>Raum</gettext></th>
-<th><gettext>Hostname</gettext></th>
-<th><gettext>Gruppen</gettext></th>
-<th><gettext>MAC</gettext></th>
-<th><gettext>IP</gettext></th>
-<th><gettext>PXE</gettext></th>
-<th><gettext>Optionen</gettext></th>
+<th><a href="$newsort{room}"><!--#echo var="sort{room}" --><gettext>Raum</gettext></a></th>
+<th><a href="$newsort{name}"><!--#echo var="sort{name}" --><gettext>Hostname</gettext></a></th>
+<th><a href="$newsort{groups}"><!--#echo var="sort{groups}" --><gettext>Gruppen</gettext></a></th>
+<th><a href="$newsort{mac}"><!--#echo var="sort{mac}" --><gettext>MAC</gettext></a></th>
+<th><a href="$newsort{ip}"><!--#echo var="sort{ip}" --><gettext>IP</gettext></a></th>
+<th><a href="$newsort{pxe}"><!--#echo var="sort{pxe}" --><gettext>PXE</gettext></a></th>
+<th><a href="$newsort{opts}"><!--#echo var="sort{opts}" --><gettext>Optionen</gettext></a></th>
 <th class="wsdel" title="l&ouml;schen"><gettext>X</gettext></th>
 </tr>
 <!--#if expr="$loop_workstations" -->
