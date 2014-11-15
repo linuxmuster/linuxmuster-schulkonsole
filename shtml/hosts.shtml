@@ -44,13 +44,13 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.</gettext></p>
 
 <table id="hosts" class="liste">
 <tr>
-<th><!--#if expr="${sortingAddition}_room" --><a href="?sort=room&desc=1"><!--#else --><a href="?sort=room"><!--#endif --><gettext>Raum</gettext></a></th>
-<th><!--#if expr="${sortingAddition}_name" --><a href="?sort=name&desc=1"><!--#else --><a href="?sort=name"><!--#endif --><gettext>Hostname</gettext></a></th>
-<th><!--#if expr="${sortingAddition}_groups" --><a href="?sort=groups&desc=1"><!--#else --><a href="?sort=groups"><!--#endif --><gettext>Gruppen</gettext></a></th>
-<th><!--#if expr="${sortingAddition}_mac" --><a href="?sort=mac&desc=1"><!--#else --><a href="?sort=mac"><!--#endif --><gettext>MAC</gettext></a></th>
-<th><!--#if expr="${sortingAddition}_ip" --><a href="?sort=ip&desc=1"><!--#else --><a href="?sort=ip"><!--#endif --><gettext>IP</gettext></a></th>
-<th><!--#if expr="${sortingAddition}_pxe" --><a href="?sort=pxe&desc=1"><!--#else --><a href="?sort=pxe"><!--#endif --><gettext>PXE</gettext></a></th>
-<th><!--#if expr="${sortingAddition}_opts" --><a href="?sort=opts&desc=1"><!--#else --><a href="?sort=opts"><!--#endif --><gettext>Optionen</gettext></a></th>
+<th><a href="$newsort{room}"><!--#echo var="sort{room}" --><gettext>Raum</gettext></a></th>
+<th><a href="$newsort{name}"><!--#echo var="sort{name}" --><gettext>Hostname</gettext></a></th>
+<th><a href="$newsort{groups}"><!--#echo var="sort{groups}" --><gettext>Gruppen</gettext></a></th>
+<th><a href="$newsort{mac}"><!--#echo var="sort{mac}" --><gettext>MAC</gettext></a></th>
+<th><a href="$newsort{ip}"><!--#echo var="sort{ip}" --><gettext>IP</gettext></a></th>
+<th><a href="$newsort{pxe}"><!--#echo var="sort{pxe}" --><gettext>PXE</gettext></a></th>
+<th><a href="$newsort{opts}"><!--#echo var="sort{opts}" --><gettext>Optionen</gettext></a></th>
 <th class="wsdel" title="l&ouml;schen"><gettext>X</gettext></th>
 </tr>
 <!--#if expr="$loop_workstations" -->
