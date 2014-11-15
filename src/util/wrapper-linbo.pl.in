@@ -441,13 +441,60 @@ Writes a LINBO file
 
 $app_id == Schulkonsole::Config::LINBOWRITEAPP and do {
 	my $filename = <>;
-	($filename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.(?:reg|desc)|pxegrub\.lst\.(?:[a-z\d_]+))$/;
+	($filename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.(?:reg|desc))$/;
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		unless defined $filename;
 
 	my $file = Schulkonsole::Encode::to_fs(
 	           	"$Schulkonsole::Config::_linbo_dir/$filename");
+
+
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+
+	open FILE, '>', $file or exit -106;
+	flock FILE, 2;
+	seek FILE, 0, 0;
+
+	while (<>) {
+		print FILE;
+	}
+
+	close FILE;
+
+	exit 0;
+};
+
+=head3 linbo_write_pxe
+
+numeric constant: C<Schulkonsole::Config::LINBOWRITEPXEAPP>
+
+=head4 Description
+
+Writes a LINBO PXE start file
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<filename>
+
+=item C<lines>
+
+=cut
+
+$app_id == Schulkonsole::Config::LINBOWRITEPXEAPP and do {
+	my $filename = <>;
+	CGI::Inspect::inspect();
+	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
+	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+		unless defined $filename;
+
+	my $file = Schulkonsole::Encode::to_fs(
+	           	"$Schulkonsole::Config::_pxe_config_dir/$filename");
 
 
 	$< = $>;

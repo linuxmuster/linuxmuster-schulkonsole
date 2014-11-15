@@ -570,6 +570,10 @@ C<linbo_write>
 
 C<linbo_manage_images>
 
+=item C<LINBOWRITEPXEAPP>
+
+C<linbo_write_pxe>
+
 =back
 
 =cut
@@ -581,6 +585,7 @@ use constant {
 	LINBODELETEAPP => 13004,
 	LINBOWRITEAPP => 13005,
 	LINBOIMAGEAPP => 13006,
+	LINBOWRITEPXEAPP => 13007,
 };
 
 
@@ -701,6 +706,10 @@ Default network settings
 
 LINBO directory
 
+=item C<$_pxe_config_dir>
+
+PXE Config directory
+
 =item C<$_linbo_start_conf_prefix>
 
 Prefix of start.conf.* files
@@ -732,7 +741,7 @@ This file defines the actual allowed wlan classes/projects
 use vars qw($_workstations_file $_room_defaults_file $_classrooms_file
             $_printers_file
             $_network_settings_file
-            $_linbo_dir $_linbo_start_conf_prefix
+            $_linbo_dir $_pxe_config_dir $_linbo_start_conf_prefix
             $_linbo_templates_dir $_linbo_templates_os_dir
             $_linbo_template_partition
             $_backup_conf_file $_dhcpd_conf_file
@@ -1140,6 +1149,7 @@ $_printers_file = $lml_env{PRINTERS};
 $_classrooms_file = $lml_env{CLASSROOMS};
 $_network_settings_file = $lml_env{NETWORKSETTINGS};
 $_linbo_dir = $lml_env{LINBODIR};
+$_pxe_config_dir = $lml_env{PXECONFIGDIR};
 $_linbo_templates_dir = '@datadir@/@PACKAGE@/linbo/templates';
 $_linbo_templates_os_dir = "$_linbo_templates_dir/os";
 $_linbo_template_partition = "$_linbo_templates_dir/part/start.conf.partition";
@@ -1244,6 +1254,7 @@ $_wrapper_radius = '@pkglibexecdir@/bin/wrapper-radius';
 	LINBOCOPYREGPATCHAPP() => 'copy_regpatch',
 	LINBODELETEAPP() => 'linbo_delete',
 	LINBOWRITEAPP() => 'linbo_write',
+	LINBOWRITEPXEAPP() => 'linbo_write_pxe',
 	LINBOIMAGEAPP() => 'linbo_manage_images',
 );
 

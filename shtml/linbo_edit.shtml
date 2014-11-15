@@ -59,25 +59,35 @@
 <td><!--#echo var="group" --><input type="hidden" name="group" value="$group"></td>
 </tr>
 <tr class="even">
+<td><label for="linbo_systemtype"><gettext>System-Typ</gettext>:</label></td>
+<td>
+<select name="linbo_systemtype">
+<option value="bios"><gettext>Bios</gettext></option>
+<option value="bios64"><gettext>Bios64</gettext></option>
+<option value="efi32"><gettext>EFI32</gettext></option>
+<option value="efi64"><gettext>EFI64</gettext></option>
+</td>
+</tr>
+<tr class="odd">
 <td><label for="linbo_roottimeout"><gettext>automatischer Rootlogout nach</gettext>:</label></td>
 <td><input id="linbo_roottimeout" name="linbo_roottimeout"> <gettext>Sekunden</gettext></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><label for="linbo_autopartition"><gettext>Automatische Partitionsreparatur</gettext>:</label></td>
 <td><!--#if expr="$linbo_autopartition" --><input type="checkbox" id="linbo_autopartition" name="linbo_autopartition" checked>
 <!--#else --><input type="checkbox" id="linbo_autopartition" name="linbo_autopartition"><!--#endif --></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><label for="linbo_autoformat"><gettext>Automatisches Formatieren</gettext>:</label></td>
 <td><!--#if expr="$linbo_autoformat" --><input type="checkbox" id="linbo_autoformat" name="linbo_autoformat" checked>
 <!--#else --><input type="checkbox" id="linbo_autoformat" name="linbo_autoformat"><!--#endif --></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><label for="linbo_autoinitcache"><gettext>Automatisches Einrichten des Caches</gettext>:</label></td>
 <td><!--#if expr="$linbo_autoinitcache" --><input type="checkbox" id="linbo_autoinitcache" name="linbo_autoinitcache" checked>
 <!--#else --><input type="checkbox" id="linbo_autoinitcache" name="linbo_autoinitcache"><!--#endif --></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><label for="linbo_downloadtype"><gettext>Downloadtype ausw&auml;hlen</gettext>:</label></td>
 <td>
 <select name="linbo_downloadtype">
@@ -87,19 +97,19 @@
 </select>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><label for="linbo_backgroundfontcolor"><gettext>Bildschirmschriftfarbe</gettext>:</label></td>
 <td><input id="linbo_backgroundfontcolor" name="linbo_backgroundfontcolor" value="white"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><label for="linbo_consolefontcolorstdout"><gettext>Konsolenschriftfarbe</gettext>:</label></td>
 <td><input id="linbo_consolefontcolorstdout" name="linbo_consolefontcolorstdout" value="white"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><label for="linbo_consolefontcolorstderr"><gettext>Konsolenschriftfarbe f&uuml;r Fehler- und Warnmeldungen</gettext>:</label></td>
 <td><input id="linbo_consolefontcolorstderr" name="linbo_consolefontcolorstderr" value="red"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><label for="linbo_kerneloptions"><gettext>LINBO-Kerneloptionen</gettext>:</label></td>
 <td><input id="linbo_kerneloptions" name="linbo_kerneloptions" value=""></td>
 </tr>
