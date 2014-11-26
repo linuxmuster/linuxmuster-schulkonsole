@@ -179,12 +179,14 @@ Writes lines into a start.conf.<group>
 
 $app_id == Schulkonsole::Config::LINBOCOPYSTARTCONFAPP and do {
 	my $src = <>;
+	chomp $src;
 	($src) = $src =~ /^([a-z\d_]+[^\/]*)$/;
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_GROUP
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		unless defined $src;
 
 	my $dest = <>;
+	chomp $dest;
 	($dest) = $dest =~ /^([a-z\d_]+)$/;
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_GROUP
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
