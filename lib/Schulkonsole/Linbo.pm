@@ -51,6 +51,10 @@ $VERSION = 0.0917;
 
 	update_linbofs
 	read_start_conf
+	set_partition_id
+	set_partition_type
+	find_free_dev
+	partition_insert_sorted
 	get_conf_from_query
 	write_start_conf
 	copy_start_conf
@@ -1509,6 +1513,112 @@ sub set_partition_id {
     $$partition{id} = $id;
 
 }
+
+=head2 find_free_dev($partitions)
+
+Find first free partition in partitions hash
+
+=head3 Parameteres
+
+=over
+
+=item C<$partitions>
+
+The hash of the partitions indexed by number sorted
+by device
+
+=back
+
+=head3 Return value
+
+A device name string
+    
+=head3 Description
+
+Cycles through device names until a gap is found. Otherwise
+append device at the end.
+
+=cut
+
+sub find_free_dev {
+    my $partitions = shift;
+    
+    my $dev_name = '/dev/sda';
+    my $dev_nr = 1;
+    my $device = $dev_name . $dev_nr;
+    my $found = 0;
+    if (%{ $partitions} ) {
+        my $frei = 1;
+        do {
+            foreach my $np (keys %$partitions) {
+                $frei = 0 if ($device eq $$partitions{$np}{dev});
+            }
+            $found = $device if ($frei);
+            $dev_nr++;
+            $device = $dev_name . $dev_nr;
+            $frei = 1;
+        } while(not $found and ($dev_nr < 100));
+    }
+    return $found;
+}
+
+
+=head2 partition_insert_sorted($partitions, $partition)
+
+Append C<$partition> to C<$partitions> and then resort according
+to device names
+
+=head3 Parameters
+
+=over
+
+=item C<$partitions>
+
+The hash of the partitions indexed by number sorted
+by device
+
+=item C<$partition>
+
+The hash of the new partition to be inserted
+
+=back
+
+=head3 Return value
+
+The new partitions hash
+    
+=head3 Description
+
+Append C<$partition> and resort.
+
+=cut
+
+sub partition_insert_sorted {
+    my $partitions = shift;
+    my $partition = shift;
+    
+    my @devs;
+    foreach my $part (values $partitions) {
+        push @devs, $part;
+    }
+    push @devs, $partition;
+    $partitions = ();
+    my $nn = 0;
+    foreach my $n (sort {
+            my ($name_a, $number_a)
+                    = $devs[$a]{dev} =~ /^(.*?)(\d*)$/;
+            my ($name_b, $number_b)
+                    = $devs[$b]{dev} =~ /^(.*?)(\d*)$/;
+
+            return (   $name_a cmp $name_b
+                    or $number_a <=> $number_b);
+            } keys @devs) {
+        $$partitions{$nn} = $devs[$n];
+        $nn++;
+    }
+    return \%$partitions;
+}
+
 
 =head2 copy_start_conf($id, $password, $src, $dest)
 

@@ -126,26 +126,27 @@ Name of the selected group
                         last SWITCHCOMMAND;
                 };
                 $cmd eq 'deleteos' and do {
-                        die unless (    $$conf{action_partition}
-                                    and $$conf{action_os});
-
-                        my $oss = $$conf{action_partition}{oss};
+                        die unless (    defined $$conf{action_partition}
+                                    and defined $$conf{action_os});
+                        my $np = $$conf{action_partition};
+                        my $nos = $$conf{action_os};
+                        my $oss = $$conf{partitions}{$np}{oss};
                         if (@$oss == 1) {
-                                delete $$conf{action_partition}{oss}
+                                delete $$conf{partitions}{$np}{oss}
                         } else {
-                                my $delete_os = $$conf{action_os};
+                                my $delete_os = $$conf{partitions}{$np}{oss}{$nos};
                                 %$delete_os = ();
                         }
 
-                        $$conf{action_partition}{is_edited} = 1;
+                        $$conf{partitions}{$np}{is_edited} = 1;
 
                         last SWITCHCOMMAND;
                 };
                 $cmd eq 'modify' and do {
-                        die unless $$conf{action_partition};
-                        my $n = $$conf{action_partition};
-                        my $partition = $$conf{partitions}{$n};
-                        my $new_system = $q->param("${n}_modifynew");
+                        die unless defined $$conf{action_partition};
+                        my $np = $$conf{action_partition};
+                        my $partition = $$conf{partitions}{$np};
+                        my $new_system = $q->param("${np}_modifynew");
 
                         SWITCHNEWSYSTEM: {
                         $new_system eq 'windows' and do {
@@ -156,7 +157,7 @@ Name of the selected group
                                     and $$partition{id} != 0x0c) {
                                         $$partition{id} = 0x0c;
                                         $$partition{fstype} = 'ntfs';
-                                        $q->param("${n}_fstype", $$partition{fstype}) if defined $n;
+                                        $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
                                 }
                                 if (not $$partition{oss}) {
                                         my %new_os = (
@@ -176,7 +177,7 @@ Name of the selected group
                                 if ($$partition{id} != 0x83) {
                                         $$partition{id} = 0x83;
                                         $$partition{fstype} = 'ext3';
-                                        $q->param("${n}_fstype", $$partition{fstype}) if defined $n;
+                                        $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
                                 }
                                 if (not $$partition{oss}) {
                                         my %new_os = (
@@ -198,7 +199,7 @@ Name of the selected group
                                     || $$partition{id} == 0x05) {
                                         $$partition{id} = 0x83;
                                         $$partition{fstype} = 'ext3';
-                                        $q->param("${n}_fstype", $$partition{fstype}) if defined $n;
+                                        $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
                                 }
 
                                 last SWITCHNEWSYSTEM;
@@ -210,7 +211,7 @@ Name of the selected group
                                 $$partition{type} = 'swap';
                                 $$partition{id} = 0x82;
                                 $$partition{fstype} = 'swap';
-                                $q->param("${n}_fstype", $$partition{fstype}) if defined $n;
+                                $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
 
                                 last SWITCHNEWSYSTEM;
                         };
@@ -222,7 +223,7 @@ Name of the selected group
                                 if ($$partition{id} != 0x83) {
                                         $$partition{id} = 0x83;
                                         $$partition{fstype} = 'ext4';
-                                        $q->param("${n}_fstype", $$partition{fstype}) if defined $n;
+                                        $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
                                 }
 
                                 last SWITCHNEWSYSTEM;
@@ -234,7 +235,7 @@ Name of the selected group
                                 $$partition{type} = 'ext';
                                 $$partition{id} = 0x05;
                                 $$partition{fstype} = '';
-                                $q->param("${n}_fstype", $$partition{fstype}) if defined $n;
+                                $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
 
                                 last SWITCHNEWSYSTEM;
                         };
@@ -246,7 +247,7 @@ Name of the selected group
                                 $$partition{id} = 0xef;
                                 $$partition{fstype} = 'vfat';
                                 $$partition{bootable} = 1;
-                                $q->param("${n}_fstype", $$partition{fstype}) if defined $n;
+                                $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
 
                                 last SWITCHNEWSYSTEM;
                         };
@@ -255,33 +256,24 @@ Name of the selected group
                         last SWITCHCOMMAND;
                 };
                 $cmd eq 'delete' and do {
-                        die unless $$conf{action_partition};
-
+                        die unless defined $$conf{action_partition};
+                        my $np = $$conf{action_partition};
                         undef $$conf{linbo}{cache}
-                                if $$conf{linbo}{cache} eq $$conf{action_partition}{dev};
-                        delete $$conf{partitions}{$$conf{action_partition}};
+                                if $$conf{linbo}{cache} eq $$conf{partitions}{$np}{dev};
+                        delete $$conf{partitions}{$np};
 
 
                         last SWITCHCOMMAND;
                 };
                 (   $cmd eq 'adddevtop'
                  or $cmd eq 'adddevbottom') and do {
-                        my $new_dev;
-                        if (%{ $$conf{partitions} }) {
-                                my $last_dev = $$conf{partitions}{$devs[-1]}{dev};
-                                my ($name, $number) = $last_dev =~ /^(.*?)(\d*)$/;
-                                $new_dev = $name . (1 + $number);
-                        } else {
-                                $new_dev = '/dev/sda1';
-                        }
-
+                        my $np = $$conf{partitions_cnt};
                         my %partition = (
-                                dev => $new_dev,
+                                dev => $np>0?Schulkonsole::Linbo::find_free_dev($$conf{partitions}):'/dev/sda1',
                         );
 
                         my $new_system = $q->param($cmd eq 'adddevtop' ?
                                                 'adddevnewtop' : 'adddevnewbottom');
-
                         SWITCHNEWDEV: {
                         $new_system eq 'windows' and do {
                                 $partition{type} = 'windows';
@@ -348,8 +340,15 @@ Name of the selected group
                         die;
                         }
 
-
-                        $$conf{partitions}{$new_dev} = \%partition;
+                        if ($np == 0) {
+                                $$conf{partitions}{$np} = \%partition;
+                        }
+                        else {
+                            $$conf{partitions} =
+                                Schulkonsole::Linbo::partition_insert_sorted(
+                                                $$conf{partitions},\%partition);
+                        }
+                        $$conf{partitions_cnt} = scalar(keys $$conf{partitions});
 
                         last SWITCHCOMMAND;
                 };
@@ -409,8 +408,7 @@ Name of the selected group
                         my ($name_b, $number_b) = $$partitions{$b}{dev} =~ /^(.*?)(\d*)$/;
 
                         return (   $name_a cmp $name_b
-                                or $number_a <=> $number_b
-                                or $a cmp $b);
+                                or $number_a <=> $number_b);
                 }
                 keys %$partitions) {
 
@@ -502,7 +500,6 @@ Array of hashes describing the devices with the keys
 if ($@) {
         $sk_session->standard_error_handling($this_file, $@);
 }
-
 
 
 
