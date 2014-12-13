@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: entwickler@lml.mine.nu\n"
-"POT-Creation-Date: 2014-11-13 11:04+0100\n"
+"POT-Creation-Date: 2014-11-15 13:37+0100\n"
 "PO-Revision-Date: 2014-04-06 14:22+0200\n"
 "Last-Translator: root <root@linuxmuster.lokal>\n"
 "Language-Team: English\n"
@@ -135,7 +135,7 @@ msgstr "Password set"
 msgid "Kein Passwort eingegeben"
 msgstr "No password entered"
 
-#: src/cgi-bin/class_shares.in:102 src/cgi-bin/hosts.in:178
+#: src/cgi-bin/class_shares.in:102 src/cgi-bin/hosts.in:172
 #: src/cgi-bin/project_shares.in:124 src/cgi-bin/quotas_classes.in:160
 #: src/cgi-bin/quotas_others.in:201 src/cgi-bin/quotas_projects.in:161
 #: src/cgi-bin/quotas_projects.in:287 src/cgi-bin/quotas_teachers.in:132
@@ -144,7 +144,7 @@ msgstr "No password entered"
 msgid "&Auml;nderungen &uuml;bernommen."
 msgstr "Changes applied."
 
-#: src/cgi-bin/class_shares.in:105 src/cgi-bin/hosts.in:183
+#: src/cgi-bin/class_shares.in:105 src/cgi-bin/hosts.in:177
 #: src/cgi-bin/project_shares.in:127 src/cgi-bin/quotas_classes.in:163
 #: src/cgi-bin/quotas_others.in:205 src/cgi-bin/quotas_projects.in:164
 #: src/cgi-bin/quotas_projects.in:291 src/cgi-bin/quotas_teachers.in:136
@@ -152,39 +152,39 @@ msgstr "Changes applied."
 msgid "Keine &Auml;nderungen."
 msgstr "No changes."
 
-#: src/cgi-bin/hosts.in:188
+#: src/cgi-bin/hosts.in:182
 msgid "ignoriert: "
 msgstr "ignored: "
 
-#: src/cgi-bin/hosts.in:216
+#: src/cgi-bin/hosts.in:210
 msgid "Workstations werden importiert"
 msgstr "Work stations are being imported"
 
-#: src/cgi-bin/hosts.in:219
+#: src/cgi-bin/hosts.in:213
 msgid "Keine Workstations zu importieren"
 msgstr "No work stations to import"
 
-#: src/cgi-bin/hosts.in:343
+#: src/cgi-bin/hosts.in:371
 msgid "ung&uuml;ltiger Raumname"
 msgstr "Invalid room name"
 
-#: src/cgi-bin/hosts.in:346
+#: src/cgi-bin/hosts.in:374
 msgid "ung&uuml;ltiger Name"
 msgstr "Invalid name"
 
-#: src/cgi-bin/hosts.in:348
+#: src/cgi-bin/hosts.in:376
 msgid "ung&uuml;ltige Gruppen"
 msgstr "Invalid groups"
 
-#: src/cgi-bin/hosts.in:350
+#: src/cgi-bin/hosts.in:378
 msgid "ung&uuml;ltige MAC"
 msgstr "Invalid MAC"
 
-#: src/cgi-bin/hosts.in:358
+#: src/cgi-bin/hosts.in:386
 msgid "ung&uuml;ltige IP"
 msgstr "Invalid IP"
 
-#: src/cgi-bin/hosts.in:360
+#: src/cgi-bin/hosts.in:388
 msgid "ung&uuml;ltige Optionen"
 msgstr "Invalid options"
 
@@ -203,8 +203,8 @@ msgstr "%s is not an image"
 
 #: src/cgi-bin/linbo_images.in:72 src/cgi-bin/linbo_images.in:110
 #: src/cgi-bin/linbo_images.in:171 src/cgi-bin/linbo_images.in:205
-#: src/cgi-bin/linbo_pxeedit.in:72 src/cgi-bin/linbo_pxeedit.in:105
-#: src/cgi-bin/linbo_pxeedit.in:138 src/cgi-bin/linbo_regpatchedit.in:149
+#: src/cgi-bin/linbo_pxeedit.in:72 src/cgi-bin/linbo_pxeedit.in:98
+#: src/cgi-bin/linbo_pxeedit.in:131 src/cgi-bin/linbo_regpatchedit.in:149
 #: src/cgi-bin/linbo_regpatchedit.in:182 src/cgi-bin/linbo_regpatchedit.in:215
 #, perl-format
 msgid "%s existiert nicht"
@@ -251,14 +251,14 @@ msgstr "%s could not be copied to %s"
 msgid "%s ist keine Beschreibungsdatei"
 msgstr "%s is not a description file"
 
-#: src/cgi-bin/linbo_images.in:186 src/cgi-bin/linbo_pxeedit.in:120
+#: src/cgi-bin/linbo_images.in:186 src/cgi-bin/linbo_pxeedit.in:113
 #: src/cgi-bin/linbo_regpatchedit.in:197
 #, perl-format
 msgid "%s geschrieben"
 msgstr "%s written"
 
 #: src/cgi-bin/linbo_images.in:232 src/cgi-bin/linbo_images.in:283
-#: src/cgi-bin/linbo_images.in:326 src/cgi-bin/linbo_pxeedit.in:167
+#: src/cgi-bin/linbo_images.in:326 src/cgi-bin/linbo_pxeedit.in:160
 #: src/cgi-bin/linbo_regpatchedit.in:129 src/cgi-bin/linbo_regpatchedit.in:244
 #, perl-format
 msgid "Kann Datei %s nicht &ouml;ffnen"
@@ -365,7 +365,7 @@ msgstr "Hard drive for the chosen group configuration is too small"
 msgid "Konfigurationsdatei erstellt"
 msgstr "Configuration file created"
 
-#: src/cgi-bin/linbo_pxeedit.in:66 src/cgi-bin/linbo_pxeedit.in:99
+#: src/cgi-bin/linbo_pxeedit.in:66
 #, perl-format
 msgid "%s ist keine PXE-Start-Datei"
 msgstr "%s is not a PXE startup file"

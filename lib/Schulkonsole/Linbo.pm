@@ -82,6 +82,7 @@ use vars qw(%_allowed_keys);
 		id => 3,
 		fstype => 1,
 		bootable => 4,
+		type => 1,
 	},
 	2 => {	# [OS]
 		name => 1,
@@ -459,7 +460,10 @@ The name of a group
 =head3 Return value
 
 A reference to a hash with the following keys and values:
-
+linbo hash with linbo section
+partitions hash indexed by number with partition sections
+    sorted by device
+    
 =head3 Description
 
 Reads /var/linbo/start.conf.<group>, where group is C<$group> and returns
@@ -478,7 +482,7 @@ sub read_start_conf {
 	seek CONF, 0, 0;
 
 
-	my %partitions;
+	my @devs;
 	my @oss;
 	my %linbo;
 	my $partition = {};
@@ -495,12 +499,11 @@ sub read_start_conf {
 				push @oss, $os;
 				$os = {};
 			} elsif (%$partition) {
-				if (not $$partition{dev}) {
-					$partitions{"? $unnamed_partitions_cnt"} = $partition;
-					$unnamed_partitions_cnt++;
-				} else {
-					$partitions{$$partition{dev}} = $partition;
-				}
+                                if (not $$partition{dev}) {
+                                    $$partition{dev} = "? $unnamed_partitions_cnt";
+                                    $unnamed_partitions_cnt++;
+                                }
+				push @devs, $partition;
 				$partition = {};
 			}
 
@@ -552,25 +555,25 @@ sub read_start_conf {
 		push @oss, $os;
 		$os = {};
 	} elsif (%$partition) {
-		if (not $$partition{dev}) {
-			$partitions{"? $unnamed_partitions_cnt"} = $partition;
-			$unnamed_partitions_cnt++;
-		} else {
-			$partitions{$$partition{dev}} = $partition;
-		}
+		push @devs, $partition;
 		$partition = {};
 	}
 
-
-
+        # Zuordnung zwischen Partitionseintrag und OS
 	foreach my $os (@oss) {
 		my $partition = $$os{root};
-
-		if (not exists $partitions{$partition}) {
-			$partitions{$partition} = {
+                my $n = -1;
+                for my $i (0 .. $#devs) {
+                        if($partition eq $devs[$i]{dev}) {
+                                $n = $i;
+                        }
+                }
+		if ($n == -1) {
+			push @devs, {
 					dev => $partition,
 					id => ($$os{kernel} eq ('grub.exe' || 'reboot') ? 0x07 : 0x83),
 				};
+                        $n = @devs[-1];
 		}
 
 		if (not $$os{baseimage}) {
@@ -584,13 +587,33 @@ sub read_start_conf {
 
 		$$os{image} =~ s/\.rsync$//;
 
-		push @{ $partitions{$partition}{oss} }, $os;
+		push @{ $devs[$n]{oss} }, $os;
 	}
+        
+        # sort partitions by device
+        my %partitions;
+        my $nn = 0;
+        foreach my $n (sort {
+                my ($name_a, $number_a)
+                        = $devs[$a]{dev} =~ /^(.*?)(\d*)$/;
+                my ($name_b, $number_b)
+                        = $devs[$b]{dev} =~ /^(.*?)(\d*)$/;
 
+                return (   $name_a cmp $name_b
+                        or $number_a <=> $number_b);
+                } keys @devs) {
+            $partitions{$nn} = $devs[$n];
+            $nn++;
+        }
+        
+	foreach my $partition (values %partitions) {
+                set_partition_type(\%{$partition}, \%linbo);
+        }
 
 	return {
 		partitions => \%partitions,
 		linbo => \%linbo,
+		partitions_cnt => scalar(keys %partitions),
 	};
 }
 
@@ -859,7 +882,6 @@ sub check_and_prepare_start_conf {
 		}
 	}
 
-
 	die new Schulkonsole::Error(Schulkonsole::Error::Linbo::START_CONF_ERROR,
 	                            \%errors)
 		if %errors;
@@ -1084,6 +1106,7 @@ sub write_start_conf {
 	my $conf = shift;
 
 	$$conf{linbo}{group} = $group;
+
 	my $start_conf = check_and_prepare_start_conf($conf);
 
 
@@ -1388,7 +1411,104 @@ sub write_start_conf {
 }
 
 
+=head2 set_partition_type($partition, $linbo)
 
+Set Partition type for partition.
+
+=head3 Parameteres
+
+=over
+
+=item C<$partition>
+
+The hash of the partition
+
+=item C<$linbo>
+
+The hash of linbo section
+
+=back
+
+=head3 Description
+
+Add the key C<type> to the hash partition of the
+specified partition. C<type> can have the values 
+C<windows> for a partition holding a Windows OS,
+C<gnulinux> for a partition holding a GNU/Linux OS,
+C<data> for a data partition,
+C<swap> for a swap partition,
+C<cache> for the cache partition,
+C<ext> for an extended parition,
+C<efi> for an EFI partition.
+
+=cut
+
+sub set_partition_type {
+    my $partition = shift;
+    my $linbo = shift;
+
+    if ($$partition{id} == 0x05) {
+            $$partition{type} = 'ext';
+    } elsif (    exists $$partition{oss}
+                and @{ $$partition{oss} }) {
+            if ($$partition{id} == 0x83) {
+                    $$partition{type} = 'gnulinux';
+            } else {
+                    $$partition{type} = 'windows';
+            }
+    } elsif ($$partition{id} == 0x82) {
+            $$partition{type} = 'swap';
+    } elsif ($$partition{dev} eq $$linbo{cache}) {
+            $$partition{type} = 'cache';
+    } elsif ($$partition{id} == 0xef) {
+            $$partition{type} = 'efi';
+    } else {
+            $$partition{type} = 'data';
+    }
+
+}
+
+=head2 set_partition_id($partition)
+
+Set Partition id for partition.
+
+=head3 Parameteres
+
+=over
+
+=item C<$partition>
+
+The hash of the partition
+
+=back
+
+=head3 Description
+
+Add the key C<id> to the hash partition of the
+specified partition.
+
+=cut
+
+sub set_partition_id {
+    my $partition = shift;
+    
+    my $fstype = $$partition{fstype};
+    my $type = $$partition{type};
+    my $id;
+    
+        ((   $fstype eq 'ext2'
+            or $fstype eq 'ext3'
+            or $fstype eq 'reiserfs') and $id = 0x83)
+    or ($fstype eq 'swap' and $id = 0x82)
+    or ($type eq 'efi' and $fstype eq 'vfat' and $id = 0xef)
+    or ($fstype eq 'vfat' and $id = 0x0c)
+    or ($fstype eq 'ntfs' and $id = 0x07)
+    or (not $fstype and $id = 0x05)
+    or ($fstype = 'ext3' and $id = 0x83);   # fallback
+
+    $$partition{id} = $id;
+
+}
 
 =head2 copy_start_conf($id, $password, $src, $dest)
 
@@ -1728,7 +1848,7 @@ sub get_conf_from_query {
 	my @os_params;
 	my %linbo_params;
 	my $cache_hd;
-	foreach my $param ($q->param) {
+foreach my $param ($q->param) {
 		if (my ($dev_n, $os_n, $key) = $param =~ /^(\d+)\.(\d+)_(.+)$/) {
 			if ($_allowed_keys{2}{$key}) {
 				$os_params[$dev_n][$os_n]{$key} = $q->param($param);
@@ -1760,30 +1880,16 @@ sub get_conf_from_query {
 
 	return undef unless $submit;
 
-
 	my %partitions;
 	for (my $dev_n = 0; $dev_n < @partition_params; $dev_n++) {
 		next unless $partition_params[$dev_n];
 
-		$partitions{$dev_n}{n} = $dev_n;
 		foreach my $key (keys %{ $_allowed_keys{1} }) {
 			$partitions{$dev_n}{$key} = $partition_params[$dev_n]{$key};
 		}
-
-		my $fstype = $partitions{$dev_n}{fstype};
-		my $id;
-		   ((   $fstype eq 'ext2'
-		     or $fstype eq 'ext3'
-		     or $fstype eq 'reiserfs') and $id = 0x83)
-		or ($fstype eq 'swap' and $id = 0x82)
-		or ($fstype eq 'vfat' and $id = 0x0c)
-		or ($fstype eq 'ntfs' and $id = 0x07)
-		or (not $fstype and $id = 0x05)
-		or ($fstype = 'ext3' and $id = 0x83);	# fallback
-
-		$partitions{$dev_n}{id} = $id;
+		
+		set_partition_id(\%{ $partitions{$dev_n}});
 	}
-
 
 	my $autostart = $q->param('autostart');
 
@@ -1817,31 +1923,26 @@ sub get_conf_from_query {
 
 
 	if (defined $submit_dev_n) {
-		if (defined $partitions{$submit_dev_n}) {
-			$submit_partition
-				= $partitions{$submit_dev_n};
-
-			if (defined $submit_os_n) {
-				if (defined $os_params[$submit_dev_n][$submit_os_n]) {
-					$submit_os = $os_params[$submit_dev_n][$submit_os_n];
-				} else {
-					return undef;
-				}
-			}
-		} else {
+		if (not defined $partitions{$submit_dev_n}) {
 			return undef;
-		}
+		} elsif (defined $submit_os_n) {
+                        if (not defined $os_params[$submit_dev_n][$submit_os_n]) {
+                                return undef;
+                        }
+                }
 	}
 
-
+	foreach my $partition (values %partitions) {
+            set_partition_type(\%{$partition}, \%linbo_params);
+        }
 
 	return {
 		partitions => \%partitions,
 		linbo => \%linbo_params,
 		partitions_cnt => scalar(@partition_params),
 		action => $submit,
-		action_partition => $submit_partition,
-		action_os => $submit_os,
+		action_partition => $submit_dev_n,
+		action_os => $submit_os_n,
 	};
 }
 

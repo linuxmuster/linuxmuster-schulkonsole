@@ -490,7 +490,6 @@ Writes a LINBO PXE start file
 
 $app_id == Schulkonsole::Config::LINBOWRITEPXEAPP and do {
 	my $filename = <>;
-	CGI::Inspect::inspect();
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		unless defined $filename;
