@@ -1410,8 +1410,6 @@ sub write_start_conf {
 
 	stop_wrapper($pid, undef, \*SCRIPTIN, \*SCRIPTIN);
 
-	# update linbofs
-	update_linbofs($id, $password);
 }
 
 
@@ -2246,8 +2244,6 @@ sub delete_image {
 
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	# update linbofs
-	update_linbofs($id, $password);
 }
 
 
@@ -2302,8 +2298,6 @@ sub move_image {
 
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	# update linbofs
-	update_linbofs($id, $password);
 }
 
 
@@ -2357,8 +2351,6 @@ sub copy_image {
 
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	# update linbofs
-	update_linbofs($id, $password);
 }
 
 
