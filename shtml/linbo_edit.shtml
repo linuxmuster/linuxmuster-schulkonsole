@@ -124,6 +124,7 @@
 <option value="swap"><gettext>Swap</gettext></option><!--#if expr="$iscached" --><!--#else -->
 <option value="cache"><gettext>Cache</gettext></option><!--#endif -->
 <option value="ext"><gettext>erweitert</gettext></option>
+<option value="efi"><gettext>EFI</gettext></option>
 </select>
 </p>
 
@@ -137,22 +138,38 @@
 <!--#if expr="$loop_devs" -->
 <!--#if expr="$devs{os}" -->
 <!--#if expr="$loop_devs{os}" -->
-<!--#if expr="$devs{os}{isnew}" --><table id="edit" class="settings"><!--#else --><!--#if expr="${devs{os}{isfirst}}" --><!--#if expr="$devs{isedited}" --><table id="edit" class="settings"><!--#else --><table class="settings"><!--#endif --><!--#else --><table class="settings"><!--#endif --><!--#endif -->
+<!--#if expr="$devs{os}{isnew}" -->
+	<table id="edit" class="settings">
+<!--#else -->
+	<!--#if expr="${devs{os}{isfirst}}" -->
+		<!--#if expr="$devs{isedited}" -->
+			<table id="edit" class="settings">
+		<!--#else -->
+			<table class="settings">
+		<!--#endif -->
+	<!--#else -->
+		<table class="settings">
+	<!--#endif -->
+<!--#endif -->
 <colgroup>
 <col width="60%">
 <col width="40%">
 </colgroup>
-<tr class="odd">
-<td><gettext>System</gettext>:</td>
-<td>
+<tr class="even">
+<td><b><gettext>System</gettext>:</b></td>
+<td><input type="hidden" name="${devs{n}}_type" value="$devs_type"><b>
 <!--#if expr="$devs{iswindows}" -->
 	<gettext>MS Windows</gettext>
 <!--#else -->
 	<gettext>GNU/Linux</gettext>
 <!--#endif -->
-</td>
+</b></td>
 </tr>
 <!--#if expr="${devs{os}{isfirst}}" -->
+<tr class="odd">
+<td><label for="${devs{n}}_label"><gettext>Name der Partition</gettext>:</label></td>
+<td><input id="${devs{n}}_label" name="${devs{n}}_label"></td>
+</tr>
 <tr class="even">
 <td><label for="${devs{n}}_dev"><gettext>Devicename der Partition</gettext>:</label></td>
 <td><input id="${devs{n}}_dev" name="${devs{n}}_dev"></td>
@@ -182,6 +199,10 @@
 <!--#else --><input type="checkbox" id="${devs{n}}_bootable" name="${devs{n}}_bootable"><!--#endif --></td>
 </tr>
 <!--#else -->
+<tr class="odd">
+<td><gettext>Name der Partition</gettext>:</td>
+<td><!--#echo var="devs{label}" --></td>
+</tr>
 <tr class="even">
 <td><gettext>Devicename der Partition</gettext>:</td>
 <td><!--#echo var="devs{dev}" --></td>
@@ -302,6 +323,7 @@
 <!--#if expr="$devs{isswap}" --><!--#else --><option value="swap"><gettext>Swap</gettext></option><!--#endif -->
 <!--#if expr="$devs{iscache}" --><!--#else --><!--#if expr="$iscached" --><!--#else --><option value="cache"><gettext>Cache</gettext></option><!--#endif --><!--#endif -->
 <!--#if expr="$devs{isext}" --><!--#else --><option value="ext"><gettext>erweitert</gettext></option><!--#endif -->
+<!--#if expr="$devs{isefi}" --><!--#else --><option value="efi"><gettext>EFI</gettext></option><!--#endif -->
 </select>&nbsp;<input type="submit" name="${devs{n}}_modify" value="System &auml;ndern"></p>
 <!--#endif -->
 <p><input type="submit" name="${devs{os}{n}}_deleteos" value="Betriebssystem l&ouml;schen"><br>
@@ -317,25 +339,35 @@
 <col width="60%">
 <col width="40%">
 </colgroup>
-<tr class="odd">
-<td><gettext>System</gettext>:</td>
+<tr class="even">
+<td><b><gettext>System</gettext>:</b></td>
 <td>
+<input type="hidden" name="${devs{n}}_type" value="$devs{type}"><b>
 <!--#if expr="$devs{isdata}" -->
-	<gettext>Daten</gettext>
+        <gettext>Daten</gettext>
 <!--#else -->
-	<!--#if expr="$devs{isswap}" -->
-		<gettext>Swap</gettext>
-	<!--#else -->
-		<!--#if expr="$devs{iscache}" -->
-			<gettext>Cache</gettext>
-		<!--#else -->
-			<!--#if expr="$devs{isext}" -->
-				<gettext>erweiterte Partition</gettext>
-			<!--#endif -->
-		<!--#endif -->
-	<!--#endif -->
+        <!--#if expr="$devs{isswap}" -->
+                <gettext>Swap</gettext>
+        <!--#else -->
+                <!--#if expr="$devs{iscache}" -->
+                        <gettext>Cache</gettext>
+                <!--#else -->
+                        <!--#if expr="$devs{isext}" -->
+                                <gettext>erweiterte Partition</gettext>
+                        <!--#else -->
+                                <!--#if expr="$devs{isefi}" -->
+                                        <gettext>EFI</gettext>
+                                <!--#endif -->
+                        <!--#endif -->
+                <!--#endif -->
+        <!--#endif -->
 <!--#endif -->
+</b>
 </td>
+</tr>
+<tr class="odd">
+<td><label for="${devs{n}}_label"><gettext>Name der Partition</gettext>:</label></td>
+<td><input id="${devs{n}}_label" name="${devs{n}}_label"></td>
 </tr>
 <tr class="even">
 <td><label for="${devs{n}}_dev"><gettext>Devicename der Partition</gettext>:</label></td>
@@ -363,6 +395,9 @@
 <option value="reiserfs"><gettext>ReiserFS</gettext></option>
 </select>
 <!--#else -->
+<!--#if expr="$devs{isefi}" -->
+<input type="hidden" id="${devs{n}}_fstype" name="${devs{n}}_fstype" value="vfat"><label><gettext>VFAT</gettext></label>
+<!--#else -->
 <select id="${devs{n}}_fstype" name="${devs{n}}_fstype">
 <option value="vfat"><gettext>VFAT</gettext></option>
 <option value="ntfs"><gettext>NTFS</gettext></option>
@@ -371,7 +406,15 @@
 <option value="reiserfs"><gettext>ReiserFS</gettext></option>
 </select>
 <!--#endif -->
+<!--#endif -->
 </td>
+<!--#if expr="$devs{isefi}" -->
+<tr class="odd">
+<td><label for="${devs{n}}_bootable"><gettext>Partition bootbar:</gettext></label></td>
+<td><!--#if expr="$devs{bootable}" --><input type="checkbox" id="${devs{n}}_bootable" name="${devs{n}}_bootable" checked disabled>
+<!--#else --><input type="checkbox" id="${devs{n}}_bootable" name="${devs{n}}_bootable" disabled><!--#endif --></td>
+</tr>
+<!--#endif -->
 </tr>
 	<!--#endif -->
 <!--#endif -->
@@ -384,6 +427,7 @@
 <!--#if expr="$devs{isswap}" --><!--#else --><option value="swap"><gettext>Swap</gettext></option><!--#endif -->
 <!--#if expr="$devs{iscache}" --><!--#else --><!--#if expr="$iscached" --><!--#else --><option value="cache"><gettext>Cache</gettext></option><!--#endif --><!--#endif -->
 <!--#if expr="$devs{isext}" --><!--#else --><option value="ext"><gettext>erweitert</gettext></option><!--#endif -->
+<!--#if expr="$devs{isefi}" --><!--#else --><option value="efi"><gettext>EFI</gettext></option><!--#endif -->
 </select>&nbsp;<input type="submit" name="${devs{n}}_modify" value="System &auml;ndern">
 
 
@@ -416,6 +460,7 @@
 <option value="swap"><gettext>Swap</gettext></option><!--#if expr="$iscached" --><!--#else -->
 <option value="cache"><gettext>Cache</gettext></option><!--#endif -->
 <option value="ext"><gettext>erweitert</gettext></option>
+<option value="efi"><gettext>EFI</gettext></option>
 </select>
 </p>
 <p><input type="submit" name="accept" value="&Auml;nderungen speichern"></p>

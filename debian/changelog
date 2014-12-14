@@ -1,4 +1,18 @@
-linuxmuster-schulkonsole (0.10.19-0fschuett) babo; urgency=low
+linuxmuster-schulkonsole (0.11.1-1fschuett) precise; urgency=low
+
+  * Added type efi to LINBO
+  * Added type to partitions for internal editing of start.conf files
+  * Cleaned up in linbo_edit, Linbo.pm
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Sat, 13 Dec 2014 12:33:53 +0100
+
+linuxmuster-schulkonsole (0.10.19-1fschuett) babo; urgency=low
+
+  * Fix for error in linbo_new.
+
+ -- root <root@gymnasium-himmelsthuer.de>  Wed, 26 Nov 2014 15:42:17 +0100
+
+linuxmuster-schulkonsole (0.10.19-0) babo; urgency=low
 
   * Fix for request #406 make hosts table sortable
   * merged uefi

@@ -34,15 +34,15 @@ my $this_file = 'linbo_edit';
 
 my $sk_session = new Schulkonsole::Session($this_file);
 if (not $sk_session->get_password()) {
-	my $q = new CGI;
-	my $url = $q->url( -full => 1 );
+        my $q = new CGI;
+        my $url = $q->url( -full => 1 );
 
-	# we send cookies over secure connections only
-	if ($url =~ s/^http:/https:/g) {
-		$sk_session->redirect($url);
-	} else {
-		$sk_session->exit_with_login_page($this_file);
-	}
+        # we send cookies over secure connections only
+        if ($url =~ s/^http:/https:/g) {
+                $sk_session->redirect($url);
+        } else {
+                $sk_session->exit_with_login_page($this_file);
+        }
 }
 
 my $q = $sk_session->query();
@@ -51,16 +51,16 @@ my $q = $sk_session->query();
 eval {
 my $groups = Schulkonsole::Linbo::groups();
 foreach my $group (keys %$groups) {
-	# if it is not a valid group name it must be a backup file
-	delete $$groups{$group} unless $group =~ /^([a-z\d_]+)$/;
+        # if it is not a valid group name it must be a backup file
+        delete $$groups{$group} unless $group =~ /^([a-z\d_]+)$/;
 }
 
 my $group = $q->param('group');
 if (not $group) {
-	# get group from submit buttons
-	foreach my $param ($q->param) {
-		last if (($group) = $param =~ /^(.*)_edit$/);
-	}
+        # get group from submit buttons
+        foreach my $param ($q->param) {
+                last if (($group) = $param =~ /^(.*)_edit$/);
+        }
 }
 
 =item C<groups>
@@ -69,7 +69,7 @@ List of all groups that have a start.conf.*
 
 =cut
 
-	$sk_session->set_var('groups', [ sort keys %$groups ]);
+        $sk_session->set_var('groups', [ sort keys %$groups ]);
 
 if (    $group
     and $$groups{$group}) {
@@ -83,280 +83,299 @@ Name of the selected group
 
 =cut
 
-	$sk_session->set_var('group', $group);
+        $sk_session->set_var('group', $group);
 
-	# make selected group first entry on dropdown
-	delete $$groups{$group};
-	my @groups = keys %$groups;
-	unshift @groups, $group;
-	$sk_session->set_var('groups', [ @groups ]);
-
-
-	my @devs;
-
-	my $conf = Schulkonsole::Linbo::get_conf_from_query($q);
-	if (not $conf) {
-		$conf = Schulkonsole::Linbo::read_start_conf($group);
-	} else {
-		SWITCHCOMMAND: {
-		my $cmd = $$conf{action};
-		$cmd eq 'addos' and do {
-			my %new_os;
-
-			my $oss = $$conf{action_partition}{oss};
-			if (    $oss
-				and $$oss[-1]) {
-				my $last_os = $$oss[-1];
-
-				foreach my $key (keys %$last_os) {
-					next if $key eq 'n';
-
-					$new_os{$key} = $$last_os{$key};
-				}
-				$new_os{version} = join ' ', ($new_os{version},
-				                              $sk_session->d()->get('NEU'));
-			} else {
-				$new_os{name} = $sk_session->d()->get('NEU');
-				my $image_name = "$new_os{name}-$group";
-				$image_name =~ tr,/,-,;
-				$new_os{baseimage} = "$new_os{name}-$group";
-			}
-			$new_os{is_new} = 1;
-			push @$oss, \%new_os;
-
-			last SWITCHCOMMAND;
-		};
-		$cmd eq 'deleteos' and do {
-			die unless (    $$conf{action_partition}
-			            and $$conf{action_os});
-
-			my $oss = $$conf{action_partition}{oss};
-			if (@$oss == 1) {
-				delete $$conf{action_partition}{oss}
-			} else {
-				my $delete_os = $$conf{action_os};
-				%$delete_os = ();
-			}
-
-			$$conf{action_partition}{is_edited} = 1;
-
-			last SWITCHCOMMAND;
-		};
-		$cmd eq 'modify' and do {
-			die unless $$conf{action_partition};
-			my $partition = $$conf{action_partition};
-			my $new_system = $q->param("$$partition{n}_modifynew");
-			my $n = $$partition{n} if exists $$partition{n};
-
-			SWITCHNEWSYSTEM: {
-			$new_system eq 'windows' and do {
-				undef $$conf{linbo}{cache}
-					if $$conf{linbo}{cache} eq $$partition{dev};
-				if (    $$partition{id} != 0x07
-				    and $$partition{id} != 0x0c) {
-					$$partition{id} = 0x0c;
-					$$partition{fstype} = 'ntfs';
-					$q->param("${n}_fstype", $$partition{fstype}) if defined $n;
-				}
-				if (not $$partition{oss}) {
-					my %new_os = (
-						name => 'MS Windows',
-						baseimage => "MS Windows-$group",
-						is_new => 1,
-					);
-					push @{ $$partition{oss} }, \%new_os;
-				}
-
-				last SWITCHNEWSYSTEM;
-			};
-			$new_system eq 'gnulinux' and do {
-				undef $$conf{linbo}{cache}
-					if $$conf{linbo}{cache} eq $$partition{dev};
-				if ($$partition{id} != 0x83) {
-					$$partition{id} = 0x83;
-					$$partition{fstype} = 'ext3';
-					$q->param("${n}_fstype", $$partition{fstype}) if defined $n;
-				}
-				if (not $$partition{oss}) {
-					my %new_os = (
-						name => 'GNU/Linux',
-						baseimage => "GNU-Linux-$group",
-						is_new => 1,
-					);
-					push @{ $$partition{oss} }, \%new_os;
-				}
-
-				last SWITCHNEWSYSTEM;
-			};
-			$new_system eq 'data' and do {
-				undef $$conf{linbo}{cache}
-					if $$conf{linbo}{cache} eq $$partition{dev};
-				delete $$partition{oss} if $$partition{oss};
-				if (   $$partition{id} == 0x82
-				    || $$partition{id} == 0x05) {
-					$$partition{id} = 0x83;
-					$$partition{fstype} = 'ext3';
-					$q->param("${n}_fstype", $$partition{fstype}) if defined $n;
-				}
-
-				last SWITCHNEWSYSTEM;
-			};
-			$new_system eq 'swap' and do {
-				undef $$conf{linbo}{cache}
-					if $$conf{linbo}{cache} eq $$partition{dev};
-				delete $$partition{oss} if $$partition{oss};
-				$$partition{id} = 0x82;
-				$$partition{fstype} = 'swap';
-				$q->param("${n}_fstype", $$partition{fstype}) if defined $n;
-
-				last SWITCHNEWSYSTEM;
-			};
-			$new_system eq 'cache' and do {
-				delete $$partition{oss} if $$partition{oss};
-				$$conf{linbo}{cache} = $$partition{dev};
-				# only linux fs allowed for cache
-				if ($$partition{id} != 0x83) {
-					$$partition{id} = 0x83;
-					$$partition{fstype} = 'ext4';
-					$q->param("${n}_fstype", $$partition{fstype}) if defined $n;
-				}
-
-				last SWITCHNEWSYSTEM;
-			};
-			$new_system eq 'ext' and do {
-				undef $$conf{linbo}{cache}
-					if $$conf{linbo}{cache} eq $$partition{dev};
-				delete $$partition{oss} if $$partition{oss};
-				$$partition{id} = 0x05;
-				$$partition{fstype} = '';
-				$q->param("${n}_fstype", $$partition{fstype}) if defined $n;
-
-				last SWITCHNEWSYSTEM;
-			};
-			}
+        # make selected group first entry on dropdown
+        delete $$groups{$group};
+        my @groups = keys %$groups;
+        unshift @groups, $group;
+        $sk_session->set_var('groups', [ @groups ]);
 
 
-			last SWITCHCOMMAND;
-		};
-		$cmd eq 'delete' and do {
-			die unless $$conf{action_partition};
+        my @devs;
+        my $conf = Schulkonsole::Linbo::get_conf_from_query($q);
+        if (not $conf) {
+                $conf = Schulkonsole::Linbo::read_start_conf($group);
+        } else {
+                SWITCHCOMMAND: {
+                my $cmd = $$conf{action};
+                $cmd eq 'addos' and do {
+                        my %new_os;
 
-			undef $$conf{linbo}{cache}
-				if $$conf{linbo}{cache} eq $$conf{action_partition}{dev};
-			delete $$conf{partitions}{$$conf{action_partition}{n}};
+                        my $oss = $$conf{action_partition}{oss};
+                        if (    $oss
+                                and $$oss[-1]) {
+                                my $last_os = $$oss[-1];
+
+                                foreach my $key (keys %$last_os) {
+                                        next if $key eq 'n';
+
+                                        $new_os{$key} = $$last_os{$key};
+                                }
+                                $new_os{version} = join ' ', ($new_os{version},
+                                                              $sk_session->d()->get('NEU'));
+                        } else {
+                                $new_os{name} = $sk_session->d()->get('NEU');
+                                my $image_name = "$new_os{name}-$group";
+                                $image_name =~ tr,/,-,;
+                                $new_os{baseimage} = "$new_os{name}-$group";
+                        }
+                        $new_os{is_new} = 1;
+                        push @$oss, \%new_os;
+
+                        last SWITCHCOMMAND;
+                };
+                $cmd eq 'deleteos' and do {
+                        die unless (    defined $$conf{action_partition}
+                                    and defined $$conf{action_os});
+                        my $np = $$conf{action_partition};
+                        my $nos = $$conf{action_os};
+                        my $oss = $$conf{partitions}{$np}{oss};
+                        if (@$oss == 1) {
+                                delete $$conf{partitions}{$np}{oss}
+                        } else {
+                                my $delete_os = $$conf{partitions}{$np}{oss}{$nos};
+                                %$delete_os = ();
+                        }
+
+                        $$conf{partitions}{$np}{is_edited} = 1;
+
+                        last SWITCHCOMMAND;
+                };
+                $cmd eq 'modify' and do {
+                        die unless defined $$conf{action_partition};
+                        my $np = $$conf{action_partition};
+                        my $partition = $$conf{partitions}{$np};
+                        my $new_system = $q->param("${np}_modifynew");
+
+                        SWITCHNEWSYSTEM: {
+                        $new_system eq 'windows' and do {
+                                undef $$conf{linbo}{cache}
+                                        if $$conf{linbo}{cache} eq $$partition{dev};
+                                $$partition{type} = 'windows';
+                                if (    $$partition{id} != 0x07
+                                    and $$partition{id} != 0x0c) {
+                                        $$partition{id} = 0x0c;
+                                        $$partition{fstype} = 'ntfs';
+                                        $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
+                                }
+                                if (not $$partition{oss}) {
+                                        my %new_os = (
+                                                name => 'MS Windows',
+                                                baseimage => "MS Windows-$group",
+                                                is_new => 1,
+                                        );
+                                        push @{ $$partition{oss} }, \%new_os;
+                                }
+
+                                last SWITCHNEWSYSTEM;
+                        };
+                        $new_system eq 'gnulinux' and do {
+                                undef $$conf{linbo}{cache}
+                                        if $$conf{linbo}{cache} eq $$partition{dev};
+                                $$partition{type} = 'gnulinux';
+                                if ($$partition{id} != 0x83) {
+                                        $$partition{id} = 0x83;
+                                        $$partition{fstype} = 'ext3';
+                                        $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
+                                }
+                                if (not $$partition{oss}) {
+                                        my %new_os = (
+                                                name => 'GNU/Linux',
+                                                baseimage => "GNU-Linux-$group",
+                                                is_new => 1,
+                                        );
+                                        push @{ $$partition{oss} }, \%new_os;
+                                }
+
+                                last SWITCHNEWSYSTEM;
+                        };
+                        $new_system eq 'data' and do {
+                                undef $$conf{linbo}{cache}
+                                        if $$conf{linbo}{cache} eq $$partition{dev};
+                                delete $$partition{oss} if $$partition{oss};
+                                $$partition{type} = 'data';
+                                if (   $$partition{id} == 0x82
+                                    || $$partition{id} == 0x05) {
+                                        $$partition{id} = 0x83;
+                                        $$partition{fstype} = 'ext3';
+                                        $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
+                                }
+
+                                last SWITCHNEWSYSTEM;
+                        };
+                        $new_system eq 'swap' and do {
+                                undef $$conf{linbo}{cache}
+                                        if $$conf{linbo}{cache} eq $$partition{dev};
+                                delete $$partition{oss} if $$partition{oss};
+                                $$partition{type} = 'swap';
+                                $$partition{id} = 0x82;
+                                $$partition{fstype} = 'swap';
+                                $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
+
+                                last SWITCHNEWSYSTEM;
+                        };
+                        $new_system eq 'cache' and do {
+                                delete $$partition{oss} if $$partition{oss};
+                                $$conf{linbo}{cache} = $$partition{dev};
+                                # only linux fs allowed for cache
+                                $$partition{type} = 'cache';
+                                if ($$partition{id} != 0x83) {
+                                        $$partition{id} = 0x83;
+                                        $$partition{fstype} = 'ext4';
+                                        $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
+                                }
+
+                                last SWITCHNEWSYSTEM;
+                        };
+                        $new_system eq 'ext' and do {
+                                undef $$conf{linbo}{cache}
+                                        if $$conf{linbo}{cache} eq $$partition{dev};
+                                delete $$partition{oss} if $$partition{oss};
+                                $$partition{type} = 'ext';
+                                $$partition{id} = 0x05;
+                                $$partition{fstype} = '';
+                                $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
+
+                                last SWITCHNEWSYSTEM;
+                        };
+                        $new_system eq 'efi' and do {
+                                undef $$conf{linbo}{cache}
+                                        if $$conf{linbo}{cache} eq $$partition{dev};
+                                delete $$partition{oss} if $$partition{oss};
+                                $$partition{type} = 'efi';
+                                $$partition{id} = 0xef;
+                                $$partition{fstype} = 'vfat';
+                                $$partition{bootable} = 1;
+                                $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
+
+                                last SWITCHNEWSYSTEM;
+                        };
+                        }
+
+                        last SWITCHCOMMAND;
+                };
+                $cmd eq 'delete' and do {
+                        die unless defined $$conf{action_partition};
+                        my $np = $$conf{action_partition};
+                        undef $$conf{linbo}{cache}
+                                if $$conf{linbo}{cache} eq $$conf{partitions}{$np}{dev};
+                        delete $$conf{partitions}{$np};
 
 
-			last SWITCHCOMMAND;
-		};
-		(   $cmd eq 'adddevtop'
-		 or $cmd eq 'adddevbottom') and do {
-		 	my $new_dev;
-		 	if (%{ $$conf{partitions} }) {
-				my @devs = sort {
-						my ($name_a, $number_a)
-							= $$conf{partitions}{$a}{dev} =~ /^(.*?)(\d*)$/;
-						my ($name_b, $number_b)
-							= $$conf{partitions}{$b}{dev} =~ /^(.*?)(\d*)$/;
+                        last SWITCHCOMMAND;
+                };
+                (   $cmd eq 'adddevtop'
+                 or $cmd eq 'adddevbottom') and do {
+                        my $np = $$conf{partitions_cnt};
+                        my %partition = (
+                                dev => $np>0?Schulkonsole::Linbo::find_free_dev($$conf{partitions}):'/dev/sda1',
+                        );
 
-						return (   $name_a cmp $name_b
-						        or $number_a <=> $number_b);
-					} keys %{ $$conf{partitions} };
-				my $last_dev = $$conf{partitions}{$devs[-1]}{dev};
-				my ($name, $number) = $last_dev =~ /^(.*?)(\d*)$/;
-				$new_dev = $name . (1 + $number);
-			} else {
-				$new_dev = '/dev/sda1';
-			}
+                        my $new_system = $q->param($cmd eq 'adddevtop' ?
+                                                'adddevnewtop' : 'adddevnewbottom');
+                        SWITCHNEWDEV: {
+                        $new_system eq 'windows' and do {
+                                $partition{type} = 'windows';
+                                $partition{id} = 0x0c;
+                                $partition{fstype} = 'ntfs';
+                                $partition{oss} = [ {
+                                                name => 'MS Windows',
+                                                baseimage => "MS Windows-$group",
+                                                is_new => 1,
+                                        } ];
 
-			my %partition = (
-				dev => $new_dev,
-			);
+                                last SWITCHNEWDEV;
+                        };
+                        $new_system eq 'gnulinux' and do {
+                                $partition{type} = 'gnulinux';
+                                $partition{id} = 0x83;
+                                $partition{fstype} = 'ext3';
+                                $partition{oss} = [ {
+                                                name => 'GNU/Linux',
+                                                baseimage => "GNU-Linux-$group",
+                                                is_new => 1,
+                                        } ];
 
-			my $new_system = $q->param($cmd eq 'adddevtop' ?
-			                  	'adddevnewtop' : 'adddevnewbottom');
+                                last SWITCHNEWDEV;
+                        };
+                        $new_system eq 'data' and do {
+                                $partition{type} = 'data';
+                                $partition{id} = 0x83;
+                                $partition{fstype} = 'ext3';
 
-			SWITCHNEWDEV: {
-			$new_system eq 'windows' and do {
-				$partition{id} = 0x0c;
-				$partition{fstype} = 'ntfs';
-				$partition{oss} = [ {
-						name => 'MS Windows',
-						baseimage => "MS Windows-$group",
-						is_new => 1,
-					} ];
+                                last SWITCHNEWDEV;
+                        };
+                        $new_system eq 'swap' and do {
+                                $partition{type} = 'swap';
+                                $partition{id} = 0x82;
+                                $partition{fstype} = 'swap';
 
-				last SWITCHNEWDEV;
-			};
-			$new_system eq 'gnulinux' and do {
-				$partition{id} = 0x83;
-				$partition{fstype} = 'ext3';
-				$partition{oss} = [ {
-						name => 'GNU/Linux',
-						baseimage => "GNU-Linux-$group",
-						is_new => 1,
-					} ];
+                                last SWITCHNEWDEV;
+                        };
+                        $new_system eq 'cache' and do {
+                                $partition{type} = 'cache';
+                                $partition{id} = 0x83;
+                                $partition{fstype} = 'ext4';
+                                $$conf{linbo}{cache} = $partition{dev};
 
-				last SWITCHNEWDEV;
-			};
-			$new_system eq 'data' and do {
-				$partition{id} = 0x83;
-				$partition{fstype} = 'ext3';
+                                last SWITCHNEWDEV;
+                        };
+                        $new_system eq 'ext' and do {
+                                $partition{type} = 'ext';
+                                $partition{id} = 0x05;
+                                $partition{fstype} = '';
 
-				last SWITCHNEWDEV;
-			};
-			$new_system eq 'swap' and do {
-				$partition{id} = 0x82;
-				$partition{fstype} = 'swap';
+                                last SWITCHNEWDEV;
+                        };
+                        $new_system eq 'efi' and do {
+                                $partition{type} = 'efi';
+                                $partition{id} = 0xef;
+                                $partition{fstype} = 'vfat';
+                                $partition{bootable} = 1;
 
-				last SWITCHNEWDEV;
-			};
-			$new_system eq 'cache' and do {
-				$partition{id} = 0x83;
-				$partition{fstype} = 'ext4';
-				$$conf{linbo}{cache} = $partition{dev};
+                                last SWITCHNEWDEV;
+                        };
 
-				last SWITCHNEWDEV;
-			};
-			$new_system eq 'ext' and do {
-				$partition{id} = 0x05;
-				$partition{fstype} = '';
+                        die;
+                        }
 
-				last SWITCHNEWDEV;
-			};
+                        if ($np == 0) {
+                                $$conf{partitions}{$np} = \%partition;
+                        }
+                        else {
+                            $$conf{partitions} =
+                                Schulkonsole::Linbo::partition_insert_sorted(
+                                                $$conf{partitions},\%partition);
+                        }
+                        $$conf{partitions_cnt} = scalar(keys $$conf{partitions});
 
-			die;
-			}
+                        last SWITCHCOMMAND;
+                };
+                $cmd eq 'accept' and do {
+                        eval {
+                                Schulkonsole::Linbo::write_start_conf(
+                                        $sk_session->userdata('id'),
+                                        $sk_session->get_password(),
+                                        $group, $conf);
+                                $sk_session->set_status($sk_session->d()->get(
+                                        'Konfigurationsdatei geschrieben'), 0);
+                        }; if ($@) {
+                                if (    ref $@
+                                    and $@->{code}
+                                        == Schulkonsole::Error::Linbo::START_CONF_ERROR) {
+                                        Schulkonsole::Linbo::handle_start_conf_errors(
+                                                ${ $@->{info} }[0],
+                                                $sk_session);
+                                } else {
+                                        $sk_session->standard_error_handling($@);
+                                }
+                        }
 
-
-
-			$$conf{partitions}{$new_dev} = \%partition;
-
-			last SWITCHCOMMAND;
-		};
-		$cmd eq 'accept' and do {
-			eval {
-				Schulkonsole::Linbo::write_start_conf(
-					$sk_session->userdata('id'),
-					$sk_session->get_password(),
-					$group, $conf);
-				$sk_session->set_status($sk_session->d()->get(
-					'Konfigurationsdatei geschrieben'), 0);
-			}; if ($@) {
-				if (    ref $@
-				    and $@->{code}
-				    	== Schulkonsole::Error::Linbo::START_CONF_ERROR) {
-					Schulkonsole::Linbo::handle_start_conf_errors(
-						${ $@->{info} }[0],
-						$sk_session);
-				} else {
-					$sk_session->standard_error_handling($@);
-				}
-			}
-
-			last SWITCHCOMMAND;
-		};
-		} # end SWITCHCOMMAND
-	}
+                        last SWITCHCOMMAND;
+                };
+                } # end SWITCHCOMMAND
+        }
 
 
 
@@ -368,116 +387,86 @@ Name of the selected group
 #
 
 # section [LINBO]
-	foreach my $key (keys %{ $Schulkonsole::Linbo::_allowed_keys{3} }) {
-		if (Schulkonsole::Linbo::is_boolean(3, $key)) {
-			$sk_session->set_var("linbo_$key", 1) if $$conf{linbo}{$key};
-		} elsif (not $q->param("linbo_$key")) {
-			$q->param("linbo_$key", $$conf{linbo}{$key});
-		}
-	}
-	$q->param('server', $ENV{SERVER_ADDR}) unless $q->param('server');
+        foreach my $key (keys %{ $Schulkonsole::Linbo::_allowed_keys{3} }) {
+                if (Schulkonsole::Linbo::is_boolean(3, $key)) {
+                        $sk_session->set_var("linbo_$key", 1) if $$conf{linbo}{$key};
+                } elsif (not $q->param("linbo_$key")) {
+                        $q->param("linbo_$key", $$conf{linbo}{$key});
+                }
+        }
+        $q->param('server', $ENV{SERVER_ADDR}) unless $q->param('server');
 
 
 
 # section [Partition] (and section [OS])
-	my $partitions = $$conf{partitions};
+        my $partitions = $$conf{partitions};
+        my $dev_cnt = $$conf{partitions_cnt} + 0;
+        my $cache = $$conf{linbo}{cache};
+        my $is_cached = 0;
+        foreach my $partition (sort {
+                        my ($name_a, $number_a) = $$partitions{$a}{dev} =~ /^(.*?)(\d*)$/;
+                        my ($name_b, $number_b) = $$partitions{$b}{dev} =~ /^(.*?)(\d*)$/;
 
-	my $dev_cnt = $$conf{partitions_cnt} + 0;
-	my $cache = $$conf{linbo}{cache};
-	my $is_cached = 0;
-	foreach my $partition (sort {
-			my ($name_a, $number_a) = $$partitions{$a}{dev} =~ /^(.*?)(\d*)$/;
-			my ($name_b, $number_b) = $$partitions{$b}{dev} =~ /^(.*?)(\d*)$/;
+                        return (   $name_a cmp $name_b
+                                or $number_a <=> $number_b);
+                }
+                keys %$partitions) {
 
-			return (   $name_a cmp $name_b
-			        or $number_a <=> $number_b
-			        or $a cmp $b);
-		}
-		keys %$partitions) {
+                $is_cached = 1 if(not $is_cached and ($cache eq $$partitions{$partition}{dev}));
+                
+                push @devs, {
+                        n => $partition,
+                        'is'.$$partitions{$partition}{type} => 1,
+                        isedited => $$partitions{$partition}{is_edited},
 
-
-# get type
-		my @is_type = (
-			'isdata',
-			'iscache',
-			'isswap',
-			'isext',
-			'isgnulinux',
-			'iswindows',
-		);
-		my $type;
-		if ($$partitions{$partition}{id} == 0x05) {	# extended
-			$type = 3;
-		} elsif (    exists $$partitions{$partition}{oss}
-		         and @{ $$partitions{$partition}{oss} }) {
-			if ($$partitions{$partition}{id} == 0x83) {	# GNU/Linux
-				$type = 4;
-			} else {	# MS Windows
-				$type = 5;
-			}
-		} elsif ($$partitions{$partition}{id} == 0x82) {	# Swap
-			$type = 2;
-		} elsif ($$partitions{$partition}{dev} eq $cache) {	# cache
-			$type = 1;
-			$is_cached = 1;
-		} else {
-			$type = 0;	# data
-		}
-
-		my $is_n = exists $$partitions{$partition}{n};
-		my $n = ($is_n ? $$partitions{$partition}{n} : $dev_cnt++);
-
-		push @devs, {
-			n => $n,
-			$is_type[$type] => 1,
-			isedited => $$partitions{$partition}{is_edited},
-
-			dev => $$partitions{$partition}{dev},
-			size => $$partitions{$partition}{size},
-			fstype => $$partitions{$partition}{fstype},
-		};
-		foreach my $key (keys %{ $Schulkonsole::Linbo::_allowed_keys{1} }) {
-			if (Schulkonsole::Linbo::is_boolean(1, $key)) {
-				$devs[-1]{$key} = 1 if $$partitions{$partition}{$key};
-			} elsif (not $is_n) {
-				$q->param("${n}_$key", $$partitions{$partition}{$key})
-			}
-		}
+                        label => $$partitions{$partition}{label},
+                        type => $$partitions{$partition}{type},
+                        dev => $$partitions{$partition}{dev},
+                        size => $$partitions{$partition}{size},
+                        fstype => $$partitions{$partition}{fstype},
+                };
+                foreach my $key (keys %{ $Schulkonsole::Linbo::_allowed_keys{1} }) {
+                        if (Schulkonsole::Linbo::is_boolean(1, $key)) {
+                                $devs[-1]{$key} = 1 if $$partitions{$partition}{$key};
+                        } else {
+                                $q->param("${partition}_$key", $$partitions{$partition}{$key})
+                        }
+                }
 
 # section [OS]
-		if ($$partitions{$partition}{oss}) {
-			my $os_cnt = $$partitions{$partition}{oss_cnt} + 0;
+                if ($$partitions{$partition}{oss}) {
+                        my $os_cnt = $$partitions{$partition}{oss_cnt} + 0;
 
-			my @oss;
-			my $is_first = 1;
-			foreach my $os (@{ $$partitions{$partition}{oss} }) {
-				next unless %$os;
+                        my @oss;
+                        my $is_first = 1;
+                        foreach my $os (@{ $$partitions{$partition}{oss} }) {
+                                next unless %$os;
 
-				my $is_os_n = exists $$os{n};
-				my $os_n = $n . '.' . ($is_os_n ? $$os{n} : $os_cnt++);
+                                my $is_os_n = exists $$os{n};
+                                my $os_n = $partition . '.' . ($is_os_n ? $$os{n} : $os_cnt++);
 
-				push @oss, {
-						n => $os_n,
-						isfirst => $is_first,
-						isnew => $$os{is_new},
-					};
+                                push @oss, {
+                                                n => $os_n,
+                                                isfirst => $is_first,
+                                                isnew => $$os{is_new},
+                                        };
 
-				foreach my $key (keys
-				                  %{ $Schulkonsole::Linbo::_allowed_keys{2} }) {
-					if (Schulkonsole::Linbo::is_boolean(2, $key)) {
-						$oss[-1]{$key} = 1 if $$os{$key};
-					} elsif (not $is_os_n) {
-						$q->param("${os_n}_$key", $$os{$key});
-					}
-				}
+                                foreach my $key (keys
+                                                  %{ $Schulkonsole::Linbo::_allowed_keys{2} }) {
+                                        if (Schulkonsole::Linbo::is_boolean(2, $key)) {
+                                                $oss[-1]{$key} = 1 if $$os{$key};
+                                        } elsif (not $is_os_n) {
+                                                $q->param("${os_n}_$key", $$os{$key});
+                                        }
+                                }
 
 
-				$is_first = 0 if $is_first;
-			}
+                                $is_first = 0 if $is_first;
+                        }
 
-			$devs[-1]{os} = \@oss;
-		}
-	} # end foreach my $partition
+                        $devs[-1]{os} = \@oss;
+                }
+        } # end foreach my $partition
 
 
 
@@ -488,7 +477,7 @@ Value for C<Cache> in section C<[LINBO]>
 
 =cut
 
-	$sk_session->set_var('cache', $$conf{linbo}{cache});
+        $sk_session->set_var('cache', $$conf{linbo}{cache});
 
 
 =item C<iscached>
@@ -497,7 +486,7 @@ True if a partition is selected as cache
 
 =cut
 
-	$sk_session->set_var('iscached', $is_cached);
+        $sk_session->set_var('iscached', $is_cached);
 
 
 =item C<devs>
@@ -506,13 +495,12 @@ Array of hashes describing the devices with the keys
 
 =cut
 
-	$sk_session->set_var('devs', \@devs);
+        $sk_session->set_var('devs', \@devs);
 }
 };
 if ($@) {
-	$sk_session->standard_error_handling($this_file, $@);
+        $sk_session->standard_error_handling($this_file, $@);
 }
-
 
 
 
@@ -601,6 +589,23 @@ Each parameter is prefixed with C<${devs{n}}> from the array in the
 session variable C<devs>.
 
 =over
+
+=item C<${devs{n}}_type>
+
+Value of key C<Type>
+
+Partition type can be one of 
+C<windows> for a partition holding a Windows OS,
+C<gnulinux> for a partition holding a GNU/Linux OS,
+C<data> for a data partition,
+C<swap> for a swap partition,
+C<cache> for the cache partition,
+C<ext> for an extended parition,
+C<efi> for an EFI partition.
+
+=item C<${devs{n}}_label>
+
+Value of key C<Label>
 
 =item C<${devs{n}}_dev>
 
@@ -730,7 +735,8 @@ C<gnulinux> for a partition holding a GNU/Linux OS,
 C<data> for a data partition,
 C<swap> for a swap partition,
 C<cache> for the cache partition,
-C<ext> for an extended parition.
+C<ext> for an extended parition,
+C<efi> for an EFI partition.
 
 =item C<${devs{os}{n}}_deleteos>
 
@@ -755,7 +761,8 @@ C<gnulinux> for a partition holding a GNU/Linux OS,
 C<data> for a data partition,
 C<swap> for a swap partition,
 C<cache> for the cache partition,
-C<ext> for an extended parition.
+C<ext> for an extended parition,
+C<efi> for an EFI partition.
 
 =item C<accept>
 
