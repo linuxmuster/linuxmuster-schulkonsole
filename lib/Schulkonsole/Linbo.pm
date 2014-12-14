@@ -87,6 +87,7 @@ use vars qw(%_allowed_keys);
 		fstype => 1,
 		bootable => 4,
 		type => 1,
+		label => 1,
 	},
 	2 => {	# [OS]
 		name => 1,
@@ -1113,7 +1114,6 @@ sub write_start_conf {
 
 	my $start_conf = check_and_prepare_start_conf($conf);
 
-
 	my $filename = $Schulkonsole::Config::_linbo_start_conf_prefix . $group;
 
 	open CONF, "<$filename" or die new Schulkonsole::Error(
@@ -1334,7 +1334,7 @@ sub write_start_conf {
 			$lines .= "[Partition]\n";
 		}
 
-		foreach my $key (('Dev', 'Size', 'Id', 'FSType', 'Bootable', )) {
+		foreach my $key (('Dev', 'Size', 'Id', 'FSType', 'Bootable','Label', )) {
 			my $key_data = $partitions{$dev}{Keys}{lc $key};
 			next unless $key_data;
 

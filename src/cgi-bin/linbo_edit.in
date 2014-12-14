@@ -419,6 +419,7 @@ Name of the selected group
                         'is'.$$partitions{$partition}{type} => 1,
                         isedited => $$partitions{$partition}{is_edited},
 
+                        label => $$partitions{$partition}{label},
                         type => $$partitions{$partition}{type},
                         dev => $$partitions{$partition}{dev},
                         size => $$partitions{$partition}{size},
@@ -601,6 +602,10 @@ C<swap> for a swap partition,
 C<cache> for the cache partition,
 C<ext> for an extended parition,
 C<efi> for an EFI partition.
+
+=item C<${devs{n}}_label>
+
+Value of key C<Label>
 
 =item C<${devs{n}}_dev>
 
