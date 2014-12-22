@@ -32,6 +32,9 @@
 <!--#if expr="$link_linbo_pxeedit" -->
 <a href="linbo_pxeedit"><gettext>PXE-Start</gettext></a></br>
 <!--#endif -->
+<!--#if expr="$link_linbo_menuedit" -->
+<a href="linbo_menuedit"><gettext>menu.lst editieren</gettext></a></br>
+<!--#endif -->
 <!--#if expr="$link_linbo_images" -->
 <a href="linbo_images"><gettext>Imageverwaltung</gettext></a></br>
 <!--#endif -->
