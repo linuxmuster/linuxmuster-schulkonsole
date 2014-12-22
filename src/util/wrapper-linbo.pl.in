@@ -337,7 +337,10 @@ Deletes a LINBO file
 
 $app_id == Schulkonsole::Config::LINBODELETEAPP and do {
 	my $filename = <>;
-	($filename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.reg|pxegrub\.lst\.(?:[a-z\d_]+))$/;
+	my $tmpfilename;
+	($tmpfilename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.reg|pxegrub\.lst\.(?:[a-z\d_]+))$/;
+        ($tmpfilename) = $filename =~ /^(menu\.lst\.[a-z\d_]+)$/ unless defined $tmpfilename;
+        $filename = $tmpfilename;
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		unless defined $filename;
@@ -443,7 +446,10 @@ Writes a LINBO file
 
 $app_id == Schulkonsole::Config::LINBOWRITEAPP and do {
 	my $filename = <>;
-	($filename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.(?:reg|desc)|pxegrub\.lst\.(?:[a-z\d_]+))$/;
+	my $tmpfilename;
+	($tmpfilename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.(?:reg|desc))$/;
+	($tmpfilename) = $filename =~ /^(menu\.lst\.[a-z\d_]+)$/ unless defined $tmpfilename;
+	$filename = $tmpfilename;
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		unless defined $filename;

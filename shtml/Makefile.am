@@ -23,7 +23,7 @@ dist_shtml_DATA = example.shtml login.shtml logout.shtml start.shtml \
 	quotas_others.shtml \
 	linbo.shtml \
 	linbo_edit.shtml linbo_images.shtml linbo_new.shtml linbo_pxeedit.shtml \
-	linbo_regpatchedit.shtml \
+	linbo_regpatchedit.shtml linbo_menuedit.shtml \
 	submenu-room.shtml.inc submenu-class.shtml.inc \
 	submenu-project.shtml.inc submenu-user.shtml.inc \
 	submenu-settings.shtml.inc submenu-quotas.shtml.inc \

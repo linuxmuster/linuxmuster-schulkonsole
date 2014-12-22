@@ -47,6 +47,7 @@ $VERSION = 0.0917;
 	regpatches
 	example_regpatches
 	pxestarts
+	menulsts
 	images
 
 	update_linbofs
@@ -391,6 +392,38 @@ sub pxestarts {
 	}
 
 	return \%re;
+}
+
+
+
+
+=head2 menulsts()
+
+Get all menu.lst files
+
+=head3 Return value
+
+A reference to a hash with the filenames as keys
+
+=head3 Description
+
+Gets the menu.lst files in /var/linbo/
+and returns them in a hash.
+
+=cut
+
+sub menulsts {
+        my %re;
+
+        foreach my $file ((
+                        glob("$Schulkonsole::Config::_linbo_dir/menu.lst.*")
+                )) {
+                next if -l$file or -d$file;
+                my ($filename) = File::Basename::fileparse($file);
+                $re{ Schulkonsole::Encode::from_fs($filename) } = $file;
+        }
+
+        return \%re;
 }
 
 
