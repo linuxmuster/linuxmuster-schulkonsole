@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: entwickler@lml.mine.nu\n"
-"POT-Creation-Date: 2014-12-14 17:11+0100\n"
+"POT-Creation-Date: 2014-11-15 13:28+0100\n"
 "PO-Revision-Date: 2014-04-06 14:22+0200\n"
 "Last-Translator: root <root@linuxmuster.lokal>\n"
 "Language-Team: English\n"
@@ -188,11 +188,11 @@ msgstr "Invalid IP"
 msgid "ung&uuml;ltige Optionen"
 msgstr "Invalid options"
 
-#: src/cgi-bin/linbo_edit.in:116 src/cgi-bin/linbo_edit.in:118
+#: src/cgi-bin/linbo_edit.in:117 src/cgi-bin/linbo_edit.in:119
 msgid "NEU"
 msgstr "NEW"
 
-#: src/cgi-bin/linbo_edit.in:362
+#: src/cgi-bin/linbo_edit.in:343
 msgid "Konfigurationsdatei geschrieben"
 msgstr "Configuration file written"
 
@@ -203,8 +203,8 @@ msgstr "%s is not an image"
 
 #: src/cgi-bin/linbo_images.in:72 src/cgi-bin/linbo_images.in:110
 #: src/cgi-bin/linbo_images.in:171 src/cgi-bin/linbo_images.in:205
-#: src/cgi-bin/linbo_pxeedit.in:72 src/cgi-bin/linbo_pxeedit.in:98
-#: src/cgi-bin/linbo_pxeedit.in:131 src/cgi-bin/linbo_regpatchedit.in:149
+#: src/cgi-bin/linbo_pxeedit.in:72 src/cgi-bin/linbo_pxeedit.in:105
+#: src/cgi-bin/linbo_pxeedit.in:138 src/cgi-bin/linbo_regpatchedit.in:149
 #: src/cgi-bin/linbo_regpatchedit.in:182 src/cgi-bin/linbo_regpatchedit.in:215
 #, perl-format
 msgid "%s existiert nicht"
@@ -251,14 +251,14 @@ msgstr "%s could not be copied to %s"
 msgid "%s ist keine Beschreibungsdatei"
 msgstr "%s is not a description file"
 
-#: src/cgi-bin/linbo_images.in:186 src/cgi-bin/linbo_pxeedit.in:113
+#: src/cgi-bin/linbo_images.in:186 src/cgi-bin/linbo_pxeedit.in:120
 #: src/cgi-bin/linbo_regpatchedit.in:197
 #, perl-format
 msgid "%s geschrieben"
 msgstr "%s written"
 
 #: src/cgi-bin/linbo_images.in:232 src/cgi-bin/linbo_images.in:283
-#: src/cgi-bin/linbo_images.in:326 src/cgi-bin/linbo_pxeedit.in:160
+#: src/cgi-bin/linbo_images.in:326 src/cgi-bin/linbo_pxeedit.in:167
 #: src/cgi-bin/linbo_regpatchedit.in:129 src/cgi-bin/linbo_regpatchedit.in:244
 #, perl-format
 msgid "Kann Datei %s nicht &ouml;ffnen"
@@ -365,7 +365,7 @@ msgstr "Hard drive for the chosen group configuration is too small"
 msgid "Konfigurationsdatei erstellt"
 msgstr "Configuration file created"
 
-#: src/cgi-bin/linbo_pxeedit.in:66
+#: src/cgi-bin/linbo_pxeedit.in:66 src/cgi-bin/linbo_pxeedit.in:99
 #, perl-format
 msgid "%s ist keine PXE-Start-Datei"
 msgstr "%s is not a PXE startup file"
@@ -535,8 +535,8 @@ msgid "Sie sind kein Projektleiter von %s"
 msgstr "You are not the project leader of %s"
 
 #: src/cgi-bin/project.in:238 src/cgi-bin/room_test_end.in:82
-#: shtml/messages.pl:1355 shtml/messages.pl:1360 shtml/messages.pl:1365
-#: shtml/messages.pl:1414 shtml/messages.pl:1429
+#: shtml/messages.pl:1339 shtml/messages.pl:1344 shtml/messages.pl:1349
+#: shtml/messages.pl:1398 shtml/messages.pl:1413
 msgid "Bitte best&auml;tigen"
 msgstr "Please confirm"
 
@@ -1366,8 +1366,8 @@ msgstr "Student"
 #: shtml/messages.pl:1042 shtml/messages.pl:1052 shtml/messages.pl:1070
 #: shtml/messages.pl:1103 shtml/messages.pl:1114 shtml/messages.pl:1129
 #: shtml/messages.pl:1143 shtml/messages.pl:1157 shtml/messages.pl:1199
-#: shtml/messages.pl:1209 shtml/messages.pl:1352 shtml/messages.pl:1390
-#: shtml/messages.pl:1411 shtml/messages.pl:1426 shtml/messages.pl:1500
+#: shtml/messages.pl:1209 shtml/messages.pl:1336 shtml/messages.pl:1374
+#: shtml/messages.pl:1395 shtml/messages.pl:1410 shtml/messages.pl:1484
 msgid "Schulkonsole"
 msgstr "School console"
 
@@ -1397,8 +1397,8 @@ msgstr "Hello "
 #: shtml/messages.pl:1040 shtml/messages.pl:1050 shtml/messages.pl:1065
 #: shtml/messages.pl:1097 shtml/messages.pl:1112 shtml/messages.pl:1125
 #: shtml/messages.pl:1139 shtml/messages.pl:1153 shtml/messages.pl:1194
-#: shtml/messages.pl:1207 shtml/messages.pl:1348 shtml/messages.pl:1387
-#: shtml/messages.pl:1407 shtml/messages.pl:1424 shtml/messages.pl:1447
+#: shtml/messages.pl:1207 shtml/messages.pl:1332 shtml/messages.pl:1371
+#: shtml/messages.pl:1391 shtml/messages.pl:1408 shtml/messages.pl:1431
 msgid "Info"
 msgstr "Info"
 
@@ -1487,8 +1487,8 @@ msgstr "New password"
 msgid "nochmal"
 msgstr "again"
 
-#: shtml/messages.pl:28 shtml/messages.pl:268 shtml/messages.pl:1518
-#: shtml/messages.pl:1519 shtml/messages.pl:1523
+#: shtml/messages.pl:28 shtml/messages.pl:268 shtml/messages.pl:1502
+#: shtml/messages.pl:1503 shtml/messages.pl:1507
 msgid "Passwort &auml;ndern"
 msgstr "Change password"
 
@@ -1545,7 +1545,7 @@ msgstr "Pages:"
 #: shtml/messages.pl:643 shtml/messages.pl:645 shtml/messages.pl:648
 #: shtml/messages.pl:673 shtml/messages.pl:675 shtml/messages.pl:678
 #: shtml/messages.pl:690 shtml/messages.pl:691 shtml/messages.pl:1108
-#: shtml/messages.pl:1145 shtml/messages.pl:1507 shtml/messages.pl:1511
+#: shtml/messages.pl:1145 shtml/messages.pl:1491 shtml/messages.pl:1495
 msgid "Projekte"
 msgstr "Projects"
 
@@ -1628,8 +1628,8 @@ msgstr "Current Room"
 #: shtml/messages.pl:427 shtml/messages.pl:452 shtml/messages.pl:454
 #: shtml/messages.pl:457 shtml/messages.pl:705 shtml/messages.pl:760
 #: shtml/messages.pl:762 shtml/messages.pl:1107 shtml/messages.pl:1131
-#: shtml/messages.pl:1133 shtml/messages.pl:1502 shtml/messages.pl:1506
-#: shtml/messages.pl:1510
+#: shtml/messages.pl:1133 shtml/messages.pl:1486 shtml/messages.pl:1490
+#: shtml/messages.pl:1494
 msgid "Klassen"
 msgstr "Classes"
 
@@ -1921,9 +1921,9 @@ msgstr ""
 #: shtml/messages.pl:142 shtml/messages.pl:144 shtml/messages.pl:158
 #: shtml/messages.pl:385 shtml/messages.pl:390 shtml/messages.pl:400
 #: shtml/messages.pl:606 shtml/messages.pl:611 shtml/messages.pl:621
-#: shtml/messages.pl:1452 shtml/messages.pl:1454 shtml/messages.pl:1458
-#: shtml/messages.pl:1464 shtml/messages.pl:1471 shtml/messages.pl:1478
-#: shtml/messages.pl:1482 shtml/messages.pl:1487
+#: shtml/messages.pl:1436 shtml/messages.pl:1438 shtml/messages.pl:1442
+#: shtml/messages.pl:1448 shtml/messages.pl:1455 shtml/messages.pl:1462
+#: shtml/messages.pl:1466 shtml/messages.pl:1471
 msgid "Austeilen"
 msgstr "Distribute"
 
@@ -1977,11 +1977,11 @@ msgstr ""
 #: shtml/messages.pl:187 shtml/messages.pl:423 shtml/messages.pl:428
 #: shtml/messages.pl:430 shtml/messages.pl:435 shtml/messages.pl:445
 #: shtml/messages.pl:644 shtml/messages.pl:649 shtml/messages.pl:651
-#: shtml/messages.pl:656 shtml/messages.pl:666 shtml/messages.pl:1453
-#: shtml/messages.pl:1455 shtml/messages.pl:1459 shtml/messages.pl:1466
-#: shtml/messages.pl:1473 shtml/messages.pl:1480 shtml/messages.pl:1484
-#: shtml/messages.pl:1489 shtml/messages.pl:1520 shtml/messages.pl:1521
-#: shtml/messages.pl:1524
+#: shtml/messages.pl:656 shtml/messages.pl:666 shtml/messages.pl:1437
+#: shtml/messages.pl:1439 shtml/messages.pl:1443 shtml/messages.pl:1450
+#: shtml/messages.pl:1457 shtml/messages.pl:1464 shtml/messages.pl:1468
+#: shtml/messages.pl:1473 shtml/messages.pl:1504 shtml/messages.pl:1505
+#: shtml/messages.pl:1508
 msgid "Einsammeln"
 msgstr "Collect"
 
@@ -1989,7 +1989,7 @@ msgstr "Collect"
 #: shtml/messages.pl:432 shtml/messages.pl:442 shtml/messages.pl:653
 #: shtml/messages.pl:663 shtml/messages.pl:695 shtml/messages.pl:784
 #: shtml/messages.pl:788 shtml/messages.pl:798 shtml/messages.pl:805
-#: shtml/messages.pl:1309 shtml/messages.pl:1312
+#: shtml/messages.pl:1298 shtml/messages.pl:1301
 msgid "1"
 msgstr "1"
 
@@ -2100,8 +2100,8 @@ msgid ""
 "beendet."
 msgstr "The exam ends with collection of the files."
 
-#: shtml/messages.pl:234 shtml/messages.pl:304 shtml/messages.pl:1357
-#: shtml/messages.pl:1416 shtml/messages.pl:1431
+#: shtml/messages.pl:234 shtml/messages.pl:304 shtml/messages.pl:1341
+#: shtml/messages.pl:1400 shtml/messages.pl:1415
 msgid "Best&auml;tigen"
 msgstr "Confirm"
 
@@ -2313,8 +2313,8 @@ msgstr ""
 "With the button &#8222;Remove&#8220; you can remove yourself from a class,\n"
 "when you no longer instruct this class."
 
-#: shtml/messages.pl:325 shtml/messages.pl:330 shtml/messages.pl:1462
-#: shtml/messages.pl:1469
+#: shtml/messages.pl:325 shtml/messages.pl:330 shtml/messages.pl:1446
+#: shtml/messages.pl:1453
 msgid "Klassenliste"
 msgstr "Class list"
 
@@ -2344,8 +2344,8 @@ msgid ""
 msgstr ""
 "Here you can see information on the students of the current selected class "
 
-#: shtml/messages.pl:353 shtml/messages.pl:358 shtml/messages.pl:1463
-#: shtml/messages.pl:1470
+#: shtml/messages.pl:353 shtml/messages.pl:358 shtml/messages.pl:1447
+#: shtml/messages.pl:1454
 msgid "Passw&ouml;rter"
 msgstr "Passwords"
 
@@ -2445,9 +2445,9 @@ msgstr ""
 
 #: shtml/messages.pl:407 shtml/messages.pl:412 shtml/messages.pl:417
 #: shtml/messages.pl:628 shtml/messages.pl:633 shtml/messages.pl:638
-#: shtml/messages.pl:1465 shtml/messages.pl:1472 shtml/messages.pl:1479
-#: shtml/messages.pl:1483 shtml/messages.pl:1488 shtml/messages.pl:1516
-#: shtml/messages.pl:1517 shtml/messages.pl:1522
+#: shtml/messages.pl:1449 shtml/messages.pl:1456 shtml/messages.pl:1463
+#: shtml/messages.pl:1467 shtml/messages.pl:1472 shtml/messages.pl:1500
+#: shtml/messages.pl:1501 shtml/messages.pl:1506
 msgid "Bereitstellen"
 msgstr "Supply"
 
@@ -2511,9 +2511,9 @@ msgstr ""
 "&#8222;_collected -&gt; collected-class&#8220;."
 
 #: shtml/messages.pl:453 shtml/messages.pl:458 shtml/messages.pl:674
-#: shtml/messages.pl:679 shtml/messages.pl:1451 shtml/messages.pl:1457
-#: shtml/messages.pl:1467 shtml/messages.pl:1474 shtml/messages.pl:1481
-#: shtml/messages.pl:1485 shtml/messages.pl:1490
+#: shtml/messages.pl:679 shtml/messages.pl:1435 shtml/messages.pl:1441
+#: shtml/messages.pl:1451 shtml/messages.pl:1458 shtml/messages.pl:1465
+#: shtml/messages.pl:1469 shtml/messages.pl:1474
 msgid "Tauschen"
 msgstr "Exchange"
 
@@ -2615,8 +2615,8 @@ msgstr ""
 "&#8222;Open&#8220; project means that other teacherscan sign into the "
 "project."
 
-#: shtml/messages.pl:494 shtml/messages.pl:499 shtml/messages.pl:1477
-#: shtml/messages.pl:1486
+#: shtml/messages.pl:494 shtml/messages.pl:499 shtml/messages.pl:1461
+#: shtml/messages.pl:1470
 msgid "Mitglieder"
 msgstr "Members"
 
@@ -2627,8 +2627,8 @@ msgid "Ausgew&auml;hltes Projekt:"
 msgstr "Selected project:"
 
 #: shtml/messages.pl:501 shtml/messages.pl:830 shtml/messages.pl:873
-#: shtml/messages.pl:875 shtml/messages.pl:1239 shtml/messages.pl:1344
-#: shtml/messages.pl:1370 shtml/messages.pl:1419 shtml/messages.pl:1434
+#: shtml/messages.pl:875 shtml/messages.pl:1234 shtml/messages.pl:1328
+#: shtml/messages.pl:1354 shtml/messages.pl:1403 shtml/messages.pl:1418
 msgid "&Auml;nderungen speichern"
 msgstr "Save changes"
 
@@ -2657,8 +2657,8 @@ msgid "teacher"
 msgstr "teacher"
 
 #: shtml/messages.pl:508 shtml/messages.pl:596 shtml/messages.pl:1106
-#: shtml/messages.pl:1116 shtml/messages.pl:1118 shtml/messages.pl:1505
-#: shtml/messages.pl:1509
+#: shtml/messages.pl:1116 shtml/messages.pl:1118 shtml/messages.pl:1489
+#: shtml/messages.pl:1493
 msgid "Lehrer"
 msgstr "Teacher"
 
@@ -2867,12 +2867,12 @@ msgstr ""
 #: shtml/messages.pl:814 shtml/messages.pl:825 shtml/messages.pl:837
 #: shtml/messages.pl:870 shtml/messages.pl:883 shtml/messages.pl:908
 #: shtml/messages.pl:927 shtml/messages.pl:954 shtml/messages.pl:985
-#: shtml/messages.pl:1501
+#: shtml/messages.pl:1485
 msgid "Benutzerverwaltung"
 msgstr "User administration"
 
 #: shtml/messages.pl:706 shtml/messages.pl:772 shtml/messages.pl:774
-#: shtml/messages.pl:775 shtml/messages.pl:1503
+#: shtml/messages.pl:775 shtml/messages.pl:1487
 msgid "Backup"
 msgstr "Backup"
 
@@ -3127,7 +3127,7 @@ msgstr ""
 "program in the, &#8222;Extra lists&#8220;."
 
 #: shtml/messages.pl:824 shtml/messages.pl:826 shtml/messages.pl:869
-#: shtml/messages.pl:1492
+#: shtml/messages.pl:1476
 msgid "Sch&uuml;lerliste pflegen"
 msgstr "maintain student list"
 
@@ -3161,7 +3161,7 @@ msgstr ""
 "studentdata\n"
 "here."
 
-#: shtml/messages.pl:836 shtml/messages.pl:838 shtml/messages.pl:1493
+#: shtml/messages.pl:836 shtml/messages.pl:838 shtml/messages.pl:1477
 msgid "Lehrerliste pflegen"
 msgstr "Maintain teacher list"
 
@@ -3234,7 +3234,7 @@ msgstr ""
 "must have\n"
 "at least 2 characters and is allowed to have 16 characters at most."
 
-#: shtml/messages.pl:871 shtml/messages.pl:1494
+#: shtml/messages.pl:871 shtml/messages.pl:1478
 msgid "Extralisten pflegen"
 msgstr "Maintain extra lists"
 
@@ -3272,7 +3272,7 @@ msgstr ""
 "Comment lines begin with a number sign (#) and are not\n"
 "evaluated."
 
-#: shtml/messages.pl:882 shtml/messages.pl:884 shtml/messages.pl:1497
+#: shtml/messages.pl:882 shtml/messages.pl:884 shtml/messages.pl:1481
 msgid "Lehrerpassw&ouml;rter"
 msgstr "Teacher passwords"
 
@@ -3319,7 +3319,7 @@ msgstr ""
 "print\n"
 "them afterwards."
 
-#: shtml/messages.pl:907 shtml/messages.pl:909 shtml/messages.pl:1495
+#: shtml/messages.pl:907 shtml/messages.pl:909 shtml/messages.pl:1479
 msgid "Benutzerlisten pr&uuml;fen"
 msgstr "Check user lists"
 
@@ -3476,7 +3476,7 @@ msgstr "Create user"
 msgid "Letzte Logdatei ansehen"
 msgstr "View last log file"
 
-#: shtml/messages.pl:963 shtml/messages.pl:1347
+#: shtml/messages.pl:963 shtml/messages.pl:1331
 msgid "Gruppe"
 msgstr "Group"
 
@@ -3535,7 +3535,7 @@ msgstr ""
 "and does not create output on the school console. You can view the current\n"
 "output of the respective process with the button &#8222;View log file&#8220;."
 
-#: shtml/messages.pl:984 shtml/messages.pl:986 shtml/messages.pl:1498
+#: shtml/messages.pl:984 shtml/messages.pl:986 shtml/messages.pl:1482
 msgid "Berichte"
 msgstr "Reports"
 
@@ -3574,7 +3574,7 @@ msgstr ""
 "potentially\n"
 "be corrected in the school administration program."
 
-#: shtml/messages.pl:995 shtml/messages.pl:1513
+#: shtml/messages.pl:995 shtml/messages.pl:1497
 msgid "Standardeinstellungen"
 msgstr "Standard settings"
 
@@ -3635,7 +3635,7 @@ msgstr ""
 "computer, check the appropriate check box and choose the action,\n"
 "&#8222;Reset selection&#8220;."
 
-#: shtml/messages.pl:1032 shtml/messages.pl:1514
+#: shtml/messages.pl:1032 shtml/messages.pl:1498
 msgid "EDV-R&auml;ume"
 msgstr "EDV rooms"
 
@@ -3818,7 +3818,7 @@ msgstr ""
 "To delete an entry, check the appropriate check box at the end of theline."
 
 #: shtml/messages.pl:1109 shtml/messages.pl:1159 shtml/messages.pl:1161
-#: shtml/messages.pl:1508 shtml/messages.pl:1512
+#: shtml/messages.pl:1492 shtml/messages.pl:1496
 msgid "Sonderquota"
 msgstr "Special quota"
 
@@ -3960,28 +3960,28 @@ msgstr ""
 "&#8222;/var&#8220;."
 
 #: shtml/messages.pl:1200 shtml/messages.pl:1201 shtml/messages.pl:1210
-#: shtml/messages.pl:1353 shtml/messages.pl:1391 shtml/messages.pl:1412
-#: shtml/messages.pl:1427
+#: shtml/messages.pl:1337 shtml/messages.pl:1375 shtml/messages.pl:1396
+#: shtml/messages.pl:1411
 msgid "linbo"
 msgstr "linbo"
 
-#: shtml/messages.pl:1202 shtml/messages.pl:1526
+#: shtml/messages.pl:1202 shtml/messages.pl:1510
 msgid "Gruppenkonfiguration editieren"
 msgstr "Edit group configuration"
 
-#: shtml/messages.pl:1203 shtml/messages.pl:1405 shtml/messages.pl:1527
+#: shtml/messages.pl:1203 shtml/messages.pl:1389 shtml/messages.pl:1511
 msgid "Gruppenkonfiguration erstellen"
 msgstr "Create group configuration"
 
-#: shtml/messages.pl:1204 shtml/messages.pl:1528
+#: shtml/messages.pl:1204 shtml/messages.pl:1512
 msgid "Registrypatch editieren"
 msgstr "Edit registry patch"
 
-#: shtml/messages.pl:1205 shtml/messages.pl:1529
+#: shtml/messages.pl:1205 shtml/messages.pl:1513
 msgid "PXE-Start"
 msgstr "PXE start"
 
-#: shtml/messages.pl:1206 shtml/messages.pl:1530
+#: shtml/messages.pl:1206 shtml/messages.pl:1514
 msgid "Imageverwaltung"
 msgstr "Image administration"
 
@@ -4014,319 +4014,284 @@ msgid "Rechnergruppenname"
 msgstr "Computer group name"
 
 #: shtml/messages.pl:1218
-#, fuzzy
-msgid "System-Typ"
-msgstr "System"
-
-#: shtml/messages.pl:1219
-msgid "Bios"
-msgstr ""
-
-#: shtml/messages.pl:1220
-msgid "Bios64"
-msgstr ""
-
-#: shtml/messages.pl:1221
-msgid "EFI32"
-msgstr ""
-
-#: shtml/messages.pl:1222
-msgid "EFI64"
-msgstr ""
-
-#: shtml/messages.pl:1223
 msgid "automatischer Rootlogout nach"
 msgstr "Automatic root logout after"
 
-#: shtml/messages.pl:1224
+#: shtml/messages.pl:1219
 msgid "Sekunden"
 msgstr "seconds"
 
-#: shtml/messages.pl:1225
+#: shtml/messages.pl:1220
 msgid "Automatische Partitionsreparatur"
 msgstr "Automatic repair of partition"
 
-#: shtml/messages.pl:1226
+#: shtml/messages.pl:1221
 msgid "Automatisches Formatieren"
 msgstr "Automatic formatting"
 
-#: shtml/messages.pl:1227
+#: shtml/messages.pl:1222
 msgid "Automatisches Einrichten des Caches"
 msgstr "Automatic set up of the cache"
 
-#: shtml/messages.pl:1228
+#: shtml/messages.pl:1223
 msgid "Downloadtype ausw&auml;hlen"
 msgstr "Select download type"
 
-#: shtml/messages.pl:1229
+#: shtml/messages.pl:1224
 msgid "rsync"
 msgstr "rsync"
 
-#: shtml/messages.pl:1230
+#: shtml/messages.pl:1225
 msgid "multicast"
 msgstr "multicast"
 
-#: shtml/messages.pl:1231
+#: shtml/messages.pl:1226
 msgid "torrent"
 msgstr "torrent"
 
-#: shtml/messages.pl:1232
+#: shtml/messages.pl:1227
 msgid "Bildschirmschriftfarbe"
 msgstr "Display font color"
 
-#: shtml/messages.pl:1233 shtml/messages.pl:1235
+#: shtml/messages.pl:1228 shtml/messages.pl:1230
 msgid "white"
 msgstr "white"
 
-#: shtml/messages.pl:1234
+#: shtml/messages.pl:1229
 msgid "Konsolenschriftfarbe"
 msgstr "Console font color"
 
-#: shtml/messages.pl:1236
+#: shtml/messages.pl:1231
 msgid "Konsolenschriftfarbe f&uuml;r Fehler- und Warnmeldungen"
 msgstr "Console font color for mistake and warning notifications"
 
-#: shtml/messages.pl:1237
+#: shtml/messages.pl:1232
 msgid "red"
 msgstr "red"
 
-#: shtml/messages.pl:1238
+#: shtml/messages.pl:1233
 msgid "LINBO-Kerneloptionen"
 msgstr "LINBO kernel options"
 
-#: shtml/messages.pl:1240 shtml/messages.pl:1336
+#: shtml/messages.pl:1235 shtml/messages.pl:1321
 msgid "Neues System hinzuf&uuml;gen"
 msgstr "Add new system"
 
-#: shtml/messages.pl:1241 shtml/messages.pl:1250 shtml/messages.pl:1290
-#: shtml/messages.pl:1325 shtml/messages.pl:1337
+#: shtml/messages.pl:1236 shtml/messages.pl:1244 shtml/messages.pl:1282
+#: shtml/messages.pl:1311 shtml/messages.pl:1322
 msgid "MS Windows"
 msgstr "MS Windows"
 
-#: shtml/messages.pl:1242 shtml/messages.pl:1251 shtml/messages.pl:1291
-#: shtml/messages.pl:1326 shtml/messages.pl:1338
+#: shtml/messages.pl:1237 shtml/messages.pl:1245 shtml/messages.pl:1283
+#: shtml/messages.pl:1312 shtml/messages.pl:1323
 msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
-#: shtml/messages.pl:1243 shtml/messages.pl:1292 shtml/messages.pl:1301
-#: shtml/messages.pl:1327 shtml/messages.pl:1339
+#: shtml/messages.pl:1238 shtml/messages.pl:1284 shtml/messages.pl:1292
+#: shtml/messages.pl:1313 shtml/messages.pl:1324
 msgid "Daten"
 msgstr "Data"
 
-#: shtml/messages.pl:1244 shtml/messages.pl:1293 shtml/messages.pl:1302
-#: shtml/messages.pl:1328 shtml/messages.pl:1340
+#: shtml/messages.pl:1239 shtml/messages.pl:1285 shtml/messages.pl:1293
+#: shtml/messages.pl:1314 shtml/messages.pl:1325
 msgid "Swap"
 msgstr "Swap"
 
-#: shtml/messages.pl:1245 shtml/messages.pl:1294 shtml/messages.pl:1303
-#: shtml/messages.pl:1329 shtml/messages.pl:1341
+#: shtml/messages.pl:1240 shtml/messages.pl:1286 shtml/messages.pl:1294
+#: shtml/messages.pl:1315 shtml/messages.pl:1326
 msgid "Cache"
 msgstr "Cache"
 
-#: shtml/messages.pl:1246 shtml/messages.pl:1295 shtml/messages.pl:1330
-#: shtml/messages.pl:1342
+#: shtml/messages.pl:1241 shtml/messages.pl:1287 shtml/messages.pl:1316
+#: shtml/messages.pl:1327
 msgid "erweitert"
 msgstr "enhanced"
 
-#: shtml/messages.pl:1247 shtml/messages.pl:1296 shtml/messages.pl:1305
-#: shtml/messages.pl:1331 shtml/messages.pl:1343
-msgid "EFI"
-msgstr ""
-
-#: shtml/messages.pl:1248
+#: shtml/messages.pl:1242
 msgid "Systeme"
 msgstr "Systems"
 
-#: shtml/messages.pl:1249 shtml/messages.pl:1300
+#: shtml/messages.pl:1243 shtml/messages.pl:1291
 msgid "System"
 msgstr "System"
 
-#: shtml/messages.pl:1252 shtml/messages.pl:1262 shtml/messages.pl:1306
-#, fuzzy
-msgid "Name der Partition"
-msgstr "Device name of partition"
-
-#: shtml/messages.pl:1253 shtml/messages.pl:1263 shtml/messages.pl:1307
+#: shtml/messages.pl:1246 shtml/messages.pl:1255 shtml/messages.pl:1296
 msgid "Devicename der Partition"
 msgstr "Device name of partition"
 
-#: shtml/messages.pl:1254 shtml/messages.pl:1264 shtml/messages.pl:1308
+#: shtml/messages.pl:1247 shtml/messages.pl:1256 shtml/messages.pl:1297
 msgid "Partitionsgr&ouml;&szlig;e in KB"
 msgstr "Size of partition in KB"
 
-#: shtml/messages.pl:1255 shtml/messages.pl:1265 shtml/messages.pl:1311
+#: shtml/messages.pl:1248 shtml/messages.pl:1257 shtml/messages.pl:1300
 msgid "Dateisystem"
 msgstr "File system"
 
-#: shtml/messages.pl:1256 shtml/messages.pl:1317 shtml/messages.pl:1318
+#: shtml/messages.pl:1249 shtml/messages.pl:1305
 msgid "VFAT"
 msgstr "VFAT"
 
-#: shtml/messages.pl:1257 shtml/messages.pl:1319
+#: shtml/messages.pl:1250 shtml/messages.pl:1306
 msgid "NTFS"
 msgstr "NTFS"
 
-#: shtml/messages.pl:1258 shtml/messages.pl:1313 shtml/messages.pl:1320
+#: shtml/messages.pl:1251 shtml/messages.pl:1302 shtml/messages.pl:1307
 msgid "EXT3"
 msgstr "EXT3"
 
-#: shtml/messages.pl:1259 shtml/messages.pl:1314 shtml/messages.pl:1321
+#: shtml/messages.pl:1252 shtml/messages.pl:1303 shtml/messages.pl:1308
 msgid "EXT4"
 msgstr "EXT4"
 
-#: shtml/messages.pl:1260 shtml/messages.pl:1315 shtml/messages.pl:1322
+#: shtml/messages.pl:1253 shtml/messages.pl:1304 shtml/messages.pl:1309
 msgid "ReiserFS"
 msgstr "ReiserFS"
 
-#: shtml/messages.pl:1261 shtml/messages.pl:1323
+#: shtml/messages.pl:1254
 msgid "Partition bootbar:"
 msgstr "Partition bootable:"
 
-#: shtml/messages.pl:1266
+#: shtml/messages.pl:1258
 msgid "Partition bootbar"
 msgstr "Partition bootable"
 
-#: shtml/messages.pl:1267
+#: shtml/messages.pl:1259
 msgid "Name des Betriebssystems"
 msgstr "Name of operating system"
 
-#: shtml/messages.pl:1268
+#: shtml/messages.pl:1260
 msgid "Betriebssystemversion (optional)"
 msgstr "Version of operating system (optional)"
 
-#: shtml/messages.pl:1269
+#: shtml/messages.pl:1261
 msgid "Beschreibung (optional)"
 msgstr "Description (optional)"
 
-#: shtml/messages.pl:1270
+#: shtml/messages.pl:1262
 msgid "Dateiname des Icons f&uuml;r den Startbutton"
 msgstr "File name of icons for start button"
 
-#: shtml/messages.pl:1271
+#: shtml/messages.pl:1263
 msgid "Dateiname des differenziellen Image"
 msgstr "File name of differential image"
 
-#: shtml/messages.pl:1272
+#: shtml/messages.pl:1264
 msgid "Dateiname des Basis-Image"
 msgstr "File name of basis image"
 
-#: shtml/messages.pl:1273
+#: shtml/messages.pl:1265
 msgid "Partition, die Kernel und initrd enth&auml;lt"
 msgstr "Partition that contains kernel and initrd"
 
-#: shtml/messages.pl:1274
+#: shtml/messages.pl:1266
 msgid "Pfad zum kernel"
 msgstr "Path to kernel"
 
-#: shtml/messages.pl:1275
+#: shtml/messages.pl:1267
 msgid "Relativer Pfad zur initrd"
 msgstr "Relative path to initrd"
 
-#: shtml/messages.pl:1276
+#: shtml/messages.pl:1268
 msgid "Bootoptionen"
 msgstr "Boot options"
 
-#: shtml/messages.pl:1277
+#: shtml/messages.pl:1269
 msgid "Start-Button f&uuml;r dieses Betriebssystem anzeigen"
 msgstr "Show start button for this operating system"
 
-#: shtml/messages.pl:1278
+#: shtml/messages.pl:1270
 msgid "Sync+Start-Button f&uuml;r dieses Betriebssystem anzeigen"
 msgstr "Show sync+start button for this operating system"
 
-#: shtml/messages.pl:1279
+#: shtml/messages.pl:1271
 msgid "Neu+Start-Button f&uuml;r dieses Betriebssystem anzeigen"
 msgstr "Show new+start button for this operating system"
 
-#: shtml/messages.pl:1280
+#: shtml/messages.pl:1272
 msgid "Betriebssystemreiter verstecken"
 msgstr "Hide operating system tab"
 
-#: shtml/messages.pl:1281
+#: shtml/messages.pl:1273
 msgid "Systemstart durch"
 msgstr "System start executed"
 
-#: shtml/messages.pl:1282
+#: shtml/messages.pl:1274
 msgid "grub.exe"
 msgstr "grub.exe"
 
-#: shtml/messages.pl:1283
+#: shtml/messages.pl:1275
 msgid "reboot"
 msgstr "reboot"
 
-#: shtml/messages.pl:1284
+#: shtml/messages.pl:1276
 msgid "Betriebssystem automatisch starten"
 msgstr "Start operating system automatically"
 
-#: shtml/messages.pl:1285
+#: shtml/messages.pl:1277
 msgid "Autostart-Timeout in Sek."
 msgstr "Autostart timeout in sec."
 
-#: shtml/messages.pl:1286
+#: shtml/messages.pl:1278
 msgid "Standard-Autostart-Aktion ausw&auml;hlen"
 msgstr "Select standard autostart action"
 
-#: shtml/messages.pl:1287
+#: shtml/messages.pl:1279
 msgid "start"
 msgstr "start"
 
-#: shtml/messages.pl:1288
+#: shtml/messages.pl:1280
 msgid "sync"
 msgstr "sync"
 
-#: shtml/messages.pl:1289
+#: shtml/messages.pl:1281
 msgid "new"
 msgstr "new"
 
-#: shtml/messages.pl:1297 shtml/messages.pl:1332
+#: shtml/messages.pl:1288 shtml/messages.pl:1317
 msgid "System &auml;ndern"
 msgstr "Change system"
 
-#: shtml/messages.pl:1298
+#: shtml/messages.pl:1289
 msgid "Betriebssystem l&ouml;schen"
 msgstr "Delete operating system"
 
-#: shtml/messages.pl:1299
+#: shtml/messages.pl:1290
 msgid "Betriebssystem hinzuf&uuml;gen"
 msgstr "Add operating system"
 
-#: shtml/messages.pl:1304
+#: shtml/messages.pl:1295
 msgid "erweiterte Partition"
 msgstr "enhanced partition"
 
-#: shtml/messages.pl:1310
+#: shtml/messages.pl:1299
 msgid "swap"
 msgstr "swap"
 
-#: shtml/messages.pl:1316
-msgid "vfat"
-msgstr ""
-
-#: shtml/messages.pl:1324
+#: shtml/messages.pl:1310
 msgid "System l&ouml;schen"
 msgstr "Delete system"
 
-#: shtml/messages.pl:1333
+#: shtml/messages.pl:1318
 msgid "kein Betriebssystem automatisch starten"
 msgstr "Do not start any operating system automatically"
 
-#: shtml/messages.pl:1334 shtml/messages.pl:1335
+#: shtml/messages.pl:1319 shtml/messages.pl:1320
 msgid "none"
 msgstr "none"
 
-#: shtml/messages.pl:1345
+#: shtml/messages.pl:1329
 msgid "Bitte Rechnergruppe ausw&auml;hlen"
 msgstr "Please select computer group"
 
-#: shtml/messages.pl:1346
+#: shtml/messages.pl:1330
 msgid "&Uuml;bersicht der Rechnergruppen"
 msgstr "Overview of Computer Group"
 
-#: shtml/messages.pl:1349
+#: shtml/messages.pl:1333
 msgid "Klicken Sie auf einen Gruppennamen, um den Editor zu &ouml;ffnen."
 msgstr "Click the group name to open the editor."
 
-#: shtml/messages.pl:1350
+#: shtml/messages.pl:1334
 msgid ""
 "Beachten Sie, da&szlig; sich im Editor der Radio-Button zur Deaktivierung "
 "des Autostarts am Seitenende befindet."
@@ -4334,7 +4299,7 @@ msgstr ""
 "Note that in the editor, the radio button for deactivation of autostart is "
 "at the end of the page."
 
-#: shtml/messages.pl:1351
+#: shtml/messages.pl:1335
 msgid ""
 "</p>\n"
 "<p><getext>Beachten Sie au&szlig;erdem, da&szlig; beim reboot-workaround in "
@@ -4347,81 +4312,81 @@ msgstr ""
 "Linbo start file under &quot;pxelinux.cfg/&lt;gruppe&gt;&quot;, the entry, "
 "&quot;DEFAULT reboot&quot; is activated and the computer will start with PXE."
 
-#: shtml/messages.pl:1354
+#: shtml/messages.pl:1338
 msgid "Imagedatei l&ouml;schen"
 msgstr "Delete image file"
 
-#: shtml/messages.pl:1356 shtml/messages.pl:1415 shtml/messages.pl:1430
+#: shtml/messages.pl:1340 shtml/messages.pl:1399 shtml/messages.pl:1414
 msgid "wirklich l&ouml;schen?"
 msgstr "Are you sure you want to delete?"
 
-#: shtml/messages.pl:1358 shtml/messages.pl:1363 shtml/messages.pl:1368
-#: shtml/messages.pl:1417 shtml/messages.pl:1432
+#: shtml/messages.pl:1342 shtml/messages.pl:1347 shtml/messages.pl:1352
+#: shtml/messages.pl:1401 shtml/messages.pl:1416
 msgid "Abbrechen"
 msgstr "Cancel"
 
-#: shtml/messages.pl:1359
+#: shtml/messages.pl:1343
 msgid "Imagedatei umbenennen"
 msgstr "Rename image file"
 
-#: shtml/messages.pl:1361 shtml/messages.pl:1366
+#: shtml/messages.pl:1345 shtml/messages.pl:1350
 msgid "&uuml;berschreiben?"
 msgstr "Overwrite?"
 
-#: shtml/messages.pl:1362 shtml/messages.pl:1367
+#: shtml/messages.pl:1346 shtml/messages.pl:1351
 msgid "&Uuml;berschreiben"
 msgstr "Overwrite"
 
-#: shtml/messages.pl:1364
+#: shtml/messages.pl:1348
 msgid "Imagedatei kopieren"
 msgstr "Copy image file"
 
-#: shtml/messages.pl:1369
+#: shtml/messages.pl:1353
 msgid "Imagebeschreibung editieren"
 msgstr "Edit image file"
 
-#: shtml/messages.pl:1371 shtml/messages.pl:1373 shtml/messages.pl:1375
-#: shtml/messages.pl:1420 shtml/messages.pl:1435
+#: shtml/messages.pl:1355 shtml/messages.pl:1357 shtml/messages.pl:1359
+#: shtml/messages.pl:1404 shtml/messages.pl:1419
 msgid "Schlie&szlig;en"
 msgstr "Close"
 
-#: shtml/messages.pl:1372
+#: shtml/messages.pl:1356
 msgid "Image-Informationen"
 msgstr "Image information"
 
-#: shtml/messages.pl:1374
+#: shtml/messages.pl:1358
 msgid "Image-Liste"
 msgstr "Image list"
 
-#: shtml/messages.pl:1376
+#: shtml/messages.pl:1360
 msgid "Basisimages"
 msgstr "Basis images"
 
-#: shtml/messages.pl:1377 shtml/messages.pl:1382
+#: shtml/messages.pl:1361 shtml/messages.pl:1366
 msgid "E"
 msgstr "E"
 
-#: shtml/messages.pl:1378 shtml/messages.pl:1383
+#: shtml/messages.pl:1362 shtml/messages.pl:1367
 msgid "I"
 msgstr "I"
 
-#: shtml/messages.pl:1379 shtml/messages.pl:1384
+#: shtml/messages.pl:1363 shtml/messages.pl:1368
 msgid "U"
 msgstr "U"
 
-#: shtml/messages.pl:1380 shtml/messages.pl:1385
+#: shtml/messages.pl:1364 shtml/messages.pl:1369
 msgid "K"
 msgstr "K"
 
-#: shtml/messages.pl:1381 shtml/messages.pl:1386
+#: shtml/messages.pl:1365 shtml/messages.pl:1370
 msgid "L"
 msgstr "L"
 
-#: shtml/messages.pl:1388
+#: shtml/messages.pl:1372
 msgid "Wenn Sie die Maus auf die Symbole bewegen, werden Hilfetexte angezeigt."
 msgstr "When you move the mouse over the symbol, help texts are shown."
 
-#: shtml/messages.pl:1389
+#: shtml/messages.pl:1373
 msgid ""
 "Zum Umbennenen und Kopieren von Images, m&uuml;ssen Sie einen neuen "
 "Dateinamen eingeben.\n"
@@ -4430,63 +4395,63 @@ msgstr ""
 "To rename and copy images, you must enter a new file name.\n"
 "File extensions (.cloop/.rsync) can be omitted."
 
-#: shtml/messages.pl:1392
+#: shtml/messages.pl:1376
 msgid "Bestehende Gruppenkonfiguration einer Rechnergruppe kopieren"
 msgstr "Copy existing group configuration of a computer group"
 
-#: shtml/messages.pl:1393
+#: shtml/messages.pl:1377
 msgid "kopieren nach"
 msgstr "copy to"
 
-#: shtml/messages.pl:1394
+#: shtml/messages.pl:1378
 msgid "Assistent zur Erstellung einer neuen Rechnergruppe"
 msgstr "Assistant for the creation of a new computer group"
 
-#: shtml/messages.pl:1395
+#: shtml/messages.pl:1379
 msgid "Rechnergruppe"
 msgstr "Computer group"
 
-#: shtml/messages.pl:1396
+#: shtml/messages.pl:1380
 msgid "Festplattengr&ouml;&szlig;e in MB"
 msgstr "Size of hard drive in MB"
 
-#: shtml/messages.pl:1397
+#: shtml/messages.pl:1381
 msgid "Festplattencontroller (ab LINBO 1.1.0 immer SATA (sda))"
 msgstr "Hard drive controller (from LINBO 1.1.0 onwards, always SATA (sda))"
 
-#: shtml/messages.pl:1398
+#: shtml/messages.pl:1382
 msgid "SATA"
 msgstr "SATA"
 
-#: shtml/messages.pl:1399
+#: shtml/messages.pl:1383
 msgid "Partition"
 msgstr "Partition"
 
-#: shtml/messages.pl:1400
+#: shtml/messages.pl:1384
 msgid "Partitionsgr&ouml;&szlig;en in MB"
 msgstr "Size of partition in MB"
 
-#: shtml/messages.pl:1401
+#: shtml/messages.pl:1385
 msgid "Betriebssystem 1 (Partition 1)"
 msgstr "Operating system 1 (Partition 1)"
 
-#: shtml/messages.pl:1402
+#: shtml/messages.pl:1386
 msgid "Betriebssystem 2 (Partition 2)"
 msgstr "Operating system 2 (Partition 2)"
 
-#: shtml/messages.pl:1403
+#: shtml/messages.pl:1387
 msgid "Betriebssystem 3 (Partition 5)"
 msgstr "Operating system 3 (Partition 5)"
 
-#: shtml/messages.pl:1404
+#: shtml/messages.pl:1388
 msgid "Betriebssystem 4 (Partition 6)"
 msgstr "Operating system 4 (Partition 6)"
 
-#: shtml/messages.pl:1406
+#: shtml/messages.pl:1390
 msgid "Keine Templates vorhanden."
 msgstr "No templates are available."
 
-#: shtml/messages.pl:1408
+#: shtml/messages.pl:1392
 msgid ""
 "Kopieren Sie hier die Konfiguration einer bestehenden Rechnergruppe\n"
 "oder erstellen Sie eine neue Gruppenkonfiguration."
@@ -4494,7 +4459,7 @@ msgstr ""
 "Copy the configuration of an existing computer group or, create\n"
 "a new group configuration here."
 
-#: shtml/messages.pl:1409
+#: shtml/messages.pl:1393
 msgid ""
 "Beachten Sie, dass ab LINBO 1.1.0 IDE-Platten wie SATA-Platten angesprochen "
 "werden.\n"
@@ -4504,7 +4469,7 @@ msgstr ""
 "activated.\n"
 "Therefore, no other selection is possible in the dropdown menu."
 
-#: shtml/messages.pl:1410
+#: shtml/messages.pl:1394
 msgid ""
 "Ist die neue Gruppenkonfiguration erstellt, k&ouml;nnen Sie im "
 "Untermen&uuml; &#8222;Gruppenkonfiguration editieren&#8220;\n"
@@ -4514,68 +4479,68 @@ msgstr ""
 "to the new configuration\n"
 "in the submenu &#8222;Edit group configuration&#8220; if necessary."
 
-#: shtml/messages.pl:1413 shtml/messages.pl:1418 shtml/messages.pl:1421
+#: shtml/messages.pl:1397 shtml/messages.pl:1402 shtml/messages.pl:1405
 msgid "PXE-Start-Dateien der Rechnergruppen editieren"
 msgstr "Edit PXE start files of computer groups"
 
-#: shtml/messages.pl:1422 shtml/messages.pl:1437
+#: shtml/messages.pl:1406 shtml/messages.pl:1421
 msgid "l&ouml;schen"
 msgstr "delete"
 
-#: shtml/messages.pl:1423
+#: shtml/messages.pl:1407
 msgid "Es sind keine PXE-Start-Dateien vorhanden."
 msgstr "No PXE start files available."
 
-#: shtml/messages.pl:1425
+#: shtml/messages.pl:1409
 msgid "."
 msgstr "."
 
-#: shtml/messages.pl:1428 shtml/messages.pl:1433 shtml/messages.pl:1436
+#: shtml/messages.pl:1412 shtml/messages.pl:1417 shtml/messages.pl:1420
 msgid "Registrypatch-Dateien der Rechnergruppen editieren"
 msgstr "Edit registry patch files of the computer group"
 
-#: shtml/messages.pl:1438
+#: shtml/messages.pl:1422
 msgid "Es sind keine Registrypatch-Dateien vorhanden."
 msgstr "There are not any registry patch files available."
 
-#: shtml/messages.pl:1439
+#: shtml/messages.pl:1423
 msgid "Registrypatch-Datei erstellen"
 msgstr "Create registry patch file"
 
-#: shtml/messages.pl:1440
+#: shtml/messages.pl:1424
 msgid "F&uuml;r"
 msgstr "for"
 
-#: shtml/messages.pl:1441
+#: shtml/messages.pl:1425
 msgid "Registrypatch-Datei erstellen aus"
 msgstr "Create registry patch file from"
 
-#: shtml/messages.pl:1442
+#: shtml/messages.pl:1426
 msgid "Verwendete Dateien"
 msgstr "Files used"
 
-#: shtml/messages.pl:1443
+#: shtml/messages.pl:1427
 msgid "Beispieldateien"
 msgstr "Example files"
 
-#: shtml/messages.pl:1444
+#: shtml/messages.pl:1428
 msgid "Es sind keine Templateedateien vorhanden."
 msgstr "There are not any template files available."
 
-#: shtml/messages.pl:1445
+#: shtml/messages.pl:1429
 msgid "Es gibt keine Imagedateien ohne Registrypatch."
 msgstr "There are not any image files without a registry patch."
 
-#: shtml/messages.pl:1446
+#: shtml/messages.pl:1430
 msgid "Es gibt keine Imagedateien."
 msgstr "There are not any image files."
 
-#: shtml/messages.pl:1448
+#: shtml/messages.pl:1432
 msgid ""
 "Klicken Sie auf den Namen einer Registrypatch-Datei, um sie zu editieren."
 msgstr "Click on the name of the registry patch file to edit it."
 
-#: shtml/messages.pl:1449
+#: shtml/messages.pl:1433
 msgid ""
 "Wollen Sie eine neue Registrypatch-Datei erstellen, w&auml;hlen Sie zun&auml;"
 "chst die Image-Datei\n"
@@ -4589,22 +4554,22 @@ msgstr ""
 "patch file,\n"
 "which should serve as a template for the new file."
 
-#: shtml/messages.pl:1450 shtml/messages.pl:1461 shtml/messages.pl:1476
-#: shtml/messages.pl:1491 shtml/messages.pl:1499 shtml/messages.pl:1504
-#: shtml/messages.pl:1525
+#: shtml/messages.pl:1434 shtml/messages.pl:1445 shtml/messages.pl:1460
+#: shtml/messages.pl:1475 shtml/messages.pl:1483 shtml/messages.pl:1488
+#: shtml/messages.pl:1509
 msgid "Start"
 msgstr "Start"
 
-#: shtml/messages.pl:1456 shtml/messages.pl:1460 shtml/messages.pl:1468
-#: shtml/messages.pl:1475
+#: shtml/messages.pl:1440 shtml/messages.pl:1444 shtml/messages.pl:1452
+#: shtml/messages.pl:1459
 msgid "Klassenarbeit"
 msgstr "Exam"
 
-#: shtml/messages.pl:1496
+#: shtml/messages.pl:1480
 msgid "Benutzerdaten &uuml;bernehmen"
 msgstr "Apply user data"
 
-#: shtml/messages.pl:1515
+#: shtml/messages.pl:1499
 msgid "Klassenarbeit:"
 msgstr "Exam:"
 
