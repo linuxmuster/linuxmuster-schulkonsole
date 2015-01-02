@@ -1,6 +1,8 @@
-linuxmuster-schulkonsole (0.10.19-2) babo; urgency=low
+linuxmuster-schulkonsole (0.10.19-4) babo; urgency=low
 
   * Remove update-linbofs from Linbo write_start_conf, image copy/move/delete
+  * Add linbo-* service restart to wrapper-linbo.pl
+  * Fix #426
 
  -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Sat, 13 Dec 2014 22:12:19 +0100
 
