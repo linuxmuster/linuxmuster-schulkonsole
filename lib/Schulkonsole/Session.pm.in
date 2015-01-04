@@ -1288,6 +1288,7 @@ sub init_l10n
 	if (defined $ENV{HTTP_ACCEPT_LANGUAGE}) {
 		my %lang_map = (
 			de_DE => 'C',	# default language, need not translate
+			de => 'C',	# accept de for de_DE
 			en => 'en_US.UTF-8',
 			'*' => 'C',
 		);
