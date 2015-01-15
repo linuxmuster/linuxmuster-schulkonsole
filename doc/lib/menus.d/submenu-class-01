@@ -1,50 +1,52 @@
 <!--#if expr="$link_class" -->
 	<a class="separator" href="class"><gettext>Start</gettext></a>
 <!--#endif -->
+<!--#if expr="$link_class_list" -->
 <!--#if expr="$class" -->
-<!--#if expr="$link_class_list" -->
 	<a href="class_list"><gettext>Klassenliste</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_class_passwords" -->
-	<a class="separator" href="class_passwords"><gettext>Passw&ouml;rter</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_class_handoutcopy" -->
-	<a href="class_handoutcopy"><gettext>Austeilen</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_class_handout" -->
-	<a href="class_handout"><gettext>Bereitstellen</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_class_collect" -->
-	<a class="separator" href="class_collect"><gettext>Einsammeln</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_class_shares" -->
-	<a class="separator" href="class_shares"><gettext>Tauschen</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_room_test" -->
-	<a class="end" href="room_test"><gettext>Klassenarbeit</gettext></a>
-<!--#endif -->
 <!--#else -->
-<!--#if expr="$link_class_list" -->
 	<span class="disabled"><gettext>Klassenliste</gettext></span>
 <!--#endif -->
+<!--#endif -->
 <!--#if expr="$link_class_passwords" -->
+<!--#if expr="$class" -->
+	<a class="separator" href="class_passwords"><gettext>Passw&ouml;rter</gettext></a>
+<!--#else -->
 	<span class="disabledseparator"><gettext>Passw&ouml;rter</gettext></span>
 <!--#endif -->
+<!--#endif -->
 <!--#if expr="$link_class_handoutcopy" -->
+<!--#if expr="$class" -->
+	<a href="class_handoutcopy"><gettext>Austeilen</gettext></a>
+<!--#else -->
 	<span class="disabled"><gettext>Austeilen</gettext></span>
 <!--#endif -->
+<!--#endif -->
 <!--#if expr="$link_class_handout" -->
+<!--#if expr="$class" -->
+	<a href="class_handout"><gettext>Bereitstellen</gettext></a>
+<!--#else -->
 	<span class="disabled"><gettext>Bereitstellen</gettext></span>
 <!--#endif -->
+<!--#endif -->
 <!--#if expr="$link_class_collect" -->
+<!--#if expr="$class" -->
+	<a class="separator" href="class_collect"><gettext>Einsammeln</gettext></a>
+<!--#else -->
 	<span class="disabledseparator"><gettext>Einsammeln</gettext></span>
 <!--#endif -->
+<!--#endif -->
 <!--#if expr="$link_class_shares" -->
+<!--#if expr="$class" -->
+	<a class="separator" href="class_shares"><gettext>Tauschen</gettext></a>
+<!--#else -->
 	<span class="disabledseparator"><gettext>Tauschen</gettext></span>
 <!--#endif -->
+<!--#endif -->
 <!--#if expr="$link_room_test" -->
-	<span class="disabledend"><gettext>Klassenarbeit</gettext></span>
+<!--#if expr="$class" -->
+	<a class="separator" href="room_test"><gettext>Klassenarbeit</gettext></a>
+<!--#else -->
+	<span class="disabledseparator"><gettext>Klassenarbeit</gettext></span>
 <!--#endif -->
 <!--#endif -->
-
-<!--#include file="footer_submenu.shtml.inc" -->

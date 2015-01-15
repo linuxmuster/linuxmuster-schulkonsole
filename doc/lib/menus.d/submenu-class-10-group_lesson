@@ -1,0 +1,7 @@
+<!--#if expr="$link_class_lesson" -->
+<!--#if expr="$class" -->
+	<a class="end" href="class_lesson"><gettext>Unterricht</gettext></a>
+<!--#else -->
+	<span class="disabledend"><gettext>Unterricht</gettext></span>
+<!--#endif -->
+<!--#endif -->
