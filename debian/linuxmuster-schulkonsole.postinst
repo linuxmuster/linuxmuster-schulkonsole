@@ -26,15 +26,18 @@ case "$1" in
 	  chown www-data $rtdir
 	  chmod 700 $rtdir
 	 fi
-	 # check for up-to-date permissions.conf
-	 if ! grep -q own_print_quota "$permfile"; then
-	  echo "Providing an up-to-date $permfile."
-	  echo "Original file is saved to $permfile.dpkg-bak."
-	  cp "$permfile_ex" "$permfile"
+	 # update permissions.conf
+	 PERMSCRIPT="/usr/share/schulkonsole/scripts/update-permissions.sh"
+	 if [ -e $PERMSCRIPT ]; then
+	  $PERMSCRIPT
 	  chmod 644 "$permfile"
 	  chown www-data:www-data "$permfile"
 	 fi
-	 
+	 # make menus
+	 MENUSCRIPT="/usr/share/schulkonsole/scripts/make-menus.sh"
+	 if [ -e $MENUSCRIPT ]; then
+	  $MENUSCRIPT
+	 fi
 	 # only on configured system
 	 [ -e "$INSTALLED" ] || exit 0
 
