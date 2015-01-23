@@ -315,6 +315,7 @@
 </td>
 </tr>
 </table>
+<p><input type="submit" name="accept" value="&Auml;nderungen speichern"></p>
 <!--#if expr="$devs{os}{isfirst}" -->
 <p><select name="${devs{n}}_modifynew">
 <!--#if expr="$devs{iswindows}" --><!--#else --><option value="windows"><gettext>MS Windows</gettext></option><!--#endif -->
@@ -419,6 +420,7 @@
 	<!--#endif -->
 <!--#endif -->
 </table>
+<p><input type="submit" name="accept" value="&Auml;nderungen speichern"></p>
 <p><input type="submit" name="${devs{n}}_delete" value="System l&ouml;schen"><br>
 <select name="${devs{n}}_modifynew">
 <!--#if expr="$devs{iswindows}" --><!--#else --><option value="windows"><gettext>MS Windows</gettext></option><!--#endif -->
