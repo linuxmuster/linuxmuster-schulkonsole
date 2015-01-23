@@ -61,7 +61,7 @@ SWITCHCOMMAND: {
 $q->param('delete') and do {
 	my $filename = $q->param('filename');
 
-	if ($filename !~ /^pxegrub\.lst\.(?:[a-z\d_]+)$/) {
+	if ($filename !~ /^pxelinux\.lst\.(?:[a-z\d_]+)$/) {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
 			'%s ist keine PXE-Start-Datei'), $filename), 1);
 		last SWITCHCOMMAND;

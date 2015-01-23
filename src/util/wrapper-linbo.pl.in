@@ -338,7 +338,7 @@ Deletes a LINBO file
 $app_id == Schulkonsole::Config::LINBODELETEAPP and do {
 	my $filename = <>;
 	my $tmpfilename;
-	($tmpfilename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.reg|pxegrub\.lst\.(?:[a-z\d_]+))$/;
+	($tmpfilename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.reg|pxelinux\.lst\.(?:[a-z\d_]+))$/;
         ($tmpfilename) = $filename =~ /^(menu\.lst\.[a-z\d_]+)$/ unless defined $tmpfilename;
         $filename = $tmpfilename;
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
