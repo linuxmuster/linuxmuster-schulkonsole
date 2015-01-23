@@ -208,6 +208,7 @@
 
 <hr>
 
+<!--#if expr="$link_start_openvpn" -->
 <form method="post" accept-charset="UTF-8">
 <h3><gettext>OpenVPN-Zertifikat</gettext></h3>
 <!--#if expr="$has_ovpn" -->
@@ -231,7 +232,7 @@
 
 <!--#endif -->
 </form>
-
+<!--#endif -->
 
 </div>
 <div id="info" style="display: block;">
