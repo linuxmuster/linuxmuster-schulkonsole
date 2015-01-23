@@ -406,7 +406,14 @@ $app_id == Schulkonsole::Config::LINBOIMAGEAPP and do {
 
 		my $new_file
 			= "$Schulkonsole::Config::_linbo_dir/$new_image.$image_suffix";
+
+		$) = 0;
+		$( = $);
+		umask(022);
+
 		if ($action == 1) {
+                        system Schulkonsole::Encode::to_cli("service linbo-bittorrent stop \Q$file\E force");
+                        system Schulkonsole::Encode::to_cli("service linbo-multicast stop \Q$file\E force");
 			foreach my $suffix (@suffixes) {
 				rename Schulkonsole::Encode::to_fs("$file$suffix"),
 				       Schulkonsole::Encode::to_fs("$new_file$suffix");
@@ -417,13 +424,15 @@ $app_id == Schulkonsole::Config::LINBOIMAGEAPP and do {
 				       	"cp -p \Q$file$suffix\E \Q$new_file$suffix\E");
 			}
 		}
+                system Schulkonsole::Encode::to_cli("service linbo-bittorrent restart \Q$new_file\E force");
+                system Schulkonsole::Encode::to_cli("service linbo-multicast restart \Q$new_file\E force");
 	} else {
 		foreach my $suffix (@suffixes) {
 			unlink Schulkonsole::Encode::to_fs("$file$suffix");
 		}
+                system Schulkonsole::Encode::to_cli("service linbo-bittorrent stop \Q$file\E");
+                system Schulkonsole::Encode::to_cli("service linbo-multicast stop \Q$file\E");
 	}
-	system Schulkonsole::Encode::to_cli("service linbo-bittorrent restart");
-	system Schulkonsole::Encode::to_cli("service linbo-multicast restart");
 
 	exit 0;
 };
