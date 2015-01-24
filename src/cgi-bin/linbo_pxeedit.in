@@ -136,7 +136,7 @@ foreach my $param ($q->param) {
 		if ($command eq 'edit') {
 			if (open REGPATCH, '<',
 			         Schulkonsole::Encode::to_fs(
- 			         	"$Schulkonsole::Config::_linbo_dir/pxelinux.cfg/$pxestart")) {
+ 			         	"$Schulkonsole::Config::_pxe_config_dir/$pxestart")) {
 				flock REGPATCH, 1;
 				seek REGPATCH, 0, 0;
 

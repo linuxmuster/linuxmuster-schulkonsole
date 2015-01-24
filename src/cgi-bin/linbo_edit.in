@@ -371,7 +371,73 @@ Name of the selected group
                                         $sk_session->standard_error_handling($@);
                                 }
                         }
+                        # update menulst
+                        my $menulst = 'menu.lst.'.$group;
+                        my $lines;
+                        my $initrd;
+                        my $kernel;
+                        if ($$conf{linbo}{systemtype} =~ /64/) {
+                            $initrd='linbofs64.lz';
+                            $kernel='linbo64';
+                        }
+                        else {
+                            $initrd='linbofs.lz';
+                            $kernel='linbo';
+                        }
+                        if (open MENULST, '<',
+                                 Schulkonsole::Encode::to_fs(
+                                        "$Schulkonsole::Config::_linbo_dir/$menulst")) {
+                                flock MENULST, 1;
+                                seek MENULST, 0, 0;
+                                {
+                                    local $/ = undef;
+                                    $lines = <MENULST>;
+                                }
+                                close MENULST;
+                                if ($lines) {
+                                    foreach my $line ($lines) {
+                                        $line =~ s/\blinbofs(64)?\.lz\b/$initrd/g;
+                                        $line =~ s/\blinbo(64)?\b/$kernel/g;
+                                    }
+                                    eval {
+                                        Schulkonsole::Linbo::write_file(
+                                            $sk_session->userdata('id'),
+                                            $sk_session->get_password(),
+                                            $menulst,
+                                            $lines);
+                                    }; if ($@) {
+                                        $sk_session->standard_error_handling($@);
+                                    }
+                                }
+                        }
+                        # update pxestart
+                        if (open PXESTART, '<',
+                                 Schulkonsole::Encode::to_fs(
+                                        "$Schulkonsole::Config::_pxe_config_dir/$group")) {
+                                flock PXESTART, 1;
+                                seek PXESTART, 0, 0;
 
+                                {
+                                    local $/ = undef;
+                                    $lines = <PXESTART>;
+                                }
+                                close PXESTART;
+                                if ($lines) {
+                                    foreach my $line ($lines) {
+                                        $line =~ s/\blinbofs(64)?\.lz\b/$initrd/g;
+                                        $line =~ s/\blinbo(64)?\b/$kernel/g;
+                                    }
+                                    eval {
+                                        Schulkonsole::Linbo::write_pxe_file(
+                                            $sk_session->userdata('id'),
+                                            $sk_session->get_password(),
+                                            $group,
+                                            $lines);
+                                    }; if ($@) {
+                                        $sk_session->standard_error_handling($@);
+                                    }
+                                }
+                        }
                         last SWITCHCOMMAND;
                 };
                 } # end SWITCHCOMMAND

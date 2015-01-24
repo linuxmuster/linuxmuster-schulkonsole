@@ -468,7 +468,6 @@ $app_id == Schulkonsole::Config::LINBOWRITEAPP and do {
 	my $file = Schulkonsole::Encode::to_fs(
 	           	"$Schulkonsole::Config::_linbo_dir/$filename");
 
-
 	$< = $>;
 	$) = 0;
 	$( = $);
@@ -507,13 +506,13 @@ Writes a LINBO PXE start file
 
 $app_id == Schulkonsole::Config::LINBOWRITEPXEAPP and do {
 	my $filename = <>;
+	($filename) = $filename =~ /^([a-z\d_]+)$/;
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		unless defined $filename;
 
 	my $file = Schulkonsole::Encode::to_fs(
 	           	"$Schulkonsole::Config::_pxe_config_dir/$filename");
-
 
 	$< = $>;
 	$) = 0;
