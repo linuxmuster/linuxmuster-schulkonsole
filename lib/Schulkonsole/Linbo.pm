@@ -392,7 +392,7 @@ sub pxestarts {
 	my %re;
 
 	foreach my $file ((
-			glob("$Schulkonsole::Config::_linbo_dir/pxelinux.cfg/*")
+			glob("$Schulkonsole::Config::_pxe_config_dir/*")
 		)) {
 		next if -l$file or -d$file;
 		my ($filename) = File::Basename::fileparse($file);
@@ -2211,7 +2211,7 @@ The lines to be written
 
 =head3 Description
 
-Writes C<$lines> into C<$filename> in C</var/linbo/pxelinux.cfg>.
+Writes C<$lines> into C<$filename> in C<Schulkonsole::Config::_pxe_config_dir>.
 
 =cut
 
