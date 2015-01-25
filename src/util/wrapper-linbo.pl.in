@@ -127,12 +127,15 @@ $app_id == Schulkonsole::Config::LINBOWRITESTARTCONFAPP and do {
 	if (-e $filename) {
 		# backup old file
 		my $time = POSIX::strftime("%Y-%m-%d-%H%M", localtime($^T));
-		my $old_filename = Schulkonsole::Encode::to_fs($filename . '-' . $time);
+		my $old_filename = Schulkonsole::Encode::to_fs(
+                    $Schulkonsole::Config::_linbo_log_dir . '/'
+                    . $filename . '-' . $time);
 		my $cnt = 0;
 		while (-e $old_filename) {
 			$cnt++;
 			$old_filename = Schulkonsole::Encode::to_fs(
-			                	$filename . '-' . $time . '-' . $cnt);
+                            $Schulkonsole::Config::_linbo_log_dir . '/' 
+                            . $filename . '-' . $time . '-' . $cnt);
 		}
 
 		rename $filename, $old_filename;

@@ -710,6 +710,10 @@ LINBO directory
 
 PXE Config directory
 
+=item C$_linbo_log_dir>
+
+LINBO log directory
+
 =item C<$_linbo_start_conf_prefix>
 
 Prefix of start.conf.* files
@@ -741,7 +745,8 @@ This file defines the actual allowed wlan classes/projects
 use vars qw($_workstations_file $_room_defaults_file $_classrooms_file
             $_printers_file
             $_network_settings_file
-            $_linbo_dir $_pxe_config_dir $_linbo_start_conf_prefix
+            $_linbo_dir $_pxe_config_dir 
+            $_linbo_log_dir $_linbo_start_conf_prefix
             $_linbo_templates_dir $_linbo_templates_os_dir
             $_linbo_template_partition
             $_backup_conf_file $_dhcpd_conf_file
@@ -1151,6 +1156,7 @@ $_network_settings_file = $lml_env{NETWORKSETTINGS};
 $_linbo_dir = $lml_env{LINBODIR};
 $_pxe_config_dir = $lml_env{PXECFGDIR};
 $_linbo_templates_dir = '@datadir@/@PACKAGE@/linbo/templates';
+$_linbo_log_dir = $lml_env{LINBOLOGDIR};
 $_linbo_templates_os_dir = "$_linbo_templates_dir/os";
 $_linbo_template_partition = "$_linbo_templates_dir/part/start.conf.partition";
 $_group_defaults_file = '/etc/linuxmuster/group_defaults';
