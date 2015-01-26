@@ -181,9 +181,17 @@
 	<td><!--#if expr="$overview_workstations{first}" -->
 <!--#if expr="$urlfilteractive" -->
 <!--#if expr="$overview_workstations{webfilter}" --><!--#set var="quickwebfilteroff" value="1" -->
+<!--#if expr="$link_room_webfilter_switch" -->
 	<input type="checkbox" name="${overview_workstations{name}};webfilter" checked>
 <!--#else -->
+	<input type="checkbox" name="${overview_workstations{name}};webfilter" checked disabled>
+<!--#endif -->
+<!--#else -->
+<!--#if expr="$link_room_webfilter_switch" -->
 	<input type="checkbox" name="${overview_workstations{name}};webfilter">
+<!--#else -->
+	<input type="checkbox" name="${overview_workstations{name}};webfilter" disabled>
+<!--#endif -->
 <!--#endif -->
 <!--#else --><input type="checkbox" disabled><!--#endif --><!--#endif --></td>
 <!--#if expr="$overview_workstations{printer}" -->
