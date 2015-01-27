@@ -2111,7 +2111,8 @@ The basename of the file
 =head3 Description
 
 Deletes C<$filename> in C</var/linbo/>. Filename has to match C<*.cloop.reg>,
-C<*.rsync.reg>, or C<pxelinux\.lst\.(?:[a-z\d_]+)>.
+C<*.rsync.reg>, C<menu\.lst\.(?:[a-z\d_]+)>,
+C<start.conf.(?:[a-z\d_]+)>, or C<pxelinux\.lst\.(?:[a-z\d_]+)>.
 
 =cut
 

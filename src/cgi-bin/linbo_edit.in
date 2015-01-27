@@ -50,16 +50,13 @@ my $q = $sk_session->query();
 
 eval {
 my $groups = Schulkonsole::Linbo::groups();
-foreach my $group (keys %$groups) {
-        # if it is not a valid group name it must be a backup file
-        delete $$groups{$group} unless $group =~ /^([a-z\d_]+)$/;
-}
 
 my $group = $q->param('group');
+my $filecmd;
 if (not $group) {
         # get group from submit buttons
         foreach my $param ($q->param) {
-                last if (($group) = $param =~ /^(.*)_edit$/);
+                last if (($group,$filecmd) = $param =~ /^(.*)_(edit|delete)_start_conf$/);
         }
 }
 
@@ -70,6 +67,33 @@ List of all groups that have a start.conf.*
 =cut
 
         $sk_session->set_var('groups', [ sort keys %$groups ]);
+
+my @devs;
+my $conf;
+
+if ($filecmd eq 'delete') {
+    if (not $$groups{$group}) {
+            $sk_session->set_status(sprintf($sk_session->d()->get(
+                    'start.conf.%s existiert nicht'), $group), 1);
+    } else {
+        Schulkonsole::Linbo::delete_file(
+                $sk_session->userdata('id'),
+                $sk_session->get_password(),
+                'start.conf.' . $group);
+
+        $groups = Schulkonsole::Linbo::groups();
+        
+        $sk_session->set_var('groups', [ sort keys %$groups ]);
+        
+        if (not $$groups{$group}) {
+                $sk_session->set_status(sprintf($sk_session->d()->get(
+                        'start.conf.%s gel&ouml;scht'), $group), 0);
+        } else {
+                $sk_session->set_status(sprintf($sk_session->d()->get(
+                        'start.conf.%s konnte nicht gel&ouml;scht werden'), $group), 0);
+        }
+    }
+}
 
 if (    $group
     and $$groups{$group}) {
@@ -92,13 +116,15 @@ Name of the selected group
         $sk_session->set_var('groups', [ @groups ]);
 
 
-        my @devs;
-        my $conf = Schulkonsole::Linbo::get_conf_from_query($q);
+        @devs;
+        $conf = Schulkonsole::Linbo::get_conf_from_query($q);
+        
         if (not $conf) {
                 $conf = Schulkonsole::Linbo::read_start_conf($group);
         } else {
                 SWITCHCOMMAND: {
                 my $cmd = $$conf{action};
+                
                 $cmd eq 'addos' and do {
                         my %new_os;
 
@@ -443,10 +469,11 @@ Name of the selected group
                 } # end SWITCHCOMMAND
         }
 
+}
 
 
-
-
+if (    $group
+    and $$groups{$group}) {
 
 #
 # (re-)assign values to CGI params if necessary
@@ -587,6 +614,11 @@ is selected
 =item C<${groups}_edit>
 
 Created from array in session variable C<groups>. Selects start.conf.<groups>
+if no start.conf.* is edited.
+
+=item C<${groups}_delete>
+
+Dreated from array in session variable C<groups>. Deletes start.conf.<groups>
 if no start.conf.* is edited.
 
 =back
