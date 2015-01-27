@@ -345,8 +345,9 @@ $app_id == Schulkonsole::Config::LINBODELETEAPP and do {
 	my $tmpfilename;
 	($tmpfilename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.reg|pxelinux\.lst\.(?:[a-z\d_]+))$/;
         ($tmpfilename) = $filename =~ /^(menu\.lst\.[a-z\d_]+)$/ unless defined $tmpfilename;
+        ($tmpfilename) = $filename =~ /^(start\.conf\.[a-z\d_]+)$/ unless defined $tmpfilename;
         $filename = $tmpfilename;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
+        exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		unless defined $filename;
 

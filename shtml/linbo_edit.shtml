@@ -488,7 +488,8 @@
 <!--#if expr="$loop_groups" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
 <!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
-<td><input type="submit" name="${groups}_edit" value="$groups"></td>
+<td><input type="submit" name="${groups}_edit_start_conf" value="$groups"></td>
+<td><input type="submit" name="${groups}_delete_start_conf" value="l&ouml;schen"></td>
 </tr>
 <!--#endif -->
 </table>
