@@ -68,9 +68,6 @@ List of all groups that have a start.conf.*
 
         $sk_session->set_var('groups', [ sort keys %$groups ]);
 
-my @devs;
-my $conf;
-
 if ($filecmd eq 'delete') {
     if (not $$groups{$group}) {
             $sk_session->set_status(sprintf($sk_session->d()->get(
@@ -116,8 +113,8 @@ Name of the selected group
         $sk_session->set_var('groups', [ @groups ]);
 
 
-        @devs;
-        $conf = Schulkonsole::Linbo::get_conf_from_query($q);
+        my @devs;
+        my $conf = Schulkonsole::Linbo::get_conf_from_query($q);
         
         if (not $conf) {
                 $conf = Schulkonsole::Linbo::read_start_conf($group);
@@ -469,11 +466,6 @@ Name of the selected group
                 } # end SWITCHCOMMAND
         }
 
-}
-
-
-if (    $group
-    and $$groups{$group}) {
 
 #
 # (re-)assign values to CGI params if necessary
