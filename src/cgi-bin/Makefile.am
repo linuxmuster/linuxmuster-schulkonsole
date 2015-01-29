@@ -27,7 +27,7 @@ EXTRA_DIST = example.in start.in logout.in \
 	class_handoutcopy.in class_handout.in class_shares.in \
 	project.in project_members.in project_addmembers.in \
 	project_handoutcopy.in project_handout.in project_collect.in \
-	project_shares.in \
+	project_shares.in project_passwords.in \
 	settings.in settings_program.in settings_users.in settings_classs.in \
 	settings_backup.in \
 	user.in user_students.in user_teachers.in user_extra.in \
