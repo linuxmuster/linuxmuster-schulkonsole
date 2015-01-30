@@ -112,6 +112,7 @@ $VERSION = 0.05;
 	remove_from_class
 	print_class
 	print_teachers
+	print_project
 	global_shares_on
 	global_shares_off
 
@@ -199,7 +200,6 @@ sub start_wrapper {
 	my $out = shift;
 	my $in = shift;
 	my $err = shift;
-
 	my $pid = IPC::Open3::open3 $out, $in, $err,
 		$Schulkonsole::Config::_wrapper_sophomorix
 		or die new Schulkonsole::Error(
@@ -2063,6 +2063,85 @@ sub print_teachers {
 	} else {
 		return $data;
 	}
+}
+
+
+
+
+=head3 C<print_project($id, $password, $project_gid)>
+
+Return document with project info
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$project_gid>
+
+The GID of the project
+
+=item C<$filetype>
+
+Type of the file, either 0 (PDF) or 1 (CSV)
+
+=back
+
+=head4 Return value
+
+PDF-data or CSV-data
+
+=head4 Description
+
+This wraps the command
+C<sophomorix-print --project project-gid --postfix uid>, where
+uid is the UID of the teacher with ID C<$id> and project-gid is C<$project_gid>
+and returns the data of the produced document.
+
+=cut
+
+sub print_project {
+        my $id = shift;
+        my $password = shift;
+        my $project_gid = shift;
+        my $filetype = shift;
+
+        my $pid = start_wrapper(Schulkonsole::Config::PRINTPROJECTAPP,
+                $id, $password,
+                \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+        binmode SCRIPTIN, ':raw' if $filetype == 0;
+
+        print SCRIPTOUT "$project_gid\n$filetype\n";
+
+        my $data;
+        my $is_error = 0;
+        {
+                local $/ = undef;
+                while (<SCRIPTIN>) {
+                        $data .= $_;
+                }
+        }
+        if (    $filetype == 0
+            and $data !~ /^\%PDF/) {
+                $is_error = 1;
+                $input_buffer = $data;
+        }
+
+        stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+        if ($is_error) {
+                return undef;
+        } else {
+                return $data;
+        }
 }
 
 

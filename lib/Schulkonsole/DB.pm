@@ -63,6 +63,7 @@ $VERSION = 0.06;
 	get_class_userdatas
 	projects
 	get_projectdata
+	get_project_userdatas
 	is_project_admin
 	project_admins
 	project_user_members
@@ -722,6 +723,62 @@ sub get_projectdata {
 
 	return $row;
 
+}
+
+
+
+
+=head3 C<get_project_userdatas($gid)>
+
+Returns userdatas of student members of project
+
+=head4 Parameters
+
+=over
+
+=item C<$gid>
+
+The GID of the project
+
+=back
+
+=head4 Return value
+
+A reference to a hash with the student users' GID as key and the userdata as
+values.
+
+=head4 Description
+
+Returns the userdatas of the student members of project C<$gid>.
+
+=cut
+
+sub get_project_userdatas {
+	my $projectgid = shift;
+
+
+	my $prepare_groups_users = $_select_userdata .
+	   'JOIN    groups_users
+		     ON userdata.uidnumber = groups_users.memberuidnumber
+		     JOIN projectdata
+			    ON groups_users.gidnumber = projectdata.gidnumber 
+		WHERE userdata.gid != \'teachers\' AND projectdata.gid = ?';
+	my $sth = $_dbh->prepare($prepare_groups_users)
+		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+			$prepare_groups_users);
+	$sth->execute($projectgid)
+		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+			$prepare_groups_users,
+			"[gid = $projectgid]");
+
+	my %re;
+	while (my $row = $sth->fetchrow_hashref) {
+		utf8_decode_userdata($row);
+		$re{$$row{uid}} = $row;
+	}
+
+
+	return \%re;
 }
 
 
