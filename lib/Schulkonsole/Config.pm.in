@@ -61,6 +61,8 @@ $VERSION = 0.06;
 	$_permissions_conf_file
 	$_db_conf_file
 	$_workstations_file
+	$_workstations_log_file
+	$_workstations_tmp_log_file
 	$_room_defaults_file
 	$_dhcpd_conf_file
 	$_printers_file
@@ -688,6 +690,14 @@ use vars qw($_preferences_conf_file $_permissions_conf_file $_db_conf_file);
 
 This file lists the workstations
 
+=item C<$_workstations_log_file>
+
+This file is the log file of the last run of import_workstations
+
+=item C<$_workstations_tmp_log_file>
+
+This file is the log file of the current run of import_workstations
+
 =item C<$_room_defaults_file>
 
 This file defines the default internet, intranet, and webfilter settings
@@ -748,7 +758,9 @@ This file defines the actual allowed wlan classes/projects
 
 =cut
 
-use vars qw($_workstations_file $_room_defaults_file $_classrooms_file
+use vars qw($_workstations_file $_workstations_log_file 
+            $_workstations_tmp_log_file 
+            $_room_defaults_file $_classrooms_file
             $_printers_file
             $_network_settings_file
             $_linbo_dir $_pxe_config_dir 
@@ -1154,6 +1166,8 @@ $_blocked_hosts_internet_file = $lml_env{BLOCKEDHOSTSINTERNET};
 $_blocked_hosts_intranet_file = $lml_env{BLOCKEDHOSTSINTRANET};
 $_unfiltered_hosts_file = $lml_env{UNFILTEREDHOSTS};
 $_workstations_file = $lml_env{WIMPORTDATA};
+$_workstations_tmp_log_file = "/var/tmp/import_workstations.log";
+$_workstations_log_file = "$lml_env{LOGDIR}/import_workstations.log";
 $_room_defaults_file = $lml_env{ROOMDEFAULTS};
 $_dhcpd_conf_file = $lml_env{DHCPDCONF};
 $_printers_file = $lml_env{PRINTERS};

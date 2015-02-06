@@ -28,6 +28,7 @@ use open ':utf8';
 use Schulkonsole::Encode;
 use Schulkonsole::Files;
 use Schulkonsole::Session;
+use Proc::ProcessTable;
 use Env::Bash;
 
 
@@ -51,140 +52,151 @@ my $q = $sk_session->query();
 
 my $additional_lines_cnt = 5;
 
+my $process_table = new Proc::ProcessTable;
 
+my %running;
+foreach my $process (@{ $process_table->table }) {
+        if ($process->fname =~ /^import_workst/) {
+                $running{wsimport} = $process->pid;
+        }
+}
 
 eval {
 COMMANDS: {
 $q->param('accept') and do {
-    my $old = Schulkonsole::Config::workstations();
-    my %new;
-    my @add_errors;
-    my @edit_errors;
-    foreach my $param ($q->param) {
-        if (my ($i) = $param =~ /^(\d+)_addip$/) {
-            if ($q->param("${i}_addignore")) {
-                $q->delete("${i}_addroom");
-                $q->delete("${i}_addname");
-                $q->delete("${i}_addgroups");
-                $q->delete("${i}_addmac");
-                $q->delete("${i}_addip");
-                $q->delete("${i}_addpxe");
-                $q->delete("${i}_addopts");
-            }
-
-            $additional_lines_cnt = $i if $i > $additional_lines_cnt;
-
-
-            my ($name) = $q->param("${i}_addname") =~ /^\s*(.+?)\s*$/;
-            $name = lc $name;
-
-            my ($room) = $q->param("${i}_addroom") =~ /^\s*(.+?)\s*$/;
-            my ($groups) = $q->param("${i}_addgroups") =~ /^\s*(.+?)\s*$/;
-            my ($mac) = $q->param("${i}_addmac") =~ /^\s*(.+?)\s*$/;
-            my ($ip) = $q->param("${i}_addip") =~ /^\s*(.+?)\s*$/;
-            my $pxe = $q->param("${i}_addpxe");
-            my $opts = $q->param("${i}_addopts");
-
-            if (    (   $name
-                     or $room
-                     or $groups
-                     or $mac
-                     or $ip)
-                and syntax_check($room, $name, $groups, $mac, $ip,
-                                 $pxe, $opts, 0, \@add_errors)) {
-                $q->delete("${i}_addroom");
-                $q->delete("${i}_addname");
-                $q->delete("${i}_addgroups");
-                $q->delete("${i}_addmac");
-                $q->delete("${i}_addip");
-                $q->delete("${i}_addpxe");
-                $q->delete("${i}_addopts");
-                $new{$name}{room} = $room;
-                $new{$name}{name} = $name;
-                $new{$name}{groups} = $groups;
-                $new{$name}{mac} = $mac;
-                $new{$name}{ip} = $ip;
-                $new{$name}{pxe} = $pxe;
-                $new{$name}{opts} = $opts;
-            }
-        } elsif (my ($host) = $param =~ /^(.+)_ip$/) {
-            if ($q->param("${host}_delete")) {
-                $new{$host} = undef;
-                next;
-            }
-
-            my ($name) = $q->param("${host}_name") =~ /^\s*(.+?)\s*$/;
-            $name = lc $name;
-
-            my ($room) = $q->param("${host}_room") =~ /^\s*(.+?)\s*$/;
-            my ($groups) = $q->param("${host}_groups") =~ /^\s*(.+?)\s*$/;
-            my ($mac) = $q->param("${host}_mac") =~ /^\s*(.+?)\s*$/;
-            my ($ip) = $q->param("${host}_ip") =~ /^\s*(.+?)\s*$/;
-            my $pxe = $q->param("${host}_pxe");
-            my $opts = $q->param("${host}_opts");
-
-
-            if (    $$old{$host}
-                and $name eq $$old{$host}{name}
-                and $room eq $$old{$host}{room}
-                and $groups eq $$old{$host}{groups}
-                and $mac eq $$old{$host}{mac}
-                and $ip eq $$old{$host}{ip}
-                and $pxe eq $$old{$host}{pxe}
-                and $opts eq $$old{$host}{opts}) {
-            } elsif (    (   $name
-                          or $room
-                          or $groups
-                          or $mac
-                          or $ip)
-                     and syntax_check($room, $name, $groups, $mac, $ip,
-                                      $pxe, $opts, $host, \@edit_errors)) {
-                $new{$host}{room} = $room;
-                $new{$host}{name} = $name;
-                $new{$host}{groups} = $groups;
-                $new{$host}{mac} = $mac;
-                $new{$host}{ip} = $ip;
-                $new{$host}{pxe} = $pxe;
-                $new{$host}{opts} = $opts;
-            }
-        }
-    }
-
-    if (@edit_errors) {
-        $sk_session->set_status(join(', ', @edit_errors, @add_errors), 1);
+    if ($running{wsimport}) {
+            $sk_session->set_status(
+                    $sk_session->d()->get('Import l&auml;uft bereits'), 1);
     } else {
-        my $status;
-        my $is_error;
+        my $old = Schulkonsole::Config::workstations();
+        my %new;
+        my @add_errors;
+        my @edit_errors;
+        foreach my $param ($q->param) {
+            if (my ($i) = $param =~ /^(\d+)_addip$/) {
+                if ($q->param("${i}_addignore")) {
+                    $q->delete("${i}_addroom");
+                    $q->delete("${i}_addname");
+                    $q->delete("${i}_addgroups");
+                    $q->delete("${i}_addmac");
+                    $q->delete("${i}_addip");
+                    $q->delete("${i}_addpxe");
+                    $q->delete("${i}_addopts");
+                }
 
-        if (%new) {
-            my $lines = new_workstations_lines(\%new);
-
-            my $id = $sk_session->userdata('id');
-            my $password = $sk_session->get_password();
-            Schulkonsole::Files::write_workstations_file(
-                $id, $password,
-                $lines);
-            Schulkonsole::Files::import_workstations($id, $password,
-                $sk_session);
+                $additional_lines_cnt = $i if $i > $additional_lines_cnt;
 
 
-            $status .=
-                $sk_session->d()->get('&Auml;nderungen &uuml;bernommen.');
-            $is_error = 0;
+                my ($name) = $q->param("${i}_addname") =~ /^\s*(.+?)\s*$/;
+                $name = lc $name;
 
-            $q->delete_all();
+                my ($room) = $q->param("${i}_addroom") =~ /^\s*(.+?)\s*$/;
+                my ($groups) = $q->param("${i}_addgroups") =~ /^\s*(.+?)\s*$/;
+                my ($mac) = $q->param("${i}_addmac") =~ /^\s*(.+?)\s*$/;
+                my ($ip) = $q->param("${i}_addip") =~ /^\s*(.+?)\s*$/;
+                my $pxe = $q->param("${i}_addpxe");
+                my $opts = $q->param("${i}_addopts");
+
+                if (    (   $name
+                        or $room
+                        or $groups
+                        or $mac
+                        or $ip)
+                    and syntax_check($room, $name, $groups, $mac, $ip,
+                                    $pxe, $opts, 0, \@add_errors)) {
+                    $q->delete("${i}_addroom");
+                    $q->delete("${i}_addname");
+                    $q->delete("${i}_addgroups");
+                    $q->delete("${i}_addmac");
+                    $q->delete("${i}_addip");
+                    $q->delete("${i}_addpxe");
+                    $q->delete("${i}_addopts");
+                    $new{$name}{room} = $room;
+                    $new{$name}{name} = $name;
+                    $new{$name}{groups} = $groups;
+                    $new{$name}{mac} = $mac;
+                    $new{$name}{ip} = $ip;
+                    $new{$name}{pxe} = $pxe;
+                    $new{$name}{opts} = $opts;
+                }
+            } elsif (my ($host) = $param =~ /^(.+)_ip$/) {
+                if ($q->param("${host}_delete")) {
+                    $new{$host} = undef;
+                    next;
+                }
+
+                my ($name) = $q->param("${host}_name") =~ /^\s*(.+?)\s*$/;
+                $name = lc $name;
+
+                my ($room) = $q->param("${host}_room") =~ /^\s*(.+?)\s*$/;
+                my ($groups) = $q->param("${host}_groups") =~ /^\s*(.+?)\s*$/;
+                my ($mac) = $q->param("${host}_mac") =~ /^\s*(.+?)\s*$/;
+                my ($ip) = $q->param("${host}_ip") =~ /^\s*(.+?)\s*$/;
+                my $pxe = $q->param("${host}_pxe");
+                my $opts = $q->param("${host}_opts");
+
+
+                if (    $$old{$host}
+                    and $name eq $$old{$host}{name}
+                    and $room eq $$old{$host}{room}
+                    and $groups eq $$old{$host}{groups}
+                    and $mac eq $$old{$host}{mac}
+                    and $ip eq $$old{$host}{ip}
+                    and $pxe eq $$old{$host}{pxe}
+                    and $opts eq $$old{$host}{opts}) {
+                } elsif (    (   $name
+                            or $room
+                            or $groups
+                            or $mac
+                            or $ip)
+                        and syntax_check($room, $name, $groups, $mac, $ip,
+                                        $pxe, $opts, $host, \@edit_errors)) {
+                    $new{$host}{room} = $room;
+                    $new{$host}{name} = $name;
+                    $new{$host}{groups} = $groups;
+                    $new{$host}{mac} = $mac;
+                    $new{$host}{ip} = $ip;
+                    $new{$host}{pxe} = $pxe;
+                    $new{$host}{opts} = $opts;
+                }
+            }
+        }
+
+        if (@edit_errors) {
+            $sk_session->set_status(join(', ', @edit_errors, @add_errors), 1);
         } else {
-            $status .= $sk_session->d()->get('Keine &Auml;nderungen.');
-            $is_error = 1;
-        }
+            my $status;
+            my $is_error;
 
-        if (@add_errors) {
-            $status .= '<br>' . $sk_session->d()->get('ignoriert: ')
-                . join(', ', @add_errors);
+            if (%new) {
+                my $lines = new_workstations_lines(\%new);
+
+                my $id = $sk_session->userdata('id');
+                my $password = $sk_session->get_password();
+                Schulkonsole::Files::write_workstations_file(
+                    $id, $password,
+                    $lines);
+                Schulkonsole::Files::import_workstations($id, $password,
+                    $sk_session);
+
+
+                $status .=
+                    $sk_session->d()->get('&Auml;nderungen &uuml;bernommen.');
+                $is_error = 0;
+
+                $q->delete_all();
+            } else {
+                $status .= $sk_session->d()->get('Keine &Auml;nderungen.');
+                $is_error = 1;
+            }
+
+            if (@add_errors) {
+                $status .= '<br>' . $sk_session->d()->get('ignoriert: ')
+                    . join(', ', @add_errors);
+            }
+            $sk_session->set_status($status, $is_error);
         }
-        $sk_session->set_status($status, $is_error);
     }
-
 
     last COMMANDS;
 };
@@ -200,20 +212,47 @@ $q->param('addrows') and do {
     last COMMANDS;
 };
 $q->param('import') and do {
-    if (Schulkonsole::Config::count_unimported_unconfigured_workstations()) {
-        my $id = $sk_session->userdata('id');
-        my $password = $sk_session->get_password();
-
-        Schulkonsole::Files::import_workstations($id, $password, $sk_session);
-
-        $sk_session->set_status(
-            $sk_session->d()->get('Workstations werden importiert'), 0);
+    if ($running{wsimport}) {
+            $sk_session->set_status(
+                    $sk_session->d()->get('Import l&auml;uft bereits'), 1);
     } else {
-        $sk_session->set_status(
-            $sk_session->d()->get('Keine Workstations zu importieren'), 1);
+        if (Schulkonsole::Config::count_unimported_unconfigured_workstations()) {
+            my $id = $sk_session->userdata('id');
+            my $password = $sk_session->get_password();
+
+            Schulkonsole::Files::import_workstations($id, $password, $sk_session);
+
+            $sk_session->set_status(
+                $sk_session->d()->get('Workstations werden importiert'), 0);
+        } else {
+            $sk_session->set_status(
+                $sk_session->d()->get('Keine Workstations zu importieren'), 1);
+        }
     }
 
     last COMMANDS;
+};
+$q->param('showlogimport') and do {
+        eval {
+            my $id = $sk_session->userdata('id');
+            my $password = $sk_session->get_password();
+            my $logimport =
+                    Schulkonsole::Files::read_import_log_file($id, $password);
+
+=item C<logimport>
+
+Output of C<import_workstations>
+
+=cut
+
+            $sk_session->set_var('logimport', join("\n", @$logimport));
+        };
+        if ($@) {
+            $sk_session->set_status(
+                    $sk_session->d()->get('Kann Logdatei nicht &ouml;ffnen'), 1);
+        }
+
+        last COMMANDS;
 };
 }
 };
@@ -337,15 +376,7 @@ True if import_workstations is running
 
 =cut
 
-my $lockfile_import_workstations
-    = Schulkonsole::Config::lockfile('import_workstations');
-if (open LOCK, '<', $lockfile_import_workstations) {
-    if (not flock(LOCK, (2 | 4))) {
-        $sk_session->set_var('isimporting', 1);
-    }
-}
-
-
+$sk_session->set_var('isimporting', $running{wsimport});
 
 $sk_session->print_page("$this_file.shtml", $this_file);
 

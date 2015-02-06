@@ -46,6 +46,7 @@ $VERSION = 0.06;
 	write_preferences_conf_file
 	import_printers
 	import_workstations
+	read_import_log_file
 );
 
 
@@ -472,6 +473,62 @@ sub import_workstations {
 
 
 
+
+=head3 C<read_import_log_file($id, $password)>
+
+Read last import_workstations log file
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the admin invoking the command
+
+=item C<$password>
+
+The password of the admin invoking the command
+
+=back
+
+=head4 Return value
+
+A reference to an array of the lines in the log file
+
+=head4 Description
+
+Reads the sorted list of
+/var/tmp/import_workstations.log if existing otherwise
+/var/log/linuxmuster/import_workstations.log, i.e. the newest.
+
+=cut
+
+sub read_import_log_file {
+        my @re;
+
+        if (open IMPORTLOG, '<', Schulkonsole::Encode::to_fs(
+                $Schulkonsole::Config::_workstations_tmp_log_file)) {
+            while (<IMPORTLOG>) {
+                    push @re, $_;
+            }
+            close IMPORTLOG;
+        } elsif (open IMPORTLOG, '<', Schulkonsole::Encode::to_fs(
+                $Schulkonsole::Config::_workstations_log_file)) {
+            while (<IMPORTLOG>) {
+                    push @re, $_;
+            }
+            close IMPORTLOG;
+        } else {
+                warn "$0: Cannot open "
+                    . $Schulkonsole::Config::_workstations_tmp_log_file
+                    . " nor "
+                    . $Schulkonsole::Config::_workstations_log_file
+                    . ": $!\n";
+        }
+        
+        return \@re;
+}
 
 =head3 C<import_printers($id, $password)>
 
