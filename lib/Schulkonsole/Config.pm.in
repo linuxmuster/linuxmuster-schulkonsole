@@ -33,6 +33,7 @@ $VERSION = 0.06;
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(
 	db
+	ldap
 	permissions_pages
 	permissions_apps
 	workstation_info
@@ -1344,6 +1345,44 @@ A hash with the configuration parameter's name as key and the value as value
 
 sub db {
 	return read_conf($_db_conf_file);
+}
+
+
+
+
+=head2 Functions
+
+=head3 C<ldap()>
+
+=head4 Description
+
+Returns the ldap configuration
+
+=head4 Return value
+
+A hash with the configuration parameter's name as key and the value as value
+
+=cut
+
+sub ldap {
+        my $filename = '/etc/ldap/ldap.conf';
+        my %conf;
+
+        open CONF, '<', Schulkonsole::Encode::to_fs($filename)
+                or die "$0: Cannot open $filename: $!\n";
+
+        while (<CONF>) {
+                next if /^#/ or /^\s*$/;
+
+                my ($key, $value) = /^(.+?)\s+(.*)/;
+
+                die "$0: Syntax error in $filename, line $.\n" unless $key;
+
+                $conf{$key} = $value;
+        }
+        close CONF;
+
+        return %conf;
 }
 
 

@@ -5,6 +5,7 @@ use Crypt::SmbHash;
 use Digest::MD5;
 use Digest::SHA;
 use MIME::Base64;
+use Net::LDAP;
 use Schulkonsole::Error;
 use Schulkonsole::Config;
 
@@ -51,6 +52,7 @@ $VERSION = 0.06;
 @EXPORT_OK = qw(
 	get_userdata
 	get_userdata_by_id
+	get_usermail
 	verify_password
 	verify_password_by_id
 	user_groups
@@ -79,6 +81,8 @@ $VERSION = 0.06;
 );
 
 my $_dbh;
+my $_ldap;
+my $_ldapbase;
 
 my $_select_userdata = 'SELECT * FROM userdata ';
 my $_select_basic_userdata = 'SELECT userdata.id AS id,
@@ -134,6 +138,30 @@ sub get_userdata {
 }
 
 
+
+sub get_usermail {
+        my $uid = shift;
+
+        utf8::encode($uid);
+
+        $_ldap->bind;
+        my $data = $_ldap->search(
+                        base => $_ldapbase,
+                        filter => "(&(objectclass=posixAccount)(uid=$uid))",
+                        sizelimit => 1,
+                        attrs => 'mail');
+        $data->code and die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+                        "ldapsearch (&(objectclass=posixAccount)(uid=$uid))", $data->error);
+        my $re;
+        if ($data->entries) {
+                my @entries = $data->entries;
+                $re = @entries[0]->get_value( 'mail' );
+        }
+        $_ldap->unbind;
+        utf8::decode($re);
+
+        return $re;
+}
 
 
 sub get_userdata_by_id {
@@ -1492,12 +1520,20 @@ sub db_connect {
 	return $_dbh;
 }
 
+sub ldap_connect {
+        if (not defined $_ldap) {
+                my %conf = Schulkonsole::Config::ldap();
+                $_ldap = Net::LDAP->new($conf{URI})
+                        or die "$@";
+                $_ldapbase = $conf{BASE} or die "LDAP Base not set.";
+        }
 
-
-
+        return $_ldap;
+}
 
 BEGIN {
 	db_connect();
+	ldap_connect();
 }
 
 
