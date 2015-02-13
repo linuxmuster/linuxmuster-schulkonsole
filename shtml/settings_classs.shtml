@@ -23,9 +23,12 @@
 <h3><gettext>Global</gettext></h3>
 
 <table class="settings">
-<colgroup span="2" width="50%">
+<colgroup span="1" width="40%">
 </colgroup>
-<tr><th><gettext>Klassenname</gettext></th><th><gettext>sichtbar</gettext></th></tr>
+<tr><th><gettext>Klassenname</gettext></th><th><gettext>sichtbar</gettext></th>
+<th><gettext>Liste</gettext></th>
+<th><gettext>Aliase</gettext></th>
+<th><gettext>WLAN</gettext></th></tr>
 <!--#if expr="$loop_classes" -->
 <!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
 <!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
@@ -35,6 +38,27 @@
 <!--#else -->
 <input type="checkbox" name="${classes{gid}}_visible" id="${classes{gid}}_visible">
 <!--#endif -->
+</td>
+<td>
+<!--#if expr="${classes{maillist}}" -->
+<input type="checkbox" name="${classes{gid}}_maillist" id="${classes{gid}}_maillist" checked>
+<!--#else -->
+<input type="checkbox" name="${classes{gid}}_maillist" id="${classes{gid}}_maillist">
+<!--#endif -->
+</td>
+<td>
+<!--#if expr="${classes{mailalias}}" -->
+<input type="checkbox" name="${classes{gid}}_mailalias" id="${classes{gid}}_mailalias" checked>
+<!--#else -->
+<input type="checkbox" name="${classes{gid}}_mailalias" id="${classes{gid}}_mailalias">
+<!--#endif -->
+</td>
+<td>
+<select name="${classes{gid}}_wlan">
+<option value="-1">-</option>
+<option value="1"><gettext>An</gettext></option>
+<option value="0"><gettext>Aus</gettext></option>
+</select>
 </td>
 </tr>
 <!--#endif -->

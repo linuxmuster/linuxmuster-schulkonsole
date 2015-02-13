@@ -28,6 +28,9 @@
 <!--#if expr="$link_settings_classs" -->
 <a href="settings_classs"><gettext>Klassen</gettext></a></br>
 <!--#endif -->
+<!--#if expr="$link_settings_projects" -->
+<a href="settings_projects"><gettext>Projekte</gettext></a></br>
+<!--#endif -->
 <!--#if expr="$link_settings_backup" -->
 <a href="settings_backup"><gettext>Backup</gettext></a></br>
 <!--#endif -->

@@ -44,6 +44,7 @@ $VERSION = 0.06;
 	write_room_defaults_file
 	write_backup_conf_file
 	write_preferences_conf_file
+        write_group_defaults_file
 	import_printers
 	import_workstations
 	read_import_log_file
@@ -408,6 +409,41 @@ Writes the file /etc/linuxmuster/schulkonsole/preferences.conf
 
 sub write_preferences_conf_file {
 	write_file(@_, 5);
+}
+
+
+
+
+=head3 C<write_group_defaults_file($id, $password, $lines)>
+
+Write new group_defaults file
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$lines>
+
+The lines of the new file
+
+=back
+
+=head4 Description
+
+Writes the file /etc/linuxmuster/group_defaults
+
+=cut
+
+sub write_group_defaults_file {
+        write_file(@_, 6);
 }
 
 

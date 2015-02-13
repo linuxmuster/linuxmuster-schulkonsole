@@ -10,6 +10,9 @@
 <!--#if expr="$link_settings_classs" -->
 	<a href="settings_classs"><gettext>Klassen</gettext></a>
 <!--#endif -->
+<!--#if expr="$link_settings_projects" -->
+        <a href="settings_projects"><gettext>Projekte</gettext></a>
+<!--#endif -->
 <!--#if expr="$link_settings_backup" -->
 	<a class="end" href="settings_backup"><gettext>Backup</gettext></a>
 <!--#endif -->

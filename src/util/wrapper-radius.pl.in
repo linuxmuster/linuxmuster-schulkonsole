@@ -115,17 +115,22 @@ group names one per line, end with empty line
 	my $trigger = <>;
 	$trigger = int($trigger) ? 'on' : 'off';
 	my $lessongroup = <>;
-	($lessongroup) = $lessongroup =~ /^([\w -]+)$/;
+	my @lessongroups = $lessongroup =~ /^([a-z\d_]+)(,([a-z\d_]+))*$/;
+	for (my $index=$#lessongroups; $index >= 0;--$index) {
+	    splice @lessongroups, $index, 1 if @lessongroups[$index] =~ /^,/;
+	}
+	$lessongroup = join(',',@lessongroups);
 	exit (  Schulkonsole::Error::Radius::WRAPPER_NO_GROUPS
 	      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
 		unless $lessongroup;
+
 
 	my $cmd =  $Schulkonsole::Config::_cmd_wlan_on_off;
 
 	my $opts;
 	$opts = "--trigger=$trigger --grouplist=$lessongroup";
-        
-        # set ruid, so that ssh searches for .ssh/ in /root
+
+	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;
 	local $) = 0;
 	local $( = $);
@@ -156,7 +161,7 @@ The name of the group
 
 $app_id == Schulkonsole::Config::WLANRESETAPP and do {
         my $group = <>;
-        ($group) = $group =~ /^([\w -]+)$/;
+        ($group) = $group =~ /^([a-z\d_]+)$/;
         exit (  Schulkonsole::Error::Radius::WRAPPER_INVALID_GROUP
               - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
                 unless $group;
@@ -197,7 +202,7 @@ Absolute time in seconds since the Epoch
 
 $app_id == Schulkonsole::Config::WLANRESETATAPP and do {
 	my $lessongroup = <>;
-	($lessongroup) = $lessongroup =~ /^([\w -]+)$/;
+	($lessongroup) = $lessongroup =~ /^([a-z\d_]+)$/;
 	exit (  Schulkonsole::Error::Radius::WRAPPER_INVALID_GROUP
 	      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
 		unless $lessongroup;

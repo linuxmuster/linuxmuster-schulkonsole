@@ -47,6 +47,7 @@ $VERSION = 0.03;
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(
 	allowed_groups_wlan
+	group_defaults
 	wlan_on
 	wlan_off
 	wlan_reset_at
@@ -84,6 +85,7 @@ sub start_wrapper {
 	binmode $out, ':utf8';
 	binmode $in, ':utf8';
 	binmode $err, ':utf8';
+
 
 
 	my $re = waitpid $pid, POSIX::WNOHANG;
@@ -203,7 +205,7 @@ sub wlan_on {
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
 	# set groups in list to on
-	print SCRIPTOUT "1\n", join("\n", @groups), "\n\n";
+	print SCRIPTOUT "1\n", join(",", @groups), "\n\n";
         buffer_input(\*SCRIPTIN);
 
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
@@ -254,7 +256,7 @@ sub wlan_off {
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
 	# set groups in list to off
-	print SCRIPTOUT "0\n", join("\n", @groups), "\n\n";
+	print SCRIPTOUT "0\n", join(",", @groups), "\n\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -329,7 +331,7 @@ sub read_group_file {
 
         my $start = '# linuxmuster.net -- automatic entries below this line';
         my $end = '# linuxmuster.net -- automatic entries above this line';
-        my $ldapgroup = 'DEFAULT\s*Ldap-Group\s*==\s*(\w+)\s*';
+        my $ldapgroup = 'DEFAULT\s*Ldap-Group\s*==\s*([a-z\d_]+)\s*';
         
         if (not open GROUPS, "<$filename") {
                 warn "$0: Cannot open $filename";
@@ -374,6 +376,51 @@ A hash with allowed group's names as key and C<1> as value.
 
 sub allowed_groups_wlan {
 	return read_group_file($Schulkonsole::Config::_allowed_groups_wlan_file);
+}
+
+
+
+
+=head3 C<group_defaults()>
+
+Returns groups default values.
+
+=head4 Return value
+
+A hash with group's names as key and C<1> as value indicating wlan access
+with one group C<default> indicating default for new groups.
+
+=cut
+
+sub group_defaults {
+        my $filename = $Schulkonsole::Config::_group_defaults_file;
+
+        my %groups;
+
+        if (not open GROUPS, "<$filename") {
+                warn "$0: Cannot open $filename";
+                return {};
+        }
+        
+        while (<GROUPS>) {
+                chomp;
+                next if /^\s*#/;
+                s/\s*#.*$//;
+
+                my ($group, $wlan)
+                        = /^\s*([a-z\d_]+)\s+(on|off|-)/;
+                
+                if ($group) {
+                        $groups{$group} = $wlan;
+                }
+        }
+
+        close GROUPS;
+
+        # set fallback values if default is undefined
+        $groups{default} = 'off' if not defined $groups{default};
+
+        return \%groups;
 }
 
 

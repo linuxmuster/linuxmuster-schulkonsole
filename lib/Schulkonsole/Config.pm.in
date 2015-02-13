@@ -122,6 +122,7 @@ $VERSION = 0.06;
 	$_cmd_sophomorix_teachin
 	$_cmd_sophomorix_quota
 	$_cmd_sophomorix_class
+	$_cmd_sophomorix_mail
 	$_cmd_import_workstations
 	$_cmd_import_printers
 	$_cmd_ovpn_client_cert
@@ -447,7 +448,24 @@ C<set_own_password>
 
 C<hide_unhide_class>
 
+=item C<CHANGEMAILALIASCLASSAPP>
+
+C<change_mailalias_classes>
+
+=item C<CHANGEMAILLISTCLASSAPP>
+
+C<change_maillist_classes>
+
+=item C<CHANGEMAILALIASPROJECTAPP>
+
+C<change_mailalias_projects>
+
+=item C<CHANGEMAILLISTPROJECTAPP>
+
+C<change_maillist_projects>
+
 =back
+
 
 =cut
 
@@ -480,6 +498,10 @@ use constant {
 	SETQUOTAAPP => 8026,
 	SETOWNPASSWORDAPP => 8027,
 	HIDEUNHIDECLASSAPP => 8028,
+	CHANGEMAILALIASCLASSAPP => 8029,
+	CHANGEMAILLISTCLASSAPP => 8030,
+	CHANGEMAILALIASPROJECTAPP => 8031,
+	CHANGEMAILLISTPROJECTAPP => 8032,
 };
 
 =head3 Constants for wrapper-cyrus
@@ -1060,6 +1082,10 @@ Path to Sophomorix command C<sophomorix-quota>
 
 Path to Sophomorix command C<sophomorix-class>
 
+=item C$_cmd_sophomorix_mail>
+
+Path to Sophomorix command C<sophomorix-mail>
+
 =item C<$_cmd_import_workstations>
 
 Path to command to import workstations into room C<import_workstations>
@@ -1109,6 +1135,7 @@ use vars qw(%_id_root_app_names
             $_cmd_sophomorix_teachin
             $_cmd_sophomorix_quota
             $_cmd_sophomorix_class
+            $_cmd_sophomorix_mail
             $_cmd_import_workstations
             $_cmd_import_printers
             $_cmd_ovpn_client_cert
@@ -1270,6 +1297,10 @@ $_wrapper_radius = '@pkglibexecdir@/bin/wrapper-radius';
 	CHMODAPP() => 'chmod',
 	SETQUOTAAPP() => 'quota',
 	HIDEUNHIDECLASSAPP() => 'hide_unhide_class',
+	CHANGEMAILALIASCLASSAPP() => 'change_mailalias_classes',
+	CHANGEMAILLISTCLASSAPP() => 'change_maillist_classes',
+	CHANGEMAILALIASPROJECTAPP() => 'change_mailalias_projects',
+	CHANGEMAILLISTPROJECTAPP() => 'change_maillist_projects',
 	SETOWNPASSWORDAPP() => 'set_own_password',
 	WRITEFILEAPP() => 'write_file',
 	IMPORTWORKSTATIONSAPP() => 'import_workstations',
@@ -1302,6 +1333,7 @@ $_cmd_linuxmuster_pk = '/usr/bin/linuxmuster-pk';
 $_cmd_sophomorix_add = '/usr/sbin/sophomorix-add';
 $_cmd_sophomorix_check = '/usr/sbin/sophomorix-check';
 $_cmd_sophomorix_class = '/usr/sbin/sophomorix-class';
+$_cmd_sophomorix_mail = '/usr/sbin/sophomorix-mail';
 $_cmd_sophomorix_kill = '/usr/sbin/sophomorix-kill';
 $_cmd_sophomorix_move = '/usr/sbin/sophomorix-move';
 $_cmd_sophomorix_passwd = '/usr/sbin/sophomorix-passwd';
