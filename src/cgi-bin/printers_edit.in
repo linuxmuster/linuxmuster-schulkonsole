@@ -314,10 +314,12 @@ sub new_printer_lines_room {
 		while (<PRINTERS>) {
 			my ($conf_printer, $conf_rooms, $conf_hosts) = split /\s+/;
 			if ($conf_printer eq $printer) {
+                            if (@$rooms[0] ne '-' or (defined $conf_hosts and $conf_hosts ne '-')) {
 				push @lines,
 				     "$printer\t" . join(',', @$rooms) . "\t$conf_hosts\n";
-				$done = 1;
-				last;
+                            }
+                            $done = 1;
+                            last;
 			} else {
 				push @lines, $_;
 			}
@@ -355,10 +357,12 @@ sub new_printer_lines_host {
 		while (<PRINTERS>) {
 			my ($conf_printer, $conf_rooms, $conf_hosts) = split /\s+/;
 			if ($conf_printer eq $printer) {
+                            if (@$hosts[0] ne '-' or (defined $conf_rooms and $conf_rooms ne '-')) {
 				push @lines,
 				     "$printer\t$conf_rooms\t" . join(',', @$hosts) . "\n";
-				$done = 1;
-				last;
+                            }
+                            $done = 1;
+                            last;
 			} else {
 				push @lines, $_;
 			}
