@@ -134,9 +134,6 @@ $VERSION = 0.06;
 	$_sophomorix_conf_true
 	$_sophomorix_conf_false
 
-	$_backup_conf_true
-	$_backup_conf_false
-
 	QUOTAAPP
 	CYRUSQUOTAAPP
 
@@ -765,10 +762,6 @@ Directory holding LINBO templates for section [OS]
 
 The LINBO template for section [Partition]
 
-=item C<$_backup_conf_file>
-
-Setup for automated backup
-
 =item C<$_group_defaults_file>
 
 This file defines the default wlan settings
@@ -790,7 +783,7 @@ use vars qw($_workstations_file $_workstations_log_file
             $_linbo_log_dir $_linbo_start_conf_prefix
             $_linbo_templates_dir $_linbo_templates_os_dir
             $_linbo_template_partition
-            $_backup_conf_file $_dhcpd_conf_file
+            $_dhcpd_conf_file
             $_group_defaults_file $_allowed_groups_wlan_file);
 
 
@@ -1155,20 +1148,11 @@ Value used for 'true' in Sophomorix configuration files
 
 Value used for 'false' in Sophomorix configuration files
 
-=item C<$_backup_conf_true>
-
-Value used for 'true' in backup.conf
-
-=item C<_backup_conf_false>
-
-Value used for 'false' in backup.conf
-
 =back
 
 =cut
 
-use vars qw($_sophomorix_conf_true $_sophomorix_conf_false
-            $_backup_conf_true $_backup_conf_false);
+use vars qw($_sophomorix_conf_true $_sophomorix_conf_false);
 
 
 
@@ -1210,7 +1194,6 @@ $_linbo_template_partition = "$_linbo_templates_dir/part/start.conf.partition";
 $_group_defaults_file = '/etc/linuxmuster/group_defaults';
 $_allowed_groups_wlan_file = '/etc/freeradius/users';
 
-$_backup_conf_file = $lml_env{SYSCONFDIR} . '/backup.conf';
 $_linbo_start_conf_prefix = $_linbo_dir . '/start.conf.';
 
 
@@ -1353,9 +1336,6 @@ $_cmd_linuxmuster_wlan_reset = '/usr/sbin/linuxmuster-wlan-reset';
 
 $_sophomorix_conf_true = 'yes';
 $_sophomorix_conf_false = 'no';
-
-$_backup_conf_true = 'yes';
-$_backup_conf_false = 'no';
 
 
 
