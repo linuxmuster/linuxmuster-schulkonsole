@@ -148,9 +148,10 @@ foreach my $param ($q->param) {
 			}
 		} else {	# remove
 			my $id = $sk_session->userdata('id');
+			my $username = $sk_session->userdata('uid');
 			my $password = $sk_session->get_password();
 
-			if ($is_admin) {
+			if ($is_admin or $username eq $member) {
 				SCOPE: {
 				$scope =~ /^u/ and do {	# user
 					my $member_userdata

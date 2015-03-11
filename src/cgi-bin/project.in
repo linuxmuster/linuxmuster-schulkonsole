@@ -164,7 +164,7 @@ if ($q->param('createproject')) {
 		utf8::encode($param_remove);
 
 		$q->param($param_remove) and do {
-			if ($$all_projects{$old_project}{joinable}) {
+			if (not $$all_projects{$old_project}{joinable}) {
 				$sk_session->set_status(
 					sprintf($sk_session->d()->get(
 						'Sie d&uuml;rfen die Benutzerliste von %s nicht &auml;ndern'),
