@@ -7,6 +7,7 @@ pkglibexec_SCRIPTS=example start logout \
 	class_handout class_shares class_lesson \
 	project project_members project_addmembers project_handoutcopy \
 	project_handout project_collect project_shares project_lesson \
+	project_passwords \
 	settings settings_projects \
 	settings_program settings_users settings_classs settings_backup \
 	user user_students user_teachers user_extra \
