@@ -684,7 +684,7 @@ sub save_password {
 
 	my $encrypted_password = $cipher->encrypt($password);
         my $encrypted_block = unpack( 'H*', $iv . $encrypted_password );
-	$this->{key} = $key;
+	$this->{key} = unpack( 'H*', $key );
 	$this->{session}->param('password', $encrypted_block);
 	$this->{session}->expire('password', $Schulkonsole::Config::_max_idle_time);
 }
@@ -719,7 +719,7 @@ sub get_password {
                 my ($iv, $encrypted_password) = unpack( 'a16a*', pack( 'H*', $encrypted_block ) );
                 my $cipher = Crypt::CBC->new(
                                 -literal_key    => 1,
-                                -key            => $key,
+                                -key            => pack( 'H*', $key),
                                 -header         => 'none',
                                 -iv             => $iv,
                                 -padding        => 'null',
