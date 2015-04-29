@@ -13,7 +13,7 @@ dist_shtml_DATA = example.shtml login.shtml logout.shtml start.shtml \
 	project_shares.shtml project_drop_verify.shtml project_lesson.shtml \
 	project_passwords.shtml \
 	settings.shtml settings_program.shtml settings_users.shtml \
-	settings_classs.shtml settings_backup.shtml settings_projects.shtml \
+	settings_classs.shtml settings_projects.shtml \
 	user.shtml user_students.shtml user_teachers.shtml user_extra.shtml \
 	user_teacherpasswords.shtml \
 	user_check.shtml user_teachin.shtml user_commit.shtml user_reports.shtml\

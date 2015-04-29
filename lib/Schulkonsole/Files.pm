@@ -42,7 +42,6 @@ $VERSION = 0.06;
 	write_printers_file
 	write_workstations_file
 	write_room_defaults_file
-	write_backup_conf_file
 	write_preferences_conf_file
         write_group_defaults_file
 	import_printers
@@ -339,41 +338,6 @@ Writes the file /etc/linuxmuster/room_defaults
 
 sub write_room_defaults_file {
 	write_file(@_, 3);
-}
-
-
-
-
-=head3 C<write_backup_conf_file($id, $password, $lines)>
-
-Write new backup.conf
-
-=head4 Parameters
-
-=over
-
-=item C<$id>
-
-The ID (not UID) of the user invoking the command
-
-=item C<$password>
-
-The password of the user invoking the command
-
-=item C<$lines>
-
-The lines of the new file
-
-=back
-
-=head4 Description
-
-Writes the file /etc/linuxmuster/backup.conf
-
-=cut
-
-sub write_backup_conf_file {
-	write_file(@_, 4);
 }
 
 
