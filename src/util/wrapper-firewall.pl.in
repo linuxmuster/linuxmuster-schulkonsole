@@ -767,12 +767,12 @@ sub all_on {
 
 		system Schulkonsole::Encode::to_cli(
 		       	$Schulkonsole::Config::_cmd_sophomorix_teacher
-		       	. " --teacher \Q$$userdata{uid}\E --shares --users "
+		       	. " --teacher \Q$$userdata{uid}\E --share --users "
 		       	. join(',', @shares_on))
 			if @shares_on;
 		system Schulkonsole::Encode::to_cli(
 		       	$Schulkonsole::Config::_cmd_sophomorix_teacher
-		       	. " --teacher \Q$$userdata{uid}\E --noshares --users "
+		       	. " --teacher \Q$$userdata{uid}\E --noshare --users "
 		       	. join(',', @shares_off))
 			if @shares_off;
 	}
