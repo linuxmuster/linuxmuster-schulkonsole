@@ -196,14 +196,22 @@ sub start_lesson {
 	}
 
 
+	my $workstation_users = workstation_users();
+	my @login_ids;
+	foreach my $host (keys %$workstation_users) {
+		foreach my $userdata (@{ $$workstation_users{$host} }) {
+			push @login_ids, $$userdata{id};
+		}
+	}
+	my $share_states
+		= Schulkonsole::Sophomorix::share_states($id, $password, @login_ids);
 	$this->param('oldsettings', {
 		blocked_hosts_internet => \%blocked_hosts_internet,
 		blocked_hosts_intranet => \%blocked_hosts_intranet,
 		unfiltered_hosts => \%unfiltered_hosts,
 		printers_accept => \%printers_accept,
+		share_states => $share_states,
 	});
-
-
 	$this->end_lesson_at($id, $password, int($^T / 300) * 300 + 2700);
 }
 
