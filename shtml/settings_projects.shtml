@@ -1,0 +1,87 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title><gettext>Schulkonsole</gettext> - <gettext>Einstellungen</gettext> - <gettext>Projekte</gettext></title>
+<!--#include file="css.shtml.inc" -->
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+<!--#include file="header.shtml.inc" -->
+
+<div id="submenu">
+<!--#include file="submenu-settings.shtml.inc" -->
+</div>
+
+<div id="content">
+
+<h2><gettext>Einstellungen</gettext> :: <gettext>Projekte</gettext></h2>
+
+<form method="post" accept-charset="UTF-8">
+
+<h3><gettext>Global</gettext></h3>
+
+<table class="settings">
+<colgroup span="1" width="59%">
+</colgroup>
+<tr><th><gettext>Projektname</gettext></th>
+<th><gettext>Liste</gettext></th>
+<th><gettext>Aliase</gettext></th>
+<th><gettext>WLAN</gettext></th></tr>
+<!--#if expr="$loop_projects" -->
+<!--#if expr="$odd" --><!--#set var="odd" value="0" --><tr class="odd">
+<!--#else --><!--#set var="odd" value="1" --><tr class="even"><!--#endif -->
+<td><label><!--#echo var="projects{name}" --></label></td>
+<td>
+<!--#if expr="${projects{maillist}}" -->
+<input type="checkbox" name="${projects{gid}}_maillist" id="${projects{gid}}_maillist" checked>
+<!--#else -->
+<input type="checkbox" name="${projects{gid}}_maillist" id="${projects{gid}}_maillist">
+<!--#endif -->
+</td>
+<td>
+<!--#if expr="${projects{mailalias}}" -->
+<input type="checkbox" name="${projects{gid}}_mailalias" id="${projects{gid}}_mailalias" checked>
+<!--#else -->
+<input type="checkbox" name="${projects{gid}}_mailalias" id="${projects{gid}}_mailalias">
+<!--#endif -->
+</td>
+<td>
+<select name="${projects{gid}}_wlan">
+<option value="-1">-</option>
+<option value="1"><gettext>An</gettext></option>
+<option value="0"><gettext>Aus</gettext></option>
+</select>
+</td>
+</tr>
+<!--#endif -->
+</table>
+
+<p>
+<input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
+</p>
+
+</form>
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+<!--#include file="status.shtml.inc" -->
+
+<h2><gettext>Info</gettext></h2>
+
+<p><gettext>Bearbeiten Sie hier die Projektstandardeinstellungen.</gettext></p>
+<p><gettext>F&uuml;r eine detaillierte Beschreibung der einzelnen Punkte
+konsultieren Sie bitte die Dokumentation.</gettext></p>
+
+<!--#include file="footer_info.shtml.inc" -->
+</div>
+
+<!--#include file="footer.shtml.inc" -->
+
+</body>
+</html>

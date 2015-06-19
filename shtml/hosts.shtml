@@ -16,7 +16,26 @@
 
 <div id="content">
 
+<h2><gettext>Hosts</gettext></h2>
+
+<form method="post" accept-charset="UTF-8">
+
 <!--#if expr="$isimporting" -->
+<p>
+<gettext>Importieren l&auml;uft.</gettext>
+</p>
+<!--#if expr="$logimport" -->
+<pre>
+<!--#echo var="logimport" -->
+</pre>
+<p>
+<input type="submit" name="showlogimport" value="Aktualisieren">
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="showlogimport" value="Letzte Logdatei ansehen">
+</p>
+<!--#endif -->
 <!--#else -->
 <!--#if expr="$unconfigured" -->
 <form method="post" accept-charset="UTF-8">
@@ -35,12 +54,20 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.</gettext></p>
 </form>
 <!--#endif -->
 <!--#endif -->
+
+<!--#if expr="$logimport" -->
+<pre>
+<!--#echo var="logimport" -->
+</pre>
+<p>
+<input type="submit" name="showlogimport" value="Aktualisieren">
+</p>
+<!--#else -->
+<p>
+<input type="submit" name="showlogimport" value="Letzte Logdatei ansehen">
+</p>
 <!--#endif -->
-
-
-<h2><gettext>Hosts</gettext></h2>
-
-<form method="post" accept-charset="UTF-8">
+<p></p>
 
 <table id="hosts" class="liste">
 <tr>
@@ -124,6 +151,7 @@ gel&ouml;scht.</gettext></p>
 
 </form>
 
+<!--#endif -->
 
 </div>
 

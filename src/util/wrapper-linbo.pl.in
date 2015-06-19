@@ -127,12 +127,17 @@ $app_id == Schulkonsole::Config::LINBOWRITESTARTCONFAPP and do {
 	if (-e $filename) {
 		# backup old file
 		my $time = POSIX::strftime("%Y-%m-%d-%H%M", localtime($^T));
-		my $old_filename = Schulkonsole::Encode::to_fs($filename . '-' . $time);
+		my $fileprefix;
+		($fileprefix) = $filename =~ /^.*\/([^\/]+)$/;
+		my $old_filename = Schulkonsole::Encode::to_fs(
+                    $Schulkonsole::Config::_linbo_log_dir . '/'
+                    . $fileprefix . '-' . $time);
 		my $cnt = 0;
 		while (-e $old_filename) {
 			$cnt++;
 			$old_filename = Schulkonsole::Encode::to_fs(
-			                	$filename . '-' . $time . '-' . $cnt);
+                            $Schulkonsole::Config::_linbo_log_dir . '/' 
+                            . $fileprefix . '-' . $time . '-' . $cnt);
 		}
 
 		rename $filename, $old_filename;
@@ -337,8 +342,12 @@ Deletes a LINBO file
 
 $app_id == Schulkonsole::Config::LINBODELETEAPP and do {
 	my $filename = <>;
-	($filename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.reg|pxegrub\.lst\.(?:[a-z\d_]+))$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
+	my $tmpfilename;
+	($tmpfilename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.reg|pxelinux\.lst\.(?:[a-z\d_]+))$/;
+        ($tmpfilename) = $filename =~ /^(menu\.lst\.[a-z\d_]+)$/ unless defined $tmpfilename;
+        ($tmpfilename) = $filename =~ /^(start\.conf\.[a-z\d_]+)$/ unless defined $tmpfilename;
+        $filename = $tmpfilename;
+        exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		unless defined $filename;
 
@@ -454,7 +463,10 @@ Writes a LINBO file
 
 $app_id == Schulkonsole::Config::LINBOWRITEAPP and do {
 	my $filename = <>;
-	($filename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.(?:reg|desc)|pxegrub\.lst\.(?:[a-z\d_]+))$/;
+	my $tmpfilename;
+	($tmpfilename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.(?:reg|desc))$/;
+	($tmpfilename) = $filename =~ /^(menu\.lst\.[a-z\d_]+)$/ unless defined $tmpfilename;
+	$filename = $tmpfilename;
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		unless defined $filename;
@@ -462,6 +474,51 @@ $app_id == Schulkonsole::Config::LINBOWRITEAPP and do {
 	my $file = Schulkonsole::Encode::to_fs(
 	           	"$Schulkonsole::Config::_linbo_dir/$filename");
 
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+
+	open FILE, '>', $file or exit -106;
+	flock FILE, 2;
+	seek FILE, 0, 0;
+
+	while (<>) {
+		print FILE;
+	}
+
+	close FILE;
+
+	exit 0;
+};
+
+=head3 linbo_write_pxe
+
+numeric constant: C<Schulkonsole::Config::LINBOWRITEPXEAPP>
+
+=head4 Description
+
+Writes a LINBO PXE start file
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<filename>
+
+=item C<lines>
+
+=cut
+
+$app_id == Schulkonsole::Config::LINBOWRITEPXEAPP and do {
+	my $filename = <>;
+	($filename) = $filename =~ /^([a-z\d_]+)$/;
+	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
+	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+		unless defined $filename;
+
+	my $file = Schulkonsole::Encode::to_fs(
+	           	"$Schulkonsole::Config::_pxe_config_dir/$filename");
 
 	$< = $>;
 	$) = 0;

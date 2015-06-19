@@ -25,6 +25,8 @@ provides the following variables:
 use strict;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::DB;
+use Schulkonsole::Files;
+use Schulkonsole::Radius;
 use Schulkonsole::Session;
 use Schulkonsole::Sophomorix;
 
@@ -54,22 +56,25 @@ my $password = $sk_session->get_password();
 
 
 my $classs;
-eval {
+my $wlanclasss;
+
+COMMANDS: { eval {
 
 $classs = Schulkonsole::DB::all_classes();
 delete $$classs{'attic'};
 
-};
-if ($@) {
-	$sk_session->standard_error_handling($this_file, $@);
-}
-
-
-
+$wlanclasss = Schulkonsole::Radius::group_defaults();
 
 if ($q->param('accept')) {
-	my @hide_classs;
-	my @unhide_classs;
+	my @hide_classs = ();
+	my @unhide_classs = ();
+	my @create_maillist = ();
+	my @remove_maillist = ();
+	my @create_mailalias = ();
+	my @remove_mailalias = ();
+	my @enable_wlan = ();
+	my @disable_wlan = ();
+	my $changes = 0;
 	foreach my $class (keys %$classs) {
 		if ($q->param("${class}_visible")) {
 			if ($$classs{$class}{type} ne 'adminclass') {
@@ -78,30 +83,88 @@ if ($q->param('accept')) {
 		} elsif ($$classs{$class}{type} eq 'adminclass') {
 			push @hide_classs, $class;
 		}
-	}
-	eval {
-		if (   @hide_classs
-		    or @unhide_classs) {
-			Schulkonsole::Sophomorix::hide_unhide_classes(
-				$id, $password,
-				\@hide_classs, \@unhide_classs);
-			$classs = Schulkonsole::DB::all_classes();
-			delete $$classs{'attic'};
-
-			$sk_session->set_status($sk_session->d()->get(
-				'&Auml;nderungen &uuml;bernommen.'), 0);
+		
+		if ($q->param("${class}_maillist")) {
+			push @create_maillist, $class unless $$classs{$class}{maillist};
 		} else {
-			$sk_session->set_status($sk_session->d()->get(
-				'Keine &Auml;nderungen.'), 1);
+			push @remove_maillist, $class if $$classs{$class}{maillist};
 		}
-
-	};
-	if ($@) {
-		$sk_session->standard_error_handling($this_file, $@);
+		if ($q->param("${class}_mailalias")) {
+			push @create_mailalias, $class unless $$classs{$class}{mailalias};
+		} else {
+			push @remove_mailalias, $class if $$classs{$class}{mailalias};
+		}
+		if ($q->param("${class}_wlan")) {
+			push @enable_wlan, $class unless $$wlanclasss{$class};
+		} else {
+			push @disable_wlan, $class if $$wlanclasss{$class};
+		}
+		
 	}
+
+	if (   @hide_classs
+	    or @unhide_classs) {
+		Schulkonsole::Sophomorix::hide_unhide_classes(
+			$id, $password,
+			\@hide_classs, \@unhide_classs);
+		$classs = Schulkonsole::DB::all_classes();
+		delete $$classs{'attic'};
+		$changes = 1;
+	}
+
+	if (@create_maillist
+	    or @remove_maillist) {
+		Schulkonsole::Sophomorix::change_maillist_classes(
+			$id, $password,
+			\@create_maillist, \@remove_maillist);
+		$changes = 1;
+	}
+	
+	if (@create_mailalias
+	    or @remove_mailalias) {
+		Schulkonsole::Sophomorix::change_mailalias_classes(
+			$id, $password,
+			\@create_mailalias, \@remove_mailalias);
+		$changes = 1;
+	}
+
+	if (@enable_wlan or @disable_wlan) {
+                Schulkonsole::Radius::wlan_on(
+                        $id, $password, @enable_wlan) if @enable_wlan;
+                Schulkonsole::Radius::wlan_off(
+                        $id, $password, @disable_wlan) if @disable_wlan;
+                        my $lines = new_group_default_lines(
+                        \%$wlanclasss, \@enable_wlan, \@disable_wlan);
+		Schulkonsole::Files::write_group_defaults_file(
+                        $id, $password, $lines);
+                $changes = 1;
+	}
+
+	if ($changes) {
+		$classs = Schulkonsole::DB::all_classes();
+		delete $$classs{'attic'};
+		$wlanclasss = Schulkonsole::Radius::group_defaults();
+
+		$sk_session->set_status($sk_session->d()->get(
+			'&Auml;nderungen &uuml;bernommen.'), 0);
+	} else {
+		$sk_session->set_status($sk_session->d()->get(
+			'Keine &Auml;nderungen.'), 0);
+	}
+
+}
+};
+} # COMMANDS
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
 }
 
 
+my %on_off = (
+        on => 1,
+        off => 0,
+        '-' => -1,
+);
 
 my @classs;
 foreach my $class (sort {
@@ -110,10 +173,22 @@ foreach my $class (sort {
 	   $A <=> $B
 	or $$classs{$a}{displayname} cmp $$classs{$b}{displayname} }
                    keys %$classs) {
+        my $wlan;
+        if ($$wlanclasss{$class}) {
+                        $wlan = $on_off{$$wlanclasss{$class}};
+        } else {
+                        $wlan = $on_off{$$wlanclasss{default}};
+        }
 	push @classs, { gid => $class,
 	                name => $$classs{$class}{displayname},
-	                visible => $$classs{$class}{type} eq 'adminclass'
+	                visible => $$classs{$class}{type} eq 'adminclass',
+                        maillist => $$classs{$class}{maillist},
+                        mailalias => $$classs{$class}{mailalias},
+                        wlan => $wlan
 	              };
+        if (not defined($q->param("${class}_wlan"))) {
+                        $q->param("${class}_wlan",$wlan);
+        }
 }
 
 =item C<classes>
@@ -131,12 +206,28 @@ The GID of the class
 
 The name of the class
 
+=item C<visible>
+
+The class is visible and should be displayed in the Schulkonsole, 
+otherwise not
+
+=item C<maillist>
+
+The class has a maillist
+
+=item C<mailalias>
+
+The class students have a mailalias
+
+=item C<wlan>
+
+The status of wlan access for this class
+
 =back
 
 =cut
 
 $sk_session->set_var('classes', \@classs);
-
 
 
 
@@ -161,4 +252,75 @@ Write the changes
 
 
 
+sub new_group_default_lines {
+    my $defaults = shift;
+    my $enable = shift;
+    my $disable = shift;
+    my $wlan_default = $$defaults{default};
+    my @re;
+
+
+    my %on_off = (
+            1 => 'on',
+            0 => 'off',
+            undef => 'off',
+            -1 => '-',
+    );
+
+    foreach my $group (@$enable) {
+	$$defaults{$group} = 'on';
+    }
+    foreach my $group (@$disable) {
+	$$defaults{$group} = 'off';
+    }
+
+    if (open GROUPFILE, "<$Schulkonsole::Config::_group_defaults_file") {
+            flock GROUPFILE, 1;
+    
+        while (my $line = <GROUPFILE>) {
+	    my ($spaces_0, $group, $spaces_1, $wlan, $remainder)
+	    = $line =~ /^(\s*)([A-z\d\.\-]+)(\s+)(on|off|-)(.*)/;
+	    if ($group) {
+		if ($group eq 'default') {
+		    $line = 'default'
+			    . "$spaces_1$wlan_default"
+			    . "$remainder\n";
+		    push @re, $line;
+		    delete $$defaults{default};
+		} else {
+		    if ($$defaults{$group} ne $wlan_default) { 
+			$line = "$group"
+			    . "$spaces_1$$defaults{$group}"
+			    . "$remainder\n";
+			push @re, $line;
+		    }
+		    delete $$defaults{$group};
+		}
+	    } else {
+		push @re, $line;
+	    }
+        }
+
+        close GROUPFILE;
+    }
+
+
+    if ($$defaults{default}) {
+            push @re,
+                    sprintf("%-20s%s\n",'default', $$defaults{default});
+
+            delete $$defaults{default};
+    }
+
+    foreach my $group (sort keys %$defaults) {
+	    if ($$defaults{$group} ne $wlan_default) {
+		push @re,
+			sprintf("%-20s%s\n",$group, $$defaults{$group});
+	    }
+    }
+    
+    return \@re;
+}
+
 =back
+

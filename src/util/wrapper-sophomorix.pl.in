@@ -998,6 +998,7 @@ $app_id == Schulkonsole::Config::PRINTTEACHERSAPP and do {
 	# sophomorix-print cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
+        $ENV{HOME}="/root" if not defined $ENV{HOME};
 	system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_print $opts >/dev/null 2>/dev/null")) == 0
 		or exit ($? >> 8);
 
@@ -1042,6 +1043,91 @@ $app_id == Schulkonsole::Config::PRINTTEACHERSAPP and do {
 	close DATA;
 
 	exit 0;
+};
+
+=head3 print_project
+
+numeric constant: C<Schulkonsole::Config::PRINTPROJECTAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item project_gid
+
+The project' GID
+
+=item filetype
+
+The filetype, 0 (PDF) or 1 (CSV)
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::PRINTPROJECTAPP and do {
+        my $project_gid = <>;
+        ($project_gid) = $project_gid =~ /^(.+)$/;
+        exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
+              - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+                unless defined $project_gid;
+
+        my $filetype = <>;
+        ($filetype) = $filetype =~ /^([01])$/;
+        exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE
+              - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+                unless defined $filetype;
+
+        my $opts = "--project \Q$project_gid\E --postfix \Q$$userdata{uid}";
+
+        # sophomorix-print cannot be invoked with taint checks enabled
+        $< = $>;
+        $( = $);
+        $ENV{HOME}="/root" if not defined $ENV{HOME};
+        system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_print $opts >/dev/null 2>/dev/null")) == 0
+                or exit ($? >> 8);
+
+        my $filename;
+        SWITCHFILETYPE: {
+        $filetype == 0 and do {
+                $filename = Schulkonsole::Encode::to_fs(
+                                "$DevelConf::druck_pfad/$project_gid-$$userdata{uid}.pdf");
+                last SWITCHFILETYPE;
+        };
+        $filetype == 1 and do {
+                $filename = Schulkonsole::Encode::to_fs(
+                                "$DevelConf::druck_pfad/$project_gid-$$userdata{uid}.csv");
+                last SWITCHFILETYPE;
+        };
+        exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE
+              - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+        }
+        
+        open DATA, '<:raw', $filename
+                or (    print STDERR "$filename: $!\n"
+                and exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
+                              - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE));
+
+        SWITCHDATATYPE: {
+        $filetype == 0 and do {
+                binmode STDOUT, ':raw';
+                local $/ = undef;
+                while (<DATA>) {
+                        print;
+                }
+                last SWITCHDATATYPE;
+        };
+        $filetype == 1 and do {
+                while (<DATA>) {
+                        print get_decoded($_);
+                }
+                last SWITCHDATATYPE;
+        };
+        }
+
+        close DATA;
+
+        exit 0;
 };
 
 =head3 set_passwords
@@ -2009,6 +2095,8 @@ $app_id == Schulkonsole::Config::HIDEUNHIDECLASSAPP and do {
 	# sophomorix-class cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
+        $) = 0;
+        umask(022);
 
 	my $opts = '--hide';
 	foreach my $gid (@hides) {
@@ -2020,6 +2108,281 @@ $app_id == Schulkonsole::Config::HIDEUNHIDECLASSAPP and do {
 		system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_class $opts --class \Q$gid\E")) == 0
 			or exit ($? >> 8);
 	}
+
+
+	exit 0;
+};
+
+=head3 change_mailalias_classes
+
+numeric constant: C<Schulkonsole::Config::CHANGEMAILALIASCLASSAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item create_mailalias_classes
+
+Classes to create mailaliases
+
+=item remove_mailalias_classes
+
+Classes to remove mailaliases
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::CHANGEMAILALIASCLASSAPP and do {
+	my @creates;
+	my @removes;
+	while (<>) {
+		last if /^$/;
+
+		my ($gid) = /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $gid;
+
+		push @creates, $gid;
+	}
+	while (<>) {
+		last if /^$/;
+
+		my ($gid) = /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $gid;
+
+		push @removes, $gid;
+	}
+
+
+	# sophomorix-class cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+        $) = 0;
+        umask(022);
+
+	my $opts = '--mailalias';
+	foreach my $gid (@creates) {
+		system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_class $opts --class \Q$gid\E")) == 0
+			or exit ($? >> 8);
+	}
+	$opts = '--nomailalias';
+	foreach my $gid (@removes) {
+		system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_class $opts --class \Q$gid\E")) == 0
+			or exit ($? >> 8);
+	}
+
+	system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_mail")) == 0
+			or exit ($? >> 8);
+
+
+	exit 0;
+};
+
+=head3 change_maillist_classes
+
+numeric constant: C<Schulkonsole::Config::CHANGEMAILLISTCLASSAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item create_maillist_classes
+
+Classes to create maillistes
+
+=item remove_maillist_classes
+
+Classes to remove maillistes
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::CHANGEMAILLISTCLASSAPP and do {
+	my @creates;
+	my @removes;
+	while (<>) {
+		last if /^$/;
+
+		my ($gid) = /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $gid;
+
+		push @creates, $gid;
+	}
+	while (<>) {
+		last if /^$/;
+
+		my ($gid) = /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $gid;
+
+		push @removes, $gid;
+	}
+
+
+	# sophomorix-class cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+        $) = 0;
+        umask(022);
+
+	my $opts = '--maillist';
+	foreach my $gid (@creates) {
+		system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_class $opts --class \Q$gid\E")) == 0
+			or exit ($? >> 8);
+	}
+	$opts = '--nomaillist';
+	foreach my $gid (@removes) {
+		system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_class $opts --class \Q$gid\E")) == 0
+			or exit ($? >> 8);
+	}
+
+	system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_mail")) == 0
+			or exit ($? >> 8);
+
+
+	exit 0;
+};
+
+=head3 change_mailalias_projects
+
+numeric constant: C<Schulkonsole::Config::CHANGEMAILALIASPROJECTAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item create_mailalias_projects
+
+Classes to create mailaliases
+
+=item remove_mailalias_projects
+
+Classes to remove mailaliases
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::CHANGEMAILALIASPROJECTAPP and do {
+	my @creates;
+	my @removes;
+	while (<>) {
+		last if /^$/;
+
+		my ($gid) = /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $gid;
+
+		push @creates, $gid;
+	}
+	while (<>) {
+		last if /^$/;
+
+		my ($gid) = /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $gid;
+
+		push @removes, $gid;
+	}
+
+
+	# sophomorix-class cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+        $) = 0;
+        umask(022);
+
+	my $opts = '--mailalias';
+	foreach my $gid (@creates) {
+		system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_project $opts --project \Q$gid\E")) == 0
+			or exit ($? >> 8);
+	}
+	$opts = '--nomailalias';
+	foreach my $gid (@removes) {
+		system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_project $opts --project \Q$gid\E")) == 0
+			or exit ($? >> 8);
+	}
+
+	system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_mail")) == 0
+			or exit ($? >> 8);
+
+	exit 0;
+};
+
+=head3 change_maillist_projects
+
+numeric constant: C<Schulkonsole::Config::CHANGEMAILLISTPROJECTAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item create_maillist_projects
+
+Classes to create maillistes
+
+=item remove_maillist_projects
+
+Classes to remove maillistes
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::CHANGEMAILLISTPROJECTAPP and do {
+	my @creates;
+	my @removes;
+	while (<>) {
+		last if /^$/;
+
+		my ($gid) = /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $gid;
+
+		push @creates, $gid;
+	}
+	while (<>) {
+		last if /^$/;
+
+		my ($gid) = /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $gid;
+
+		push @removes, $gid;
+	}
+
+
+	# sophomorix-class cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+        $) = 0;
+        umask(022);
+
+	my $opts = '--maillist';
+	foreach my $gid (@creates) {
+		system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_project $opts --project \Q$gid\E")) == 0
+			or exit ($? >> 8);
+	}
+	$opts = '--nomaillist';
+	foreach my $gid (@removes) {
+		system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_project $opts --project \Q$gid\E")) == 0
+			or exit ($? >> 8);
+	}
+
+	system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_mail")) == 0
+			or exit ($? >> 8);
 
 
 	exit 0;

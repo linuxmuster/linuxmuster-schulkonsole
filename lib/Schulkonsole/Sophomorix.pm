@@ -112,6 +112,7 @@ $VERSION = 0.05;
 	remove_from_class
 	print_class
 	print_teachers
+	print_project
 	global_shares_on
 	global_shares_off
 
@@ -175,6 +176,10 @@ $VERSION = 0.05;
 	change_password
 
 	hide_unhide_classes
+	change_mailalias_classes
+	change_maillist_classes
+	change_mailalias_projects
+	change_maillist_projects
 );
 
 
@@ -199,7 +204,6 @@ sub start_wrapper {
 	my $out = shift;
 	my $in = shift;
 	my $err = shift;
-
 	my $pid = IPC::Open3::open3 $out, $in, $err,
 		$Schulkonsole::Config::_wrapper_sophomorix
 		or die new Schulkonsole::Error(
@@ -2063,6 +2067,85 @@ sub print_teachers {
 	} else {
 		return $data;
 	}
+}
+
+
+
+
+=head3 C<print_project($id, $password, $project_gid)>
+
+Return document with project info
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$project_gid>
+
+The GID of the project
+
+=item C<$filetype>
+
+Type of the file, either 0 (PDF) or 1 (CSV)
+
+=back
+
+=head4 Return value
+
+PDF-data or CSV-data
+
+=head4 Description
+
+This wraps the command
+C<sophomorix-print --project project-gid --postfix uid>, where
+uid is the UID of the teacher with ID C<$id> and project-gid is C<$project_gid>
+and returns the data of the produced document.
+
+=cut
+
+sub print_project {
+        my $id = shift;
+        my $password = shift;
+        my $project_gid = shift;
+        my $filetype = shift;
+
+        my $pid = start_wrapper(Schulkonsole::Config::PRINTPROJECTAPP,
+                $id, $password,
+                \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+        binmode SCRIPTIN, ':raw' if $filetype == 0;
+
+        print SCRIPTOUT "$project_gid\n$filetype\n";
+
+        my $data;
+        my $is_error = 0;
+        {
+                local $/ = undef;
+                while (<SCRIPTIN>) {
+                        $data .= $_;
+                }
+        }
+        if (    $filetype == 0
+            and $data !~ /^\%PDF/) {
+                $is_error = 1;
+                $input_buffer = $data;
+        }
+
+        stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+        if ($is_error) {
+                return undef;
+        } else {
+                return $data;
+        }
 }
 
 
@@ -4726,6 +4809,226 @@ sub hide_unhide_classes {
 	print SCRIPTOUT
 	      (@$hide_classs ? join("\n", @$hide_classs) . "\n\n" : "\n"),
 	      (@$unhide_classs ? join("\n", @$unhide_classs) . "\n\n" : "\n");
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+}
+
+
+=head3 C<change_mailalias_classes($id, $password, $create_mailalias_classs, remove_mailalias_classs)>
+
+Create/Remove mailaliases for classes
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$create_mailalias_classs>
+
+A reference to an array of GIDs of classes to create mailaliases
+
+=item C<$remove_mailalias_classs>
+
+A reference to an array of GIDs of classes to remove mailaliases
+
+=back
+
+=head4 Description
+
+This wraps the command
+C<sophomorix-class --class GID --mailalias> for all GIDs in C<$create_mailalias_classs>
+and the command
+C<sophomorix-class --class GID --nomailalias> for all GIDs in C<$remove_mailalias_classs>
+
+=cut
+
+sub change_mailalias_classes {
+	my $id = shift;
+	my $password = shift;
+	my $create_mailalias_classs = shift;
+	my $remove_mailalias_classs = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::CHANGEMAILALIASCLASSAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT
+	      (@$create_mailalias_classs ? join("\n", @$create_mailalias_classs) . "\n\n" : "\n"),
+	      (@$remove_mailalias_classs ? join("\n", @$remove_mailalias_classs) . "\n\n" : "\n");
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+}
+
+
+=head3 C<change_maillist_classes($id, $password, $create_maillist_classs, remove_maillist_classs)>
+
+Create/Remove maillists for classes
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$create_maillist_classs>
+
+A reference to an array of GIDs of classes to create mailaliases
+
+=item C<$remove_maillist_classs>
+
+A reference to an array of GIDs of classes to remove mailaliases
+
+=back
+
+=head4 Description
+
+This wraps the command
+C<sophomorix-class --class GID --maillist> for all GIDs in C<$create_maillist_classs>
+and the command
+C<sophomorix-class --class GID --nomaillists> for all GIDs in C<$remove_maillist_classs>
+
+=cut
+
+sub change_maillist_classes {
+	my $id = shift;
+	my $password = shift;
+	my $create_maillist_classs = shift;
+	my $remove_maillist_classs = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::CHANGEMAILLISTCLASSAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT
+	      (@$create_maillist_classs ? join("\n", @$create_maillist_classs) . "\n\n" : "\n"),
+	      (@$remove_maillist_classs ? join("\n", @$remove_maillist_classs) . "\n\n" : "\n");
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+}
+
+
+=head3 C<change_mailalias_projects($id, $password, $create_mailalias_projects, remove_mailalias_projects)>
+
+Create/Remove mailaliases for projects
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$create_mailalias_projects>
+
+A reference to an array of GIDs of projects to create mailaliases
+
+=item C<$remove_mailalias_projects>
+
+A reference to an array of GIDs of projects to remove mailaliases
+
+=back
+
+=head4 Description
+
+This wraps the command
+C<sophomorix-project --project GID --mailalias> for all GIDs in C<$create_mailalias_projects>
+and the command
+C<sophomorix-project --project GID --nomailalias> for all GIDs in C<$remove_mailalias_projects>
+
+=cut
+
+sub change_mailalias_projects {
+	my $id = shift;
+	my $password = shift;
+	my $create_mailalias_projects = shift;
+	my $remove_mailalias_projects = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::CHANGEMAILALIASPROJECTAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT
+	      (@$create_mailalias_projects ? join("\n", @$create_mailalias_projects) . "\n\n" : "\n"),
+	      (@$remove_mailalias_projects ? join("\n", @$remove_mailalias_projects) . "\n\n" : "\n");
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+}
+
+
+=head3 C<change_maillist_projects($id, $password, $create_maillist_projects, remove_maillist_projects)>
+
+Create/Remove maillists for projects
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$create_maillist_projects>
+
+A reference to an array of GIDs of projects to create mailaliases
+
+=item C<$remove_maillist_projects>
+
+A reference to an array of GIDs of projects to remove mailaliases
+
+=back
+
+=head4 Description
+
+This wraps the command
+C<sophomorix-project --project GID --maillist> for all GIDs in C<$create_maillist_projects>
+and the command
+C<sophomorix-project --project GID --nomaillists> for all GIDs in C<$remove_maillist_projects>
+
+=cut
+
+sub change_maillist_projects {
+	my $id = shift;
+	my $password = shift;
+	my $create_maillist_projects = shift;
+	my $remove_maillist_projects = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::CHANGEMAILLISTPROJECTAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT
+	      (@$create_maillist_projects ? join("\n", @$create_maillist_projects) . "\n\n" : "\n"),
+	      (@$remove_maillist_projects ? join("\n", @$remove_maillist_projects) . "\n\n" : "\n");
 
 	buffer_input(\*SCRIPTIN);
 

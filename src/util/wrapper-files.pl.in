@@ -89,7 +89,7 @@ numeric constant: C<Schulkonsole::Config::WRITEFILEAPP>
 =item file
 
 0 = classrooms, 1 = printers, 2 = workstations, 3 = room_defaults,
-4 = backup.conf, 5 = preferences.conf
+5 = preferences.conf, 6 = group_defaults
 
 =back
 
@@ -125,18 +125,18 @@ $app_id == Schulkonsole::Config::WRITEFILEAPP and do {
 		            	$Schulkonsole::Config::_room_defaults_file);
 		last SWITCHWRITEFILE;
 	};
-	$file == 4 and do {
-		$filename = Schulkonsole::Encode::to_fs(
-		            	$Schulkonsole::Config::_backup_conf_file);
-		$perm = 0755 unless -e $filename;
-		last SWITCHWRITEFILE;
-	};
 	$file == 5 and do {
 		$filename = Schulkonsole::Encode::to_fs(
 		            	$Schulkonsole::Config::_preferences_conf_file);
 		$perm = 0644 unless -e $filename;
 		last SWITCHWRITEFILE;
 	};
+        $file == 6 and do {
+                $filename = Schulkonsole::Encode::to_fs(
+                                $Schulkonsole::Config::_group_defaults_file);
+                $perm = 0644 unless -e $filename;
+                last SWITCHWRITEFILE;
+        };
 	}
 
 	$< = $>;

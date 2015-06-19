@@ -11,15 +11,19 @@ nobase_dist_perllib_DATA = \
 	Error/Linbo.pm \
 	Error/OVPN.pm \
 	Error/Printer.pm \
+	Error/Radius.pm \
 	Error/Sophomorix.pm \
 	Error/User.pm \
 	Files.pm \
 	Firewall.pm \
 	Gettext.pm \
 	Info.pm \
+	Lesson.pm \
+	LessonSession.pm \
 	Linbo.pm \
 	OVPN.pm \
 	Printer.pm \
+	Radius.pm \
 	Room.pm \
 	RoomSession.pm \
 	Sophomorix.pm \

@@ -161,10 +161,12 @@ use Net::CUPS;
 use Net::CUPS::Destination;
 use Schulkonsole::Session;
 use Schulkonsole::Config;
+use Schulkonsole::DB;
 use Schulkonsole::Info;
 use Schulkonsole::OVPN;
 use Schulkonsole::Printer;
 use Schulkonsole::Sophomorix;
+use Sophomorix::SophomorixConfig;
 
 my $this_file = 'start';
 
@@ -621,9 +623,9 @@ my $var_classes_str = join ', ', @classs;
 $sk_session->set_var('classes_str', $var_classes_str);
 
 
-
 my @mailaliass = Schulkonsole::Info::mailaliases($uid);
 my $var_mailaliases = join ', ', @mailaliass;
+my $usermail = Schulkonsole::DB::get_usermail($uid);
 
 =item C<mailaliases>
 
@@ -634,9 +636,16 @@ A comma separated list of the user's mailaliases
 $sk_session->set_var('mailaliases', $var_mailaliases);
 
 my ($maildomain) = `cat /etc/mailname`;
-
 my @array_mailaddresss;
-foreach my $mailalias (sort $uid, @mailaliass) {
+if ($usermail) {
+        push @array_mailaddresss, $usermail;
+} elsif ($Conf::alt_mail_domainname) {
+        push @array_mailaddresss, "$uid\@".$Conf::alt_mail_domainname;
+} else {
+        push @array_mailaddresss, "$uid\@$maildomain";
+}
+
+foreach my $mailalias (sort @mailaliass) {
 	push @array_mailaddresss, "$mailalias\@$maildomain";
 }
 my $var_mailaddresses = join ', ', @array_mailaddresss;

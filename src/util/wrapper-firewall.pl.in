@@ -41,6 +41,7 @@ use Schulkonsole::Encode;
 use Schulkonsole::Error::Firewall;
 use Schulkonsole::Firewall;
 use Schulkonsole::RoomSession;
+use Schulkonsole::Sophomorix;
 
 my $lml_majorversion = "$Schulkonsole::Config::_lml_majorversion";
 
@@ -557,96 +558,11 @@ sub all_on {
 
 	my $oldsettings = $room_session->param('oldsettings');
 
-# do not restore internet/intranet and urlfilter status from session file, use linuxmuster-reset instead (see below)
-#	my $blocked_hosts_internet
-#		= Schulkonsole::Firewall::blocked_hosts_internet();
-#	my $blocked_hosts_intranet
-#		= Schulkonsole::Firewall::blocked_hosts_intranet();
-#	my $unfiltered_hosts = Schulkonsole::Firewall::unfiltered_hosts();
-#	my @internet_ons;
-#	my @internet_offs;
-#	my @intranet_ons;
-#	my @intranet_offs;
-#	my @webfilter_ons;
-#	my @webfilter_offs;
-#	foreach my $workstation (keys %$workstations) {
-#		my ($mac) = $$workstations{$workstation}{mac} =~ /^(\w{2}(?::\w{2}){5})$/;
-#		my ($host) = $$workstations{$workstation}{ip} =~ /^([\w.-]+)$/i;
-#		if (    $$oldsettings{blocked_hosts_internet}
-#		    and    $$oldsettings{blocked_hosts_internet}{$mac}
-#		        != $$blocked_hosts_internet{$mac}) {
-#			if ($$oldsettings{blocked_hosts_internet}{$mac}) {
-#				push @internet_offs, $mac;
-#			} else {
-#				push @internet_ons, $mac;
-#			}
-#		}
-#		if (    $$oldsettings{blocked_hosts_intranet}
-#		    and    $$oldsettings{blocked_hosts_intranet}{$mac}
-#		        != $$blocked_hosts_intranet{$mac}) {
-#			if ($$oldsettings{blocked_hosts_intranet}{$mac}) {
-#				push @intranet_offs, $mac;
-#			} else {
-#				push @intranet_ons, $mac;
-#			}
-#		}
-#		if (    $$oldsettings{unfiltered_hosts}
-#		    and    $$oldsettings{unfiltered_hosts}{$mac}
-#		        != $$unfiltered_hosts{$mac}) {
-#			if ($$oldsettings{unfiltered_hosts}{$mac}) {
-#				push @webfilter_offs, $host;
-#			} else {
-#				push @webfilter_ons, $host;
-#			}
-#		}
-#	}
-
-
 	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;
 	local $) = 0;
 	local $( = $);
 	umask(022);
-# do not restore internet/intranet and urlfilter status from session file, use linuxmuster-reset instead (see below)
-#	if (@webfilter_offs) {
-#		my $opts = "--trigger=off --hostlist=" . join(',', @webfilter_offs);
-#
-#		system Schulkonsole::Encode::to_cli(
-#		       	$Schulkonsole::Config::_cmd_urlfilter_on_off . ' ' . $opts);
-#	}
-#	if (@webfilter_ons) {
-#		my $opts = "--trigger=on --hostlist=" . join(',', @webfilter_ons);
-#
-#		system Schulkonsole::Encode::to_cli(
-#		       	$Schulkonsole::Config::_cmd_urlfilter_on_off . ' ' . $opts);
-#	}
-#
-#	if (@internet_ons) {
-#		my $opts = "--trigger=on --maclist=" . join(',', @internet_ons);
-#
-#		system Schulkonsole::Encode::to_cli(
-#		       	$Schulkonsole::Config::_cmd_internet_on_off . ' ' . $opts);
-#	}
-#	if (@internet_offs) {
-#		my $opts = "--trigger=off --maclist=" . join(',', @internet_offs);
-#
-#		system Schulkonsole::Encode::to_cli(
-#		       	$Schulkonsole::Config::_cmd_internet_on_off . ' ' . $opts);
-#	}
-#
-#	if (@intranet_ons) {
-#		my $opts = "--trigger=on --maclist=" . join(',', @intranet_ons);
-#
-#		system Schulkonsole::Encode::to_cli(
-#		       	$Schulkonsole::Config::_cmd_intranet_on_off . ' ' . $opts);
-#	}
-#	if (@intranet_offs) {
-#		my $opts = "--trigger=off --maclist=" . join(',', @intranet_offs);
-#
-#		system Schulkonsole::Encode::to_cli(
-#		       	$Schulkonsole::Config::_cmd_intranet_on_off . ' ' . $opts);
-#	}
-
 
 	# reset the room settings according to rooms_default instead of restoring 
 	# the old state from session file
@@ -654,7 +570,7 @@ sub all_on {
 	system Schulkonsole::Encode::to_cli(
 	       	"$Schulkonsole::Config::_cmd_linuxmuster_reset $opts");
 
-
+	# reset printer settings to old state from session file
 	if ($$oldsettings{printers_accept}) {
 		my %value_type = (
 			DenyUser => 2,
@@ -736,43 +652,29 @@ sub all_on {
 		}
 	}
 
-
-
+	# reset share states to old settings from session file
 	if ($$oldsettings{share_states}) {
 		my $old_share_states = $$oldsettings{share_states};
 		my @shares_on;
 		my @shares_off;
+		my $shareuserdata;
 		foreach my $login_id (keys %$old_share_states) {
-			my $login_userdata
-				= Schulkonsole::DB::get_userdata_by_id($login_id);
-			next unless $login_userdata;
-			my $share_dir
-				= "$$login_userdata{homedirectory}/$Language::share_dir/";
-	
-			if (-d $share_dir) {
-				my $mode = (stat $share_dir)[2];
-				my $share_state = (($mode & 05) == 05);
-	
-				if ($$old_share_states{$login_id}) {
-					push @shares_on, "\Q$$login_userdata{uid}"
-						unless $share_state;
-				} else {
-					push @shares_off, "\Q$$login_userdata{uid}"
-						if $share_state;
-				}
-	
+			$shareuserdata = Schulkonsole::DB::get_userdata_by_id($login_id);
+			if( $$old_share_states{$login_id}) {
+				push @shares_on, $$shareuserdata{uid};
+			} elsif( not $$old_share_states{$login_id}) {
+				push @shares_off, $$shareuserdata{uid};
 			}
 		}
 
-
 		system Schulkonsole::Encode::to_cli(
 		       	$Schulkonsole::Config::_cmd_sophomorix_teacher
-		       	. " --teacher \Q$$userdata{uid}\E --shares --users "
+		       	. " --teacher \Q$$userdata{uid}\E --share --users "
 		       	. join(',', @shares_on))
 			if @shares_on;
 		system Schulkonsole::Encode::to_cli(
 		       	$Schulkonsole::Config::_cmd_sophomorix_teacher
-		       	. " --teacher \Q$$userdata{uid}\E --noshares --users "
+		       	. " --teacher \Q$$userdata{uid}\E --noshare --users "
 		       	. join(',', @shares_off))
 			if @shares_off;
 	}

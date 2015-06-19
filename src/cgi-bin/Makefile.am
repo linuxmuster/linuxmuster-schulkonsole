@@ -4,18 +4,20 @@ pkglibexec_SCRIPTS=example start logout \
 	room_test room_test_handout room_test_password room_test_collect \
 	room_test_end \
 	class class_list class_passwords class_collect class_handoutcopy \
-	class_handout class_shares \
+	class_handout class_shares class_lesson \
 	project project_members project_addmembers project_handoutcopy \
-	project_handout project_collect project_shares \
-	settings \
-	settings_program settings_users settings_classs settings_backup \
+	project_handout project_collect project_shares project_lesson \
+	project_passwords \
+	settings settings_projects \
+	settings_program settings_users settings_classs \
 	user user_students user_teachers user_extra \
 	user_teacherpasswords \
 	user_check user_teachin user_commit user_reports \
 	rooms rooms_classrooms \
 	printers printers_edit hosts \
 	quotas quotas_teachers quotas_classes quotas_projects quotas_others \
-	linbo linbo_edit linbo_new linbo_regpatchedit linbo_pxeedit linbo_images
+	linbo linbo_edit linbo_new linbo_regpatchedit linbo_pxeedit linbo_images \
+	linbo_menuedit
 
 CLEANFILES = $(pkglibexec_SCRIPTS)
 EXTRA_DIST = example.in start.in logout.in \
@@ -24,11 +26,12 @@ EXTRA_DIST = example.in start.in logout.in \
 	room_test_end.in \
 	class.in class_list.in class_passwords.in class_collect.in \
 	class_handoutcopy.in class_handout.in class_shares.in \
+	class_lesson.in \
 	project.in project_members.in project_addmembers.in \
 	project_handoutcopy.in project_handout.in project_collect.in \
-	project_shares.in \
+	project_shares.in project_lesson.in project_passwords.in \
 	settings.in settings_program.in settings_users.in settings_classs.in \
-	settings_backup.in \
+	settings_projects.in \
 	user.in user_students.in user_teachers.in user_extra.in \
 	user_teacherpasswords.in \
 	user_check.in user_teachin.in user_commit.in user_reports.in \
@@ -37,7 +40,7 @@ EXTRA_DIST = example.in start.in logout.in \
 	quotas.in \
 	quotas_teachers.in quotas_classes.in quotas_projects.in quotas_others.in \
 	linbo.in linbo_edit.in linbo_new.in linbo_regpatchedit.in \
-	linbo_pxeedit.in linbo_images.in
+	linbo_pxeedit.in linbo_images.in linbo_menuedit.in
 
 
 do_subst = sed \

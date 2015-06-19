@@ -2,6 +2,7 @@ use strict;
 use Schulkonsole::Error::Cyrus;
 use Schulkonsole::Error::Files;
 use Schulkonsole::Error::Firewall;
+use Schulkonsole::Error::Radius;
 use Schulkonsole::Error::Linbo;
 use Schulkonsole::Error::OVPN;
 use Schulkonsole::Error::Printer;
@@ -22,6 +23,7 @@ $VERSION = 0.06;
 	USER_AUTHENTICATION_FAILED
 	USER_PASSWORD_MISMATCH
 	UNKNOWN_ROOM
+	UNKNOWN_GROUP
 	QUOTA_NOT_ALL_MOUNTPOINTS
 	PUBLIC_BG_ERROR
 	INTERNAL_BG_ERROR
@@ -47,6 +49,7 @@ use constant {
 
 
 	UNKNOWN_ROOM => 3,
+	UNKNOWN_GROUP => 4,
 
 	QUOTA_NOT_ALL_MOUNTPOINTS => 10,
 
@@ -109,6 +112,8 @@ sub what {
 		and return 'Neues Passwort nicht richtig wiederholt';
 	$this->{code} == UNKNOWN_ROOM
 		and return 'Raum ist unbekannt';
+	$this->{code} == UNKNOWN_GROUP
+		and return 'Klasse/Projekt ist unbekannt';
 	$this->{code} == QUOTA_NOT_ALL_MOUNTPOINTS
 		and return 'F&uuml;r Diskquota m&uuml;ssen alle oder keine Felder ausgef&uuml;llt sein';
 	$this->{code} == PUBLIC_BG_ERROR
@@ -144,6 +149,7 @@ sub what {
 		and return 'Datenuebertragung (lesen) unterbrochen';
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_PROGRAM_ERROR
+	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_PROGRAM_ERROR
@@ -152,6 +158,7 @@ sub what {
 		and return 'Programmaufruf fehlgeschlagen';
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_UID
+	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_UNAUTHORIZED_UID
@@ -168,6 +175,7 @@ sub what {
 		and return 'Skript nicht vorhanden';
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_SCRIPT_EXEC_FAILED
+	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_SCRIPT_EXEC_FAILED
@@ -176,6 +184,7 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_SCRIPT_EXEC_FAILED)
 		and return 'Skriptaufruf fehlgeschlagen';
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHENTICATED_ID
+	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_UNAUTHENTICATED_ID
@@ -183,6 +192,7 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHENTICATED_ID)
 		and return 'Authentifizierung fehlgeschlagen nach ID';
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_APP_ID_DOES_NOT_EXIST
+	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_APP_ID_DOES_NOT_EXIST
@@ -190,6 +200,7 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_APP_ID_DOES_NOT_EXIST)
 		and return 'Programm-ID unbekannt';
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_ID
+	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_ID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_ID
 	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_UNAUTHORIZED_ID
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_UNAUTHORIZED_ID
