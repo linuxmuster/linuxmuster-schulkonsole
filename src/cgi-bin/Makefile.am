@@ -17,7 +17,8 @@ pkglibexec_SCRIPTS=example start logout \
 	printers printers_edit hosts \
 	quotas quotas_teachers quotas_classes quotas_projects quotas_others \
 	linbo linbo_edit linbo_new linbo_regpatchedit linbo_pxeedit linbo_images \
-	linbo_menuedit
+	linbo_menuedit \
+	config.php
 
 CLEANFILES = $(pkglibexec_SCRIPTS)
 EXTRA_DIST = example.in start.in logout.in \
