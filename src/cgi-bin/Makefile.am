@@ -41,7 +41,8 @@ EXTRA_DIST = example.in start.in logout.in \
 	quotas.in \
 	quotas_teachers.in quotas_classes.in quotas_projects.in quotas_others.in \
 	linbo.in linbo_edit.in linbo_new.in linbo_regpatchedit.in \
-	linbo_pxeedit.in linbo_images.in linbo_menuedit.in
+	linbo_pxeedit.in linbo_images.in linbo_menuedit.in \
+	config.php.in
 
 
 do_subst = sed \
@@ -53,4 +54,3 @@ do_subst = sed \
 
 %: %.in
 	$(do_subst) $(srcdir)/$@.in > $@
-
