@@ -76,8 +76,9 @@ install: build
 
 	# Add here commands to install the package into debian/tmp
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
-	#install -d -o root -g root -m 755 $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/permissions.d
-	#install -d -o root -g root -m 755 $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/menus.d
+	install -d -o root -g root -m 755 $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole
+	install -d -o root -g root -m 755 $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/menus.d
+	install -d -o root -g root -m 755 $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/permissions.d
 	install -d -o root -g root -m 755 $(CURDIR)/debian/tmp/etc/apache2/sites-available
 	install -p -o root -g root -m 644 $(CURDIR)/doc/etc/apache2/sites-available/schulkonsole $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/apache2.conf
 	install -p -o root -g root -m 644 $(CURDIR)/doc/etc/schulkonsole/permissions.conf $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/permissions.conf
