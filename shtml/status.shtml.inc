@@ -1,8 +1,5 @@
 <div id="status">
 <div></div>
-<!--#if expr="$status" -->
-<p><!--#echo var="status" --></p>
-<!--#endif -->
 <!--#if expr="$REMOTE_ADDR" -->
 <p class="info">
 <gettext>Sitzungsdauer:</gettext> <!--#echo var="session_time" --><br>
