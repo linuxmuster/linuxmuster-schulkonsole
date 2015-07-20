@@ -195,7 +195,34 @@ my $_element_name;
 
 
 
-
+sub get_jquery_dialog {
+	my $title = shift;
+	my $message = shift;
+	my $function = "\n". ' <script>
+  $(function() {
+    $( "#dialog-message" ).dialog({
+      modal: true,
+      buttons: {
+        Ok: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    }).position({
+      my: "center",
+      at: "center",
+    });
+  });
+  </script>
+';
+	my $dialog = '<div id="dialog-message" title="'.$title.'">
+  <p>
+    <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 50px 0;"></span>
+    '.$message.'
+  </p>
+</div>
+';
+	return $function . $dialog;
+}
 
 sub print_page {
 	my $sk_session = shift;
@@ -230,7 +257,6 @@ sub print_page {
 
 	my $old_session_id = $_query->cookie(CGI::Session->name());
 	$_no_cookies = 1 unless ($old_session_id or $sk_session->{logout});
-
 
 	if ($sk_session->{logout}) {
 		my @cookies = (
@@ -536,15 +562,10 @@ sub start_tag_handler {
 			} else {
 				print_content($text);
 			}
-		} elsif (    $tagname eq 'div'
-		         and $$attr_ref{id} eq 'status'
-		         and defined $_is_error) {
-			if ($_is_error) {
-				print_content(
-					substitute_token($text, $tokenpos, { class => 'error' }));
-			} else {
-				print_content(
-					substitute_token($text, $tokenpos, { class => 'ok' }));
+		} elsif ($tagname eq 'div' and defined $_is_error and $$attr_ref{id} eq 'content') {
+			print_content($text);
+			if($_is_error) {
+				print_content(get_jquery_dialog("Fehler",get_value("status")));
 			}
 		} elsif (    $tagname eq 'optgroup'
 		         and defined $$attr_ref{label}) {
