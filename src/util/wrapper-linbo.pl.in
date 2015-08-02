@@ -343,17 +343,18 @@ Deletes a LINBO file
 $app_id == Schulkonsole::Config::LINBODELETEAPP and do {
 	my $filename = <>;
 	my $tmpfilename;
-	($tmpfilename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.reg|pxelinux\.lst\.(?:[a-z\d_]+))$/;
-        ($tmpfilename) = $filename =~ /^(menu\.lst\.[a-z\d_]+)$/ unless defined $tmpfilename;
+	($tmpfilename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.reg)$/;
+        ($tmpfilename) = $filename =~ /^([a-z\d_]+\.cfg)$/ unless defined $tmpfilename;
         ($tmpfilename) = $filename =~ /^(start\.conf\.[a-z\d_]+)$/ unless defined $tmpfilename;
         $filename = $tmpfilename;
         exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		unless defined $filename;
 
-
-	my $file = Schulkonsole::Encode::to_fs(
-	           	"$Schulkonsole::Config::_linbo_dir/$filename");
+        my $path = "$Schulkonsole::Config::_linbo_dir";
+        $path = "$Schulkonsole::Config::_pxe_config_dir" if $filename =~ /^[a-z\d_]+\.cfg/;
+        
+	my $file = Schulkonsole::Encode::to_fs("$path/$filename");
 
 	unlink $file;
 
@@ -465,14 +466,13 @@ $app_id == Schulkonsole::Config::LINBOWRITEAPP and do {
 	my $filename = <>;
 	my $tmpfilename;
 	($tmpfilename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.(?:reg|desc))$/;
-	($tmpfilename) = $filename =~ /^(menu\.lst\.[a-z\d_]+)$/ unless defined $tmpfilename;
+	($tmpfilename) = $filename =~ /^([a-z\d_]+\.cfg)$/ unless defined $tmpfilename;
 	$filename = $tmpfilename;
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		unless defined $filename;
 
-	my $file = Schulkonsole::Encode::to_fs(
-	           	"$Schulkonsole::Config::_linbo_dir/$filename");
+	my $file = Schulkonsole::Encode::to_fs("$Schulkonsole::Config::_linbo_dir/$filename");
 
 	$< = $>;
 	$) = 0;
@@ -512,7 +512,7 @@ Writes a LINBO PXE start file
 
 $app_id == Schulkonsole::Config::LINBOWRITEPXEAPP and do {
 	my $filename = <>;
-	($filename) = $filename =~ /^([a-z\d_]+)$/;
+	($filename) = $filename =~ /^([a-z\d_]+\.cfg)$/;
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
 	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		unless defined $filename;

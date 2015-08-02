@@ -47,7 +47,6 @@ $VERSION = 0.0917;
 	regpatches
 	example_regpatches
 	pxestarts
-	menulsts
 	images
 
 	update_linbofs
@@ -383,7 +382,7 @@ A reference to a hash with the filenames as keys
 
 =head3 Description
 
-Gets the PXE start files in /var/linbo/
+Gets the PXE start files in LINBODIR/boot/grub
 and returns them in a hash.
 
 =cut
@@ -392,46 +391,15 @@ sub pxestarts {
 	my %re;
 
 	foreach my $file ((
-			glob("$Schulkonsole::Config::_pxe_config_dir/*")
+			glob("$Schulkonsole::Config::_pxe_config_dir/*.cfg")
 		)) {
 		next if -l$file or -d$file;
 		my ($filename) = File::Basename::fileparse($file);
+		next if $filename eq "grub.cfg";
 		$re{ Schulkonsole::Encode::from_fs($filename) } = $file;
 	}
 
 	return \%re;
-}
-
-
-
-
-=head2 menulsts()
-
-Get all menu.lst files
-
-=head3 Return value
-
-A reference to a hash with the filenames as keys
-
-=head3 Description
-
-Gets the menu.lst files in /var/linbo/
-and returns them in a hash.
-
-=cut
-
-sub menulsts {
-        my %re;
-
-        foreach my $file ((
-                        glob("$Schulkonsole::Config::_linbo_dir/menu.lst.*")
-                )) {
-                next if -l$file or -d$file;
-                my ($filename) = File::Basename::fileparse($file);
-                $re{ Schulkonsole::Encode::from_fs($filename) } = $file;
-        }
-
-        return \%re;
 }
 
 
@@ -2111,8 +2079,8 @@ The basename of the file
 =head3 Description
 
 Deletes C<$filename> in C</var/linbo/>. Filename has to match C<*.cloop.reg>,
-C<*.rsync.reg>, C<menu\.lst\.(?:[a-z\d_]+)>,
-C<start.conf.(?:[a-z\d_]+)>, or C<pxelinux\.lst\.(?:[a-z\d_]+)>.
+C<*.rsync.reg>, C<boot/grub/(?:[a-z\d_]+)\.cfg>,
+C<start.conf.(?:[a-z\d_]+)>.
 
 =cut
 
@@ -2190,7 +2158,7 @@ sub write_file {
 
 =head2 write_pxe_file($id, $password, $filename, $lines)
 
-Writes a LINBO file
+Writes the LINBO pxe start file
 
 =head3 Parameters
 
