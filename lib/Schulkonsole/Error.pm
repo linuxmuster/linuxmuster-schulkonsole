@@ -8,6 +8,7 @@ use Schulkonsole::Error::OVPN;
 use Schulkonsole::Error::Printer;
 use Schulkonsole::Error::Sophomorix;
 use Schulkonsole::Error::User;
+use Schulkonsole::Error::Horde;
 
 package Schulkonsole::Error;
 require Exporter;
@@ -148,6 +149,7 @@ sub what {
 	$this->{code} == WRAPPER_BROKEN_PIPE_IN
 		and return 'Datenuebertragung (lesen) unterbrochen';
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_PROGRAM_ERROR
+	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_PROGRAM_ERROR
@@ -157,6 +159,7 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_PROGRAM_ERROR)
 		and return 'Programmaufruf fehlgeschlagen';
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_UNAUTHORIZED_UID
+	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_UID
@@ -166,14 +169,18 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHORIZED_UID)
 		and return 'Nicht autorisierter Aufrufer';
-	$this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_UID
+	(    $this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_UID
+	or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_INVALID_UID)
 		and return 'Wechsel zu diesem Benutzer nicht erlaubt';
-	$this->{code} == Schulkonsole::Error::User::WRAPPER_SETUID_FAILED
+	(    $this->{code} == Schulkonsole::Error::User::WRAPPER_SETUID_FAILED
+	or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_SETUID_FAILED)
 		and return 'Wechsel zu diesem Benutzer nicht moeglich';
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_SCRIPT
+	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_INVALID_SCRIPT)
 	 or $this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_INVALID_SCRIPT)
 		and return 'Skript nicht vorhanden';
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_SCRIPT_EXEC_FAILED
+	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_SCRIPT_EXEC_FAILED

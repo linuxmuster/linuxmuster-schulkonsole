@@ -58,6 +58,27 @@
 <p><input type="submit" value="Passwort &auml;ndern"></p>
 </form>
 
+<h3><gettext>Mail-Weiterleitung</gettext></h3>
+<form meth="post" accept-charset="UTF-8">
+<table id="mailforward">
+<col width="30%">
+<col width="70%">
+<tr>
+<td><label for="mailforwards"><gettext>Weiterleitung(en)</gettext></label>: </td>
+<td><input id="mailforwards" name="mailforwards" value="$mailforwards"></td>
+</tr>
+<tr>
+<td><label for="mailkeep"><gettext>Kopie behalten</gettext></label>: </td>
+<td>
+<!--#if expr="$mailkeep" -->
+<input id="mailkeep" name="mailkeep" type="checkbox" checked>
+<!--#else -->
+<input id="mailkeep" name="mailkeep" type="checkbox">
+<!--#endif -->
+</td>
+</tr>
+</table>
+<p><input type="submit" name="mailchange" value="Mailadresse(n) &auml;ndern">
 
 <hr>
 
@@ -160,6 +181,8 @@
 
 
 <!--#if expr="$printquota" -->
+<p><gettext>Druckquota:</gettext></p>
+
 <table id="printquota">
 <col width="30%">
 <col width="70%">
@@ -244,7 +267,11 @@
 <h2><gettext>Info</gettext></h2>
 
 <p><gettext>Auf dieser Seite k&ouml;nnen Sie eigene Druckauftr&auml;ge l&ouml;schen
-und Ihr Passwort &auml;ndern. Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch
+und Ihr Passwort &auml;ndern.
+<p>Weiterhin k&ouml;nnen Sie eine Mail-Weiterleitung an
+eine oder mehrere durch Komma getrennte Mail-Adressen einrichten und festlegen, ob
+eine Kopie im Postfach verbleiben soll. 
+<p>Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch
 auf dem Server und in Ihrem Postfach. Alle Werte sind
 in Kilobyte angegeben. Zus&auml;tzlich wird angezeigt in welchen Projekten Sie
 Mitglied sind.</gettext></p>

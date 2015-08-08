@@ -14,9 +14,11 @@ nobase_dist_perllib_DATA = \
 	Error/Radius.pm \
 	Error/Sophomorix.pm \
 	Error/User.pm \
+	Error/Horde.pm \
 	Files.pm \
 	Firewall.pm \
 	Gettext.pm \
+	Horde.pm \
 	Info.pm \
 	Lesson.pm \
 	LessonSession.pm \
@@ -33,7 +35,8 @@ nobase_dist_perllib_DATA = \
 	File.php \
 	Session.php \
 	Template.php \
-	Wrapper.php
+	Wrapper.php \
+	horde-mail.php
 
 CLEANFILES = $(perllib_DATA)
 EXTRA_DIST = Session.pm.in Config.pm.in

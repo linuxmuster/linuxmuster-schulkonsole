@@ -37,6 +37,17 @@ the id of the printjob
 
 the title of the printed document
 
+=over
+
+=item C<mailforwards>
+
+A string with a comma separated list of mail addresses to forward mail for
+this user to.
+
+=item C<mailkeep>
+
+A boolean value to keep a copy of the forwarded mail in the users mailbox.
+
 =back
 
 =item C<diskquotas>
@@ -162,6 +173,7 @@ use Net::CUPS::Destination;
 use Schulkonsole::Session;
 use Schulkonsole::Config;
 use Schulkonsole::DB;
+use Schulkonsole::Horde;
 use Schulkonsole::Info;
 use Schulkonsole::OVPN;
 use Schulkonsole::Printer;
@@ -275,6 +287,38 @@ COMMANDS: {
 
 	last COMMANDS;
 };
+
+# change mailforwards
+defined $q->param('mailchange') and do {
+        my $mailaddresses = $q->param('mailforwards');
+        my @mailforwards = ();
+        foreach my $mailaddress (split(',',$mailaddresses)) {
+            $mailaddress =~ s/^\s+|\s+$//g;
+            if($mailaddress !~ /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b/) {
+                $sk_session->mark_input_error('mailforwards');
+                $sk_session->set_status($sk_session->d()->get(
+				'Eine oder mehrere Mail-Adressen sind ungültig.'), 1);
+                last COMMANDS;
+            }
+            push @mailforwards, $mailaddress;
+        }
+        eval {
+            if(@mailforwards) {
+                Schulkonsole::Horde::set_mailforwards($uid,$password,join(',', @mailforwards),
+                        ($q->param('mailkeep') ? 1 : 0));
+            } else {
+                Schulkonsole::Horde::remove_mailforwards($uid,$password);
+            }
+            $sk_session->set_status(
+                    $sk_session->{d}->get('Mailweiterleitung erfolgreich ge&auml;ndert'), 0);
+        };
+        if ($@) {
+                $sk_session->standard_error_handling($this_file, $@);
+        }
+        
+        last COMMANDS;
+};
+
 # cancel print jobs
 defined $q->param('printjobs') and do {
 	my $status;
@@ -433,8 +477,14 @@ foreach my $destination ($cups->getDestinations) {
 }
 $sk_session->set_var('printjobs', \@array_printjobs) if @array_printjobs;
 
-
-
+eval {
+my ($mailforwards,$mailkeep) = Schulkonsole::Horde::get_mailforwards($uid,$password);
+$sk_session->set_var('mailforwards', $mailforwards) if $mailforwards;
+$sk_session->set_var('mailkeep', $mailkeep) if $mailkeep;
+};
+if ($@) {
+	warn "$@\n";
+}
 
 my $disk_quotas =
 	Schulkonsole::Info::disk_quotas($sk_session->userdata('uidnumber'));
@@ -593,6 +643,7 @@ my $printquota = {
 	percent_rounded => ($usage_percent < 100.0 ?
 	                      int($usage_percent + 0.5)
 	                    : 100),
+        'warn' => $usage > $limit,
 };
 
 
@@ -713,6 +764,22 @@ The new password
 =item newpasswordagain
 
 Used to rule typos out
+
+=back
+
+=head3 Mailforwards change
+
+The following form fields are used to change mailforward addresses:
+
+=over
+
+=item mailforwards
+
+A comma separated string list of valid mail addresses to forward to.
+
+=item mailkeep
+
+A boolean value to keep a copy of forwarded mail.
 
 =back
 
