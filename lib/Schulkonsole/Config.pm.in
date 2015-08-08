@@ -128,6 +128,7 @@ $VERSION = 0.06;
 	$_cmd_ovpn_client_cert
 	$_cmd_wlan_on_off
 	$_cmd_linuxmuster_wlan_reset
+	$_cmd_horde_mail
 
 	$_shell
 
@@ -1099,6 +1100,10 @@ Path to command to administer wlan configuration C<wlan_on_off>
 
 Path to command to reset group settings C<group-reset>
 
+=item C<$_cmd_horde_mail>
+
+Path to command to read mail forwards C<schulkonsole.php>
+
 =back
 
 =cut
@@ -1133,7 +1138,8 @@ use vars qw(%_id_root_app_names
             $_cmd_import_printers
             $_cmd_ovpn_client_cert
             $_cmd_wlan_on_off
-            $_cmd_linuxmuster_wlan_reset);
+            $_cmd_linuxmuster_wlan_reset
+            $_cmd_horde_mail);
 
 
 =head3 Other variables
@@ -1332,7 +1338,7 @@ $_cmd_urlfilter_check = '/usr/share/linuxmuster/scripts/check_urlfilter.sh';
 $_cmd_urlfilter_on_off = '/usr/share/linuxmuster/scripts/urlfilter_on_off.sh';
 $_cmd_wlan_on_off = '/usr/share/linuxmuster/scripts/wlan_on_off.sh';
 $_cmd_linuxmuster_wlan_reset = '/usr/sbin/linuxmuster-wlan-reset';
-
+$_cmd_horde_mail = '/usr/share/schulkonsole/Schulkonsole/horde-mail.php';
 
 $_sophomorix_conf_true = 'yes';
 $_sophomorix_conf_false = 'no';
