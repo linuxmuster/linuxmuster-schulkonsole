@@ -176,7 +176,7 @@ sub what {
 	or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_SETUID_FAILED)
 		and return 'Wechsel zu diesem Benutzer nicht moeglich';
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_SCRIPT
-	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_INVALID_SCRIPT)
+	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_INVALID_SCRIPT
 	 or $this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_INVALID_SCRIPT)
 		and return 'Skript nicht vorhanden';
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_SCRIPT_EXEC_FAILED

@@ -48,6 +48,7 @@ pkgruntimedir = /var/lib/@PACKAGE@
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 	install -d -o www-data -g root -m 700 $(DESTDIR)$(pkgruntimedir)
+	chmod -f 755 $(DESTDIR)$(perllibdir)/horde-mail.php
 
 
 
