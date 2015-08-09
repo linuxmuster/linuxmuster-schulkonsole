@@ -221,7 +221,7 @@ Name of a file to delete, if <command> is C<delete>.
 			$sk_session->set_var('deletefilename', $menulst);
 			$is_action = 1;
 
-			$sk_session->set_status('Bitte best&auml;tigen', 1);
+			$sk_session->set_status('Bitte best&auml;tigen', 0);
 			last SWITCHCOMMAND;
 		}
 	}

@@ -562,6 +562,9 @@ sub start_tag_handler {
 			} else {
 				print_content($text);
 			}
+		} elsif ($tagname eq 'div' and $$attr_ref{id} eq 'status' 
+				and defined $_is_error and !$_is_error) {
+			print_content(substitute_token($text, $tokenpos, { class => 'ok' }));
 		} elsif ($tagname eq 'div' and defined $_is_error and $$attr_ref{id} eq 'content') {
 			print_content($text);
 			if($_is_error) {
