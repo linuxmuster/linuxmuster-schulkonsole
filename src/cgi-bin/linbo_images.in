@@ -419,7 +419,7 @@ Name of image to delete, if the submit button C<delete> has been selected.
 			$sk_session->set_var('deleteimage', $image);
 			$is_action = 1;
 
-			$sk_session->set_status('Bitte best&auml;tigen', 1);
+			$sk_session->set_status('Bitte best&auml;tigen', 0);
 			last SWITCHCOMMAND;
 		};
 
