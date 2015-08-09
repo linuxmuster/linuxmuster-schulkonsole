@@ -82,7 +82,7 @@ use vars qw(%_allowed_keys);
 %_allowed_keys = (
 	1 => {	# [Partition]
 		dev => 1,
-		size => 2,
+		size => 5,
 		id => 3,
 		fstype => 1,
 		bootable => 4,
@@ -538,6 +538,9 @@ sub read_start_conf {
 					$value = ($value =~ /yes/i ? 1 : 0);
 					last SWITCHTYPE;
 				};
+				$type == 5 and do {     # partition size (unit)
+                                        last SWITCHTYPE;
+                                };
 				}
 				if ($section == 1) {
 					$$partition{$key} = $value;
@@ -1773,7 +1776,7 @@ Template for first OS
 
 =item C<$os_size_1>
 
-Size of partition of first OS in KiB
+Size of partition of first OS in kB(,M,G,T)
 
 =item C<$os_template_2>
 
@@ -1781,7 +1784,7 @@ Template for second OS
 
 =item C<$os_size_2>
 
-Size of partition of second OS in KiB
+Size of partition of second OS in kB(,M,G,T)
 
 =item C<$os_template_3>
 
@@ -1789,7 +1792,7 @@ Template for third OS
 
 =item C<$os_size_3>
 
-Size of partition of third OS in KiB
+Size of partition of third OS in kB(,M,G,T)
 
 =item C<$os_template_4>
 
@@ -1797,7 +1800,7 @@ Template for fourth OS
 
 =item C<$os_size_4>
 
-Size of partition of fourth OS in KiB
+Size of partition of fourth OS in kB(,M,G,T)
 
 =back
 
@@ -1825,7 +1828,7 @@ sub create_start_conf_from_template {
 	for (my $i = 0; $i < 4; $i++) {
 		push @os_templates, shift;
 		push @os_sizes, shift;
-		$total_size += $os_sizes[-1];
+		$total_size += partsize_to_kB($os_sizes[-1]);
 		if ($os_templates[-1]) {
 			if ($i < 2) {
 				push @ids, 'c';
@@ -2454,6 +2457,9 @@ sub string_to_type {
 		$value = ($value ? 'yes' : 'no');
 		last SWITCHTYPE;
 	};
+	$type == 5 and do {    # partition size (unit)
+                return undef if ($value !~ /^\d*(kB|M|G|T)?$/);
+                last SWITCHTYPE;
 	}
 
 	return $value;
@@ -2477,6 +2483,16 @@ sub line_with_new_value {
 	return "$key = $value$rem\n";
 }
 
+
+sub partsize_to_kB {
+        my $line = shift;
+        my ($value, $unit) = $line =~ /^\s*(\d+)\s*(kB|M|G|T)?\s*$/;
+        return 0 if not defined $value;
+        return $value*1000 if $unit == 'M';
+        return $value*1000000 if $unit == 'G';
+        return $value*1000000000 if $unit == 'T';
+        return $value; # kB
+}
 
 
 1;
