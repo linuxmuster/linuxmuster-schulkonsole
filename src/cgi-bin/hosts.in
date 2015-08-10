@@ -68,10 +68,38 @@ $q->param('accept') and do {
             $sk_session->set_status(
                     $sk_session->d()->get('Import l&auml;uft bereits'), 1);
     } else {
-        my $old = Schulkonsole::Config::workstations();
+        my ($oldcomments,$old) = Schulkonsole::Config::workstations();
         my %new;
         my @add_errors;
         my @edit_errors;
+        # accept new comment lines / comment lines to hosts changes
+        my @comment_array = split(/^/,$q->param('commentlines'));
+        my @new_comment_array;
+        foreach my $commentline (@comment_array) {
+            if ($commentline =~ /^#|^\s*$/) {
+                push @new_comment_array, $commentline;
+                next;
+            }
+            ($commentline) = $commentline =~ /^\s*(.+?)\s*$/;
+            my ($room, $name, $groups, $mac, $ip, $mask, $dummy1,
+                $dummy2, $dummy3, $dummy4, $pxe, $opts) = split(';', $commentline);
+            if (    ($name
+                    or $room
+                    or $groups
+                    or $mac
+                    or $ip)
+                and syntax_check($room, $name, $groups, $mac, $ip,
+                                $pxe, $opts, 0, \@add_errors)) {
+                $new{$name}{room} = $room;
+                $new{$name}{name} = $name;
+                $new{$name}{groups} = $groups;
+                $new{$name}{mac} = $mac;
+                $new{$name}{ip} = $ip;
+                $new{$name}{pxe} = $pxe;
+                $new{$name}{opts} = $opts;
+            }
+        }
+        # accept host changes
         foreach my $param ($q->param) {
             if (my ($i) = $param =~ /^(\d+)_addip$/) {
                 if ($q->param("${i}_addignore")) {
@@ -135,8 +163,19 @@ $q->param('accept') and do {
                 my $pxe = $q->param("${host}_pxe");
                 my $opts = $q->param("${host}_opts");
 
+                # process host to comment line changes
+                if ($room =~ /^#/) {
+                    my %network_settings_env;
+                    tie %network_settings_env, 'Env::Bash',
+                        Source => $Schulkonsole::Config::_network_settings_file;
+                    my $mask = $network_settings_env{internmask} || '255.240.0.0';
 
-                if (    $$old{$host}
+                    my $default_mask_and_dummy = "$mask;1;1;1;1;";
+                    my $newcomment = "$room;$name;$groups;$mac;$ip;$default_mask_and_dummy$pxe;$opts\n";
+                    push @new_comment_array,$newcomment;
+                    $new{$host} = undef;
+                    next;
+                } elsif (    $$old{$host}
                     and $name eq $$old{$host}{name}
                     and $room eq $$old{$host}{room}
                     and $groups eq $$old{$host}{groups}
@@ -168,18 +207,27 @@ $q->param('accept') and do {
             my $status;
             my $is_error;
 
-            if (%new) {
-                my $lines = new_workstations_lines(\%new);
-
+            my $lines = \@new_comment_array;
+            my $newcomments = join('',@new_comment_array);
+            my $hosts_changed = %new;
+            if ($hosts_changed or ($oldcomments ne $newcomments)) {
+                my $wlines = new_workstations_lines(\%new);
+                push(@$lines,@$wlines);
                 my $id = $sk_session->userdata('id');
                 my $password = $sk_session->get_password();
                 Schulkonsole::Files::write_workstations_file(
                     $id, $password,
                     $lines);
-                Schulkonsole::Files::import_workstations($id, $password,
-                    $sk_session);
+                if($hosts_changed){
+                    Schulkonsole::Files::import_workstations($id, $password,
+                        $sk_session);
 
-
+                    foreach my $process (@{ $process_table->table }) {
+                            if ($process->fname =~ /^import_workst/) {
+                                    $running{wsimport} = $process->pid;
+                            }
+                    }
+                }
                 $status .=
                     $sk_session->d()->get('&Auml;nderungen &uuml;bernommen.');
                 $is_error = 0;
@@ -221,6 +269,12 @@ $q->param('import') and do {
             my $password = $sk_session->get_password();
 
             Schulkonsole::Files::import_workstations($id, $password, $sk_session);
+
+            foreach my $process (@{ $process_table->table }) {
+                    if ($process->fname =~ /^import_workst/) {
+                            $running{wsimport} = $process->pid;
+                    }
+            }
 
             $sk_session->set_status(
                 $sk_session->d()->get('Workstations werden importiert'), 0);
@@ -283,7 +337,8 @@ foreach my $col (@cols) {
   }
 }
 
-my $workstations = Schulkonsole::Config::workstations();
+my ($commentlines,$workstations) = Schulkonsole::Config::workstations();
+
 my @workstations_array;
 foreach my $workstation (sort {
            $$workstations{($desc ? $b : $a)}{$sortcol} cmp $$workstations{($desc ? $a : $b)}{$sortcol}
@@ -378,6 +433,15 @@ True if import_workstations is running
 
 $sk_session->set_var('isimporting', $running{wsimport});
 
+=item C<commentlines>
+
+String containing workstation comments
+
+=cut
+
+$q->param('commentlines',$commentlines);
+
+
 $sk_session->print_page("$this_file.shtml", $this_file);
 
 
@@ -418,7 +482,6 @@ sub syntax_check {
     }
     push @errors, $sk_session->d()->get('ung&uuml;ltige Optionen')
         unless $opts =~ /^(|noudma|unicast|noudma,unicast)$/;
-
 
     if (@errors) {
         $id .= "/$room" if $room;

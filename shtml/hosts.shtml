@@ -68,6 +68,14 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.</gettext></p>
 </p>
 <!--#endif -->
 <p></p>
+<h2><gettext>Kommentare bearbeiten</gettext></h2>
+
+<p><textarea wrap="off" name="commentlines" rows="5" cols="100"></textarea></p>
+<p><input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
+</p>
+
+<p></p>
+<h2><gettext>Rechner bearbeiten</gettext></h2>
 
 <table id="hosts" class="liste">
 <tr>
@@ -138,12 +146,6 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.</gettext></p>
 </tr>
 </table>
 
-
-<!--#if expr="$comments" -->
-<p><gettext><strong>Hinweis:</strong> Die Host-Liste enth&auml;t manuell
-hinzugef&uuml;gte Kommentarzeilen. Diese werden beim Speichern
-gel&ouml;scht.</gettext></p>
-<!--#endif -->
 <p>
 <input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
 <input type="reset" value="Zur&uuml;cksetzen">
@@ -166,6 +168,8 @@ gel&ouml;scht.</gettext></p>
 <p><gettext>&Auml;ndern Sie einfach die entsprechenden Felder in der Liste.</gettext></p>
 <p><gettext>F&uuml;r einen neuen Rechner f&uuml;llen Sie die n&auml;chste freie Zeile aus.</gettext></p>
 <p><gettext>Um einen Eintrag zu l&ouml;schen, setzen Sie das H&auml;kchen in der entsprechenden Checkbox am Zeilenende.</gettext></p>
+<p><gettext>Stellen Sie dem Raumnamen ein '#' voran, um einen Eintrag auszukommentieren und entfernen Sie
+ein vorangestelltes '#', um einen auskommentierten Eintrag wieder zu aktivieren.</gettext></p>
 <p><gettext>Schliessen Sie die Aktion mit &#8222;&Auml;nderungen &uuml;bernehmen&#8220;  ab.</gettext></p>
 
 <!--#include file="footer_info.shtml.inc" -->
