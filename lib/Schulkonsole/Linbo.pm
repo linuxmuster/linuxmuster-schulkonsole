@@ -73,6 +73,8 @@ $VERSION = 0.0917;
 
 	get_templates_os
 
+	partsize_to_kB
+
 	%_allowed_keys
 );
 use vars qw(%_allowed_keys);
@@ -2460,6 +2462,7 @@ sub string_to_type {
 	$type == 5 and do {    # partition size (unit)
                 return undef if ($value !~ /^\d*(kB|M|G|T)?$/);
                 last SWITCHTYPE;
+	};
 	}
 
 	return $value;
@@ -2487,11 +2490,18 @@ sub line_with_new_value {
 sub partsize_to_kB {
         my $line = shift;
         my ($value, $unit) = $line =~ /^\s*(\d+)\s*(kB|M|G|T)?\s*$/;
-        return 0 if not defined $value;
-        return $value*1000 if $unit == 'M';
-        return $value*1000000 if $unit == 'G';
-        return $value*1000000000 if $unit == 'T';
-        return $value; # kB
+
+        if(not defined $value) {
+            return 0;
+        } elsif($unit =~ /^M$/ ) {
+            return ($value*1024);
+        } elsif($unit =~ /^G$/ ) {
+            return ($value*1024*1024);
+        } elsif($unit =~ /^T$/ ) {
+            return ($value*1024*1024*1024);
+        } else {
+            return $value; # kB
+        }
 }
 
 

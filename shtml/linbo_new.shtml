@@ -44,7 +44,7 @@
 <td><input id="group" name="group"></td>
 </tr>
 <tr>
-<td><label for="disksize"><gettext>Festplattengr&ouml;&szlig;e in MB</gettext>:</label></td>
+<td><label for="disksize"><gettext>Festplattengr&ouml;&szlig;e <b>kB</b>(,M,G,T)</gettext>:</label></td>
 <td><input id="disksize" name="disksize"></td>
 </tr>
 <tr>
@@ -60,7 +60,7 @@
 <tr>
 <th><gettext>Partition</gettext></th>
 <th><gettext>Betriebssystem</getttext></th>
-<th><gettext>Partitionsgr&ouml;&szlig;en in MB</gettext></td>
+<th><gettext>Partitionsgr&ouml;&szlig;en <b>kB</b>(,M,G,T)</gettext></td>
 </tr>
 <!--#if expr="$templatesoswin" -->
 <tr>

@@ -133,9 +133,9 @@ $q->param('create') and do {
 		push @errors, $sk_session->d()->get(
 		              	'Keine Festplattengr&ouml;&szlig;e angegeben');
 		$sk_session->mark_input_error('disksize');
-	} elsif ($disk_size !~ /^\d+$/) {
+	} elsif ($disk_size !~ /^\d+(kB|M|G|T)?$/) {
 		push @errors, $sk_session->d()->get(
-		              	'Festplattengr&ouml;&szlig;e muss eine Zahl sein');
+		              	'Festplattengr&ouml;&szlig;e muss eine Zahl (wahlweise mit Einheit) sein');
 		$sk_session->mark_input_error('disksize');
 	}
 
@@ -161,19 +161,20 @@ $q->param('create') and do {
 		}
 
 		if (not $os_size_1) {
-			$os_size_1 = 10;
-		} elsif ($os_size_1 !~ /^\d+$/) {
+			$os_size_1 = '10M';
+		} elsif ($os_size_1 !~ /^\d+(kB|M|G|T)?$/) {
 			push @errors, sprintf($sk_session->d()->get(
-			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 1 muss eine Zahl sein'),
+			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 1 muss eine Zahl (wahlweise mit Einheit) sein'),
 			                      $os_template_1);
 			$sk_session->mark_input_error('os1');
-			$os_size_1 = 10;
+			$os_size_1 = '10M';
 		}
 	} elsif (not $os_size_1) {
-		$os_size_1 = 10;
+		$os_size_1 = '10M';
 	}
 
-	$os_size_total += $os_size_1;
+	my $os_size_1test = Schulkonsole::Linbo::partsize_to_kB($os_size_1);
+	$os_size_total += $os_size_1test;
 
 	if ($os_template_2) {
 		if (not $$templates_os{$os_template_2}) {
@@ -188,19 +189,19 @@ $q->param('create') and do {
 		}
 
 		if (not $os_size_2) {
-			$os_size_2 = 10;
-		} elsif ($os_size_2 !~ /^\d+$/) {
+			$os_size_2 = '10M';
+		} elsif ($os_size_2 !~ /^\d+(kB|M|G|T)?$/) {
 			push @errors, sprintf($sk_session->d()->get(
-			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 2 muss eine Zahl sein'),
+			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 2 muss eine Zahl (wahlweise mit Einheit) sein'),
 			                      $os_template_2);
 			$sk_session->mark_input_error('os2');
-			$os_size_2 = 10;
+			$os_size_2 = '10M';
 		}
 	} elsif (not $os_size_2) {
-		$os_size_2 = 10;
+		$os_size_2 = '10M';
 	}
 
-	$os_size_total += $os_size_2;
+	$os_size_total += Schulkonsole::Linbo::partsize_to_kB($os_size_2);
 
 	if ($os_template_3) {
 		if (not $$templates_os{$os_template_3}) {
@@ -215,19 +216,19 @@ $q->param('create') and do {
 		}
 
 		if (not $os_size_3) {
-			$os_size_3 = 10;
-		} elsif ($os_size_3 !~ /^\d+$/) {
+			$os_size_3 = '10M';
+		} elsif ($os_size_3 !~ /^\d+(kB|M|G|T)?$/) {
 			push @errors, sprintf($sk_session->d()->get(
-			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 3 muss eine Zahl sein'),
+			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 3 muss eine Zahl -(wahlweise mit Einheit) sein'),
 			                      $os_template_3);
 			$sk_session->mark_input_error('os3');
-			$os_size_3 = 10;
+			$os_size_3 = '10M';
 		}
 	} elsif (not $os_size_3) {
-		$os_size_3 = 10;
+		$os_size_3 = '10M';
 	}
 
-	$os_size_total += $os_size_3;
+	$os_size_total += Schulkonsole::Linbo::partsize_to_kB($os_size_3);
 
 	if ($os_template_4) {
 		if (not $$templates_os{$os_template_4}) {
@@ -242,22 +243,21 @@ $q->param('create') and do {
 		}
 
 		if (not $os_size_4) {
-			$os_size_4 = 10;
-		} elsif ($os_size_4 !~ /^\d+$/) {
+			$os_size_4 = '10M';
+		} elsif ($os_size_4 !~ /^\d+(kB|M|G|T)?$/) {
 			push @errors, sprintf($sk_session->d()->get(
-			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 4 muss eine Zahl sein'),
+			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 4 muss eine Zahl (wahlweise mit Einheit) sein'),
 			                      $os_template_4);
 			$sk_session->mark_input_error('os4');
-			$os_size_4 = 10;
+			$os_size_4 = '10M';
 		}
 	} elsif (not $os_size_4) {
-		$os_size_4 = 10;
+		$os_size_4 = '10M';
 	}
 
-	$os_size_total += $os_size_4;
+	$os_size_total += Schulkonsole::Linbo::partsize_to_kB($os_size_4);
 
-
-	if ($os_size_total * 1.7 >= $disk_size) {
+	if ($os_size_total * 1.7 >= Schulkonsole::Linbo::partsize_to_kB($disk_size)) {
 		push @errors, $sk_session->d()->get(
 		              	'Festplatte f&uuml;r die gew&auml;hlte Gruppenkonfiguration zu klein');
 		$sk_session->mark_input_error('disksize');
@@ -273,10 +273,10 @@ $q->param('create') and do {
 			$group,
 			$ENV{SERVER_ADDR},
 			$device,
-			$os_template_1, $os_size_1 * 1024,
-			$os_template_2, $os_size_2 * 1024,
-			$os_template_3, $os_size_3 * 1024,
-			$os_template_4, $os_size_4 * 1024);
+			$os_template_1, $os_size_1,
+			$os_template_2, $os_size_2,
+			$os_template_3, $os_size_3,
+			$os_template_4, $os_size_4);
 		$sk_session->set_status(
 			$sk_session->d()->get('Konfigurationsdatei erstellt'), 0);
 	}
@@ -290,8 +290,6 @@ $q->param('create') and do {
 if ($@) {
 	$sk_session->standard_error_handling($this_file, $@);
 }
-
-
 
 
 =item C<groups>
