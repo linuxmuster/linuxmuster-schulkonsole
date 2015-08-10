@@ -38,7 +38,6 @@ $VERSION = 0.06;
 	permissions_apps
 	workstation_info
 	workstations_room
-	workstations
 
 	rooms
 	hosts
@@ -1720,6 +1719,7 @@ sub count_unimported_unconfigured_workstations {
 
 
 	my $unimported_cnt = keys %macs;
+
 	return (wantarray ? ($unimported_cnt, $unconfigured_cnt, $comment_cnt) :
 	                    $unimported_cnt || $unconfigured_cnt );
 }
@@ -1895,26 +1895,34 @@ sub hosts {
 
 =head3 C<workstations()>
 
-Returns a list of all workstations
+Returns a list of all workstations in scalar environment and
+an array of all comments (unsorted) and a list of all workstations in a 
+non scalar environment.
 
 =head4 Return value
 
 A reference to a hash of all workstations from the workstations file as keys and
-the room of that workstation as value
+the room of that workstation as value in a scalar environment and
+a reference to an array of all comments (unsorted) and a hash of all workstations from
+the workstations file as keys and the room of that workstation in a non scalar
+environment.
 
 =cut
 
 sub workstations {
+        my $comments;
 	my %workstations;
 
 	open WORKSTATIONS, '<', Schulkonsole::Encode::to_fs($_workstations_file)
 		or die "$0: Cannot open $_workstations_file: $!\n";
 
 	while (<WORKSTATIONS>) {
-		next if /^#/ || /^\s*$/;
-
+                if(/^#|^\s*$/) {
+                    $comments .= $_;
+                    next;
+		}
 		chomp;
-		my @fields = split ';';
+                my @fields = split ';';
 
 		my $base = $fields[1];
 		if ($base) {
@@ -1937,8 +1945,7 @@ sub workstations {
 
 	close WORKSTATIONS;
 
-
-	return \%workstations;
+	return (wantarray ? ($comments,\%workstations) : \%workstations);
 }
 
 
