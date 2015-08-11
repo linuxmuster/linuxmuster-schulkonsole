@@ -95,6 +95,7 @@ $VERSION = 0.06;
 	$_wrapper_files
 	$_wrapper_linbo
 	$_wrapper_radius
+	$_wrapper_debconf
 
 	%_id_root_app_names
 	$_cmd_internet_on_off
@@ -617,6 +618,21 @@ use constant {
 };
 
 
+=head3 Constants for wrapper-debconf
+
+=over
+
+=item C<DEBCONFREADAPP>
+
+=back
+
+=cut
+
+use constant {
+	DEBCONFREADAPP => 15001,
+};
+
+
 =head3 Constants that describe the state of an exam
 
 =over
@@ -953,6 +969,10 @@ Path to wrapper to write files with root permissions
 
 Path to wrapper to write linbo configuration files
 
+=item C<$_wrapper_debconf>
+
+Path to wrapper to read debconf configuration secion/values
+
 =back
 
 Path to wrapper to write files with root permissions
@@ -967,7 +987,8 @@ Path to wrapper to write radius configuration files
 
 use vars qw($_wrapper_user $_wrapper_firewall $_wrapper_ovpn $_wrapper_printer
             $_wrapper_sophomorix $_wrapper_cyrus $_wrapper_collab
-            $_wrapper_files $_wrapper_linbo $_wrapper_radius);
+            $_wrapper_files $_wrapper_linbo $_wrapper_radius
+	    $_wrapper_debconf);
 
 
 =head3 Variables used by wrappers
@@ -1237,6 +1258,7 @@ $_wrapper_collab = '@pkglibexecdir@/bin/wrapper-collab';
 $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 $_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
 $_wrapper_radius = '@pkglibexecdir@/bin/wrapper-radius';
+$_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
 
 
 
@@ -1303,6 +1325,7 @@ $_wrapper_radius = '@pkglibexecdir@/bin/wrapper-radius';
 	LINBOWRITEAPP() => 'linbo_write',
 	LINBOWRITEPXEAPP() => 'linbo_write_pxe',
 	LINBOIMAGEAPP() => 'linbo_manage_images',
+	DEBCONFREADAPP() => 'debconf_read',
 );
 
 
