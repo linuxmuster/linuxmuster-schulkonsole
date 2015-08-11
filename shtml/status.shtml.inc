@@ -1,26 +1,26 @@
 <div id="status">
 <div></div>
-<!--#if expr="$status" -->
-<p><!--#echo var="status" --></p>
-<!--#endif -->
-<!--#if expr="$REMOTE_ADDR" -->
+[% IF status %]
+<p>[% status %]</p>
+[% END %]
+[% IF REMOTE_ADDR %]
 <p class="info">
-<gettext>Sitzungsdauer:</gettext> <!--#echo var="session_time" --><br>
-<gettext>verbleibend:</gettext> <span id="timer"><!--#echo var="max_idle_hh_mm_ss" --></span></p>
+<gettext>Sitzungsdauer:</gettext> [% session_time %]<br>
+<gettext>verbleibend:</gettext> <span id="timer">[% max_idle_hh_mm_ss %]</span></p>
 <p class="info"><gettext>Benutzer:</gettext>
-<strong><!--#echo var="firstname" --> <!--#echo var="surname" --></strong><br>
+<strong>[% firstname %] [% surname %]</strong><br>
 <gettext>Raum:</gettext>
-<!--#if expr="$remote_room" -->
-<strong><!--#echo var="remote_room" --></strong><br>
-<!--#else -->
+[% IF remote_room %]
+<strong>[% remote_room %]</strong><br>
+[% ELSE %]
 <strong><gettext>unbekannt</gettext></strong><br>
-<!--#endif -->
+[% END %]
 <gettext>Workstation:</gettext>
-<strong><!--#echo var="remote_workstation" --></strong><br>
-<gettext>IP:</gettext> <strong><!--#echo var="REMOTE_ADDR" --></strong><br>
-<!--#if expr="$class" -->
+<strong>[% remote_workstation %]</strong><br>
+<gettext>IP:</gettext> <strong>[% REMOTE_ADDR %]</strong><br>
+[% IF class %]
 <p class="info"><gettext>aktive Klasse:</gettext>
-<strong><!--#echo var="class" --></strong></p>
-<!--#endif -->
-<!--#endif -->
+<strong>[% class %]</strong></p>
+[% END %]
+[% END %]
 </div>

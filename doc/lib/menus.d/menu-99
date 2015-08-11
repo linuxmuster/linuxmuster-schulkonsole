@@ -1,4 +1,4 @@
-<!--#if expr="$link_logout" -->
+[% IF link_logout %]
    <a href="logout"><gettext>Abmelden</gettext></a>
-<!--#endif -->
+[% END %]
 </div>
