@@ -8,6 +8,7 @@ use Schulkonsole::Error::OVPN;
 use Schulkonsole::Error::Printer;
 use Schulkonsole::Error::Sophomorix;
 use Schulkonsole::Error::User;
+use Schulkonsole::Error::Debconf;
 
 package Schulkonsole::Error;
 require Exporter;
@@ -148,6 +149,7 @@ sub what {
 	$this->{code} == WRAPPER_BROKEN_PIPE_IN
 		and return 'Datenuebertragung (lesen) unterbrochen';
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_PROGRAM_ERROR
+	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_PROGRAM_ERROR
@@ -157,6 +159,7 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_PROGRAM_ERROR)
 		and return 'Programmaufruf fehlgeschlagen';
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_UNAUTHORIZED_UID
+	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_UID
@@ -166,7 +169,8 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHORIZED_UID)
 		and return 'Nicht autorisierter Aufrufer';
-	$this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_UID
+	(    $this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_UID
+	or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_UID)
 		and return 'Wechsel zu diesem Benutzer nicht erlaubt';
 	$this->{code} == Schulkonsole::Error::User::WRAPPER_SETUID_FAILED
 		and return 'Wechsel zu diesem Benutzer nicht moeglich';
@@ -174,6 +178,7 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_INVALID_SCRIPT)
 		and return 'Skript nicht vorhanden';
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_SCRIPT_EXEC_FAILED
+	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_SCRIPT_EXEC_FAILED
@@ -185,6 +190,7 @@ sub what {
 		and return 'Skriptaufruf fehlgeschlagen';
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHENTICATED_ID
+	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_UNAUTHENTICATED_ID
@@ -193,6 +199,7 @@ sub what {
 		and return 'Authentifizierung fehlgeschlagen nach ID';
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_APP_ID_DOES_NOT_EXIST
+	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_APP_ID_DOES_NOT_EXIST
@@ -227,6 +234,7 @@ sub what {
 		and return 'Erwarte 0 oder 1 fuer scope';
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_FORK
 	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_FORK
+	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_CANNOT_FORK
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_CANNOT_FORK)
 		and return 'Fork nicht moeglich';
 	(   $this->{code} == Schulkonsole::Error::Printer::WRAPPER_CANNOT_OPEN_PRINTERSCONF
@@ -327,6 +335,12 @@ sub what {
 		and return 'Ungueltiger Wert fuer mailquota';
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_IS_JOIN
 		and return 'Erwarte 1 oder 0 fuer is_open';
+	$this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_SECTION
+		and return 'Ungueltiger Debconf-Bereich';
+	$this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_NAME
+		and return 'Ungueltiger Debconf-Name';
+	$this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_REQUEST
+		and return 'Dieser Bereich/Name darf nicht abgefragt werden';
 	$this->{what}
 		and return $this->{what};
 
