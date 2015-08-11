@@ -2,6 +2,7 @@ use strict;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
 use Schulkonsole::Error;
+use Schulkonsole::Error::Debconf;
 use Schulkonsole::Config;
 
 
@@ -65,10 +66,10 @@ sub start_wrapper {
 	my $err = shift;
 
 	my $pid = IPC::Open3::open3 $out, $in, $err,
-		$Schulkonsole::Config::_wrapper_files
+		$Schulkonsole::Config::_wrapper_debconf
 		or die new Schulkonsole::Error(
 			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-			$Schulkonsole::Config::_wrapper_files, $!);
+			$Schulkonsole::Config::_wrapper_debconf, $!);
 
 	binmode $out, ':utf8';
 	binmode $in, ':utf8';
@@ -82,11 +83,11 @@ sub start_wrapper {
 		if ($error < -127) {
 			die new Schulkonsole::Error(
 				Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-				$Schulkonsole::Config::_wrapper_files, $!);
+				$Schulkonsole::Config::_wrapper_debconf, $!);
 		} else {
 			die new Schulkonsole::Error(
 				Schulkonsole::Error::Files::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_files);
+				$Schulkonsole::Config::_wrapper_debconf);
 		}
 	}
 
@@ -115,12 +116,12 @@ sub stop_wrapper {
 		if ($error < -127) {
 			die new Schulkonsole::Error(
 				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-				$Schulkonsole::Config::_wrapper_files, $!,
+				$Schulkonsole::Config::_wrapper_debconf, $!,
 				($input_buffer ? "Output: $input_buffer" : 'No Output'));
 		} else {
 			die new Schulkonsole::Error(
 				Schulkonsole::Error::Files::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_files);
+				$Schulkonsole::Config::_wrapper_debconf);
 		}
 	}
 
@@ -128,14 +129,14 @@ sub stop_wrapper {
 		close $out
 			or die new Schulkonsole::Error(
 				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_OUT,
-				$Schulkonsole::Config::_wrapper_files, $!,
+				$Schulkonsole::Config::_wrapper_debconf, $!,
 				($input_buffer ? "Output: $input_buffer" : 'No Output'));
 	}
 
 	close $in
 		or die new Schulkonsole::Error(
 			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-			$Schulkonsole::Config::_wrapper_files, $!,
+			$Schulkonsole::Config::_wrapper_debconf, $!,
 			($input_buffer ? "Output: $input_buffer" : 'No Output'));
 
 	undef $input_buffer;
@@ -188,14 +189,21 @@ sub read {
 	print SCRIPTOUT "$section\n$name\n";
 	close SCRIPTOUT;
 
-	my @re;
+	my $ret;
+	my $value;
 	while (<SCRIPTIN>) {
-		push @re, $_;
+		($ret,$value) = $_ =~ /^(\d+)\s+([a-zA-Z\d\-]+)$/;
+		next if not defined $ret;
+		die new Schulkonsole::Error(
+			Schulkonsole::Error::Debconf::WRAPPER_INVALID_REQUEST,
+			$Schulkonsole::Config::_wrapper_debconf, $!,
+			    "debconf-communicate error $ret")
+			unless $ret == 0;
 	}
 
 	stop_wrapper($pid, undef, \*SCRIPTIN, \*SCRIPTIN);
 
-	return \@re;
+	return $value;
 }
 
 
