@@ -32,7 +32,7 @@
 <th><gettext>abgew&auml;hlt</gettext></th>
 </tr>
 <td>
-<select name="roomdeselect" multiple>
+<select name="roomdeselect" multiple size="20">
 <!--#if expr="$loop_roomsselected" -->
 	<option value="$roomsselected"><!--#echo var="roomsselected" --></option>
 <!--#endif -->
@@ -43,7 +43,7 @@
 <input type="submit" name="${printer}_roomdeselect" value="&gt;&gt;">
 </td>
 <td>
-<select name="roomselect" multiple>
+<select name="roomselect" multiple size="20">
 <!--#if expr="$loop_roomsdeselected" -->
 	<option value="$roomsdeselected"><!--#echo var="roomsdeselected" --></option>
 <!--#endif -->
@@ -71,7 +71,7 @@
 <th><gettext>abgew&auml;hlt</gettext></th>
 </tr>
 <td>
-<select name="hostdeselect" multiple>
+<select name="hostdeselect" multiple size="20">
 <!--#if expr="$loop_hostsselected" -->
 	<option value="$hostsselected"><!--#echo var="hostsselected" --></option>
 <!--#endif -->
@@ -82,7 +82,7 @@
 <input type="submit" name="${printer}_hostdeselect" value="&gt;&gt;">
 </td>
 <td>
-<select name="hostselect" multiple>
+<select name="hostselect" multiple size="20">
 <!--#if expr="$loop_hostsdeselected" -->
 	<option value="$hostsdeselected"><!--#echo var="hostsdeselected" --></option>
 <!--#endif -->
