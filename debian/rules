@@ -96,7 +96,7 @@ binary-indep: build install
 	dh_install -i
 	dh_link -i
 	dh_compress -i
-	dh_fixperms -i -X/var/lib/schulkonsole -X/usr/lib/schulkonsole/bin/wrapper-user -X/usr/lib/schulkonsole/bin/wrapper-firewall -X/usr/lib/schulkonsole/bin/wrapper-printer -X/usr/lib/schulkonsole/bin/wrapper-sophomorix -X/usr/lib/schulkonsole/bin/wrapper-files -X/usr/lib/schulkonsole/bin/wrapper-ovpn -X/usr/lib/schulkonsole/bin/wrapper-linbo -X/usr/lib/schulkonsole/bin/wrapper-radius
+	dh_fixperms -i -X/var/lib/schulkonsole -X/usr/lib/schulkonsole/bin/wrapper-user -X/usr/lib/schulkonsole/bin/wrapper-firewall -X/usr/lib/schulkonsole/bin/wrapper-printer -X/usr/lib/schulkonsole/bin/wrapper-sophomorix -X/usr/lib/schulkonsole/bin/wrapper-files -X/usr/lib/schulkonsole/bin/wrapper-ovpn -X/usr/lib/schulkonsole/bin/wrapper-linbo -X/usr/lib/schulkonsole/bin/wrapper-radius -X/usr/lib/schulkonsole/bin/wrapper-debconf
 	dh_perl -i /usr/share/schulkonsole /usr/lib/schulkonsole
 	dh_installdeb -i
 	dh_gencontrol -i
@@ -114,7 +114,7 @@ binary-arch: build install
 	dh_link -a
 	dh_strip -a
 	dh_compress -a
-	dh_fixperms -i -X/var/lib/schulkonsole -X/usr/lib/schulkonsole/bin/wrapper-user -X/usr/lib/schulkonsole/bin/wrapper-firewall -X/usr/lib/schulkonsole/bin/wrapper-printer -X/usr/lib/schulkonsole/bin/wrapper-sophomorix -X/usr/lib/schulkonsole/bin/wrapper-files -X/usr/lib/schulkonsole/bin/wrapper-ovpn -X/usr/lib/schulkonsole/bin/wrapper-linbo -X/usr/lib/schulkonsole/bin/wrapper-radius
+	dh_fixperms -i -X/var/lib/schulkonsole -X/usr/lib/schulkonsole/bin/wrapper-user -X/usr/lib/schulkonsole/bin/wrapper-firewall -X/usr/lib/schulkonsole/bin/wrapper-printer -X/usr/lib/schulkonsole/bin/wrapper-sophomorix -X/usr/lib/schulkonsole/bin/wrapper-files -X/usr/lib/schulkonsole/bin/wrapper-ovpn -X/usr/lib/schulkonsole/bin/wrapper-linbo -X/usr/lib/schulkonsole/bin/wrapper-radius -X/usr/lib/schulkonsole/bin/wrapper-debconf
 	dh_installdeb -a
 	dh_shlibdeps -a
 	dh_gencontrol -a
