@@ -31,6 +31,7 @@ use Net::CUPS::Destination;
 use Schulkonsole::Encode;
 use Schulkonsole::Files;
 use Schulkonsole::Session;
+use Schulkonsole::Debconf;
 
 
 my $this_file = 'printers_edit';
@@ -57,7 +58,8 @@ my $cups = new Net::CUPS;
 my @destinations = $cups->getDestinations();      # existing printers
 my $printers = eval { Schulkonsole::Config::printers(); }; # configured printers
 $printers = {} if $@;
-
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
 
 
 my $edit_printer;
@@ -69,7 +71,10 @@ foreach my $destination (@destinations) {
 		$edit_printer = $printer;
 
 		my $rooms = Schulkonsole::Config::rooms();
-
+                my $fwconfig = Schulkonsole::Debconf::read($id,$password,'linuxmuster-base','fwconfig');
+                if( defined $fwconfig and $fwconfig eq 'ipfire') {
+                        $$rooms{ovpn} = 1;
+                }
 		my @rooms_selected_array;
 		my @rooms_deselected_array;
 		foreach my $room (sort keys %$rooms) {
@@ -161,6 +166,10 @@ An array with the hosts not selected for the printer
 
 
 		my $rooms = Schulkonsole::Config::rooms();
+                my $fwconfig = Schulkonsole::Debconf::read($id,$password,'linuxmuster-base','fwconfig');
+                if( defined $fwconfig and $fwconfig eq 'ipfire') {
+                        $$rooms{ovpn} = 1;
+                }
 
 		my @rooms_selected_array;
 		my @rooms_deselected_array;
@@ -222,6 +231,10 @@ An array with the hosts not selected for the printer
 
 		my @printer_rooms;
 		my $rooms = Schulkonsole::Config::rooms();
+                my $fwconfig = Schulkonsole::Debconf::read($id,$password,'linuxmuster-base','fwconfig');
+                if( defined $fwconfig and $fwconfig eq 'ipfire') {
+                        $$rooms{ovpn} = 1;
+                }
 		foreach my $room (keys %$rooms) {
 			push @printer_rooms, $room if $rooms_selected{$room};
 		}
