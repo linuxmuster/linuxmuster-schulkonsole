@@ -1,42 +1,44 @@
+Content-Type: text/html; charset=UTF-8
+
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Startseite</gettext></title>
-<!--#include file="css.shtml.inc" -->
+[% INCLUDE css.shtml.inc %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-<!--#include file="header.shtml.inc" -->
+[% INCLUDE header.shtml.inc %]
 
 <div id="submenu">
-<!--#include file="footer_submenu.shtml.inc" -->
+[% INCLUDE footer_submenu.shtml.inc %]
 </div>
 
 <div id="content">
 
-<h2><gettext>Konto von</gettext> <!--#echo var="firstname" --> <!--#echo var="surname" --></h2>
+<h2><gettext>Konto von</gettext> [% firstname %] [% surname %]</h2>
 
 
 <h3><gettext>Druckauftr&auml;ge</gettext></h3>
 
-<!--#if expr="$printjobs" -->
-<form method="post" accept-charset="UTF-8">
-<p>
-<select name="printjobs" multiple>
-<!--#if expr="$loop_printjobs" -->
-    <option value="$printjobs{id}">
-        <!--#echo var="printjobs{id}" --> <!--#echo var="printjobs{title}" -->
-    </option>
-<!--#endif -->
-</select>
-</p>
-<p><input type="submit" value="Druckauftr&auml;ge l&ouml;schen"></p>
-</form>
-<!--#else -->
-<p><gettext>Keine Druckauftr&auml;ge</gettext></p>
-<!--#endif -->
+[% IF printjobs %]
+    <form method="post" accept-charset="UTF-8">
+    <p>
+    <select name="printjobs" multiple>
+    [% FOREACH job IN printjobs %]
+        <option value="[% job.id %]">
+            [% job.id %] [% job.title %]
+        </option>
+    [% END %]
+    </select>
+    </p>
+    <p><input type="submit" value="Druckauftr&auml;ge l&ouml;schen"></p>
+    </form>
+[% ELSE %]
+    <p><gettext>Keine Druckauftr&auml;ge</gettext></p>
+[% END %]
 
 <hr>
 
@@ -58,140 +60,146 @@
 <p><input type="submit" value="Passwort &auml;ndern"></p>
 </form>
 
-
 <hr>
 
 <h3><gettext>Info</gettext></h3>
 
 <h4><gettext>Quota</gettext></h4>
 
-<!--#if expr="$diskquotas" -->
-<p><gettext>Festplattenquota:</gettext></p></p>
+[% IF diskquotas %]
+    <p><gettext>Festplattenquota:</gettext></p></p>
 
-<table id="diskquotas">
-<col width="30%">
-<col width="70%">
-<!--#if expr="$loop_diskquotas" -->
-<tr>
+    <table id="diskquotas">
+    <col width="30%">
+    <col width="70%">
+    [% FOREACH quota IN diskquotas %]
+        <tr>
 
-<td>
-<!--#echo var="diskquotas{path}" -->
-</td>
+        <td>
+        [% quota.path %]
+        </td>
 
-<td>
+        <td>
 
-<p>
-<!--#echo var="diskquotas{path}" -->:<br>
-    <gettext>Speicherplatz/KB:</gettext>
-    <!--#echo var="diskquotas{blocks_usage}" -->/<!--#echo var="diskquotas{blocks_soft}" -->
-    - max: <!--#echo var="diskquotas{blocks_hard}" -->
-    - <!--#echo var="diskquotas{blocks_percent}" -->%<br>
-    <!--#if expr="$diskquotas{blocks_grace}" -->
-    <gettext>verbleibende Zeit:</gettext> <!--#echo var="diskquotas{blocks_grace}" --><br><!--#endif -->
-    <gettext>Dateien:</gettext>
-    <!--#echo var="diskquotas{files_usage}" -->/<!--#echo var="diskquotas{files_soft}" -->
-    - max: <!--#echo var="diskquotas{files_hard}" -->
-    - <!--#echo var="diskquotas{files_percent}" -->%<br>
-    <!--#if expr="$diskquotas{files_grace}" -->
-    <gettext>verbleibende Zeit:</gettext> <!--#echo var="diskquotas{files_grace}" --><br><!--#endif --><br>
-</p>
+        <p>
+        [% quota.path %]:<br>
+        <gettext>Speicherplatz/KB:</gettext>
+        [% quota.blocks_usage %]/[% quota.blocks_soft %]
+        - max: [% quota.blocks_hard %]
+        - [% quota.blocks_percent %]%<br>
+        [% IF quota.blocks_grace %]
+            <gettext>verbleibende Zeit:</gettext> [% quota.blocks_grace %]<br>
+        [% END %]
+        <gettext>Dateien:</gettext>
+        [% quota.files_usage %]/[% quota.files_soft %]
+        - max: [% quota.files_hard %]
+        - [% quota.files_percent %]%<br>
+        [% IF quota.files_grace %]
+            <gettext>verbleibende Zeit:</gettext> [% quota.files_grace %]<br>
+        [% END %]
+        <br>
+        </p>
 
-<ul>
-<!--#if expr="$diskquotas{warn}" -->
-<li class="warn">
-<!--#else -->
-<li>
-<!--#endif -->
-<span title="${diskquotas{path}}: ${diskquotas{blocks_percent}}%" style="width: ${diskquotas{blocks_percent_rounded}}%;">&nbsp;</span>
-</li>
-</ul>
+        <ul>
+        [% IF quota.warn %]
+            <li class="warn">
+        [% ELSE %]
+            <li>
+        [% END %]
+        <span title="[% quota.path %]: [% quota.blocks_percent %]%" style="width: [% quota.blocks_percent_rounded %]%;">&nbsp;</span>
+        </li>
+        </ul>
 
-</td>
+        </td>
 
-</tr>
-<!--#endif -->
+        </tr>
+    [% END %]
 
-</table>
-
-
-<!--#else -->
-<p><gettext>Keine Quota</gettext></p>
-<!--#endif -->
-
-<p><gettext>Mailquota von</gettext> <!--#echo var="mailaddresses_str" -->:</p>
-<!--#if expr="$mailquotas" -->
-<table id="mailquotas">
-<col width="30%">
-<col width="70%">
-
-<!--#if expr="$loop_mailquotas" -->
-<tr>
-
-<td><!--#echo var="mailquotas{mbox}" --></td>
-
-<td><!--#if expr="$mailquotas{limit}" -->
+    </table>
 
 
-<p>
-    <gettext>E-Mail-Speicher/KB:</gettext>
-    <!--#echo var="mailquotas{usage}" -->/<!--#echo var="mailquotas{limit}" -->
-    - <!--#echo var="mailquotas{percent}" -->%
-</p>
+[% ELSE %]
+    <p><gettext>Keine Quota</gettext></p>
+[% END %]
+
+<p><gettext>Mailquota von</gettext> [% mailaddresses_str %]:</p>
+[% IF mailquotas %]
+    <table id="mailquotas">
+    <col width="30%">
+    <col width="70%">
+
+    [% FOREACH quota IN mailquotas %]
+        <tr>
+
+        <td>[% quota.mbox %]</td>
+
+        <td>
+        [% IF quota.limit %]
+            <p>
+                <gettext>E-Mail-Speicher/KB:</gettext>
+                [% quota.usage %]/[% quota.limit %]
+                - [% quota.percent %]%
+            </p>
 
 
-<ul>
-<!--#if expr="$mailquotas{warn}" -->
-<li class="warn">
-<!--#else -->
-<li>
-<!--#endif -->
-<span title="E-Mail: ${mailquotas{usage}}/${mailquotas{limit}} ${mailquotas{percent}}%" style="width: ${mailquotas{percent_rounded}}%;">&nbsp;</span>
-</li>
-</ul>
-<!--#else -->-<!--#endif --></td>
-
-</tr>
-<!--#endif -->
-</table>
-<!--#else -->
-<p>Keine Mailquota</p>
-<!--#endif -->
-
-
-
-<!--#if expr="$printquota" -->
-<table id="printquota">
-<col width="30%">
-<col width="70%">
-
-<tr>
-
-<td><gettext>Seiten</gettext></td>
-
-<td>
+            <ul>
+            [% IF quota.warn %]
+                <li class="warn">
+            [% ELSE %]
+                <li>
+            [% END %]
+            <span title="E-Mail: [% quota.usage %]/[% quota.limit %] [% quota.percent %]%" style="width: [% quota.percent_rounded %]%;">&nbsp;</span>
+            </li>
+            </ul>
+        [% ELSE %]
+            -
+        [% END %]
+        </td>
+        </tr>
+    [% END %]
+    </table>
+[% ELSE %]
+    <p>Keine Mailquota</p>
+[% END %]
 
 
-<p>
-    <gettext>Seiten:</gettext>
-    <!--#echo var="printquota{usage}" -->/<!--#echo var="printquota{limit}" -->
-    - <!--#echo var="printquota{percent}" -->%
-</p>
+
+[% IF printquota %]
+    <p><gettext>Druckquota:</gettext></p>
+
+    <table id="printquota">
+    <col width="30%">
+    <col width="70%">
+
+    <tr>
+
+    <td><gettext>Seiten</gettext></td>
+
+    <td>
 
 
-<ul>
-<li>
-<span title="Druckseiten: ${printquota{usage}}/${printquota{limit}} ${printquota{percent}}%" style="width: ${printquota{percent_rounded}}%;">&nbsp;</span>
-</li>
-</ul>
-</td>
-
-</tr>
-</table>
-<!--#else -->
-<p>Keine Druckquota</p>
-<!--#endif -->
+    <p>
+        <gettext>Seiten:</gettext>
+        [% printquota.usage %]/[% printquota.limit %]
+        - [% printquota.percent %]%
+    </p>
 
 
+    <ul>
+    [% IF printquota.warn %]
+        <li class="warn">
+    [% ELSE %]
+        <li>
+    [% END %]
+    <span title="Druckseiten: [% printquota.usage %]/[% printquota.limit %] [% printquota.percent %]%" style="width: [% printquota.percent_rounded %]%;">&nbsp;</span>
+    </li>
+    </ul>
+    </td>
+    </tr>
+    </table>
+[% ELSE %]
+    <p>Keine Druckquota</p>
+[% END %]
 
 
 <hr>
@@ -199,46 +207,46 @@
 <h4><gettext>Projekte</gettext></h4>
 
 <p>
-<!--#if expr="$projects" -->
-<!--#echo var="projects" -->
-<!--#else -->
-<gettext>keine Projekte vorhanden</gettext>
-<!--#endif -->
+[% IF projects %]
+    [% projects %]
+[% ELSE %]
+    <gettext>keine Projekte vorhanden</gettext>
+[% END %]
 </p>
 
 <hr>
 
-<!--#if expr="$link_start_openvpn" -->
-<form method="post" accept-charset="UTF-8">
-<h3><gettext>OpenVPN-Zertifikat</gettext></h3>
-<!--#if expr="$has_ovpn" -->
-<p><gettext>Ein OpenVPN-Zertifikat wurde f&uuml;r Sie erstellt.</gettext></p>
-<p><input type="submit" name="ovpndownload" value="OpenVPN-Zertifikat herunterladen"></p>
-<!--#else -->
-<h4><gettext>OpenVPN-Zertifikat erstellen</gettext></h4>
+[% IF link_start_openvpn %]
+    <form method="post" accept-charset="UTF-8">
+    <h3><gettext>OpenVPN-Zertifikat</gettext></h3>
+    [% IF has_ovpn %]
+        <p><gettext>Ein OpenVPN-Zertifikat wurde f&uuml;r Sie erstellt.</gettext></p>
+        <p><input type="submit" name="ovpndownload" value="OpenVPN-Zertifikat herunterladen"></p>
+    [% ELSE %]
+        <h4><gettext>OpenVPN-Zertifikat erstellen</gettext></h4>
 
-<table>
-<tr>
-<td><label for="ovpnpassword"><gettext>Zertifikatspasswort (mind. 6 Zeichen):</gettext></label></td>
-<td><input type="password" id="ovpnpassword" name="ovpnpassword"></td>
-</tr>
-<tr>
-<td><label for="ovpnpasswordagain"><gettext>Zertifikatspasswort best&auml;tigen:</gettext></label></td>
-<td><input type="password" id="ovpnpasswordagain" name="ovpnpasswordagain"></td>
-</tr>
-</table>
+        <table>
+        <tr>
+        <td><label for="ovpnpassword"><gettext>Zertifikatspasswort (mind. 6 Zeichen):</gettext></label></td>
+        <td><input type="password" id="ovpnpassword" name="ovpnpassword"></td>
+        </tr>
+        <tr>
+        <td><label for="ovpnpasswordagain"><gettext>Zertifikatspasswort best&auml;tigen:</gettext></label></td>
+        <td><input type="password" id="ovpnpasswordagain" name="ovpnpasswordagain"></td>
+        </tr>
+        </table>
 
-<p><input type="submit" value="Zertifikat erstellen und herunterladen"></p>
+        <p><input type="submit" value="Zertifikat erstellen und herunterladen"></p>
 
-<!--#endif -->
-</form>
-<!--#endif -->
+    [% END %]
+    </form>
+[% END %]
 
 </div>
 <div id="info" style="display: block;">
 <a class="hideinfo" href="#" onclick="toggle_visibility('info');">^</a>
 
-<!--#include file="status.shtml.inc" -->
+[% INCLUDE status.shtml.inc %]
 
 
 <h2><gettext>Info</gettext></h2>
@@ -253,10 +261,10 @@ Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner &#8222;OpenVPN&#82
 abgelegt.</gettext></p>
 
 
-<!--#include file="footer_info.shtml.inc" -->
+[% INCLUDE footer_info.shtml.inc %]
 </div>
 
-<!--#include file="footer.shtml.inc" -->
+[% INCLUDE footer.shtml.inc %]
 
 </body>
 </html>
