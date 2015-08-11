@@ -3,6 +3,7 @@ perllib_DATA = Session.pm Config.pm
 nobase_dist_perllib_DATA = \
 	Cyrus.pm \
 	DB.pm \
+	Debconf.pm \
 	Encode.pm \
 	Error.pm ExternalError.pm \
 	Error/Cyrus.pm \
@@ -14,6 +15,7 @@ nobase_dist_perllib_DATA = \
 	Error/Radius.pm \
 	Error/Sophomorix.pm \
 	Error/User.pm \
+	Error/Debconf.pm \
 	Files.pm \
 	Firewall.pm \
 	Gettext.pm \
