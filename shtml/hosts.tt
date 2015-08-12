@@ -3,15 +3,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('Hosts') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
-[% INCLUDE footer_submenu.inc.tt %]
+[% INCLUDE "footer_submenu.inc.tt" %]
 </div>
 
 <div id="content">
@@ -91,47 +91,47 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.') %]</p>
 [% FOREACH workstations %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><input name="[% .workstations %]_room" size="10"></td>
-<td><input name="[% .workstations %]_name" size="12"></td>
-<td><input name="[% .workstations %]_groups" size="8"></td>
-<td><input name="[% .workstations %]_mac" size="18" maxlength="17"></td>
-<td><input name="[% .workstations %]_ip" size="17" maxlength="15"></td>
-<td><select class="wspxe" name="[% .workstations %]_pxe">
+<td><input name="[% workstations %]_room" size="10"></td>
+<td><input name="[% workstations %]_name" size="12"></td>
+<td><input name="[% workstations %]_groups" size="8"></td>
+<td><input name="[% workstations %]_mac" size="18" maxlength="17"></td>
+<td><input name="[% workstations %]_ip" size="17" maxlength="15"></td>
+<td><select class="wspxe" name="[% workstations %]_pxe">
 <option value="1">[% d.get('PXE') %]</option>
 <option value="2">[% d.get('PXE mit Opsi') %]</option>
 <option value="3">[% d.get('Opsi PXE') %]</option>
 <option value="0">[% d.get('Aus') %]</option>
 </select></td>
-<td><select class="wsopts" name="[% .workstations %]_opts">
+<td><select class="wsopts" name="[% workstations %]_opts">
 <option value="">-</option>
 <option value="noudma">noudma</option>
 <option value="unicast">unicast</option>
 <option value="noudma,unicast">noudma+unicast</option>
 </select></td>
-<td><input class="wsdel" title="l&ouml;schen" type="checkbox" name="[% .workstations %]_delete"></td>
+<td><input class="wsdel" title="l&ouml;schen" type="checkbox" name="[% workstations %]_delete"></td>
 </tr>
 [% END %]
 [% FOREACH add %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><input name="[% .add %]_addroom" size="10"></td>
-<td><input name="[% .add %]_addname" size="12"></td>
-<td><input name="[% .add %]_addgroups" size="8"></td>
-<td><input name="[% .add %]_addmac" size="18" maxlength="17"></td>
-<td><input name="[% .add %]_addip" size="17" maxlength="15"></td>
-<td><select name="[% .add %]_addpxe">
+<td><input name="[% add %]_addroom" size="10"></td>
+<td><input name="[% add %]_addname" size="12"></td>
+<td><input name="[% add %]_addgroups" size="8"></td>
+<td><input name="[% add %]_addmac" size="18" maxlength="17"></td>
+<td><input name="[% add %]_addip" size="17" maxlength="15"></td>
+<td><select name="[% add %]_addpxe">
 <option value="1">[% d.get('PXE') %]</option>
 <option value="2">[% d.get('PXE mit Opsi') %]</option>
 <option value="3">[% d.get('Opsi PXE') %]</option>
 <option value="0">[% d.get('Aus') %]</option>
 </select></td>
-<td><select name="[% .add %]_addopts">
+<td><select name="[% add %]_addopts">
 <option value="">-</option>
 <option value="noudma">noudma</option>
 <option value="unicast">unicast</option>
 <option value="noudma,unicast">noudma+unicast</option>
 </select></td>
-<td><input title="ignorieren" type="checkbox" name="[% .add %]_addignore"></td>
+<td><input title="ignorieren" type="checkbox" name="[% add %]_addignore"></td>
 </tr>
 [% END %]
 [% IF odd %][% odd=0 %]<tr class="odd">
@@ -160,7 +160,7 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.') %]</p>
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -172,10 +172,10 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.') %]</p>
 ein vorangestelltes '#', um einen auskommentierten Eintrag wieder zu aktivieren.') %]</p>
 <p>[% d.get('Schliessen Sie die Aktion mit &#8222;&Auml;nderungen &uuml;bernehmen&#8220;  ab.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

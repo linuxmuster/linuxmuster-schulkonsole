@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('Projekte') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-project.inc.tt" %]
@@ -27,7 +27,7 @@
 <p>[% d.get('M&ouml;chten Sie das Projekt wirklich l&ouml;schen?') %]</p>
 
 <p><input type="hidden" name="ok" value="1">
-<input type="submit" name="[% .project_gid %]_drop" value="Ja">
+<input type="submit" name="[% project_gid %]_drop" value="Ja">
 <input type="submit" value="Nein">
 </p>
 
@@ -40,17 +40,17 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
 <p>[% d.get('W&auml;hlen Sie &#8222;Ja&#8220;, um das Projekt wirklich
 zu l&ouml;schen.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

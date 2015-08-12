@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('Klassen') %]: [% class %] - [% d.get('Tauschen') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-class.inc.tt" %]
@@ -52,7 +52,7 @@
 	<td>[% students.login %]</td>
 	<td>[% students.firstname %] [% students.surname %]</td>
 	<td>
-[% IF students{shares} %]
+[% IF students.shares %]
 	<input type="checkbox" name="[% students.login %];shares" checked>
 [% ELSE %]
 	<input type="checkbox" name="[% students.login %];shares">
@@ -81,7 +81,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -89,10 +89,10 @@
 Klasse Zugriff auf die Tauschordner in ihrem Homeverzeichnis
 haben.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

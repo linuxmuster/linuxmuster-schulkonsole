@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('Quota') %] - [% d.get('Sonderquota') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-quotas.inc.tt" %]
@@ -86,8 +86,8 @@
 [% END %]
 <tr class="even">
 <td>[% www.login %]</td>
-[% FOREACH www{diskquotas} %]
-<td><input size="6" maxlength="5" name="[% www.login %]_user[% www.diskquotas}{mountpoint %]-diskquota" value="[% www.diskquotas %]{quota}"></td>
+[% FOREACH www.diskquotas %]
+<td><input size="6" maxlength="5" name="[% www.login %]_user[% www.diskquotas.mountpoint %]-diskquota" value="[% www.diskquotas.quota %]"></td>
 [% END %]
 <td><input size="6" maxlength="5" name="[% www.login %]_usermailquota" value="[% www.mailquota %]"></td>
 </tr>
@@ -137,8 +137,8 @@
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td>[% admins.login %]</td>
 <td>[% admins.firstname %] [% admins.surname %]</td>
-[% FOREACH admins{diskquotas} %]
-<td><input size="6" maxlength="5" name="[% admins.login %]_user[% admins.diskquotas}{mountpoint %]-diskquota" value="[% admins.diskquotas %]{quota}"></td>
+[% FOREACH admins.diskquotas %]
+<td><input size="6" maxlength="5" name="[% admins.login %]_user[% admins.diskquotas.mountpoint %]-diskquota" value="[% admins.diskquotas.quota %]"></td>
 [% END %]
 <td><input size="6" maxlength="5" name="[% admins.login %]_usermailquota" value="[% admins.mailquota %]"></td>
 </tr>
@@ -188,8 +188,8 @@
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td>[% users.login %]</td>
 <td>[% users.firstname %] [% users.surname %]</td>
-[% FOREACH users{diskquotas} %]
-<td><input size="6" maxlength="5" name="[% users.login %]_user[% users.diskquotas}{mountpoint %]-diskquota" value="[% users.diskquotas %]{quota}"></td>
+[% FOREACH users.diskquotas %]
+<td><input size="6" maxlength="5" name="[% users.login %]_user[% users.diskquotas.mountpoint %]-diskquota" value="[% users.diskquotas.quota %]"></td>
 [% END %]
 <td><input size="6" maxlength="5" name="[% users.login %]_usermailquota" value="[% users.mailquota %]"></td>
 </tr>
@@ -238,8 +238,8 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td>[% workstations.login %]</td>
-[% FOREACH workstations{diskquotas} %]
-<td><input size="6" maxlength="5" name="[% workstations.login %]_userstation[% workstations.diskquotas}{mountpoint %]-diskquota" value="[% workstations.diskquotas %]{quota}"></td>
+[% FOREACH workstations.diskquotas %]
+<td><input size="6" maxlength="5" name="[% workstations.login %]_userstation[% workstations.diskquotas.mountpoint %]-diskquota" value="[% workstations.diskquotas.quota %]"></td>
 [% END %]
 <td><input size="6" maxlength="5" name="[% workstations.login %]_usermailquota" value="[% workstations.mailquota %]"></td>
 </tr>
@@ -286,8 +286,8 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td>[% systems.login %]</td>
-[% FOREACH systems{diskquotas} %]
-<td><input size="6" maxlength="5" name="[% systems.login %]_user[% systems.diskquotas}{mountpoint %]-diskquota" value="[% systems.diskquotas %]{quota}"></td>
+[% FOREACH systems.diskquotas %]
+<td><input size="6" maxlength="5" name="[% systems.login %]_user[% systems.diskquotas.mountpoint %]-diskquota" value="[% systems.diskquotas.quota %]"></td>
 [% END %]
 <td><input size="6" maxlength="5" name="[% systems.login %]_usermailquota" value="[% systems.mailquota %]"></td>
 </tr>
@@ -308,7 +308,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -320,10 +320,10 @@ insgesamt belegen d&uuml;rfen. &Auml;ndern Sie hierzu den Quotawert f&uuml;r &#8
 &#8222;/var&#8220;.') %]</p>
 <p>[% d.get('Alle Werte sind in Megabyte (MB) einzugeben.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

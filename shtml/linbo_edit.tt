@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('linbo') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-linbo.inc.tt" %]
@@ -136,13 +136,13 @@
 <hr>
 
 [% FOREACH devs %]
-[% IF devs{os} %]
-[% FOREACH devs{os} %]
-[% IF devs{os}{isnew} %]
+[% IF devs.os %]
+[% FOREACH devs.os %]
+[% IF devs.os.isnew %]
 	<table id="edit" class="settings">
 [% ELSE %]
-	[% IF {devs{os}{isfirst}} %]
-		[% IF devs{isedited} %]
+	[% IF devs.os.isfirst %]
+		[% IF devs.isedited %]
 			<table id="edit" class="settings">
 		[% ELSE %]
 			<table class="settings">
@@ -158,14 +158,14 @@
 <tr class="even">
 <td><b>[% d.get('System') %]:</b></td>
 <td><input type="hidden" name="[% devs.n %]_type" value="[% devs_type %]"><b>
-[% IF devs{iswindows} %]
+[% IF devs.iswindows %]
 	[% d.get('MS Windows') %]
 [% ELSE %]
 	[% d.get('GNU/Linux') %]
 [% END %]
 </b></td>
 </tr>
-[% IF {devs{os}{isfirst}} %]
+[% IF devs.os.isfirst %]
 <tr class="odd">
 <td><label for="[% devs.n %]_label">[% d.get('Name der Partition') %]:</label></td>
 <td><input id="[% devs.n %]_label" name="[% devs.n %]_label"></td>
@@ -182,7 +182,7 @@
 <td><label for="[% devs.n %]_fstype">[% d.get('Dateisystem') %]:</label></td>
 <td>
 <select id="[% devs.n %]_fstype" name="[% devs.n %]_fstype">
-[% IF devs{iswindows} %]
+[% IF devs.iswindows %]
 <option value="vfat">[% d.get('VFAT') %]</option>
 <option value="ntfs">[% d.get('NTFS') %]</option>
 [% ELSE %]
@@ -195,7 +195,7 @@
 </tr>
 <tr class="odd">
 <td><label for="[% devs.n %]_bootable">[% d.get('Partition bootbar:') %]</label></td>
-<td>[% IF devs{bootable} %]<input type="checkbox" id="[% devs.n %]_bootable" name="[% devs.n %]_bootable" checked>
+<td>[% IF devs.bootable %]<input type="checkbox" id="[% devs.n %]_bootable" name="[% devs.n %]_bootable" checked>
 [% ELSE %]<input type="checkbox" id="[% devs.n %]_bootable" name="[% devs.n %]_bootable">[% END %]</td>
 </tr>
 [% ELSE %]
@@ -217,77 +217,77 @@
 </tr>
 <tr class="odd">
 <td>[% d.get('Partition bootbar') %]:</td>
-<td>[% IF {devs{bootable}} %]<input type="checkbox" disabled checked>
+<td>[% IF devs.bootable %]<input type="checkbox" disabled checked>
 [% ELSE %]<input type="checkbox" disabled>[% END %]</td>
 </tr>
 [% END %]
 <tr class="even">
-<td><label for="[% devs.os}{n %]_name">[% d.get('Name des Betriebssystems') %]:</label></td>
-<td><input id="[% devs.os}{n %]_name" name="[% devs.os}{n %]_name"></td>
+<td><label for="[% devs.os.n %]_name">[% d.get('Name des Betriebssystems') %]:</label></td>
+<td><input id="[% devs.os.n %]_name" name="[% devs.os.n %]_name"></td>
 </tr>
 <tr class="odd">
-<td><label for="[% devs.os}{n %]_version">[% d.get('Betriebssystemversion (optional)') %]:</label></td>
-<td><input id="[% devs.os}{n %]_version" name="[% devs.os}{n %]_version"></td>
+<td><label for="[% devs.os.n %]_version">[% d.get('Betriebssystemversion (optional)') %]:</label></td>
+<td><input id="[% devs.os.n %]_version" name="[% devs.os.n %]_version"></td>
 </tr>
 <tr class="even">
-<td><label for="[% devs.os}{n %]_description">[% d.get('Beschreibung (optional)') %]:</label></td>
-<td><input id="[% devs.os}{n %]_description" name="[% devs.os}{n %]_description"></td>
+<td><label for="[% devs.os.n %]_description">[% d.get('Beschreibung (optional)') %]:</label></td>
+<td><input id="[% devs.os.n %]_description" name="[% devs.os.n %]_description"></td>
 </tr>
 </tr>
 <tr class="odd">
-<td><label for="[% devs.os}{n %]_iconname">[% d.get('Dateiname des Icons f&uuml;r den Startbutton') %]:</label></td>
-<td><input id="[% devs.os}{n %]_iconname" name="[% devs.os}{n %]_iconname"></td>
+<td><label for="[% devs.os.n %]_iconname">[% d.get('Dateiname des Icons f&uuml;r den Startbutton') %]:</label></td>
+<td><input id="[% devs.os.n %]_iconname" name="[% devs.os.n %]_iconname"></td>
 </tr>
 <tr class="even">
-<td><label for="[% devs.os}{n %]_image">[% d.get('Dateiname des differenziellen Image') %]:</label></td>
-<td><input id="[% devs.os}{n %]_image" name="[% devs.os}{n %]_image">.rsync</td>
+<td><label for="[% devs.os.n %]_image">[% d.get('Dateiname des differenziellen Image') %]:</label></td>
+<td><input id="[% devs.os.n %]_image" name="[% devs.os.n %]_image">.rsync</td>
 </tr>
 <tr class="odd">
-<td><label for="[% devs.os}{n %]_baseimage">[% d.get('Dateiname des Basis-Image') %]:</label></td>
-<td><input id="[% devs.os}{n %]_baseimage" name="[% devs.os}{n %]_baseimage">.cloop</td>
+<td><label for="[% devs.os.n %]_baseimage">[% d.get('Dateiname des Basis-Image') %]:</label></td>
+<td><input id="[% devs.os.n %]_baseimage" name="[% devs.os.n %]_baseimage">.cloop</td>
 </tr>
-[% IF devs{isgnulinux} %]
+[% IF devs.isgnulinux %]
 <tr class="even">
-<td><label for="[% devs.os}{n %]_boot">[% d.get('Partition, die Kernel und initrd enth&auml;lt') %]:</label></td>
-<td><input id="[% devs.os}{n %]_boot" name="[% devs.os}{n %]_boot"></td>
+<td><label for="[% devs.os.n %]_boot">[% d.get('Partition, die Kernel und initrd enth&auml;lt') %]:</label></td>
+<td><input id="[% devs.os.n %]_boot" name="[% devs.os.n %]_boot"></td>
 </tr>
 <tr class="odd">
-<td><label for="[% devs.os}{n %]_kernel">[% d.get('Pfad zum kernel') %]:</label></td>
-<td><input id="[% devs.os}{n %]_kernel" name="[% devs.os}{n %]_kernel"></td>
+<td><label for="[% devs.os.n %]_kernel">[% d.get('Pfad zum kernel') %]:</label></td>
+<td><input id="[% devs.os.n %]_kernel" name="[% devs.os.n %]_kernel"></td>
 </tr>
 <tr class="even">
-<td><label for="[% devs.os}{n %]_initrd">[% d.get('Relativer Pfad zur initrd') %]:</label></td>
-<td><input id="[% devs.os}{n %]_initrd" name="[% devs.os}{n %]_initrd"></td>
+<td><label for="[% devs.os.n %]_initrd">[% d.get('Relativer Pfad zur initrd') %]:</label></td>
+<td><input id="[% devs.os.n %]_initrd" name="[% devs.os.n %]_initrd"></td>
 </tr>
 <tr class="odd">
-<td><label for="[% devs.os}{n %]_append">[% d.get('Bootoptionen') %]:</label></td>
-<td><input id="[% devs.os}{n %]_append" name="[% devs.os}{n %]_append"></td>
+<td><label for="[% devs.os.n %]_append">[% d.get('Bootoptionen') %]:</label></td>
+<td><input id="[% devs.os.n %]_append" name="[% devs.os.n %]_append"></td>
 </tr>
 [% END %]
 <tr class="even">
-<td><label for="[% devs.os}{n %]_startenabled">[% d.get('Start-Button f&uuml;r dieses Betriebssystem anzeigen') %]:</label></td>
-<td>[% IF devs{os}{startenabled} %]<input type="checkbox" id="[% devs.os}{n %]_startenabled" name="[% devs.os}{n %]_startenabled" checked>
-[% ELSE %]<input type="checkbox" id="[% devs.os}{n %]_startenabled" name="[% devs.os}{n %]_startenabled">[% END %]</td>
+<td><label for="[% devs.os.n %]_startenabled">[% d.get('Start-Button f&uuml;r dieses Betriebssystem anzeigen') %]:</label></td>
+<td>[% IF devs.os.startenabled %]<input type="checkbox" id="[% devs.os.n %]_startenabled" name="[% devs.os.n %]_startenabled" checked>
+[% ELSE %]<input type="checkbox" id="[% devs.os.n %]_startenabled" name="[% devs.os.n %]_startenabled">[% END %]</td>
 </tr>
 <tr class="odd">
-<td><label for="[% devs.os}{n %]_syncenabled">[% d.get('Sync+Start-Button f&uuml;r dieses Betriebssystem anzeigen') %]:</label></td>
-<td>[% IF devs{os}{syncenabled} %]<input type="checkbox" id="[% devs.os}{n %]_syncenabled" name="[% devs.os}{n %]_syncenabled" checked>
-[% ELSE %]<input type="checkbox" id="[% devs.os}{n %]_syncenabled" name="[% devs.os}{n %]_syncenabled">[% END %]</td>
+<td><label for="[% devs.os.n %]_syncenabled">[% d.get('Sync+Start-Button f&uuml;r dieses Betriebssystem anzeigen') %]:</label></td>
+<td>[% IF devs.os.syncenabled %]<input type="checkbox" id="[% devs.os.n %]_syncenabled" name="[% devs.os.n %]_syncenabled" checked>
+[% ELSE %]<input type="checkbox" id="[% devs.os.n %]_syncenabled" name="[% devs.os.n %]_syncenabled">[% END %]</td>
 </tr>
 <tr class="even">
-<td><label for="[% devs.os}{n %]_newenabled">[% d.get('Neu+Start-Button f&uuml;r dieses Betriebssystem anzeigen') %]:</label></td>
-<td>[% IF devs{os}{newenabled} %]<input type="checkbox" id="[% devs.os}{n %]_newenabled" name="[% devs.os}{n %]_newenabled" checked>
-[% ELSE %]<input type="checkbox" id="[% devs.os}{n %]_newenabled" name="[% devs.os}{n %]_newenabled">[% END %]</td>
+<td><label for="[% devs.os.n %]_newenabled">[% d.get('Neu+Start-Button f&uuml;r dieses Betriebssystem anzeigen') %]:</label></td>
+<td>[% IF devs.os.newenabled %]<input type="checkbox" id="[% devs.os.n %]_newenabled" name="[% devs.os.n %]_newenabled" checked>
+[% ELSE %]<input type="checkbox" id="[% devs.os.n %]_newenabled" name="[% devs.os.n %]_newenabled">[% END %]</td>
 </tr>
 <tr class="odd">
-<td><label for="[% devs.os}{n %]_hidden">[% d.get('Betriebssystemreiter verstecken') %]:</label></td>
-<td>[% IF devs{os}{hidden} %]<input type="checkbox" id="[% devs.os}{n %]_hidden" name="[% devs.os}{n %]_hidden" checked>
-[% ELSE %]<input type="checkbox" id="[% devs.os}{n %]_hidden" name="[% devs.os}{n %]_hidden">[% END %]</td>
+<td><label for="[% devs.os.n %]_hidden">[% d.get('Betriebssystemreiter verstecken') %]:</label></td>
+<td>[% IF devs.os.hidden %]<input type="checkbox" id="[% devs.os.n %]_hidden" name="[% devs.os.n %]_hidden" checked>
+[% ELSE %]<input type="checkbox" id="[% devs.os.n %]_hidden" name="[% devs.os.n %]_hidden">[% END %]</td>
 </tr>
 <tr class="even">
-[% IF devs{iswindows} %]
-<td><label for="[% devs.os}{n %]_kernel">[% d.get('Systemstart durch') %]:</label></td>
-<td><select id="[% devs.os}{n %]_kernel" name="[% devs.os}{n %]_kernel">
+[% IF devs.iswindows %]
+<td><label for="[% devs.os.n %]_kernel">[% d.get('Systemstart durch') %]:</label></td>
+<td><select id="[% devs.os.n %]_kernel" name="[% devs.os.n %]_kernel">
 <option value="grub.exe">[% d.get('grub.exe') %]</option>
 <option value="reboot">[% d.get('reboot') %]</option>
 </select>
@@ -295,19 +295,19 @@
 </tr>
 <tr class="odd">
 [% END %]
-<td><label for="[% devs.os}{n %]_autostart">[% d.get('Betriebssystem automatisch starten') %]:</label></td>
-<td>[% IF devs{os}{autostart} %]<input type="radio" id="[% devs.os}{n %]_autostart" name="autostart" value="[% devs.os}{n %]" checked>[% isautostartselected=1 %]
-[% ELSE %]<input type="radio" id="[% devs.os}{n %]_autostart" name="autostart" value="[% devs.os}{n %]">[% END %][% isautostartpossible=1 %]</td>
+<td><label for="[% devs.os.n %]_autostart">[% d.get('Betriebssystem automatisch starten') %]:</label></td>
+<td>[% IF devs.os.autostart %]<input type="radio" id="[% devs.os.n %]_autostart" name="autostart" value="[% devs.os.n %]" checked>[% isautostartselected=1 %]
+[% ELSE %]<input type="radio" id="[% devs.os.n %]_autostart" name="autostart" value="[% devs.os.n %]">[% END %][% isautostartpossible=1 %]</td>
 </tr>
 </tr>
 <tr class="even">
-<td><label for="[% devs.os}{n %]_autostarttimeout">[% d.get('Autostart-Timeout in Sek.') %]:</label></td>
-<td><input id="[% devs.os}{n %]_autostarttimeout" name="[% devs.os}{n %]_autostarttimeout""></td>
+<td><label for="[% devs.os.n %]_autostarttimeout">[% d.get('Autostart-Timeout in Sek.') %]:</label></td>
+<td><input id="[% devs.os.n %]_autostarttimeout" name="[% devs.os.n %]_autostarttimeout""></td>
 </tr>
 <tr class="odd">
-<td><label for="[% devs.os}{n %]_defaultaction">[% d.get('Standard-Autostart-Aktion ausw&auml;hlen') %]:</label></td>
+<td><label for="[% devs.os.n %]_defaultaction">[% d.get('Standard-Autostart-Aktion ausw&auml;hlen') %]:</label></td>
 <td>
-<select name="[% devs.os}{n %]_defaultaction">
+<select name="[% devs.os.n %]_defaultaction">
 <option value="start">[% d.get('start') %]</option>
 <option value="sync">[% d.get('sync') %]</option>
 <option value="new">[% d.get('new') %]</option>
@@ -316,18 +316,18 @@
 </tr>
 </table>
 <p><input type="submit" name="accept" value="&Auml;nderungen speichern"></p>
-[% IF devs{os}{isfirst} %]
+[% IF devs.os.isfirst %]
 <p><select name="[% devs.n %]_modifynew">
-[% IF devs{iswindows} %][% ELSE %]<option value="windows">[% d.get('MS Windows') %]</option>[% END %]
-[% IF devs{isgnulinux} %][% ELSE %]<option value="gnulinux">[% d.get('GNU/Linux') %]</option>[% END %]
-[% IF devs{isdata} %][% ELSE %]<option value="data">[% d.get('Daten') %]</option>[% END %]
-[% IF devs{isswap} %][% ELSE %]<option value="swap">[% d.get('Swap') %]</option>[% END %]
-[% IF devs{iscache} %][% ELSE %][% IF iscached %][% ELSE %]<option value="cache">[% d.get('Cache') %]</option>[% END %][% END %]
-[% IF devs{isext} %][% ELSE %]<option value="ext">[% d.get('erweitert') %]</option>[% END %]
-[% IF devs{isefi} %][% ELSE %]<option value="efi">[% d.get('EFI') %]</option>[% END %]
+[% IF devs.iswindows %][% ELSE %]<option value="windows">[% d.get('MS Windows') %]</option>[% END %]
+[% IF devs.isgnulinux %][% ELSE %]<option value="gnulinux">[% d.get('GNU/Linux') %]</option>[% END %]
+[% IF devs.isdata %][% ELSE %]<option value="data">[% d.get('Daten') %]</option>[% END %]
+[% IF devs.isswap %][% ELSE %]<option value="swap">[% d.get('Swap') %]</option>[% END %]
+[% IF devs.iscache %][% ELSE %][% IF iscached %][% ELSE %]<option value="cache">[% d.get('Cache') %]</option>[% END %][% END %]
+[% IF devs.isext %][% ELSE %]<option value="ext">[% d.get('erweitert') %]</option>[% END %]
+[% IF devs.isefi %][% ELSE %]<option value="efi">[% d.get('EFI') %]</option>[% END %]
 </select>&nbsp;<input type="submit" name="[% devs.n %]_modify" value="System &auml;ndern"></p>
 [% END %]
-<p><input type="submit" name="[% devs.os}{n %]_deleteos" value="Betriebssystem l&ouml;schen"><br>
+<p><input type="submit" name="[% devs.os.n %]_deleteos" value="Betriebssystem l&ouml;schen"><br>
 <input type="submit" name="[% devs.n %]_addos" value="Betriebssystem hinzuf&uuml;gen">
 
 
@@ -344,19 +344,19 @@
 <td><b>[% d.get('System') %]:</b></td>
 <td>
 <input type="hidden" name="[% devs.n %]_type" value="[% devs.type %]"><b>
-[% IF devs{isdata} %]
+[% IF devs.isdata %]
         [% d.get('Daten') %]
 [% ELSE %]
-        [% IF devs{isswap} %]
+        [% IF devs.isswap %]
                 [% d.get('Swap') %]
         [% ELSE %]
-                [% IF devs{iscache} %]
+                [% IF devs.iscache %]
                         [% d.get('Cache') %]
                 [% ELSE %]
-                        [% IF devs{isext} %]
+                        [% IF devs.isext %]
                                 [% d.get('erweiterte Partition') %]
                         [% ELSE %]
-                                [% IF devs{isefi} %]
+                                [% IF devs.isefi %]
                                         [% d.get('EFI') %]
                                 [% END %]
                         [% END %]
@@ -377,26 +377,26 @@
 <tr class="odd">
 <td><label for="[% devs.n %]_size">[% d.get('Partitionsgr&ouml;&szlig;e in KB') %]:</label></td>
 <td><input id="[% devs.n %]_size" name="[% devs.n %]_size">
-[% IF devs{bootable} %]<input type="hidden" id="[% devs.n %]_bootable" name="[% devs.n %]_bootable" value="1">[% END %]
-[% IF devs{isswap} %]
+[% IF devs.bootable %]<input type="hidden" id="[% devs.n %]_bootable" name="[% devs.n %]_bootable" value="1">[% END %]
+[% IF devs.isswap %]
 <input type="hidden" name="[% devs.n %]_fstype" value="swap"></td>
 </tr>
 [% ELSE %]
-	[% IF devs{isext} %]
+	[% IF devs.isext %]
 <input type="hidden" name="[% devs.n %]_fstype" value=""></td>
 </tr>
 	[% ELSE %]</td>
 </tr>
 <tr class="even">
 <td><label for="[% devs.n %]_fstype">[% d.get('Dateisystem') %]:</label></td>
-<td>[% IF devs{iscache} %]
+<td>[% IF devs.iscache %]
 <input type="hidden" name="[% devs.n %]_iscache" value="1"><select id="[% devs.n %]_fstype" name="[% devs.n %]_fstype">
 <option value="ext3">[% d.get('EXT3') %]</option>
 <option value="ext4">[% d.get('EXT4') %]</option>
 <option value="reiserfs">[% d.get('ReiserFS') %]</option>
 </select>
 [% ELSE %]
-[% IF devs{isefi} %]
+[% IF devs.isefi %]
 <input type="hidden" id="[% devs.n %]_fstype" name="[% devs.n %]_fstype" value="vfat"><label>[% d.get('VFAT') %]</label>
 [% ELSE %]
 <select id="[% devs.n %]_fstype" name="[% devs.n %]_fstype">
@@ -409,10 +409,10 @@
 [% END %]
 [% END %]
 </td>
-[% IF devs{isefi} %]
+[% IF devs.isefi %]
 <tr class="odd">
 <td><label for="[% devs.n %]_bootable">[% d.get('Partition bootbar:') %]</label></td>
-<td>[% IF devs{bootable} %]<input type="checkbox" id="[% devs.n %]_bootable" name="[% devs.n %]_bootable" checked disabled>
+<td>[% IF devs.bootable %]<input type="checkbox" id="[% devs.n %]_bootable" name="[% devs.n %]_bootable" checked disabled>
 [% ELSE %]<input type="checkbox" id="[% devs.n %]_bootable" name="[% devs.n %]_bootable" disabled>[% END %]</td>
 </tr>
 [% END %]
@@ -423,13 +423,13 @@
 <p><input type="submit" name="accept" value="&Auml;nderungen speichern"></p>
 <p><input type="submit" name="[% devs.n %]_delete" value="System l&ouml;schen"><br>
 <select name="[% devs.n %]_modifynew">
-[% IF devs{iswindows} %][% ELSE %]<option value="windows">[% d.get('MS Windows') %]</option>[% END %]
-[% IF devs{isgnulinux} %][% ELSE %]<option value="gnulinux">[% d.get('GNU/Linux') %]</option>[% END %]
-[% IF devs{isdata} %][% ELSE %]<option value="data">[% d.get('Daten') %]</option>[% END %]
-[% IF devs{isswap} %][% ELSE %]<option value="swap">[% d.get('Swap') %]</option>[% END %]
-[% IF devs{iscache} %][% ELSE %][% IF iscached %][% ELSE %]<option value="cache">[% d.get('Cache') %]</option>[% END %][% END %]
-[% IF devs{isext} %][% ELSE %]<option value="ext">[% d.get('erweitert') %]</option>[% END %]
-[% IF devs{isefi} %][% ELSE %]<option value="efi">[% d.get('EFI') %]</option>[% END %]
+[% IF devs.iswindows %][% ELSE %]<option value="windows">[% d.get('MS Windows') %]</option>[% END %]
+[% IF devs.isgnulinux %][% ELSE %]<option value="gnulinux">[% d.get('GNU/Linux') %]</option>[% END %]
+[% IF devs.isdata %][% ELSE %]<option value="data">[% d.get('Daten') %]</option>[% END %]
+[% IF devs.isswap %][% ELSE %]<option value="swap">[% d.get('Swap') %]</option>[% END %]
+[% IF devs.iscache %][% ELSE %][% IF iscached %][% ELSE %]<option value="cache">[% d.get('Cache') %]</option>[% END %][% END %]
+[% IF devs.isext %][% ELSE %]<option value="ext">[% d.get('erweitert') %]</option>[% END %]
+[% IF devs.isefi %][% ELSE %]<option value="efi">[% d.get('EFI') %]</option>[% END %]
 </select>&nbsp;<input type="submit" name="[% devs.n %]_modify" value="System &auml;ndern">
 
 
@@ -488,8 +488,8 @@
 [% FOREACH groups %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><input type="submit" name="[% .groups %]_edit_start_conf" value="[% groups %]"></td>
-<td><input type="submit" name="[% .groups %]_delete_start_conf" value="l&ouml;schen"></td>
+<td><input type="submit" name="[% groups %]_edit_start_conf" value="[% groups %]"></td>
+<td><input type="submit" name="[% groups %]_delete_start_conf" value="l&ouml;schen"></td>
 </tr>
 [% END %]
 </table>
@@ -504,7 +504,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -512,10 +512,10 @@
 <p>[% d.get('Beachten Sie, da&szlig; sich im Editor der Radio-Button zur Deaktivierung des Autostarts am Seitenende befindet.') %]</p>
 <p><getext>Beachten Sie au&szlig;erdem, da&szlig; beim reboot-workaround in der gruppenspezifischen Linbo-Startdatei unter &quot;pxelinux.cfg/&lt;gruppe&gt;&quot; der Eintrag &quot;DEFAULT reboot&quot; aktiviert ist und der Rechner &uuml;ber PXE startet.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('Quota') %] - [% d.get('Klassen') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-quotas.inc.tt" %]
@@ -45,8 +45,8 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td>[% classes.name %]</td>
-[% FOREACH classes{diskquotas} %]
-<td><input size="6" maxlength="5" name="[% classes.gid %]_class[% classes.diskquotas}{mountpoint %]-diskquota" value="[% classes.diskquotas %]{quota}"></td>
+[% FOREACH classes.diskquotas %]
+<td><input size="6" maxlength="5" name="[% classes.gid %]_class[% classes.diskquotas.mountpoint %]-diskquota" value="[% classes.diskquotas.quota %]"></td>
 [% END %]
 <td><input size="6" maxlength="5" name="[% classes.gid %]_classmailquota" value="[% classes.mailquota %]"></td>
 </tr>
@@ -69,7 +69,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -77,10 +77,10 @@
 <p>[% d.get('Leere Felder bedeuten, dass in dem Fall die Standardeinstellungen gelten.') %]</p>
 <p>[% d.get('Alle Werte sind in Megabyte (MB) einzugeben.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

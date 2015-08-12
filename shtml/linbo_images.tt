@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('linbo') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-linbo.inc.tt" %]
@@ -113,13 +113,13 @@
 [% FOREACH images_base %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-    <td><label for="[% .images_base %]_newimage">[% images_base %]</label></td>
-    <td><input title="Beschreibung anzeigen/editieren" type="submit" class="btn-linbo-edit" alt="Beschreibung" name="[% .images_base %]_editdesc" value="E"></td>
-    <td><input title="Information anzeigen" type="submit" class="btn-linbo-showinfo" alt="Info" name="[% .images_base %]_info" value="I"></td>
-    <td><input id="[% .images_base %]_newimage" name="[% .images_base %]_newimage"></td>
-    <td><input title="Image umbenennen" type="submit" class="btn-linbo-move" alt="Umbenennen" name="[% .images_base %]_move" value="U"></td>
-    <td><input title="Image kopieren" type="submit" class="btn-linbo-copy" alt="Kopieren" name="[% .images_base %]_copy" value="K"></td>
-    <td><input title="Image l&ouml;schen" type="submit" class="btn-linbo-trash" alt="L&ouml;schen" name="[% .images_base %]_delete" value="L"></td>
+    <td><label for="[% images_base %]_newimage">[% images_base %]</label></td>
+    <td><input title="Beschreibung anzeigen/editieren" type="submit" class="btn-linbo-edit" alt="Beschreibung" name="[% images_base %]_editdesc" value="E"></td>
+    <td><input title="Information anzeigen" type="submit" class="btn-linbo-showinfo" alt="Info" name="[% images_base %]_info" value="I"></td>
+    <td><input id="[% images_base %]_newimage" name="[% images_base %]_newimage"></td>
+    <td><input title="Image umbenennen" type="submit" class="btn-linbo-move" alt="Umbenennen" name="[% images_base %]_move" value="U"></td>
+    <td><input title="Image kopieren" type="submit" class="btn-linbo-copy" alt="Kopieren" name="[% images_base %]_copy" value="K"></td>
+    <td><input title="Image l&ouml;schen" type="submit" class="btn-linbo-trash" alt="L&ouml;schen" name="[% images_base %]_delete" value="L"></td>
 </tr>[% END %]
 </table>
 
@@ -147,13 +147,13 @@
 [% FOREACH images_diff %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-    <td><label for="[% .images_diff %]_newimage">[% images_diff %]</label></td>
-    <td><input title="Beschreibung anzeigen/editieren" type="submit" class="btn-linbo-edit" alt="Beschreibung" name="[% .images_diff %]_editdesc" value="E"></td>
-    <td><input title="Information anzeigen" type="submit" class="btn-linbo-showinfo" alt="Info" name="[% .images_diff %]_info" value="I"></td>
-    <td><input id="[% .images_diff %]_newimage" name="[% .images_diff %]_newimage"></td>
-    <td><input title="Image umbenennen" type="submit" class="btn-linbo-move" alt="Umbenennen" name="[% .images_diff %]_move" value="U"></td>
-    <td><input title="Image kopieren" type="submit" class="btn-linbo-copy" alt="Kopieren" name="[% .images_diff %]_copy" value="K"></td>
-    <td><input title="Image l&ouml;schen" type="submit" class="btn-linbo-trash alt="L&ouml;schen" name="[% .images_diff %]_delete" value="L"></td>
+    <td><label for="[% images_diff %]_newimage">[% images_diff %]</label></td>
+    <td><input title="Beschreibung anzeigen/editieren" type="submit" class="btn-linbo-edit" alt="Beschreibung" name="[% images_diff %]_editdesc" value="E"></td>
+    <td><input title="Information anzeigen" type="submit" class="btn-linbo-showinfo" alt="Info" name="[% images_diff %]_info" value="I"></td>
+    <td><input id="[% images_diff %]_newimage" name="[% images_diff %]_newimage"></td>
+    <td><input title="Image umbenennen" type="submit" class="btn-linbo-move" alt="Umbenennen" name="[% images_diff %]_move" value="U"></td>
+    <td><input title="Image kopieren" type="submit" class="btn-linbo-copy" alt="Kopieren" name="[% images_diff %]_copy" value="K"></td>
+    <td><input title="Image l&ouml;schen" type="submit" class="btn-linbo-trash alt="L&ouml;schen" name="[% images_diff %]_delete" value="L"></td>
 </tr>[% END %]
 </table>
 
@@ -172,7 +172,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -180,10 +180,10 @@
 <p>[% d.get('Zum Umbennenen und Kopieren von Images, m&uuml;ssen Sie einen neuen Dateinamen eingeben.
 Dateierweiterungen (.cloop/.rsync) k&ouml;nnen weggelassen werden.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

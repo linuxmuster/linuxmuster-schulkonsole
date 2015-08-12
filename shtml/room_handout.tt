@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('aktueller Raum') %]: [% room %] - [% d.get('Austeilen') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-room.inc.tt" %]
@@ -44,7 +44,7 @@
 [% IF teacher_share_files %]
 <ul>
 [% FOREACH teacher_share_files %]
-	<li>[% IF teacher_share_files{isdir} %]<img src="img/folder.gif" alt="*">[% ELSE %]<img src="img/file.gif" alt="">[% END %]
+	<li>[% IF teacher_share_files.isdir %]<img src="img/folder.gif" alt="*">[% ELSE %]<img src="img/file.gif" alt="">[% END %]
 	    [% teacher_share_files.name %]</li>
 [% END %]
 </ul>
@@ -61,7 +61,7 @@
 <th>[% d.get('Auswahl') %]</th>
 </tr>
 [% FOREACH overview_workstations %]
-[% IF overview_workstations{editing} %]
+[% IF overview_workstations.editing %]
 <tr class="editing">
 [% IF odd %][% odd=0 %]
 [% ELSE %][% odd=1 %][% END %]
@@ -69,14 +69,14 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 [% END %]
-	<td>[% IF overview_workstations{first} %]
+	<td>[% IF overview_workstations.first %]
 	    [% overview_workstations.name %]
 	    [% END %]</td>
-	[% IF overview_workstations{login} %]
+	[% IF overview_workstations.login %]
 	<td>
 	    [% overview_workstations.login %]
 	</td>
-	<td>[% IF overview_workstations{editing} %]
+	<td>[% IF overview_workstations.editing %]
 		<input type="checkbox" disabled>[% ELSE %]
 		<input type="checkbox" name="[% overview_workstations.login %];handout" checked>
 	[% END %]</td>
@@ -104,7 +104,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -116,10 +116,10 @@ sichtbar machen.') %]</p>
 <p>[% d.get('Die Sch&uuml;ler/innen finden die ausgeteilten Dateien in ihrem Heimatverzeichnis unter
 &#8222;__austeilen -&gt; austeilen-aktueller_raum.&#8220;') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

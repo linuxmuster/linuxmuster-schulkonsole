@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('Benutzer') %] - [% d.get('&Auml;nderungen durchf&uuml;hren') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-user.inc.tt" %]
@@ -43,7 +43,7 @@
 <input type="submit" name="prev" value="zur&uuml;ck">
 [% END %]
 [% FOREACH pages %]
-<input type="submit" name="[% .pages %]_page" value="[% pages %]">
+<input type="submit" name="[% pages %]_page" value="[% pages %]">
 [% END %]
 [% IF lastpage %]
 <input type="submit" name="next" value="weiter" disabled>
@@ -68,26 +68,26 @@
 [% FOREACH users %]
 <tr class="sameuser">
 <td>[% users.login %]</td>
-<td>[% IF users{delete} %]
-<input type="radio" name="[% users.login %]_user" id="[% users.login %];[% users.id %]" value="::" checked>
+<td>[% IF users.delete %]
+<input type="radio" name="[% users.login %]_user" id="[% users.login}};${users{id %]" value="::" checked>
 [% ELSE %]
-<input type="radio" name="[% users.login %]_user" id="[% users.login %];[% users.id %]" value="">
+<input type="radio" name="[% users.login %]_user" id="[% users.login}};${users{id %]" value="">
 [% END %]</td>
 <td>[% users.class %]</td>
-<td><label for="[% users.login %];[% users.id %]">[% users.id %]</label></td>
+<td><label for="[% users.login}};${users{id %]">[% users.id %]</label></td>
 </tr>
 [% odd=0 %]
-[% FOREACH users{alt} %]
+[% FOREACH users.alt %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td></td>
-<td>[% IF users{alt}{selected} %]
-<input type="radio" name="[% users.login %]_user" id="[% users.login %];[% users.alt}{id %]" value="[% users.alt %]{id}" checked>
+<td>[% IF users.alt.selected %]
+<input type="radio" name="[% users.login %]_user" id="[% users.login %];[% users.alt.id %]" value="[% users.alt.id %]" checked>
 [% ELSE %]
-<input type="radio" name="[% users.login %]_user" id="[% users.login %];[% users.alt}{id %]" value="[% users.alt %]{id}">
+<input type="radio" name="[% users.login %]_user" id="[% users.login %];[% users.alt.id %]" value="[% users.alt.id %]">
 [% END %]</td>
-<td>[% users.alt}{class %]</td>
-<td><label for="[% users.login %];[% users.alt}{id %]">[% users.alt}{id %]</label></td>
+<td>[% users.alt.class %]</td>
+<td><label for="[% users.login %];[% users.alt.id %]">[% users.alt.id %]</label></td>
 </tr>
 [% END %]
 [% END %]
@@ -100,7 +100,7 @@
 <input type="submit" name="prev" value="zur&uuml;ck">
 [% END %]
 [% FOREACH pages %]
-<input type="submit" name="[% .pages %]_page" value="[% pages %]">
+<input type="submit" name="[% pages %]_page" value="[% pages %]">
 [% END %]
 [% IF lastpage %]
 <input type="submit" name="next" value="weiter" disabled>
@@ -125,7 +125,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -136,10 +136,10 @@ die Schaltfl&auml;che &#8222;&Auml;nderungen &uuml;bernehmen&#8220;.') %]</p>
 <p>[% d.get('Beenden Sie die Teach-In-Sitzung erst, wenn Sie alle Seiten
 gepr&uuml;ft haben.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>
