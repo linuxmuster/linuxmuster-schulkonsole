@@ -9,7 +9,7 @@
 MENUDIR=/usr/lib/schulkonsole/menus.d
 MENUUSERDIR=/etc/linuxmuster/schulkonsole/menus.d
 SHTMLDIR=/usr/share/schulkonsole/shtml
-EXT=.shtml.inc
+EXT=.inc.tt
 MENU=menu
 SUBMENU=submenu
 SUBSUBMENU=subsubmenu
