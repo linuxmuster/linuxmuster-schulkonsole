@@ -123,7 +123,7 @@
 [% ELSE %]
 <li>
 [% END %]
-<span title="[% {diskquotas{path}}: ${diskquotas{blocks_percent}}% %]" style="width: ${diskquotas{blocks_percent_rounded}}%;">&nbsp;</span>
+<span title="[% diskquotas.path %]: [% diskquotas.blocks_percent %]%" style="width: [% diskquotas.blocks_percent_rounded %]%;">&nbsp;</span>
 </li>
 </ul>
 
@@ -166,7 +166,7 @@
 [% ELSE %]
 <li>
 [% END %]
-<span title="E-Mail: ${mailquotas{usage}}/${mailquotas{limit}} ${mailquotas{percent}}%" style="width: ${mailquotas{percent_rounded}}%;">&nbsp;</span>
+<span title="E-Mail: [% mailquotas.usage %]/[% mailquotas.limit %] [% mailquotas.percent %]%" style="width: [% mailquotas.percent_rounded %]%;">&nbsp;</span>
 </li>
 </ul>
 [% ELSE %]-[% END %]</td>
@@ -203,7 +203,7 @@
 
 <ul>
 <li>
-<span title="Druckseiten: ${printquota{usage}}/${printquota{limit}} ${printquota{percent}}%" style="width: ${printquota{percent_rounded}}%;">&nbsp;</span>
+<span title="Druckseiten: [% printquota.usage %]/[% printquota.limit %] [% printquota.percent %]%" style="width: [% printquota.percent_rounded %]%;">&nbsp;</span>
 </li>
 </ul>
 </td>
