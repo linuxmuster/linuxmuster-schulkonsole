@@ -679,16 +679,7 @@ sub exit_with_login_page {
 
 
 	$this->set_var('version', $Schulkonsole::Config::_version);
-	my $template = Template->new({
-            INCLUDE_PATH => ['/usr/share/schulkonsole/shtml','/usr/share/schulkonsole/css'],
-            #DEBUG => DEBUG_PROVIDER | DEBUG_PARSER,
-        });
-        my $vars = $this->{template_vars};
-        
-        $template->process($Schulkonsole::Config::_login_template,$vars) or die $template->error();
-#	Schulkonsole::Template::print_page($this,
-#		$Schulkonsole::Config::_login_template, $action);
-
+	$this->print_page($Schulkonsole::Config::_login_template, $action);
 	exit;
 }
 
