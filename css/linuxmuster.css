@@ -1,0 +1,605 @@
+/* Styles for Open Source Version of Schulkonsole */
+
+body {
+    margin: 3px;
+    padding: 0;
+    width: 100%;
+    font-family: Verdana, sans-serif;
+    font-size: 12px;
+    background: #FBFAF9 url("img/page-gradient.png") top left repeat-x;
+}
+
+#header {
+    border: none;
+    height: 50px;
+    font-size: 10px;
+    color: #cecece;
+    padding: 5px;
+    margin: 0;
+    margin-right: 20px;
+    background: transparent url("img/logo_sk.png") top right no-repeat;
+    max-width: 99%;
+}
+
+#header h1 {
+    margin: 0;
+    padding: 0;
+    font-family: Verdana, sans-serif;
+    font-size: 20px;
+    color: #999999;
+    font-weight: bold;
+    text-shadow: 2px 2px 0 #FFFFFF;
+}
+
+#header img {
+    display: none;
+    visibility:0;
+}
+
+#menu {
+    border: none;
+    height: 23px;
+    background-color: #83a5d2;
+    margin: 0;
+    margin-bottom: 1px;
+    margin-right: 1px;
+}
+
+#menu a {
+    font-size: 11px;
+    margin: 0;
+    float: left;
+    height: 20px;
+    padding-top: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #fff;
+    font-weight: bold;
+    background-color: #83a5d2;
+    text-decoration: none;
+    border:0;
+    border-right: 1px solid #FBFAF9;
+}
+
+#submenu a.current,
+#submenu a.tworowseparatorcurrent,
+#submenu a.tworowcurrent,
+#submenu a.separatorcurrent,
+#submenu a.endcurrent,
+#menu a.current,
+#menu a.currentparent {
+  color: #fff;
+  font-weight: bold;
+  background-color: #3465A4;
+  }
+
+#menu a:hover {
+    color: #888;
+    background-color: #3C587B;
+}
+
+#submenu {
+    position: absolute;
+    font-size: 11px;
+    margin: 0;
+    padding: 0;
+    width: 180px;
+    margin-top: 2px;
+    top: 120px;
+    bottom: 20px;
+    overflow: hidden;
+    color: #444;
+    font-weight: bold;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+#submenu a,
+#submenu .disabled,
+#submenu .disabledseparator,
+#submenu .disabledend,
+#submenu .tworowdisabled,
+#submenu .tworowdisabledseparator,
+#submenu .tworowdisabledend
+{
+    margin: 0 0 1px 0;
+    display: block;
+    height: 20px;
+    width: 179px;
+    padding-top: 6px;
+    padding-left: 4px;
+    left: 0;
+    top: 0;
+    float: left;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    background-color: #83a5d2;
+}
+
+
+#submenu a.tworow,
+#submenu a.tworowseparatorcurrent,
+#submenu a.tworowcurrent,
+#submenu a.tworowseparator,
+#submenu a.tworowdisabled,
+#submenu a.tworowdisabledseparator,
+#submenu a.tworowdisabledend
+{
+    height: 36px;
+}
+
+
+#submenu a {
+ text-decoration: none;
+}
+#submenu .disabled,
+#submenu .disabledseparator,
+#submenu .disabledend {
+ color: #ccc;
+}
+
+#submenu a:hover {
+    color: #000;
+    background-color: #3C587B;
+}
+
+#submenu a.current:hover,
+#submenu a.separatorcurrent:hover,
+#submenu a.tworowseparatorcurrent:hover,
+#submenu a.tworowcurrent:hover,
+#submenu a.endcurrent:hover
+{
+  color: #fff;
+  background-color: #3465A4;
+}
+
+
+#subsubmenu a.todo, #subsubmenu a.todocurrent {
+    color: #666666;
+    background-color: #ffdbdb;
+}
+
+#content {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    width: 560px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 3px;
+    top: 120px;
+    left: 190px;
+    bottom: 36px;
+
+
+    font-weight: normal;
+}
+
+body#start #submenu { width:0; display:none; visibility: none;}
+body#start #content { width:780px; left:0px}
+
+body#printers #submenu { width:0; display:none; visibility: none;}
+body#printers #content { width:780px; left:0px}
+body#hosts #submenu { width:0; display:none; visibility: none;}
+body#hosts #content { width:780px; left:0px}
+
+
+#content h2 {
+    margin-top: 10px;
+    margin-bottom: 4px;
+    padding: 0;
+
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#content input,
+#content select,
+#content textarea {
+    font-size: 11px;
+}
+
+#content select {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border-width: 2px;
+}
+
+#content p {
+    padding: 0;
+    margin: 0;
+    margin-top: 10px;
+}
+
+#content .hint {
+    color: #999999;
+}
+
+#content a {
+    color: #11386B;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+#content a:hover {
+    color: #6695D2;
+}
+
+#content table {
+    font-size: 11px;
+}
+#content table tbody input{
+    font-size: 11px;
+}
+
+table#classesoverview input {
+    width: 100px;
+}
+
+#info {
+    position: absolute;
+    top: 120px;
+    right: 20px;
+    padding: 3px;
+    width: 240px;
+    background-color: #FBFAF9;
+    border: 1px solid #dbdbe3;
+    z-index:4;
+    display: block;
+}
+
+#info a.hideinfo {
+    display: block;
+    text-align: right;
+    font-size: 8px;
+    text-decoration: none;
+    color: #bbb;
+}
+
+#info p {
+    padding: 3px;
+    margin: 0;
+}
+
+#info p.info {
+    padding: 3px;
+    font-size: 10px;
+    margin: 0;
+}
+
+#info a {
+    color: #0000aa;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+#info a:hover {
+    color: #cc3333;
+}
+
+#info h2 {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0;
+  margin: 4px 0 0 4px;
+  }
+
+#info ul {
+  padding: 16px;
+  margin :0;
+  }
+
+#status {
+    background-color: #dbdbe3;
+    min-height: 150px;
+}
+
+#status.ok {
+    color: white;
+    background-color: #a9d400;
+    margin: 0;
+    padding: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    min-height: 150px;
+    overflow: hidden;
+}
+
+#status p {
+    margin: 0;
+    padding: 0;
+}
+
+#status.ok p.info {
+    display: none;
+}
+
+label.error {
+    color: #d54f4f;
+}
+
+
+p.selectdomain {
+    float: right;
+}
+
+form.singleton {
+    float: left;
+}
+
+
+hr {
+    margin: 0;
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 1px;
+
+    clear: left;
+
+    border: none;
+
+}
+
+
+/* not MOII style guide)  */
+
+th {
+    vertical-align: top;
+}
+
+
+
+table.liste td {
+    vertical-align: top;
+}
+
+.settings td {
+    vertical-align: middle;
+}
+
+
+table.liste > tr:first-child,
+table.liste th {
+    text-align: left;
+    background-color: #f3f3f3;
+}
+
+
+
+table.liste tr {
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #999999;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #999999;
+}
+
+table.liste tr.even,
+table.liste tr.hosteven,
+table.settings tr.even {
+    background-color: #dbdbe3;
+}
+
+table.liste tr.odd,
+table.liste tr.hostodd,
+table.settings tr.odd {
+    background-color: #ffffff;
+}
+
+table.liste tr.hostodd > td:first-child,
+table.liste tr.hosteven > td:first-child {
+    padding-left: 2em;
+}
+
+table.liste tr.unset {
+    background-color: #ffffff;
+    color: #999999;
+}
+
+
+table.liste tr.editing {
+    background-color: #deffdf;
+}
+
+
+.important {
+    font-size: +140%;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #d54f4f;
+}
+
+.important strong {
+    font-style: italic;
+}
+
+#diskquotas,
+#mailquotas,
+#printquota,
+#roomshares,
+#roomhandoutcopy,
+#roomhandout,
+#classesoverview,
+#classshares,
+#classhandout,
+#classhandoutcopy,
+#classwww,
+#projectshares,
+#projecthandout,
+#projecthandoutcopy,
+#projectwww,
+#quotasteachers,
+#quotasclasses,
+#quotasprojects,
+#linbooverview,
+#linboregpatchoverview,
+#linbopxeoverview {
+    width: 62%;
+}
+
+#roomoverview,
+#printersoverview,
+#roomcollect,
+#classoverview,
+#classpasswords,
+#classcollect,
+#searchstudents,
+#searchteachers,
+#searchclasses,
+#searchprojects,
+#projectcollect,
+#projectmemberclasses,
+#projectmemberprojects,
+#projectmemberteachers,
+#projectmemberstudents,
+.settings,
+#quotaswww,
+#quotasadmins,
+#quotasstudents,
+#quotasworkstations,
+#quotassystem,
+#rooms,
+#printers,
+#printersedit,
+#hosts,
+#teachersedit,
+#teachersadd,
+#teachersdelete,
+#teacherspasswords,
+#teachin,
+#usersdelete,
+#commitadd,
+#commitmove,
+#commitkill,
+.tabletable,
+#linbobaseimages,
+#linboimages {
+    width: 100%;
+}
+
+#printersedit select {
+    max-height: 230px;
+}
+
+#hosts input, #hosts select {
+}
+#hosts input {
+width: 9em;
+}
+
+#hosts select {
+}
+
+td select {
+    width: 100%;
+    }
+
+#action td {
+    text-align: center;
+    vertical-align: middle;
+    background: red;
+}
+
+/* linbo seite */
+#imageinfo, #imagelist {
+    margin: 0;
+    border-top: 2px solid #888888;
+    border-left: 2px solid #888888;
+    border-bottom: 2px solid #dddddd;
+    border-right: 2px solid #dddddd;
+    width: 84ex;
+    height: 50ex;
+    overflow: auto;
+}
+
+
+/* quota */
+
+td li span {
+    display: block;
+    background-color: #6c71b3;
+}
+
+td li.warn span {
+    background-color: #d54f4f;
+}
+
+td ul {
+    list-style-type: none;
+    margin: 1px;
+    padding: 0;
+}
+
+td ul li {
+    margin: 0;
+    margin-top: 2ex;
+    padding: 0;
+    border: 1px solid black;
+    width: 100%;
+    font-size: 25%;
+    background-color: white;
+}
+
+td p {
+    display: none;
+}
+
+td:hover p {
+    display: block;
+    position: absolute;
+    border: 1px solid black;
+    background: #dbdbe3 ;
+    padding: .4ex;
+    z-index: 1000;
+}
+
+
+
+#content textarea {
+    white-space: pre;
+}
+
+input.btn-linbo-move {
+    background: url("img/rename.png") no-repeat scroll center center transparent;
+    border: 0 none;
+    color: transparent;
+}
+input.btn-linbo-copy {
+    background: url("img/edit-copy.png") no-repeat scroll center center transparent;
+    border: 0 none;
+    color: transparent;
+}
+input.btn-linbo-trash {
+    background: url("img/edit-delete.png") no-repeat scroll center center transparent;
+    border: 0 none;
+    color: transparent;
+}
+input.btn-linbo-edit {
+    background: url("img/edit.png") no-repeat scroll center center transparent;
+    border: 0 none;
+    color: transparent;
+}
+input.btn-linbo-showinfo {
+    background: url("img/info.png") no-repeat scroll center center transparent;
+    border: 0 none;
+    color: transparent;
+}
+input.btn-linbo-list {
+    background: url("img/list.png") no-repeat scroll center center transparent;
+    border: 0 none;
+    color: transparent;
+}
+
+.wspxe {
+    width: 9em;
+}
+.wsopts {
+    width: 8em;
+}
+.wsdel {
+    width: 1.2em;
+}
