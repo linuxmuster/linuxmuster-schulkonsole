@@ -1,6 +1,8 @@
 shtmldir = $(datarootdir)/schulkonsole/shtml
 dist_shtml_DATA = example.tt login.tt logout.tt start.tt \
-	dialog.inc.tt status.inc.tt \
+	css.inc.tt dialog.inc.tt status.inc.tt \
+	header.inc.tt footer.inc.tt footer_info.inc.tt \
+	footer_submenu.inc.tt \
 	room.tt room_handout.tt room_collect.tt room_shares.tt \
 	room_test.tt room_test_end.tt \
 	room_test_handout.tt room_test_password.tt room_test_collect.tt \
