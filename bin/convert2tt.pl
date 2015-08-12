@@ -7,9 +7,10 @@ use File::Basename;
 
 my $file;
 foreach $file (@ARGV) {
-    my ($src,$path,$suffix) = fileparse($file);
-    if($suffix) {
-        convert($file,$path.'/'.$src.'.tt');
+    my @parts = split(/\./,$file);
+    print "$parts[0]  - $parts[1]\n";
+    if($parts[1]) {
+        convert($file,$parts[0].'.tt');
     } else {
         convert($file,$file.'.tt');
     }
@@ -30,7 +31,7 @@ sub convert {
     while(<INF>) {
         ($line) = $_ =~ /^(.*?)$/;
         $line = substitute($line);
-        print(OUTF,"$line\n");
+        print OUTF "$line\n";
     }
     
     print " OK\n";
@@ -38,6 +39,19 @@ sub convert {
 
 sub substitute {
     my $line = shift;
-    
+    $line =~ s/<!--#include file="(.*?)" -->/[% INCLUDE $1 %]/g;
+    $line =~ s/<!--#echo var="([^\{]*?)" -->/[% $1 %]/g;
+    $line =~ s/<!--#echo var="([^\{]*?)\{(.*?)\}" -->/[% $1.$2 %]/g;
+    $line =~ s/<gettext>(.*?)<\/gettext>/[% d.get('$1') %]/g;
+    $line =~ s/<gettext>/[% d.get('/g;
+    $line =~ s/<\/gettext>/') %]/g;
+    $line =~ s/<!--#if expr="\$loop_(.*?)" -->/[% FOREACH $1 %]/g;
+    $line =~ s/<!--#if expr="\$(.*?)" -->/[% IF $1 %]/g;
+    $line =~ s/<!--#else -->/[% ELSE %]/g;
+    $line =~ s/<!--#endif -->/[% END %]/g;
+    $line =~ s/<!--#set var="(.*?)" value="(.*?)" -->/[% $1=$2 %]/g;
+    $line =~ s/\$\{(.*?)\{(.*?)\}\}([a-zA-Z0-9_]*?)/[% $1.$2 %]$3/g;
+    $line =~ s/\$([^\{]*?)\{(.*?)\}/[% $1.$2 %]/g;
+    $line =~ s/"\$(.*?)"/"[% $1 %]"/g;
     return $line;
 }
