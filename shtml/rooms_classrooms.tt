@@ -26,7 +26,7 @@ mit den tats&auml;chlich im System vorhandenen Hosts &uuml;berein.') %]
 [% IF unimported %]
 <p class="important">
 [% d.get('Es wurden noch nicht alle Hosts mit ihren R&auml;men in das
-System &uuml;bernommen.' %]
+System &uuml;bernommen.') %]
 [% d.get('Bitte &uuml;berpr&uuml;fen Sie die <a href="hosts">Hosts-Liste</a>.') %]
 </p>
 [% END %]
