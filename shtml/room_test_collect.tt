@@ -11,12 +11,12 @@
 [% INCLUDE header.inc.tt %]
 
 <div id="submenu">
-[% INCLUDE submenu-room.inc.tt %]
+[% INCLUDE "submenu-room.inc.tt" %]
 </div>
 
 <div id="content">
 
-[% INCLUDE subsubmenu-room_test.inc.tt %]
+[% INCLUDE "subsubmenu-room_test.inc.tt" %]
 
 <h2>[% d.get('Aktueller Raum') %]: [% room %]
 ::  [% d.get('Klassenarbeitsmodus') %]</h2>
