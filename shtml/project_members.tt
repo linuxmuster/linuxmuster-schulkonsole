@@ -222,7 +222,7 @@
 [% ELSE %]
 <li>
 [% END %]
-<span title="[% membersstudents.diskquotas}{path %]: [% membersstudents.diskquotas.blocks_percent %]%" style="width: ${membersstudents{diskquotas}{blocks_percent_rounded}}%;">&nbsp;</span>
+<span title="[% membersstudents.diskquotas.path %]: [% membersstudents.diskquotas.blocks_percent %]%" style="width: [% membersstudents.diskquotas.blocks_percent_rounded %]%;">&nbsp;</span>
 </li>
 [% END %]
 </ul>
@@ -243,7 +243,7 @@
 [% ELSE %]
 <li>
 [% END %]
-<span title="E-Mail: ${membersstudents{mailquotas}{usage}}/${membersstudents{mailquotas}{limit}} ${membersstudents{mailquotas}{percent}}%" style="width: ${membersstudents{mailquotas}{percent_rounded}}%;">&nbsp;</span>
+<span title="E-Mail: [% membersstudents.mailquotas.usage %]/[% membersstudents.mailquotas.limit %] [% membersstudents.mailquotas.percent %]%" style="width: [% membersstudents.mailquotas.percent_rounded %]%;">&nbsp;</span>
 </li>
 </ul>
 [% ELSE %]-[% END %]</td>

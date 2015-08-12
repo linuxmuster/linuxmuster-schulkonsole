@@ -84,7 +84,7 @@
 [% ELSE %]
 <li>
 [% END %]
-<span title="[% students.diskquotas}{path %]: [% students.diskquotas.blocks_percent %]%" style="width: ${students{diskquotas}{blocks_percent_rounded}}%;">&nbsp;</span>
+<span title="[% students.diskquotas.path %]: [% students.diskquotas.blocks_percent %]%" style="width: [% students.diskquotas.blocks_percent_rounded %]%;">&nbsp;</span>
 </li>
 [% END %]
 </ul>
@@ -105,7 +105,7 @@
 [% ELSE %]
 <li>
 [% END %]
-<span title="E-Mail: ${students{mailquotas}{usage}}/${students{mailquotas}{limit}} ${students{mailquotas}{percent}}%" style="width: ${students{mailquotas}{percent_rounded}}%;">&nbsp;</span>
+<span title="E-Mail: [% students.mailquotas.usage %]/[% students.mailquotas.limit %] [% students.mailquotas.percent %]%" style="width: [% students.mailquotas.percent_rounded %]%;">&nbsp;</span>
 </li>
 </ul>
 [% ELSE %]-[% END %]</td>

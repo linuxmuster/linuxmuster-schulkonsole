@@ -69,12 +69,12 @@
 <tr class="sameuser">
 <td>[% users.login %]</td>
 <td>[% IF users.delete %]
-<input type="radio" name="[% users.login %]_user" id="[% users.login}};${users{id %]" value="::" checked>
+<input type="radio" name="[% users.login %]_user" id="[% users.login %];[% users.id %]" value="::" checked>
 [% ELSE %]
-<input type="radio" name="[% users.login %]_user" id="[% users.login}};${users{id %]" value="">
+<input type="radio" name="[% users.login %]_user" id="[% users.login %];[% users.id %]" value="">
 [% END %]</td>
 <td>[% users.class %]</td>
-<td><label for="[% users.login}};${users{id %]">[% users.id %]</label></td>
+<td><label for="[% users.login %];[% users.id %]">[% users.id %]</label></td>
 </tr>
 [% odd=0 %]
 [% FOREACH users.alt %]

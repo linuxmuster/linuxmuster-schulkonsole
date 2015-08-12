@@ -251,7 +251,7 @@
 <td><input type="button" value="An" name="webfilter" onClick="check_uncheck(this)"></td>
 [% END %]
 [% FOREACH printers %]
-<td><input type="button" value="Aus" name="[% {printers};printer %]" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="Aus" name="[% printers %];printer" checked onClick="check_uncheck(this)"></td>
 [% END %]
 [% IF quicksharesoff %]
 <td><input type="button" value="Aus" name="shares" onClick="check_uncheck(this)"></td>
