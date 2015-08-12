@@ -1,4 +1,5 @@
-<div id="status">
+
+<div id="status"[% IF is_error == 0 %] class="ok"[% END %]>
 <div></div>
 [% IF status %]
 <p>[% status %]</p>

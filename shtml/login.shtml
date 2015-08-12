@@ -1,19 +1,21 @@
+Content-Type: text/html; charset=UTF-8
+
 <html lang="de">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title><gettext>Schulkonsole</gettext> - <gettext>Login</gettext></title>
-<!--#include file="css.shtml.inc" -->
+[% INCLUDE css.shtml.inc %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-<!--#include file="header.shtml.inc" -->
+[% INCLUDE header.shtml.inc %]
 
 <div id="special"> </div>
 
 <div id="submenu">
-<!--#include file="footer_submenu.shtml.inc" -->
+[% INCLUDE footer_submenu.shtml.inc %]
 </div>
 
 <div id="content">
@@ -38,16 +40,16 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-<!--#include file="status.shtml.inc" -->
+[% INCLUDE status.shtml.inc %]
 
 <h2><gettext>Info</gettext></h2>
 
 <p><gettext>Bitte melden Sie sich mit Benutzername und Passwort an.</gettext></p>
 
-<!--#include file="footer_info.shtml.inc" -->
+[% INCLUDE footer_info.shtml.inc %]
 </div>
 
-<!--#include file="footer.shtml.inc" -->
+[% INCLUDE footer.shtml.inc %]
 
 </body>
 </html>

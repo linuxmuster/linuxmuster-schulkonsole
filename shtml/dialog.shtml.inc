@@ -1,0 +1,25 @@
+[% IF is_error %]
+    <script>
+    $(function() {
+        $( "#dialog-message" ).dialog({
+        modal: true,
+        buttons: {
+            Ok: function() {
+            $( this ).dialog( "close" );
+            }
+        }
+        }).position({
+        my: "center",
+        at: "center",
+        });
+    });
+    </script>
+
+    <div id="dialog-message" title="Fehler">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 50px 0;"></span>
+        [% status %]
+    </p>
+    </div>
+
+[% END %]

@@ -15,6 +15,8 @@ use Digest::MD5;
 use Schulkonsole::Config;
 use Schulkonsole::DB;
 use Schulkonsole::Template;
+use Template;
+use Template::Constants qw ( :debug );
 
 
 package Schulkonsole::Session;
@@ -200,6 +202,82 @@ sub end_session {
 }
 
 
+
+=head3 C<send_cookie()>
+
+=head4 Description
+
+Saves the session data in a cookie for next invocation.
+
+=cut
+
+sub send_cookie{
+	my $this = shift;
+
+	binmode(STDOUT, ":utf8");
+
+	# if we have path-info the links within the page will not work
+	# we should not be here
+	my $path = $this->{query}->path_info();
+	if ($path) {
+		my $url = $this->{query}->url( -absolute => 1 );
+		$url =~ s:/+$::; # delete multiple / remaining from path-info
+		print $this->{query}->redirect( -uri => $url,
+		                         -status => 303 );
+
+		exit;
+	}
+
+	my $session_id = $this->{session}->id;
+
+	my $old_session_id = $this->{query}->cookie(CGI::Session->name());
+	my $no_cookies = 1 unless ($old_session_id or $this->{logout});
+
+	if ($this->{logout}) {
+		my @cookies = (
+			$this->{query}->cookie(
+				-name => $this->{session}->name,
+				-value => 'expired',
+				-expires => 'now',
+				-path => $Schulkonsole::Config::_http_root,
+				-secure => 1,
+			),
+			$this->{query}->cookie(
+				-name => 'key',
+				-value => 'expired',
+				-expires => 'now',
+				-path => $Schulkonsole::Config::_http_root,
+				-secure => 1,
+			),
+		);
+		print $this->{query}->header( -cookie => \@cookies,
+		                       -expires => 'now' );
+	} elsif (   $no_cookies
+	         or $session_id ne $old_session_id) {
+		my $cookie = $this->{query}->cookie(
+			-name => $this->{session}->name,
+			-value => $session_id,
+			-path => $Schulkonsole::Config::_http_root,
+			-secure => 1,
+		);
+		print $this->{query}->header( -cookie => $cookie,
+		                       -expires => 'now' );
+	} elsif ($this->{key}) {
+		my $cookie = $this->{query}->cookie(
+			-name => 'key',
+			-value => $this->{key},
+			-path => $Schulkonsole::Config::_http_root,
+			-secure => 1,
+		);
+		print $this->{query}->header( -cookie => $cookie,
+		                       -expires => 'now' );
+	} else {
+		print $this->{query}->header( -expires => 'now' );
+	}
+	
+	return $no_cookies;
+
+}
 
 
 =head3 C<set_var($var_name, $var_value)>
@@ -528,9 +606,29 @@ output. For a description of the template format see Schulkonsole::Template.
 =cut
 
 sub print_page {
-	my $this = $_[0];
+	my $this = shift;
+	my $file = shift;
+	my $action = shift;
 
-	Schulkonsole::Template::print_page(@_);
+	my $template = Template->new({
+            INCLUDE_PATH => ['/usr/share/schulkonsole/shtml','/usr/share/schulkonsole/css'],
+            DEBUG => 'provider',
+        });
+
+        my $vars = $this->{template_vars};
+
+        $vars->{no_cookies} = $this->send_cookie();
+	$vars->{parent_page} = $this->{parent_page};
+	$vars->{is_error} = $this->{is_error};
+	# localization: [% d.get('Text') %]
+	$vars->{d} = $this->{d};
+	$vars->{lang} = $this->{lang};
+	$vars->{input_errors} = %{ $this->{input_errors} };
+	$vars->{session_id} = $this->{session}->id;
+        $vars->{action} = $action;
+        # colored labels an Stelle von for="text" jetzt [% labelfor("text") %]
+        $vars->{labelfor} = sub { return 'for="'.@_[0].'"'.($this->{input_errors}{@_[0]}? ' class="error"':''); };
+        $template->process($file, $vars) or die $template->error();
 
 	# occasionally the session is not automatically flushed
 	$this->{session}->flush();
@@ -581,8 +679,15 @@ sub exit_with_login_page {
 
 
 	$this->set_var('version', $Schulkonsole::Config::_version);
-	Schulkonsole::Template::print_page($this,
-		$Schulkonsole::Config::_login_template, $action);
+	my $template = Template->new({
+            INCLUDE_PATH => ['/usr/share/schulkonsole/shtml','/usr/share/schulkonsole/css'],
+            #DEBUG => DEBUG_PROVIDER | DEBUG_PARSER,
+        });
+        my $vars = $this->{template_vars};
+        
+        $template->process($Schulkonsole::Config::_login_template,$vars) or die $template->error();
+#	Schulkonsole::Template::print_page($this,
+#		$Schulkonsole::Config::_login_template, $action);
 
 	exit;
 }
