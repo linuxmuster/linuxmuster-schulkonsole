@@ -1,0 +1,190 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Benutzer') %] - [% d.get('&Auml;nderungen durchf&uuml;hren') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-user.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('&Auml;nderungen durchf&uuml;hren') %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+
+[% IF isalling %]
+<p>
+[% d.get('Benutzer anlegen/versetzen/l&ouml;schen l&auml;uft.') %]
+</p>
+[% ELSE %]
+<p>
+<input type="submit" name="all" value="Benutzer anlegen/versetzen/l&ouml;schen">
+</p>
+[% END %]
+
+
+<hr>
+
+
+[% IF isadding %]
+<p>
+[% d.get('Anlegen l&auml;uft.') %]
+</p>
+[% ELSE %]
+<p>
+<input type="submit" name="add" value="Benutzer anlegen">
+</p>
+[% END %]
+
+[% IF logadd %]
+<pre>
+[% logadd %]
+</pre>
+<p>
+<input type="submit" name="showlogadd" value="Aktualisieren">
+</p>
+[% ELSE %]
+<p>
+<input type="submit" name="showlogadd" value="Letzte Logdatei ansehen">
+</p>
+[% END %]
+
+[% IF addlist %]
+<table id="commitadd" class="liste">
+<tr>
+<th>[% d.get('Bezeichner') %]</th>
+<th>[% d.get('Gruppe') %]</th>
+</tr>
+[% FOREACH addlist %]
+<tr>
+<td>[% addlist.identifier %]</td>
+<td>[% addlist.group %]</td>
+</tr>
+[% END %]
+</table>
+[% END %]
+
+
+<hr>
+
+[% IF ismoving %]
+<p>
+[% d.get('Versetzen l&auml;uft.') %]
+</p>
+[% ELSE %]
+<p>
+<input type="submit" name="move" value="Benutzer versetzen">
+</p>
+[% END %]
+
+[% IF logmove %]
+<pre>
+[% logmove %]
+</pre>
+<p>
+<input type="submit" name="showlogmove" value="Aktualisieren">
+</p>
+[% ELSE %]
+<p>
+<input type="submit" name="showlogmove" value="Letzte Logdatei ansehen">
+</p>
+[% END %]
+
+[% IF movelist %]
+<table id="commitmove" class="liste">
+<tr>
+<th>[% d.get('Benutzer') %]</th>
+<th>[% d.get('von') %]</th>
+<th>[% d.get('nach') %]</th>
+<th>[% d.get('Status') %]</th>
+</tr>
+[% FOREACH movelist %]
+<tr>
+<td>[% movelist.login %]</td>
+<td>[% movelist.from %]</td>
+<td>[% movelist.to %]</td>
+<td>[% movelist.status %]</td>
+</tr>
+[% END %]
+</table>
+[% END %]
+
+
+<hr>
+
+[% IF iskilling %]
+<p>
+[% d.get('L&ouml;schen l&auml;uft.') %]
+</p>
+[% ELSE %]
+<p>
+<input type="submit" name="kill" value="Benutzer l&ouml;schen">
+</p>
+[% END %]
+
+[% IF logkill %]
+<pre>
+[% logkill %]
+</pre>
+<p>
+<input type="submit" name="showlogkill" value="Aktualisieren">
+</p>
+[% ELSE %]
+<p>
+<input type="submit" name="showlogkill" value="Letzte Logdatei ansehen">
+</p>
+[% END %]
+
+[% IF killlist %]
+<table id="commitkill" class="liste">
+<tr>
+<th>[% d.get('Benutzer') %]</th>
+<th>[% d.get('Bezeichner') %]</th>
+</tr>
+[% FOREACH killlist %]
+<tr>
+<td>[% killlist.login %]</td>
+<td>[% killlist.identifier %]</td>
+</tr>
+[% END %]
+</table>
+[% END %]
+
+
+
+</form>
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Auf dieser Seite bekommen Sie zun&auml;chst einen &Uuml;berblick &uuml;ber die
+durchzuf&uuml;hrenden &Auml;nderungen.') %]</p>
+<p>[% d.get('Sie k&ouml;nnen die anstehenden Aktionen entweder in einem Durchgang oder nacheinander
+ausf&uuml;hren lassen.') %]</p>
+<p>[% d.get('Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund ausgef&uuml;hrt
+wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen
+Prozesses k&ouml;nnen Sie sich &uuml;ber die Schaltfl&auml;che &#8222;Letze Logdatei ansehen&#8220;
+anzeigen lassen.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

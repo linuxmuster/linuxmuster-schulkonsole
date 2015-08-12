@@ -1,0 +1,105 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('aktueller Raum') %]: [% room %] - [% d.get('Klassenarbeitsmodus') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-room.inc.tt %]
+</div>
+
+<div id="content">
+
+[% INCLUDE subsubmenu-room_test.inc.tt %]
+
+<h2>[% d.get('Aktueller Raum') %]: [% room %]
+::  [% d.get('Klassenarbeitsmodus') %]</h2>
+
+<p>
+[% d.get('Nutzung:') %]
+
+[% IF editinguser %]
+[% editinguser %]
+[% d.get('unterrichtet in Raum') %]
+[% room %].
+[% IF endedittime %]
+[% d.get('Unterrichtsende um') %] [% endedittime %].
+[% END %]
+</p>
+
+<p>[% d.get('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
+
+<hr>
+
+<form method="post" accept-charset="UTF-8">
+
+<p><input type="submit" name="collectcopy" value="Kopien einsammeln">
+   <input type="submit" name="collectmove" value="Einsammeln und beenden"></p>
+
+<table id="roomcollect" class="liste">
+<tr>
+<th>[% d.get('Hostname') %]</th>
+<th>[% d.get('Login') %]</th>
+<th>[% d.get('Dateien') %]</th>
+</tr>
+[% FOREACH overview_workstations %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+	<td>[% IF overview_workstations{first} %]
+	    [% overview_workstations.name %]
+	    [% END %]</td>
+	[% IF overview_workstations{login} %]
+	<td>[% overview_workstations.login %]</td>
+	<td>[% FOREACH overview_workstations{files} %]
+	[% IF overview_workstation{files}{isdir} %]
+	*[% END %][% overview_workstations.files}{name %]<br>
+	[% END %]
+	</td>
+	[% ELSE %]
+	<td>-</td>
+	<td>-</td>
+	[% END %]
+</tr>
+[% END %]
+</table>
+
+<p><input type="submit" name="collectcopy" value="Kopien einsammeln">
+   <input type="submit" name="collectmove" value="Einsammeln und beenden"></p>
+
+
+<p><input type="submit" value="Aktualisieren"></p>
+
+</form>
+
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Die Sch&uuml;ler/innen m&uuml;ssen ihre Ergebnisse im Heimatverzeichnis der
+Arbeitsstation im Ordner &#8222;__einsammeln&#8220; ablegen, damit sie hier aufgelistet werden und
+eingesammelt werden k&ouml;nnen. Laden Sie die Seite eventuell neu, um den aktuellen
+Status zu sehen.') %]</p>
+<p>[% d.get('&#8222;Kopien einsammeln&#8220; sammelt den aktuellen Stand der Ergebnisse ein.') %]</p>
+<p>[% d.get('&#8222;Einsammeln und beenden&#8220; sammelt alle Ergebnisse ein, l&ouml;scht den Inhalt des
+Ordners &#8222;__einsammeln&#8220; der Arbeitsstation und beendet die Klassenarbeit.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('linbo') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-linbo.inc.tt %]
+</div>
+
+<div id="content">
+
+[% IF groups %]
+<h2>[% d.get('Bestehende Gruppenkonfiguration einer Rechnergruppe kopieren') %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+<p>
+<select name="src">
+[% FOREACH groups %]
+<option value="[% groups %]">[% groups %]</option>
+[% END %]
+</select>
+<input type="submit" name="copy" value="kopieren nach">
+<input name="dest">
+</p>
+</form>
+
+<hr>
+[% END %]
+
+<h2>[% d.get('Assistent zur Erstellung einer neuen Rechnergruppe') %]</h2>
+
+[% IF hastemplates %]
+<form method="post" accept-charset="UTF-8">
+<table>
+<tr>
+<td><label for="group">[% d.get('Rechnergruppe') %]:</label></td>
+<td><input id="group" name="group"></td>
+</tr>
+<tr>
+<td><label for="disksize">[% d.get('Festplattengr&ouml;&szlig;e in MB') %]:</label></td>
+<td><input id="disksize" name="disksize"></td>
+</tr>
+<tr>
+<td><label for="device">[% d.get('Festplattencontroller (ab LINBO 1.1.0 immer SATA (sda))') %]:</label></td>
+<td>
+<select id="device" name="device">
+<option value="sda">[% d.get('SATA') %]</option>
+</select>
+</td>
+</tr>
+</table>
+<table>
+<tr>
+<th>[% d.get('Partition') %]</th>
+<th>[% d.get('Betriebssystem</getttext></th>
+<th>[% d.get('Partitionsgr&ouml;&szlig;en in MB') %]</td>
+</tr>
+[% IF templatesoswin %]
+<tr>
+<td><label for="os1">[% d.get('Betriebssystem 1 (Partition 1)') %]</label></td>
+<td><select id="os1" name="os1">
+<option value=""></option>[% FOREACH templatesoswin %]
+<option value="[% templatesoswin %]">[% templatesoswin %]</option>
+[% END %]</select>
+</td>
+<td><input name="size1"></td>
+</tr>
+<tr>
+<td><label for="os2">[% d.get('Betriebssystem 2 (Partition 2)') %]</label></td>
+<td><select id="os2" name="os2">
+<option value=""></option>[% FOREACH templatesoswin %]
+<option value="[% templatesoswin %]">[% templatesoswin %]</option>
+[% END %]</select>
+</td>
+<td><input name="size2"></td>
+</tr>
+[% END %]
+[% IF templatesosnonwin %]
+<tr>
+<td><label for="os3">[% d.get('Betriebssystem 3 (Partition 5)') %]</label></td>
+<td><select id="os3" name="os3">
+<option value=""></option>[% FOREACH templatesosnonwin %]
+<option value="[% templatesosnonwin %]">[% templatesosnonwin %]</option>
+[% END %]</select>
+</td>
+<td><input name="size3"></td>
+</tr>
+<tr>
+<td><label for="os4">[% d.get('Betriebssystem 4 (Partition 6)') %]</label></td>
+<td><select id="os4" name="os4">
+<option value=""></option>[% FOREACH templatesosnonwin %]
+<option value="[% templatesosnonwin %]">[% templatesosnonwin %]</option>
+[% END %]</select>
+</td>
+<td><input name="size4"></td>
+</tr>
+[% END %]
+</table>
+
+<p><input type="submit" name="create" value="Gruppenkonfiguration erstellen"></p>
+
+</form>
+[% ELSE %]
+<p>[% d.get('Keine Templates vorhanden.') %]</p>
+[% END %]
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Kopieren Sie hier die Konfiguration einer bestehenden Rechnergruppe
+oder erstellen Sie eine neue Gruppenkonfiguration.') %]</p>
+<p>[% d.get('Beachten Sie, dass ab LINBO 1.1.0 IDE-Platten wie SATA-Platten angesprochen werden.
+Deshalb ist im Dropdown-Men&uuml; keine andere Auswahl m&ouml;glich.') %]</p>
+<p>[% d.get('Ist die neue Gruppenkonfiguration erstellt, k&ouml;nnen Sie im Untermen&uuml; &#8222;Gruppenkonfiguration editieren&#8220;
+gegebenenfalls weitere Anpassungen an der neuen Konfiguration vornehmen.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

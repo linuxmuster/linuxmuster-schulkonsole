@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Startseite') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+[% IF action %]
+    <body id="[% action %]">
+[% ELSE %]
+    <body>
+[% END %]
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE footer_submenu.inc.tt %]
+</div>
+
+<div id="content">
+[% INCLUDE dialog.inc.tt %]
+
+<h2>[% d.get('Konto von') %] [% firstname %] [% surname %]</h2>
+
+
+<h3>[% d.get('Druckauftr&auml;ge') %]</h3>
+
+[% IF printjobs %]
+    <form method="post" accept-charset="UTF-8">
+    <p>
+    <select name="printjobs" multiple>
+    [% FOREACH job IN printjobs %]
+        <option value="[% job.id %]">
+            [% job.id %] [% job.title %]
+        </option>
+    [% END %]
+    </select>
+    </p>
+    <p><input type="submit" value="Druckauftr&auml;ge l&ouml;schen"></p>
+    </form>
+[% ELSE %]
+    <p>[% d.get('Keine Druckauftr&auml;ge') %]</p>
+[% END %]
+
+<hr>
+
+<h3>[% d.get('Passwort&auml;nderung') %]</h3>
+<form method="post" accept-charset="UTF-8">
+<table>
+<tr>
+<td><label [% labelfor("oldpassword") %]>[% d.get('Altes Passwort') %]</label>: </td>
+<td><input id="oldpassword" name="oldpassword" type="password"></td>
+</tr>
+<tr>
+<td><label for="newpassword">[% d.get('Neues Passwort') %]</label>: </td>
+<td><input id="newpassword" name="newpassword" type="password"></td>
+<tr>
+<td><label for="newpasswordagain">[% d.get('nochmal') %]</label>: </td>
+<td><input id="newpasswordagain" name="newpasswordagain" type="password"></td>
+</tr>
+</table>
+<p><input type="submit" value="Passwort &auml;ndern"></p>
+</form>
+
+<hr>
+
+<h3>[% d.get('Info') %]</h3>
+
+<h4>[% d.get('Quota') %]</h4>
+
+[% IF diskquotas %]
+    <p>[% d.get('Festplattenquota:') %]</p></p>
+
+    <table id="diskquotas">
+    <col width="30%">
+    <col width="70%">
+    [% FOREACH quota IN diskquotas %]
+        <tr>
+
+        <td>
+        [% quota.path %]
+        </td>
+
+        <td>
+
+        <p>
+        [% quota.path %]:<br>
+        [% d.get('Speicherplatz/KB:') %]
+        [% quota.blocks_usage %]/[% quota.blocks_soft %]
+        - max: [% quota.blocks_hard %]
+        - [% quota.blocks_percent %]%<br>
+        [% IF quota.blocks_grace %]
+            [% d.get('verbleibende Zeit:') %] [% quota.blocks_grace %]<br>
+        [% END %]
+        [% d.get('Dateien:') %]
+        [% quota.files_usage %]/[% quota.files_soft %]
+        - max: [% quota.files_hard %]
+        - [% quota.files_percent %]%<br>
+        [% IF quota.files_grace %]
+            [% d.get('verbleibende Zeit:') %] [% quota.files_grace %]<br>
+        [% END %]
+        <br>
+        </p>
+
+        <ul>
+        [% IF quota.warn %]
+            <li class="warn">
+        [% ELSE %]
+            <li>
+        [% END %]
+        <span title="[% quota.path %]: [% quota.blocks_percent %]%" style="width: [% quota.blocks_percent_rounded %]%;">&nbsp;</span>
+        </li>
+        </ul>
+
+        </td>
+
+        </tr>
+    [% END %]
+
+    </table>
+
+
+[% ELSE %]
+    <p>[% d.get('Keine Quota') %]</p>
+[% END %]
+
+<p>[% d.get('Mailquota von') %] [% mailaddresses_str %]:</p>
+[% IF mailquotas %]
+    <table id="mailquotas">
+    <col width="30%">
+    <col width="70%">
+
+    [% FOREACH quota IN mailquotas %]
+        <tr>
+
+        <td>[% quota.mbox %]</td>
+
+        <td>
+        [% IF quota.limit %]
+            <p>
+                [% d.get('E-Mail-Speicher/KB:') %]
+                [% quota.usage %]/[% quota.limit %]
+                - [% quota.percent %]%
+            </p>
+
+
+            <ul>
+            [% IF quota.warn %]
+                <li class="warn">
+            [% ELSE %]
+                <li>
+            [% END %]
+            <span title="E-Mail: [% quota.usage %]/[% quota.limit %] [% quota.percent %]%" style="width: [% quota.percent_rounded %]%;">&nbsp;</span>
+            </li>
+            </ul>
+        [% ELSE %]
+            -
+        [% END %]
+        </td>
+        </tr>
+    [% END %]
+    </table>
+[% ELSE %]
+    <p>Keine Mailquota</p>
+[% END %]
+
+
+
+[% IF printquota %]
+    <p>[% d.get('Druckquota:') %]</p>
+
+    <table id="printquota">
+    <col width="30%">
+    <col width="70%">
+
+    <tr>
+
+    <td>[% d.get('Seiten') %]</td>
+
+    <td>
+
+
+    <p>
+        [% d.get('Seiten:') %]
+        [% printquota.usage %]/[% printquota.limit %]
+        - [% printquota.percent %]%
+    </p>
+
+
+    <ul>
+    [% IF printquota.warn %]
+        <li class="warn">
+    [% ELSE %]
+        <li>
+    [% END %]
+    <span title="Druckseiten: [% printquota.usage %]/[% printquota.limit %] [% printquota.percent %]%" style="width: [% printquota.percent_rounded %]%;">&nbsp;</span>
+    </li>
+    </ul>
+    </td>
+    </tr>
+    </table>
+[% ELSE %]
+    <p>Keine Druckquota</p>
+[% END %]
+
+
+<hr>
+
+<h4>[% d.get('Projekte') %]</h4>
+
+<p>
+[% IF projects %]
+    [% projects %]
+[% ELSE %]
+    [% d.get('keine Projekte vorhanden') %]
+[% END %]
+</p>
+
+<hr>
+
+[% IF link_start_openvpn %]
+    <form method="post" accept-charset="UTF-8">
+    <h3>[% d.get('OpenVPN-Zertifikat') %]</h3>
+    [% IF has_ovpn %]
+        <p>[% d.get('Ein OpenVPN-Zertifikat wurde f&uuml;r Sie erstellt.') %]</p>
+        <p><input type="submit" name="ovpndownload" value="OpenVPN-Zertifikat herunterladen"></p>
+    [% ELSE %]
+        <h4>[% d.get('OpenVPN-Zertifikat erstellen') %]</h4>
+
+        <table>
+        <tr>
+        <td><label for="ovpnpassword">[% d.get('Zertifikatspasswort (mind. 6 Zeichen):') %]</label></td>
+        <td><input type="password" id="ovpnpassword" name="ovpnpassword"></td>
+        </tr>
+        <tr>
+        <td><label for="ovpnpasswordagain">[% d.get('Zertifikatspasswort best&auml;tigen:') %]</label></td>
+        <td><input type="password" id="ovpnpasswordagain" name="ovpnpasswordagain"></td>
+        </tr>
+        </table>
+
+        <p><input type="submit" value="Zertifikat erstellen und herunterladen"></p>
+
+    [% END %]
+    </form>
+[% END %]
+
+</div>
+<div id="info" style="display: block;">
+<a class="hideinfo" href="#" onclick="toggle_visibility('info');">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Auf dieser Seite k&ouml;nnen Sie eigene Druckauftr&auml;ge l&ouml;schen
+und Ihr Passwort &auml;ndern.
+<p>Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch
+auf dem Server und in Ihrem Postfach. Alle Werte sind
+in Kilobyte angegeben. Zus&auml;tzlich wird angezeigt in welchen Projekten Sie
+Mitglied sind.') %]</p>
+<p>[% d.get('Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden.
+Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner &#8222;OpenVPN&#8220;
+abgelegt.') %]</p>
+
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

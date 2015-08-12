@@ -1,0 +1,66 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('aktueller Raum') %]: [% room %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-room.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Aktueller Raum') %]: [% room %]</h2>
+
+<p>
+[% d.get('Nutzung:') %]
+
+[% IF editinguser %]
+[% editinguser %]
+[% d.get('unterrichtet in Raum') %]
+[% room %].
+[% IF endedittime %]
+[% d.get('Unterrichtsende um') %] [% endedittime %].
+[% END %]
+</p>
+
+<p>[% d.get('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
+
+<form method="post" accept-charset="UTF-8">
+
+<h3>[% d.get('Bitte best&auml;tigen</getttext></h3>
+
+<p>[% d.get('In diesem Raum findet eine Klassenarbeit statt.') %]
+[% d.get('Soll der Unterricht wirklich beendet werden?') %]</p>
+
+<p><input type="hidden" name="force" value="1">
+<input type="submit" name="end_lesson_now" value="Best&auml;tigen"></p>
+
+</form>
+
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p></p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

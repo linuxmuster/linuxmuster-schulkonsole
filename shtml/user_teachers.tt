@@ -1,0 +1,174 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Benutzer') %] - [% d.get('Lehrerliste pflegen') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-user.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('Lehrerliste pflegen') %]</h2>
+
+
+<form method="post" accept-charset="UTF-8">
+<h3>[% d.get('Lehrer hinzuf&uuml;gen') %]</h3>
+
+<table id="teachersadd" class="liste">
+<tr>
+<th><label for="newsurname">[% d.get('Nachname') %]</label></th>
+<th><label for="newfirstname">[% d.get('Vorname') %]</label></th>
+<th><label for="newbirthdate">[% d.get('Geburtsdatum') %]</label></th>
+<th><label for="newlogin">[% d.get('Login') %]</label></th>
+</tr>
+<tr>
+<td><input id="newsurname" name="newsurname"></td>
+<td><input id="newfirstname" name="newfirstname"></td>
+<td><input id="newbirthdate" name="newbirthdate"></td>
+<td><input id="newlogin" name="newlogin"></td>
+</tr>
+</table>
+
+<p><input type="submit" name="newteacher" value="&Auml;nderungen in Lehrerliste speichern"></p>
+</form>
+
+
+<hr>
+
+
+[% IF teachersuploadallowed %]
+
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+<h3><label for="teachersfilename">[% d.get('Datei importieren') %]</label></h3>
+<p>
+<input type="file" id="teachersfilename" name="teachersfilename">
+<input type="submit" name="teachersupload" value="Hochladen">
+</p>
+</form>
+
+[% ELSE %]
+
+[% IF error_teachers %]
+
+<form method="post" accept-charset="UTF-8">
+
+
+<h3>[% d.get('Fehler korrigieren') %]</h3>
+
+<table id="errorteachersedit" class="liste">
+<tr>
+<th>[% d.get('Nachname') %]</th>
+<th>[% d.get('Vorname') %]</th>
+<th>[% d.get('Geburtsdatum') %]</th>
+<th>[% d.get('Login') %]</th>
+</tr>
+[% FOREACH error_teachers %]
+<tr>
+<td><input name="[% error_teachers.key %]_surname" value="[% error_teachers.surname %]"></td>
+<td><input name="[% error_teachers.key %]_firstname" value="[% error_teachers.firstname %]"></td>
+<td><input name="[% error_teachers.key %]_birthdate" value="[% error_teachers.birthdate %]"></td>
+<td><input name="[% error_teachers.key %]_login" value="[% error_teachers.login %]"></td>
+</tr>
+[% END %]
+</table>
+
+<p><input type="submit" name="acceptteachers" value="&Auml;nderungen in Lehrerliste speichern"></p>
+
+</form>
+
+<hr>
+
+[% END %]
+
+
+[% IF teachers %]
+
+<form method="post" accept-charset="UTF-8">
+
+<h3>[% d.get('Editieren') %]</h3>
+
+
+<table id="teachersedit" class="liste">
+<tr>
+<th>[% d.get('Nachname') %]</th>
+<th>[% d.get('Vorname') %]</th>
+<th>[% d.get('Geburtsdatum') %]</th>
+<th>[% d.get('K&uuml;rzel') %]</th>
+</tr>
+[% FOREACH teachers %]
+<tr>
+<td><input name="[% teachers.login %]_surname" value="[% teachers.surname %]"></td>
+<td><input name="[% teachers.login %]_firstname" value="[% teachers.firstname %]"></td>
+<td><input name="[% teachers.login %]_birthdate" value="[% teachers.birthdate %]"></td>
+<td>[% teachers.short %]</td>
+</tr>
+[% END %]
+</table>
+
+<p><input type="submit" name="acceptteachers" value="&Auml;nderungen in Lehrerliste speichern"></p>
+
+</form>
+
+[% END %]
+
+[% END %]
+
+
+<hr>
+
+
+<form method="post" accept-charset="UTF-8">
+<h3>[% d.get('Lehrer entfernen') %]</h3>
+
+<table id="teachersdelete" class="liste">
+<tr>
+<th></th>
+<th>[% d.get('Nachname') %]</th>
+<th>[% d.get('Vorname') %]</th>
+</tr>
+[% FOREACH teachers %]
+<tr>
+<td><input type="checkbox" name="[% teachers.login %]_delete"></td>
+<td>[% teachers.surname %]</td>
+<td>[% teachers.firstname %]</td>
+</tr>
+[% END %]
+</table>
+
+<p><input type="submit" name="acceptteachers" value="&Auml;nderungen in Lehrerliste speichern"></p>
+</form>
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Hier k&ouml;nnen Sie, falls noch nicht geschehen, die Datei mit den Lehrerdaten
+&#8222;lehrer.txt&#8220; ins System hochladen. Beachten Sie, dass diese Option nur vorhanden ist,
+solange keine &#8222;lehrer.txt&#8220; im System vorliegt.') %]</p>
+<p>[% d.get('Die weitere Datenpflege nehmen Sie dann &uuml;ber diese
+Seite vor.') %]</p>
+<p>[% d.get('Wichtig: Bei der Eingabe des Lehrerlogins werden nur Kleinbuchstaben und keine
+Umlaute oder sonstige Sonderzeichen akzeptiert. Er muss mindestens zwei und darf h&ouml;chstens
+16 Zeichen lang sein.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

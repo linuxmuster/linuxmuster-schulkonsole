@@ -1,0 +1,127 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Drucker') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE footer_submenu.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Drucker') %] [% printer %]</h2>
+
+
+[% IF editrooms %]
+<form method="post" accept-charset="UTF-8">
+
+<table id="printersedit" class="liste">
+<col id="selected" width="40%">
+<col id="action" width="20%">
+<col id="deselected" width="40%">
+<tr>
+<th>[% d.get('ausgew&auml;hlt') %]</th>
+<th></th>
+<th>[% d.get('abgew&auml;hlt') %]</th>
+</tr>
+<td>
+<select name="roomdeselect" multiple>
+[% FOREACH roomsselected %]
+	<option value="[% roomsselected %]">[% roomsselected %]</option>
+[% END %]
+</select>
+</td>
+<td>
+<input type="submit" name="[% .printer %]_roomselect" value="&lt;&lt;"><br>
+<input type="submit" name="[% .printer %]_roomdeselect" value="&gt;&gt;">
+</td>
+<td>
+<select name="roomselect" multiple>
+[% FOREACH roomsdeselected %]
+	<option value="[% roomsdeselected %]">[% roomsdeselected %]</option>
+[% END %]
+</select>
+</td>
+</tr>
+</table>
+
+<p>
+[% FOREACH roomsselected %]<input type="hidden" name="roomsselected" value="[% roomsselected %]">[% END %]
+<input type="submit" name="[% .printer %]_acceptrooms" value="&Auml;nderungen &uuml;bernehmen">
+</p>
+
+</form>
+[% ELSE %]
+<form method="post" accept-charset="UTF-8">
+
+<table id="printersedit" class="liste">
+<col id="selected" width="40%">
+<col id="action" width="20%">
+<col id="deselected" width="40%">
+<tr>
+<th>[% d.get('ausgew&auml;hlt') %]</th>
+<th></th>
+<th>[% d.get('abgew&auml;hlt') %]</th>
+</tr>
+<td>
+<select name="hostdeselect" multiple>
+[% FOREACH hostsselected %]
+	<option value="[% hostsselected %]">[% hostsselected %]</option>
+[% END %]
+</select>
+</td>
+<td>
+<input type="submit" name="[% .printer %]_hostselect" value="&lt;&lt;"><br>
+<input type="submit" name="[% .printer %]_hostdeselect" value="&gt;&gt;">
+</td>
+<td>
+<select name="hostselect" multiple>
+[% FOREACH hostsdeselected %]
+	<option value="[% hostsdeselected %]">[% hostsdeselected %]</option>
+[% END %]
+</select>
+</td>
+</tr>
+</table>
+
+<p>
+[% FOREACH hostsselected %]<input type="hidden" name="hostsselected" value="[% hostsselected %]">[% END %]
+<input type="submit" name="[% .printer %]_accepthosts" value="&Auml;nderungen &uuml;bernehmen">
+</p>
+
+</form>
+[% END %]
+
+
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('W&auml;hlen Sie unter &#8222;abgew&auml;hlt&#8220; die R&auml;ume oder Rechner aus,
+die Zugriff auf diesen Drucker bekommen sollen.') %]</p>
+<p>[% d.get('&Uuml;bernehmen Sie die Auswahl durch Bet&auml;tigen der Schaltfl&auml;che
+&#8222;&lt;&lt;&#8220;.') %]</p>
+<p>[% d.get('Mehrfachauswahl mit gedr&uuml;ckter Strg-Taste ist m&ouml;glich.') %]</p>
+<p>[% d.get('Schliessen Sie die Aktion mit &#8222;&Auml;nderungen &uuml;bernehmen&#8220;  ab.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

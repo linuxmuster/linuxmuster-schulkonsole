@@ -1,0 +1,446 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('aktueller Raum') %]: [% room %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-room.inc.tt %]
+</div>
+
+<div id="content">
+
+<form method="post" accept-charset="UTF-8">
+<p style="float: right;">
+<select name="rooms">
+<optgroup label="R&auml;ume">
+[% FOREACH rooms %] <option value="[% rooms %]">[% rooms %]</option>
+[% END %]
+</optgroup>
+<optgroup label="aktueller Raum">
+<option value="[% room %]" selected>[% room %]</option>
+</optgroup>
+</select>
+<input type="submit" value="Wechseln">
+</p>
+</form>
+
+[% IF room %]
+<h2>[% d.get('Aktueller Raum') %]: [% room %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+<p>
+[% d.get('Nutzung:') %]
+
+[% IF editinguser %]
+[% editinguser %]
+[% d.get('unterrichtet in Raum') %]
+[% room %].
+[% IF endedittime %]
+[% d.get('Unterrichtsende um') %] [% endedittime %].
+[% END %]
+</p>
+
+[% IF exammode %]
+<p class="important">[% d.get('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
+<p><input type="submit" name="end_lesson_now" value="Klassenarbeitsmodus beenden"></p>
+[% ELSE %]
+<p>[% d.get('Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.') %]</p>
+
+
+[% IF stopedit %]
+<p>[% d.get('Unterricht beenden:') %]
+<input type="submit" name="end_lesson_now" value="sofort beenden">
+
+[% IF edit %]
+[% d.get('- oder -') %] [% d.get('um') %] 
+
+<select name="lesson_end_hours">
+	<option value="0">00</option>
+	<option value="1">01</option>
+	<option value="2">02</option>
+	<option value="3">03</option>
+	<option value="4">04</option>
+	<option value="5">05</option>
+	<option value="6">06</option>
+	<option value="7">07</option>
+	<option value="8">08</option>
+	<option value="9">09</option>
+	<option value="10">10</option>
+	<option value="11">11</option>
+	<option value="12">12</option>
+	<option value="13">13</option>
+	<option value="14">14</option>
+	<option value="15">15</option>
+	<option value="16">16</option>
+	<option value="17">17</option>
+	<option value="18">18</option>
+	<option value="19">19</option>
+	<option value="20">20</option>
+	<option value="21">21</option>
+	<option value="22">22</option>
+	<option value="23">23</option>
+</select>:<select name="lesson_end_minutes">
+	<option value="0">00</option>
+	<option value="5">05</option>
+	<option value="10">10</option>
+	<option value="15">15</option>
+	<option value="20">20</option>
+	<option value="25">25</option>
+	<option value="30">30</option>
+	<option value="35">35</option>
+	<option value="40">40</option>
+	<option value="45">45</option>
+	<option value="50">50</option>
+	<option value="55">55</option>
+</select>
+[% d.get('Uhr') %]
+<input type="submit" name="end_lesson_at" value="beenden lassen">.
+[% END %]
+[% END %]
+[% END %]
+[% ELSE %]
+
+[% IF privilegeduser %]
+[% privilegeduser %] [% d.get('ist in Raum') %]
+[% room %]
+[% d.get('angemeldet,') %]
+[% END %]
+[% d.get('kein Unterricht.') %]
+<input type="submit" name="start_lesson" value="Unterricht beginnen">
+
+[% END %]
+</p>
+</form>
+
+
+[% IF edit %]
+
+<h3>[% d.get('&Uuml;bersicht PCs') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+<table id="roomoverview" class="liste">
+<tr>
+<th>[% d.get('Hostname') %]</th>
+<th>[% d.get('Login') %]</th>
+<th>[% d.get('Internet') %]</th>
+<th>[% d.get('Intranet') %]</th>
+<th>[% d.get('Webfilter') %]</th>
+[% FOREACH printers %]
+<th>[% d.get('Drucker') %]<br>[% printers %]</th>
+[% END %]
+<th>[% d.get('Tauschen<br>global') %]</th>
+</tr>
+[% FOREACH overview_workstations %]
+[% IF overview_workstations{editing} %]
+<tr class="editing">
+[% IF odd %][% odd=0 %]
+[% ELSE %][% odd=1 %][% END %]
+[% ELSE %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+[% END %]
+	<td>[% IF overview_workstations{first} %]
+		[% overview_workstations.name %]
+	[% END %]</td>
+	<td>[% IF overview_workstations{login} %]
+		[% overview_workstations.login %]
+		[% ELSE %]-[% END %]
+	</td>
+
+	<td>[% IF overview_workstations{first} %]
+[% IF overview_workstations{internet} %]
+      [% quickinternetoff=1 %]
+	<input type="checkbox" name="[% overview_workstations.name %];internet" checked>
+[% ELSE %]
+	<input type="checkbox" name="[% overview_workstations.name %];internet">
+[% END %]
+	[% END %]</td>
+
+	<td>[% IF overview_workstations{first} %]
+[% IF intranetactive %]
+[% IF overview_workstations{intranet} %]
+[% IF overview_workstations{editinghost} %]
+	<input type="checkbox" disabled checked>
+[% ELSE %][% quickintranetoff=1 %]
+	<input type="checkbox" name="[% overview_workstations.name %];intranet" checked>
+[% END %]
+[% ELSE %]
+	<input type="checkbox" name="[% overview_workstations.name %];intranet">
+[% END %]
+[% ELSE %]
+	<input type="checkbox" disabled checked>
+[% END %]
+	[% END %]</td>
+	<td>[% IF overview_workstations{first} %]
+[% IF urlfilteractive %]
+[% IF overview_workstations{webfilter} %][% quickwebfilteroff=1 %]
+[% IF link_room_webfilter_switch %]
+	<input type="checkbox" name="[% overview_workstations.name %];webfilter" checked>
+[% ELSE %]
+	<input type="checkbox" name="[% overview_workstations.name %];webfilter" checked disabled>
+[% END %]
+[% ELSE %]
+[% IF link_room_webfilter_switch %]
+	<input type="checkbox" name="[% overview_workstations.name %];webfilter">
+[% ELSE %]
+	<input type="checkbox" name="[% overview_workstations.name %];webfilter" disabled>
+[% END %]
+[% END %]
+[% ELSE %]<input type="checkbox" disabled>[% END %][% END %]</td>
+[% IF overview_workstations{printer} %]
+[% FOREACH overview_workstations{printer} %]
+	<td>
+[% IF overview_workstations{printer}{off} %]
+	<input type="checkbox" name="[% overview_workstations.login %];[% overview_workstations.printer}{name %];printer">
+[% ELSE %]
+	<input type="checkbox" name="[% overview_workstations.login %];[% overview_workstations.printer}{name %];printer" checked>
+[% END %]
+	</td>
+[% END %]
+[% ELSE %]
+[% FOREACH printers %]
+	<td><input type="checkbox" disabled></td>
+[% END %]
+[% END %]
+
+	[% IF overview_workstations{login} %]
+	<td>
+[% IF overview_workstations{shares} %][% quicksharesoff=1 %]
+	<input type="checkbox" name="[% overview_workstations.login %];shares" checked>
+[% ELSE %]
+	<input type="checkbox" name="[% overview_workstations.login %];shares">
+[% END %]
+	</td>
+	[% ELSE %]
+	<td><input type="checkbox" disabled></td>
+	[% END %]
+</tr>
+[% END %]
+<tr>
+<td colspan="2"></td>
+<td>|</td>
+<td>|</td>
+<td>|</td>
+[% FOREACH printers %]
+<td>|</td>
+[% END %]
+<td>|</td>
+</tr>
+<tr class="quickselection">
+<td colspan="2">[% d.get('Schnellauswahl') %]</td>
+[% IF quickinternetoff %]
+<td><input type="button" value="Aus" name="internet" checked onClick="check_uncheck(this)"></td>
+[% ELSE %]
+<td><input type="button" value="An" name="internet" checked onClick="check_uncheck(this)"></td>
+[% END %]
+[% IF quickintranetoff %]
+<td><input type="button" value="Aus" name="intranet" checked onClick="check_uncheck(this)"></td>
+[% ELSE %]
+<td><input type="button" value="An" name="intranet" checked onClick="check_uncheck(this)"></td>
+[% END %]
+[% IF quickwebfilteroff %]
+<td><input type="button" value="Aus" name="webfilter" onClick="check_uncheck(this)"></td>
+[% ELSE %]
+<td><input type="button" value="An" name="webfilter" onClick="check_uncheck(this)"></td>
+[% END %]
+[% FOREACH printers %]
+<td><input type="button" value="Aus" name="[% .printers %];printer" checked onClick="check_uncheck(this)"></td>
+[% END %]
+[% IF quicksharesoff %]
+<td><input type="button" value="Aus" name="shares" onClick="check_uncheck(this)"></td>
+[% ELSE %]
+<td><input type="button" value="An" name="shares" onClick="check_uncheck(this)"></td>
+[% END %]
+</tr>
+</table>
+<p><input type="submit" name="acceptfirewall" value="&Auml;nderungen &uuml;bernehmen"></p>
+</form>
+
+<h3>[% d.get('&Uuml;bersicht Drucker') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+<table id="printersoverview" class="liste">
+<colgroup span="2" width="40%"></colgroup>
+<tr>
+<th>[% d.get('Name') %]</th>
+<th>[% d.get('Status') %]</th>
+<th>[% d.get('freigeschaltet') %]</th>
+</tr>
+[% FOREACH overview_devices %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td>[% overview_devices.name %]</td>
+<td>[% IF overview_devices{statemessage} %]
+[% overview_devices.statemessage %]
+[% ELSE %]
+[% overview_devices.state %]
+[% END %]</td>
+[% IF overview_devices{accepting} %]
+[% quickprinteroff=1 %]
+<td><input type="checkbox" name="[% overview_devices.name %];printer" checked></td>
+[% ELSE %]
+<td><input type="checkbox" name="[% overview_devices.name %];printer"></td>
+[% END %]
+</tr>
+[% END %]
+<tr>
+<td colspan=2></td>
+<td>|</td>
+</tr>
+<tr class="quickselection">
+<td>[% d.get('Schnellauswahl') %]</td>
+<td></td>
+[% IF quickprinteroff %]
+<td><input type="button" value="Aus" name="printer" checked onClick="check_uncheck(this)"></td>
+[% ELSE %]
+<td><input type="button" value="An" name="printer" checked onClick="check_uncheck(this)"></td>
+[% END %]
+</tr>
+</table>
+<p><input type="submit" name="acceptprinter" value="&Auml;nderungen &uuml;bernehmen"></p>
+</form>
+
+[% ELSE %]
+
+<h3>[% d.get('&Uuml;bersicht PCs') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+<table id="roomoverview" class="liste">
+<tr>
+<th>[% d.get('Hostname') %]</th>
+<th>[% d.get('Login') %]</th>
+<th>[% d.get('Internet') %]</th>
+<th>[% d.get('Intranet') %]</th>
+<th>[% d.get('Webfilter') %]</th>
+[% FOREACH printers %]
+<th>[% d.get('Drucker') %]<br>[% printers %]</th>
+[% END %]
+<th>[% d.get('Tauschen<br>global') %]</th>
+</tr>
+[% FOREACH overview_workstations %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+	<td>[% IF overview_workstations{first} %]
+		[% overview_workstations.name %]
+	[% END %]</td>
+	<td>[% IF overview_workstations{login} %]
+		[% overview_workstations.login %]
+		[% ELSE %]-[% END %]
+	</td>
+	<td>[% IF overview_workstations{first} %]
+[% IF overview_workstations{internet} %]
+	<input type="checkbox" disabled checked>
+[% ELSE %]
+	<input type="checkbox" disabled>
+[% END %]
+	[% END %]</td>
+	<td>[% IF overview_workstations{first} %]
+[% IF overview_workstations{intranet} %]
+	<input type="checkbox" disabled checked>
+[% ELSE %]
+	<input type="checkbox" disabled>
+[% END %]
+	[% END %]</td>
+	<td>[% IF overview_workstations{first} %]
+[% IF urlfilteractive %]
+[% IF overview_workstations{webfilter} %]
+	<input type="checkbox" disabled checked>
+[% ELSE %]
+	<input type="checkbox" disabled>
+[% END %]
+[% ELSE %]
+	<input type="checkbox" disabled>
+[% END %]
+	[% END %]</td>
+[% IF overview_workstations{printer} %]
+	[% FOREACH overview_workstations{printer} %]
+	<td>
+[% IF overview_workstations{printer}{off} %]
+	<input type="checkbox" disabled>
+[% ELSE %]
+	<input type="checkbox" disabled checked>
+[% END %]
+	</td>
+[% END %]
+[% ELSE %]
+[% FOREACH printers %]
+	<td><input type="checkbox" disabled></td>
+[% END %]
+[% END %]
+	<td>
+[% IF overview_workstations{shares} %]
+	<input type="checkbox" disabled checked>
+[% ELSE %]
+	<input type="checkbox" disabled>
+[% END %]
+	</td>
+</tr>
+[% END %]
+
+</table>
+
+
+<h3>[% d.get('&Uuml;bersicht Drucker') %]</h3>
+
+[% odd=0 %]<table id="printersoverview" class="liste">
+<colgroup span="2" width="40%"></colgroup>
+<tr>
+<th>[% d.get('Name') %]</th>
+<th>[% d.get('Status') %]</th>
+<th>[% d.get('freigeschaltet') %]</th>
+</tr>
+[% FOREACH overview_devices %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td>[% overview_devices.name %]</td>
+<td>[% IF overview_devices{statemessage} %]
+[% overview_devices.statemessage %]
+[% ELSE %]
+[% overview_devices.state %]
+[% END %]</td>
+[% IF overview_devices{accepting} %]
+<td><input type="checkbox" disabled checked></td>
+[% ELSE %]
+<td><input type="checkbox" disabled></td>
+[% END %]
+</tr>
+[% END %]
+</table>
+
+[% END %]
+[% ELSE %]
+<h2>[% d.get('Aktueller Raum') %]: [% d.get('unbekannt') %]</h2>
+[% END %]
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Sie m&uuml;ssen den &#8222;Unterricht beginnen&#8220;, damit Sie
+die Funktionen zur Steuerung des Unterrichts im aktuellen Raum nutzen k&ouml;nnen.<br>
+Beenden Sie den Unterricht entweder &uuml;ber den Button &#8222;sofort beenden&#8220; 
+oder stellen Sie das Unterrichtsende &uuml;ber die Dropdown-Men&uuml;s ein und best&auml;tigen 
+es mit &#8222;beenden lassen&#8220;.') %]</p>
+<p>[% d.get('Im Bereich &#8222;&Uuml;bersicht PCs&#8220; k&ouml;nnen Sie den Zugriff der Sch&uuml;lerarbeitspl&auml;tze auf Intranet, Internet,
+Webfilter, Drucker und das globale Tauschverzeichnis &uuml;ber Checkboxen steuern.') %]</p>
+<p>[% d.get('Im Bereich &#8222;&Uuml;bersicht Drucker&#8220; k&ouml;nnen Sie den Zugriff auf die Raumdrucker
+f&uuml;r alle Benutzer, nicht nur die des Raumes, freigeben oder sperren.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

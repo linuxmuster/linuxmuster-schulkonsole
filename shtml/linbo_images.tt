@@ -1,0 +1,189 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('linbo') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-linbo.inc.tt %]
+</div>
+
+<div id="content">
+
+
+[% IF deleteimage %]
+
+<h2>[% d.get('Imagedatei l&ouml;schen') %]</h2>
+
+<h3>[% d.get('Bitte best&auml;tigen') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+<p>[% deleteimage %] [% d.get('wirklich l&ouml;schen?') %]</p>
+
+<p><input type="hidden" name="image" value="[% deleteimage %]"><input type="submit" name="delete" value="Best&auml;tigen">
+<input type="submit" name="abort" value="Abbrechen"></p>
+
+</form>
+
+[% ELSE %]
+[% IF moveimage %]
+<h2>[% d.get('Imagedatei umbenennen') %]</h2>
+
+<h3>[% d.get('Bitte best&auml;tigen') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+<p>[% moveimage %] [% d.get('&uuml;berschreiben?') %]</p>
+
+<p><input type="hidden" name="src" value="[% src %]"><input type="hidden" name="dst" value="[% moveimage %]"><input type="submit" name="move" value="&Uuml;berschreiben">
+<input type="submit" name="abort" value="Abbrechen"></p>
+
+</form>
+
+[% ELSE %]
+[% IF copyimage %]
+<h2>[% d.get('Imagedatei kopieren') %]</h2>
+
+<h3>[% d.get('Bitte best&auml;tigen') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+<p>[% copyimage %] [% d.get('&uuml;berschreiben?') %]</p>
+
+<p><input type="hidden" name="src" value="[% src %]"><input type="hidden" name="dst" value="[% copyimage %]"><input type="submit" name="copy" value="&Uuml;berschreiben">
+<input type="submit" name="abort" value="Abbrechen"></p>
+
+</form>
+
+[% ELSE %]
+[% IF editfilename %]
+
+<h2>[% image %]: [% d.get('Imagebeschreibung editieren') %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+<p><textarea wrap="off" name="imagedesc" rows="20" cols="70"></textarea></p>
+<p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="&Auml;nderungen speichern">
+<input type="submit" name="abort" value="Schlie&szlig;en"></p>
+
+</form>
+
+[% ELSE %]
+[% IF imageinfo %]
+
+<h2>[% image %]: [% d.get('Image-Informationen') %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+<pre id="imageinfo">[% imageinfo %]</pre>
+<p><input type="submit" name="abort" value="Schlie&szlig;en"></p>
+
+</form>
+[% ELSE %]
+[% IF imagelist %]
+
+<h2>[% image %]: [% d.get('Image-Liste') %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+<pre id="imagelist">[% imagelist %]</pre>
+<p><input type="submit" name="abort" value="Schlie&szlig;en"></p>
+
+</form>
+[% ELSE %]
+
+<h2>[% d.get('Basisimages') %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+<table id="linbobaseimages" class="liste">
+
+<colgroup width="50%"></colgroup>
+<colgroup span="2" width="3%"></colgroup>
+<colgroup width="32%"></colgroup>
+<colgroup span="3" width="3%"></colgroup>
+
+<tr>
+<th>Imagename</th>
+<th></th>
+<th></th>
+<th colspan="3">Umbenennen/Kopieren</th>
+<th></th>
+</tr>
+[% FOREACH images_base %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+    <td><label for="[% .images_base %]_newimage">[% images_base %]</label></td>
+    <td><input title="Beschreibung anzeigen/editieren" type="submit" class="btn-linbo-edit" alt="Beschreibung" name="[% .images_base %]_editdesc" value="E"></td>
+    <td><input title="Information anzeigen" type="submit" class="btn-linbo-showinfo" alt="Info" name="[% .images_base %]_info" value="I"></td>
+    <td><input id="[% .images_base %]_newimage" name="[% .images_base %]_newimage"></td>
+    <td><input title="Image umbenennen" type="submit" class="btn-linbo-move" alt="Umbenennen" name="[% .images_base %]_move" value="U"></td>
+    <td><input title="Image kopieren" type="submit" class="btn-linbo-copy" alt="Kopieren" name="[% .images_base %]_copy" value="K"></td>
+    <td><input title="Image l&ouml;schen" type="submit" class="btn-linbo-trash" alt="L&ouml;schen" name="[% .images_base %]_delete" value="L"></td>
+</tr>[% END %]
+</table>
+
+</form>
+
+<hr>
+
+<h2>Differenzielle Images</h2>
+
+<form method="post" accept-charset="UTF-8">
+<table id="linboimages" class="liste">
+
+<colgroup width="50%"></colgroup>
+<colgroup span="2" width="3%"></colgroup>
+<colgroup width="32%"></colgroup>
+<colgroup span="3" width="3%"></colgroup>
+
+<tr>
+<th>Imagename</th>
+<th></th>
+<th></th>
+<th colspan="3">Umbenennen/Kopieren</th>
+<th></th>
+</tr>
+[% FOREACH images_diff %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+    <td><label for="[% .images_diff %]_newimage">[% images_diff %]</label></td>
+    <td><input title="Beschreibung anzeigen/editieren" type="submit" class="btn-linbo-edit" alt="Beschreibung" name="[% .images_diff %]_editdesc" value="E"></td>
+    <td><input title="Information anzeigen" type="submit" class="btn-linbo-showinfo" alt="Info" name="[% .images_diff %]_info" value="I"></td>
+    <td><input id="[% .images_diff %]_newimage" name="[% .images_diff %]_newimage"></td>
+    <td><input title="Image umbenennen" type="submit" class="btn-linbo-move" alt="Umbenennen" name="[% .images_diff %]_move" value="U"></td>
+    <td><input title="Image kopieren" type="submit" class="btn-linbo-copy" alt="Kopieren" name="[% .images_diff %]_copy" value="K"></td>
+    <td><input title="Image l&ouml;schen" type="submit" class="btn-linbo-trash alt="L&ouml;schen" name="[% .images_diff %]_delete" value="L"></td>
+</tr>[% END %]
+</table>
+
+</form>
+
+[% END %]
+[% END %]
+[% END %]
+[% END %]
+[% END %]
+[% END %]
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Wenn Sie die Maus auf die Symbole bewegen, werden Hilfetexte angezeigt.') %]</p>
+<p>[% d.get('Zum Umbennenen und Kopieren von Images, m&uuml;ssen Sie einen neuen Dateinamen eingeben.
+Dateierweiterungen (.cloop/.rsync) k&ouml;nnen weggelassen werden.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

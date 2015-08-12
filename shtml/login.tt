@@ -1,0 +1,55 @@
+Content-Type: text/html; charset=UTF-8
+
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Login') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="special"> </div>
+
+<div id="submenu">
+[% INCLUDE footer_submenu.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Anmeldung') %]</h2>
+<p>
+<form method="post" accept-charset="UTF-8" action="">
+<table>
+<tr>
+<td><label for="username">[% d.get('Benutzername') %]</label>: </td>
+<td><input id="username" name="username"></td>
+</tr>
+<tr>
+<td><label for="password">[% d.get('Passwort') %]</label>: </td>
+<td><input id="password" name="password" type="password"></td>
+</table>
+<p><input type="submit" value="Anmelden"></p>
+</form>
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Bitte melden Sie sich mit Benutzername und Passwort an.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

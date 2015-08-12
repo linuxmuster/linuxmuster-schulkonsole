@@ -1,0 +1,109 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('aktueller Raum') %]: [% room %] - [% d.get('Klassenarbeitsmodus') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-room.inc.tt %]
+</div>
+
+<div id="content">
+
+[% INCLUDE subsubmenu-room_test.inc.tt %]
+
+<h2>[% d.get('Aktueller Raum') %]: [% room %]
+::  [% d.get('Klassenarbeitsmodus') %]</h2>
+
+<p>
+[% d.get('Nutzung:') %]
+
+[% IF editinguser %]
+[% editinguser %]
+[% d.get('unterrichtet in Raum') %]
+[% room %].
+[% IF endedittime %]
+[% d.get('Unterrichtsende um') %] [% endedittime %].
+[% END %]
+</p>
+
+<p>[% d.get('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
+
+<hr>
+
+<form method="post" accept-charset="UTF-8">
+
+
+<table id="roomhandout" class="liste">
+<tr>
+<th>[% d.get('Hostname') %]</th>
+<th>[% d.get('Login') %]</th>
+</tr>
+[% FOREACH overview_workstations %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+	<td>[% IF overview_workstations{first} %]
+	    [% overview_workstations.name %]
+	    [% END %]</td>
+	<td>[% IF overview_workstations{login} %]
+	    [% overview_workstations.login %]
+	    [% ELSE %]-[% END %]
+	</td>
+</tr>
+[% END %]
+</table>
+
+<p><input type="submit" value="Aktualisieren"></p>
+
+
+<h3>[% d.get('Bereitzustellende Dateien') %]</h3>
+
+[% IF teacher_share_files %]
+<ul>
+[% FOREACH teacher_share_files %]
+	<li>[% IF teacher_share_files{isdir} %]
+	*[% END %][% teacher_share_files.name %]</li>
+[% END %]
+</ul>
+<p>[% d.get('Allen') %] <input type="submit" name="handouttest" value="bereitstellen">
+</p>
+[% ELSE %]
+<p>[% d.get('Keine Dateien') %]<p>
+<p><input type="submit" name="continue" value="weiter">
+</p>
+[% END %]
+
+</form>
+
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Falls zu Beginn der Klassenarbeit noch nicht alle Sch&uuml;ler angemeldet
+waren, k&ouml;nnen Sie &uuml;ber die Schaltfl&auml;che &#8222;Anmeldestatus &uuml;berpr&uuml;fen&#8220;
+die Ansicht aktualisieren.') %]</p>
+<p>[% d.get('Um die Ansicht der bereitzustellenden Dateien zu aktualisieren, klicken Sie einfach
+oben auf den Link &#8222;Bereitstellen&#8220;.') %]</p>
+<p>[% d.get('Mit Bet&auml;tigen der Schaltfl&auml;che &#8222;bereitstellen&#8220; gelangen Sie zum n&auml;chsten
+Schritt. Gleichzeitig werden Ihre Dateien den Klassenarbeitsteilnehmern bereitgestellt.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

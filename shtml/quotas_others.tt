@@ -1,0 +1,329 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Quota') %] - [% d.get('Sonderquota') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-quotas.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Quota') %] :: [% d.get('Sonderquota') %]</h2>
+
+
+<h3>[% d.get('Neu anlegen') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+
+<table id="quotasothersnew" class="liste">
+<tr>
+<th><label for="newlogin">[% d.get('Login') %]</label></th>
+[% IF mountpoints %]
+<th colspan="[% mountpoints_cnt %]">[% d.get('Diskquota') %]</th>
+[% END %]
+<th>[% d.get('Mailquota') %]</th>
+</tr>
+[% IF mountpoints %]
+<tr>
+<th></th>
+[% FOREACH mountpoints %]
+<th>[% mountpoints %]</th>
+[% END %]
+<th></th>
+</tr>
+[% END %]
+<tr class="even">
+<td><input id="newlogin" name="newlogin"></td>
+[% FOREACH standarddiskquotas %]
+<td><input size="6" maxlength="5" name="[% standarddiskquotas.mountpoint %]-newdiskquota" value="[% standarddiskquotas.diskquota %]"></td>
+[% END %]
+<td><input size="6" maxlength="5" name="newmailquota" value="[% standardmailquota %]"></td>
+</tr>
+</table>
+
+<p><input type="submit" name="acceptusers" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+
+
+[% IF www %]
+
+<h3>[% d.get('Webspace') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+
+[% odd=0 %]
+<table id="quotaswww" class="liste">
+<colgroup span="1" width="70%"></colgroup>
+<colgroup>
+	[% IF mountpoints %]<col span="[% mountpoints_cnt %]">[% END %]
+	<col>
+</colgroup>
+<tr>
+<th>[% d.get('Login') %]</th>
+[% IF mountpoints %]
+<th colspan="[% mountpoints_cnt %]">[% d.get('Diskquota') %]</th>
+[% END %]
+<th>[% d.get('Mailquota') %]</th>
+</tr>
+[% IF mountpoints %]
+<tr>
+<th></th>
+[% FOREACH mountpoints %]
+<th>[% mountpoints %]</th>
+[% END %]
+<th></th>
+</tr>
+[% END %]
+<tr class="even">
+<td>[% www.login %]</td>
+[% FOREACH www{diskquotas} %]
+<td><input size="6" maxlength="5" name="[% www.login %]_user[% www.diskquotas}{mountpoint %]-diskquota" value="[% www.diskquotas %]{quota}"></td>
+[% END %]
+<td><input size="6" maxlength="5" name="[% www.login %]_usermailquota" value="[% www.mailquota %]"></td>
+</tr>
+</table>
+
+<p><input type="submit" name="acceptusers" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+[% END %]
+
+
+
+
+[% IF admins %]
+
+<h3>[% d.get('Administratoren') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+
+[% odd=0 %]
+<table id="quotasadmins" class="liste">
+<colgroup span="2" width="35%"></colgroup>
+<colgroup>
+	[% IF mountpoints %]<col span="[% mountpoints_cnt %]">[% END %]
+	<col>
+</colgroup>
+<tr>
+<th>[% d.get('Login') %]</th>
+<th>[% d.get('Name') %]</th>
+[% IF mountpoints %]
+<th colspan="[% mountpoints_cnt %]">[% d.get('Diskquota') %]</th>
+[% END %]
+<th>[% d.get('Mailquota') %]</th>
+</tr>
+[% IF mountpoints %]
+<tr>
+<th colspan="2"></th>
+[% FOREACH mountpoints %]
+<th>[% mountpoints %]</th>
+[% END %]
+<th></th>
+</tr>
+[% END %]
+[% FOREACH admins %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td>[% admins.login %]</td>
+<td>[% admins.firstname %] [% admins.surname %]</td>
+[% FOREACH admins{diskquotas} %]
+<td><input size="6" maxlength="5" name="[% admins.login %]_user[% admins.diskquotas}{mountpoint %]-diskquota" value="[% admins.diskquotas %]{quota}"></td>
+[% END %]
+<td><input size="6" maxlength="5" name="[% admins.login %]_usermailquota" value="[% admins.mailquota %]"></td>
+</tr>
+[% END %]
+</table>
+
+<p><input type="submit" name="acceptusers" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+[% END %]
+
+
+
+[% IF users %]
+
+<h3>[% d.get('Sch&uuml;ler') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+
+[% odd=0 %]
+<table id="quotasstudents" class="liste">
+<colgroup span="2" width="35%"></colgroup>
+<colgroup>
+	[% IF mountpoints %]<col span="[% mountpoints_cnt %]">[% END %]
+	<col>
+</colgroup>
+<tr>
+<th>[% d.get('Login') %]</th>
+<th>[% d.get('Name') %]</th>
+[% IF mountpoints %]
+<th colspan="[% mountpoints_cnt %]">[% d.get('Diskquota') %]</th>
+[% END %]
+<th>[% d.get('Mailquota') %]</th>
+</tr>
+[% IF mountpoints %]
+<tr>
+<th colspan="2"></th>
+[% FOREACH mountpoints %]
+<th>[% mountpoints %]</th>
+[% END %]
+<th></th>
+</tr>
+[% END %]
+[% FOREACH users %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td>[% users.login %]</td>
+<td>[% users.firstname %] [% users.surname %]</td>
+[% FOREACH users{diskquotas} %]
+<td><input size="6" maxlength="5" name="[% users.login %]_user[% users.diskquotas}{mountpoint %]-diskquota" value="[% users.diskquotas %]{quota}"></td>
+[% END %]
+<td><input size="6" maxlength="5" name="[% users.login %]_usermailquota" value="[% users.mailquota %]"></td>
+</tr>
+[% END %]
+</table>
+
+<p><input type="submit" name="acceptusers" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+[% END %]
+
+
+
+
+[% IF workstations %]
+
+<h3>[% d.get('Workstationaccounts') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+
+[% odd=0 %]
+<table id="quotasworkstations" class="liste">
+<colgroup span="1" width="70%"></colgroup>
+<colgroup>
+	[% IF mountpoints %]<col span="[% mountpoints_cnt %]">[% END %]
+	<col>
+</colgroup>
+<tr>
+<th>[% d.get('Login') %]</th>
+[% IF mountpoints %]
+<th colspan="[% mountpoints_cnt %]">[% d.get('Diskquota') %]</th>
+[% END %]
+<th>[% d.get('Mailquota') %]</th>
+</tr>
+[% IF mountpoints %]
+<tr>
+<th></th>
+[% FOREACH mountpoints %]
+<th>[% mountpoints %]</th>
+[% END %]
+<th></th>
+</tr>
+[% END %]
+[% FOREACH workstations %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td>[% workstations.login %]</td>
+[% FOREACH workstations{diskquotas} %]
+<td><input size="6" maxlength="5" name="[% workstations.login %]_userstation[% workstations.diskquotas}{mountpoint %]-diskquota" value="[% workstations.diskquotas %]{quota}"></td>
+[% END %]
+<td><input size="6" maxlength="5" name="[% workstations.login %]_usermailquota" value="[% workstations.mailquota %]"></td>
+</tr>
+[% END %]
+
+<p><input type="submit" name="acceptusers" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+[% END %]
+
+
+
+[% IF systems %]
+
+<h3>[% d.get('Systembenutzer') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+
+[% odd=0 %]
+<table id="quotassystem" class="liste">
+<colgroup span="1" width="70%"></colgroup>
+<colgroup>
+	[% IF mountpoints %]<col span="[% mountpoints_cnt %]">[% END %]
+	<col>
+</colgroup>
+<tr>
+<th>[% d.get('Login') %]</th>
+[% IF mountpoints %]
+<th colspan="[% mountpoints_cnt %]">[% d.get('Diskquota') %]</th>
+[% END %]
+<th>[% d.get('Mailquota') %]</th>
+</tr>
+[% IF mountpoints %]
+<tr>
+<th colspan="2"></th>
+[% FOREACH mountpoints %]
+<th>[% mountpoints %]</th>
+[% END %]
+<th></th>
+</tr>
+[% END %]
+[% FOREACH systems %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td>[% systems.login %]</td>
+[% FOREACH systems{diskquotas} %]
+<td><input size="6" maxlength="5" name="[% systems.login %]_user[% systems.diskquotas}{mountpoint %]-diskquota" value="[% systems.diskquotas %]{quota}"></td>
+[% END %]
+<td><input size="6" maxlength="5" name="[% systems.login %]_usermailquota" value="[% systems.mailquota %]"></td>
+</tr>
+[% END %]
+</table>
+
+<p><input type="submit" name="acceptusers" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+[% END %]
+
+
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Hier &auml;ndern Sie die Quotawerte spezieller Benutzer und einzelner Sch&uuml;ler/innen.') %]</p>
+<p>[% d.get('Unter &#8222;Neu anlegen&#8220; k&ouml;nnen Sie einem bisher hier nicht aufgef&uuml;hrten Benutzer
+Sonderquota zuweisen. Geben Sie dazu den Login ein und passen Sie die Quotawerte entsprechend an.') %]</p>
+<p>[% d.get('Unter &#8222;Webspace&#8220; legen Sie fest, wieviel Platz alle ver&ouml;ffentlichten Webseiten
+insgesamt belegen d&uuml;rfen. &Auml;ndern Sie hierzu den Quotawert f&uuml;r &#8222;www-data&#8220; auf
+&#8222;/var&#8220;.') %]</p>
+<p>[% d.get('Alle Werte sind in Megabyte (MB) einzugeben.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

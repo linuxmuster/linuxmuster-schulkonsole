@@ -1,0 +1,87 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Einstellungen') %] - [% d.get('Projekte') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-settings.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Einstellungen') %] :: [% d.get('Projekte') %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+
+<h3>[% d.get('Global') %]</h3>
+
+<table class="settings">
+<colgroup span="1" width="59%">
+</colgroup>
+<tr><th>[% d.get('Projektname') %]</th>
+<th>[% d.get('Liste') %]</th>
+<th>[% d.get('Aliase') %]</th>
+<th>[% d.get('WLAN') %]</th></tr>
+[% FOREACH projects %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td><label>[% projects.name %]</label></td>
+<td>
+[% IF {projects{maillist}} %]
+<input type="checkbox" name="[% projects.gid %]_maillist" id="[% projects.gid %]_maillist" checked>
+[% ELSE %]
+<input type="checkbox" name="[% projects.gid %]_maillist" id="[% projects.gid %]_maillist">
+[% END %]
+</td>
+<td>
+[% IF {projects{mailalias}} %]
+<input type="checkbox" name="[% projects.gid %]_mailalias" id="[% projects.gid %]_mailalias" checked>
+[% ELSE %]
+<input type="checkbox" name="[% projects.gid %]_mailalias" id="[% projects.gid %]_mailalias">
+[% END %]
+</td>
+<td>
+<select name="[% projects.gid %]_wlan">
+<option value="-1">-</option>
+<option value="1">[% d.get('An') %]</option>
+<option value="0">[% d.get('Aus') %]</option>
+</select>
+</td>
+</tr>
+[% END %]
+</table>
+
+<p>
+<input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
+</p>
+
+</form>
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Bearbeiten Sie hier die Projektstandardeinstellungen.') %]</p>
+<p>[% d.get('F&uuml;r eine detaillierte Beschreibung der einzelnen Punkte
+konsultieren Sie bitte die Dokumentation.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

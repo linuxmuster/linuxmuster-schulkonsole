@@ -1,0 +1,84 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Quota') %] - [% d.get('Projekte') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-quotas.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Quota') %] :: [% d.get('Projekte (Zusatzquota)') %]</h2>
+
+
+[% IF projects %]
+
+<form method="post" accept-charset="UTF-8">
+
+[% odd=0 %]
+<table id="quotasprojects" class="liste">
+<tr>
+<th>[% d.get('Projekt') %]</th>
+[% IF mountpoints %]
+<th colspan="[% mountpoints_cnt %]">[% d.get('Diskquota') %]</th>
+[% END %]
+<th>[% d.get('Mailquota') %]</th>
+</tr>
+[% IF mountpoints %]
+<tr>
+<th></th>
+[% FOREACH mountpoints %]
+<th>[% mountpoints %]</th>
+[% END %]
+<th></th>
+</tr>
+[% END %]
+[% FOREACH projects %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td>[% projects.name %]</td>
+[% FOREACH projects{adddiskquotas} %]
+<td><input size="6" maxlength="5" name="[% projects.gid %]_project[% projects.adddiskquotas}{mountpoint %]-diskquota" value="[% projects.adddiskquotas %]{quota}"></td>
+[% END %]
+<td><input size="6" maxlength="5" name="[% projects.gid %]_projectmailquota" value="[% projects.addmailquota %]"></td>
+</tr>
+[% END %]
+</table>
+
+<p><input type="submit" name="acceptprojects" value="&Auml;nderungen &uuml;bernehmen"></p>
+
+</form>
+
+[% ELSE %]
+<p>[% d.get('Es gibt keine Projekte.') %]</p>
+[% END %]
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Hier k&ouml;nnen Sie den Mitgliedern eines Projekts zus&auml;tzliche Quota zuweisen.') %]</p>
+<p>[% d.get('Leere Felder bedeuten, dass f&uuml;r dieses Projekt bisher keine Zusatzquota vergeben wurden.') %]</p>
+<p>[% d.get('Alle Werte sind in Megabyte (MB) einzugeben.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

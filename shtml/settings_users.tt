@@ -1,0 +1,232 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Einstellungen') %] - [% d.get('Benutzerverwaltung') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-settings.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Einstellungen') %] :: [% d.get('Benutzerverwaltung') %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+
+<h3>[% d.get('Global') %]</h3>
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="even">
+<td><label for="birthlimitlow" accesskey="g">[% d.get('Geburtsjahreszahl f&uuml;r Sch&uuml;ler') %]</label></td>
+<td><input type="text" size="5" maxlength="4" name="birthlimitlow" id="birthlimitlow">
+  - <input type="text" size="5" maxlength="4" name="birthlimitup" id="birthlimitup"></td>
+</tr>
+<tr class="odd">
+<td><label for="filterstarclass" accesskey="f">[% d.get('Sternchenklassen filtern') %]</label></td>
+[% IF filterstarclass %]
+<td><input type="checkbox" name="filterstarclass" id="filterstarclass" checked></td>
+[% ELSE %]
+<td><input type="checkbox" name="filterstarclass" id="filterstarclass"></td>
+[% END %]
+</tr>
+<tr class="even">
+<td><label for="activatequota">[% d.get('Quota aktivieren') %]</label></td>
+[% IF activatequota %]
+<td><input type="checkbox" name="activatequota" id="activatequota" checked></td>
+[% ELSE %]
+<td><input type="checkbox" name="activatequota" id="activatequota"></td>
+[% END %]
+</tr>
+[% IF mountpoints %]
+<tr class="odd">
+<td>[% d.get('Standardquota Lehrer') %]</td>
+<td>
+
+<table class="tabletable">
+[% FOREACH mountpoints %]
+<th><label for="[% .mountpoints %]_quotateacher">[% mountpoints %]</label></th>
+[% END %]
+</tr>
+<tr>
+[% FOREACH mountpoints %]
+<td><input size="6" maxlength="5" name="[% .mountpoints %]_quotateacher" id="[% .mountpoints %]_quotateacher"> MB</td>
+[% END %]
+</tr>
+</table>
+
+</td>
+</tr>
+<tr class="even">
+<td>[% d.get('Standardquota Sch&uuml;ler') %]</td>
+<td>
+
+<table class="tabletable">
+[% FOREACH mountpoints %]
+<th><label for="[% .mountpoints %]_quotastudent">[% mountpoints %]</label></th>
+[% END %]
+</tr>
+<tr>
+[% FOREACH mountpoints %]
+<td><input size="6" maxlength="5" name="[% .mountpoints %]_quotastudent" id="[% .mountpoints %]_quotastudent"> MB</td>
+[% END %]
+</tr>
+</table>
+
+</td>
+</tr>
+[% END %]
+<tr class="odd">
+<td><label for="activateglobalshares">[% d.get('Schulweites Tauschen aktivieren') %]</label></td>
+[% IF activateglobalshares %]
+<td><input type="checkbox" name="activateglobalshares" id="activateglobalshares" checked></td>
+[% ELSE %]
+<td><input type="checkbox" name="activateglobalshares" id="activateglobalshares"></td>
+[% END %]
+</tr>
+</table>
+
+<hr>
+
+<h3>[% d.get('Login') %] [% d.get('(Lehrer)') %]</h3>
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="even">
+<td><label for="activaterandompasswordteacher">[% d.get('Zufallspasswort') %]</label></td>
+[% IF activaterandompasswordteacher %]
+<td><input type="checkbox" name="activaterandompasswordteacher" id="activaterandompasswordteacher" checked></td>
+[% ELSE %]
+<td><input type="checkbox" name="activaterandompasswordteacher" id="activaterandompasswordteacher"></td>
+[% END %]
+</tr>
+<tr class="odd">
+<td><label for="randompasswordlengthteacher">[% d.get('Zufallspasswortzeichen') %]</label></td>
+<td><input type="text" size="3" name="randompasswordlengthteacher" id="randompasswordlengthteacher"></td>
+</tr>
+<tr class="even">
+<td><label for="activatesshteacher">[% d.get('Shell aktivieren') %]</label></td>
+[% IF activatesshteacher %]
+<td><input type="checkbox" name="activatesshteacher" id="activatesshteacher" checked></td>
+[% ELSE %]
+<td><input type="checkbox" name="activatesshteacher" id="activatesshteacher"></td>
+[% END %]
+</tr>
+<tr class="odd">
+<td><label for="changesmbpasswordteacher">[% d.get('Sambapasswort bei Erstanmeldung &auml;ndern') %]</label></td>
+[% IF changesmbpasswordteacher %]
+<td><input type="checkbox" name="changesmbpasswordteacher" id="changesmbpasswordteacher" checked></td>
+[% ELSE %]
+<td><input type="checkbox" name="changesmbpasswordteacher" id="changesmbpasswordteacher"></td>
+[% END %]
+</tr>
+</table>
+
+<hr>
+
+<h3>[% d.get('Login') %] [% d.get('(Sch&uuml;ler)') %]</h3>
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="even">
+<td><label for="activaterandompasswordstudent">[% d.get('Zufallspasswort') %]</label></td>
+[% IF activaterandompasswordstudent %]
+<td><input type="checkbox" name="activaterandompasswordstudent" id="activaterandompasswordstudent" checked></td>
+[% ELSE %]
+<td><input type="checkbox" name="activaterandompasswordstudent" id="activaterandompasswordstudent"></td>
+[% END %]
+</tr>
+<tr class="odd">
+<td><label for="randompasswordlengthstudent">[% d.get('Zufallspasswortzeichen') %]</label></td>
+<td><input type="text" size="3" name="randompasswordlengthstudent" id="randompasswordlengthstudent"></td>
+</tr>
+<tr class="even">
+<td><label for="activatesshstudent">[% d.get('Shell aktivieren') %]</label></td>
+[% IF activatesshstudent %]
+<td><input type="checkbox" name="activatesshstudent" id="activatesshstudent" checked></td>
+[% ELSE %]
+<td><input type="checkbox" name="activatesshstudent" id="activatesshstudent"></td>
+[% END %]
+</tr>
+<tr class="odd">
+<td><label for="changesmbpasswordstudent">[% d.get('Sambapasswort bei Erstanmeldung &auml;ndern') %]</label></td>
+[% IF changesmbpasswordstudent %]
+<td><input type="checkbox" name="changesmbpasswordstudent" id="changesmbpasswordstudent" checked></td>
+[% ELSE %]
+<td><input type="checkbox" name="changesmbpasswordstudent" id="changesmbpasswordstudent"></td>
+[% END %]
+</tr>
+</table>
+
+<hr>
+
+<h3>[% d.get('L&ouml;schen') %] [% d.get('(Lehrer)') %]</h3>
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="even">
+<td><label for="tolerateteacher">[% d.get('Duldungszeitraum') %]</label></td>
+<td><input size="5" maxlength="4" name="tolerateteacher" id="tolerateteacher"> Tage</td>
+</tr>
+<tr class="odd">
+<td><label for="deactivateteacher">[% d.get('Deaktivierungszeitraum') %]</label></td>
+<td><input size="5" maxlength="4" name="deactivateteacher" id="deactivateteacher"> Tage</td>
+</tr>
+</table>
+
+<hr>
+
+<h3>[% d.get('L&ouml;schen') %] [% d.get('(Sch&uuml;ler)') %]</h3>
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="even">
+<td><label for="toleratestudent">[% d.get('Duldungszeitraum') %]</label></td>
+<td><input size="5" maxlength="4" name="toleratestudent" id="toleratestudent"> Tage</td>
+</tr>
+<tr class="odd">
+<td><label for="deactivatestudent">[% d.get('Deaktivierungszeitraum') %]</label></td>
+<td><input size="5" maxlength="4" name="deactivatestudent" id="deactivatestudent"> Tage</td>
+</tr>
+</table>
+
+<p>
+<input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
+</p>
+
+</form>
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Bearbeiten Sie hier die globalen Einstellungen f&uuml;r die
+Benutzerverwaltung.') %]</p>
+<p>[% d.get('F&uuml;r eine detaillierte Beschreibung der einzelnen Punkte
+konsultieren Sie bitte die Dokumentation.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

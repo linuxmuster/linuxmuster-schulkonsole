@@ -1,0 +1,89 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('R&auml;ume') %] - [% d.get('EDV-R&auml;ume') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-rooms.inc.tt %]
+</div>
+
+<div id="content">
+
+[% IF unconfigured %]
+<p class="important">
+[% d.get('Die Liste der konfigurierten Hosts und ihrer R&auml;me stimmt nicht
+mit den tats&auml;chlich im System vorhandenen Hosts &uuml;berein.') %]
+[% d.get('Bitte &uuml;berpr&uuml;fen Sie die <a href="hosts">Hosts-Liste</a>.') %]
+</p>
+[% ELSE %]
+[% IF unimported %]
+<p class="important">
+[% d.get('Es wurden noch nicht alle Hosts mit ihren R&auml;men in das
+System &uuml;bernommen.[% d.get('
+[% d.get('Bitte &uuml;berpr&uuml;fen Sie die <a href="hosts">Hosts-Liste</a>.') %]
+</p>
+[% END %]
+[% END %]
+
+
+
+<h2>[% d.get('R&auml;ume') %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+
+
+<table id="rooms" class="liste">
+<col width="80%">
+<col width="20%">
+<tr>
+<th>[% d.get('Raumbezeichnung') %]</th>
+<th>[% d.get('Computerraum') %]</th>
+</tr>
+[% FOREACH rooms %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td><label for="[% rooms.name %]_classroom">[% rooms.name %]</label></td>
+[% IF rooms{selected} %]
+<td><input type="checkbox" id="[% rooms.name %]_classroom" name="[% rooms.name %]_classroom" checked></td>
+[% ELSE %]
+<td><input type="checkbox" id="[% rooms.name %]_classroom" name="[% rooms.name %]_classroom"></td>
+[% END %]
+</tr>
+[% END %]
+</table>
+
+
+
+<p>
+<input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
+</p>
+
+</form>
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Legen Sie hier fest, welche R&auml;ume von der Schulkonsole als Computerraum
+unter &#8222;aktueller Raum&#8220; verwaltbar sein sollen.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

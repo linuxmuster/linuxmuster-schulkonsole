@@ -1,0 +1,57 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Einstellungen') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-settings.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Einstellungen') %]</h2>
+
+<p>
+[% IF link_settings_program %]
+<a href="settings_program">[% d.get('Schulkonsole') %]</a></br>
+[% END %]
+[% IF link_settings_users %]
+<a href="settings_users">[% d.get('Benutzerverwaltung') %]</a></br>
+[% END %]
+[% IF link_settings_classs %]
+<a href="settings_classs">[% d.get('Klassen') %]</a></br>
+[% END %]
+[% IF link_settings_projects %]
+<a href="settings_projects">[% d.get('Projekte') %]</a></br>
+[% END %]
+</p>
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Bearbeiten Sie hier die globalen Einstellungen f&uuml;r die
+Schulkonsole, die Benutzerverwaltung und die Klassensichtbarkeit.') %]</p>
+<p>[% d.get('F&uuml;r eine detaillierte Beschreibung der einzelnen Punkte
+konsultieren Sie bitte die Dokumentation.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

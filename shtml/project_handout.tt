@@ -1,0 +1,87 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Projekte') %]: [% project %] - [% d.get('Bereitstellen') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-project.inc.tt %]
+</div>
+
+<div id="content">
+
+[% IF projects %]
+<form method="post" accept-charset="UTF-8">
+<p class="selectdomain"> <select name="projects">
+<optgroup label="Projekte">
+[% FOREACH projects %] <option value="[% projects.gid %]">[% projects.name %]</option>
+[% END %]
+</optgroup>
+<optgroup label="aktuelles Projekt">
+<option value="[% project_gid %]" selected>[% project %]</option>
+</optgroup>
+</select>
+<input type="submit" value="Wechseln">
+</p>
+</form>
+[% END %]
+
+
+<h2>[% d.get('Projekte') %] :: [% d.get('Bereitstellen') %]</h2>
+
+<h3>[% d.get('Ausgew&auml;hltes Projekt:') %] [% project %]</h3>
+
+
+<form method="post" accept-charset="UTF-8">
+
+
+<h3>[% d.get('Vorlagen') %]</h3>
+
+[% IF admin_share_files %]
+<ul>
+[% FOREACH admin_share_files %]
+	<li>[% IF admin_share_files{isdir} %]
+	*[% END %][% admin_share_files.name %]</li>
+[% END %]
+</ul>
+[% ELSE %]
+<p>[% d.get('Keine Dateien') %]<p>
+[% END %]
+<p><input type="submit" value="Ansicht aktualisieren"></p>
+
+
+<p><input type="submit" name="handout" value="Bereitstellen"></p>
+</form>
+
+
+
+
+</div>
+
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Legen Sie Ihre bereitzustellenden Vorlagen in Ihrem Heimatverzeichnis
+unter &#8222;_bereitstellen -&gt; bereitstellen-') %][% project %]&#8220; ab.</p>
+<p>[% d.get('Nach Bet&auml;tigen der Schaltfl&auml;che &#8222;Bereitstellen&#8220; finden die
+Projektmitglieder Ihre Vorlagen in ihrem Homeverzeichnis unter &#8222;__vorlagen -&gt;
+vorlagen-') %][% project %]&#8220;.</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>
