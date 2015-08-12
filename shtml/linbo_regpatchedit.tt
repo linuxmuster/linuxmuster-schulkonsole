@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('linbo') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-linbo.inc.tt" %]
@@ -53,8 +53,8 @@
 [% FOREACH regpatches %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><input type="submit" name="[% .regpatches %]_edit" value="[% regpatches %]"></td>
-<td><input type="submit" name="[% .regpatches %]_delete" value="l&ouml;schen"></td>
+<td><input type="submit" name="[% regpatches %]_edit" value="[% regpatches %]"></td>
+<td><input type="submit" name="[% regpatches %]_delete" value="l&ouml;schen"></td>
 </tr>
 [% END %]
 </table>
@@ -82,7 +82,7 @@
 [% END %]</optgroup>[% END %]
 [% IF example_regpatches %]
 <optgroup label="Beispieldateien">[% FOREACH example_regpatches %]
-<option value="[% .example_regpatches %]_example">[% example_regpatches %]</option>
+<option value="[% example_regpatches %]_example">[% example_regpatches %]</option>
 [% END %]</optgroup>[% END %]
 </select>
 </p>
@@ -109,7 +109,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -118,10 +118,10 @@
 aus dem oberen Dropdown-Men&uuml;. Im unteren Dropdown-Men&uuml; w&auml;hlen Sie die Registrypatch-Datei aus,
 die als Vorlage f&uuml;r die neue Datei dienen soll.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

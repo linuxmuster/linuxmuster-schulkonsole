@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('R&auml;ume') %] - [% d.get('EDV-R&auml;ume') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-rooms.inc.tt" %]
@@ -50,7 +50,7 @@ System &uuml;bernommen.[% d.get('
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td><label for="[% rooms.name %]_classroom">[% rooms.name %]</label></td>
-[% IF rooms{selected} %]
+[% IF rooms.selected %]
 <td><input type="checkbox" id="[% rooms.name %]_classroom" name="[% rooms.name %]_classroom" checked></td>
 [% ELSE %]
 <td><input type="checkbox" id="[% rooms.name %]_classroom" name="[% rooms.name %]_classroom"></td>
@@ -73,17 +73,17 @@ System &uuml;bernommen.[% d.get('
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
 <p>[% d.get('Legen Sie hier fest, welche R&auml;ume von der Schulkonsole als Computerraum
 unter &#8222;aktueller Raum&#8220; verwaltbar sein sollen.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

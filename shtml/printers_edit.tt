@@ -3,15 +3,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('Drucker') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
-[% INCLUDE footer_submenu.inc.tt %]
+[% INCLUDE "footer_submenu.inc.tt" %]
 </div>
 
 <div id="content">
@@ -39,8 +39,8 @@
 </select>
 </td>
 <td>
-<input type="submit" name="[% .printer %]_roomselect" value="&lt;&lt;"><br>
-<input type="submit" name="[% .printer %]_roomdeselect" value="&gt;&gt;">
+<input type="submit" name="[% printer %]_roomselect" value="&lt;&lt;"><br>
+<input type="submit" name="[% printer %]_roomdeselect" value="&gt;&gt;">
 </td>
 <td>
 <select name="roomselect" multiple>
@@ -54,7 +54,7 @@
 
 <p>
 [% FOREACH roomsselected %]<input type="hidden" name="roomsselected" value="[% roomsselected %]">[% END %]
-<input type="submit" name="[% .printer %]_acceptrooms" value="&Auml;nderungen &uuml;bernehmen">
+<input type="submit" name="[% printer %]_acceptrooms" value="&Auml;nderungen &uuml;bernehmen">
 </p>
 
 </form>
@@ -78,8 +78,8 @@
 </select>
 </td>
 <td>
-<input type="submit" name="[% .printer %]_hostselect" value="&lt;&lt;"><br>
-<input type="submit" name="[% .printer %]_hostdeselect" value="&gt;&gt;">
+<input type="submit" name="[% printer %]_hostselect" value="&lt;&lt;"><br>
+<input type="submit" name="[% printer %]_hostdeselect" value="&gt;&gt;">
 </td>
 <td>
 <select name="hostselect" multiple>
@@ -93,7 +93,7 @@
 
 <p>
 [% FOREACH hostsselected %]<input type="hidden" name="hostsselected" value="[% hostsselected %]">[% END %]
-<input type="submit" name="[% .printer %]_accepthosts" value="&Auml;nderungen &uuml;bernehmen">
+<input type="submit" name="[% printer %]_accepthosts" value="&Auml;nderungen &uuml;bernehmen">
 </p>
 
 </form>
@@ -107,7 +107,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -118,10 +118,10 @@ die Zugriff auf diesen Drucker bekommen sollen.') %]</p>
 <p>[% d.get('Mehrfachauswahl mit gedr&uuml;ckter Strg-Taste ist m&ouml;glich.') %]</p>
 <p>[% d.get('Schliessen Sie die Aktion mit &#8222;&Auml;nderungen &uuml;bernehmen&#8220;  ab.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

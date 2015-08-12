@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('Einstellungen') %] - [% d.get('Klassen') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-settings.inc.tt" %]
@@ -33,21 +33,21 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td><label for="[% classes.gid %]_visible">[% classes.name %]</label></td><td>
-[% IF {classes{visible}} %]
+[% IF classes.visible %]
 <input type="checkbox" name="[% classes.gid %]_visible" id="[% classes.gid %]_visible" checked>
 [% ELSE %]
 <input type="checkbox" name="[% classes.gid %]_visible" id="[% classes.gid %]_visible">
 [% END %]
 </td>
 <td>
-[% IF {classes{maillist}} %]
+[% IF classes.maillist %]
 <input type="checkbox" name="[% classes.gid %]_maillist" id="[% classes.gid %]_maillist" checked>
 [% ELSE %]
 <input type="checkbox" name="[% classes.gid %]_maillist" id="[% classes.gid %]_maillist">
 [% END %]
 </td>
 <td>
-[% IF {classes{mailalias}} %]
+[% IF classes.mailalias %]
 <input type="checkbox" name="[% classes.gid %]_mailalias" id="[% classes.gid %]_mailalias" checked>
 [% ELSE %]
 <input type="checkbox" name="[% classes.gid %]_mailalias" id="[% classes.gid %]_mailalias">
@@ -76,7 +76,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -84,10 +84,10 @@
 <p>[% d.get('F&uuml;r eine detaillierte Beschreibung der einzelnen Punkte
 konsultieren Sie bitte die Dokumentation.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

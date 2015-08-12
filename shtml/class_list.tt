@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('Klassen') %]: [% class %] - [% d.get('Klassenliste') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-class.inc.tt" %]
@@ -53,59 +53,59 @@
 <td>[% students.login %]</td>
 <td>[% students.firstname %] [% students.surname %]</td>
 <td>
-[% IF students{diskquotas} %]
+[% IF students.diskquotas %]
 
 <p>
 
-[% FOREACH students{diskquotas} %]
+[% FOREACH students.diskquotas %]
 
-[% students.diskquotas}{path %]:<br>
+[% students.diskquotas.path %]:<br>
 	[% d.get('Speicherplatz/KB:') %]
-	[% students.diskquotas}{blocks_usage %]/[% students.diskquotas}{blocks_soft %]
-	- max: [% students.diskquotas}{blocks_hard %]
-	- [% students.diskquotas}{blocks_percent %]%<br>
-	[% IF students{diskquotas}{blocks_grace} %]
-	[% d.get('verbleibende Zeit:') %] [% students.diskquotas}{blocks_grace %]<br>[% END %]
+	[% students.diskquotas.blocks_usage %]/[% students.diskquotas.blocks_soft %]
+	- max: [% students.diskquotas.blocks_hard %]
+	- [% students.diskquotas.blocks_percent %]%<br>
+	[% IF students.diskquotas.blocks_grace %]
+	[% d.get('verbleibende Zeit:') %] [% students.diskquotas.blocks_grace %]<br>[% END %]
 	[% d.get('Dateien:') %]
-	[% students.diskquotas}{files_usage %]/[% students.diskquotas}{files_soft %]
-	- max: [% students.diskquotas}{files_hard %]
-	- [% students.diskquotas}{files_percent %]%<br>
-	[% IF students{diskquotas}{files_grace} %]
-	[% d.get('verbleibende Zeit:') %] [% students.diskquotas}{files_grace %]<br>[% END %]<br>
+	[% students.diskquotas.files_usage %]/[% students.diskquotas.files_soft %]
+	- max: [% students.diskquotas.files_hard %]
+	- [% students.diskquotas.files_percent %]%<br>
+	[% IF students.diskquotas.files_grace %]
+	[% d.get('verbleibende Zeit:') %] [% students.diskquotas.files_grace %]<br>[% END %]<br>
 
 [% END %]
 </p>
 
 
 <ul>
-[% FOREACH students{diskquotas} %]
-[% IF students{diskquotas}{warn} %]
+[% FOREACH students.diskquotas %]
+[% IF students.diskquotas.warn %]
 <li class="warn">
 [% ELSE %]
 <li>
 [% END %]
-<span title="[% students.diskquotas}{path %]: [% students.diskquotas}{blocks_percent %]%" style="width: [% students.diskquotas}{blocks_percent_rounded %]%;">&nbsp;</span>
+<span title="[% students.diskquotas}{path %]: [% students.diskquotas.blocks_percent %]%" style="width: ${students{diskquotas}{blocks_percent_rounded}}%;">&nbsp;</span>
 </li>
 [% END %]
 </ul>
 [% ELSE %]-[% END %]</td>
-<td>[% IF students{mailquotas}{limit} %]
+<td>[% IF students.mailquotas.limit %]
 
 
 <p>
 	[% d.get('E-Mail-Speicher/KB:') %]
-	[% students.mailquotas}{usage %]/[% students.mailquotas}{limit %]
-	- [% students.mailquotas}{percent %]%
+	[% students.mailquotas.usage %]/[% students.mailquotas.limit %]
+	- [% students.mailquotas.percent %]%
 </p>
 
 
 <ul>
-[% IF students{mailquotas}{warn} %]
+[% IF students.mailquotas.warn %]
 <li class="warn">
 [% ELSE %]
 <li>
 [% END %]
-<span title="E-Mail: [% students.mailquotas}{usage %]/[% students.mailquotas}{limit %] [% students.mailquotas}{percent %]%" style="width: [% students.mailquotas}{percent_rounded %]%;">&nbsp;</span>
+<span title="E-Mail: ${students{mailquotas}{usage}}/${students{mailquotas}{limit}} ${students{mailquotas}{percent}}%" style="width: ${students{mailquotas}{percent_rounded}}%;">&nbsp;</span>
 </li>
 </ul>
 [% ELSE %]-[% END %]</td>
@@ -132,17 +132,17 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
 <p>[% d.get('Hier sehen Sie Informationen zu den Sch&uuml;ler/innen der aktuell ausgew&auml;hlten Klasse ') %]
 [% class %].</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

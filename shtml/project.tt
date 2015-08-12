@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('Projekte') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-project.inc.tt" %]
@@ -60,16 +60,16 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td><input type="submit" name="[% projects.gid %]_members" value="[% projects.name %]"></td>
-<td>[% IF projects{addquota} %]
+<td>[% IF projects.addquota %]
 [% projects.addquota %]&nbsp;MB[% ELSE %]-[% END %]</td>
 
-[% IF projects{joinable} %]
+[% IF projects.joinable %]
 <td><input type="checkbox" disabled checked></td>
 [% ELSE %]
 <td><input type="checkbox" disabled></td>
 [% END %]
-[% IF projects{joinable} %]
-[% IF projects{islastadmin} %]
+[% IF projects.joinable %]
+[% IF projects.islastadmin %]
 <td></td>
 [% ELSE %]
 <td><input type="submit" name="[% projects.gid %]_remove" value="Austragen"></td>
@@ -78,7 +78,7 @@
 <td></td>
 [% END %]
 
-[% IF projects{isadmin} %]
+[% IF projects.isadmin %]
 <td><input type="submit" name="[% projects.gid %]_drop" value="L&ouml;schen"></td>
 [% ELSE %]
 <td></td>
@@ -131,7 +131,7 @@ p_<input id="projectname" name="projectname">
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -147,10 +147,10 @@ a-z und 0-9 sowie _ und -. Der Name muss zwischen 3 und 14 Zeichen lang sein.') 
 <p>[% d.get('&#8222;Offenes&#8220; Projekt bedeutet, andere Lehrer k&ouml;nnen sich
 in das Projekt eintragen.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('R&auml;ume') %] - [% d.get('Standardeinstellungen') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-rooms.inc.tt" %]
@@ -80,8 +80,8 @@
 [% IF odd %][% odd=0 %]
 [% ELSE %][% odd=1 %][% END %]
 
-	[% IF nondefaults{isroom} %]
-	[% IF nondefaults{isset} %]
+	[% IF nondefaults.isroom %]
+	[% IF nondefaults.isset %]
 	[% IF odd %]<tr class="odd">[% ELSE %]<tr class="even">[% END %]
 	[% ELSE %]
 	<tr class="unset">
@@ -108,9 +108,9 @@
 		<option value="0">[% d.get('Aus') %]</option>
 		</select>
 	</td>
-	[% IF nondefaults{hosts} %]
+	[% IF nondefaults.hosts %]
 	<td><select name="[% nondefaults.name %]_add">
-		[% FOREACH nondefaults{hosts} %]
+		[% FOREACH nondefaults.hosts %]
 		<option value="[% nondefaults.hosts %]">[% nondefaults.hosts %]</option>
 	[% END %]
 	</select></td>
@@ -175,7 +175,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -192,10 +192,10 @@ zur&uuml;ckzusetzen, setzen Sie das H&auml;kchen in der entsprechenden
 Checkbox und w&auml;hlen die Aktion
 &#8222;Auswahl zur&uuml;cksetzen&#8220;.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

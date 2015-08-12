@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('Projekte') %]: [% project %] - [% d.get('Mitglieder') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-project.inc.tt" %]
@@ -83,7 +83,7 @@
 [% FOREACH membersclasses %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-[% IF membersclasses{ismember} %]
+[% IF membersclasses.ismember %]
 <td><input type="submit" name="[% membersclasses.gid %]_gotoclass" value="[% membersclasses.name %]"></td>
 [% ELSE %]
 <td>[% membersclasses.name %]</td>
@@ -114,7 +114,7 @@
 [% FOREACH membersprojects %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-[% IF membersprojects{ismember} %]
+[% IF membersprojects.ismember %]
 <td><input type="submit" name="[% membersprojects.gid %]_gotoproject" value="[% membersprojects.name %]"></td>
 [% ELSE %]
 <td>[% membersprojects.name %]</td>
@@ -152,7 +152,7 @@
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td>[% membersteachers.login %]</td>
 <td>[% membersteachers.firstname %] [% membersteachers.surname %]</td>
-[% IF membersteachers{isadmin} %]
+[% IF membersteachers.isadmin %]
 <td><input type="checkbox" disabled checked></td>
 [% ELSE %]
 <td><input type="checkbox" disabled></td>
@@ -191,59 +191,59 @@
 <td>[% membersstudents.login %]</td>
 <td>[% membersstudents.firstname %] [% membersstudents.surname %]</td>
 <td>
-[% IF membersstudents{diskquotas} %]
+[% IF membersstudents.diskquotas %]
 
 <p>
 
-[% FOREACH membersstudents{diskquotas} %]
+[% FOREACH membersstudents.diskquotas %]
 
-[% membersstudents.diskquotas}{path %]:<br>
+[% membersstudents.diskquotas.path %]:<br>
 	[% d.get('Speicherplatz/KB:') %]
-	[% membersstudents.diskquotas}{blocks_usage %]/[% membersstudents.diskquotas}{blocks_soft %]
-	- max: [% membersstudents.diskquotas}{blocks_hard %]
-	- [% membersstudents.diskquotas}{blocks_percent %]%<br>
-	[% IF membersstudents{diskquotas}{blocks_grace} %]
-	[% d.get('verbleibende Zeit:') %] [% membersstudents.diskquotas}{blocks_grace %]<br>[% END %]
+	[% membersstudents.diskquotas.blocks_usage %]/[% membersstudents.diskquotas.blocks_soft %]
+	- max: [% membersstudents.diskquotas.blocks_hard %]
+	- [% membersstudents.diskquotas.blocks_percent %]%<br>
+	[% IF membersstudents.diskquotas.blocks_grace %]
+	[% d.get('verbleibende Zeit:') %] [% membersstudents.diskquotas.blocks_grace %]<br>[% END %]
 	[% d.get('Dateien:') %]
-	[% membersstudents.diskquotas}{files_usage %]/[% membersstudents.diskquotas}{files_soft %]
-	- max: [% membersstudents.diskquotas}{files_hard %]
-	- [% membersstudents.diskquotas}{files_percent %]%<br>
-	[% IF membersstudents{diskquotas}{files_grace} %]
-	[% d.get('verbleibende Zeit:') %] [% membersstudents.diskquotas}{files_grace %]<br>[% END %]<br>
+	[% membersstudents.diskquotas.files_usage %]/[% membersstudents.diskquotas.files_soft %]
+	- max: [% membersstudents.diskquotas.files_hard %]
+	- [% membersstudents.diskquotas.files_percent %]%<br>
+	[% IF membersstudents.diskquotas.files_grace %]
+	[% d.get('verbleibende Zeit:') %] [% membersstudents.diskquotas.files_grace %]<br>[% END %]<br>
 
 [% END %]
 </p>
 
 
 <ul>
-[% FOREACH membersstudents{diskquotas} %]
-[% IF membersstudents{diskquotas}{warn} %]
+[% FOREACH membersstudents.diskquotas %]
+[% IF membersstudents.diskquotas.warn %]
 <li class="warn">
 [% ELSE %]
 <li>
 [% END %]
-<span title="[% membersstudents.diskquotas}{path %]: [% membersstudents.diskquotas}{blocks_percent %]%" style="width: [% membersstudents.diskquotas}{blocks_percent_rounded %]%;">&nbsp;</span>
+<span title="[% membersstudents.diskquotas}{path %]: [% membersstudents.diskquotas.blocks_percent %]%" style="width: ${membersstudents{diskquotas}{blocks_percent_rounded}}%;">&nbsp;</span>
 </li>
 [% END %]
 </ul>
 [% ELSE %]-[% END %]</td>
-<td>[% IF membersstudents{mailquotas}{limit} %]
+<td>[% IF membersstudents.mailquotas.limit %]
 
 
 <p>
 	[% d.get('E-Mail-Speicher/KB:') %]
-	[% membersstudents.mailquotas}{usage %]/[% membersstudents.mailquotas}{limit %]
-	- [% membersstudents.mailquotas}{percent %]%
+	[% membersstudents.mailquotas.usage %]/[% membersstudents.mailquotas.limit %]
+	- [% membersstudents.mailquotas.percent %]%
 </p>
 
 
 <ul>
-[% IF membersstudents{mailquotas}{warn} %]
+[% IF membersstudents.mailquotas.warn %]
 <li class="warn">
 [% ELSE %]
 <li>
 [% END %]
-<span title="E-Mail: [% membersstudents.mailquotas}{usage %]/[% membersstudents.mailquotas}{limit %] [% membersstudents.mailquotas}{percent %]%" style="width: [% membersstudents.mailquotas}{percent_rounded %]%;">&nbsp;</span>
+<span title="E-Mail: ${membersstudents{mailquotas}{usage}}/${membersstudents{mailquotas}{limit}} ${membersstudents{mailquotas}{percent}}%" style="width: ${membersstudents{mailquotas}{percent_rounded}}%;">&nbsp;</span>
 </li>
 </ul>
 [% ELSE %]-[% END %]</td>
@@ -272,7 +272,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -285,10 +285,10 @@ Sch&uuml;ler/innen, Lehrer/innen, alle Mitglieder einer Klasse oder eines Projek
 hinzuf&uuml;gen wollen. Geben Sie dann einen Suchbegriff ein und bet&auml;tigen die
 Schaltfl&auml;che &#8222;Suche&#8220;. Ein * im Suchbegriff als Wildcard ist erlaubt.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

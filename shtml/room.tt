@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('aktueller Raum') %]: [% room %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-room.inc.tt" %]
@@ -20,7 +20,7 @@
 <p style="float: right;">
 <select name="rooms">
 <optgroup label="R&auml;ume">
-[% FOREACH room IN rooms %] <option value="[% room %]">[% room %]</option>
+[% FOREACH rooms %] <option value="[% rooms %]">[% rooms %]</option>
 [% END %]
 </optgroup>
 <optgroup label="aktueller Raum">
@@ -251,7 +251,7 @@
 <td><input type="button" value="An" name="webfilter" onClick="check_uncheck(this)"></td>
 [% END %]
 [% FOREACH printers %]
-<td><input type="button" value="Aus" name="[% printers %];printer" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="Aus" name="[% {printers};printer %]" checked onClick="check_uncheck(this)"></td>
 [% END %]
 [% IF quicksharesoff %]
 <td><input type="button" value="Aus" name="shares" onClick="check_uncheck(this)"></td>
@@ -423,7 +423,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -437,10 +437,10 @@ Webfilter, Drucker und das globale Tauschverzeichnis &uuml;ber Checkboxen steuer
 <p>[% d.get('Im Bereich &#8222;&Uuml;bersicht Drucker&#8220; k&ouml;nnen Sie den Zugriff auf die Raumdrucker
 f&uuml;r alle Benutzer, nicht nur die des Raumes, freigeben oder sperren.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

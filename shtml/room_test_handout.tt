@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('aktueller Raum') %]: [% room %] - [% d.get('Klassenarbeitsmodus') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-room.inc.tt" %]
@@ -16,7 +16,7 @@
 
 <div id="content">
 
-[% INCLUDE subsubmenu-room_test.inc.tt %]
+[% INCLUDE "subsubmenu-room_test.inc.tt" %]
 
 <h2>[% d.get('Aktueller Raum') %]: [% room %]
 ::  [% d.get('Klassenarbeitsmodus') %]</h2>
@@ -48,10 +48,10 @@
 [% FOREACH overview_workstations %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-	<td>[% IF overview_workstations{first} %]
+	<td>[% IF overview_workstations.first %]
 	    [% overview_workstations.name %]
 	    [% END %]</td>
-	<td>[% IF overview_workstations{login} %]
+	<td>[% IF overview_workstations.login %]
 	    [% overview_workstations.login %]
 	    [% ELSE %]-[% END %]
 	</td>
@@ -67,7 +67,7 @@
 [% IF teacher_share_files %]
 <ul>
 [% FOREACH teacher_share_files %]
-	<li>[% IF teacher_share_files{isdir} %]
+	<li>[% IF teacher_share_files.isdir %]
 	*[% END %][% teacher_share_files.name %]</li>
 [% END %]
 </ul>
@@ -88,7 +88,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -100,10 +100,10 @@ oben auf den Link &#8222;Bereitstellen&#8220;.') %]</p>
 <p>[% d.get('Mit Bet&auml;tigen der Schaltfl&auml;che &#8222;bereitstellen&#8220; gelangen Sie zum n&auml;chsten
 Schritt. Gleichzeitig werden Ihre Dateien den Klassenarbeitsteilnehmern bereitgestellt.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

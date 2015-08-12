@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('aktueller Raum') %]: [% room %] - [% d.get('Einsammeln') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-room.inc.tt" %]
@@ -67,7 +67,7 @@
 <th>[% d.get('Dateien') %]</th>
 </tr>
 [% FOREACH overview_workstations %]
-[% IF overview_workstations{editing} %]
+[% IF overview_workstations.editing %]
 <tr class="editing">
 [% IF odd %][% odd=0 %]
 [% ELSE %][% odd=1 %][% END %]
@@ -75,23 +75,23 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 [% END %]
-	<td>[% IF overview_workstations{first} %]
+	<td>[% IF overview_workstations.first %]
 	    [% overview_workstations.name %]
 	    [% END %]</td>
-	[% IF overview_workstations{login} %]
+	[% IF overview_workstations.login %]
 	<td>
 	    [% overview_workstations.login %]
 	</td>
 	<td>
 	    [% overview_workstations.firstname %] [% overview_workstations.surname %]
 	</td>
-	<td>[% IF overview_workstations{editing} %]
+	<td>[% IF overview_workstations.editing %]
 		<input type="checkbox" disabled>[% ELSE %]
 		<input type="checkbox" name="[% overview_workstations.login %];collect" checked>
 	[% END %]</td>
-	<td>[% FOREACH overview_workstations{files} %]
-	[% IF overview_workstations{files}{isdir} %]
-	*[% END %][% overview_workstations.files}{name %]<br>
+	<td>[% FOREACH overview_workstations.files %]
+	[% IF overview_workstations.files.isdir %]
+	*[% END %][% overview_workstations.files.name %]<br>
 	[% END %]
 	</td>
 	[% ELSE %]
@@ -133,7 +133,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -145,10 +145,10 @@ Nachtr&auml;glich von den Sch&uuml;ler/innen dorthin abgelegte Dateien k&ouml;nn
 erhalten bleiben sollen.') %]</p>
 <p>[% d.get('Sie finden die eingesammelten Dateien in Ihrem Heimatverzeichnis unter &#8222;_eingesammelt -&gt; eingesammelt-aktueller_raum&#8220;.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>

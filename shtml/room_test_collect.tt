@@ -3,12 +3,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="de">
 <title>[% d.get('Schulkonsole') %] - [% d.get('aktueller Raum') %]: [% room %] - [% d.get('Klassenarbeitsmodus') %]</title>
-[% INCLUDE css.inc.tt %]
+[% INCLUDE "css.inc.tt" %]
 <script type="text/javascript" src="schulkonsole.js"></script>
 </head>
 <body>
 
-[% INCLUDE header.inc.tt %]
+[% INCLUDE "header.inc.tt" %]
 
 <div id="submenu">
 [% INCLUDE "submenu-room.inc.tt" %]
@@ -51,14 +51,14 @@
 [% FOREACH overview_workstations %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-	<td>[% IF overview_workstations{first} %]
+	<td>[% IF overview_workstations.first %]
 	    [% overview_workstations.name %]
 	    [% END %]</td>
-	[% IF overview_workstations{login} %]
+	[% IF overview_workstations.login %]
 	<td>[% overview_workstations.login %]</td>
-	<td>[% FOREACH overview_workstations{files} %]
-	[% IF overview_workstation{files}{isdir} %]
-	*[% END %][% overview_workstations.files}{name %]<br>
+	<td>[% FOREACH overview_workstations.files %]
+	[% IF overview_workstation.files.isdir %]
+	*[% END %][% overview_workstations.files.name %]<br>
 	[% END %]
 	</td>
 	[% ELSE %]
@@ -84,7 +84,7 @@
 <div id="info" style="display: block;">
 <a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
 
-[% INCLUDE status.inc.tt %]
+[% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
 
@@ -96,10 +96,10 @@ Status zu sehen.') %]</p>
 <p>[% d.get('&#8222;Einsammeln und beenden&#8220; sammelt alle Ergebnisse ein, l&ouml;scht den Inhalt des
 Ordners &#8222;__einsammeln&#8220; der Arbeitsstation und beendet die Klassenarbeit.') %]</p>
 
-[% INCLUDE footer_info.inc.tt %]
+[% INCLUDE "footer_info.inc.tt" %]
 </div>
 
-[% INCLUDE footer.inc.tt %]
+[% INCLUDE "footer.inc.tt" %]
 
 </body>
 </html>
