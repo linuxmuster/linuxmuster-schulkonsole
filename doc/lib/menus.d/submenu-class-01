@@ -1,52 +1,52 @@
-<!--#if expr="$link_class" -->
-	<a class="separator" href="class"><gettext>Start</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_class_list" -->
-<!--#if expr="$class" -->
-	<a href="class_list"><gettext>Klassenliste</gettext></a>
-<!--#else -->
-	<span class="disabled"><gettext>Klassenliste</gettext></span>
-<!--#endif -->
-<!--#endif -->
-<!--#if expr="$link_class_passwords" -->
-<!--#if expr="$class" -->
-	<a class="separator" href="class_passwords"><gettext>Passw&ouml;rter</gettext></a>
-<!--#else -->
-	<span class="disabledseparator"><gettext>Passw&ouml;rter</gettext></span>
-<!--#endif -->
-<!--#endif -->
-<!--#if expr="$link_class_handoutcopy" -->
-<!--#if expr="$class" -->
-	<a href="class_handoutcopy"><gettext>Austeilen</gettext></a>
-<!--#else -->
-	<span class="disabled"><gettext>Austeilen</gettext></span>
-<!--#endif -->
-<!--#endif -->
-<!--#if expr="$link_class_handout" -->
-<!--#if expr="$class" -->
-	<a href="class_handout"><gettext>Bereitstellen</gettext></a>
-<!--#else -->
-	<span class="disabled"><gettext>Bereitstellen</gettext></span>
-<!--#endif -->
-<!--#endif -->
-<!--#if expr="$link_class_collect" -->
-<!--#if expr="$class" -->
-	<a class="separator" href="class_collect"><gettext>Einsammeln</gettext></a>
-<!--#else -->
-	<span class="disabledseparator"><gettext>Einsammeln</gettext></span>
-<!--#endif -->
-<!--#endif -->
-<!--#if expr="$link_class_shares" -->
-<!--#if expr="$class" -->
-	<a class="separator" href="class_shares"><gettext>Tauschen</gettext></a>
-<!--#else -->
-	<span class="disabledseparator"><gettext>Tauschen</gettext></span>
-<!--#endif -->
-<!--#endif -->
-<!--#if expr="$link_room_test" -->
-<!--#if expr="$class" -->
-	<a class="separator" href="room_test"><gettext>Klassenarbeit</gettext></a>
-<!--#else -->
-	<span class="disabledseparator"><gettext>Klassenarbeit</gettext></span>
-<!--#endif -->
-<!--#endif -->
+[% IF link_class %]
+	<a class="separator" href="class">[% d.get('Start') %]</a>
+[% END %]
+[% IF link_class_list %]
+[% IF class %]
+	<a href="class_list">[% d.get('Klassenliste') %]</a>
+[% ELSE %]
+	<span class="disabled">[% d.get('Klassenliste') %]</span>
+[% END %]
+[% END %]
+[% IF link_class_passwords %]
+[% IF class %]
+	<a class="separator" href="class_passwords">[% d.get('Passw&ouml;rter') %]</a>
+[% ELSE %]
+	<span class="disabledseparator">[% d.get('Passw&ouml;rter') %]</span>
+[% END %]
+[% END %]
+[% IF link_class_handoutcopy %]
+[% IF class %]
+	<a href="class_handoutcopy">[% d.get('Austeilen') %]</a>
+[% ELSE %]
+	<span class="disabled">[% d.get('Austeilen') %]</span>
+[% END %]
+[% END %]
+[% IF link_class_handout %]
+[% IF class %]
+	<a href="class_handout">[% d.get('Bereitstellen') %]</a>
+[% ELSE %]
+	<span class="disabled">[% d.get('Bereitstellen') %]</span>
+[% END %]
+[% END %]
+[% IF link_class_collect %]
+[% IF class %]
+	<a class="separator" href="class_collect">[% d.get('Einsammeln') %]</a>
+[% ELSE %]
+	<span class="disabledseparator">[% d.get('Einsammeln') %]</span>
+[% END %]
+[% END %]
+[% IF link_class_shares %]
+[% IF class %]
+	<a class="separator" href="class_shares">[% d.get('Tauschen') %]</a>
+[% ELSE %]
+	<span class="disabledseparator">[% d.get('Tauschen') %]</span>
+[% END %]
+[% END %]
+[% IF link_room_test %]
+[% IF class %]
+	<a class="separator" href="room_test">[% d.get('Klassenarbeit') %]</a>
+[% ELSE %]
+	<span class="disabledseparator">[% d.get('Klassenarbeit') %]</span>
+[% END %]
+[% END %]

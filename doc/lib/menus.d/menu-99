@@ -1,4 +1,4 @@
 [% IF link_logout %]
-   <a href="logout"><gettext>Abmelden</gettext></a>
+   <a href="logout">[% d.get('Abmelden') %]</a>
 [% END %]
 </div>

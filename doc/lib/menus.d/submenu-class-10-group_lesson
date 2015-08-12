@@ -1,7 +1,7 @@
-<!--#if expr="$link_class_lesson" -->
-<!--#if expr="$class" -->
-	<a class="end" href="class_lesson"><gettext>Unterricht</gettext></a>
-<!--#else -->
-	<span class="disabledend"><gettext>Unterricht</gettext></span>
-<!--#endif -->
-<!--#endif -->
+[% IF link_class_lesson %]
+[% IF class %]
+	<a class="end" href="class_lesson">[% d.get('Unterricht') %]</a>
+[% ELSE %]
+	<span class="disabledend">[% d.get('Unterricht') %]</span>
+[% END %]
+[% END %]

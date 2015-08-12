@@ -1,21 +1,21 @@
-<!--#if expr="$link_linbo" -->
-	<a class="separator" href="linbo"><gettext>Start</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_linbo_edit" -->
-	<a class="tworow" href="linbo_edit"><gettext>Gruppenkonfiguration editieren</gettext></a></br>
-<!--#endif -->
-<!--#if expr="$link_linbo_new" -->
-	<a class="tworowseparator"  href="linbo_new"><gettext>Gruppenkonfiguration erstellen</gettext></a></br>
-<!--#endif -->
-<!--#if expr="$link_linbo_regpatchedit" -->
-	<a href="linbo_regpatchedit"><gettext>Registrypatch editieren</gettext></a></br>
-<!--#endif -->
-<!--#if expr="$link_linbo_pxeedit" -->
-	<a class="separator" href="linbo_pxeedit"><gettext>PXE-Start</gettext></a></br>
-<!--#endif -->
-<!--#if expr="$link_linbo_menuedit" -->
-        <a class="separator" href="linbo_menuedit"><gettext>menu.lst editieren</gettext></a></br>
-<!--#endif -->
-<!--#if expr="$link_linbo_images" -->
-	<a class="end" href="linbo_images"><gettext>Imageverwaltung</gettext></a></br>
-<!--#endif -->
+[% IF link_linbo %]
+	<a class="separator" href="linbo">[% d.get('Start') %]</a>
+[% END %]
+[% IF link_linbo_edit %]
+	<a class="tworow" href="linbo_edit">[% d.get('Gruppenkonfiguration editieren') %]</a></br>
+[% END %]
+[% IF link_linbo_new %]
+	<a class="tworowseparator"  href="linbo_new">[% d.get('Gruppenkonfiguration erstellen') %]</a></br>
+[% END %]
+[% IF link_linbo_regpatchedit %]
+	<a href="linbo_regpatchedit">[% d.get('Registrypatch editieren') %]</a></br>
+[% END %]
+[% IF link_linbo_pxeedit %]
+	<a class="separator" href="linbo_pxeedit">[% d.get('PXE-Start') %]</a></br>
+[% END %]
+[% IF link_linbo_menuedit %]
+	<a class="separator" href="linbo_menuedit">[% d.get('menu.lst editieren') %]</a></br>
+[% END %]
+[% IF link_linbo_images %]
+	<a class="end" href="linbo_images">[% d.get('Imageverwaltung') %]</a></br>
+[% END %]
