@@ -1,0 +1,63 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Benutzer') %] - [% d.get('Sch&uuml;lerliste pflegen') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-user.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('Sch&uuml;lerliste pflegen') %]</h2>
+
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+<h3><label for="studentsfilename">[% d.get('Datei importieren') %]</label></h3>
+<p>
+<input type="file" id="studentsfilename" name="studentsfilename">
+<input type="submit" name="studentsupload" value="Hochladen">
+</p>
+</form>
+
+<hr>
+
+<form method="post" accept-charset="UTF-8">
+<h3><label for="students">[% d.get('Editieren') %]</label></h3>
+
+<p>
+<textarea id="students" name="students" rows="20" cols="70">
+</textarea>
+</p>
+
+<p><input type="submit" name="studentsedit" value="&Auml;nderungen speichern"></p>
+
+</form>
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Hier k&ouml;nnen Sie die aus dem Schulverwaltungsprogramm exportierte Datei
+&#8222;schueler.txt&#8220; ins System hochladen.') %]</p>
+<p>[% d.get('Zudem haben Sie hier die M&ouml;glichkeit, &Auml;nderungen an den Sch&uuml;lerdaten
+von Hand einzupflegen.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

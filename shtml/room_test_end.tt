@@ -1,0 +1,72 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('aktueller Raum') %]: [% room %] - [% d.get('Klassenarbeitsmodus') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-room.inc.tt %]
+</div>
+
+<div id="content">
+
+[% INCLUDE subsubmenu-room_test.inc.tt %]
+
+<h2>[% d.get('Aktueller Raum') %]: [% room %]
+::  [% d.get('Klassenarbeitsmodus') %]</h2>
+
+<p>
+[% d.get('Nutzung:') %]
+
+[% IF editinguser %]
+[% editinguser %]
+[% d.get('unterrichtet in Raum') %]
+[% room %].
+[% IF endedittime %]
+[% d.get('Unterrichtsende um') %] [% endedittime %].
+[% END %]
+</p>
+
+<p>[% d.get('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
+
+<form method="post" accept-charset="UTF-8">
+
+<h3>[% d.get('Bitte best&auml;tigen</getttext></h3>
+
+<p>[% d.get('Mit dem Einsammeln der Dateien wird die Klassenarbeit
+beendet.') %]
+
+<p><input type="submit" name="collectmove" value="Best&auml;tigen"></p>
+
+</form>
+
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Best&auml;tigen Sie das Beenden der Klassenarbeit. Die eingesammelten
+Ergebnisse finden Sie danach in Ihrem Heimatverzeichnis unter
+&#8222;_eingesammelt -&gt; eingesammelt-klassenarbeit&#8220;.') %]</p>
+<p>[% d.get('Falls Sie doch noch nicht beenden wollen, k&ouml;nnen Sie &uuml;ber den Link
+&#8222;Einsammeln&#8220; wieder zur vorigen Seite zur&uuml;ckkehren.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

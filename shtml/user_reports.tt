@@ -1,0 +1,71 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Benutzer') %] - [% d.get('Berichte') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+<style type="text/css" media="print">
+#head, #menu, #submenu, #help,
+#supportnetz, #special, #footer, #bwlogo, #lmzlogo,
+form {
+	display: none;
+}
+
+#content {
+	position: relative;
+	margin: 1em;
+	padding: 0;
+	border: none;
+}
+</style>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-user.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('Berichte') %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+<input type="submit" name="showadmin" value="Administrator-Report">
+<input type="submit" name="showoffice" value="Report f&uuml;r das Sekretariat">
+</form>
+
+[% IF content %]
+
+<pre>
+[% content %]
+</pre>
+
+[% END %]
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Hier rufen Sie die Berichte der jeweils letzten Aktion ab.') %]</p>
+<p>[% d.get('Unter &#8222;Administrator-Report&#8220; erhalten Sie ein Protokoll des letzten Durchlaufs
+von &#8222;anlegen/versetzen/l&ouml;schen&#8220;.') %]</p>
+<p>[% d.get('Unter &#8222;Report f&uuml;r das Sekretariat&#8220; finden Sie Angaben zu Datens&auml;tzen,
+die nicht den Vorgaben von Sophomorix entsprechen und evtl. im Schulverwaltungsprogramm
+korrigiert werden m&uuml;ssen.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('aktueller Raum') %]: [% room %] - [% d.get('Einsammeln') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-room.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Aktueller Raum') %]: [% room %]
+:: [% d.get('Einsammeln') %]</h2>
+
+<p>
+[% d.get('Nutzung:') %]
+
+[% editinguser %] [% d.get('unterrichtet in Raum') %]
+[% room %].
+[% IF endedittime %]
+[% d.get('Unterrichtsende um') %] [% endedittime %].
+[% END %]
+</p>
+
+[% IF exammode %]
+<p>[% d.get('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
+[% ELSE %]
+<p>[% d.get('Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.') %]</p>
+[% END %]
+
+
+<hr>
+
+<form method="post" accept-charset="UTF-8">
+
+<p><input type="submit" value="Ansicht aktualisieren"></p>
+
+
+<table>
+<tr>
+    <td><input type="radio" id="deletetop" name="deletetop" value="1"></td>
+	<td><label for="deletetop">[% d.get('Original wird gel&ouml;scht') %]</label></td>
+</tr>
+<tr>
+	<td><input type="radio" id="copytop" name="deletetop" value="0" checked></td>
+	<td><label for="copytop">[% d.get('Original bleibt erhalten') %]</label></td>
+</tr>
+</table>
+<p><input type="submit" name="collecttop" value="Einsammeln"></p>
+
+
+<table id="roomcollect" class="liste">
+<colgroup span="4"></colgroup>
+<colgroup width="40%"></colgroup>
+<tr>
+<th>[% d.get('Hostname') %]</th>
+<th>[% d.get('Login') %]</th>
+<th>[% d.get('Name') %]</th>
+<th>[% d.get('Auswahl') %]</th>
+<th>[% d.get('Dateien') %]</th>
+</tr>
+[% FOREACH overview_workstations %]
+[% IF overview_workstations{editing} %]
+<tr class="editing">
+[% IF odd %][% odd=0 %]
+[% ELSE %][% odd=1 %][% END %]
+[% ELSE %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+[% END %]
+	<td>[% IF overview_workstations{first} %]
+	    [% overview_workstations.name %]
+	    [% END %]</td>
+	[% IF overview_workstations{login} %]
+	<td>
+	    [% overview_workstations.login %]
+	</td>
+	<td>
+	    [% overview_workstations.firstname %] [% overview_workstations.surname %]
+	</td>
+	<td>[% IF overview_workstations{editing} %]
+		<input type="checkbox" disabled>[% ELSE %]
+		<input type="checkbox" name="[% overview_workstations.login %];collect" checked>
+	[% END %]</td>
+	<td>[% FOREACH overview_workstations{files} %]
+	[% IF overview_workstations{files}{isdir} %]
+	*[% END %][% overview_workstations.files}{name %]<br>
+	[% END %]
+	</td>
+	[% ELSE %]
+	<td>-</td>
+	<td></td>
+	<td>-</td>
+	[% END %]
+</tr>
+[% END %]
+<tr>
+<td colspan="3"></td>
+<td>|</td>
+<td></td>
+</tr>
+<tr class="quickselection">
+<td colspan="3">[% d.get('Schnellauswahl') %]</td>
+<td><input class="button" type="button" value="Aus" name="collect" onClick="check_uncheck(this)" checked></td>
+<td></td>
+</tr>
+</table>
+
+
+<table>
+<tr>
+	<td><input type="radio" id="deletebottom" name="deletebottom" value="1"></td>
+	<td><label for="deletebottom">[% d.get('Original wird gel&ouml;scht') %]</label></td>
+</tr>
+<tr>
+	<td><input type="radio" id="copybottom" name="deletebottom" value="0" checked></td>
+	<td><label for="copybottom">[% d.get('Original bleibt erhalten') %]</label></td>
+</tr>
+</table>
+<p><input type="submit" name="collectbottom" value="Einsammeln"></p>
+
+</form>
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Einzusammelnde Dateien m&uuml;ssen im Heimatverzeichnis der Sch&uuml;ler/innen im Ordner
+&#8222;__einsammeln&#8220; abgelegt sein, damit sie hier aufgelistet werden.<br>
+Nachtr&auml;glich von den Sch&uuml;ler/innen dorthin abgelegte Dateien k&ouml;nnen Sie &uuml;ber
+&#8222;Ansicht aktualisieren&#8220; sichtbar machen.') %]</p>
+<p>[% d.get('W&auml;hlen Sie aus, ob die Originaldateien auf Sch&uuml;lerseite gel&ouml;scht werden oder
+erhalten bleiben sollen.') %]</p>
+<p>[% d.get('Sie finden die eingesammelten Dateien in Ihrem Heimatverzeichnis unter &#8222;_eingesammelt -&gt; eingesammelt-aktueller_raum&#8220;.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

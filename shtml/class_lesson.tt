@@ -1,0 +1,184 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Klassen') %]: [% class %] - [% d.get('Unterricht') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-class.inc.tt %]
+</div>
+
+<div id="content">
+
+[% IF classes %]
+<form method="post" accept-charset="UTF-8">
+<p class="selectdomain">
+<select name="classes">
+<optgroup label="Klassen">
+[% FOREACH classes %] <option value="[% classes.gid %]">[% classes.name %]</option>
+[% END %]
+</optgroup>
+<optgroup label="aktuelle Klasse">
+<option value="[% class_gid %]" selected>[% class %]</option>
+</optgroup>
+</select>
+<input type="submit" value="Wechseln">
+</p>
+</form>
+[% END %]
+
+<h2>[% d.get('Klassen') %] :: [% d.get('Unterricht') %]</h2>
+
+<h3>[% d.get('Ausgew&auml;hlte Klasse') %]: [% class %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+<p>
+[% d.get('Nutzung:') %]
+
+[% IF editinguser %]
+[% editinguser %]
+[% d.get('unterrichtet in der Klasse') %]
+[% class %].
+[% IF endedittime %]
+[% d.get('Unterrichtsende um') %] [% endedittime %].
+[% END %]
+</p>
+
+[% IF stopedit %]
+<p>[% d.get('Unterricht beenden:') %]
+<input type="submit" name="end_lesson_now" value="sofort beenden">
+
+[% IF edit %]
+[% d.get('- oder -') %] [% d.get('um') %] 
+
+<select name="lesson_end_hours">
+	<option value="0">00</option>
+	<option value="1">01</option>
+	<option value="2">02</option>
+	<option value="3">03</option>
+	<option value="4">04</option>
+	<option value="5">05</option>
+	<option value="6">06</option>
+	<option value="7">07</option>
+	<option value="8">08</option>
+	<option value="9">09</option>
+	<option value="10">10</option>
+	<option value="11">11</option>
+	<option value="12">12</option>
+	<option value="13">13</option>
+	<option value="14">14</option>
+	<option value="15">15</option>
+	<option value="16">16</option>
+	<option value="17">17</option>
+	<option value="18">18</option>
+	<option value="19">19</option>
+	<option value="20">20</option>
+	<option value="21">21</option>
+	<option value="22">22</option>
+	<option value="23">23</option>
+</select>:<select name="lesson_end_minutes">
+	<option value="0">00</option>
+	<option value="5">05</option>
+	<option value="10">10</option>
+	<option value="15">15</option>
+	<option value="20">20</option>
+	<option value="25">25</option>
+	<option value="30">30</option>
+	<option value="35">35</option>
+	<option value="40">40</option>
+	<option value="45">45</option>
+	<option value="50">50</option>
+	<option value="55">55</option>
+</select>
+[% d.get('Uhr') %]
+<input type="submit" name="end_lesson_at" value="beenden lassen">.
+[% END %]
+[% END %]
+[% ELSE %]
+
+[% IF privilegeduser %]
+[% privilegeduser %] [% d.get('ist in der Klasse') %]
+[% class %]
+[% d.get('angemeldet,') %]
+[% END %]
+[% d.get('kein Unterricht.') %]
+<input type="submit" name="start_lesson" value="Unterricht beginnen">
+
+[% END %]
+</p>
+</form>
+
+
+[% IF edit %]
+
+<h3>[% d.get('&Uuml;bersicht') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+<table id="lessonoverview" class="liste">
+<tr>
+<th>[% d.get('WLAN') %]</th>
+</tr>
+<tr class="odd">
+<td>
+[% IF group_wlan %]
+	<input type="checkbox" name="group;wlan" checked>
+[% ELSE %]
+	<input type="checkbox" name="group;wlan">
+[% END %]
+</td>
+</tr>
+</table>
+<p><input type="submit" name="acceptlesson" value="&Auml;nderungen &uuml;bernehmen"></p>
+</form>
+
+[% ELSE %]
+
+<h3>[% d.get('&Uuml;bersicht') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+<table id="lessonoverview" class="liste">
+<tr>
+<th>[% d.get('WLAN') %]</th>
+</tr>
+<tr class="odd">
+<td>
+[% IF group_wlan %]
+	<input type="checkbox" disabled checked>
+[% ELSE %]
+	<input type="checkbox" disabled>
+[% END %]
+</td>
+</tr>
+</table>
+</form>
+
+[% END %]
+</div>
+
+<div id="info">
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Sie m&uuml;ssen den &#8222;Unterricht beginnen&#8220;, damit Sie
+die Funktionen zur Steuerung des Unterrichts in der ausgew&auml;hlten Klasse nutzen k&ouml;nnen.<br>
+Beenden Sie den Unterricht entweder &uuml;ber den Button &#8222;sofort beenden&#8220; 
+oder stellen Sie das Unterrichtsende &uuml;ber die Dropdown-Men&uuml;s ein und best&auml;tigen 
+es mit &#8222;beenden lassen&#8220;.') %]</p>
+<p>[% d.get('Im Bereich &#8222;&Uuml;bersicht&#8220; k&ouml;nnen Sie den Zugriff der Sch&uuml;ler auf das WLAN
+&uuml;ber eine Checkbox steuern.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

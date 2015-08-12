@@ -1,0 +1,98 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Klassen') %]: [% class %] - [% d.get('Tauschen') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-class.inc.tt %]
+</div>
+
+<div id="content">
+
+[% IF classes %]
+<form method="post" accept-charset="UTF-8">
+<p class="selectdomain">
+<select name="classes">
+<optgroup label="Klassen">
+[% FOREACH classes %] <option value="[% classes.gid %]">[% classes.name %]</option>
+[% END %]
+</optgroup>
+<optgroup label="aktuelle Klasse">
+<option value="[% class_gid %]" selected>[% class %]</option>
+</optgroup>
+</select>
+<input type="submit" value="Wechseln">
+</p>
+</form>
+[% END %]
+
+
+<h2>[% d.get('Klassen') %] :: [% d.get('Tauschen') %]</h2>
+
+<h3>[% d.get('Ausgew&auml;hlte Klasse:') %] [% class %]</h3>
+
+
+<form method="post" accept-charset="UTF-8">
+<table id="classshares" class="liste">
+<tr>
+<th>[% d.get('Login') %]</th>
+<th>[% d.get('Name') %]</th>
+<th>[% d.get('Tauschen<br>global') %]</th>
+</tr>
+[% FOREACH students %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+	<td>[% students.login %]</td>
+	<td>[% students.firstname %] [% students.surname %]</td>
+	<td>
+[% IF students{shares} %]
+	<input type="checkbox" name="[% students.login %];shares" checked>
+[% ELSE %]
+	<input type="checkbox" name="[% students.login %];shares">
+[% END %]
+	</td>
+
+	</tr>
+[% END %]
+<tr>
+<td colspan="2"></td>
+<td>|</td>
+</tr>
+<tr class="quickselection">
+<td colspan="2">[% d.get('Schnellauswahl') %]</td>
+<td><input class="button" type="button" value="Aus" name="shares" onClick="check_uncheck(this)"></td>
+</tr>
+</table>
+<p><input type="submit" name="acceptshares" value="&Auml;nderungen &uuml;bernehmen"></p>
+</form>
+
+
+
+</div>
+
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Hier k&ouml;nnen Sie festlegen, ob die Sch&uuml;ler/innen der
+Klasse Zugriff auf die Tauschordner in ihrem Homeverzeichnis
+haben.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Benutzer') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-user.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Benutzerverwaltung') %]</h2>
+
+[% IF link_user_students %]
+<p>
+[% IF link_user_teachers %]
+[% d.get('Bearbeiten Sie zun&auml;chst die
+<a href="user_students">Sch&uuml;ler-</a>
+und <a href="user_teachers">Lehrerlisten</a>.') %]
+[% ELSE %]
+[% d.get('Bearbeiten Sie zun&auml;chst die
+<a href="user_students">Sch&uuml;lerlisten</a>.') %]
+[% END %]
+</p>
+[% END %]
+
+[% IF link_user_check %]
+<p>[% d.get('Mit der <a href="user_check">&Uuml;berpr&uuml;fung der Benutzerlisten</a> werden die Daten zur &Uuml;bertragung ins System vorbereitet.') %]</p>
+[% END %]
+
+[% IF link_user_commit %]
+<p>[% d.get('Auf der Seite zur
+<a href="user_commit">&Uuml;bernahme der Benutzerdaten</a> k&ouml;nnen Sie
+die &Uuml;bertragung ins System starten und sich Informationen zum Prozess
+anzeigen lassen.') %]</p>
+[% END %]
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Hier legen Sie Benutzer an und pflegen die Sch&uuml;ler- und Lehrerlisten.') %]</p>
+<p>[% d.get('Benutzer und Kurse, die nicht aus dem Schulverwaltungsprogramm exportiert werden k&ouml;nnen,
+verwalten Sie in den &#8222;Extralisten&#8220;.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

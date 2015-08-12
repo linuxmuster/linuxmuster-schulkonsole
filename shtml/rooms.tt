@@ -1,0 +1,201 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('R&auml;ume') %] - [% d.get('Standardeinstellungen') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-rooms.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Standardeinstellungen f&uuml;r R&auml;ume') %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+
+
+<table id="roomsdefaults" class="liste">
+<colgroup width="20%"></colgroup>
+<colgroup span="3" width="11%"></colgroup>
+<colgroup span="2"></colgroup>
+<colgroup span="2" width="3%"></colgroup>
+<tr>
+<th></th>
+<th>[% d.get('Internet') %]</th>
+<th>[% d.get('Intranet') %]</th>
+<th>[% d.get('Webfilter') %]</th>
+<th colspan="2"></th>
+<th><img title="zur&uuml;cksetzen" src="img/reset.png" alt="0"></th>
+<th><img title="l&ouml;schen" src="img/trash.png" alt="X"></th>
+</tr>
+<tr>
+<td>[% d.get('default') %]</td>
+<td>
+<select name="default_internet">
+<option value="-1">-</option>
+<option value="1">[% d.get('An') %]</option>
+<option value="0">[% d.get('Aus') %]</option>
+</select>
+</td>
+<td>
+<select name="default_intranet">
+<option value="-1">-</option>
+<option value="1">[% d.get('An') %]</option>
+<option value="0">[% d.get('Aus') %]</option>
+</select>
+</td>
+<td>
+<select name="default_webfilter">
+<option value="-1">-</option>
+<option value="1">[% d.get('An') %]</option>
+<option value="0">[% d.get('Aus') %]</option>
+</select>
+</td>
+[% IF defaultrooms %]<td><select name="default_add">
+[% FOREACH defaultrooms %]	<option value="[% defaultrooms %]">[% defaultrooms %]</option>
+[% END %]
+</select></td>
+<td><input type="submit" name="add_room" value="Ausnahme hinzuf&uuml;gen"></td>
+[% ELSE %]
+<td colspan="2"></td>
+[% END %]
+[% IF nondefaults %]
+<td><input type="checkbox" name="reset_all"></td>
+[% ELSE %]
+<td><input type="checkbox" disabled></td>
+[% END %]
+<td></td>
+</tr>
+<tr><td colspan="7">&nbsp;</td></tr>
+
+[% FOREACH nondefaults %]
+
+[% IF odd %][% odd=0 %]
+[% ELSE %][% odd=1 %][% END %]
+
+	[% IF nondefaults{isroom} %]
+	[% IF nondefaults{isset} %]
+	[% IF odd %]<tr class="odd">[% ELSE %]<tr class="even">[% END %]
+	[% ELSE %]
+	<tr class="unset">
+	[% END %]
+	<td>[% nondefaults.name %]</td>
+	<td>
+		<select name="[% nondefaults.name %]_room_internet">
+		<option value="-1">-</option>
+		<option value="1">[% d.get('An') %]</option>
+		<option value="0">[% d.get('Aus') %]</option>
+		</select>
+	</td>
+	<td>
+		<select name="[% nondefaults.name %]_room_intranet">
+		<option value="-1">-</option>
+		<option value="1">[% d.get('An') %]</option>
+		<option value="0">[% d.get('Aus') %]</option>
+		</select>
+	</td>
+	<td>
+		<select name="[% nondefaults.name %]_room_webfilter">
+		<option value="-1">-</option>
+		<option value="1">[% d.get('An') %]</option>
+		<option value="0">[% d.get('Aus') %]</option>
+		</select>
+	</td>
+	[% IF nondefaults{hosts} %]
+	<td><select name="[% nondefaults.name %]_add">
+		[% FOREACH nondefaults{hosts} %]
+		<option value="[% nondefaults.hosts %]">[% nondefaults.hosts %]</option>
+	[% END %]
+	</select></td>
+	<td><input type="submit" name="[% nondefaults.name %]_add_host" value="Ausnahme hinzuf&uuml;gen"></td>
+	[% ELSE %]
+	<td colspan="2"></td>
+	[% END %]
+	<td><input type="checkbox" name="[% nondefaults.name %]_room_reset"></td>
+	<td><input type="checkbox" name="[% nondefaults.name %]_room_delete"></td>
+	</tr>
+	[% ELSE %]
+	[% IF odd %]<tr class="hostodd">[% ELSE %]<tr class="hosteven">[% END %]
+	<td>[% nondefaults.name %]</td>
+	<td>
+		<select name="[% nondefaults.name %]_internet">
+		<option value="-1">-</option>
+		<option value="1">[% d.get('An') %]</option>
+		<option value="0">[% d.get('Aus') %]</option>
+		</select>
+	</td>
+	<td>
+		<select name="[% nondefaults.name %]_intranet">
+		<option value="-1">-</option>
+		<option value="1">[% d.get('An') %]</option>
+		<option value="0">[% d.get('Aus') %]</option>
+		</select>
+	</td>
+	<td>
+		<select name="[% nondefaults.name %]_webfilter">
+		<option value="-1">-</option>
+		<option value="1">[% d.get('An') %]</option>
+		<option value="0">[% d.get('Aus') %]</option>
+		</select>
+	</td>
+	<td colspan="2"></td>
+	<td><input type="checkbox" name="[% nondefaults.name %]_reset"></td>
+	<td><input type="checkbox" name="[% nondefaults.name %]_delete"></td>
+	</tr>
+	[% END %]
+[% END %]
+</table>
+
+
+<p>
+[% IF nondefaults %]
+<input type="submit" name="reset" value="Auswahl zur&uuml;cksetzen">
+[% ELSE %]
+<input type="submit" name="reset" value="Auswahl zur&uuml;cksetzen" disabled>
+[% END %]
+<input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
+</p>
+
+</form>
+
+
+
+</form>
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Legen Sie hier die Standardeinstellungen f&uuml;r die Workstations
+in den R&auml;umen fest.') %]</p>
+<p>[% d.get('Um eine Ausnahme f&uuml;r eine Workstation anzulegen, muss ein
+Eintrag f&uuml;r den Raum hinzugef&uuml;gt worden sein') %].
+<p>[% d.get('Um einen Eintrag zu l&ouml;schen, setzen Sie das H&auml;kchen in
+der entsprechenden Checkbox am Zeilenende.') %]</p>
+<p>[% d.get('Schliessen Sie die Aktion mit
+&#8222;&Auml;nderungen &uuml;bernehmen&#8220; ab.') %]</p>
+<p>[% d.get('Um die Rechner in einem Raum oder einzelne Rechner
+zur&uuml;ckzusetzen, setzen Sie das H&auml;kchen in der entsprechenden
+Checkbox und w&auml;hlen die Aktion
+&#8222;Auswahl zur&uuml;cksetzen&#8220;.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

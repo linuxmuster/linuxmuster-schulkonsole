@@ -1,0 +1,70 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Drucker') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE footer_submenu.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Drucker') %]</h2>
+
+<form method="post" accept-charset="UTF-8" action="printers_edit">
+
+
+<table id="printers" class="liste">
+<colgroup span="5" width="20%">
+<col width="16%">
+<col width="27%">
+<col width="15%">
+<col width="27%">
+<col width="15%">
+</colgroup>
+<tr>
+<th>[% d.get('Drucker') %]</th>
+<th colspan="2">[% d.get('R&auml;ume') %]</th>
+<th colspan="2">[% d.get('Rechner') %]</th>
+</tr>
+[% FOREACH printers %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td>[% printers.name %]</td>
+<td><label for="[% printers.name %]_rooms">[% printers.rooms %]</label></td>
+<td><input type="submit" id="[% printers.name %]_rooms" name="[% printers.name %]_rooms" value="Bearbeiten"></td>
+<td><label for="[% printers.name %]_hosts">[% printers.hosts %]</label></td>
+<td><input type="submit" id="[% printers.name %]_hosts" name="[% printers.name %]_hosts" value="Bearbeiten"></td>
+</tr>
+[% END %]
+</table>
+
+
+</form>
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Legen Sie hier fest, welche R&auml;ume bzw. einzelne Rechner Zugriff auf welche Drucker haben.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

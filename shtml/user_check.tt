@@ -1,0 +1,103 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('Benutzer') %] - [% d.get('Benutzerlisten pr&uuml;fen') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-user.inc.tt %]
+</div>
+
+<div id="content">
+
+<h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('Benutzerlisten pr&uuml;fen') %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+<p>
+<input type="submit" name="check" value="Benutzerlisten &uuml;berpr&uuml;fen">
+</p>
+
+[% IF teachin %]
+
+[% IF usersdelete %]
+
+<p>[% d.get('Folgende Benutzer werden automatisch entfernt:') %]</p>
+
+<table id="usersdelete" class="liste">
+<col width="25%">
+<col width="10%">
+<col width="50%">
+<tr>
+<th>[% d.get('Benutzername') %]</th>
+<th>[% d.get('Klasse') %]</th>
+<th>[% d.get('Bezeichner') %]</th>
+</tr>
+[% FOREACH usersdelete %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td>[% usersdelete.login %]</td>
+<td>[% usersdelete.class %]</td>
+<td>[% usersdelete.id %]</td>
+</tr>
+
+[% END %]
+</table>
+
+[% END %]
+
+<p>[% d.get('Die Daten mancher Benutzer wurden ge&auml;ndert.') %]
+[% d.get('Bearbeiten Sie die
+<a href="user_teachin">Verkn&uuml;pfungen</a>
+der alten mit neuen Benutzern f&uuml;rs <a href="user_teachin">Teach-In</a>.') %]</p>
+
+[% ELSE %]
+
+[% IF checklog %]
+<p>[% d.get('Sie k&ouml;nnen jetzt die <a href="user_commit">Benutzerdaten
+&uuml;bernehmen</a>.') %]</p>
+
+
+<p>[% d.get('Bei der &Uuml;berpr&uuml;fung der Benutzerdaten wurde Folgendes
+ausgegeben:') %]</p>
+<pre>
+[% checklog %]
+</pre>
+
+[% END %]
+
+[% END %]
+
+</form>
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Hier &uuml;berpr&uuml;fen Sie die zuvor eingepflegten Benutzerdaten auf
+Konsistenz.') %]</p>
+<p>[% d.get('Nach Ende der &Uuml;berpr&uuml;fung sehen Sie die Konsolenausgabe von
+&#8222;sophomorix-check&#8220; mit Hinweisen auf die weitere Verfahrensweise.') %]</p>
+<p>[% d.get('War der Check erfolgreich, gelangen Sie &uuml;ber den Link &#8222;Benutzerdaten
+&uuml;bernehmen&#8220; zum n&auml;chsten Schritt.') %]</p>
+<p>[% d.get('Wurden &Auml;nderungen an den Benutzerdaten festgestellt, die eine weitere
+&Uuml;berpr&uuml;fung notwendig machen, wird ein &#8222;Teach-In&#8220; vorgeschlagen.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

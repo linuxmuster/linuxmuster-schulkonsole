@@ -1,0 +1,88 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('linbo') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-linbo.inc.tt %]
+</div>
+
+<div id="content">
+
+
+[% IF deletefilename %]
+
+<h2>[% d.get('PXE-Start-Dateien der Rechnergruppen editieren') %]</h2>
+
+<h3>[% d.get('Bitte best&auml;tigen') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+<p>[% deletefilename %] [% d.get('wirklich l&ouml;schen?') %]</p>
+
+<p><input type="hidden" name="filename" value="[% deletefilename %]"><input type="submit" name="delete" value="Best&auml;tigen">
+<input type="submit" name="abort" value="Abbrechen"></p>
+
+</form>
+
+[% ELSE %]
+[% IF editfilename %]
+
+<h2>[% d.get('PXE-Start-Dateien der Rechnergruppen editieren') %]: [% editfilename %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+<p><textarea wrap="off" name="pxestart" rows="20" cols="70"></textarea></p>
+<p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="&Auml;nderungen speichern">
+<input type="submit" name="abort" value="Schlie&szlig;en"></p>
+
+</form>
+
+[% ELSE %]
+
+<h2>[% d.get('PXE-Start-Dateien der Rechnergruppen editieren') %]</h2>
+
+[% IF pxestarts %]
+<form method="post" accept-charset="UTF-8">
+<table id="linbopxeoverview" class="liste">
+[% FOREACH pxestarts %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td><input type="submit" name="[% .pxestarts %]_edit" value="[% pxestarts %]"></td>
+<td><input type="submit" name="[% .pxestarts %]_delete" value="l&ouml;schen"></td>
+</tr>
+[% END %]
+</table>
+</form>
+[% ELSE %]
+<p>[% d.get('Es sind keine PXE-Start-Dateien vorhanden.') %]</p>
+[% END %]
+
+
+[% END %]
+[% END %]
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>

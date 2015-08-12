@@ -1,0 +1,127 @@
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="de">
+<title>[% d.get('Schulkonsole') %] - [% d.get('linbo') %]</title>
+[% INCLUDE css.inc.tt %]
+<script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body>
+
+[% INCLUDE header.inc.tt %]
+
+<div id="submenu">
+[% INCLUDE submenu-linbo.inc.tt %]
+</div>
+
+<div id="content">
+
+
+[% IF deletefilename %]
+
+<h2>[% d.get('Registrypatch-Dateien der Rechnergruppen editieren') %]</h2>
+
+<h3>[% d.get('Bitte best&auml;tigen') %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+<p>[% deletefilename %] [% d.get('wirklich l&ouml;schen?') %]</p>
+
+<p><input type="hidden" name="filename" value="[% deletefilename %]"><input type="submit" name="delete" value="Best&auml;tigen">
+<input type="submit" name="abort" value="Abbrechen"></p>
+
+</form>
+
+[% ELSE %]
+[% IF editfilename %]
+
+<h2>[% d.get('Registrypatch-Dateien der Rechnergruppen editieren') %]: [% editfilename %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+<p><textarea wrap="off" name="regpatch" rows="20" cols="70"></textarea></p>
+<p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="&Auml;nderungen speichern">
+<input type="submit" name="abort" value="Schlie&szlig;en"></p>
+
+</form>
+
+[% ELSE %]
+
+<h2>[% d.get('Registrypatch-Dateien der Rechnergruppen editieren') %]</h2>
+
+[% IF regpatches %]
+<form method="post" accept-charset="UTF-8">
+<table id="linboregpatchoverview" class="liste">
+[% FOREACH regpatches %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td><input type="submit" name="[% .regpatches %]_edit" value="[% regpatches %]"></td>
+<td><input type="submit" name="[% .regpatches %]_delete" value="l&ouml;schen"></td>
+</tr>
+[% END %]
+</table>
+</form>
+[% ELSE %]
+<p>[% d.get('Es sind keine Registrypatch-Dateien vorhanden.') %]</p>
+[% END %]
+
+
+<h2>[% d.get('Registrypatch-Datei erstellen') %]</h2>
+
+[% IF images %]
+[% IF hastemplates %]
+<form method="post" accept-charset="UTF-8">
+
+<p>[% d.get('F&uuml;r') %]
+<select name="image">[% FOREACH images %]
+<option value="[% images %]">[% images %]</option>
+[% END %]</select>
+<input type="submit" name="create" value="Registrypatch-Datei erstellen aus">
+<select name="template">
+[% IF regpatches %]
+<optgroup label="Verwendete Dateien">[% FOREACH regpatches %]
+<option value="[% regpatches %]">[% regpatches %]</option>
+[% END %]</optgroup>[% END %]
+[% IF example_regpatches %]
+<optgroup label="Beispieldateien">[% FOREACH example_regpatches %]
+<option value="[% .example_regpatches %]_example">[% example_regpatches %]</option>
+[% END %]</optgroup>[% END %]
+</select>
+</p>
+
+</form>
+[% ELSE %]
+<p>[% d.get('Es sind keine Templateedateien vorhanden.') %]</p>
+[% END %]
+[% ELSE %]
+[% IF regpatches %]
+<p>[% d.get('Es gibt keine Imagedateien ohne Registrypatch.') %]</p>
+[% ELSE %]
+<p>[% d.get('Es gibt keine Imagedateien.') %]</p>
+[% END %]
+[% END %]
+
+
+[% END %]
+[% END %]
+
+
+</div>
+
+<div id="info" style="display: block;">
+<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
+
+[% INCLUDE status.inc.tt %]
+
+<h2>[% d.get('Info') %]</h2>
+
+<p>[% d.get('Klicken Sie auf den Namen einer Registrypatch-Datei, um sie zu editieren.') %]</p>
+<p>[% d.get('Wollen Sie eine neue Registrypatch-Datei erstellen, w&auml;hlen Sie zun&auml;chst die Image-Datei
+aus dem oberen Dropdown-Men&uuml;. Im unteren Dropdown-Men&uuml; w&auml;hlen Sie die Registrypatch-Datei aus,
+die als Vorlage f&uuml;r die neue Datei dienen soll.') %]</p>
+
+[% INCLUDE footer_info.inc.tt %]
+</div>
+
+[% INCLUDE footer.inc.tt %]
+
+</body>
+</html>
