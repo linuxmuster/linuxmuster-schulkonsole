@@ -53,5 +53,7 @@ sub substitute {
     $line =~ s/\$\{(.*?)\{(.*?)\}\}([a-zA-Z0-9_]*?)/[% $1.$2 %]$3/g;
     $line =~ s/\$([^\{]*?)\{(.*?)\}/[% $1.$2 %]/g;
     $line =~ s/"\$(.*?)"/"[% $1 %]"/g;
+    $line =~ s/\.shtml\.inc/.inc.tt/g;
+    $line =~ s/\.shtml/.tt/g;
     return $line;
 }
