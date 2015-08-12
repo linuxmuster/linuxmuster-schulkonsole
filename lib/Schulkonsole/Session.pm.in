@@ -52,9 +52,9 @@ Schulkonsole::Session - session management for schulkonsole
  # put label for <input>-field 'username' in class="error"
  $session->mark_input_error('username');
 
- # produce output using template.shtml.
+ # produce output using template.tt.
  # unspecified <form>-action will be "file.cgi"
- $session->print_page('template.shtml', 'file.cgi');
+ $session->print_page('template.tt', 'file.cgi');
 
  # delete the underlying CGI::Session-object and
  # delete the user's session cookie
