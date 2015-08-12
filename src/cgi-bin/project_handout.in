@@ -11,7 +11,7 @@ project_handout - hand out files to project
 =head1 DESCRIPTION
 
 C<project_handout> lets you hand out files to a selected project.
-The HTML template is project_handout.shtml.
+The HTML template is project_handout.tt.
 
 =head2 Template variables
 
@@ -188,7 +188,7 @@ $sk_session->set_var('project', $$projects{$project}{displayname});
 
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

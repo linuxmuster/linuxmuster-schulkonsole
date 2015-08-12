@@ -11,7 +11,7 @@ settings - produces start page for settings
 =head1 DESCRIPTION
 
 C<settings> produces the start page of settings.
-The HTML template is settings.shtml.
+The HTML template is settings.tt.
 
 =head2 Template variables
 
@@ -115,7 +115,7 @@ foreach my $key (keys %preferences_conf) {
 
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 

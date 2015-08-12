@@ -11,7 +11,7 @@ quotas_classes - quota settings for classes
 =head1 DESCRIPTION
 
 C<quotas_classes> lets you edit the quotas of classes.
-The HTML template is quotas_classes.shtml.
+The HTML template is quotas_classes.tt.
 
 =head2 Template variables
 
@@ -271,7 +271,7 @@ The number of mountpoints
 $sk_session->set_var('mountpoints_cnt', scalar(@mountpoints));
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

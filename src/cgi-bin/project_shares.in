@@ -12,7 +12,7 @@ project_shares - activate/deactivate shares
 
 C<project_shares> lets you activate and deactivate the shares of the members
 of a project.
-The HTML template is project_shares.shtml.
+The HTML template is project_shares.tt.
 
 =head2 Template variables
 
@@ -246,7 +246,7 @@ $sk_session->set_var('project', $$projects{$project}{displayname});
 
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

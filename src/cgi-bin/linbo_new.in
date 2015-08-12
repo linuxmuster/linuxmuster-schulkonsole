@@ -12,7 +12,7 @@ linbo_new - create a new LINBO start.conf.*
 
 C<linbo_new> lets the user create a new start.conf.* file for a workstation
 group.
-The HTML template is linbo_new.shtml.
+The HTML template is linbo_new.tt.
 
 =head2 Template variables
 
@@ -346,7 +346,7 @@ $sk_session->set_var('templatesosnonwin', \@templates_os_nonwin);
 
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

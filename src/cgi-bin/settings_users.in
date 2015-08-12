@@ -11,7 +11,7 @@ settings_users - settings for user administration
 =head1 DESCRIPTION
 
 C<settings> lets you change the settings of the user administration.
-The HTML template is settings_users.shtml.
+The HTML template is settings_users.tt.
 
 =head2 Template variables
 
@@ -330,7 +330,7 @@ foreach my $key (keys %filesystem_conf) {
 
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 

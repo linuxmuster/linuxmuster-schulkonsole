@@ -11,7 +11,7 @@ room_collect - collect files from users in a room
 =head1 DESCRIPTION
 
 C<room_collect> lets you copy or move files of users in a selected room
-to your directory. The HTML template is room_collect.shtml.
+to your directory. The HTML template is room_collect.tt.
 
 =head2 Template variables
 
@@ -199,7 +199,7 @@ if ($@) {
 
 $room_session->set_vars($sk_session);
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

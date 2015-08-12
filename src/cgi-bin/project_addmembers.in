@@ -12,7 +12,7 @@ project_addmembers - add members to project
 
 C<project_addmembers> lets you search users, classes and projects and add
 them to a project.
-The HTML template is project_addmembers.shtml.
+The HTML template is project_addmembers.tt.
 
 =head2 Template variables
 
@@ -652,7 +652,7 @@ The name of the selected project
 $sk_session->set_var('project', $$projects{$project}{displayname});
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

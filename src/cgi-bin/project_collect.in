@@ -11,7 +11,7 @@ project_collect - collect files from a project
 =head1 DESCRIPTION
 
 C<project_collect> lets you copy or move files of members of a selected project
-to your directory. The HTML template is project_collect.shtml.
+to your directory. The HTML template is project_collect.tt.
 
 =head2 Template variables
 
@@ -252,7 +252,7 @@ The name of the selected project
 $sk_session->set_var('project', $$projects{$project}{displayname});
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

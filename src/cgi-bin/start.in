@@ -11,7 +11,7 @@ start - startpage of schulkonsole
 =head1 DESCRIPTION
 
 C<start> produces the startpage of schulkonsole. The HTML template
-is start.shtml.
+is start.tt.
 Functionality of the startpage includes password change and deletion
 of printjobs.
 
@@ -737,17 +737,7 @@ True if the user has an OpenVPN certificate
 $sk_session->set_var('has_ovpn', $has_ovpn);
 
 
-##############################
-my $template = Template->new({
-    INCLUDE_PATH => ['/usr/share/schulkonsole/shtml','/usr/share/schulkonsole/css'],
-    DEBUG => DEBUG_PARSER | DEBUG_PROVIDER,
-});
-
-my $vars = $sk_session->{template_vars};
-
-$template->process("$this_file.shtml", $vars) or die $template->error();
-
-#$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 

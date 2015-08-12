@@ -11,7 +11,7 @@ linbo_edit - edit LINBO's start.conf.* files
 =head1 DESCRIPTION
 
 C<linbo_edit> lets the user choose a start.conf.* file and edit it.
-The HTML template is linbo_edit.shtml.
+The HTML template is linbo_edit.tt.
 
 =head2 Template variables
 
@@ -589,7 +589,7 @@ if ($@) {
 
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

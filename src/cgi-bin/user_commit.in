@@ -11,7 +11,7 @@ user_commit - commit the changes to the user lists into the DB
 =head1 DESCRIPTION
 
 C<user_commit> lets you commit the changes to the user lists into the DB.
-The HTML template is user_commit.shtml.
+The HTML template is user_commit.tt.
 
 =head2 Template variables
 
@@ -291,7 +291,7 @@ $sk_session->set_var('killlist', $list_kill);
 
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

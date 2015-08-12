@@ -11,7 +11,7 @@ hosts - edit list of hosts
 =head1 DESCRIPTION
 
 C<hosts> lets you add new hosts to and edit the list of hosts in the network.
-The HTML templates is hosts.shtml.
+The HTML templates is hosts.tt.
 
 =head2 Template variables
 
@@ -442,7 +442,7 @@ String containing workstation comments
 $q->param('commentlines',$commentlines);
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 

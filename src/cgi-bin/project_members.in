@@ -12,7 +12,7 @@ project_members - lists of project members
 
 C<project_list> displays lists of all members in a selected project and
 allows to perform a query for possible new members.
-The HTML template is project_members.shtml.
+The HTML template is project_members.tt.
 
 =head2 Template variables
 
@@ -745,7 +745,7 @@ Name of the selected project
 
 }
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back
