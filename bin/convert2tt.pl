@@ -39,7 +39,7 @@ sub convert {
 
 sub substitute {
     my $line = shift;
-    $line =~ s/<!--#include file="(.*?)" -->/[% INCLUDE $1 %]/g;
+    $line =~ s/<!--#include file="(.*?)" -->/[% INCLUDE "$1" %]/g;
     $line =~ s/<!--#echo var="([^\{]*?)" -->/[% $1 %]/g;
     $line =~ s/<!--#echo var="([^\{]*?)\{(.*?)\}" -->/[% $1.$2 %]/g;
     $line =~ s/<gettext>(.*?)<\/gettext>/[% d.get('$1') %]/g;
