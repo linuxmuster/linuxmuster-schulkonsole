@@ -11,7 +11,7 @@ user_check - check the edited users
 =head1 DESCRIPTION
 
 C<user_check> lets you performs a consistency check of the user lists.
-The HTML template is user_check.shtml.
+The HTML template is user_check.tt.
 
 =head2 Template variables
 
@@ -176,7 +176,7 @@ The user's class
 
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

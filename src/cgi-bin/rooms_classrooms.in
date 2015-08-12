@@ -12,7 +12,7 @@ rooms_classrooms - add rooms to list of available rooms
 
 C<rooms_classrooms> lets you add rooms to the list of available rooms in
 https://server/schulkonsole/room
-The HTML template is rooms_classrooms.shtml.
+The HTML template is rooms_classrooms.tt.
 
 =head2 Template variables
 
@@ -150,7 +150,7 @@ $sk_session->set_var('unconfigured', $unconfigured);
 
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 

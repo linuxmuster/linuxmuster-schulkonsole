@@ -11,7 +11,7 @@ class_collect - collect files from a class
 =head1 DESCRIPTION
 
 C<class_collect> lets you copy or move files of members of a selected class
-to your directory. The HTML template is class_collect.shtml.
+to your directory. The HTML template is class_collect.tt.
 
 =head2 Template variables
 
@@ -218,7 +218,7 @@ $sk_session->set_var('class', $$classs{$class}{displayname});
 
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

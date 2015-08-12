@@ -12,7 +12,7 @@ user_teachin - resolve name conflicts in user lists
 
 C<user_teachin> lets you resolve naming conflicts and uncertainty in user
 lists.
-The HTML templates are user_teachin.shtml and showpassword.shtml.
+The HTML templates are user_teachin.tt and showpassword.tt.
 
 =head2 Template variables
 
@@ -281,7 +281,7 @@ $sk_session->set_var('users', \@users);
 
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

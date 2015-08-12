@@ -11,7 +11,7 @@ class_handoutcopy - hand out copies of files to class
 =head1 DESCRIPTION
 
 C<class_handoutcopy> lets you copy files to members of a selected class
-from your directory. The HTML template is class_handoutcopy.shtml.
+from your directory. The HTML template is class_handoutcopy.tt.
 
 =head2 Template variables
 
@@ -212,7 +212,7 @@ The name of the class
 
 $sk_session->set_var('class', $$classs{$class}{displayname});
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 =back
 

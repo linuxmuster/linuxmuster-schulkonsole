@@ -11,7 +11,7 @@ room_test - start an exam
 =head1 DESCRIPTION
 
 C<room_test> lets you start an exam or redirects if there already is an exam
-The HTML template is room_test.shtml.
+The HTML template is room_test.tt.
 
 =head2 Template variables
 
@@ -146,7 +146,7 @@ $q->param('workstationpassword', Schulkonsole::Room::random_password(5))
 	unless $q->param('workstationpassword');
 $room_session->set_vars($sk_session);
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =head2 Form fields

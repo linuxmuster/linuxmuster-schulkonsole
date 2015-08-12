@@ -12,7 +12,7 @@ printers - overview of printers
 
 C<printers> displays an overview of all printers and serves as a starting
 point to select a printer for C<printers_edit>.
-The HTML template is printers.shtml.
+The HTML template is printers.tt.
 
 =head2 Template variables
 
@@ -103,7 +103,7 @@ $sk_session->set_var('printers', \@printers_array);
 
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

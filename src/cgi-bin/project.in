@@ -12,7 +12,7 @@ project - overview of available projects
 
 C<project> lets you enter/leave/drop a project and select one of the
 projects to work with.
-The HTML templates are project.shtml and project_drop_verify
+The HTML templates are project.tt and project_drop_verify
 
 =head2 Template variables
 
@@ -240,7 +240,7 @@ if ($q->param('createproject')) {
 =pod
 
 (Only C<project_gid> and C<project> are available in
-project_drop_verify.shtml)
+project_drop_verify.tt)
 
 =over
 
@@ -249,7 +249,7 @@ project_drop_verify.shtml)
 				$sk_session->set_var('project_gid', $old_project);
 				$sk_session->set_var('project',
 				                     $$projects{$old_project}{displayname});
-				$sk_session->print_page('project_drop_verify.shtml',
+				$sk_session->print_page('project_drop_verify.tt',
 				                        $this_file);
 				exit 0;
 			}
@@ -407,7 +407,7 @@ Name of the selected project
 	$sk_session->set_var('project', $$projects{$project}{displayname});
 }
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

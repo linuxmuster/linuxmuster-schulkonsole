@@ -11,7 +11,7 @@ user_extra - administration of student accounts
 =head1 DESCRIPTION
 
 C<user_extra> lets you edit the extra user and course lists.
-The HTML template is user_extra.shtml.
+The HTML template is user_extra.tt.
 
 =head2 Template variables
 
@@ -106,7 +106,7 @@ if ($@) {
 
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =head2 Form fields

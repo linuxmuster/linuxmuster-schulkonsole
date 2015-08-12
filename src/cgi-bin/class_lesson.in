@@ -15,7 +15,7 @@ class_lesson - overview of class lessons
 
 C<class_lesson> lets you select a class, start a lesson in a class
 and control WLAN access for the selected class.
-The HTML template is class_lesson.shtml.
+The HTML template is class_lesson.tt.
 
 =cut
 
@@ -287,7 +287,7 @@ The name of the class
 
 $sk_session->set_var('class', $sk_session->param('group'));
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

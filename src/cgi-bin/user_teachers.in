@@ -11,7 +11,7 @@ user_teachers - administration of teacher accounts
 =head1 DESCRIPTION
 
 C<user_teachers> lets you edit the user lists for teachers.
-The HTML template is user_teachers.shtml.
+The HTML template is user_teachers.tt.
 
 =head2 Template variables
 
@@ -341,7 +341,7 @@ foreach my $teacher (sort keys %$teachers) {
 	}
 }
 
-=head3 Template variables specific to user_teachers.shtml
+=head3 Template variables specific to user_teachers.tt
 
 =over
 
@@ -387,7 +387,7 @@ if (    not @teachers
 }
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

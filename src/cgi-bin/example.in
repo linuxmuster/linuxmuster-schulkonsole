@@ -7,5 +7,5 @@ my $this_file = 'example';
 
 my $sk_session = new Schulkonsole::Session($this_file);
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 

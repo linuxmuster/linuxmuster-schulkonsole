@@ -11,7 +11,7 @@ class - overview of available classes
 =head1 DESCRIPTION
 
 C<class> lets you enter/leave a class and select one of the classes to work
-with. The HTML template is class.shtml.
+with. The HTML template is class.tt.
 
 =head2 Template variables
 
@@ -217,7 +217,7 @@ The name of the selected class (if a class is selected)
 	$sk_session->set_var('class', $$classs{$class}{displayname});
 }
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =back

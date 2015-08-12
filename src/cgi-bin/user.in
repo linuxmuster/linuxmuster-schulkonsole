@@ -11,7 +11,7 @@ user - produces startpage for account administration
 =head1 DESCRIPTION
 
 C<start> produces the startpage of schulkonsole account administration.
-The HTML template is user.shtml.
+The HTML template is user.tt.
 
 =head2 Template variables
 
@@ -31,7 +31,7 @@ my $sk_session = new Schulkonsole::Session($this_file);
 
 
 
-$sk_session->print_page("$this_file.shtml", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file);
 
 
 =head2 Form fields
