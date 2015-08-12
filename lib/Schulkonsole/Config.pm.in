@@ -1230,7 +1230,7 @@ $_cups_printers_conf_file = '/etc/cups/printers.conf';
 
 $_workstation_file = "$_lml_cache_dir/logins/%s";
 
-$_login_template = 'login.shtml';
+$_login_template = 'login.tt';
 
 
 $_max_idle_time = '+30m';	# ask for password after 30 minutes idle time
