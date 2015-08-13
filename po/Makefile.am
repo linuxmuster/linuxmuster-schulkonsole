@@ -31,21 +31,14 @@ po: $(POFILES)
 # refresh the template from the source code
 template: $(TEMPLATE)
 
-$(TEMPLATE): POTFILES.perl.in POTFILES.tt.in
-	$(XGETTEXT) --join-existing \
-	--from-code=UTF-8 --language=Perl \
-	--sort-by-file --output=$(TEMPLATE) \
-	--package-name="schulkonsole" --package-version=$(VERSION) \
-	--copyright-holder='This file is put in the public domain' \
-	--msgid-bugs-address=fschuett@gymnasium-himmelsthuer.de \
-	--files-from=POTFILES.perl.in
-	$(XGETTEXT) --join-existing \
+$(TEMPLATE): POTFILES.tt.in
+	$(XGETTEXT) \
 	--from-code=UTF-8 --language=Python \
 	--sort-by-file --output=$(TEMPLATE) \
 	--package-name="schulkonsole" --package-version=$(VERSION) \
 	--copyright-holder='This file is put in the public domain' \
 	--msgid-bugs-address=fschuett@gymnasium-himmelsthuer.de \
-	--files-from=POTFILES.tt.in
+	--keyword=get --files-from=POTFILES.tt.in
 
 $(POFILES): %.po:
 	$(MSGMERGE) --sort-by-file --update $< $(TEMPLATE)
