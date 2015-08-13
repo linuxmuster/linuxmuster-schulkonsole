@@ -48,7 +48,7 @@
 
     <div id="content">
         [% IF template.subsubmenu %]
-            [% INCLUDE "subsubmenu-"_$template.subsubmenu_".inc.tt" %]
+            [% INCLUDE "subsubmenu-${template.subsubmenu}.inc.tt" %]
         [% END %]
         
         [% content %]
