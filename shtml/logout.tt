@@ -1,20 +1,9 @@
-<html lang="de">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="Content-Language" content="de">
-<title>[% d.get('Schulkonsole') %] - [% d.get('Logout') %]</title>
-[% INCLUDE "css.inc.tt" %]
-<script type="text/javascript" src="schulkonsole.js"></script>
-</head>
-<body>
+[% page = {
+      title   => d.get('Schulkonsole - Logout'),
+      info    => d.get('<p></p>'),
+   }
+%]
 
-[% INCLUDE "header.inc.tt" %]
-
-<div id="submenu">
-[% INCLUDE "footer_submenu.inc.tt" %]
-</div>
-
-<div id="content">
 <h2>[% d.get('Abgemeldet') %]</h2>
 <p>
 </p>
@@ -27,13 +16,3 @@
 [% INCLUDE "status.inc.tt" %]
 
 <h2>[% d.get('Info') %]</h2>
-
-<p></p>
-
-[% INCLUDE "footer_info.inc.tt" %]
-</div>
-
-[% INCLUDE "footer.inc.tt" %]
-
-</body>
-</html>

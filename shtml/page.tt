@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="Content-Language" content="de">
 
-    <title>[% template.title %]</title>
+    <title>[% page.title %]</title>
     <link rel="stylesheet" title="linuxmuster.net::Schulkonsole" href="css/linuxmuster.css" type="text/css">
     <link rel="stylesheet" href="/jquery/jquery-ui.css"/>
     <script src="/jquery/jquery.js"></script>
@@ -32,62 +32,63 @@
         </div>
     </div>
 
-    [% IF template.special %]
+    [% IF page.special %]
         <div id="special"> </div>
     [% END %]
-    [% IF template.menu %]
+    [% IF page.menu %]
         [% INCLUDE menu.inc.tt %]
     [% END %]
     <div id="submenu">
         [% IF submenu %]
-            [% INCLUDE "submenu-${template.submenu}.inc.tt" %]
+            [% INCLUDE "submenu-${page.submenu}.inc.tt" %]
         [% ELSE %]
             [% INCLUDE "footer_submenu.inc.tt" %]
         [% END %]
     </div>
 
     <div id="content">
-        [% IF template.subsubmenu %]
-            [% INCLUDE "subsubmenu-${template.subsubmenu}.inc.tt" %]
+        [% INCLUDE dialog.inc.tt %]
+        [% IF page.subsubmenu %]
+            [% INCLUDE "subsubmenu-${page.subsubmenu}.inc.tt" %]
         [% END %]
         
         [% content %]
         
-        </div>
-        <div id="info" style="display: block;">
-        <a class="hideinfo" href="#" onclick="toggle_visibility('info');">^</a>
-            <div id="status"[% IF is_error == 0 %] class="ok"[% END %]>
-                <div></div>
-                [% IF status %]
-                    <p>[% status %]</p>
+    </div>
+
+    <div id="info" style="display: block;">
+    <a class="hideinfo" href="#" onclick="toggle_visibility('info');">^</a>
+        <div id="status"[% IF is_error == 0 %] class="ok"[% END %]>
+            <div></div>
+            [% IF status %]
+                <p>[% status %]</p>
+            [% END %]
+            [% IF REMOTE_ADDR %]
+                <p class="info">
+                [% d.get('Sitzungsdauer:') %] [% session_time %]<br>
+                [% d.get('verbleibend:') %] <span id="timer">[% max_idle_hh_mm_ss %]</span></p>
+                <p class="info">[% d.get('Benutzer:') %]
+                <strong>[% firstname %] [% surname %]</strong><br>
+                [% d.get('Raum:') %]
+                [% IF remote_room %]
+                    <strong>[% remote_room %]</strong><br>
+                [% ELSE %]
+                    <strong>[% d.get('unbekannt') %]</strong><br>
                 [% END %]
-                [% IF REMOTE_ADDR %]
-                    <p class="info">
-                    [% d.get('Sitzungsdauer:') %] [% session_time %]<br>
-                    [% d.get('verbleibend:') %] <span id="timer">[% max_idle_hh_mm_ss %]</span></p>
-                    <p class="info">[% d.get('Benutzer:') %]
-                    <strong>[% firstname %] [% surname %]</strong><br>
-                    [% d.get('Raum:') %]
-                    [% IF remote_room %]
-                        <strong>[% remote_room %]</strong><br>
-                    [% ELSE %]
-                        <strong>[% d.get('unbekannt') %]</strong><br>
-                    [% END %]
-                    [% d.get('Workstation:') %]
-                    <strong>[% remote_workstation %]</strong><br>
-                    [% d.get('IP:') %] <strong>[% REMOTE_ADDR %]</strong><br>
-                    [% IF class %]
-                        <p class="info">[% d.get('aktive Klasse:') %]
-                        <strong>[% class %]</strong></p>
-                    [% END %]
+                [% d.get('Workstation:') %]
+                <strong>[% remote_workstation %]</strong><br>
+                [% d.get('IP:') %] <strong>[% REMOTE_ADDR %]</strong><br>
+                [% IF class %]
+                    <p class="info">[% d.get('aktive Klasse:') %]
+                    <strong>[% class %]</strong></p>
                 [% END %]
-            </div>
-            <h2>[% d.get('Info') %]</h2>
-            [% template.info %]
-            [% INCLUDE "footer_info.inc.tt" %]
+            [% END %]
         </div>
-        <div id="authors">
-        </div>
+        <h2>[% d.get('Info') %]</h2>
+        [% page.info %]
+        [% INCLUDE "footer_info.inc.tt" %]
+    </div>
+    <div id="authors">
     </div>
 </body>
 </html>
