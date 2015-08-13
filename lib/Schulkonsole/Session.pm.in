@@ -613,7 +613,6 @@ sub print_page {
 	my $template = Template->new({
             INCLUDE_PATH => ['/usr/share/schulkonsole/shtml','/usr/share/schulkonsole/css'],
             WRAPPER => 'page.tt',
-            DEBUG => 'provider',
         });
 
         my $vars = $this->{template_vars};
