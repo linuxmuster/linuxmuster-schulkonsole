@@ -9,11 +9,15 @@ MSGFILES = $(ALL_LINGUAS:=.mo)
 
 TEMPLATE = $(PACKAGE).pot
 
-libpdpodir = $(pkglibdir)/po
-libpdpo_DATA = $(MSGFILES)
-dist_libpdpo_DATA =
+libpdpodir = $(datarootdir)/locale
 
 EXTRA_DIST = $(POFILES)
+
+# install
+install-data-hook:
+	for l in $(ALL_LINGUAS); do \
+	    $(INSTALL) -m 644 -D $(addsuffix .mo,$$l) $(DESTDIR)$(libpdpodir)/$$l/LC_MESSAGES/$(PACKAGE).mo; \
+	done
 
 # generate .mo files from the .po files
 all-local: $(MSGFILES)
@@ -45,4 +49,4 @@ $(POFILES): $(TEMPLATE)
 
 
 %.mo: %.po
-	$(MSGFMT) -o $*.mo  $<
+	$(MSGFMT) -o $@  $<
