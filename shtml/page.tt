@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Language" content="de">
+
+    <title>[% template.title %]</title>
+    <link rel="stylesheet" title="linuxmuster.net::Schulkonsole" href="css/linuxmuster.css" type="text/css">
+    <link rel="stylesheet" href="/jquery/jquery-ui.css"/>
+    <script src="/jquery/jquery.js"></script>
+    <script src="/jquery/jquery-ui.js"></script>
+    <!--[if lt IE 7]>
+    <style type="text/css">@import url(css/linuxmuster_IE.css);</style>
+    </style>
+    <![endif]-->
+    <script type="text/javascript" src="schulkonsole.js"></script>
+</head>
+<body[% IF action %] class="[% action %]"[% END %]>
+
+    <div id="container">
+        <div id="header">
+            [% IF link_settings %]
+                <h1>[% d.get('Schulkonsole f&uuml;r Netzwerkberater/innen') %]</h1>
+            [% ELSIF link_class %]
+                <h1>[% d.get('Schulkonsole f&uuml;r Lehrer/innen') %]</h1>
+            [% ELSIF link_start %]
+                <h1>[% d.get('Schulkonsole f&uuml;r Sch&uuml;ler/innen') %]</h1>
+            [% ELSE %]
+                <h1>[% d.get('Schulkonsole') %]</h1>
+            [% END %]
+            [% d.get('Version') %] [% version %] [% action %]
+        </div>
+    </div>
+
+    [% IF template.menu %]
+        [% INCLUDE menu.inc.tt %]
+    [% END %]
+    <div id="submenu">
+        [% IF submenu %]
+            [% INCLUDE "submenu-"_$template.submenu_".inc.tt" %]
+        [% ELSE %]
+            [% INCLUDE "footer_submenu.inc.tt" %]
+        [% END %]
+    </div>
+
+    <div id="content">
+        [% IF template.subsubmenu %]
+            [% INCLUDE "subsubmenu-"_$template.subsubmenu_".inc.tt" %]
+        [% END %]
+        
+        [% content %]
+        
+        </div>
+        <div id="info" style="display: block;">
+        <a class="hideinfo" href="#" onclick="toggle_visibility('info');">^</a>
+            <div id="status"[% IF is_error == 0 %] class="ok"[% END %]>
+                <div></div>
+                [% IF status %]
+                    <p>[% status %]</p>
+                [% END %]
+                [% IF REMOTE_ADDR %]
+                    <p class="info">
+                    [% d.get('Sitzungsdauer:') %] [% session_time %]<br>
+                    [% d.get('verbleibend:') %] <span id="timer">[% max_idle_hh_mm_ss %]</span></p>
+                    <p class="info">[% d.get('Benutzer:') %]
+                    <strong>[% firstname %] [% surname %]</strong><br>
+                    [% d.get('Raum:') %]
+                    [% IF remote_room %]
+                        <strong>[% remote_room %]</strong><br>
+                    [% ELSE %]
+                        <strong>[% d.get('unbekannt') %]</strong><br>
+                    [% END %]
+                    [% d.get('Workstation:') %]
+                    <strong>[% remote_workstation %]</strong><br>
+                    [% d.get('IP:') %] <strong>[% REMOTE_ADDR %]</strong><br>
+                    [% IF class %]
+                        <p class="info">[% d.get('aktive Klasse:') %]
+                        <strong>[% class %]</strong></p>
+                    [% END %]
+                [% END %]
+            </div>
+            <h2>[% d.get('Info') %]</h2>
+            [% template.info %]
+            [% INCLUDE "footer_info.inc.tt" %]
+        </div>
+        <div id="authors">
+        </div>
+    </div>
+</body>
+</html>

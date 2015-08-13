@@ -1,20 +1,17 @@
-<html lang="de">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="Content-Language" content="de">
-<title>[% d.get('Schulkonsole') %] - [% d.get('Startseite') %]</title>
-[% INCLUDE "css.inc.tt" %]
-<script type="text/javascript" src="schulkonsole.js"></script>
-</head>
-<body>
-
-[% INCLUDE "header.inc.tt" %]
-
-<div id="submenu">
-[% INCLUDE "footer_submenu.inc.tt" %]
-</div>
-
-<div id="content">
+[% META title="d.get('Schulkonsole')_" - "_d.get('Startseite')" %]
+[% META menu=1 %]
+[% META info="<p>d.get('Auf dieser Seite k&ouml;nnen Sie eigene Druckauftr&auml;ge l&ouml;schen
+und Ihr Passwort &auml;ndern.
+<p>Weiterhin k&ouml;nnen Sie eine Mail-Weiterleitung an
+eine oder mehrere durch Komma getrennte Mail-Adressen einrichten und festlegen, ob
+eine Kopie im Postfach verbleiben soll. 
+<p>Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch
+auf dem Server und in Ihrem Postfach. Alle Werte sind
+in Kilobyte angegeben. Zus&auml;tzlich wird angezeigt in welchen Projekten Sie
+Mitglied sind.')</p>
+<p>d.get('Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden.
+Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner &#8222;OpenVPN&#8220;
+abgelegt.')</p>" %]
 
 <h2>[% d.get('Konto von') %] [% firstname %] [% surname %]</h2>
 
@@ -257,33 +254,5 @@
 </form>
 [% END %]
 
-</div>
-<div id="info" style="display: block;">
-<a class="hideinfo" href="#" onclick="toggle_visibility('info');">^</a>
-
-[% INCLUDE "status.inc.tt" %]
 
 
-<h2>[% d.get('Info') %]</h2>
-
-<p>[% d.get('Auf dieser Seite k&ouml;nnen Sie eigene Druckauftr&auml;ge l&ouml;schen
-und Ihr Passwort &auml;ndern.
-<p>Weiterhin k&ouml;nnen Sie eine Mail-Weiterleitung an
-eine oder mehrere durch Komma getrennte Mail-Adressen einrichten und festlegen, ob
-eine Kopie im Postfach verbleiben soll. 
-<p>Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch
-auf dem Server und in Ihrem Postfach. Alle Werte sind
-in Kilobyte angegeben. Zus&auml;tzlich wird angezeigt in welchen Projekten Sie
-Mitglied sind.') %]</p>
-<p>[% d.get('Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden.
-Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner &#8222;OpenVPN&#8220;
-abgelegt.') %]</p>
-
-
-[% INCLUDE "footer_info.inc.tt" %]
-</div>
-
-[% INCLUDE "footer.inc.tt" %]
-
-</body>
-</html>
