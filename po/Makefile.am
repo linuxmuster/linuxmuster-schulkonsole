@@ -37,6 +37,13 @@ template: $(TEMPLATE)
 
 $(TEMPLATE): POTFILES.tt.in
 	$(XGETTEXT) \
+	--from-code=UTF-8 --language=Perl \
+	--sort-by-file --output=$(TEMPLATE) \
+	--package-name="schulkonsole" --package-version=$(VERSION) \
+	--copyright-holder='This file is put in the public domain' \
+	--msgid-bugs-address=fschuett@gymnasium-himmelsthuer.de \
+	--keyword=get --files-from=POTFILES.perl.in
+	$(XGETTEXT) --join-existing \
 	--from-code=UTF-8 --language=Python \
 	--sort-by-file --output=$(TEMPLATE) \
 	--package-name="schulkonsole" --package-version=$(VERSION) \
