@@ -40,8 +40,8 @@ $(TEMPLATE): POTFILES.tt.in
 	--msgid-bugs-address=fschuett@gymnasium-himmelsthuer.de \
 	--keyword=get --files-from=POTFILES.tt.in
 
-$(POFILES): %.po:
-	$(MSGMERGE) --sort-by-file --update $< $(TEMPLATE)
+$(POFILES): $(TEMPLATE)
+	$(MSGMERGE) $@ $< -o $@
 
 
 %.mo: %.po
