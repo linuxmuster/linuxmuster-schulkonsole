@@ -1,6 +1,9 @@
-[% META title="$d.get('Schulkonsole') - $d.get('Login')" %]
-[% META info="<p>$d.get('Bitte melden Sie sich mit Benutzername und Passwort an.')</p>" %]
-[% META special=1 %]
+[% page = {
+      title   => "$d.get('Schulkonsole') - $d.get('Login')",
+      info    => "<p>$d.get('Bitte melden Sie sich mit Benutzername und Passwort an.')</p>",
+      special => 1,
+   }
+%]
 
 <h2>[% d.get('Anmeldung') %]</h2>
 <p>
