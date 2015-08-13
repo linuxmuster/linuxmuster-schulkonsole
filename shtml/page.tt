@@ -40,7 +40,7 @@
     [% END %]
     <div id="submenu">
         [% IF submenu %]
-            [% INCLUDE "submenu-"_$template.submenu_".inc.tt" %]
+            [% INCLUDE "submenu-${template.submenu}.inc.tt" %]
         [% ELSE %]
             [% INCLUDE "footer_submenu.inc.tt" %]
         [% END %]
