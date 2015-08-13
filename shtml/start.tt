@@ -1,6 +1,7 @@
-[% META title="d.get('Schulkonsole')_" - "_d.get('Startseite')" %]
-[% META menu=1 %]
-[% META info="<p>d.get('Auf dieser Seite k&ouml;nnen Sie eigene Druckauftr&auml;ge l&ouml;schen
+[% page = {
+        title   => "$d.get('Schulkonsole') - $d.get('Startseite')",
+        menu    => 1,
+        info    => "<p>$d.get('Auf dieser Seite k&ouml;nnen Sie eigene Druckauftr&auml;ge l&ouml;schen
 und Ihr Passwort &auml;ndern.
 <p>Weiterhin k&ouml;nnen Sie eine Mail-Weiterleitung an
 eine oder mehrere durch Komma getrennte Mail-Adressen einrichten und festlegen, ob
@@ -9,9 +10,11 @@ eine Kopie im Postfach verbleiben soll.
 auf dem Server und in Ihrem Postfach. Alle Werte sind
 in Kilobyte angegeben. Zus&auml;tzlich wird angezeigt in welchen Projekten Sie
 Mitglied sind.')</p>
-<p>d.get('Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden.
+<p>$d.get('Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden.
 Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner &#8222;OpenVPN&#8220;
-abgelegt.')</p>" %]
+abgelegt.')</p>",
+}
+%]
 
 <h2>[% d.get('Konto von') %] [% firstname %] [% surname %]</h2>
 

@@ -32,6 +32,9 @@
         </div>
     </div>
 
+    [% IF template.special %]
+        <div id="special"> </div>
+    [% END %]
     [% IF template.menu %]
         [% INCLUDE menu.inc.tt %]
     [% END %]
