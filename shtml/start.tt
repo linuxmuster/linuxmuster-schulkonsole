@@ -8,7 +8,7 @@
 <h2>[% d.get('Konto von') %] [% firstname %] [% surname %]</h2>
 
 
-<h3>[% d.get('Druckauftr&auml;ge') %]</h3>
+<h3>[% d.get('Druckaufträge') %]</h3>
 
 [% IF printjobs %]
 <form method="post" accept-charset="UTF-8">

@@ -30,7 +30,7 @@ clean-local:
 	-rm -f -- $(POFILES:=~)
 	-rm -f -- $(TEMPLATE)
 
-po: $(POFILES)
+messages: $(POFILES)
 
 # refresh the template from the source code
 template: $(TEMPLATE)
