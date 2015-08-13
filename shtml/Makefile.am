@@ -28,8 +28,3 @@ dist_shtml_DATA = example.tt login.tt logout.tt start.tt \
 	linbo_edit.tt linbo_images.tt linbo_new.tt linbo_pxeedit.tt \
 	linbo_regpatchedit.tt linbo_menuedit.tt \
 	schulkonsole.js
-
-CLEANFILES = messages.pl
-
-messages.pl: $(dist_shtml_DATA)
-	../bin/template-gettext.perl $(dist_shtml_DATA) > $@
