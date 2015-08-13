@@ -14,9 +14,9 @@
 <form method="post" accept-charset="UTF-8">
 <p>
 <select name="printjobs" multiple>
-[% FOREACH printjobs %]
-    <option value="[% printjobs.id %]">
-        [% printjobs.id %] [% printjobs.title %]
+[% FOREACH printjob IN printjobs %]
+    <option value="[% printjob.id %]">
+        [% printjob.id %] [% printjob.title %]
     </option>
 [% END %]
 </select>
@@ -81,38 +81,38 @@
 <table id="diskquotas">
 <col width="30%">
 <col width="70%">
-[% FOREACH diskquotas %]
+[% FOREACH diskquota IN diskquotas %]
 <tr>
 
 <td>
-[% diskquotas.path %]
+[% diskquota.path %]
 </td>
 
 <td>
 
 <p>
-[% diskquotas.path %]:<br>
+[% diskquota.path %]:<br>
     [% d.get('Speicherplatz/KB:') %]
-    [% diskquotas.blocks_usage %]/[% diskquotas.blocks_soft %]
-    - max: [% diskquotas.blocks_hard %]
-    - [% diskquotas.blocks_percent %]%<br>
-    [% IF diskquotas.blocks_grace %]
-    [% d.get('verbleibende Zeit:') %] [% diskquotas.blocks_grace %]<br>[% END %]
+    [% diskquota.blocks_usage %]/[% diskquota.blocks_soft %]
+    - max: [% diskquota.blocks_hard %]
+    - [% diskquota.blocks_percent %]%<br>
+    [% IF diskquota.blocks_grace %]
+    [% d.get('verbleibende Zeit:') %] [% diskquota.blocks_grace %]<br>[% END %]
     [% d.get('Dateien:') %]
-    [% diskquotas.files_usage %]/[% diskquotas.files_soft %]
-    - max: [% diskquotas.files_hard %]
-    - [% diskquotas.files_percent %]%<br>
-    [% IF diskquotas.files_grace %]
-    [% d.get('verbleibende Zeit:') %] [% diskquotas.files_grace %]<br>[% END %]<br>
+    [% diskquota.files_usage %]/[% diskquota.files_soft %]
+    - max: [% diskquota.files_hard %]
+    - [% diskquota.files_percent %]%<br>
+    [% IF diskquota.files_grace %]
+    [% d.get('verbleibende Zeit:') %] [% diskquota.files_grace %]<br>[% END %]<br>
 </p>
 
 <ul>
-[% IF diskquotas.warn %]
+[% IF diskquota.warn %]
 <li class="warn">
 [% ELSE %]
 <li>
 [% END %]
-<span title="[% diskquotas.path %]: [% diskquotas.blocks_percent %]%" style="width: [% diskquotas.blocks_percent_rounded %]%;">&nbsp;</span>
+<span title="[% diskquota.path %]: [% diskquota.blocks_percent %]%" style="width: [% diskquota.blocks_percent_rounded %]%;">&nbsp;</span>
 </li>
 </ul>
 
@@ -134,28 +134,29 @@
 <col width="30%">
 <col width="70%">
 
-[% FOREACH mailquotas %]
+[% FOREACH mailquota IN mailquotas %]
 <tr>
 
-<td>[% mailquotas.mbox %]</td>
+<td>[% mailquota.mbox %]</td>
 
-<td>[% IF mailquotas.limit %]
+<td>[% IF mailquota.limit %]
 
 
 <p>
     [% d.get('E-Mail-Speicher/KB:') %]
-    [% mailquotas.usage %]/[% mailquotas.limit %]
-    - [% mailquotas.percent %]%
+    [% mailquota.usage %]/[% mailquota.limit %]
+    - [% mailquota.percent %]%
 </p>
 
 
 <ul>
-[% IF mailquotas.warn %]
+[% IF mailquota.warn %]
 <li class="warn">
 [% ELSE %]
 <li>
 [% END %]
-<span title="E-Mail: [% mailquotas.usage %]/[% mailquotas.limit %] [% mailquotas.percent %]%" style="width: [% mailquotas.percent_rounded %]%;">&nbsp;</span>
+<span title="E-Mail: [% mailquota.usage %]/[% mailquota.limit %] [% mailquota.percent %]%" style="width: [% mailquota.
+percent_rounded %]%;">&nbsp;</span>
 </li>
 </ul>
 [% ELSE %]-[% END %]</td>
