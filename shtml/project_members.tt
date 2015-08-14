@@ -27,7 +27,7 @@
 <option value="[% project_gid %]" selected>[% project %]</option>
 </optgroup>
 </select>
-<input type="submit" value="Wechseln">
+<input type="submit" value="[% d.get('Wechseln') %]">
 </p>
 </form>
 [% END %]
@@ -46,7 +46,7 @@
 [% ELSE %]
 <input type="checkbox" id="projectisopen" name="projectisopen"><br>
 [% END %]
-<input type="submit" name="projectisopenaccept" value="&Auml;nderungen speichern">
+<input type="submit" name="projectisopenaccept" value="[% d.get('&Auml;nderungen speichern') %]">
 </p>
 </form>
 
@@ -56,14 +56,14 @@
 <p>
 <label for="query">[% d.get('Suche:') %]</label>
 <input id="query" name="query">
-<input type="submit" name="search" value="Suche"></p>
-<p><input type="radio" name="scope" id="radiostudent" value="student" checked>
+<input type="submit" name="search" value="[% d.get('Suche') %]"></p>
+<p><input type="radio" name="scope" id="radiostudent" value="[% d.get('student') %]" checked>
    <label for="radiostudent">[% d.get('Sch&uuml;ler') %]</label>
-   <input type="radio" name="scope" id="radioteacher" value="teacher">
+   <input type="radio" name="scope" id="radioteacher" value="[% d.get('teacher') %]">
    <label for="radioteacher">[% d.get('Lehrer') %]</label>
-   <input type="radio" name="scope" id="radioclass" value="class">
+   <input type="radio" name="scope" id="radioclass" value="[% d.get('class') %]">
    <label for="radioclass">[% d.get('Klasse') %]</label>
-   <input type="radio" name="scope" id="radioproject" value="project">
+   <input type="radio" name="scope" id="radioproject" value="[% d.get('project') %]">
    <label for="radioproject">[% d.get('Projekt') %]</label></p>
 </form>
 [% END %]
@@ -88,7 +88,7 @@
 [% ELSE %]
 <td>[% membersclasses.name %]</td>
 [% END %]
-<td><input type="submit" name="[% membersclasses.gid %]_removeclass" value="Mitgliedschaft beenden"></td>
+<td><input type="submit" name="[% membersclasses.gid %]_removeclass" value="[% d.get('Mitgliedschaft beenden') %]"></td>
 </tr>
 [% END %]
 <tr>
@@ -120,7 +120,7 @@
 <td>[% membersprojects.name %]</td>
 [% END %]
 <td><input type="checkbox" disabled checked></td>
-<td><input type="submit" name="[% membersprojects.gid %]_removeproject" value="Mitgliedschaft beenden"></td>
+<td><input type="submit" name="[% membersprojects.gid %]_removeproject" value="[% d.get('Mitgliedschaft beenden') %]"></td>
 <td></td>
 [% END %]
 </tr>
@@ -157,7 +157,7 @@
 [% ELSE %]
 <td><input type="checkbox" disabled></td>
 [% END %]
-<td><input type="submit" name="[% membersteachers.login %]_removeuser" value="Mitgliedschaft beenden"></td>
+<td><input type="submit" name="[% membersteachers.login %]_removeuser" value="[% d.get('Mitgliedschaft beenden') %]"></td>
 </tr>
 [% END %]
 <tr>
@@ -248,7 +248,7 @@
 </ul>
 [% ELSE %]-[% END %]</td>
 <td>[% membersstudents.class %]</td>
-<td><input type="submit" name="[% membersstudents.login %]_removeuser" value="Mitgliedschaft beenden"></td>
+<td><input type="submit" name="[% membersstudents.login %]_removeuser" value="[% d.get('Mitgliedschaft beenden') %]"></td>
 </tr>
 [% END %]
 <tr>

@@ -26,7 +26,7 @@
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="all" value="Benutzer anlegen/versetzen/l&ouml;schen">
+<input type="submit" name="all" value="[% d.get('Benutzer anlegen/versetzen/l&ouml;schen') %]">
 </p>
 [% END %]
 
@@ -40,7 +40,7 @@
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="add" value="Benutzer anlegen">
+<input type="submit" name="add" value="[% d.get('Benutzer anlegen') %]">
 </p>
 [% END %]
 
@@ -49,11 +49,11 @@
 [% logadd %]
 </pre>
 <p>
-<input type="submit" name="showlogadd" value="Aktualisieren">
+<input type="submit" name="showlogadd" value="[% d.get('Aktualisieren') %]">
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="showlogadd" value="Letzte Logdatei ansehen">
+<input type="submit" name="showlogadd" value="[% d.get('Letzte Logdatei ansehen') %]">
 </p>
 [% END %]
 
@@ -81,7 +81,7 @@
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="move" value="Benutzer versetzen">
+<input type="submit" name="move" value="[% d.get('Benutzer versetzen') %]">
 </p>
 [% END %]
 
@@ -90,11 +90,11 @@
 [% logmove %]
 </pre>
 <p>
-<input type="submit" name="showlogmove" value="Aktualisieren">
+<input type="submit" name="showlogmove" value="[% d.get('Aktualisieren') %]">
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="showlogmove" value="Letzte Logdatei ansehen">
+<input type="submit" name="showlogmove" value="[% d.get('Letzte Logdatei ansehen') %]">
 </p>
 [% END %]
 
@@ -126,7 +126,7 @@
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="kill" value="Benutzer l&ouml;schen">
+<input type="submit" name="kill" value="[% d.get('Benutzer l&ouml;schen') %]">
 </p>
 [% END %]
 
@@ -135,11 +135,11 @@
 [% logkill %]
 </pre>
 <p>
-<input type="submit" name="showlogkill" value="Aktualisieren">
+<input type="submit" name="showlogkill" value="[% d.get('Aktualisieren') %]">
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="showlogkill" value="Letzte Logdatei ansehen">
+<input type="submit" name="showlogkill" value="[% d.get('Letzte Logdatei ansehen') %]">
 </p>
 [% END %]
 

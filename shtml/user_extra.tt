@@ -27,7 +27,7 @@
 </textarea>
 </p>
 
-<p><input type="submit" name="extrauseredit" value="&Auml;nderungen speichern"></p>
+<p><input type="submit" name="extrauseredit" value="[% d.get('&Auml;nderungen speichern') %]"></p>
 
 </form>
 
@@ -41,7 +41,7 @@
 </textarea>
 </p>
 
-<p><input type="submit" name="extracourseedit" value="&Auml;nderungen speichern"></p>
+<p><input type="submit" name="extracourseedit" value="[% d.get('&Auml;nderungen speichern') %]"></p>
 
 </form>
 

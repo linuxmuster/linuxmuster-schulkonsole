@@ -28,7 +28,7 @@
 <option value="[% class_gid %]" selected>[% class %]</option>
 </optgroup>
 </select>
-<input type="submit" value="Wechseln">
+<input type="submit" value="[% d.get('Wechseln') %]">
 </p>
 </form>
 [% END %]
@@ -67,10 +67,10 @@
 </tr>
 <tr class="quickselection">
 <td colspan="2">[% d.get('Schnellauswahl') %]</td>
-<td><input class="button" type="button" value="Aus" name="shares" onClick="check_uncheck(this)"></td>
+<td><input class="button" type="button" value="[% d.get('Aus') %]" name="shares" onClick="check_uncheck(this)"></td>
 </tr>
 </table>
-<p><input type="submit" name="acceptshares" value="&Auml;nderungen &uuml;bernehmen"></p>
+<p><input type="submit" name="acceptshares" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]"></p>
 </form>
 
 

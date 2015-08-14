@@ -39,9 +39,9 @@
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td>[% printers.name %]</td>
 <td><label for="[% printers.name %]_rooms">[% printers.rooms %]</label></td>
-<td><input type="submit" id="[% printers.name %]_rooms" name="[% printers.name %]_rooms" value="Bearbeiten"></td>
+<td><input type="submit" id="[% printers.name %]_rooms" name="[% printers.name %]_rooms" value="[% d.get('Bearbeiten') %]"></td>
 <td><label for="[% printers.name %]_hosts">[% printers.hosts %]</label></td>
-<td><input type="submit" id="[% printers.name %]_hosts" name="[% printers.name %]_hosts" value="Bearbeiten"></td>
+<td><input type="submit" id="[% printers.name %]_hosts" name="[% printers.name %]_hosts" value="[% d.get('Bearbeiten') %]"></td>
 </tr>
 [% END %]
 </table>

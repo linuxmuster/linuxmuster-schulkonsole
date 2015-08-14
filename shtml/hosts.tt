@@ -29,11 +29,11 @@
 [% logimport %]
 </pre>
 <p>
-<input type="submit" name="showlogimport" value="Aktualisieren">
+<input type="submit" name="showlogimport" value="[% d.get('Aktualisieren') %]">
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="showlogimport" value="Letzte Logdatei ansehen">
+<input type="submit" name="showlogimport" value="[% d.get('Letzte Logdatei ansehen') %]">
 </p>
 [% END %]
 [% ELSE %]
@@ -42,7 +42,7 @@
 <p class="important">[% d.get('Die Liste der konfigurierten Hosts stimmt nicht mit den
 tats&auml;chlich im System vorhandenen Hosts &uuml;berein.') %]</p>
 
-<p><input type="submit" name="import" value="Hosts jetzt &uuml;bernehmen"></p>
+<p><input type="submit" name="import" value="[% d.get('Hosts jetzt &uuml;bernehmen') %]"></p>
 </form>
 [% ELSE %]
 [% IF unimported %]
@@ -50,7 +50,7 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.') %]</p>
 <p class="important">[% d.get('Es wurden noch nicht alle Hosts in das System &uuml;bernommen.
 ') %]</p>
 
-<p><input type="submit" name="import" value="Hosts jetzt &uuml;bernehmen"></p>
+<p><input type="submit" name="import" value="[% d.get('Hosts jetzt &uuml;bernehmen') %]"></p>
 </form>
 [% END %]
 [% END %]
@@ -60,18 +60,18 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.') %]</p>
 [% logimport %]
 </pre>
 <p>
-<input type="submit" name="showlogimport" value="Aktualisieren">
+<input type="submit" name="showlogimport" value="[% d.get('Aktualisieren') %]">
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="showlogimport" value="Letzte Logdatei ansehen">
+<input type="submit" name="showlogimport" value="[% d.get('Letzte Logdatei ansehen') %]">
 </p>
 [% END %]
 <p></p>
 <h2>[% d.get('Kommentare bearbeiten') %]</h2>
 
 <p><textarea wrap="off" name="commentlines" rows="5" cols="100"></textarea></p>
-<p><input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
+<p><input type="submit" name="accept" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]">
 </p>
 
 <p></p>
@@ -142,13 +142,13 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.') %]</p>
 <option value="10">10</option>
 <option value="30">30</option>
 </select></td>
-<td colspan="7"><input type="submit" name="addrows" value="Zeilen hinzuf&uuml;gen"></td>
+<td colspan="7"><input type="submit" name="addrows" value="[% d.get('Zeilen hinzuf&uuml;gen') %]"></td>
 </tr>
 </table>
 
 <p>
-<input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
-<input type="reset" value="Zur&uuml;cksetzen">
+<input type="submit" name="accept" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]">
+<input type="reset" value="[% d.get('Zur&uuml;cksetzen') %]">
 </p>
 
 </form>

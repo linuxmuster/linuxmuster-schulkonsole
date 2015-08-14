@@ -37,7 +37,7 @@
 </tr>
 </table>
 
-<p><input type="submit" name="newteacher" value="&Auml;nderungen in Lehrerliste speichern"></p>
+<p><input type="submit" name="newteacher" value="[% d.get('&Auml;nderungen in Lehrerliste speichern') %]"></p>
 </form>
 
 
@@ -50,7 +50,7 @@
 <h3><label for="teachersfilename">[% d.get('Datei importieren') %]</label></h3>
 <p>
 <input type="file" id="teachersfilename" name="teachersfilename">
-<input type="submit" name="teachersupload" value="Hochladen">
+<input type="submit" name="teachersupload" value="[% d.get('Hochladen') %]">
 </p>
 </form>
 
@@ -80,7 +80,7 @@
 [% END %]
 </table>
 
-<p><input type="submit" name="acceptteachers" value="&Auml;nderungen in Lehrerliste speichern"></p>
+<p><input type="submit" name="acceptteachers" value="[% d.get('&Auml;nderungen in Lehrerliste speichern') %]"></p>
 
 </form>
 
@@ -113,7 +113,7 @@
 [% END %]
 </table>
 
-<p><input type="submit" name="acceptteachers" value="&Auml;nderungen in Lehrerliste speichern"></p>
+<p><input type="submit" name="acceptteachers" value="[% d.get('&Auml;nderungen in Lehrerliste speichern') %]"></p>
 
 </form>
 
@@ -143,7 +143,7 @@
 [% END %]
 </table>
 
-<p><input type="submit" name="acceptteachers" value="&Auml;nderungen in Lehrerliste speichern"></p>
+<p><input type="submit" name="acceptteachers" value="[% d.get('&Auml;nderungen in Lehrerliste speichern') %]"></p>
 </form>
 
 

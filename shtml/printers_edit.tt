@@ -39,8 +39,8 @@
 </select>
 </td>
 <td>
-<input type="submit" name="[% printer %]_roomselect" value="&lt;&lt;"><br>
-<input type="submit" name="[% printer %]_roomdeselect" value="&gt;&gt;">
+<input type="submit" name="[% printer %]_roomselect" value="[% d.get('&lt;&lt;') %]"><br>
+<input type="submit" name="[% printer %]_roomdeselect" value="[% d.get('&gt;&gt;') %]">
 </td>
 <td>
 <select name="roomselect" multiple>
@@ -54,7 +54,7 @@
 
 <p>
 [% FOREACH roomsselected %]<input type="hidden" name="roomsselected" value="[% roomsselected %]">[% END %]
-<input type="submit" name="[% printer %]_acceptrooms" value="&Auml;nderungen &uuml;bernehmen">
+<input type="submit" name="[% printer %]_acceptrooms" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]">
 </p>
 
 </form>
@@ -78,8 +78,8 @@
 </select>
 </td>
 <td>
-<input type="submit" name="[% printer %]_hostselect" value="&lt;&lt;"><br>
-<input type="submit" name="[% printer %]_hostdeselect" value="&gt;&gt;">
+<input type="submit" name="[% printer %]_hostselect" value="[% d.get('&lt;&lt;') %]"><br>
+<input type="submit" name="[% printer %]_hostdeselect" value="[% d.get('&gt;&gt;') %]">
 </td>
 <td>
 <select name="hostselect" multiple>
@@ -93,7 +93,7 @@
 
 <p>
 [% FOREACH hostsselected %]<input type="hidden" name="hostsselected" value="[% hostsselected %]">[% END %]
-<input type="submit" name="[% printer %]_accepthosts" value="&Auml;nderungen &uuml;bernehmen">
+<input type="submit" name="[% printer %]_accepthosts" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]">
 </p>
 
 </form>

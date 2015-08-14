@@ -28,7 +28,7 @@
 <option value="[% class_gid %]" selected>[% class %]</option>
 </optgroup>
 </select>
-<input type="submit" value="Wechseln">
+<input type="submit" value="[% d.get('Wechseln') %]">
 </p>
 </form>
 [% END %]
@@ -43,7 +43,7 @@
 
 <form method="post" accept-charset="UTF-8">
 
-<p><input type="submit" value="Ansicht aktualisieren"></p>
+<p><input type="submit" value="[% d.get('Ansicht aktualisieren') %]"></p>
 
 
 <table>
@@ -56,7 +56,7 @@
 	<td><label for="copytop">[% d.get('Original bleibt erhalten') %]</label></td>
 </tr>
 </table>
-<p><input type="submit" name="collecttop" value="Einsammeln"></p>
+<p><input type="submit" name="collecttop" value="[% d.get('Einsammeln') %]"></p>
 
 <table id="classcollect" class="liste">
 <colgroup span="3"></colgroup>
@@ -87,7 +87,7 @@
 </tr>
 <tr class="quickselection">
 <td colspan="2">[% d.get('Schnellauswahl') %]</td>
-<td><input class="button" type="button" value="Aus" name="collect" onClick="check_uncheck(this)" checked></td>
+<td><input class="button" type="button" value="[% d.get('Aus') %]" name="collect" onClick="check_uncheck(this)" checked></td>
 <td></td>
 </tr>
 </table>
@@ -102,7 +102,7 @@
 	<td><label for="copybottom">[% d.get('Original bleibt erhalten') %]</label></td>
 </tr>
 </table>
-<p><input type="submit" name="collectbottom" value="Einsammeln"></p>
+<p><input type="submit" name="collectbottom" value="[% d.get('Einsammeln') %]"></p>
 
 </form>
 

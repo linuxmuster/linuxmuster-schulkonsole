@@ -33,8 +33,8 @@ form {
 <h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('Berichte') %]</h2>
 
 <form method="post" accept-charset="UTF-8">
-<input type="submit" name="showadmin" value="Administrator-Report">
-<input type="submit" name="showoffice" value="Report f&uuml;r das Sekretariat">
+<input type="submit" name="showadmin" value="[% d.get('Administrator-Report') %]">
+<input type="submit" name="showoffice" value="[% d.get('Report f&uuml;r das Sekretariat') %]">
 </form>
 
 [% IF content %]

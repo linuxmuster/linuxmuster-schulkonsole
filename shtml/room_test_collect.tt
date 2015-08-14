@@ -39,8 +39,8 @@
 
 <form method="post" accept-charset="UTF-8">
 
-<p><input type="submit" name="collectcopy" value="Kopien einsammeln">
-   <input type="submit" name="collectmove" value="Einsammeln und beenden"></p>
+<p><input type="submit" name="collectcopy" value="[% d.get('Kopien einsammeln') %]">
+   <input type="submit" name="collectmove" value="[% d.get('Einsammeln und beenden') %]"></p>
 
 <table id="roomcollect" class="liste">
 <tr>
@@ -69,11 +69,11 @@
 [% END %]
 </table>
 
-<p><input type="submit" name="collectcopy" value="Kopien einsammeln">
-   <input type="submit" name="collectmove" value="Einsammeln und beenden"></p>
+<p><input type="submit" name="collectcopy" value="[% d.get('Kopien einsammeln') %]">
+   <input type="submit" name="collectmove" value="[% d.get('Einsammeln und beenden') %]"></p>
 
 
-<p><input type="submit" value="Aktualisieren"></p>
+<p><input type="submit" value="[% d.get('Aktualisieren') %]"></p>
 
 </form>
 

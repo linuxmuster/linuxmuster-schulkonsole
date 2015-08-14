@@ -62,7 +62,7 @@
 [% FOREACH defaultrooms %]	<option value="[% defaultrooms %]">[% defaultrooms %]</option>
 [% END %]
 </select></td>
-<td><input type="submit" name="add_room" value="Ausnahme hinzuf&uuml;gen"></td>
+<td><input type="submit" name="add_room" value="[% d.get('Ausnahme hinzuf&uuml;gen') %]"></td>
 [% ELSE %]
 <td colspan="2"></td>
 [% END %]
@@ -114,7 +114,7 @@
 		<option value="[% nondefaults.hosts %]">[% nondefaults.hosts %]</option>
 	[% END %]
 	</select></td>
-	<td><input type="submit" name="[% nondefaults.name %]_add_host" value="Ausnahme hinzuf&uuml;gen"></td>
+	<td><input type="submit" name="[% nondefaults.name %]_add_host" value="[% d.get('Ausnahme hinzuf&uuml;gen') %]"></td>
 	[% ELSE %]
 	<td colspan="2"></td>
 	[% END %]
@@ -156,11 +156,11 @@
 
 <p>
 [% IF nondefaults %]
-<input type="submit" name="reset" value="Auswahl zur&uuml;cksetzen">
+<input type="submit" name="reset" value="[% d.get('Auswahl zur&uuml;cksetzen') %]">
 [% ELSE %]
-<input type="submit" name="reset" value="Auswahl zur&uuml;cksetzen" disabled>
+<input type="submit" name="reset" value="[% d.get('Auswahl zur&uuml;cksetzen') %]" disabled>
 [% END %]
-<input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen">
+<input type="submit" name="accept" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]">
 </p>
 
 </form>

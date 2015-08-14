@@ -28,7 +28,7 @@
 <option value="[% class_gid %]" selected>[% class %]</option>
 </optgroup>
 </select>
-<input type="submit" value="Wechseln">
+<input type="submit" value="[% d.get('Wechseln') %]">
 </p>
 </form>
 [% END %]

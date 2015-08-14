@@ -17,5 +17,5 @@
 <td><label for="password">[% d.get('Passwort') %]</label>: </td>
 <td><input id="password" name="password" type="password"></td>
 </table>
-<p><input type="submit" value="Anmelden"></p>
+<p><input type="submit" value="[% d.get('Anmelden') %]"></p>
 </form>
