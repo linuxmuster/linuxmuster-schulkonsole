@@ -28,7 +28,7 @@
 <option value="[% project_gid %]" selected>[% project %]</option>
 </optgroup>
 </select>
-<input type="submit" value="Wechseln">
+<input type="submit" value="[% d.get('Wechseln') %]">
 </p>
 </form>
 [% END %]
@@ -72,14 +72,14 @@
 [% IF projects.islastadmin %]
 <td></td>
 [% ELSE %]
-<td><input type="submit" name="[% projects.gid %]_remove" value="Austragen"></td>
+<td><input type="submit" name="[% projects.gid %]_remove" value="[% d.get('Austragen') %]"></td>
 [% END %]
 [% ELSE %]
 <td></td>
 [% END %]
 
 [% IF projects.isadmin %]
-<td><input type="submit" name="[% projects.gid %]_drop" value="L&ouml;schen"></td>
+<td><input type="submit" name="[% projects.gid %]_drop" value="[% d.get('L&ouml;schen') %]"></td>
 [% ELSE %]
 <td></td>
 [% END %]
@@ -103,7 +103,7 @@
 <option value="[% other_projects.gid %]">[% other_projects.name %]</option>
 [% END %]
 </select>
-<input type="submit" value="Eintragen">
+<input type="submit" value="[% d.get('Eintragen') %]">
 </p>
 </form>
 [% END %]
@@ -121,7 +121,7 @@ p_<input id="projectname" name="projectname">
 <input type="checkbox" id="projectisopen" name="projectisopen" checked>
 <label for="projectisopen">offenes Projekt</label><br>
 
-<input type="submit" name="createproject" value="Anlegen">
+<input type="submit" name="createproject" value="[% d.get('Anlegen') %]">
 </p>
 
 

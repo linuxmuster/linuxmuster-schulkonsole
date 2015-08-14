@@ -42,7 +42,7 @@
 <p>[% d.get('Mit dem Einsammeln der Dateien wird die Klassenarbeit
 beendet.') %]
 
-<p><input type="submit" name="collectmove" value="Best&auml;tigen"></p>
+<p><input type="submit" name="collectmove" value="[% d.get('Best&auml;tigen') %]"></p>
 
 </form>
 

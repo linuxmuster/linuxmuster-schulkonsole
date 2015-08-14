@@ -59,7 +59,7 @@
 [% END %]
 </table>
 
-<p><input type="submit" value="Aktualisieren"></p>
+<p><input type="submit" value="[% d.get('Aktualisieren') %]"></p>
 
 
 <h3>[% d.get('Bereitzustellende Dateien') %]</h3>
@@ -71,11 +71,11 @@
 	*[% END %][% teacher_share_files.name %]</li>
 [% END %]
 </ul>
-<p>[% d.get('Allen') %] <input type="submit" name="handouttest" value="bereitstellen">
+<p>[% d.get('Allen') %] <input type="submit" name="handouttest" value="[% d.get('bereitstellen') %]">
 </p>
 [% ELSE %]
 <p>[% d.get('Keine Dateien') %]<p>
-<p><input type="submit" name="continue" value="weiter">
+<p><input type="submit" name="continue" value="[% d.get('weiter') %]">
 </p>
 [% END %]
 

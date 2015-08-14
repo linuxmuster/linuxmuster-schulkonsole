@@ -28,7 +28,7 @@
 <option value="100">100</option>
 <option value="500">500</option>
 </select>
-<input type="submit" name="changemax" value="&auml;ndern"></p>
+<input type="submit" name="changemax" value="[% d.get('&auml;ndern') %]"></p>
 
 </form>
 
@@ -38,17 +38,17 @@
 <form method="post" accept-charset="UTF-8">
 <p>
 [% IF firstpage %]
-<input type="submit" name="prev" value="zur&uuml;ck" disabled>
+<input type="submit" name="prev" value="[% d.get('zur&uuml;ck') %]" disabled>
 [% ELSE %]
-<input type="submit" name="prev" value="zur&uuml;ck">
+<input type="submit" name="prev" value="[% d.get('zur&uuml;ck') %]">
 [% END %]
 [% FOREACH pages %]
 <input type="submit" name="[% pages %]_page" value="[% pages %]">
 [% END %]
 [% IF lastpage %]
-<input type="submit" name="next" value="weiter" disabled>
+<input type="submit" name="next" value="[% d.get('weiter') %]" disabled>
 [% ELSE %]
-<input type="submit" name="next" value="weiter">
+<input type="submit" name="next" value="[% d.get('weiter') %]">
 [% END %]
 </p>
 
@@ -69,9 +69,9 @@
 <tr class="sameuser">
 <td>[% users.login %]</td>
 <td>[% IF users.delete %]
-<input type="radio" name="[% users.login %]_user" id="[% users.login %];[% users.id %]" value="::" checked>
+<input type="radio" name="[% users.login %]_user" id="[% users.login %];[% users.id %]" value="[% d.get('::') %]" checked>
 [% ELSE %]
-<input type="radio" name="[% users.login %]_user" id="[% users.login %];[% users.id %]" value="">
+<input type="radio" name="[% users.login %]_user" id="[% users.login %];[% users.id %]" value="[% d.get('') %]">
 [% END %]</td>
 <td>[% users.class %]</td>
 <td><label for="[% users.login %];[% users.id %]">[% users.id %]</label></td>
@@ -95,26 +95,26 @@
 
 <p>
 [% IF firstpage %]
-<input type="submit" name="prev" value="zur&uuml;ck" disabled>
+<input type="submit" name="prev" value="[% d.get('zur&uuml;ck') %]" disabled>
 [% ELSE %]
-<input type="submit" name="prev" value="zur&uuml;ck">
+<input type="submit" name="prev" value="[% d.get('zur&uuml;ck') %]">
 [% END %]
 [% FOREACH pages %]
 <input type="submit" name="[% pages %]_page" value="[% pages %]">
 [% END %]
 [% IF lastpage %]
-<input type="submit" name="next" value="weiter" disabled>
+<input type="submit" name="next" value="[% d.get('weiter') %]" disabled>
 [% ELSE %]
-<input type="submit" name="next" value="weiter">
+<input type="submit" name="next" value="[% d.get('weiter') %]">
 [% END %]
 </p>
 
 
-<p><input type="submit" name="accept" value="&Auml;nderungen &uuml;bernehmen"></p>
+<p><input type="submit" name="accept" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]"></p>
 
 <hr>
 
-<p><input type="submit" name="write" value="Beenden"></p>
+<p><input type="submit" name="write" value="[% d.get('Beenden') %]"></p>
 
 </form>
 

@@ -27,7 +27,7 @@
 <option value="[% project_gid %]" selected>[% project %]</option>
 </optgroup>
 </select>
-<input type="submit" value="Wechseln">
+<input type="submit" value="[% d.get('Wechseln') %]">
 </p>
 </form>
 [% END %]
@@ -53,10 +53,10 @@
 [% ELSE %]
 <p>[% d.get('Keine Dateien') %]<p>
 [% END %]
-<p><input type="submit" value="Ansicht aktualisieren"></p>
+<p><input type="submit" value="[% d.get('Ansicht aktualisieren') %]"></p>
 
 
-<p><input type="submit" name="handout" value="Bereitstellen"></p>
+<p><input type="submit" name="handout" value="[% d.get('Bereitstellen') %]"></p>
 </form>
 
 

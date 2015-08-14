@@ -28,7 +28,7 @@
 <option value="[% class_gid %]" selected>[% class %]</option>
 </optgroup>
 </select>
-<input type="submit" value="Wechseln">
+<input type="submit" value="[% d.get('Wechseln') %]">
 </p>
 </form>
 [% END %]
@@ -52,7 +52,7 @@
 
 [% IF stopedit %]
 <p>[% d.get('Unterricht beenden:') %]
-<input type="submit" name="end_lesson_now" value="sofort beenden">
+<input type="submit" name="end_lesson_now" value="[% d.get('sofort beenden') %]">
 
 [% IF edit %]
 [% d.get('- oder -') %] [% d.get('um') %] 
@@ -97,7 +97,7 @@
 	<option value="55">55</option>
 </select>
 [% d.get('Uhr') %]
-<input type="submit" name="end_lesson_at" value="beenden lassen">.
+<input type="submit" name="end_lesson_at" value="[% d.get('beenden lassen') %]">.
 [% END %]
 [% END %]
 [% ELSE %]
@@ -108,7 +108,7 @@
 [% d.get('angemeldet,') %]
 [% END %]
 [% d.get('kein Unterricht.') %]
-<input type="submit" name="start_lesson" value="Unterricht beginnen">
+<input type="submit" name="start_lesson" value="[% d.get('Unterricht beginnen') %]">
 
 [% END %]
 </p>
@@ -134,7 +134,7 @@
 </td>
 </tr>
 </table>
-<p><input type="submit" name="acceptlesson" value="&Auml;nderungen &uuml;bernehmen"></p>
+<p><input type="submit" name="acceptlesson" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]"></p>
 </form>
 
 [% ELSE %]

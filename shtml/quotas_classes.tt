@@ -53,7 +53,7 @@
 [% END %]
 </table>
 
-<p><input type="submit" name="acceptclasses" value="&Auml;nderungen &uuml;bernehmen"></p>
+<p><input type="submit" name="acceptclasses" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]"></p>
 
 </form>
 

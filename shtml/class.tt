@@ -28,7 +28,7 @@
 <option value="[% class_gid %]" selected>[% class %]</option>
 </optgroup>
 </select>
-<input type="submit" value="Wechseln">
+<input type="submit" value="[% d.get('Wechseln') %]">
 </p>
 </form>
 [% END %]
@@ -57,7 +57,7 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td><input type="submit" name="[% classes.gid %]_list" value="[% classes.name %]"></td>
-<td><input type="submit" name="[% classes.gid %]_remove" value="Austragen"></td>
+<td><input type="submit" name="[% classes.gid %]_remove" value="[% d.get('Austragen') %]"></td>
 </tr>
 [% END %]
 </table>
@@ -77,7 +77,7 @@
 <option value="[% other_classes.gid %]">[% other_classes.name %]</option>
 [% END %]
 </select>
-<input type="submit" value="Eintragen">
+<input type="submit" value="[% d.get('Eintragen') %]">
 </p>
 </form>
 [% END %]

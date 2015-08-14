@@ -23,7 +23,7 @@
 [% FOREACH groups %] <option value="[% groups %]">[% groups %]</option>
 [% END %]
 </select>
-<input type="submit" value="Datei w&auml;hlen">
+<input type="submit" value="[% d.get('Datei w&auml;hlen') %]">
 </p>
 </form>
 [% END %]
@@ -99,24 +99,24 @@
 </tr>
 <tr class="even">
 <td><label for="linbo_backgroundfontcolor">[% d.get('Bildschirmschriftfarbe') %]:</label></td>
-<td><input id="linbo_backgroundfontcolor" name="linbo_backgroundfontcolor" value="white"></td>
+<td><input id="linbo_backgroundfontcolor" name="linbo_backgroundfontcolor" value="[% d.get('white') %]"></td>
 </tr>
 <tr class="odd">
 <td><label for="linbo_consolefontcolorstdout">[% d.get('Konsolenschriftfarbe') %]:</label></td>
-<td><input id="linbo_consolefontcolorstdout" name="linbo_consolefontcolorstdout" value="white"></td>
+<td><input id="linbo_consolefontcolorstdout" name="linbo_consolefontcolorstdout" value="[% d.get('white') %]"></td>
 </tr>
 <tr class="even">
 <td><label for="linbo_consolefontcolorstderr">[% d.get('Konsolenschriftfarbe f&uuml;r Fehler- und Warnmeldungen') %]:</label></td>
-<td><input id="linbo_consolefontcolorstderr" name="linbo_consolefontcolorstderr" value="red"></td>
+<td><input id="linbo_consolefontcolorstderr" name="linbo_consolefontcolorstderr" value="[% d.get('red') %]"></td>
 </tr>
 <tr class="odd">
 <td><label for="linbo_kerneloptions">[% d.get('LINBO-Kerneloptionen') %]:</label></td>
-<td><input id="linbo_kerneloptions" name="linbo_kerneloptions" value=""></td>
+<td><input id="linbo_kerneloptions" name="linbo_kerneloptions" value="[% d.get('') %]"></td>
 </tr>
 </table>
 
-<p><input type="submit" name="accept" value="&Auml;nderungen speichern"></p>
-<p><input type="submit" name="adddevtop" value="Neues System hinzuf&uuml;gen">
+<p><input type="submit" name="accept" value="[% d.get('&Auml;nderungen speichern') %]"></p>
+<p><input type="submit" name="adddevtop" value="[% d.get('Neues System hinzuf&uuml;gen') %]">
 <select name="adddevnewtop">
 <option value="windows">[% d.get('MS Windows') %]</option>
 <option value="gnulinux">[% d.get('GNU/Linux') %]</option>
@@ -315,7 +315,7 @@
 </td>
 </tr>
 </table>
-<p><input type="submit" name="accept" value="&Auml;nderungen speichern"></p>
+<p><input type="submit" name="accept" value="[% d.get('&Auml;nderungen speichern') %]"></p>
 [% IF devs.os.isfirst %]
 <p><select name="[% devs.n %]_modifynew">
 [% IF devs.iswindows %][% ELSE %]<option value="windows">[% d.get('MS Windows') %]</option>[% END %]
@@ -325,10 +325,10 @@
 [% IF devs.iscache %][% ELSE %][% IF iscached %][% ELSE %]<option value="cache">[% d.get('Cache') %]</option>[% END %][% END %]
 [% IF devs.isext %][% ELSE %]<option value="ext">[% d.get('erweitert') %]</option>[% END %]
 [% IF devs.isefi %][% ELSE %]<option value="efi">[% d.get('EFI') %]</option>[% END %]
-</select>&nbsp;<input type="submit" name="[% devs.n %]_modify" value="System &auml;ndern"></p>
+</select>&nbsp;<input type="submit" name="[% devs.n %]_modify" value="[% d.get('System &auml;ndern') %]"></p>
 [% END %]
-<p><input type="submit" name="[% devs.os.n %]_deleteos" value="Betriebssystem l&ouml;schen"><br>
-<input type="submit" name="[% devs.n %]_addos" value="Betriebssystem hinzuf&uuml;gen">
+<p><input type="submit" name="[% devs.os.n %]_deleteos" value="[% d.get('Betriebssystem l&ouml;schen') %]"><br>
+<input type="submit" name="[% devs.n %]_addos" value="[% d.get('Betriebssystem hinzuf&uuml;gen') %]">
 
 
 
@@ -379,11 +379,11 @@
 <td><input id="[% devs.n %]_size" name="[% devs.n %]_size">
 [% IF devs.bootable %]<input type="hidden" id="[% devs.n %]_bootable" name="[% devs.n %]_bootable" value="1">[% END %]
 [% IF devs.isswap %]
-<input type="hidden" name="[% devs.n %]_fstype" value="swap"></td>
+<input type="hidden" name="[% devs.n %]_fstype" value="[% d.get('swap') %]"></td>
 </tr>
 [% ELSE %]
 	[% IF devs.isext %]
-<input type="hidden" name="[% devs.n %]_fstype" value=""></td>
+<input type="hidden" name="[% devs.n %]_fstype" value="[% d.get('') %]"></td>
 </tr>
 	[% ELSE %]</td>
 </tr>
@@ -397,7 +397,7 @@
 </select>
 [% ELSE %]
 [% IF devs.isefi %]
-<input type="hidden" id="[% devs.n %]_fstype" name="[% devs.n %]_fstype" value="vfat"><label>[% d.get('VFAT') %]</label>
+<input type="hidden" id="[% devs.n %]_fstype" name="[% devs.n %]_fstype" value="[% d.get('vfat') %]"><label>[% d.get('VFAT') %]</label>
 [% ELSE %]
 <select id="[% devs.n %]_fstype" name="[% devs.n %]_fstype">
 <option value="vfat">[% d.get('VFAT') %]</option>
@@ -420,8 +420,8 @@
 	[% END %]
 [% END %]
 </table>
-<p><input type="submit" name="accept" value="&Auml;nderungen speichern"></p>
-<p><input type="submit" name="[% devs.n %]_delete" value="System l&ouml;schen"><br>
+<p><input type="submit" name="accept" value="[% d.get('&Auml;nderungen speichern') %]"></p>
+<p><input type="submit" name="[% devs.n %]_delete" value="[% d.get('System l&ouml;schen') %]"><br>
 <select name="[% devs.n %]_modifynew">
 [% IF devs.iswindows %][% ELSE %]<option value="windows">[% d.get('MS Windows') %]</option>[% END %]
 [% IF devs.isgnulinux %][% ELSE %]<option value="gnulinux">[% d.get('GNU/Linux') %]</option>[% END %]
@@ -430,7 +430,7 @@
 [% IF devs.iscache %][% ELSE %][% IF iscached %][% ELSE %]<option value="cache">[% d.get('Cache') %]</option>[% END %][% END %]
 [% IF devs.isext %][% ELSE %]<option value="ext">[% d.get('erweitert') %]</option>[% END %]
 [% IF devs.isefi %][% ELSE %]<option value="efi">[% d.get('EFI') %]</option>[% END %]
-</select>&nbsp;<input type="submit" name="[% devs.n %]_modify" value="System &auml;ndern">
+</select>&nbsp;<input type="submit" name="[% devs.n %]_modify" value="[% d.get('System &auml;ndern') %]">
 
 
 
@@ -447,14 +447,14 @@
 </colgroup>
 <td><label for="no_autostart">[% d.get('kein Betriebssystem automatisch starten') %]:</label></td>
 [% IF isautostartselected %]
-<td><input type="radio" id="no_autostart" name="autostart" value="none"></td>
+<td><input type="radio" id="no_autostart" name="autostart" value="[% d.get('none') %]"></td>
 [% ELSE %]
-<td><input type="radio" id="no_autostart" name="autostart" value="none" checked></td>
+<td><input type="radio" id="no_autostart" name="autostart" value="[% d.get('none') %]" checked></td>
 [% END %]
 </table>
 [% END %]
 
-<p><input type="submit" name="adddevbottom" value="Neues System hinzuf&uuml;gen">
+<p><input type="submit" name="adddevbottom" value="[% d.get('Neues System hinzuf&uuml;gen') %]">
 <select name="adddevnewbottom">
 <option value="windows">[% d.get('MS Windows') %]</option>
 <option value="gnulinux">[% d.get('GNU/Linux') %]</option>
@@ -465,7 +465,7 @@
 <option value="efi">[% d.get('EFI') %]</option>
 </select>
 </p>
-<p><input type="submit" name="accept" value="&Auml;nderungen speichern"></p>
+<p><input type="submit" name="accept" value="[% d.get('&Auml;nderungen speichern') %]"></p>
 
 </form>
 
@@ -489,7 +489,7 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td><input type="submit" name="[% groups %]_edit_start_conf" value="[% groups %]"></td>
-<td><input type="submit" name="[% groups %]_delete_start_conf" value="l&ouml;schen"></td>
+<td><input type="submit" name="[% groups %]_delete_start_conf" value="[% d.get('l&ouml;schen') %]"></td>
 </tr>
 [% END %]
 </table>

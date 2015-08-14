@@ -51,7 +51,7 @@
 [% ELSE %]
 <p>[% d.get('Keine Dateien') %]<p>
 [% END %]
-<p><input type="submit" value="Ansicht aktualisieren"></p>
+<p><input type="submit" value="[% d.get('Ansicht aktualisieren') %]"></p>
 
 
 <table id="roomhandoutcopy" class="liste">
@@ -92,11 +92,11 @@
 </tr>
 <tr class="quickselection">
 <td colspan="2">[% d.get('Schnellauswahl') %]</td>
-<td><input class="button" type="button" value="Aus" name="handout" onClick="check_uncheck(this)" checked></td>
+<td><input class="button" type="button" value="[% d.get('Aus') %]" name="handout" onClick="check_uncheck(this)" checked></td>
 </tr>
 </table>
 
-<p><input type="submit" name="handoutcopy" value="Austeilen"></p>
+<p><input type="submit" name="handoutcopy" value="[% d.get('Austeilen') %]"></p>
 </form>
 
 </div>

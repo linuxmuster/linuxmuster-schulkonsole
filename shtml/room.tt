@@ -27,7 +27,7 @@
 <option value="[% room %]" selected>[% room %]</option>
 </optgroup>
 </select>
-<input type="submit" value="Wechseln">
+<input type="submit" value="[% d.get('Wechseln') %]">
 </p>
 </form>
 
@@ -49,14 +49,14 @@
 
 [% IF exammode %]
 <p class="important">[% d.get('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
-<p><input type="submit" name="end_lesson_now" value="Klassenarbeitsmodus beenden"></p>
+<p><input type="submit" name="end_lesson_now" value="[% d.get('Klassenarbeitsmodus beenden') %]"></p>
 [% ELSE %]
 <p>[% d.get('Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.') %]</p>
 
 
 [% IF stopedit %]
 <p>[% d.get('Unterricht beenden:') %]
-<input type="submit" name="end_lesson_now" value="sofort beenden">
+<input type="submit" name="end_lesson_now" value="[% d.get('sofort beenden') %]">
 
 [% IF edit %]
 [% d.get('- oder -') %] [% d.get('um') %] 
@@ -101,7 +101,7 @@
 	<option value="55">55</option>
 </select>
 [% d.get('Uhr') %]
-<input type="submit" name="end_lesson_at" value="beenden lassen">.
+<input type="submit" name="end_lesson_at" value="[% d.get('beenden lassen') %]">.
 [% END %]
 [% END %]
 [% END %]
@@ -113,7 +113,7 @@
 [% d.get('angemeldet,') %]
 [% END %]
 [% d.get('kein Unterricht.') %]
-<input type="submit" name="start_lesson" value="Unterricht beginnen">
+<input type="submit" name="start_lesson" value="[% d.get('Unterricht beginnen') %]">
 
 [% END %]
 </p>
@@ -236,31 +236,31 @@
 <tr class="quickselection">
 <td colspan="2">[% d.get('Schnellauswahl') %]</td>
 [% IF quickinternetoff %]
-<td><input type="button" value="Aus" name="internet" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% d.get('Aus') %]" name="internet" checked onClick="check_uncheck(this)"></td>
 [% ELSE %]
-<td><input type="button" value="An" name="internet" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% d.get('An') %]" name="internet" checked onClick="check_uncheck(this)"></td>
 [% END %]
 [% IF quickintranetoff %]
-<td><input type="button" value="Aus" name="intranet" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% d.get('Aus') %]" name="intranet" checked onClick="check_uncheck(this)"></td>
 [% ELSE %]
-<td><input type="button" value="An" name="intranet" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% d.get('An') %]" name="intranet" checked onClick="check_uncheck(this)"></td>
 [% END %]
 [% IF quickwebfilteroff %]
-<td><input type="button" value="Aus" name="webfilter" onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% d.get('Aus') %]" name="webfilter" onClick="check_uncheck(this)"></td>
 [% ELSE %]
-<td><input type="button" value="An" name="webfilter" onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% d.get('An') %]" name="webfilter" onClick="check_uncheck(this)"></td>
 [% END %]
 [% FOREACH printers %]
-<td><input type="button" value="Aus" name="[% printers %];printer" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% d.get('Aus') %]" name="[% printers %];printer" checked onClick="check_uncheck(this)"></td>
 [% END %]
 [% IF quicksharesoff %]
-<td><input type="button" value="Aus" name="shares" onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% d.get('Aus') %]" name="shares" onClick="check_uncheck(this)"></td>
 [% ELSE %]
-<td><input type="button" value="An" name="shares" onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% d.get('An') %]" name="shares" onClick="check_uncheck(this)"></td>
 [% END %]
 </tr>
 </table>
-<p><input type="submit" name="acceptfirewall" value="&Auml;nderungen &uuml;bernehmen"></p>
+<p><input type="submit" name="acceptfirewall" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]"></p>
 </form>
 
 <h3>[% d.get('&Uuml;bersicht Drucker') %]</h3>
@@ -298,13 +298,13 @@
 <td>[% d.get('Schnellauswahl') %]</td>
 <td></td>
 [% IF quickprinteroff %]
-<td><input type="button" value="Aus" name="printer" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% d.get('Aus') %]" name="printer" checked onClick="check_uncheck(this)"></td>
 [% ELSE %]
-<td><input type="button" value="An" name="printer" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% d.get('An') %]" name="printer" checked onClick="check_uncheck(this)"></td>
 [% END %]
 </tr>
 </table>
-<p><input type="submit" name="acceptprinter" value="&Auml;nderungen &uuml;bernehmen"></p>
+<p><input type="submit" name="acceptprinter" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]"></p>
 </form>
 
 [% ELSE %]

@@ -21,7 +21,7 @@
 [% END %]
 </select>
 </p>
-<p><input type="submit" value="Druckauftr&auml;ge l&ouml;schen"></p>
+<p><input type="submit" value="[% d.get('Druckauftr&auml;ge l&ouml;schen') %]"></p>
 </form>
 [% ELSE %]
 <p>[% d.get('Keine Druckauftr&auml;ge') %]</p>
@@ -44,7 +44,7 @@
 <td><input id="newpasswordagain" name="newpasswordagain" type="password"></td>
 </tr>
 </table>
-<p><input type="submit" value="Passwort &auml;ndern"></p>
+<p><input type="submit" value="[% d.get('Passwort &auml;ndern') %]"></p>
 </form>
 
 <hr>
@@ -205,7 +205,7 @@ percent_rounded %]%;">&nbsp;</span>
 <h3>[% d.get('OpenVPN-Zertifikat') %]</h3>
 [% IF has_ovpn %]
 <p>[% d.get('Ein OpenVPN-Zertifikat wurde f&uuml;r Sie erstellt.') %]</p>
-<p><input type="submit" name="ovpndownload" value="OpenVPN-Zertifikat herunterladen"></p>
+<p><input type="submit" name="ovpndownload" value="[% d.get('OpenVPN-Zertifikat herunterladen') %]"></p>
 [% ELSE %]
 <h4>[% d.get('OpenVPN-Zertifikat erstellen') %]</h4>
 
@@ -220,7 +220,7 @@ percent_rounded %]%;">&nbsp;</span>
 </tr>
 </table>
 
-<p><input type="submit" value="Zertifikat erstellen und herunterladen"></p>
+<p><input type="submit" value="[% d.get('Zertifikat erstellen und herunterladen') %]"></p>
 
 [% END %]
 </form>

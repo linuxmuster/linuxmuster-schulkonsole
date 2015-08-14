@@ -22,7 +22,7 @@
 <h3><label for="studentsfilename">[% d.get('Datei importieren') %]</label></h3>
 <p>
 <input type="file" id="studentsfilename" name="studentsfilename">
-<input type="submit" name="studentsupload" value="Hochladen">
+<input type="submit" name="studentsupload" value="[% d.get('Hochladen') %]">
 </p>
 </form>
 
@@ -36,7 +36,7 @@
 </textarea>
 </p>
 
-<p><input type="submit" name="studentsedit" value="&Auml;nderungen speichern"></p>
+<p><input type="submit" name="studentsedit" value="[% d.get('&Auml;nderungen speichern') %]"></p>
 
 </form>
 

@@ -47,7 +47,7 @@
 </tr>
 </table>
 
-<p><input type="submit" name="add" value="Aufnehmen"></p>
+<p><input type="submit" name="add" value="[% d.get('Aufnehmen') %]"></p>
 
 [% END %]
 
@@ -77,7 +77,7 @@
 </tr>
 </table>
 
-<p><input type="submit" name="add" value="Aufnehmen"></p>
+<p><input type="submit" name="add" value="[% d.get('Aufnehmen') %]"></p>
 
 [% END %]
 
@@ -102,7 +102,7 @@
 </tr>
 </table>
 
-<p><input type="submit" name="add" value="Aufnehmen"></p>
+<p><input type="submit" name="add" value="[% d.get('Aufnehmen') %]"></p>
 
 [% END %]
 
@@ -127,7 +127,7 @@
 </tr>
 </table>
 
-<p><input type="submit" name="add" value="Aufnehmen"></p>
+<p><input type="submit" name="add" value="[% d.get('Aufnehmen') %]"></p>
 
 [% END %]
 
@@ -142,14 +142,14 @@
 <p>
 <label for="query">[% d.get('Neue Suche:') %]</label>
 <input id="query" name="query">
-<input type="submit" name="search" value="Suche"></p>
-<p><input type="radio" name="scope" id="radiostudent" value="student" checked>
+<input type="submit" name="search" value="[% d.get('Suche') %]"></p>
+<p><input type="radio" name="scope" id="radiostudent" value="[% d.get('student') %]" checked>
    <label for="radiostudent">[% d.get('Sch&uuml;ler') %]</label>
-   <input type="radio" name="scope" id="radioteacher" value="teacher">
+   <input type="radio" name="scope" id="radioteacher" value="[% d.get('teacher') %]">
    <label for="radioteacher">[% d.get('Lehrer') %]</label>
-   <input type="radio" name="scope" id="radioclass" value="class">
+   <input type="radio" name="scope" id="radioclass" value="[% d.get('class') %]">
    <label for="radioclass">[% d.get('Klasse') %]</label>
-   <input type="radio" name="scope" id="radioproject" value="project">
+   <input type="radio" name="scope" id="radioproject" value="[% d.get('project') %]">
    <label for="radioproject">[% d.get('Projekt') %]</label></p>
 </form>
 

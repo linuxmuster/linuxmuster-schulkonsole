@@ -20,7 +20,7 @@
 
 <form method="post" accept-charset="UTF-8">
 <p>
-<input type="submit" name="check" value="Benutzerlisten &uuml;berpr&uuml;fen">
+<input type="submit" name="check" value="[% d.get('Benutzerlisten &uuml;berpr&uuml;fen') %]">
 </p>
 
 [% IF teachin %]

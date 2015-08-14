@@ -27,8 +27,8 @@
 <p>[% d.get('M&ouml;chten Sie das Projekt wirklich l&ouml;schen?') %]</p>
 
 <p><input type="hidden" name="ok" value="1">
-<input type="submit" name="[% project_gid %]_drop" value="Ja">
-<input type="submit" value="Nein">
+<input type="submit" name="[% project_gid %]_drop" value="[% d.get('Ja') %]">
+<input type="submit" value="[% d.get('Nein') %]">
 </p>
 
 </form>
