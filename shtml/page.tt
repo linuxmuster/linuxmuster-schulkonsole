@@ -55,7 +55,7 @@
     </div>
 
     <div id="info" style="display: block;">
-    <a class="hideinfo" href="#" onclick="toggle_visibility('info');">^</a>
+    <a class="hideinfo" [% dohref("#") %] onclick="toggle_visibility('info');">^</a>
         <div id="status"[% IF is_error == 0 %] class="ok"[% END %]>
             <div></div>
             [% IF status %]
