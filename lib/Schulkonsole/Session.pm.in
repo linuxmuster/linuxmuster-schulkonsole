@@ -618,7 +618,7 @@ sub print_page {
         my $vars = $this->{template_vars};
 
         $vars->{no_cookies} = $this->send_cookie();
-	$vars->{parent_page} = $this->{parent_page};
+        $vars->{parent_page} = $this->{parent_page};
 	$vars->{is_error} = $this->{is_error};
 	# localization: [% d.get('Text') %]
 	$vars->{d} = $this->{d};
@@ -628,6 +628,7 @@ sub print_page {
         $vars->{action} = $action;
         # colored labels an Stelle von for="text" jetzt [% labelfor("text") %]
         $vars->{labelfor} = sub { return 'for="'.@_[0].'"'.($this->{input_errors}{@_[0]}? ' class="error"':''); };
+        $vars->{dohref} = sub { return 'href="'.@_[0].($vars->{no_cookies}?'?'.CGI::Session->name().'='.$this->{session}->id.'"':'"'); };
         $template->process($file, $vars) or die $template->error();
 
 	# occasionally the session is not automatically flushed
