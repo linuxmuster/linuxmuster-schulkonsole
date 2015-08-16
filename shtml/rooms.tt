@@ -49,7 +49,7 @@
 </select>
 </td>
 [% IF defaultrooms %]<td><select name="default_add">
-[% FOREACH defaultrooms %]	<option value="[% defaultrooms %]">[% defaultrooms %]</option>
+[% FOREACH dr IN defaultrooms %]	<option value="[% dr %]">[% dr %]</option>
 [% END %]
 </select></td>
 <td><input type="submit" name="add_room" value="[% d.get('Ausnahme hinzuf&uuml;gen') %]"></td>
@@ -65,79 +65,79 @@
 </tr>
 <tr><td colspan="7">&nbsp;</td></tr>
 
-[% FOREACH nondefaults %]
+[% FOREACH nd IN nondefaults %]
 
 [% IF odd %][% odd=0 %]
 [% ELSE %][% odd=1 %][% END %]
 
-	[% IF nondefaults.isroom %]
-	[% IF nondefaults.isset %]
+	[% IF nd.isroom %]
+	[% IF nd.isset %]
 	[% IF odd %]<tr class="odd">[% ELSE %]<tr class="even">[% END %]
 	[% ELSE %]
 	<tr class="unset">
 	[% END %]
-	<td>[% nondefaults.name %]</td>
+	<td>[% nd.name %]</td>
 	<td>
-		<select name="[% nondefaults.name %]_room_internet">
+		<select name="[% nd.name %]_room_internet">
 		<option value="-1">-</option>
 		<option value="1">[% d.get('An') %]</option>
 		<option value="0">[% d.get('Aus') %]</option>
 		</select>
 	</td>
 	<td>
-		<select name="[% nondefaults.name %]_room_intranet">
+		<select name="[% nd.name %]_room_intranet">
 		<option value="-1">-</option>
 		<option value="1">[% d.get('An') %]</option>
 		<option value="0">[% d.get('Aus') %]</option>
 		</select>
 	</td>
 	<td>
-		<select name="[% nondefaults.name %]_room_webfilter">
+		<select name="[% nd.name %]_room_webfilter">
 		<option value="-1">-</option>
 		<option value="1">[% d.get('An') %]</option>
 		<option value="0">[% d.get('Aus') %]</option>
 		</select>
 	</td>
-	[% IF nondefaults.hosts %]
-	<td><select name="[% nondefaults.name %]_add">
-		[% FOREACH nondefaults.hosts %]
-		<option value="[% nondefaults.hosts %]">[% nondefaults.hosts %]</option>
+	[% IF nd.hosts %]
+	<td><select name="[% nd.name %]_add">
+		[% FOREACH nd.hosts %]
+		<option value="[% nd.hosts %]">[% nd.hosts %]</option>
 	[% END %]
 	</select></td>
-	<td><input type="submit" name="[% nondefaults.name %]_add_host" value="[% d.get('Ausnahme hinzuf&uuml;gen') %]"></td>
+	<td><input type="submit" name="[% nd.name %]_add_host" value="[% d.get('Ausnahme hinzuf&uuml;gen') %]"></td>
 	[% ELSE %]
 	<td colspan="2"></td>
 	[% END %]
-	<td><input type="checkbox" name="[% nondefaults.name %]_room_reset"></td>
-	<td><input type="checkbox" name="[% nondefaults.name %]_room_delete"></td>
+	<td><input type="checkbox" name="[% nd.name %]_room_reset"></td>
+	<td><input type="checkbox" name="[% nd.name %]_room_delete"></td>
 	</tr>
 	[% ELSE %]
 	[% IF odd %]<tr class="hostodd">[% ELSE %]<tr class="hosteven">[% END %]
-	<td>[% nondefaults.name %]</td>
+	<td>[% nd.name %]</td>
 	<td>
-		<select name="[% nondefaults.name %]_internet">
+		<select name="[% nd.name %]_internet">
 		<option value="-1">-</option>
 		<option value="1">[% d.get('An') %]</option>
 		<option value="0">[% d.get('Aus') %]</option>
 		</select>
 	</td>
 	<td>
-		<select name="[% nondefaults.name %]_intranet">
+		<select name="[% nd.name %]_intranet">
 		<option value="-1">-</option>
 		<option value="1">[% d.get('An') %]</option>
 		<option value="0">[% d.get('Aus') %]</option>
 		</select>
 	</td>
 	<td>
-		<select name="[% nondefaults.name %]_webfilter">
+		<select name="[% nd.name %]_webfilter">
 		<option value="-1">-</option>
 		<option value="1">[% d.get('An') %]</option>
 		<option value="0">[% d.get('Aus') %]</option>
 		</select>
 	</td>
 	<td colspan="2"></td>
-	<td><input type="checkbox" name="[% nondefaults.name %]_reset"></td>
-	<td><input type="checkbox" name="[% nondefaults.name %]_delete"></td>
+	<td><input type="checkbox" name="[% nd.name %]_reset"></td>
+	<td><input type="checkbox" name="[% nd.name %]_delete"></td>
 	</tr>
 	[% END %]
 [% END %]

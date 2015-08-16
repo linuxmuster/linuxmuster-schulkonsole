@@ -24,14 +24,14 @@
 <th colspan="2">[% d.get('R&auml;ume') %]</th>
 <th colspan="2">[% d.get('Rechner') %]</th>
 </tr>
-[% FOREACH printers %]
+[% FOREACH p IN printers %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% printers.name %]</td>
-<td><label [% labelfor("${printers.name_rooms") %]>[% printers.rooms %]</label></td>
-<td><input type="submit" id="[% printers.name %]_rooms" name="[% printers.name %]_rooms" value="[% d.get('Bearbeiten') %]"></td>
-<td><label [% labelfor("${printers.name}_hosts") %]>[% printers.hosts %]</label></td>
-<td><input type="submit" id="[% printers.name %]_hosts" name="[% printers.name %]_hosts" value="[% d.get('Bearbeiten') %]"></td>
+<td>[% p.name %]</td>
+<td><label [% labelfor("${p.name_rooms") %]>[% p.rooms %]</label></td>
+<td><input type="submit" id="[% p.name %]_rooms" name="[% p.name %]_rooms" value="[% d.get('Bearbeiten') %]"></td>
+<td><label [% labelfor("${p.name}_hosts") %]>[% p.hosts %]</label></td>
+<td><input type="submit" id="[% p.name %]_hosts" name="[% p.name %]_hosts" value="[% d.get('Bearbeiten') %]"></td>
 </tr>
 [% END %]
 </table>

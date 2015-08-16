@@ -10,8 +10,8 @@
 <form method="post" accept-charset="UTF-8">
 <p class="selectdomain"> <select name="projects">
 <optgroup label="Projekte">
-[% FOREACH projects %] <option value="[% projects.gid %]">[% projects.name %]</option>
-[% END %]
+[% FOREACH p IN projects %] <option value="[% p.gid %]">[% projects.name %]</option>
+p
 </optgroup>
 <optgroup label="aktuelles Projekt">
 <option value="[% project_gid %]" selected>[% project %]</option>
@@ -35,9 +35,9 @@
 
 [% IF admin_share_files %]
 <ul>
-[% FOREACH admin_share_files %]
-	<li>[% IF admin_share_files.isdir %]
-	*[% END %][% admin_share_files.name %]</li>
+[% FOREACH asf IN admin_share_files %]
+	<li>[% IF asf.isdir %]
+	*[% END %][% asf.name %]</li>
 [% END %]
 </ul>
 [% ELSE %]

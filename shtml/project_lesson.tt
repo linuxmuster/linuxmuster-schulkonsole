@@ -11,7 +11,7 @@
 <p class="selectdomain"> 
 <select name="projects">
 <optgroup label="Projekte">
-[% FOREACH projects %] <option value="[% projects.gid %]">[% projects.name %]</option>
+[% FOREACH p IN projects %] <option value="[% p.gid %]">[% p.name %]</option>
 [% END %]
 </optgroup>
 <optgroup label="aktuelles Projekt">

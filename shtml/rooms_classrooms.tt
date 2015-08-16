@@ -36,14 +36,14 @@ System &uuml;bernommen.') %]
 <th>[% d.get('Raumbezeichnung') %]</th>
 <th>[% d.get('Computerraum') %]</th>
 </tr>
-[% FOREACH rooms %]
+[% FOREACH r IN rooms %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><label [% labelfor("${rooms.name}_classroom") %]>[% rooms.name %]</label></td>
-[% IF rooms.selected %]
-<td><input type="checkbox" id="[% rooms.name %]_classroom" name="[% rooms.name %]_classroom" checked></td>
+<td><label [% labelfor("${r.name}_classroom") %]>[% r.name %]</label></td>
+[% IF r.selected %]
+<td><input type="checkbox" id="[% r.name %]_classroom" name="[% r.name %]_classroom" checked></td>
 [% ELSE %]
-<td><input type="checkbox" id="[% rooms.name %]_classroom" name="[% rooms.name %]_classroom"></td>
+<td><input type="checkbox" id="[% r.name %]_classroom" name="[% r.name %]_classroom"></td>
 [% END %]
 </tr>
 [% END %]

@@ -42,13 +42,13 @@
 <td>
 
 <table class="tabletable">
-[% FOREACH mountpoints %]
-<th><label [% labelfor("${mountpoints}_quotateacher") %]>[% mountpoints %]</label></th>
+[% FOREACH m IN mountpoints %]
+<th><label [% labelfor("${m}_quotateacher") %]>[% m %]</label></th>
 [% END %]
 </tr>
 <tr>
-[% FOREACH mountpoints %]
-<td><input size="6" maxlength="5" name="[% mountpoints %]_quotateacher" id="[% mountpoints %]_quotateacher"> MB</td>
+[% FOREACH m IN mountpoints %]
+<td><input size="6" maxlength="5" name="[% m %]_quotateacher" id="[% m %]_quotateacher"> MB</td>
 [% END %]
 </tr>
 </table>
@@ -60,13 +60,13 @@
 <td>
 
 <table class="tabletable">
-[% FOREACH mountpoints %]
-<th><label [% labelfor("${mountpoints}_quotastudent") %]>[% mountpoints %]</label></th>
+[% FOREACH m IN mountpoints %]
+<th><label [% labelfor("${m}_quotastudent") %]>[% m %]</label></th>
 [% END %]
 </tr>
 <tr>
-[% FOREACH mountpoints %]
-<td><input size="6" maxlength="5" name="[% mountpoints %]_quotastudent" id="[% mountpoints %]_quotastudent"> MB</td>
+[% FOREACH m IN mountpoints %]
+<td><input size="6" maxlength="5" name="[% m %]_quotastudent" id="[% m %]_quotastudent"> MB</td>
 [% END %]
 </tr>
 </table>

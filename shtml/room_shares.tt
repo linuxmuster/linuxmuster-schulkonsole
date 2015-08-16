@@ -35,8 +35,8 @@
 <th>[% d.get('Login') %]</th>
 <th>[% d.get('Tauschen<br>global') %]</th>
 </tr>
-[% FOREACH overview_workstations %]
-[% IF overview_workstations.editing %]
+[% FOREACH w IN overview_workstations %]
+[% IF w.editing %]
 <tr class="editing">
 [% IF odd %][% odd=0 %]
 [% ELSE %][% odd=1 %][% END %]
@@ -44,22 +44,22 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 [% END %]
-	<td>[% IF overview_workstations.first %]
-	    [% overview_workstations.name %]
+	<td>[% IF w.first %]
+	    [% w.name %]
 	[% END %]</td>
-	<td>[% IF overview_workstations.login %]
-	    [% overview_workstations.login %]
+	<td>[% IF w.login %]
+	    [% w.login %]
 	    [% ELSE %]-[% END %]
 	</td>
 	<td>
-[% IF overview_workstations.shares %]
-[% IF overview_workstations.editing %]
+[% IF w.shares %]
+[% IF w.editing %]
         <input type="checkbox" disabled checked>
 [% ELSE %]
-	<input type="checkbox" name="[% overview_workstations.login %];shares" checked>
+	<input type="checkbox" name="[% w.login %];shares" checked>
 [% END %]
 [% ELSE %]
-	<input type="checkbox" name="[% overview_workstations.login %];shares">
+	<input type="checkbox" name="[% w.login %];shares">
 [% END %]
 	</td>
 

@@ -19,32 +19,32 @@
 <th>[% d.get('Liste') %]</th>
 <th>[% d.get('Aliase') %]</th>
 <th>[% d.get('WLAN') %]</th></tr>
-[% FOREACH classes %]
+[% FOREACH c IN classes %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><label [% labelfor("${classes.gid}_visible") %]>[% classes.name %]</label></td><td>
-[% IF classes.visible %]
-<input type="checkbox" name="[% classes.gid %]_visible" id="[% classes.gid %]_visible" checked>
+<td><label [% labelfor("${c.gid}_visible") %]>[% c.name %]</label></td><td>
+[% IF c.visible %]
+<input type="checkbox" name="[% c.gid %]_visible" id="[% c.gid %]_visible" checked>
 [% ELSE %]
-<input type="checkbox" name="[% classes.gid %]_visible" id="[% classes.gid %]_visible">
+<input type="checkbox" name="[% c.gid %]_visible" id="[% c.gid %]_visible">
 [% END %]
 </td>
 <td>
-[% IF classes.maillist %]
-<input type="checkbox" name="[% classes.gid %]_maillist" id="[% classes.gid %]_maillist" checked>
+[% IF c.maillist %]
+<input type="checkbox" name="[% c.gid %]_maillist" id="[% c.gid %]_maillist" checked>
 [% ELSE %]
-<input type="checkbox" name="[% classes.gid %]_maillist" id="[% classes.gid %]_maillist">
+<input type="checkbox" name="[% c.gid %]_maillist" id="[% c.gid %]_maillist">
 [% END %]
 </td>
 <td>
-[% IF classes.mailalias %]
-<input type="checkbox" name="[% classes.gid %]_mailalias" id="[% classes.gid %]_mailalias" checked>
+[% IF c.mailalias %]
+<input type="checkbox" name="[% c.gid %]_mailalias" id="[% c.gid %]_mailalias" checked>
 [% ELSE %]
-<input type="checkbox" name="[% classes.gid %]_mailalias" id="[% classes.gid %]_mailalias">
+<input type="checkbox" name="[% c.gid %]_mailalias" id="[% c.gid %]_mailalias">
 [% END %]
 </td>
 <td>
-<select name="[% classes.gid %]_wlan">
+<select name="[% c.gid %]_wlan">
 <option value="-1">-</option>
 <option value="1">[% d.get('An') %]</option>
 <option value="0">[% d.get('Aus') %]</option>

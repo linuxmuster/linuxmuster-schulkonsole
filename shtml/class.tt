@@ -11,7 +11,7 @@
 <p class="selectdomain">
 <select name="classes">
 <optgroup label="Klassen">
-[% FOREACH classes %] <option value="[% classes.gid %]">[% classes.name %]</option>
+[% FOREACH c IN classes %] <option value="[% c.gid %]">[% c.name %]</option>
 [% END %]
 </optgroup>
 <optgroup label="aktuelle Klasse">
@@ -43,11 +43,11 @@
 <th>[% d.get('Klassenname') %]</th>
 <th></th>
 </tr>
-[% FOREACH classes %]
+[% FOREACH class IN classes %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><input type="submit" name="[% classes.gid %]_list" value="[% classes.name %]"></td>
-<td><input type="submit" name="[% classes.gid %]_remove" value="[% d.get('Austragen') %]"></td>
+<td><input type="submit" name="[% class.gid %]_list" value="[% class.name %]"></td>
+<td><input type="submit" name="[% class.gid %]_remove" value="[% d.get('Austragen') %]"></td>
 </tr>
 [% END %]
 </table>
@@ -63,8 +63,8 @@
 
 <p>
 <select name="class_add">
-[% FOREACH other_classes %]
-<option value="[% other_classes.gid %]">[% other_classes.name %]</option>
+[% FOREACH class IN other_classes %]
+<option value="[% class.gid %]">[% class.name %]</option>
 [% END %]
 </select>
 <input type="submit" value="[% d.get('Eintragen') %]">

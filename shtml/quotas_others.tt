@@ -24,16 +24,16 @@
 [% IF mountpoints %]
 <tr>
 <th></th>
-[% FOREACH mountpoints %]
-<th>[% mountpoints %]</th>
+[% FOREACH m IN mountpoints %]
+<th>[% m %]</th>
 [% END %]
 <th></th>
 </tr>
 [% END %]
 <tr class="even">
 <td><input id="newlogin" name="newlogin"></td>
-[% FOREACH standarddiskquotas %]
-<td><input size="6" maxlength="5" name="[% standarddiskquotas.mountpoint %]-newdiskquota" value="[% standarddiskquotas.diskquota %]"></td>
+[% FOREACH sdq IN standarddiskquotas %]
+<td><input size="6" maxlength="5" name="[% sdq.mountpoint %]-newdiskquota" value="[% sdq.diskquota %]"></td>
 [% END %]
 <td><input size="6" maxlength="5" name="newmailquota" value="[% standardmailquota %]"></td>
 </tr>
@@ -68,16 +68,16 @@
 [% IF mountpoints %]
 <tr>
 <th></th>
-[% FOREACH mountpoints %]
-<th>[% mountpoints %]</th>
+[% FOREACH m IN mountpoints %]
+<th>[% m %]</th>
 [% END %]
 <th></th>
 </tr>
 [% END %]
 <tr class="even">
 <td>[% www.login %]</td>
-[% FOREACH www.diskquotas %]
-<td><input size="6" maxlength="5" name="[% www.login %]_user[% www.diskquotas.mountpoint %]-diskquota" value="[% www.diskquotas.quota %]"></td>
+[% FOREACH wdq IN www.diskquotas %]
+<td><input size="6" maxlength="5" name="[% www.login %]_user[% wdq.mountpoint %]-diskquota" value="[% wdq.quota %]"></td>
 [% END %]
 <td><input size="6" maxlength="5" name="[% www.login %]_usermailquota" value="[% www.mailquota %]"></td>
 </tr>
@@ -116,21 +116,21 @@
 [% IF mountpoints %]
 <tr>
 <th colspan="2"></th>
-[% FOREACH mountpoints %]
-<th>[% mountpoints %]</th>
+[% FOREACH m IN mountpoints %]
+<th>[% m %]</th>
 [% END %]
 <th></th>
 </tr>
 [% END %]
-[% FOREACH admins %]
+[% FOREACH a IN admins %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% admins.login %]</td>
-<td>[% admins.firstname %] [% admins.surname %]</td>
-[% FOREACH admins.diskquotas %]
-<td><input size="6" maxlength="5" name="[% admins.login %]_user[% admins.diskquotas.mountpoint %]-diskquota" value="[% admins.diskquotas.quota %]"></td>
+<td>[% a.login %]</td>
+<td>[% a.firstname %] [% a.surname %]</td>
+[% FOREACH aq IN a.diskquotas %]
+<td><input size="6" maxlength="5" name="[% a.login %]_user[% aq.mountpoint %]-diskquota" value="[% aq.quota %]"></td>
 [% END %]
-<td><input size="6" maxlength="5" name="[% admins.login %]_usermailquota" value="[% admins.mailquota %]"></td>
+<td><input size="6" maxlength="5" name="[% a.login %]_usermailquota" value="[% a.mailquota %]"></td>
 </tr>
 [% END %]
 </table>
@@ -167,21 +167,21 @@
 [% IF mountpoints %]
 <tr>
 <th colspan="2"></th>
-[% FOREACH mountpoints %]
-<th>[% mountpoints %]</th>
+[% FOREACH m %]
+<th>[% m %]</th>
 [% END %]
 <th></th>
 </tr>
 [% END %]
-[% FOREACH users %]
+[% FOREACH u IN users %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% users.login %]</td>
-<td>[% users.firstname %] [% users.surname %]</td>
-[% FOREACH users.diskquotas %]
-<td><input size="6" maxlength="5" name="[% users.login %]_user[% users.diskquotas.mountpoint %]-diskquota" value="[% users.diskquotas.quota %]"></td>
+<td>[% u.login %]</td>
+<td>[% u.firstname %] [% u.surname %]</td>
+[% FOREACH uq IN u.diskquotas %]
+<td><input size="6" maxlength="5" name="[% u.login %]_user[% uq.mountpoint %]-diskquota" value="[% uq.quota %]"></td>
 [% END %]
-<td><input size="6" maxlength="5" name="[% users.login %]_usermailquota" value="[% users.mailquota %]"></td>
+<td><input size="6" maxlength="5" name="[% u.login %]_usermailquota" value="[% u.mailquota %]"></td>
 </tr>
 [% END %]
 </table>
@@ -218,20 +218,20 @@
 [% IF mountpoints %]
 <tr>
 <th></th>
-[% FOREACH mountpoints %]
-<th>[% mountpoints %]</th>
+[% FOREACH m %]
+<th>[% m %]</th>
 [% END %]
 <th></th>
 </tr>
 [% END %]
-[% FOREACH workstations %]
+[% FOREACH w IN workstations %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% workstations.login %]</td>
-[% FOREACH workstations.diskquotas %]
-<td><input size="6" maxlength="5" name="[% workstations.login %]_userstation[% workstations.diskquotas.mountpoint %]-diskquota" value="[% workstations.diskquotas.quota %]"></td>
+<td>[% w.login %]</td>
+[% FOREACH wq IN w.diskquotas %]
+<td><input size="6" maxlength="5" name="[% w.login %]_userstation[% wq.mountpoint %]-diskquota" value="[% wq.quota %]"></td>
 [% END %]
-<td><input size="6" maxlength="5" name="[% workstations.login %]_usermailquota" value="[% workstations.mailquota %]"></td>
+<td><input size="6" maxlength="5" name="[% w.login %]_usermailquota" value="[% w.mailquota %]"></td>
 </tr>
 [% END %]
 
@@ -266,20 +266,20 @@
 [% IF mountpoints %]
 <tr>
 <th colspan="2"></th>
-[% FOREACH mountpoints %]
-<th>[% mountpoints %]</th>
+[% FOREACH m %]
+<th>[% m %]</th>
 [% END %]
 <th></th>
 </tr>
 [% END %]
-[% FOREACH systems %]
+[% FOREACH s IN systems %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% systems.login %]</td>
-[% FOREACH systems.diskquotas %]
-<td><input size="6" maxlength="5" name="[% systems.login %]_user[% systems.diskquotas.mountpoint %]-diskquota" value="[% systems.diskquotas.quota %]"></td>
+<td>[% s.login %]</td>
+[% FOREACH sq IN s.diskquotas %]
+<td><input size="6" maxlength="5" name="[% s.login %]_user[% sq.mountpoint %]-diskquota" value="[% sq.quota %]"></td>
 [% END %]
-<td><input size="6" maxlength="5" name="[% systems.login %]_usermailquota" value="[% systems.mailquota %]"></td>
+<td><input size="6" maxlength="5" name="[% s.login %]_usermailquota" value="[% s.mailquota %]"></td>
 </tr>
 [% END %]
 </table>

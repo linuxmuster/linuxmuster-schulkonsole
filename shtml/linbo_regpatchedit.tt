@@ -40,11 +40,11 @@
 [% IF regpatches %]
 <form method="post" accept-charset="UTF-8">
 <table id="linboregpatchoverview" class="liste">
-[% FOREACH regpatches %]
+[% FOREACH rp IN regpatches %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><input type="submit" name="[% regpatches %]_edit" value="[% regpatches %]"></td>
-<td><input type="submit" name="[% regpatches %]_delete" value="[% d.get('l&ouml;schen') %]"></td>
+<td><input type="submit" name="[% rp %]_edit" value="[% rp %]"></td>
+<td><input type="submit" name="[% rp %]_delete" value="[% d.get('l&ouml;schen') %]"></td>
 </tr>
 [% END %]
 </table>
@@ -61,18 +61,18 @@
 <form method="post" accept-charset="UTF-8">
 
 <p>[% d.get('F&uuml;r') %]
-<select name="image">[% FOREACH images %]
-<option value="[% images %]">[% images %]</option>
+<select name="image">[% FOREACH i IN images %]
+<option value="[% i %]">[% i %]</option>
 [% END %]</select>
 <input type="submit" name="create" value="[% d.get('Registrypatch-Datei erstellen aus') %]">
 <select name="template">
 [% IF regpatches %]
-<optgroup label="Verwendete Dateien">[% FOREACH regpatches %]
-<option value="[% regpatches %]">[% regpatches %]</option>
+<optgroup label="Verwendete Dateien">[% FOREACH rp IN regpatches %]
+<option value="[% rp %]">[% rp %]</option>
 [% END %]</optgroup>[% END %]
 [% IF example_regpatches %]
-<optgroup label="Beispieldateien">[% FOREACH example_regpatches %]
-<option value="[% example_regpatches %]_example">[% example_regpatches %]</option>
+<optgroup label="Beispieldateien">[% FOREACH erp IN example_regpatches %]
+<option value="[% erp %]_example">[% erp %]</option>
 [% END %]</optgroup>[% END %]
 </select>
 </p>

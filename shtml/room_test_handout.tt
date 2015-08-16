@@ -35,14 +35,14 @@
 <th>[% d.get('Hostname') %]</th>
 <th>[% d.get('Login') %]</th>
 </tr>
-[% FOREACH overview_workstations %]
+[% FOREACH w IN overview_workstations %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-	<td>[% IF overview_workstations.first %]
-	    [% overview_workstations.name %]
+	<td>[% IF w.first %]
+	    [% w.name %]
 	    [% END %]</td>
-	<td>[% IF overview_workstations.login %]
-	    [% overview_workstations.login %]
+	<td>[% IF w.login %]
+	    [% w.login %]
 	    [% ELSE %]-[% END %]
 	</td>
 </tr>
@@ -56,9 +56,9 @@
 
 [% IF teacher_share_files %]
 <ul>
-[% FOREACH teacher_share_files %]
-	<li>[% IF teacher_share_files.isdir %]
-	*[% END %][% teacher_share_files.name %]</li>
+[% FOREACH tsf IN teacher_share_files %]
+	<li>[% IF tsf.isdir %]
+	*[% END %][% tsf.name %]</li>
 [% END %]
 </ul>
 <p>[% d.get('Allen') %] <input type="submit" name="handouttest" value="[% d.get('bereitstellen') %]">

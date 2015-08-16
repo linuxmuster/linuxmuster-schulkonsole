@@ -22,8 +22,8 @@
 </tr>
 <td>
 <select name="roomdeselect" multiple>
-[% FOREACH roomsselected %]
-	<option value="[% roomsselected %]">[% roomsselected %]</option>
+[% FOREACH r IN roomsselected %]
+	<option value="[% r %]">[% r %]</option>
 [% END %]
 </select>
 </td>
@@ -33,8 +33,8 @@
 </td>
 <td>
 <select name="roomselect" multiple>
-[% FOREACH roomsdeselected %]
-	<option value="[% roomsdeselected %]">[% roomsdeselected %]</option>
+[% FOREACH r IN roomsdeselected %]
+	<option value="[% r %]">[% r %]</option>
 [% END %]
 </select>
 </td>
@@ -42,7 +42,7 @@
 </table>
 
 <p>
-[% FOREACH roomsselected %]<input type="hidden" name="roomsselected" value="[% roomsselected %]">[% END %]
+[% FOREACH r IN roomsselected %]<input type="hidden" name="roomsselected" value="[% r %]">[% END %]
 <input type="submit" name="[% printer %]_acceptrooms" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]">
 </p>
 
@@ -61,8 +61,8 @@
 </tr>
 <td>
 <select name="hostdeselect" multiple>
-[% FOREACH hostsselected %]
-	<option value="[% hostsselected %]">[% hostsselected %]</option>
+[% FOREACH h IN hostsselected %]
+	<option value="[% h %]">[% h %]</option>
 [% END %]
 </select>
 </td>
@@ -72,8 +72,8 @@
 </td>
 <td>
 <select name="hostselect" multiple>
-[% FOREACH hostsdeselected %]
-	<option value="[% hostsdeselected %]">[% hostsdeselected %]</option>
+[% FOREACH h IN hostsdeselected %]
+	<option value="[% h %]">[% h %]</option>
 [% END %]
 </select>
 </td>
@@ -81,7 +81,7 @@
 </table>
 
 <p>
-[% FOREACH hostsselected %]<input type="hidden" name="hostsselected" value="[% hostsselected %]">[% END %]
+[% FOREACH h IN hostsselected %]<input type="hidden" name="hostsselected" value="[% h %]">[% END %]
 <input type="submit" name="[% printer %]_accepthosts" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]">
 </p>
 

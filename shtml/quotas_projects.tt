@@ -25,20 +25,20 @@
 [% IF mountpoints %]
 <tr>
 <th></th>
-[% FOREACH mountpoints %]
-<th>[% mountpoints %]</th>
+[% FOREACH m IN mountpoints %]
+<th>[% m %]</th>
 [% END %]
 <th></th>
 </tr>
 [% END %]
-[% FOREACH projects %]
+[% FOREACH p IN projects %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% projects.name %]</td>
-[% FOREACH projects.adddiskquotas %]
-<td><input size="6" maxlength="5" name="[% projects.gid %]_project[% projects.adddiskquotas.mountpoint %]-diskquota" value="[% projects.adddiskquotas.quota %]"></td>
+<td>[% p.name %]</td>
+[% FOREACH paq IN p.adddiskquotas %]
+<td><input size="6" maxlength="5" name="[% p.gid %]_project[% paq.mountpoint %]-diskquota" value="[% paq.quota %]"></td>
 [% END %]
-<td><input size="6" maxlength="5" name="[% projects.gid %]_projectmailquota" value="[% projects.addmailquota %]"></td>
+<td><input size="6" maxlength="5" name="[% p.gid %]_projectmailquota" value="[% p.addmailquota %]"></td>
 </tr>
 [% END %]
 </table>

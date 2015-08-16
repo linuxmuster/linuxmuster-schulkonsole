@@ -38,17 +38,17 @@
 <th>[% d.get('Login') %]</th>
 <th>[% d.get('Dateien') %]</th>
 </tr>
-[% FOREACH overview_workstations %]
+[% FOREACH w IN overview_workstations %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-	<td>[% IF overview_workstations.first %]
-	    [% overview_workstations.name %]
+	<td>[% IF w.first %]
+	    [% w.name %]
 	    [% END %]</td>
-	[% IF overview_workstations.login %]
-	<td>[% overview_workstations.login %]</td>
-	<td>[% FOREACH overview_workstations.files %]
-	[% IF overview_workstation.files.isdir %]
-	*[% END %][% overview_workstations.files.name %]<br>
+	[% IF w.login %]
+	<td>[% .login %]</td>
+	<td>[% FOREACH wf IN w.files %]
+	[% IF wf.isdir %]
+	*[% END %][% wf.name %]<br>
 	[% END %]
 	</td>
 	[% ELSE %]

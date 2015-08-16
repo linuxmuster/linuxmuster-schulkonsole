@@ -41,7 +41,7 @@
 <form method="post" accept-charset="UTF-8">
 <p>
 <select name="filename">
-[% FOREACH nomenulsts %] <option value="[% nomenulsts %]">[% nomenulsts %]</option>
+[% FOREACH nm IN nomenulsts %] <option value="[% nm %]">[% nm %]</option>
 [% END %]
 <option value="" selected></option>
 </select>
@@ -55,11 +55,11 @@
 [% IF menulsts %]
 <form method="post" accept-charset="UTF-8">
 <table id="linbomenulstsoverview" class="liste">
-[% FOREACH menulsts %]
+[% FOREACH ml IN menulsts %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><input type="submit" name="[% menulsts %]_edit" value="[% menulsts %]"></td>
-<td><input type="submit" name="[% menulsts %]_delete" value="[% d.get('l&ouml;schen') %]"></td>
+<td><input type="submit" name="[% ml %]_edit" value="[% ml %]"></td>
+<td><input type="submit" name="[% ml %]_delete" value="[% d.get('l&ouml;schen') %]"></td>
 </tr>
 [% END %]
 </table>
