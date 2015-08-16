@@ -16,7 +16,7 @@
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
-<td><label for="conf_max_idle_time" accesskey="i">[% d.get('Sitzungsdauer') %]</label></td>
+<td><label [% labelfor("conf_max_idle_time") %] accesskey="i">[% d.get('Sitzungsdauer') %]</label></td>
 <td><input type="text" size="5" maxlength="4" name="conf_max_idle_time" id="conf_max_idle_time"> [% d.get('Minuten') %]</td>
 </tr>
 </table>

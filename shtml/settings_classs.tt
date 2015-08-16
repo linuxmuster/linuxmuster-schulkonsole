@@ -22,7 +22,7 @@
 [% FOREACH classes %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><label for="[% classes.gid %]_visible">[% classes.name %]</label></td><td>
+<td><label [% labelfor("${classes.gid}_visible") %]>[% classes.name %]</label></td><td>
 [% IF classes.visible %]
 <input type="checkbox" name="[% classes.gid %]_visible" id="[% classes.gid %]_visible" checked>
 [% ELSE %]

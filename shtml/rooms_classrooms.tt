@@ -39,7 +39,7 @@ System &uuml;bernommen.') %]
 [% FOREACH rooms %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><label for="[% rooms.name %]_classroom">[% rooms.name %]</label></td>
+<td><label [% labelfor("${rooms.name}_classroom") %]>[% rooms.name %]</label></td>
 [% IF rooms.selected %]
 <td><input type="checkbox" id="[% rooms.name %]_classroom" name="[% rooms.name %]_classroom" checked></td>
 [% ELSE %]

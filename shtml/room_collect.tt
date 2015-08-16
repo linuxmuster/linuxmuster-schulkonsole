@@ -36,11 +36,11 @@
 <table>
 <tr>
     <td><input type="radio" id="deletetop" name="deletetop" value="1"></td>
-	<td><label for="deletetop">[% d.get('Original wird gel&ouml;scht') %]</label></td>
+	<td><label [% labelfor("deletetop") %]>[% d.get('Original wird gel&ouml;scht') %]</label></td>
 </tr>
 <tr>
 	<td><input type="radio" id="copytop" name="deletetop" value="0" checked></td>
-	<td><label for="copytop">[% d.get('Original bleibt erhalten') %]</label></td>
+	<td><label [% labelfor("copytop") %]>[% d.get('Original bleibt erhalten') %]</label></td>
 </tr>
 </table>
 <p><input type="submit" name="collecttop" value="[% d.get('Einsammeln') %]"></p>
@@ -107,11 +107,11 @@
 <table>
 <tr>
 	<td><input type="radio" id="deletebottom" name="deletebottom" value="1"></td>
-	<td><label for="deletebottom">[% d.get('Original wird gel&ouml;scht') %]</label></td>
+	<td><label [% labelfor("deletebottom") %]>[% d.get('Original wird gel&ouml;scht') %]</label></td>
 </tr>
 <tr>
 	<td><input type="radio" id="copybottom" name="deletebottom" value="0" checked></td>
-	<td><label for="copybottom">[% d.get('Original bleibt erhalten') %]</label></td>
+	<td><label [% labelfor("copybottom") %]>[% d.get('Original bleibt erhalten') %]</label></td>
 </tr>
 </table>
 <p><input type="submit" name="collectbottom" value="[% d.get('Einsammeln') %]"></p>

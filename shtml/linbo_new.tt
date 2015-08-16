@@ -30,15 +30,15 @@
 <form method="post" accept-charset="UTF-8">
 <table>
 <tr>
-<td><label for="group">[% d.get('Rechnergruppe') %]:</label></td>
+<td><label [% labelfor("group") %]>[% d.get('Rechnergruppe') %]:</label></td>
 <td><input id="group" name="group"></td>
 </tr>
 <tr>
-<td><label for="disksize">[% d.get('Festplattengr&ouml;&szlig;e in MB') %]:</label></td>
+<td><label [% labelfor("disksize") %]>[% d.get('Festplattengr&ouml;&szlig;e in MB') %]:</label></td>
 <td><input id="disksize" name="disksize"></td>
 </tr>
 <tr>
-<td><label for="device">[% d.get('Festplattencontroller (ab LINBO 1.1.0 immer SATA (sda))') %]:</label></td>
+<td><label [% labelfor("device") %]>[% d.get('Festplattencontroller (ab LINBO 1.1.0 immer SATA (sda))') %]:</label></td>
 <td>
 <select id="device" name="device">
 <option value="sda">[% d.get('SATA') %]</option>
@@ -54,7 +54,7 @@
 </tr>
 [% IF templatesoswin %]
 <tr>
-<td><label for="os1">[% d.get('Betriebssystem 1 (Partition 1)') %]</label></td>
+<td><label [% labelfor("os1") %]>[% d.get('Betriebssystem 1 (Partition 1)') %]</label></td>
 <td><select id="os1" name="os1">
 <option value=""></option>[% FOREACH templatesoswin %]
 <option value="[% templatesoswin %]">[% templatesoswin %]</option>
@@ -63,7 +63,7 @@
 <td><input name="size1"></td>
 </tr>
 <tr>
-<td><label for="os2">[% d.get('Betriebssystem 2 (Partition 2)') %]</label></td>
+<td><label [% labelfor("os2") %]>[% d.get('Betriebssystem 2 (Partition 2)') %]</label></td>
 <td><select id="os2" name="os2">
 <option value=""></option>[% FOREACH templatesoswin %]
 <option value="[% templatesoswin %]">[% templatesoswin %]</option>
@@ -74,7 +74,7 @@
 [% END %]
 [% IF templatesosnonwin %]
 <tr>
-<td><label for="os3">[% d.get('Betriebssystem 3 (Partition 5)') %]</label></td>
+<td><label [% labelfor("os3") %]>[% d.get('Betriebssystem 3 (Partition 5)') %]</label></td>
 <td><select id="os3" name="os3">
 <option value=""></option>[% FOREACH templatesosnonwin %]
 <option value="[% templatesosnonwin %]">[% templatesosnonwin %]</option>
@@ -83,7 +83,7 @@
 <td><input name="size3"></td>
 </tr>
 <tr>
-<td><label for="os4">[% d.get('Betriebssystem 4 (Partition 6)') %]</label></td>
+<td><label [% labelfor("os4") %]>[% d.get('Betriebssystem 4 (Partition 6)') %]</label></td>
 <td><select id="os4" name="os4">
 <option value=""></option>[% FOREACH templatesosnonwin %]
 <option value="[% templatesosnonwin %]">[% templatesosnonwin %]</option>

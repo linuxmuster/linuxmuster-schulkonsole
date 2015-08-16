@@ -10,7 +10,7 @@
 
 
 <form method="post" accept-charset="UTF-8">
-<h3><label for="extrauser">[% d.get('Extrasch&uuml;ler editieren') %]</label></h3>
+<h3><label [% labelfor("extrauser") %]>[% d.get('Extrasch&uuml;ler editieren') %]</label></h3>
 
 <p>
 <textarea id="extrauser" name="extrauser" rows="20" cols="70">
@@ -24,7 +24,7 @@
 <hr>
 
 <form method="post" accept-charset="UTF-8">
-<h3><label for="extracourse">[% d.get('Extrakurse editieren') %]</label></h3>
+<h3><label [% labelfor("extracourse") %]>[% d.get('Extrakurse editieren') %]</label></h3>
 
 <p>
 <textarea id="extracourse" name="extracourse" rows="20" cols="70">

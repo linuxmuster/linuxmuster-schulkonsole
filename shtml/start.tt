@@ -33,14 +33,14 @@
 <form method="post" accept-charset="UTF-8">
 <table>
 <tr>
-<td><label for="oldpassword">[% d.get('Altes Passwort') %]</label>: </td>
+<td><label [% labelfor("oldpassword") %]>[% d.get('Altes Passwort') %]</label>: </td>
 <td><input id="oldpassword" name="oldpassword" type="password"></td>
 </tr>
 <tr>
-<td><label for="newpassword">[% d.get('Neues Passwort') %]</label>: </td>
+<td><label [% labelfor("newpassword") %]>[% d.get('Neues Passwort') %]</label>: </td>
 <td><input id="newpassword" name="newpassword" type="password"></td>
 <tr>
-<td><label for="newpasswordagain">[% d.get('nochmal') %]</label>: </td>
+<td><label [% labelfor("newpasswordagain") %]>[% d.get('nochmal') %]</label>: </td>
 <td><input id="newpasswordagain" name="newpasswordagain" type="password"></td>
 </tr>
 </table>
@@ -211,11 +211,11 @@ percent_rounded %]%;">&nbsp;</span>
 
 <table>
 <tr>
-<td><label for="ovpnpassword">[% d.get('Zertifikatspasswort (mind. 6 Zeichen):') %]</label></td>
+<td><label [% labelfor("ovpnpassword") %]>[% d.get('Zertifikatspasswort (mind. 6 Zeichen):') %]</label></td>
 <td><input type="password" id="ovpnpassword" name="ovpnpassword"></td>
 </tr>
 <tr>
-<td><label for="ovpnpasswordagain">[% d.get('Zertifikatspasswort best&auml;tigen:') %]</label></td>
+<td><label [% labelfor("ovpnpasswordagain") %]>[% d.get('Zertifikatspasswort best&auml;tigen:') %]</label></td>
 <td><input type="password" id="ovpnpasswordagain" name="ovpnpasswordagain"></td>
 </tr>
 </table>

@@ -10,7 +10,7 @@
 
 <form method="post" accept-charset="UTF-8">
 
-<p><label for="max">[% d.get('Benutzer pro Seite:') %]</label>
+<p><label [% labelfor("max") %]>[% d.get('Benutzer pro Seite:') %]</label>
 <select name="max" id="max">
 <option value="10" selected>10</option>
 <option value="20">20</option>
@@ -64,7 +64,7 @@
 <input type="radio" name="[% users.login %]_user" id="[% users.login %];[% users.id %]" value="[% d.get('') %]">
 [% END %]</td>
 <td>[% users.class %]</td>
-<td><label for="[% users.login %];[% users.id %]">[% users.id %]</label></td>
+<td><label [% labelfor("${users.login};${users.id}") %]>[% users.id %]</label></td>
 </tr>
 [% odd=0 %]
 [% FOREACH users.alt %]
@@ -77,7 +77,7 @@
 <input type="radio" name="[% users.login %]_user" id="[% users.login %];[% users.alt.id %]" value="[% users.alt.id %]">
 [% END %]</td>
 <td>[% users.alt.class %]</td>
-<td><label for="[% users.login %];[% users.alt.id %]">[% users.alt.id %]</label></td>
+<td><label [% labelfor("${users.login};${users.alt.id}") %]>[% users.alt.id %]</label></td>
 </tr>
 [% END %]
 [% END %]

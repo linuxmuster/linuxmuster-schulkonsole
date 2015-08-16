@@ -15,7 +15,7 @@
 
 <table id="quotasothersnew" class="liste">
 <tr>
-<th><label for="newlogin">[% d.get('Login') %]</label></th>
+<th><label [% labelfor("newlogin") %]>[% d.get('Login') %]</label></th>
 [% IF mountpoints %]
 <th colspan="[% mountpoints_cnt %]">[% d.get('Diskquota') %]</th>
 [% END %]

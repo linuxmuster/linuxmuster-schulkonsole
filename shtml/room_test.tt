@@ -28,7 +28,7 @@
 <hr>
 
 <form method="post" accept-charset="UTF-8">
-<p><label for="workstationpassword">Workstationpasswort:</label>
+<p><label [% labelfor("workstationpassword") %]>Workstationpasswort:</label>
    <input id="workstationpassword" name="workstationpassword"></p>
 <p><input type="submit" name="starttest" value="[% d.get('Klassenarbeit starten') %]">
 </p>

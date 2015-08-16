@@ -9,7 +9,7 @@
 <h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('Sch&uuml;lerliste pflegen') %]</h2>
 
 <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
-<h3><label for="studentsfilename">[% d.get('Datei importieren') %]</label></h3>
+<h3><label [% labelfor("studentsfilename") %]>[% d.get('Datei importieren') %]</label></h3>
 <p>
 <input type="file" id="studentsfilename" name="studentsfilename">
 <input type="submit" name="studentsupload" value="[% d.get('Hochladen') %]">
@@ -19,7 +19,7 @@
 <hr>
 
 <form method="post" accept-charset="UTF-8">
-<h3><label for="students">[% d.get('Editieren') %]</label></h3>
+<h3><label [% labelfor("students") %]>[% d.get('Editieren') %]</label></h3>
 
 <p>
 <textarea id="students" name="students" rows="20" cols="70">
