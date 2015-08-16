@@ -1,20 +1,10 @@
-<html lang="de">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="Content-Language" content="de">
-<title>[% d.get('Schulkonsole') %] - [% d.get('Projekte') %]: [% project %] - [% d.get('Mitglieder hinzuf&uuml;gen') %]</title>
-[% INCLUDE "css.inc.tt" %]
-<script type="text/javascript" src="schulkonsole.js"></script>
-</head>
-<body>
+[% page = {
+      title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Mitglieder hinzuf&uuml;gen'),
+      menu     => 1,
+      submenu  => "project",
+   }
+%]
 
-[% INCLUDE "header.inc.tt" %]
-
-<div id="submenu">
-[% INCLUDE "submenu-project.inc.tt" %]
-</div>
-
-<div id="content">
 <h2>[% d.get('Projekte') %] :: [% d.get('Mitglieder hinzuf&uuml;gen') %]</h2>
 
 <h3>[% d.get('Ausgew&auml;hltes Projekt:') %] [% project %]</h3>
