@@ -149,19 +149,3 @@
 </form>
 
 [% END %]
-</div>
-
-<div id="info">
-
-[% INCLUDE "status.inc.tt" %]
-
-<h2>[% d.get('Info') %]</h2>
-
-
-[% INCLUDE "footer_info.inc.tt" %]
-</div>
-
-[% INCLUDE "footer.inc.tt" %]
-
-</body>
-</html>

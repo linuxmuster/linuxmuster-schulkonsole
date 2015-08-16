@@ -7,12 +7,3 @@
 <h2>[% d.get('Abgemeldet') %]</h2>
 <p>
 </p>
-
-</div>
-
-<div id="info" style="display: block;">
-<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
-
-[% INCLUDE "status.inc.tt" %]
-
-<h2>[% d.get('Info') %]</h2>

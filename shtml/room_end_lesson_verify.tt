@@ -33,23 +33,3 @@
 <input type="submit" name="end_lesson_now" value="[% d.get('Best&auml;tigen') %]"></p>
 
 </form>
-
-
-
-</div>
-
-<div id="info" style="display: block;">
-<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
-
-[% INCLUDE "status.inc.tt" %]
-
-<h2>[% d.get('Info') %]</h2>
-
-
-[% INCLUDE "footer_info.inc.tt" %]
-</div>
-
-[% INCLUDE "footer.inc.tt" %]
-
-</body>
-</html>
