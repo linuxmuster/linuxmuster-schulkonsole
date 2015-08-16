@@ -2,21 +2,21 @@
 <p>[% d.get('Klassenarbeit:') %]
 [% IF done_test_start %]
 [% IF todo_test_handout %]
-<a href="room_test_handout" class="todo">[% d.get('Bereitstellen') %]</a>
+<a [% dohref("$room_test_handout") %] class="todo">[% d.get('Bereitstellen') %]</a>
 [% ELSE %]
-<a href="room_test_handout">[% d.get('Bereitstellen') %]</a>
+<a [% dohref("$room_test_handout") %]>[% d.get('Bereitstellen') %]</a>
 [% END %]
 -
 [% IF todo_test_password %]
-<a href="room_test_password" class="todo">[% d.get('Passwort &auml;ndern') %]</a>
+<a [% dohref("$room_test_password") %] class="todo">[% d.get('Passwort &auml;ndern') %]</a>
 [% ELSE %]
-<a href="room_test_password">[% d.get('Passwort &auml;ndern') %]</a>
+<a [% dohref("$room_test_password") %]>[% d.get('Passwort &auml;ndern') %]</a>
 [% END %]
 -
 [% IF todo_test_collect %]
-<a href="room_test_collect" class="todo">[% d.get('Einsammeln') %]</a>
+<a [% dohref("$room_test_collect") %] class="todo">[% d.get('Einsammeln') %]</a>
 [% ELSE %]
-<a href="room_test_collect">[% d.get('Einsammeln') %]</a>
+<a [% dohref("$room_test_collect") %]>[% d.get('Einsammeln') %]</a>
 [% END %]
 [% ELSE %]
 [% d.get('Bereitstellen') %]

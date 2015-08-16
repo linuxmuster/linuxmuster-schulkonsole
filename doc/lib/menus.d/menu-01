@@ -1,37 +1,37 @@
 <div id="menu">
 [% IF link_start %]
-   <a href="start">[% d.get('Mein Konto') %]</a>
+   <a [% dohref("$start") %]>[% d.get('Mein Konto') %]</a>
 [% END %]
 [% IF link_settings %]
 [% ELSE %]
 [% IF link_room %]
-   <a href="room">[% d.get('aktueller Raum') %]</a>
+   <a [% dohref("$room") %]>[% d.get('aktueller Raum') %]</a>
 [% END %]
 [% IF link_class %]
-   <a href="class">[% d.get('Klassen') %]</a>
+   <a [% dohref("$class") %]>[% d.get('Klassen') %]</a>
 [% END %]
 [% IF link_project %]
-   <a href="project">[% d.get('Projekte') %]</a>
+   <a [% dohref("$project") %]>[% d.get('Projekte') %]</a>
 [% END %]
 [% END %]
 [% IF link_settings %]
-   <a href="settings">[% d.get('Einstellungen') %]</a>
+   <a [% dohref("$settings") %]>[% d.get('Einstellungen') %]</a>
 [% END %]
 [% IF link_user %]
-   <a href="user">[% d.get('Benutzer') %]</a>
+   <a [% dohref("$user") %]>[% d.get('Benutzer') %]</a>
 [% END %]
 [% IF link_quotas %]
-   <a href="quotas">[% d.get('Quota') %]</a>
+   <a [% dohref("$quotas") %]>[% d.get('Quota') %]</a>
 [% END %]
 [% IF link_rooms %]
-   <a href="rooms">[% d.get('R&auml;ume') %]</a>
+   <a [% dohref("$rooms") %]>[% d.get('R&auml;ume') %]</a>
 [% END %]
 [% IF link_printers %]
-   <a href="printers">[% d.get('Drucker') %]</a>
+   <a [% dohref("$printers") %]>[% d.get('Drucker') %]</a>
 [% END %]
 [% IF link_hosts %]
-   <a href="hosts">[% d.get('Hosts') %]</a>
+   <a [% dohref("$hosts") %]>[% d.get('Hosts') %]</a>
 [% END %]
 [% IF link_linbo %]
-   <a href="linbo">[% d.get('LINBO') %]</a>
+   <a [% dohref("$linbo") %]>[% d.get('LINBO') %]</a>
 [% END %]

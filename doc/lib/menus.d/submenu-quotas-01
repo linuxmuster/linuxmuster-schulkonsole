@@ -1,18 +1,18 @@
 [% IF link_quotas %]
-	<a class="separator" href="quotas">[% d.get('Start') %]</a>
+	<a class="separator" [% dohref("$quotas") %]>[% d.get('Start') %]</a>
 [% END %]
 [% IF quotaactivated %]
 [% IF link_quotas_teachers %]
-	<a href="quotas_teachers">[% d.get('Lehrer') %]</a>
+	<a [% dohref("$quotas_teachers") %]>[% d.get('Lehrer') %]</a>
 [% END %]
 [% IF link_quotas_classes %]
-	<a href="quotas_classes">[% d.get('Klassen') %]</a>
+	<a [% dohref("$quotas_classes") %]>[% d.get('Klassen') %]</a>
 [% END %]
 [% IF link_quotas_projects %]
-	<a href="quotas_projects">[% d.get('Projekte') %]</a>
+	<a [% dohref("$quotas_projects") %]>[% d.get('Projekte') %]</a>
 [% END %]
 [% IF link_quotas_others %]
-	<a class="end" href="quotas_others">[% d.get('Sonderquota') %]</a>
+	<a class="end" [% dohref("$quotas_others") %]>[% d.get('Sonderquota') %]</a>
 [% END %]
 [% ELSE %]
 [% IF link_quotas_teachers %]

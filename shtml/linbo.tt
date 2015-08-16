@@ -11,21 +11,21 @@
 
 <p>
 [% IF link_linbo_edit %]
-<a href="linbo_edit">[% d.get('Gruppenkonfiguration editieren') %]</a></br>
+<a [% dohref("$linbo_edit") %]>[% d.get('Gruppenkonfiguration editieren') %]</a></br>
 [% END %]
 [% IF link_linbo_new %]
-<a href="linbo_new">[% d.get('Gruppenkonfiguration erstellen') %]</a></br>
+<a [% dohref("$linbo_new") %]>[% d.get('Gruppenkonfiguration erstellen') %]</a></br>
 [% END %]
 [% IF link_linbo_regpatchedit %]
-<a href="linbo_regpatchedit">[% d.get('Registrypatch editieren') %]</a></br>
+<a [% dohref("$linbo_regpatchedit") %]>[% d.get('Registrypatch editieren') %]</a></br>
 [% END %]
 [% IF link_linbo_pxeedit %]
-<a href="linbo_pxeedit">[% d.get('PXE-Start') %]</a></br>
+<a [% dohref("$linbo_pxeedit") %]>[% d.get('PXE-Start') %]</a></br>
 [% END %]
 [% IF link_linbo_menuedit %]
-<a href="linbo_menuedit">[% d.get('menu.lst editieren') %]</a></br>
+<a [% dohref("$linbo_menuedit") %]>[% d.get('menu.lst editieren') %]</a></br>
 [% END %]
 [% IF link_linbo_images %]
-<a href="linbo_images">[% d.get('Imageverwaltung') %]</a></br>
+<a [% dohref("$linbo_images") %]>[% d.get('Imageverwaltung') %]</a></br>
 [% END %]
 </p>

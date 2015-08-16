@@ -13,16 +13,16 @@
 
 <p>
 [% IF link_quotas_teachers %]
-<a href="quotas_teachers">[% d.get('Lehrer') %]</a></br>
+<a [% dohref("quotas_teachers") %]>[% d.get('Lehrer') %]</a></br>
 [% END %]
 [% IF link_quotas_classes %]
-<a href="quotas_classes">[% d.get('Klassen') %]</a></br>
+<a [% dohref("quotas_classes") %]>[% d.get('Klassen') %]</a></br>
 [% END %]
 [% IF link_quotas_projects %]
-<a href="quotas_projects">[% d.get('Projekte') %]</a></br>
+<a [% dohref("quotas_projects") %]>[% d.get('Projekte') %]</a></br>
 [% END %]
 [% IF link_quotas_others %]
-<a href="quotas_others">[% d.get('Sonderquota') %]</a></br>
+<a [% dohref("quotas_others") %]>[% d.get('Sonderquota') %]</a></br>
 [% END %]
 </p>
 
