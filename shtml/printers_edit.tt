@@ -1,6 +1,7 @@
 [% page = {
       title    => d.get('Schulkonsole - Drucker'),
       menu     => 1,
+      info     => d.get('<p>W&auml;hlen Sie unter &#8222;abgew&auml;hlt&#8220; die R&auml;ume oder Rechner aus, die Zugriff auf diesen Drucker bekommen sollen.</p><p>&Uuml;bernehmen Sie die Auswahl durch Bet&auml;tigen der Schaltfl&auml;che &#8222;&lt;&lt;&#8220;.</p><p>Mehrfachauswahl mit gedr&uuml;ckter Strg-Taste ist m&ouml;glich.</p><p>Schliessen Sie die Aktion mit &#8222;&Auml;nderungen &uuml;bernehmen&#8220; ab.</p>'),
    }
 %]
 
@@ -99,12 +100,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('W&auml;hlen Sie unter &#8222;abgew&auml;hlt&#8220; die R&auml;ume oder Rechner aus,
-die Zugriff auf diesen Drucker bekommen sollen.') %]</p>
-<p>[% d.get('&Uuml;bernehmen Sie die Auswahl durch Bet&auml;tigen der Schaltfl&auml;che
-&#8222;&lt;&lt;&#8220;.') %]</p>
-<p>[% d.get('Mehrfachauswahl mit gedr&uuml;ckter Strg-Taste ist m&ouml;glich.') %]</p>
-<p>[% d.get('Schliessen Sie die Aktion mit &#8222;&Auml;nderungen &uuml;bernehmen&#8220;  ab.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

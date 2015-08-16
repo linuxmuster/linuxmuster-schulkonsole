@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Benutzer - Lehrerliste pflegen'),
       menu     => 1,
       submenu  => "user",
+      info     => d.get('<p>Hier k&ouml;nnen Sie die Passw&ouml;rter der Lehrkr&auml;fte &auml;ndern. Sie haben folgende Funktionen zur Verf&uuml;gung:</p><ul><li>Setzen des Passwortes auf das Erstpasswort</li><li>Setzen des Passwortes und des Erstpasswortes auf einen zuf&auml;lligen Wert</li><li>Setzen des Passwortes und des Erstpasswortes auf einen eingegebenen Wert</li></ul><p>Sie k&ouml;nnen sich das Passwort eines Lehrers nach der Vergabe anzeigen lassen. Au&szlig;erdem k&ouml;nnen Sie sich die Passwortliste der Lehrkr&auml;fte im PDF- oder CSV-Format herunterladen, um Sie dann ausdrucken zu lassen.</p>'),
    }
 %]
 
@@ -145,14 +146,14 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Hier k&ouml;nnen Sie, falls noch nicht geschehen, die Datei mit den Lehrerdaten
+<p>Hier k&ouml;nnen Sie, falls noch nicht geschehen, die Datei mit den Lehrerdaten
 &#8222;lehrer.txt&#8220; ins System hochladen. Beachten Sie, dass diese Option nur vorhanden ist,
-solange keine &#8222;lehrer.txt&#8220; im System vorliegt.') %]</p>
-<p>[% d.get('Die weitere Datenpflege nehmen Sie dann &uuml;ber diese
-Seite vor.') %]</p>
-<p>[% d.get('Wichtig: Bei der Eingabe des Lehrerlogins werden nur Kleinbuchstaben und keine
+solange keine &#8222;lehrer.txt&#8220; im System vorliegt.</p>
+<p>Die weitere Datenpflege nehmen Sie dann &uuml;ber diese
+Seite vor.</p>
+<p>Wichtig: Bei der Eingabe des Lehrerlogins werden nur Kleinbuchstaben und keine
 Umlaute oder sonstige Sonderzeichen akzeptiert. Er muss mindestens zwei und darf h&ouml;chstens
-16 Zeichen lang sein.') %]</p>
+16 Zeichen lang sein.</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

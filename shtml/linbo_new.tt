@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Linbo'),
       menu     => 1,
       submenu  => "linbo",
+      info     => d.get('<p>Kopieren Sie hier die Konfiguration einer bestehenden Rechnergruppe oder erstellen Sie eine neue Gruppenkonfiguration.</p><p>Beachten Sie, dass ab LINBO 1.1.0 IDE-Platten wie SATA-Platten angesprochen werden. Deshalb ist im Dropdown-Men&uuml; keine andere Auswahl m&ouml;glich.</p><p>Ist die neue Gruppenkonfiguration erstellt, k&ouml;nnen Sie im Untermen&uuml; &#8222;Gruppenkonfiguration editieren&#8220; gegebenenfalls weitere Anpassungen an der neuen Konfiguration vornehmen.</p>'),
    }
 %]
 
@@ -110,12 +111,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Kopieren Sie hier die Konfiguration einer bestehenden Rechnergruppe
-oder erstellen Sie eine neue Gruppenkonfiguration.') %]</p>
-<p>[% d.get('Beachten Sie, dass ab LINBO 1.1.0 IDE-Platten wie SATA-Platten angesprochen werden.
-Deshalb ist im Dropdown-Men&uuml; keine andere Auswahl m&ouml;glich.') %]</p>
-<p>[% d.get('Ist die neue Gruppenkonfiguration erstellt, k&ouml;nnen Sie im Untermen&uuml; &#8222;Gruppenkonfiguration editieren&#8220;
-gegebenenfalls weitere Anpassungen an der neuen Konfiguration vornehmen.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

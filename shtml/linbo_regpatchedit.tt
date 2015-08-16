@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Linbo'),
       menu     => 1,
       submenu  => "linbo",
+      info     => d.get('<p>Klicken Sie auf den Namen einer Registrypatch-Datei, um sie zu editieren.</p><p>Wollen Sie eine neue Registrypatch-Datei erstellen, w&auml;hlen Sie zun&auml;chst die Image-Datei aus dem oberen Dropdown-Men&uuml;. Im unteren Dropdown-Men&uuml; w&auml;hlen Sie die Registrypatch-Datei aus, die als Vorlage f&uuml;r die neue Datei dienen soll.</p>'),
    }
 %]
 
@@ -102,10 +103,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Klicken Sie auf den Namen einer Registrypatch-Datei, um sie zu editieren.') %]</p>
-<p>[% d.get('Wollen Sie eine neue Registrypatch-Datei erstellen, w&auml;hlen Sie zun&auml;chst die Image-Datei
-aus dem oberen Dropdown-Men&uuml;. Im unteren Dropdown-Men&uuml; w&auml;hlen Sie die Registrypatch-Datei aus,
-die als Vorlage f&uuml;r die neue Datei dienen soll.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

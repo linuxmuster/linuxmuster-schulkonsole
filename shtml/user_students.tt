@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Benutzer - Sch&uuml;lerliste pflegen'),
       menu     => 1,
       submenu  => "user",
+      info     => d.get('<p>Hier k&ouml;nnen Sie die aus dem Schulverwaltungsprogramm exportierte Datei &#8222;schueler.txt&#8220; ins System hochladen.</p><p>Zudem haben Sie hier die M&ouml;glichkeit, &Auml;nderungen an den Sch&uuml;lerdaten von Hand einzupflegen.</p>'),
    }
 %]
 
@@ -38,10 +39,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Hier k&ouml;nnen Sie die aus dem Schulverwaltungsprogramm exportierte Datei
-&#8222;schueler.txt&#8220; ins System hochladen.') %]</p>
-<p>[% d.get('Zudem haben Sie hier die M&ouml;glichkeit, &Auml;nderungen an den Sch&uuml;lerdaten
-von Hand einzupflegen.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

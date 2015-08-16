@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Projekte'),
       menu     => 1,
       submenu  => "project",
+      info     => d.get('<p>W&auml;hlen Sie ein Projekt aus dem Pull-Down-Men&uuml; oben rechts oder aus der Liste, um damit arbeiten zu k&ouml;nnen.</p><p>Tragen Sie sich aus einem Projekt aus, wenn Sie darin nicht mehr mitarbeiten.</p><p>Tragen Sie sich in ein Projekt ein, indem Sie es im Pull-Down-Men&uuml; ausw&auml;hlen und dann die Schaltfl&auml;che &#8222;Eintragen&#8220; bet&auml;tigen.</p><p>Erlaubte Zeichen f&uuml;r den Kurznamen eines neuen Projekts sind a-z und 0-9 sowie _ und -. Der Name muss zwischen 3 und 14 Zeichen lang sein.</p><p>&#8222;Offenes&#8220; Projekt bedeutet, andere Lehrer k&ouml;nnen sich in das Projekt eintragen.</p>'),
    }
 %]
 
@@ -124,17 +125,6 @@ p_<input id="projectname" name="projectname">
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('W&auml;hlen Sie ein Projekt aus dem Pull-Down-Men&uuml; oben
-rechts oder aus der Liste, um damit arbeiten zu k&ouml;nnen.') %]</p>
-<p>[% d.get('Tragen Sie sich aus einem Projekt aus, wenn Sie darin nicht mehr
-mitarbeiten.') %]</p>
-<p>[% d.get('Tragen Sie sich in ein Projekt ein, indem Sie es im
-Pull-Down-Men&uuml; ausw&auml;hlen und dann die Schaltfl&auml;che
-&#8222;Eintragen&#8220; bet&auml;tigen.') %]</p>
-<p>[% d.get('Erlaubte Zeichen f&uuml;r den Kurznamen eines neuen Projekts sind
-a-z und 0-9 sowie _ und -. Der Name muss zwischen 3 und 14 Zeichen lang sein.') %]</p>
-<p>[% d.get('&#8222;Offenes&#8220; Projekt bedeutet, andere Lehrer k&ouml;nnen sich
-in das Projekt eintragen.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

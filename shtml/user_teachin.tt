@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Benutzer - &Auml;nderungen durchf&uuml;hren'),
       menu     => 1,
       submenu  => "user",
+      info     => d.get('<p>W&auml;hrend der Teach-In-Sitzung m&uuml;ssen Sie nicht eindeutig zuordenbare Benutzerdaten mit den richtigen Benutzernamen verkn&uuml;pfen.</p><p>Best&auml;tigen Sie alle &Auml;nderungen einer Seite jedes Mal &uuml;ber die Schaltfl&auml;che &#8222;&Auml;nderungen &uuml;bernehmen&#8220;.</p><p>Beenden Sie die Teach-In-Sitzung erst, wenn Sie alle Seiten gepr&uuml;ft haben.</p>'),
    }
 %]
 
@@ -118,12 +119,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('W&auml;hrend der Teach-In-Sitzung m&uuml;ssen Sie nicht eindeutig
-zuordenbare Benutzerdaten mit den richtigen Benutzernamen verkn&uuml;pfen.') %]</p>
-<p>[% d.get('Best&auml;tigen Sie alle &Auml;nderungen einer Seite jedes Mal &uuml;ber
-die Schaltfl&auml;che &#8222;&Auml;nderungen &uuml;bernehmen&#8220;.') %]</p>
-<p>[% d.get('Beenden Sie die Teach-In-Sitzung erst, wenn Sie alle Seiten
-gepr&uuml;ft haben.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

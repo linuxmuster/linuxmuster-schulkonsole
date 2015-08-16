@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Quota - Sonderquota'),
       menu     => 1,
       submenu  => "quotas",
+      info     => d.get('<p>Hier &auml;ndern Sie die Quotawerte spezieller Benutzer und einzelner Sch&uuml;ler/innen.</p><p>Unter &#8222;Neu anlegen&#8220; k&ouml;nnen Sie einem bisher hier nicht aufgef&uuml;hrten Benutzer Sonderquota zuweisen. Geben Sie dazu den Login ein und passen Sie die Quotawerte entsprechend an.</p><p>Unter &#8222;Webspace&#8220; legen Sie fest, wieviel Platz alle ver&ouml;ffentlichten Webseiten insgesamt belegen d&uuml;rfen. &Auml;ndern Sie hierzu den Quotawert f&uuml;r &#8222;www-data&#8220; auf &#8222;/var&#8220;.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),
    }
 %]
 
@@ -301,13 +302,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Hier &auml;ndern Sie die Quotawerte spezieller Benutzer und einzelner Sch&uuml;ler/innen.') %]</p>
-<p>[% d.get('Unter &#8222;Neu anlegen&#8220; k&ouml;nnen Sie einem bisher hier nicht aufgef&uuml;hrten Benutzer
-Sonderquota zuweisen. Geben Sie dazu den Login ein und passen Sie die Quotawerte entsprechend an.') %]</p>
-<p>[% d.get('Unter &#8222;Webspace&#8220; legen Sie fest, wieviel Platz alle ver&ouml;ffentlichten Webseiten
-insgesamt belegen d&uuml;rfen. &Auml;ndern Sie hierzu den Quotawert f&uuml;r &#8222;www-data&#8220; auf
-&#8222;/var&#8220;.') %]</p>
-<p>[% d.get('Alle Werte sind in Megabyte (MB) einzugeben.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

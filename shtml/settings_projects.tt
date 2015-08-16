@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Einstellungen - Projekte'),
       menu     => 1,
       submenu  => "settings",
+      info     => d.get('<p>Bearbeiten Sie hier die Projektstandardeinstellungen.</p><p>F&uuml;r eine detaillierte Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</p>'),
    }
 %]
 
@@ -63,9 +64,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Bearbeiten Sie hier die Projektstandardeinstellungen.') %]</p>
-<p>[% d.get('F&uuml;r eine detaillierte Beschreibung der einzelnen Punkte
-konsultieren Sie bitte die Dokumentation.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

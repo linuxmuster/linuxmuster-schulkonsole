@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - aktueller Raum') . ": $room",
       menu     => 1,
       submenu  => "room",
+      info     => d.get('<p></p>'),
    }
 %]
 
@@ -23,7 +24,7 @@
 
 <form method="post" accept-charset="UTF-8">
 
-<h3>[% d.get('Bitte best&auml;tigen</getttext></h3>
+<h3>[% d.get('Bitte best&auml;tigen') %]</h3>
 
 <p>[% d.get('In diesem Raum findet eine Klassenarbeit statt.') %]
 [% d.get('Soll der Unterricht wirklich beendet werden?') %]</p>
@@ -44,7 +45,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p></p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Benutzer - Sch&uuml;lerliste pflegen'),
       menu     => 1,
       submenu  => "user",
+      info     => d.get('<p>Hier pflegen Sie Extrasch&uuml;ler und Extrakurse.</p><p>Editieren Sie die Listen in den entsprechenden Textfeldern. Ge&auml;nderte Daten werden &uuml;ber die Schaltfl&auml;che &#8222;&Auml;nderungen speichern&#8220; im System gespeichert. Fahren Sie dann mit dem Men&uuml;punkt &#8222;Benutzerlisten pr&uuml;fen&#8220; fort.</p><p>Kommentarzeilen beginnen mit einem Gatter (#) und werden nicht ausgewertet.</p>'),
    }
 %]
 
@@ -43,14 +44,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Hier pflegen Sie Extrasch&uuml;ler und Extrakurse.') %]</p>
-<p>[% d.get('Editieren Sie die Listen in den entsprechenden Textfeldern.
-Ge&auml;nderte Daten werden &uuml;ber die Schaltfl&auml;che
-&#8222;&Auml;nderungen speichern&#8220; im System gespeichert.
-Fahren Sie dann mit dem Men&uuml;punkt &#8222;Benutzerlisten pr&uuml;fen&#8220;
-fort.') %]</p>
-<p>[% d.get('Kommentarzeilen beginnen mit einem Gatter (#) und werden nicht
-ausgewertet.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

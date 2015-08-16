@@ -1,6 +1,7 @@
 [% page = {
       title    => d.get('Schulkonsole - Beispielseite'),
       menu     => 1,
+      info     => d.get('Das ist eine Beispiel-Seite.'),
    }
 %]
 
@@ -15,8 +16,6 @@
 
 
 <h2>[% d.get('Info') %]</h2>
-
-<p>[% d.get('Das ist eine Beispiel-Seite.') %]</p>
 
 
 [% INCLUDE "footer_info.inc.tt" %]
