@@ -10,11 +10,11 @@
 <form method="post" accept-charset="UTF-8" action="">
 <table>
 <tr>
-<td><label for="username">[% d.get('Benutzername') %]</label>: </td>
+<td><label [% labelfor("username") %]>[% d.get('Benutzername') %]</label>: </td>
 <td><input id="username" name="username"></td>
 </tr>
 <tr>
-<td><label for="password">[% d.get('Passwort') %]</label>: </td>
+<td><label [% labelfor("password") %]>[% d.get('Passwort') %]</label>: </td>
 <td><input id="password" name="password" type="password"></td>
 </table>
 <p><input type="submit" value="[% d.get('Anmelden') %]"></p>

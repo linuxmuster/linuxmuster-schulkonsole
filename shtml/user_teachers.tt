@@ -14,10 +14,10 @@
 
 <table id="teachersadd" class="liste">
 <tr>
-<th><label for="newsurname">[% d.get('Nachname') %]</label></th>
-<th><label for="newfirstname">[% d.get('Vorname') %]</label></th>
-<th><label for="newbirthdate">[% d.get('Geburtsdatum') %]</label></th>
-<th><label for="newlogin">[% d.get('Login') %]</label></th>
+<th><label [% labelfor("newsurname") %]>[% d.get('Nachname') %]</label></th>
+<th><label [% labelfor("newfirstname") %]>[% d.get('Vorname') %]</label></th>
+<th><label [% labelfor("newbirthdate") %]>[% d.get('Geburtsdatum') %]</label></th>
+<th><label [% labelfor("newlogin") %]>[% d.get('Login') %]</label></th>
 </tr>
 <tr>
 <td><input id="newsurname" name="newsurname"></td>
@@ -37,7 +37,7 @@
 [% IF teachersuploadallowed %]
 
 <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
-<h3><label for="teachersfilename">[% d.get('Datei importieren') %]</label></h3>
+<h3><label [% labelfor("teachersfilename") %]>[% d.get('Datei importieren') %]</label></h3>
 <p>
 <input type="file" id="teachersfilename" name="teachersfilename">
 <input type="submit" name="teachersupload" value="[% d.get('Hochladen') %]">
