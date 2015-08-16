@@ -135,30 +135,3 @@
 
 <p><input type="submit" name="acceptteachers" value="[% d.get('&Auml;nderungen in Lehrerliste speichern') %]"></p>
 </form>
-
-
-</div>
-
-<div id="info" style="display: block;">
-<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
-
-[% INCLUDE "status.inc.tt" %]
-
-<h2>[% d.get('Info') %]</h2>
-
-<p>Hier k&ouml;nnen Sie, falls noch nicht geschehen, die Datei mit den Lehrerdaten
-&#8222;lehrer.txt&#8220; ins System hochladen. Beachten Sie, dass diese Option nur vorhanden ist,
-solange keine &#8222;lehrer.txt&#8220; im System vorliegt.</p>
-<p>Die weitere Datenpflege nehmen Sie dann &uuml;ber diese
-Seite vor.</p>
-<p>Wichtig: Bei der Eingabe des Lehrerlogins werden nur Kleinbuchstaben und keine
-Umlaute oder sonstige Sonderzeichen akzeptiert. Er muss mindestens zwei und darf h&ouml;chstens
-16 Zeichen lang sein.</p>
-
-[% INCLUDE "footer_info.inc.tt" %]
-</div>
-
-[% INCLUDE "footer.inc.tt" %]
-
-</body>
-</html>

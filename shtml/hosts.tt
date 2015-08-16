@@ -143,21 +143,3 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.') %]</p>
 </form>
 
 [% END %]
-
-</div>
-
-<div id="info" style="display: block;">
-<a class="hideinfo" onclick="toggle_visibility('info');" href="#">^</a>
-
-[% INCLUDE "status.inc.tt" %]
-
-<h2>[% d.get('Info') %]</h2>
-
-
-[% INCLUDE "footer_info.inc.tt" %]
-</div>
-
-[% INCLUDE "footer.inc.tt" %]
-
-</body>
-</html>
