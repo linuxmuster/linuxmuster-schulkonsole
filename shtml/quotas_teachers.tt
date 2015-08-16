@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Quota - Lehrer'),
       menu     => 1,
       submenu  => "quotas",
+      info     => d.get('<p>Hier k&ouml;nnen Sie die Disk- und Mailquota f&uuml;r Lehrer/innen individuell anpassen. Die Darstellung der Diskquota h&auml;ngt von Ihrer Partitionierung ab.</p><p>Leere Felder bedeuten, dass in dem Fall die Standardeinstellungen gelten.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),
    }
 %]
 
@@ -62,10 +63,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Hier k&ouml;nnen Sie die Disk- und Mailquota f&uuml;r Lehrer/innen individuell anpassen. Die
-Darstellung der Diskquota h&auml;ngt von Ihrer Partitionierung ab.') %]</p>
-<p>[% d.get('Leere Felder bedeuten, dass in dem Fall die Standardeinstellungen gelten.') %]</p>
-<p>[% d.get('Alle Werte sind in Megabyte (MB) einzugeben.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

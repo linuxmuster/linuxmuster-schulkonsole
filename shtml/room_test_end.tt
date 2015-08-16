@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - aktueller Raum') . ": $room - " . d.get('Klassenarbeitsmodus'),
       menu     => 1,
       submenu  => "room",
+      info     => d.get('<p>Best&auml;tigen Sie das Beenden der Klassenarbeit. Die eingesammelten Ergebnisse finden Sie danach in Ihrem Heimatverzeichnis unter &#8222;_eingesammelt -&gt; eingesammelt-klassenarbeit&#8220;.</p><p>Falls Sie doch noch nicht beenden wollen, k&ouml;nnen Sie &uuml;ber den Link &#8222;Einsammeln&#8220; wieder zur vorigen Seite zur&uuml;ckkehren.</p>'),
    }
 %]
 
@@ -26,7 +27,7 @@
 
 <form method="post" accept-charset="UTF-8">
 
-<h3>[% d.get('Bitte best&auml;tigen</getttext></h3>
+<h3>[% d.get('Bitte best&auml;tigen') %]</h3>
 
 <p>[% d.get('Mit dem Einsammeln der Dateien wird die Klassenarbeit
 beendet.') %]
@@ -46,11 +47,6 @@ beendet.') %]
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Best&auml;tigen Sie das Beenden der Klassenarbeit. Die eingesammelten
-Ergebnisse finden Sie danach in Ihrem Heimatverzeichnis unter
-&#8222;_eingesammelt -&gt; eingesammelt-klassenarbeit&#8220;.') %]</p>
-<p>[% d.get('Falls Sie doch noch nicht beenden wollen, k&ouml;nnen Sie &uuml;ber den Link
-&#8222;Einsammeln&#8220; wieder zur vorigen Seite zur&uuml;ckkehren.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

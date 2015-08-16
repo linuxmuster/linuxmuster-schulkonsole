@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Benutzer - Benutzerlisten pr&uuml;fen'),
       menu     => 1,
       submenu  => "user",
+      info     => d.get('<p>Hier &uuml;berpr&uuml;fen Sie die zuvor eingepflegten Benutzerdaten auf Konsistenz.</p><p>Nach Ende der &Uuml;berpr&uuml;fung sehen Sie die Konsolenausgabe von &#8222;sophomorix-check&#8220; mit Hinweisen auf die weitere Verfahrensweise.</p><p>War der Check erfolgreich, gelangen Sie &uuml;ber den Link &#8222;Benutzerdaten &uuml;bernehmen&#8220; zum n&auml;chsten Schritt.</p><p>Wurden &Auml;nderungen an den Benutzerdaten festgestellt, die eine weitere &Uuml;berpr&uuml;fung notwendig machen, wird ein &#8222;Teach-In&#8220; vorgeschlagen.</p>'),
    }
 %]
 
@@ -74,14 +75,6 @@ ausgegeben:') %]</p>
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Hier &uuml;berpr&uuml;fen Sie die zuvor eingepflegten Benutzerdaten auf
-Konsistenz.') %]</p>
-<p>[% d.get('Nach Ende der &Uuml;berpr&uuml;fung sehen Sie die Konsolenausgabe von
-&#8222;sophomorix-check&#8220; mit Hinweisen auf die weitere Verfahrensweise.') %]</p>
-<p>[% d.get('War der Check erfolgreich, gelangen Sie &uuml;ber den Link &#8222;Benutzerdaten
-&uuml;bernehmen&#8220; zum n&auml;chsten Schritt.') %]</p>
-<p>[% d.get('Wurden &Auml;nderungen an den Benutzerdaten festgestellt, die eine weitere
-&Uuml;berpr&uuml;fung notwendig machen, wird ein &#8222;Teach-In&#8220; vorgeschlagen.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

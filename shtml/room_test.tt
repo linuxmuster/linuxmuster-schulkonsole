@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - aktueller Raum') . ": $room - " . d.get('Klassenarbeitsmodus'),
       menu     => 1,
       submenu  => "room",
+      info     => d.get('<p>&Uuml;bernehmen Sie entweder das vorgegebene Zufallspasswort oder geben Sie ein eigenes Passwort ein.</p><p>Mit Bet&auml;tigung der Schaltfl&auml;che &#8222;Klassenarbeit starten&#8220; wird das neue Passwort an alle Arbeitsstationen im Raum verteilt, und die Sch&uuml;ler/innen k&ouml;nnen sich mit dem Namen der Arbeitsstation und dem eben vergebenen Passwort anmelden.</p>'),
    }
 %]
 
@@ -44,11 +45,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('&Uuml;bernehmen Sie entweder das vorgegebene Zufallspasswort oder geben Sie ein
-eigenes Passwort ein.') %]</p>
-<p>[% d.get('Mit Bet&auml;tigung der Schaltfl&auml;che &#8222;Klassenarbeit starten&#8220; wird das neue
-Passwort an alle Arbeitsstationen im Raum verteilt, und die Sch&uuml;ler/innen k&ouml;nnen sich
-mit dem Namen der Arbeitsstation und dem eben vergebenen Passwort anmelden.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

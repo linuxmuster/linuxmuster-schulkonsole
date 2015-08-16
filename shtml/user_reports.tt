@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Benutzer - Berichte'),
       menu     => 1,
       submenu  => "user",
+      info     => d.get('<p>Hier rufen Sie die Berichte der jeweils letzten Aktion ab.</p><p>Unter &#8222;Administrator-Report&#8220; erhalten Sie ein Protokoll des letzten Durchlaufs von &#8222;anlegen/versetzen/l&ouml;schen&#8220;.</p><p>Unter &#8222;Report f&uuml;r das Sekretariat&#8220; finden Sie Angaben zu Datens&auml;tzen, die nicht den Vorgaben von Sophomorix entsprechen und evtl. im Schulverwaltungsprogramm korrigiert werden m&uuml;ssen.</p>'),
    }
 %]
 
@@ -30,12 +31,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Hier rufen Sie die Berichte der jeweils letzten Aktion ab.') %]</p>
-<p>[% d.get('Unter &#8222;Administrator-Report&#8220; erhalten Sie ein Protokoll des letzten Durchlaufs
-von &#8222;anlegen/versetzen/l&ouml;schen&#8220;.') %]</p>
-<p>[% d.get('Unter &#8222;Report f&uuml;r das Sekretariat&#8220; finden Sie Angaben zu Datens&auml;tzen,
-die nicht den Vorgaben von Sophomorix entsprechen und evtl. im Schulverwaltungsprogramm
-korrigiert werden m&uuml;ssen.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

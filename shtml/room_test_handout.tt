@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - aktueller Raum') . ": $room - " . d.get('Klassenarbeitsmodus'),
       menu     => 1,
       submenu  => "room",
+      info     => d.get('<p>Falls zu Beginn der Klassenarbeit noch nicht alle Sch&uuml;ler angemeldet waren, k&ouml;nnen Sie &uuml;ber die Schaltfl&auml;che &#8222;Anmeldestatus &uuml;berpr&uuml;fen&#8220; die Ansicht aktualisieren.</p><p>Um die Ansicht der bereitzustellenden Dateien zu aktualisieren, klicken Sie einfach oben auf den Link &#8222;Bereitstellen&#8220;.</p><p>Mit Bet&auml;tigen der Schaltfl&auml;che &#8222;bereitstellen&#8220; gelangen Sie zum n&auml;chsten Schritt. Gleichzeitig werden Ihre Dateien den Klassenarbeitsteilnehmern bereitgestellt.</p>'),
    }
 %]
 
@@ -81,13 +82,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Falls zu Beginn der Klassenarbeit noch nicht alle Sch&uuml;ler angemeldet
-waren, k&ouml;nnen Sie &uuml;ber die Schaltfl&auml;che &#8222;Anmeldestatus &uuml;berpr&uuml;fen&#8220;
-die Ansicht aktualisieren.') %]</p>
-<p>[% d.get('Um die Ansicht der bereitzustellenden Dateien zu aktualisieren, klicken Sie einfach
-oben auf den Link &#8222;Bereitstellen&#8220;.') %]</p>
-<p>[% d.get('Mit Bet&auml;tigen der Schaltfl&auml;che &#8222;bereitstellen&#8220; gelangen Sie zum n&auml;chsten
-Schritt. Gleichzeitig werden Ihre Dateien den Klassenarbeitsteilnehmern bereitgestellt.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

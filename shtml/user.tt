@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Benutzer'),
       menu     => 1,
       submenu  => "user",
+      info     => d.get('<p>Hier legen Sie Benutzer an und pflegen die Sch&uuml;ler- und Lehrerlisten.</p><p>Benutzer und Kurse, die nicht aus dem Schulverwaltungsprogramm exportiert werden k&ouml;nnen, verwalten Sie in den &#8222;Extralisten&#8220;.</p>'),
    }
 %]
 
@@ -41,9 +42,6 @@ anzeigen lassen.') %]</p>
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Hier legen Sie Benutzer an und pflegen die Sch&uuml;ler- und Lehrerlisten.') %]</p>
-<p>[% d.get('Benutzer und Kurse, die nicht aus dem Schulverwaltungsprogramm exportiert werden k&ouml;nnen,
-verwalten Sie in den &#8222;Extralisten&#8220;.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

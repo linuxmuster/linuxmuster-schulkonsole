@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Benutzer - &Auml;nderungen durchf&uuml;hren'),
       menu     => 1,
       submenu  => "user",
+      info     => d.get('<p>Auf dieser Seite bekommen Sie zun&auml;chst einen &Uuml;berblick &uuml;ber die durchzuf&uuml;hrenden &Auml;nderungen.</p><p>Sie k&ouml;nnen die anstehenden Aktionen entweder in einem Durchgang oder nacheinander ausf&uuml;hren lassen.</p><p>Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund ausgef&uuml;hrt wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen Prozesses k&ouml;nnen Sie sich &uuml;ber die Schaltfl&auml;che &#8222;Letze Logdatei ansehen&#8220; anzeigen lassen.</p>'),
    }
 %]
 
@@ -161,14 +162,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Auf dieser Seite bekommen Sie zun&auml;chst einen &Uuml;berblick &uuml;ber die
-durchzuf&uuml;hrenden &Auml;nderungen.') %]</p>
-<p>[% d.get('Sie k&ouml;nnen die anstehenden Aktionen entweder in einem Durchgang oder nacheinander
-ausf&uuml;hren lassen.') %]</p>
-<p>[% d.get('Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund ausgef&uuml;hrt
-wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen
-Prozesses k&ouml;nnen Sie sich &uuml;ber die Schaltfl&auml;che &#8222;Letze Logdatei ansehen&#8220;
-anzeigen lassen.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

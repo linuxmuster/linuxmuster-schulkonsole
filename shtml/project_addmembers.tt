@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Mitglieder hinzuf&uuml;gen'),
       menu     => 1,
       submenu  => "project",
+      info     => d.get('<p>W&auml;hlen Sie die Mitglieder aus, die Sie neu ins Projekt aufnehmen wollen und klicken Sie dann auf die Schaltfl&auml;che &#8222;Aufnehmen&#8220;.</p><p>Falls das Suchergebnis nicht Ihren Erwartungen entspricht, k&ouml;nnen Sie unten eine neue Suche starten.</p>'),
    }
 %]
 
@@ -154,10 +155,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('W&auml;hlen Sie die Mitglieder aus, die Sie neu ins Projekt aufnehmen
-wollen und klicken Sie dann auf die Schaltfl&auml;che &#8222;Aufnehmen&#8220;.') %]</p>
-<p>[% d.get('Falls das Suchergebnis nicht Ihren Erwartungen entspricht, k&ouml;nnen Sie
-unten eine neue Suche starten.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

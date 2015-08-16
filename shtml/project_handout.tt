@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Bereitstellen'),
       menu     => 1,
       submenu  => "project",
+      info     => d.get('<p>Legen Sie Ihre bereitzustellenden Vorlagen in Ihrem Heimatverzeichnis unter &#8222;_bereitstellen -&gt; bereitstellen-[% project %]&#8220; ab.</p><p>Nach Bet&auml;tigen der Schaltfl&auml;che &#8222;Bereitstellen&#8220; finden die Projektmitglieder Ihre Vorlagen in ihrem Homeverzeichnis unter &#8222;__vorlagen -&gt; vorlagen-') . "${project}&#8220;.</p>",
    }
 %]
 
@@ -61,11 +62,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Legen Sie Ihre bereitzustellenden Vorlagen in Ihrem Heimatverzeichnis
-unter &#8222;_bereitstellen -&gt; bereitstellen-') %][% project %]&#8220; ab.</p>
-<p>[% d.get('Nach Bet&auml;tigen der Schaltfl&auml;che &#8222;Bereitstellen&#8220; finden die
-Projektmitglieder Ihre Vorlagen in ihrem Homeverzeichnis unter &#8222;__vorlagen -&gt;
-vorlagen-') %][% project %]&#8220;.</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

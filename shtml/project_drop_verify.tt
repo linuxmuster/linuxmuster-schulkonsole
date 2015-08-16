@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Projekte'),
       menu     => 1,
       submenu  => "project",
+      info     => d.get('<p>W&auml;hlen Sie &#8222;Ja&#8220;, um das Projekt wirklich zu l&ouml;schen.</p>'),
    }
 %]
 
@@ -11,7 +12,7 @@
 
 <form method="post" accept-charset="UTF-8">
 
-<h3>[% d.get('Bitte best&auml;tigen</getttext></h3>
+<h3>[% d.get('Bitte best&auml;tigen') %]</h3>
 
 <p>[% d.get('M&ouml;chten Sie das Projekt wirklich l&ouml;schen?') %]</p>
 
@@ -33,8 +34,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('W&auml;hlen Sie &#8222;Ja&#8220;, um das Projekt wirklich
-zu l&ouml;schen.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

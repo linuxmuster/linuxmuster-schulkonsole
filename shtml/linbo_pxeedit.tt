@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Linbo'),
       menu     => 1,
       submenu  => "linbo",
+      info     => d.get('.'),
    }
 %]
 
@@ -66,7 +67,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

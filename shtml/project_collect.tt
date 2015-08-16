@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Einsammeln'),
       menu     => 1,
       submenu  => "project",
+      info     => d.get('<p>Einzusammelnde Dateien m&uuml;ssen von den Projektmitgliedern in ihrem Heimatverzeichnis im Ordner &#8222;__einsammeln&#8220; abgelegt werden.</p><p>W&auml;hlen Sie aus, ob die einzusammelnden Dateien erhalten bleiben oder gel&ouml;scht werden sollen.</p><p>W&auml;hlen Sie die Projektmitglieder aus, von denen Sie einsammeln wollen. In der Spalte &#8222;Dateien&#8220; k&ouml;nnen Sie sehen, welche Dateien zum Einsammeln zur Verf&uuml;gung stehen.</p><p>Sie finden die eingesammelten Arbeiten in Ihrem Heimatverzeichnis unter &#8222;_eingesammelt -&gt; eingesammelt-[% project %]&#8220;.</p>'),
    }
 %]
 
@@ -104,14 +105,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Einzusammelnde Dateien m&uuml;ssen von den Projektmitgliedern in ihrem Heimatverzeichnis im
-Ordner &#8222;__einsammeln&#8220; abgelegt werden.') %]</p>
-<p>[% d.get('W&auml;hlen Sie aus, ob die einzusammelnden Dateien erhalten bleiben oder gel&ouml;scht
-werden sollen.') %]</p>
-<p>[% d.get('W&auml;hlen Sie die Projektmitglieder aus, von denen Sie einsammeln wollen.
-In der Spalte &#8222;Dateien&#8220; k&ouml;nnen Sie sehen, welche Dateien zum Einsammeln zur Verf&uuml;gung stehen.') %]</p>
-<p>[% d.get('Sie finden die eingesammelten Arbeiten in Ihrem Heimatverzeichnis unter
-&#8222;_eingesammelt -&gt; eingesammelt-') %][% project %]&#8220;.</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>

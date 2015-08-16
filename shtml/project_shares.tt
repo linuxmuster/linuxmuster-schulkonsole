@@ -2,6 +2,7 @@
       title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Tauschen'),
       menu     => 1,
       submenu  => "project",
+      info     => d.get('<p>Hier k&ouml;nnen Sie festlegen, ob die Sch&uuml;ler/innen des Projekts Zugriff auf die Tauschordner in ihrem Homeverzeichnis haben.</p>'),
    }
 %]
 
@@ -73,9 +74,6 @@
 
 <h2>[% d.get('Info') %]</h2>
 
-<p>[% d.get('Hier k&ouml;nnen Sie festlegen, ob die Sch&uuml;ler/innen des
-Projekts Zugriff auf die Tauschordner in ihrem Homeverzeichnis
-haben.') %]</p>
 
 [% INCLUDE "footer_info.inc.tt" %]
 </div>
