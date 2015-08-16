@@ -1,20 +1,9 @@
-<html lang="de">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="Content-Language" content="de">
-<title>[% d.get('Schulkonsole') %] - [% d.get('R&auml;ume') %] - [% d.get('EDV-R&auml;ume') %]</title>
-[% INCLUDE "css.inc.tt" %]
-<script type="text/javascript" src="schulkonsole.js"></script>
-</head>
-<body>
-
-[% INCLUDE "header.inc.tt" %]
-
-<div id="submenu">
-[% INCLUDE "submenu-rooms.inc.tt" %]
-</div>
-
-<div id="content">
+[% page = {
+      title    => d.get('Schulkonsole - R&auml;ume - EDV-R&auml;ume'),
+      menu     => 1,
+      submenu  => "rooms",
+   }
+%]
 
 [% IF unconfigured %]
 <p class="important">
