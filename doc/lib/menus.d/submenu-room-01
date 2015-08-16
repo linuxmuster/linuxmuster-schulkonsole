@@ -1,9 +1,9 @@
 [% IF link_room %]
-	<a class="separator" href="room">[% d.get('Start') %]</a>
+	<a class="separator" [% dohref("$room") %]>[% d.get('Start') %]</a>
 [% END %]
 [% IF edit %]
 [% IF link_room_shares %]
-	<a href="room_shares">[% d.get('Tauschen') %]</a>
+	<a [% dohref("$room_shares") %]>[% d.get('Tauschen') %]</a>
 [% END %]
 [% IF exammode %]
 [% IF link_room_handout %]
@@ -14,24 +14,24 @@
 [% END %]
 [% ELSE %]
 [% IF link_room_handout %]
-	<a href="room_handout">[% d.get('Austeilen') %]</a>
+	<a [% dohref("$room_handout") %]>[% d.get('Austeilen') %]</a>
 [% END %]
 [% IF link_room_collect %]
-	<a class="separator" href="room_collect">[% d.get('Einsammeln') %]</a>
+	<a class="separator" [% dohref("$room_collect") %]>[% d.get('Einsammeln') %]</a>
 [% END %]
 [% END %]
 [% IF link_room_test %]
 	
 [% IF done_test_password %]
-	<a class="end" href="room_test_collect">
+	<a class="end" [% dohref("$room_test_collect") %]>
 [% ELSE %]
 [% IF done_test_handout %]
-	<a class="end" href="room_test_password">
+	<a class="end" [% dohref("$room_test_password") %]>
 [% ELSE %]
 [% IF done_test_start %]
-	<a class="end" href="room_test_handout">
+	<a class="end" [% dohref("$room_test_handout") %]>
 [% ELSE %]
-	<a class="end" href="room_test">
+	<a class="end" [% dohref("$room_test") %]>
 [% END %]
 [% END %]
 [% END %]

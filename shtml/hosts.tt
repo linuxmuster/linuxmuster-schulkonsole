@@ -68,13 +68,13 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.') %]</p>
 
 <table id="hosts" class="liste">
 <tr>
-<th><a href="[% newsort.room %]">[% sort.room %][% d.get('Raum') %]</a></th>
-<th><a href="[% newsort.name %]">[% sort.name %][% d.get('Hostname') %]</a></th>
-<th><a href="[% newsort.groups %]">[% sort.groups %][% d.get('Gruppen') %]</a></th>
-<th><a href="[% newsort.mac %]">[% sort.mac %][% d.get('MAC') %]</a></th>
-<th><a href="[% newsort.ip %]">[% sort.ip %][% d.get('IP') %]</a></th>
-<th><a href="[% newsort.pxe %]">[% sort.pxe %][% d.get('PXE') %]</a></th>
-<th><a href="[% newsort.opts %]">[% sort.opts %][% d.get('Optionen') %]</a></th>
+<th><a [% dohref("$newsort.room") %]>[% sort.room %][% d.get('Raum') %]</a></th>
+<th><a [% dohref("$newsort.name") %]>[% sort.name %][% d.get('Hostname') %]</a></th>
+<th><a [% dohref("$newsort.groups") %]>[% sort.groups %][% d.get('Gruppen') %]</a></th>
+<th><a [% dohref("$newsort.mac") %]>[% sort.mac %][% d.get('MAC') %]</a></th>
+<th><a [% dohref("$newsort.ip") %]>[% sort.ip %][% d.get('IP') %]</a></th>
+<th><a [% dohref("$newsort.pxe") %]>[% sort.pxe %][% d.get('PXE') %]</a></th>
+<th><a [% dohref("$newsort.opts") %]>[% sort.opts %][% d.get('Optionen') %]</a></th>
 <th class="wsdel" title="l&ouml;schen">[% d.get('X') %]</th>
 </tr>
 [% FOREACH workstations %]

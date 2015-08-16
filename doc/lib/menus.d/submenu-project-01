@@ -1,25 +1,25 @@
 [% IF link_project %]
-	<a class="separator" href="project">[% d.get('Start') %]</a>
+	<a class="separator" [% dohref("$project") %]>[% d.get('Start') %]</a>
 [% END %]
 [% IF project %]
 [% IF link_project_members %]
-	<a class="separator" href="project_members">[% d.get('Mitglieder') %]</a>
+	<a class="separator" [% dohref("$project_members") %]>[% d.get('Mitglieder') %]</a>
 [% END %]
 [% IF link_project_passwords %]
-        <a class="separator" href="project_passwords">[% d.get('Passw&ouml;rter') %]</a>
+        <a class="separator" [% dohref("$project_passwords") %]>[% d.get('Passw&ouml;rter') %]</a>
 [% END %]
 [% IF isadmin %]
 [% IF link_project_handoutcopy %]
-	<a href="project_handoutcopy">[% d.get('Austeilen') %]</a>
+	<a [% dohref("$project_handoutcopy") %]>[% d.get('Austeilen') %]</a>
 [% END %]
 [% IF link_project_handout %]
-	<a href="project_handout">[% d.get('Bereitstellen') %]</a>
+	<a [% dohref("$project_handout") %]>[% d.get('Bereitstellen') %]</a>
 [% END %]
 [% IF link_project_collect %]
-	<a class="separator" href="project_collect">[% d.get('Einsammeln') %]</a>
+	<a class="separator" [% dohref("$project_collect") %]>[% d.get('Einsammeln') %]</a>
 [% END %]
 [% IF link_project_shares %]
-	<a class="separator" href="project_shares">[% d.get('Tauschen') %]</a>
+	<a class="separator" [% dohref("$project_shares") %]>[% d.get('Tauschen') %]</a>
 [% END %]
 [% ELSE %]
 [% IF link_project_handoutcopy %]

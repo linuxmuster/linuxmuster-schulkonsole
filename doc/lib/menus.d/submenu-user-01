@@ -1,24 +1,24 @@
 [% IF link_user %]
-	<a class="separator" href="user">[% d.get('Start') %]</a>
+	<a class="separator" [% dohref("$user") %]>[% d.get('Start') %]</a>
 [% END %]
 [% IF link_user_students %]
-	<a href="user_students">[% d.get('Sch&uuml;lerliste pflegen') %]</a>
+	<a [% dohref("$user_students") %]>[% d.get('Sch&uuml;lerliste pflegen') %]</a>
 [% END %]
 [% IF link_user_teachers %]
-	<a href="user_teachers">[% d.get('Lehrerliste pflegen') %]</a>
+	<a [% dohref("$user_teachers") %]>[% d.get('Lehrerliste pflegen') %]</a>
 [% END %]
 [% IF link_user_extra %]
-	<a class="separator" href="user_extra">[% d.get('Extralisten pflegen') %]</a>
+	<a class="separator" [% dohref("$user_extra") %]>[% d.get('Extralisten pflegen') %]</a>
 [% END %]
 [% IF link_user_check %]
-	<a href="user_check">[% d.get('Benutzerlisten pr&uuml;fen') %]</a>
+	<a [% dohref("$user_check") %]>[% d.get('Benutzerlisten pr&uuml;fen') %]</a>
 [% END %]
 [% IF link_user_commit %]
-	<a class="tworowseparator" href="user_commit">[% d.get('Benutzerdaten &uuml;bernehmen') %]</a>
+	<a class="tworowseparator" [% dohref("$user_commit") %]>[% d.get('Benutzerdaten &uuml;bernehmen') %]</a>
 [% END %]
 [% IF link_user_teacherpasswords %]
-	<a href="user_teacherpasswords">[% d.get('Lehrerpassw&ouml;rter') %]</a>
+	<a [% dohref("$user_teacherpasswords") %]>[% d.get('Lehrerpassw&ouml;rter') %]</a>
 [% END %]
 [% IF link_user_reports %]
-	<a class="end" href="user_reports">[% d.get('Berichte') %]</a>
+	<a class="end" [% dohref("$user_reports") %]>[% d.get('Berichte') %]</a>
 [% END %]

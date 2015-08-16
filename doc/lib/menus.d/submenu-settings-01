@@ -1,15 +1,15 @@
 [% IF link_settings %]
-	<a class="separator" href="settings">[% d.get('Start') %]</a>
+	<a class="separator" [% dohref("$settings") %]>[% d.get('Start') %]</a>
 [% END %]
 [% IF link_settings_program %]
-	<a href="settings_program">[% d.get('Schulkonsole') %]</a>
+	<a [% dohref("$settings_program") %]>[% d.get('Schulkonsole') %]</a>
 [% END %]
 [% IF link_settings_users %]
-	<a href="settings_users">[% d.get('Benutzerverwaltung') %]</a>
+	<a [% dohref("$settings_users") %]>[% d.get('Benutzerverwaltung') %]</a>
 [% END %]
 [% IF link_settings_classs %]
-	<a href="settings_classs">[% d.get('Klassen') %]</a>
+	<a [% dohref("$settings_classs") %]>[% d.get('Klassen') %]</a>
 [% END %]
 [% IF link_settings_projects %]
-        <a href="settings_projects">[% d.get('Projekte') %]</a>
+        <a [% dohref("$settings_projects") %]>[% d.get('Projekte') %]</a>
 [% END %]

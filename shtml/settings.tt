@@ -10,15 +10,15 @@
 
 <p>
 [% IF link_settings_program %]
-<a href="settings_program">[% d.get('Schulkonsole') %]</a></br>
+<a [% dohref("settings_program") %]>[% d.get('Schulkonsole') %]</a></br>
 [% END %]
 [% IF link_settings_users %]
-<a href="settings_users">[% d.get('Benutzerverwaltung') %]</a></br>
+<a [% dohref("$settings_users") %]>[% d.get('Benutzerverwaltung') %]</a></br>
 [% END %]
 [% IF link_settings_classs %]
-<a href="settings_classs">[% d.get('Klassen') %]</a></br>
+<a [% dohref("$settings_classs") %]>[% d.get('Klassen') %]</a></br>
 [% END %]
 [% IF link_settings_projects %]
-<a href="settings_projects">[% d.get('Projekte') %]</a></br>
+<a [% dohref("$settings_projects") %]>[% d.get('Projekte') %]</a></br>
 [% END %]
 </p>

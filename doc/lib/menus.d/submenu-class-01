@@ -1,51 +1,51 @@
 [% IF link_class %]
-	<a class="separator" href="class">[% d.get('Start') %]</a>
+	<a class="separator" [% dohref("$class") %]>[% d.get('Start') %]</a>
 [% END %]
 [% IF link_class_list %]
 [% IF class %]
-	<a href="class_list">[% d.get('Klassenliste') %]</a>
+	<a [% dohref("$class_list") %]>[% d.get('Klassenliste') %]</a>
 [% ELSE %]
 	<span class="disabled">[% d.get('Klassenliste') %]</span>
 [% END %]
 [% END %]
 [% IF link_class_passwords %]
 [% IF class %]
-	<a class="separator" href="class_passwords">[% d.get('Passw&ouml;rter') %]</a>
+	<a class="separator" [% dohref("$class_passwords") %]>[% d.get('Passw&ouml;rter') %]</a>
 [% ELSE %]
 	<span class="disabledseparator">[% d.get('Passw&ouml;rter') %]</span>
 [% END %]
 [% END %]
 [% IF link_class_handoutcopy %]
 [% IF class %]
-	<a href="class_handoutcopy">[% d.get('Austeilen') %]</a>
+	<a [% dohref("$class_handoutcopy") %]>[% d.get('Austeilen') %]</a>
 [% ELSE %]
 	<span class="disabled">[% d.get('Austeilen') %]</span>
 [% END %]
 [% END %]
 [% IF link_class_handout %]
 [% IF class %]
-	<a href="class_handout">[% d.get('Bereitstellen') %]</a>
+	<a [% dohref("$class_handout") %]>[% d.get('Bereitstellen') %]</a>
 [% ELSE %]
 	<span class="disabled">[% d.get('Bereitstellen') %]</span>
 [% END %]
 [% END %]
 [% IF link_class_collect %]
 [% IF class %]
-	<a class="separator" href="class_collect">[% d.get('Einsammeln') %]</a>
+	<a class="separator" [% dohref("$class_collect") %]>[% d.get('Einsammeln') %]</a>
 [% ELSE %]
 	<span class="disabledseparator">[% d.get('Einsammeln') %]</span>
 [% END %]
 [% END %]
 [% IF link_class_shares %]
 [% IF class %]
-	<a class="separator" href="class_shares">[% d.get('Tauschen') %]</a>
+	<a class="separator" [% dohref("$class_shares") %]>[% d.get('Tauschen') %]</a>
 [% ELSE %]
 	<span class="disabledseparator">[% d.get('Tauschen') %]</span>
 [% END %]
 [% END %]
 [% IF link_room_test %]
 [% IF class %]
-	<a class="separator" href="room_test">[% d.get('Klassenarbeit') %]</a>
+	<a class="separator" [% dohref("$room_test") %]>[% d.get('Klassenarbeit') %]</a>
 [% ELSE %]
 	<span class="disabledseparator">[% d.get('Klassenarbeit') %]</span>
 [% END %]
