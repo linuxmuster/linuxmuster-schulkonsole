@@ -28,12 +28,12 @@
 <th>[% d.get('Klasse') %]</th>
 <th>[% d.get('Bezeichner') %]</th>
 </tr>
-[% FOREACH usersdelete %]
+[% FOREACH ud IN usersdelete %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% usersdelete.login %]</td>
-<td>[% usersdelete.class %]</td>
-<td>[% usersdelete.id %]</td>
+<td>[% ud.login %]</td>
+<td>[% ud.class %]</td>
+<td>[% ud.id %]</td>
 </tr>
 
 [% END %]

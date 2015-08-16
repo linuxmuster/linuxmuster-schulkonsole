@@ -25,21 +25,21 @@
 [% IF mountpoints %]
 <tr>
 <th colspan="2"></th>
-[% FOREACH mountpoints %]
-<th>[% mountpoints %]</th>
+[% FOREACH m IN mountpoints %]
+<th>[% m %]</th>
 [% END %]
 <th></th>
 </tr>
 [% END %]
-[% FOREACH teachers %]
+[% FOREACH t IN teachers %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% teachers.login %]</td>
-<td>[% teachers.firstname %] [% teachers.surname %]</td>
-[% FOREACH teachers.diskquotas %]
-<td><input size="6" maxlength="5" name="[% teachers.login %]_teacher[% teachers.diskquotas.mountpoint %]-diskquota" value="[% teachers.diskquotas.quota %]"></td>
+<td>[% t.login %]</td>
+<td>[% t.firstname %] [% t.surname %]</td>
+[% FOREACH tq IN t.diskquotas %]
+<td><input size="6" maxlength="5" name="[% t.login %]_teacher[% tq.mountpoint %]-diskquota" value="[% tq.quota %]"></td>
 [% END %]
-<td><input size="6" maxlength="5" name="[% teachers.login %]_teachermailquota" value="[% teachers.mailquota %]"></td>
+<td><input size="6" maxlength="5" name="[% t.login %]_teachermailquota" value="[% t.mailquota %]"></td>
 </tr>
 [% END %]
 </table>
@@ -48,6 +48,6 @@
 
 </form>
 
-<!--#else-->
+[% ELSE %]
 <p>[% d.get('Es gibt keine Lehrer.') %]</p>
 [% END %]

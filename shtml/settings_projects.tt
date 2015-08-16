@@ -19,26 +19,26 @@
 <th>[% d.get('Liste') %]</th>
 <th>[% d.get('Aliase') %]</th>
 <th>[% d.get('WLAN') %]</th></tr>
-[% FOREACH projects %]
+[% FOREACH p IN projects %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><label>[% projects.name %]</label></td>
+<td><label>[% p.name %]</label></td>
 <td>
-[% IF projects.maillist %]
-<input type="checkbox" name="[% projects.gid %]_maillist" id="[% projects.gid %]_maillist" checked>
+[% IF p.maillist %]
+<input type="checkbox" name="[% p.gid %]_maillist" id="[% p.gid %]_maillist" checked>
 [% ELSE %]
-<input type="checkbox" name="[% projects.gid %]_maillist" id="[% projects.gid %]_maillist">
+<input type="checkbox" name="[% p.gid %]_maillist" id="[% p.gid %]_maillist">
 [% END %]
 </td>
 <td>
-[% IF projects.mailalias %]
-<input type="checkbox" name="[% projects.gid %]_mailalias" id="[% projects.gid %]_mailalias" checked>
+[% IF p.mailalias %]
+<input type="checkbox" name="[% p.gid %]_mailalias" id="[% p.gid %]_mailalias" checked>
 [% ELSE %]
-<input type="checkbox" name="[% projects.gid %]_mailalias" id="[% projects.gid %]_mailalias">
+<input type="checkbox" name="[% p.gid %]_mailalias" id="[% p.gid %]_mailalias">
 [% END %]
 </td>
 <td>
-<select name="[% projects.gid %]_wlan">
+<select name="[% p.gid %]_wlan">
 <option value="-1">-</option>
 <option value="1">[% d.get('An') %]</option>
 <option value="0">[% d.get('Aus') %]</option>

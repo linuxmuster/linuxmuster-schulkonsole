@@ -11,7 +11,7 @@
 <p class="selectdomain">
 <select name="classes">
 <optgroup label="Klassen">
-[% FOREACH classes %] <option value="[% classes.gid %]">[% classes.name %]</option>
+[% FOREACH c IN classes %] <option value="[% c.gid %]">[% c.name %]</option>
 [% END %]
 </optgroup>
 <optgroup label="aktuelle Klasse">
@@ -36,16 +36,16 @@
 <th>[% d.get('Name') %]</th>
 <th>[% d.get('Tauschen<br>global') %]</th>
 </tr>
-[% FOREACH students %]
+[% FOREACH s IN students %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-	<td>[% students.login %]</td>
-	<td>[% students.firstname %] [% students.surname %]</td>
+	<td>[% s.login %]</td>
+	<td>[% s.firstname %] [% s.surname %]</td>
 	<td>
-[% IF students.shares %]
-	<input type="checkbox" name="[% students.login %];shares" checked>
+[% IF s.shares %]
+	<input type="checkbox" name="[% s.login %];shares" checked>
 [% ELSE %]
-	<input type="checkbox" name="[% students.login %];shares">
+	<input type="checkbox" name="[% s.login %];shares">
 [% END %]
 	</td>
 

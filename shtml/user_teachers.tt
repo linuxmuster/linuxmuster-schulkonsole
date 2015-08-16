@@ -60,12 +60,12 @@
 <th>[% d.get('Geburtsdatum') %]</th>
 <th>[% d.get('Login') %]</th>
 </tr>
-[% FOREACH error_teachers %]
+[% FOREACH et IN error_teachers %]
 <tr>
-<td><input name="[% error_teachers.key %]_surname" value="[% error_teachers.surname %]"></td>
-<td><input name="[% error_teachers.key %]_firstname" value="[% error_teachers.firstname %]"></td>
-<td><input name="[% error_teachers.key %]_birthdate" value="[% error_teachers.birthdate %]"></td>
-<td><input name="[% error_teachers.key %]_login" value="[% error_teachers.login %]"></td>
+<td><input name="[% et.key %]_surname" value="[% et.surname %]"></td>
+<td><input name="[% et.key %]_firstname" value="[% et.firstname %]"></td>
+<td><input name="[% et.key %]_birthdate" value="[% et.birthdate %]"></td>
+<td><input name="[% et.key %]_login" value="[% et.login %]"></td>
 </tr>
 [% END %]
 </table>
@@ -93,12 +93,12 @@
 <th>[% d.get('Geburtsdatum') %]</th>
 <th>[% d.get('K&uuml;rzel') %]</th>
 </tr>
-[% FOREACH teachers %]
+[% FOREACH t IN teachers %]
 <tr>
-<td><input name="[% teachers.login %]_surname" value="[% teachers.surname %]"></td>
-<td><input name="[% teachers.login %]_firstname" value="[% teachers.firstname %]"></td>
-<td><input name="[% teachers.login %]_birthdate" value="[% teachers.birthdate %]"></td>
-<td>[% teachers.short %]</td>
+<td><input name="[% t.login %]_surname" value="[% t.surname %]"></td>
+<td><input name="[% t.login %]_firstname" value="[% t.firstname %]"></td>
+<td><input name="[% t.login %]_birthdate" value="[% t.birthdate %]"></td>
+<td>[% t.short %]</td>
 </tr>
 [% END %]
 </table>
@@ -124,11 +124,11 @@
 <th>[% d.get('Nachname') %]</th>
 <th>[% d.get('Vorname') %]</th>
 </tr>
-[% FOREACH teachers %]
+[% FOREACH t IN teachers %]
 <tr>
-<td><input type="checkbox" name="[% teachers.login %]_delete"></td>
-<td>[% teachers.surname %]</td>
-<td>[% teachers.firstname %]</td>
+<td><input type="checkbox" name="[% t.login %]_delete"></td>
+<td>[% t.surname %]</td>
+<td>[% t.firstname %]</td>
 </tr>
 [% END %]
 </table>

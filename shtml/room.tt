@@ -10,7 +10,7 @@
 <p style="float: right;">
 <select name="rooms">
 <optgroup label="R&auml;ume">
-[% FOREACH rooms %] <option value="[% rooms %]">[% rooms %]</option>
+[% FOREACH r IN rooms %] <option value="[% r %]">[% r %]</option>
 [% END %]
 </optgroup>
 <optgroup label="aktueller Raum">
@@ -122,13 +122,13 @@
 <th>[% d.get('Internet') %]</th>
 <th>[% d.get('Intranet') %]</th>
 <th>[% d.get('Webfilter') %]</th>
-[% FOREACH printers %]
-<th>[% d.get('Drucker') %]<br>[% printers %]</th>
+[% FOREACH p IN printers %]
+<th>[% d.get('Drucker') %]<br>[% p %]</th>
 [% END %]
 <th>[% d.get('Tauschen<br>global') %]</th>
 </tr>
-[% FOREACH overview_workstations %]
-[% IF overview_workstations.editing %]
+[% FOREACH w IN overview_workstations %]
+[% IF w.editing %]
 <tr class="editing">
 [% IF odd %][% odd=0 %]
 [% ELSE %][% odd=1 %][% END %]
@@ -136,76 +136,76 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 [% END %]
-	<td>[% IF overview_workstations.first %]
-		[% overview_workstations.name %]
+	<td>[% IF w.first %]
+		[% w.name %]
 	[% END %]</td>
-	<td>[% IF overview_workstations.login %]
-		[% overview_workstations.login %]
+	<td>[% IF w.login %]
+		[% w.login %]
 		[% ELSE %]-[% END %]
 	</td>
 
-	<td>[% IF overview_workstations.first %]
-[% IF overview_workstations.internet %]
+	<td>[% IF w.first %]
+[% IF w.internet %]
       [% quickinternetoff=1 %]
-	<input type="checkbox" name="[% overview_workstations.name %];internet" checked>
+	<input type="checkbox" name="[% w.name %];internet" checked>
 [% ELSE %]
-	<input type="checkbox" name="[% overview_workstations.name %];internet">
+	<input type="checkbox" name="[% w.name %];internet">
 [% END %]
 	[% END %]</td>
 
-	<td>[% IF overview_workstations.first %]
+	<td>[% IF w.first %]
 [% IF intranetactive %]
-[% IF overview_workstations.intranet %]
-[% IF overview_workstations.editinghost %]
+[% IF w.intranet %]
+[% IF w.editinghost %]
 	<input type="checkbox" disabled checked>
 [% ELSE %][% quickintranetoff=1 %]
-	<input type="checkbox" name="[% overview_workstations.name %];intranet" checked>
+	<input type="checkbox" name="[% w.name %];intranet" checked>
 [% END %]
 [% ELSE %]
-	<input type="checkbox" name="[% overview_workstations.name %];intranet">
+	<input type="checkbox" name="[% w.name %];intranet">
 [% END %]
 [% ELSE %]
 	<input type="checkbox" disabled checked>
 [% END %]
 	[% END %]</td>
-	<td>[% IF overview_workstations.first %]
+	<td>[% IF w.first %]
 [% IF urlfilteractive %]
-[% IF overview_workstations.webfilter %][% quickwebfilteroff=1 %]
+[% IF w.webfilter %][% quickwebfilteroff=1 %]
 [% IF link_room_webfilter_switch %]
-	<input type="checkbox" name="[% overview_workstations.name %];webfilter" checked>
+	<input type="checkbox" name="[% w.name %];webfilter" checked>
 [% ELSE %]
-	<input type="checkbox" name="[% overview_workstations.name %];webfilter" checked disabled>
+	<input type="checkbox" name="[% w.name %];webfilter" checked disabled>
 [% END %]
 [% ELSE %]
 [% IF link_room_webfilter_switch %]
-	<input type="checkbox" name="[% overview_workstations.name %];webfilter">
+	<input type="checkbox" name="[% w.name %];webfilter">
 [% ELSE %]
-	<input type="checkbox" name="[% overview_workstations.name %];webfilter" disabled>
+	<input type="checkbox" name="[% w.name %];webfilter" disabled>
 [% END %]
 [% END %]
 [% ELSE %]<input type="checkbox" disabled>[% END %][% END %]</td>
-[% IF overview_workstations.printer %]
-[% FOREACH overview_workstations.printer %]
+[% IF w.printer %]
+[% FOREACH wp IN w.printer %]
 	<td>
-[% IF overview_workstations.printer.off %]
-	<input type="checkbox" name="[% overview_workstations.login %];[% overview_workstations.printer.name %];printer">
+[% IF wp.off %]
+	<input type="checkbox" name="[% w.login %];[% wp.name %];printer">
 [% ELSE %]
-	<input type="checkbox" name="[% overview_workstations.login %];[% overview_workstations.printer.name %];printer" checked>
+	<input type="checkbox" name="[% w.login %];[% wp.name %];printer" checked>
 [% END %]
 	</td>
 [% END %]
 [% ELSE %]
-[% FOREACH printers %]
+[% FOREACH p IN printers %]
 	<td><input type="checkbox" disabled></td>
 [% END %]
 [% END %]
 
-	[% IF overview_workstations.login %]
+	[% IF w.login %]
 	<td>
-[% IF overview_workstations.shares %][% quicksharesoff=1 %]
-	<input type="checkbox" name="[% overview_workstations.login %];shares" checked>
+[% IF w.shares %][% quicksharesoff=1 %]
+	<input type="checkbox" name="[% w.login %];shares" checked>
 [% ELSE %]
-	<input type="checkbox" name="[% overview_workstations.login %];shares">
+	<input type="checkbox" name="[% w.login %];shares">
 [% END %]
 	</td>
 	[% ELSE %]
@@ -218,7 +218,7 @@
 <td>|</td>
 <td>|</td>
 <td>|</td>
-[% FOREACH printers %]
+[% FOREACH p IN printers %]
 <td>|</td>
 [% END %]
 <td>|</td>
@@ -240,8 +240,8 @@
 [% ELSE %]
 <td><input type="button" value="[% d.get('An') %]" name="webfilter" onClick="check_uncheck(this)"></td>
 [% END %]
-[% FOREACH printers %]
-<td><input type="button" value="[% d.get('Aus') %]" name="[% printers %];printer" checked onClick="check_uncheck(this)"></td>
+[% FOREACH p IN printers %]
+<td><input type="button" value="[% d.get('Aus') %]" name="[% p %];printer" checked onClick="check_uncheck(this)"></td>
 [% END %]
 [% IF quicksharesoff %]
 <td><input type="button" value="[% d.get('Aus') %]" name="shares" onClick="check_uncheck(this)"></td>
@@ -263,20 +263,20 @@
 <th>[% d.get('Status') %]</th>
 <th>[% d.get('freigeschaltet') %]</th>
 </tr>
-[% FOREACH overview_devices %]
+[% FOREACH d IN overview_devices %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% overview_devices.name %]</td>
-<td>[% IF overview_devices.statemessage %]
-[% overview_devices.statemessage %]
+<td>[% d.name %]</td>
+<td>[% IF d.statemessage %]
+[% d.statemessage %]
 [% ELSE %]
-[% overview_devices.state %]
+[% d.state %]
 [% END %]</td>
-[% IF overview_devices.accepting %]
+[% IF d.accepting %]
 [% quickprinteroff=1 %]
-<td><input type="checkbox" name="[% overview_devices.name %];printer" checked></td>
+<td><input type="checkbox" name="[% d.name %];printer" checked></td>
 [% ELSE %]
-<td><input type="checkbox" name="[% overview_devices.name %];printer"></td>
+<td><input type="checkbox" name="[% d.name %];printer"></td>
 [% END %]
 </tr>
 [% END %]
@@ -309,38 +309,38 @@
 <th>[% d.get('Internet') %]</th>
 <th>[% d.get('Intranet') %]</th>
 <th>[% d.get('Webfilter') %]</th>
-[% FOREACH printers %]
-<th>[% d.get('Drucker') %]<br>[% printers %]</th>
+[% FOREACH p IN printers %]
+<th>[% d.get('Drucker') %]<br>[% p %]</th>
 [% END %]
 <th>[% d.get('Tauschen<br>global') %]</th>
 </tr>
-[% FOREACH overview_workstations %]
+[% FOREACH w %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-	<td>[% IF overview_workstations.first %]
-		[% overview_workstations.name %]
+	<td>[% IF w.first %]
+		[% w.name %]
 	[% END %]</td>
-	<td>[% IF overview_workstations.login %]
-		[% overview_workstations.login %]
+	<td>[% IF w.login %]
+		[% w.login %]
 		[% ELSE %]-[% END %]
 	</td>
-	<td>[% IF overview_workstations.first %]
-[% IF overview_workstations.internet %]
+	<td>[% IF w.first %]
+[% IF w.internet %]
 	<input type="checkbox" disabled checked>
 [% ELSE %]
 	<input type="checkbox" disabled>
 [% END %]
 	[% END %]</td>
-	<td>[% IF overview_workstations.first %]
-[% IF overview_workstations.intranet %]
+	<td>[% IF w.first %]
+[% IF w.intranet %]
 	<input type="checkbox" disabled checked>
 [% ELSE %]
 	<input type="checkbox" disabled>
 [% END %]
 	[% END %]</td>
-	<td>[% IF overview_workstations.first %]
+	<td>[% IF w.first %]
 [% IF urlfilteractive %]
-[% IF overview_workstations.webfilter %]
+[% IF w.webfilter %]
 	<input type="checkbox" disabled checked>
 [% ELSE %]
 	<input type="checkbox" disabled>
@@ -349,10 +349,10 @@
 	<input type="checkbox" disabled>
 [% END %]
 	[% END %]</td>
-[% IF overview_workstations.printer %]
-	[% FOREACH overview_workstations.printer %]
+[% IF w.printer %]
+	[% FOREACH wp IN w.printer %]
 	<td>
-[% IF overview_workstations.printer.off %]
+[% IF wp.off %]
 	<input type="checkbox" disabled>
 [% ELSE %]
 	<input type="checkbox" disabled checked>
@@ -360,12 +360,12 @@
 	</td>
 [% END %]
 [% ELSE %]
-[% FOREACH printers %]
+[% FOREACH p IN printers %]
 	<td><input type="checkbox" disabled></td>
 [% END %]
 [% END %]
 	<td>
-[% IF overview_workstations.shares %]
+[% IF w.shares %]
 	<input type="checkbox" disabled checked>
 [% ELSE %]
 	<input type="checkbox" disabled>
@@ -386,16 +386,16 @@
 <th>[% d.get('Status') %]</th>
 <th>[% d.get('freigeschaltet') %]</th>
 </tr>
-[% FOREACH overview_devices %]
+[% FOREACH d IN overview_devices %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% overview_devices.name %]</td>
-<td>[% IF overview_devices.statemessage %]
-[% overview_devices.statemessage %]
+<td>[% d.name %]</td>
+<td>[% IF d.statemessage %]
+[% d.statemessage %]
 [% ELSE %]
-[% overview_devices.state %]
+[% d.state %]
 [% END %]</td>
-[% IF overview_devices.accepting %]
+[% IF d.accepting %]
 <td><input type="checkbox" disabled checked></td>
 [% ELSE %]
 <td><input type="checkbox" disabled></td>

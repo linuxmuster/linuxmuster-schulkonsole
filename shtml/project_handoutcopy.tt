@@ -10,7 +10,7 @@
 <form method="post" accept-charset="UTF-8">
 <p class="selectdomain"> <select name="projects">
 <optgroup label="Projekte">
-[% FOREACH projects %] <option value="[% projects.gid %]">[% projects.name %]</option>
+[% FOREACH p IN projects %] <option value="[% p.gid %]">[% p.name %]</option>
 [% END %]
 </optgroup>
 <optgroup label="aktuelles Projekt">
@@ -35,9 +35,9 @@
 
 [% IF admin_share_files %]
 <ul>
-[% FOREACH admin_share_files %]
-	<li>[% IF admin_share_files.isdir %]
-	*[% END %][% admin_share_files.name %]</li>
+[% FOREACH asf IN admin_share_files %]
+	<li>[% IF asf.isdir %]
+	*[% END %][% asf.name %]</li>
 [% END %]
 </ul>
 [% ELSE %]
@@ -52,12 +52,12 @@
 <th>[% d.get('Name') %]</th>
 <th>[% d.get('Auswahl') %]</th>
 </tr>
-[% FOREACH members %]
+[% FOREACH m IN members %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% members.login %]</td>
-<td>[% members.firstname %] [% members.surname %]</td>
-<td><input type="checkbox" name="[% members.login %];handout" checked></td>
+<td>[% m.login %]</td>
+<td>[% m.firstname %] [% m.surname %]</td>
+<td><input type="checkbox" name="[% m.login %];handout" checked></td>
 </tr>
 [% END %]
 <tr>

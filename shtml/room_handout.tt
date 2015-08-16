@@ -34,9 +34,9 @@
 
 [% IF teacher_share_files %]
 <ul>
-[% FOREACH teacher_share_files %]
-	<li>[% IF teacher_share_files.isdir %]<img src="img/folder.gif" alt="*">[% ELSE %]<img src="img/file.gif" alt="">[% END %]
-	    [% teacher_share_files.name %]</li>
+[% FOREACH tsf IN teacher_share_files %]
+	<li>[% IF tsf.isdir %]<img src="img/folder.gif" alt="*">[% ELSE %]<img src="img/file.gif" alt="">[% END %]
+	    [% tsf.name %]</li>
 [% END %]
 </ul>
 [% ELSE %]
@@ -51,8 +51,8 @@
 <th>[% d.get('Login') %]</th>
 <th>[% d.get('Auswahl') %]</th>
 </tr>
-[% FOREACH overview_workstations %]
-[% IF overview_workstations.editing %]
+[% FOREACH w IN overview_workstations %]
+[% IF w.editing %]
 <tr class="editing">
 [% IF odd %][% odd=0 %]
 [% ELSE %][% odd=1 %][% END %]
@@ -60,16 +60,16 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 [% END %]
-	<td>[% IF overview_workstations.first %]
-	    [% overview_workstations.name %]
+	<td>[% IF w.first %]
+	    [% w.name %]
 	    [% END %]</td>
-	[% IF overview_workstations.login %]
+	[% IF w.login %]
 	<td>
-	    [% overview_workstations.login %]
+	    [% w.login %]
 	</td>
-	<td>[% IF overview_workstations.editing %]
+	<td>[% IF w.editing %]
 		<input type="checkbox" disabled>[% ELSE %]
-		<input type="checkbox" name="[% overview_workstations.login %];handout" checked>
+		<input type="checkbox" name="[% w.login %];handout" checked>
 	[% END %]</td>
 	[% ELSE %]
 	<td>-</td>

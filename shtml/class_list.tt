@@ -11,7 +11,7 @@
 <p class="selectdomain">
 <select name="classes">
 <optgroup label="Klassen">
-[% FOREACH classes %] <option value="[% classes.gid %]">[% classes.name %]</option>
+[% FOREACH c IN classes %] <option value="[% c.gid %]">[% c.name %]</option>
 [% END %]
 </optgroup>
 <optgroup label="aktuelle Klasse">
@@ -37,44 +37,44 @@
 <th>[% d.get('Subklasse') %]</th>
 <th>[% d.get('Projekte') %]</th>
 </tr>
-[% FOREACH students %]
+[% FOREACH s IN students %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% students.login %]</td>
-<td>[% students.firstname %] [% students.surname %]</td>
+<td>[% s.login %]</td>
+<td>[% s.firstname %] [% s.surname %]</td>
 <td>
-[% IF students.diskquotas %]
+[% IF s.diskquotas %]
 
 <p>
 
-[% FOREACH students.diskquotas %]
+[% FOREACH sd IN s.diskquotas %]
 
-[% students.diskquotas.path %]:<br>
+[% sd.path %]:<br>
 	[% d.get('Speicherplatz/KB:') %]
-	[% students.diskquotas.blocks_usage %]/[% students.diskquotas.blocks_soft %]
-	- max: [% students.diskquotas.blocks_hard %]
-	- [% students.diskquotas.blocks_percent %]%<br>
-	[% IF students.diskquotas.blocks_grace %]
-	[% d.get('verbleibende Zeit:') %] [% students.diskquotas.blocks_grace %]<br>[% END %]
+	[% sd.blocks_usage %]/[% sd.blocks_soft %]
+	- max: [% sd.blocks_hard %]
+	- [% sd.blocks_percent %]%<br>
+	[% IF sd.blocks_grace %]
+	[% d.get('verbleibende Zeit:') %] [% sd.blocks_grace %]<br>[% END %]
 	[% d.get('Dateien:') %]
-	[% students.diskquotas.files_usage %]/[% students.diskquotas.files_soft %]
-	- max: [% students.diskquotas.files_hard %]
-	- [% students.diskquotas.files_percent %]%<br>
-	[% IF students.diskquotas.files_grace %]
-	[% d.get('verbleibende Zeit:') %] [% students.diskquotas.files_grace %]<br>[% END %]<br>
+	[% sd.files_usage %]/[% sd.files_soft %]
+	- max: [% sd.files_hard %]
+	- [% sd.files_percent %]%<br>
+	[% IF sd.files_grace %]
+	[% d.get('verbleibende Zeit:') %] [% sd.files_grace %]<br>[% END %]<br>
 
 [% END %]
 </p>
 
 
 <ul>
-[% FOREACH students.diskquotas %]
-[% IF students.diskquotas.warn %]
+[% FOREACH sd IN s.diskquotas %]
+[% IF sd.warn %]
 <li class="warn">
 [% ELSE %]
 <li>
 [% END %]
-<span title="[% students.diskquotas.path %]: [% students.diskquotas.blocks_percent %]%" style="width: [% students.diskquotas.blocks_percent_rounded %]%;">&nbsp;</span>
+<span title="[% sd.path %]: [% sd.blocks_percent %]%" style="width: [% sd.blocks_percent_rounded %]%;">&nbsp;</span>
 </li>
 [% END %]
 </ul>

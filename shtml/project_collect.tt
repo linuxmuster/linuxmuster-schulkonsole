@@ -10,7 +10,7 @@
 <form method="post" accept-charset="UTF-8">
 <p class="selectdomain"> <select name="projects">
 <optgroup label="Projekte">
-[% FOREACH projects %] <option value="[% projects.gid %]">[% projects.name %]</option>
+[% FOREACH p IN projects %] <option value="[% p.gid %]">[% p.name %]</option>
 [% END %]
 </optgroup>
 <optgroup label="aktuelles Projekt">
@@ -56,15 +56,15 @@
 <th>[% d.get('Auswahl') %]</th>
 <th>[% d.get('Dateien') %]</th>
 </tr>
-[% FOREACH members %]
+[% FOREACH m IN members %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-	<td>[% members.login %]</td>
-	<td>[% members.firstname %] [% members.surname %]</td>
-	<td><input type="checkbox" name="[% members.login %];collect" checked></td>
-	<td>[% FOREACH members.files %]
-	[% IF members.files.isdir %]
-	*[% END %][% members.files.name %]<br>
+	<td>[% m.login %]</td>
+	<td>[% m.firstname %] [% m.surname %]</td>
+	<td><input type="checkbox" name="[% m.login %];collect" checked></td>
+	<td>[% FOREACH mf IN m.files %]
+	[% IF mf.isdir %]
+	*[% END %][% mf.name %]<br>
 	[% END %]
 	</td>
 </tr>

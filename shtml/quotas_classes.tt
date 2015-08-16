@@ -25,20 +25,20 @@
 [% IF mountpoints %]
 <tr>
 <th></th>
-[% FOREACH mountpoints %]
-<th>[% mountpoints %]</th>
+[% FOREACH m IN mountpoints %]
+<th>[% m %]</th>
 [% END %]
 <th></th>
 </tr>
 [% END %]
-[% FOREACH classes %]
+[% FOREACH c IN classes %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% classes.name %]</td>
-[% FOREACH classes.diskquotas %]
-<td><input size="6" maxlength="5" name="[% classes.gid %]_class[% classes.diskquotas.mountpoint %]-diskquota" value="[% classes.diskquotas.quota %]"></td>
+<td>[% c.name %]</td>
+[% FOREACH cq IN c.diskquotas %]
+<td><input size="6" maxlength="5" name="[% c.gid %]_class[% cq.mountpoint %]-diskquota" value="[% cq.quota %]"></td>
 [% END %]
-<td><input size="6" maxlength="5" name="[% classes.gid %]_classmailquota" value="[% classes.mailquota %]"></td>
+<td><input size="6" maxlength="5" name="[% c.gid %]_classmailquota" value="[% c.mailquota %]"></td>
 </tr>
 [% END %]
 </table>

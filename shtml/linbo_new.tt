@@ -12,8 +12,8 @@
 <form method="post" accept-charset="UTF-8">
 <p>
 <select name="src">
-[% FOREACH groups %]
-<option value="[% groups %]">[% groups %]</option>
+[% FOREACH g IN groups %]
+<option value="[% g %]">[% g %]</option>
 [% END %]
 </select>
 <input type="submit" name="copy" value="[% d.get('kopieren nach') %]">
@@ -56,8 +56,8 @@
 <tr>
 <td><label [% labelfor("os1") %]>[% d.get('Betriebssystem 1 (Partition 1)') %]</label></td>
 <td><select id="os1" name="os1">
-<option value=""></option>[% FOREACH templatesoswin %]
-<option value="[% templatesoswin %]">[% templatesoswin %]</option>
+<option value=""></option>[% FOREACH to IN templatesoswin %]
+<option value="[% to %]">[% to %]</option>
 [% END %]</select>
 </td>
 <td><input name="size1"></td>
@@ -65,8 +65,8 @@
 <tr>
 <td><label [% labelfor("os2") %]>[% d.get('Betriebssystem 2 (Partition 2)') %]</label></td>
 <td><select id="os2" name="os2">
-<option value=""></option>[% FOREACH templatesoswin %]
-<option value="[% templatesoswin %]">[% templatesoswin %]</option>
+<option value=""></option>[% FOREACH to IN templatesoswin %]
+<option value="[% to %]">[% to %]</option>
 [% END %]</select>
 </td>
 <td><input name="size2"></td>
@@ -76,8 +76,8 @@
 <tr>
 <td><label [% labelfor("os3") %]>[% d.get('Betriebssystem 3 (Partition 5)') %]</label></td>
 <td><select id="os3" name="os3">
-<option value=""></option>[% FOREACH templatesosnonwin %]
-<option value="[% templatesosnonwin %]">[% templatesosnonwin %]</option>
+<option value=""></option>[% FOREACH to IN templatesosnonwin %]
+<option value="[% to %]">[% to %]</option>
 [% END %]</select>
 </td>
 <td><input name="size3"></td>
@@ -85,8 +85,8 @@
 <tr>
 <td><label [% labelfor("os4") %]>[% d.get('Betriebssystem 4 (Partition 6)') %]</label></td>
 <td><select id="os4" name="os4">
-<option value=""></option>[% FOREACH templatesosnonwin %]
-<option value="[% templatesosnonwin %]">[% templatesosnonwin %]</option>
+<option value=""></option>[% FOREACH to IN templatesosnonwin %]
+<option value="[% to %]">[% to %]</option>
 [% END %]</select>
 </td>
 <td><input name="size4"></td>

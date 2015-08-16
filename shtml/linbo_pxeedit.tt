@@ -40,11 +40,11 @@
 [% IF pxestarts %]
 <form method="post" accept-charset="UTF-8">
 <table id="linbopxeoverview" class="liste">
-[% FOREACH pxestarts %]
+[% FOREACH p IN pxestarts %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><input type="submit" name="[% pxestarts %]_edit" value="[% pxestarts %]"></td>
-<td><input type="submit" name="[% pxestarts %]_delete" value="[% d.get('l&ouml;schen') %]"></td>
+<td><input type="submit" name="[% p %]_edit" value="[% p %]"></td>
+<td><input type="submit" name="[% p %]_delete" value="[% d.get('l&ouml;schen') %]"></td>
 </tr>
 [% END %]
 </table>

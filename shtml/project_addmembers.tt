@@ -21,13 +21,13 @@
 <th>[% d.get('Klasse') %]</th>
 <th>[% d.get('Mitgliedschaft') %]</th>
 </tr>
-[% FOREACH students %]
+[% FOREACH s IN students %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% students.login %]</td>
-<td>[% students.firstname %] [% students.surname %]</td>
-<td>[% students.class %]</td>
-<td><input type="checkbox" name="[% students.login %]_member"></td>
+<td>[% s.login %]</td>
+<td>[% s.firstname %] [% s.surname %]</td>
+<td>[% s.class %]</td>
+<td><input type="checkbox" name="[% s.login %]_member"></td>
 </tr>
 [% END %]
 <tr>
@@ -51,13 +51,13 @@
 <th>[% d.get('Mitgliedschaft') %]</th>
 <th>[% d.get('Projektleitung') %]</th>
 </tr>
-[% FOREACH teachers %]
+[% FOREACH t IN teachers %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% teachers.login %]</td>
-<td>[% teachers.firstname %] [% teachers.surname %]</td>
-<td><input type="checkbox" name="[% teachers.login %]_member"></td>
-<td><input type="checkbox" name="[% teachers.login %]_admin"></td>
+<td>[% t.login %]</td>
+<td>[% t.firstname %] [% t.surname %]</td>
+<td><input type="checkbox" name="[% t.login %]_member"></td>
+<td><input type="checkbox" name="[% t.login %]_admin"></td>
 </tr>
 [% END %]
 <tr>
@@ -80,11 +80,11 @@
 <th>[% d.get('Name') %]</th>
 <th>[% d.get('Mitgliedschaft') %]</th>
 </tr>
-[% FOREACH classes %]
+[% FOREACH c IN classes %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><input type="submit" name="[% classes.gid %]_showclass" value="[% classes.name %]"></td>
-<td><input type="checkbox" name="[% classes.gid %]_class"></td>
+<td><input type="submit" name="[% c.gid %]_showclass" value="[% c.name %]"></td>
+<td><input type="checkbox" name="[% c.gid %]_class"></td>
 </tr>
 [% END %]
 <tr>
@@ -105,11 +105,11 @@
 <th>[% d.get('Name') %]</th>
 <th>[% d.get('Mitgliedschaft') %]</th>
 </tr>
-[% FOREACH projects %]
+[% FOREACH p IN projects %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% projects.name %]</td>
-<td><input type="checkbox" name="[% projects.gid %]_project"></td>
+<td>[% p.name %]</td>
+<td><input type="checkbox" name="[% p.gid %]_project"></td>
 </tr>
 [% END %]
 <tr>

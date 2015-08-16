@@ -53,10 +53,10 @@
 <th>[% d.get('Bezeichner') %]</th>
 <th>[% d.get('Gruppe') %]</th>
 </tr>
-[% FOREACH addlist %]
+[% FOREACH al IN addlist %]
 <tr>
-<td>[% addlist.identifier %]</td>
-<td>[% addlist.group %]</td>
+<td>[% al.identifier %]</td>
+<td>[% al.group %]</td>
 </tr>
 [% END %]
 </table>
@@ -96,12 +96,12 @@
 <th>[% d.get('nach') %]</th>
 <th>[% d.get('Status') %]</th>
 </tr>
-[% FOREACH movelist %]
+[% FOREACH ml IN movelist %]
 <tr>
-<td>[% movelist.login %]</td>
-<td>[% movelist.from %]</td>
-<td>[% movelist.to %]</td>
-<td>[% movelist.status %]</td>
+<td>[% ml.login %]</td>
+<td>[% ml.from %]</td>
+<td>[% ml.to %]</td>
+<td>[% ml.status %]</td>
 </tr>
 [% END %]
 </table>
@@ -139,10 +139,10 @@
 <th>[% d.get('Benutzer') %]</th>
 <th>[% d.get('Bezeichner') %]</th>
 </tr>
-[% FOREACH killlist %]
+[% FOREACH kl IN killlist %]
 <tr>
-<td>[% killlist.login %]</td>
-<td>[% killlist.identifier %]</td>
+<td>[% kl.login %]</td>
+<td>[% kl.identifier %]</td>
 </tr>
 [% END %]
 </table>

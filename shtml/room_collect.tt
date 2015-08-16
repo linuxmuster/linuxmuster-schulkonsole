@@ -56,8 +56,8 @@
 <th>[% d.get('Auswahl') %]</th>
 <th>[% d.get('Dateien') %]</th>
 </tr>
-[% FOREACH overview_workstations %]
-[% IF overview_workstations.editing %]
+[% FOREACH w IN overview_workstations %]
+[% IF w.editing %]
 <tr class="editing">
 [% IF odd %][% odd=0 %]
 [% ELSE %][% odd=1 %][% END %]
@@ -65,23 +65,23 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 [% END %]
-	<td>[% IF overview_workstations.first %]
-	    [% overview_workstations.name %]
+	<td>[% IF w.first %]
+	    [% w.name %]
 	    [% END %]</td>
-	[% IF overview_workstations.login %]
+	[% IF w.login %]
 	<td>
-	    [% overview_workstations.login %]
+	    [% w.login %]
 	</td>
 	<td>
-	    [% overview_workstations.firstname %] [% overview_workstations.surname %]
+	    [% w.firstname %] [% w.surname %]
 	</td>
-	<td>[% IF overview_workstations.editing %]
+	<td>[% IF w.editing %]
 		<input type="checkbox" disabled>[% ELSE %]
-		<input type="checkbox" name="[% overview_workstations.login %];collect" checked>
+		<input type="checkbox" name="[% w.login %];collect" checked>
 	[% END %]</td>
-	<td>[% FOREACH overview_workstations.files %]
-	[% IF overview_workstations.files.isdir %]
-	*[% END %][% overview_workstations.files.name %]<br>
+	<td>[% FOREACH wf IN w.files %]
+	[% IF wf.isdir %]
+	*[% END %][% wf.name %]<br>
 	[% END %]
 	</td>
 	[% ELSE %]

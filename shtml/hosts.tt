@@ -77,50 +77,50 @@ tats&auml;chlich im System vorhandenen Hosts &uuml;berein.') %]</p>
 <th><a [% dohref("$newsort.opts") %]>[% sort.opts %][% d.get('Optionen') %]</a></th>
 <th class="wsdel" title="l&ouml;schen">[% d.get('X') %]</th>
 </tr>
-[% FOREACH workstations %]
+[% FOREACH w IN workstations %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><input name="[% workstations %]_room" size="10"></td>
-<td><input name="[% workstations %]_name" size="12"></td>
-<td><input name="[% workstations %]_groups" size="8"></td>
-<td><input name="[% workstations %]_mac" size="18" maxlength="17"></td>
-<td><input name="[% workstations %]_ip" size="17" maxlength="15"></td>
-<td><select class="wspxe" name="[% workstations %]_pxe">
+<td><input name="[% w %]_room" size="10"></td>
+<td><input name="[% w %]_name" size="12"></td>
+<td><input name="[% w %]_groups" size="8"></td>
+<td><input name="[% w %]_mac" size="18" maxlength="17"></td>
+<td><input name="[% w %]_ip" size="17" maxlength="15"></td>
+<td><select class="wspxe" name="[% w %]_pxe">
 <option value="1">[% d.get('PXE') %]</option>
 <option value="2">[% d.get('PXE mit Opsi') %]</option>
 <option value="3">[% d.get('Opsi PXE') %]</option>
 <option value="0">[% d.get('Aus') %]</option>
 </select></td>
-<td><select class="wsopts" name="[% workstations %]_opts">
+<td><select class="wsopts" name="[% w %]_opts">
 <option value="">-</option>
 <option value="noudma">noudma</option>
 <option value="unicast">unicast</option>
 <option value="noudma,unicast">noudma+unicast</option>
 </select></td>
-<td><input class="wsdel" title="l&ouml;schen" type="checkbox" name="[% workstations %]_delete"></td>
+<td><input class="wsdel" title="l&ouml;schen" type="checkbox" name="[% w %]_delete"></td>
 </tr>
 [% END %]
-[% FOREACH add %]
+[% FOREACH a IN add %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><input name="[% add %]_addroom" size="10"></td>
-<td><input name="[% add %]_addname" size="12"></td>
-<td><input name="[% add %]_addgroups" size="8"></td>
-<td><input name="[% add %]_addmac" size="18" maxlength="17"></td>
-<td><input name="[% add %]_addip" size="17" maxlength="15"></td>
-<td><select name="[% add %]_addpxe">
+<td><input name="[% a %]_addroom" size="10"></td>
+<td><input name="[% a %]_addname" size="12"></td>
+<td><input name="[% a %]_addgroups" size="8"></td>
+<td><input name="[% a %]_addmac" size="18" maxlength="17"></td>
+<td><input name="[% a %]_addip" size="17" maxlength="15"></td>
+<td><select name="[% a %]_addpxe">
 <option value="1">[% d.get('PXE') %]</option>
 <option value="2">[% d.get('PXE mit Opsi') %]</option>
 <option value="3">[% d.get('Opsi PXE') %]</option>
 <option value="0">[% d.get('Aus') %]</option>
 </select></td>
-<td><select name="[% add %]_addopts">
+<td><select name="[% a %]_addopts">
 <option value="">-</option>
 <option value="noudma">noudma</option>
 <option value="unicast">unicast</option>
 <option value="noudma,unicast">noudma+unicast</option>
 </select></td>
-<td><input title="ignorieren" type="checkbox" name="[% add %]_addignore"></td>
+<td><input title="ignorieren" type="checkbox" name="[% a %]_addignore"></td>
 </tr>
 [% END %]
 [% IF odd %][% odd=0 %]<tr class="odd">

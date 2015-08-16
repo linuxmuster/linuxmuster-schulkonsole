@@ -11,7 +11,7 @@
 <p class="selectdomain">
 <select name="classes">
 <optgroup label="Klassen">
-[% FOREACH classes %] <option value="[% classes.gid %]">[% classes.name %]</option>
+[% FOREACH c IN classes %] <option value="[% c.gid %]">[% c.name %]</option>
 [% END %]
 </optgroup>
 <optgroup label="aktuelle Klasse">
@@ -57,15 +57,15 @@
 <th>[% d.get('Auswahl') %]</th>
 <th>[% d.get('Dateien') %]</th>
 </tr>
-[% FOREACH students %]
+[% FOREACH s IN students %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-	<td>[% students.login %]</td>
-	<td>[% students.firstname %] [% students.surname %]</td>
-	<td><input type="checkbox" name="[% students.login %];collect" checked></td>
-	<td>[% FOREACH students.files %]
-	[% IF students.files.isdir %]
-	*[% END %][% students.files.name %]<br>
+	<td>[% s.login %]</td>
+	<td>[% s.firstname %] [% s.surname %]</td>
+	<td><input type="checkbox" name="[% s.login %];collect" checked></td>
+	<td>[% FOREACH sf IN s.files %]
+	[% IF sf.isdir %]
+	*[% END %][% sf.name %]<br>
 	[% END %]
 	</td>
 </tr>

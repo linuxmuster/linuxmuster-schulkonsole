@@ -11,7 +11,7 @@
 <p class="selectdomain">
 <select name="classes">
 <optgroup label="Klassen">
-[% FOREACH classes %] <option value="[% classes.gid %]">[% classes.name %]</option>
+[% FOREACH c IN classes %] <option value="[% c.gid %]">[% c.name %]</option>
 [% END %]
 </optgroup>
 <optgroup label="aktuelle Klasse">
