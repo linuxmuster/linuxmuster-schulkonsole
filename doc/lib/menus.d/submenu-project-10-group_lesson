@@ -1,7 +1,7 @@
 [% IF project %]
 [% IF isadmin %]
 [% IF link_project_lesson %]
-        <a class="end" [% dohref("$project_lesson") %]>[% d.get('Unterricht') %]</a>
+        <a class="end" [% dohref("project_lesson") %]>[% d.get('Unterricht') %]</a>
 [% END %]
 [% ELSE %]
 [% IF link_project_lesson %]
