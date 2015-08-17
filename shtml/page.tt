@@ -42,7 +42,7 @@
         </div>
     [% END %]
 
-    <div id="content"[% IF action %] class="[% action %]"[% END %]>
+    <div id="content" class="content[% IF action %] [% action %][% END %][% IF page.classes %] [% page.classes %][% END %]">
         [% INCLUDE dialog.inc.tt %]
         [% IF page.subsubmenu %]
             [% INCLUDE "subsubmenu-${page.subsubmenu}.inc.tt" %]

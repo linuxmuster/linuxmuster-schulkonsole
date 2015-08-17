@@ -160,7 +160,7 @@ body {
     background-color: #ffdbdb;
 }
 
-#content {
+.content {
     position: absolute;
     margin: 0;
     padding: 0;
@@ -176,16 +176,9 @@ body {
     font-weight: normal;
 }
 
-body#start #submenu { width:0; display:none; visibility: none;}
-body#start #content { width:780px; left:0px}
+.start, .printers, .hosts { width:780px; left:0px}
 
-body#printers #submenu { width:0; display:none; visibility: none;}
-body#printers #content { width:780px; left:0px}
-body#hosts #submenu { width:0; display:none; visibility: none;}
-body#hosts #content { width:780px; left:0px}
-
-
-#content h2 {
+.content h2 {
     margin-top: 10px;
     margin-bottom: 4px;
     padding: 0;
@@ -194,13 +187,13 @@ body#hosts #content { width:780px; left:0px}
     font-size: 14px;
 }
 
-#content input,
-#content select,
-#content textarea {
+.content input,
+.content select,
+.content textarea {
     font-size: 11px;
 }
 
-#content select {
+.content select {
     margin-top: 0;
     margin-bottom: 0;
     padding-top: 1px;
@@ -208,30 +201,30 @@ body#hosts #content { width:780px; left:0px}
     border-width: 2px;
 }
 
-#content p {
+.content p {
     padding: 0;
     margin: 0;
     margin-top: 10px;
 }
 
-#content .hint {
+.content .hint {
     color: #999999;
 }
 
-#content a {
+.content a {
     color: #11386B;
     font-weight: bold;
     text-decoration: underline;
 }
 
-#content a:hover {
+.content a:hover {
     color: #6695D2;
 }
 
-#content table {
+.content table {
     font-size: 11px;
 }
-#content table tbody input{
+.content table tbody input{
     font-size: 11px;
 }
 
@@ -559,7 +552,7 @@ td:hover p {
 
 
 
-#content textarea {
+.content textarea {
     white-space: pre;
 }
 
