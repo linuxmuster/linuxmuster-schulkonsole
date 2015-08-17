@@ -105,7 +105,7 @@
     <td><label [% labelfor("${image_base}_newimage") %]>[% image_base %]</label></td>
     <td><input title="Beschreibung anzeigen/editieren" type="submit" class="btn-linbo-edit" alt="Beschreibung" name="[% image_base %]_editdesc" value="[% d.get('E') %]"></td>
     <td><input title="Information anzeigen" type="submit" class="btn-linbo-showinfo" alt="Info" name="[% image_base %]_info" value="[% d.get('I') %]"></td>
-    <td><input id="[% image_base %]_newimage" name="[% image_base %]_newimage"></td>
+    <td><input id="[% image_base %]_newimage" name="[% image_base %]_newimage" [% dovalue("${image_base}_newimage") %]></td>
     <td><input title="Image umbenennen" type="submit" class="btn-linbo-move" alt="Umbenennen" name="[% image_base %]_move" value="[% d.get('U') %]"></td>
     <td><input title="Image kopieren" type="submit" class="btn-linbo-copy" alt="Kopieren" name="[% image_base %]_copy" value="[% d.get('K') %]"></td>
     <td><input title="Image l&ouml;schen" type="submit" class="btn-linbo-trash" alt="L&ouml;schen" name="[% image_base %]_delete" value="[% d.get('L') %]"></td>
@@ -139,7 +139,7 @@
     <td><label [% labelfor("${image_diff}_newimage") %]>[% image_diff %]</label></td>
     <td><input title="Beschreibung anzeigen/editieren" type="submit" class="btn-linbo-edit" alt="Beschreibung" name="[% image_diff %]_editdesc" value="[% d.get('E') %]"></td>
     <td><input title="Information anzeigen" type="submit" class="btn-linbo-showinfo" alt="Info" name="[% image_diff %]_info" value="[% d.get('I') %]"></td>
-    <td><input id="[% image_diff %]_newimage" name="[% image_diff %]_newimage"></td>
+    <td><input id="[% image_diff %]_newimage" name="[% image_diff %]_newimage" [% dovalue("${image_diff}_newimage") %]></td>
     <td><input title="Image umbenennen" type="submit" class="btn-linbo-move" alt="Umbenennen" name="[% image_diff %]_move" value="[% d.get('U') %]"></td>
     <td><input title="Image kopieren" type="submit" class="btn-linbo-copy" alt="Kopieren" name="[% image_diff %]_copy" value="[% d.get('K') %]"></td>
     <td><input title="Image l&ouml;schen" type="submit" class="btn-linbo-trash alt="L&ouml;schen" name="[% image_diff %]_delete" value="[% d.get('L') %]"></td>

@@ -17,7 +17,7 @@
 [% END %]
 </select>
 <input type="submit" name="copy" value="[% d.get('kopieren nach') %]">
-<input name="dest">
+<input name="dest" value="[% dest %]">
 </p>
 </form>
 
