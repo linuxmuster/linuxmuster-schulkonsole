@@ -1,5 +1,6 @@
 [% page = {
         title   => d.get('Schulkonsole - Startseite'),
+        classes => "widecontent",
         menu    => 1,
         info    => d.get('<p>Auf dieser Seite k&ouml;nnen Sie eigene Druckauftr&auml;ge l&ouml;schen und Ihr Passwort &auml;ndern.<p>Weiterhin k&ouml;nnen Sie eine Mail-Weiterleitung an eine oder mehrere durch Komma getrennte Mail-Adressen einrichten und festlegen, ob eine Kopie im Postfach verbleiben soll.<p>Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch auf dem Server und in Ihrem Postfach. Alle Werte sind in Kilobyte angegeben. Zus&auml;tzlich wird angezeigt in welchen Projekten Sie Mitglied sind.</p><p>Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden. Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner &#8222;OpenVPN&#8220; abgelegt.</p>'),
    }
