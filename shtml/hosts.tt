@@ -1,5 +1,6 @@
 [% page = {
       title    => d.get('Schulkonsole - Hosts'),
+      classes  => "widecontent",
       menu     => 1,
       info     => d.get('<p>Hier k&ouml;nnen Sie die Liste der importierten Arbeitsstationen  bearbeiten.</p><p>&Auml;ndern Sie einfach die entsprechenden Felder in der Liste.</p><p>F&uuml;r einen neuen Rechner f&uuml;llen Sie die n&auml;chste freie Zeile aus.</p><p>Um einen Eintrag zu l&ouml;schen, setzen Sie das H&auml;kchen in der entsprechenden Checkbox am Zeilenende.</p><p>Stellen Sie dem Raumnamen ein # voran, um einen Eintrag auszukommentieren und entfernen Sie ein vorangestelltes #, um einen auskommentierten Eintrag wieder zu aktivieren.</p><p>Schliessen Sie die Aktion mit &#8222;&Auml;nderungen &uuml;bernehmen&#8220;  ab.</p>'),
    }
