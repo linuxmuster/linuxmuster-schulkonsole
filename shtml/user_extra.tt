@@ -13,8 +13,7 @@
 <h3><label [% labelfor("extrauser") %]>[% d.get('Extrasch&uuml;ler editieren') %]</label></h3>
 
 <p>
-<textarea id="extrauser" name="extrauser" rows="20" cols="70">
-</textarea>
+<textarea id="extrauser" name="extrauser" rows="20" cols="70">[% extrauser %]</textarea>
 </p>
 
 <p><input type="submit" name="extrauseredit" value="[% d.get('&Auml;nderungen speichern') %]"></p>
@@ -27,8 +26,7 @@
 <h3><label [% labelfor("extracourse") %]>[% d.get('Extrakurse editieren') %]</label></h3>
 
 <p>
-<textarea id="extracourse" name="extracourse" rows="20" cols="70">
-</textarea>
+<textarea id="extracourse" name="extracourse" rows="20" cols="70">[% extracourse %]</textarea>
 </p>
 
 <p><input type="submit" name="extracourseedit" value="[% d.get('&Auml;nderungen speichern') %]"></p>

@@ -22,8 +22,7 @@
 <h3><label [% labelfor("students") %]>[% d.get('Editieren') %]</label></h3>
 
 <p>
-<textarea id="students" name="students" rows="20" cols="70">
-</textarea>
+<textarea id="students" name="students" rows="20" cols="70">[% students %]</textarea>
 </p>
 
 <p><input type="submit" name="studentsedit" value="[% d.get('&Auml;nderungen speichern') %]"></p>

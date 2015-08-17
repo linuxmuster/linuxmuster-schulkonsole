@@ -17,8 +17,8 @@
 </colgroup>
 <tr class="even">
 <td><label [% labelfor("birthlimitlow") %] accesskey="g">[% d.get('Geburtsjahreszahl f&uuml;r Sch&uuml;ler') %]</label></td>
-<td><input type="text" size="5" maxlength="4" name="birthlimitlow" id="birthlimitlow">
-  - <input type="text" size="5" maxlength="4" name="birthlimitup" id="birthlimitup"></td>
+<td><input type="text" size="5" maxlength="4" name="birthlimitlow" id="birthlimitlow" value="[% birthlimitlow %]">
+  - <input type="text" size="5" maxlength="4" name="birthlimitup" id="birthlimitup" value="[% birthlimitup %]"></td>
 </tr>
 <tr class="odd">
 <td><label [% labelfor("filterstarclass") %] accesskey="f">[% d.get('Sternchenklassen filtern') %]</label></td>
@@ -42,6 +42,7 @@
 <td>
 
 <table class="tabletable">
+<tr>
 [% FOREACH m IN mountpoints %]
 <th><label [% labelfor("${m}_quotateacher") %]>[% m %]</label></th>
 [% END %]
@@ -60,6 +61,7 @@
 <td>
 
 <table class="tabletable">
+<tr>
 [% FOREACH m IN mountpoints %]
 <th><label [% labelfor("${m}_quotastudent") %]>[% m %]</label></th>
 [% END %]

@@ -29,23 +29,23 @@
 <td>[% d.get('default') %]</td>
 <td>
 <select name="default_internet">
-<option value="-1">-</option>
-<option value="1">[% d.get('An') %]</option>
-<option value="0">[% d.get('Aus') %]</option>
+<option value="-1"[% IF default_internet == "-1" %] selected[% END %]>-</option>
+<option value="1"[% IF default_internet == "1" %] selected[% END %]>[% d.get('An') %]</option>
+<option value="0"[% IF default_internet == "0" %] selected[% END %]>[% d.get('Aus') %]</option>
 </select>
 </td>
 <td>
 <select name="default_intranet">
-<option value="-1">-</option>
-<option value="1">[% d.get('An') %]</option>
-<option value="0">[% d.get('Aus') %]</option>
+<option value="-1"[% IF default_intranet == "-1" %] selected[% END %]>-</option>
+<option value="1"[% IF default_intranet == "1" %] selected[% END %]>[% d.get('An') %]</option>
+<option value="0"[% IF default_intranet == "0" %] selected[% END %]>[% d.get('Aus') %]</option>
 </select>
 </td>
 <td>
 <select name="default_webfilter">
-<option value="-1">-</option>
-<option value="1">[% d.get('An') %]</option>
-<option value="0">[% d.get('Aus') %]</option>
+<option value="-1"[% IF default_webfilter == "-1" %] selected[% END %]>-</option>
+<option value="1"[% IF default_webfilter == "1" %] selected[% END %]>[% d.get('An') %]</option>
+<option value="0"[% IF default_webfilter == "0" %] selected[% END %]>[% d.get('Aus') %]</option>
 </select>
 </td>
 [% IF defaultrooms %]<td><select name="default_add">
@@ -79,32 +79,32 @@
 	<td>[% nd.name %]</td>
 	<td>
 		<select name="[% nd.name %]_room_internet">
-		<option value="-1">-</option>
-		<option value="1">[% d.get('An') %]</option>
-		<option value="0">[% d.get('Aus') %]</option>
+		<option value="-1"[% IF valueof("${nd.name}_room_internet")=="-1" %] selected[% END %]>-</option>
+		<option value="1"[% IF valueof("${nd.name}_room_internet")=="1" %] selected[% END %]>[% d.get('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_room_internet")=="0" %] selected[% END %]>[% d.get('Aus') %]</option>
 		</select>
 	</td>
 	<td>
 		<select name="[% nd.name %]_room_intranet">
-		<option value="-1">-</option>
-		<option value="1">[% d.get('An') %]</option>
-		<option value="0">[% d.get('Aus') %]</option>
+		<option value="-1"[% IF valueof("${nd.name}_room_intranet")=="-1" %] selected[% END %]>-</option>
+		<option value="1"[% IF valueof("${nd.name}_room_intranet")=="1" %] selected[% END %]>[% d.get('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_room_intranet")=="0" %] selected[% END %]>[% d.get('Aus') %]</option>
 		</select>
 	</td>
 	<td>
 		<select name="[% nd.name %]_room_webfilter">
-		<option value="-1">-</option>
-		<option value="1">[% d.get('An') %]</option>
-		<option value="0">[% d.get('Aus') %]</option>
+		<option value="-1"[% IF valueof("${nd.name}_room_webfilter")=="-1" %] selected[% END %]>-</option>
+		<option value="1"[% IF valueof("${nd.name}_room_webfilter")=="1" %] selected[% END %]>[% d.get('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_room_webfilter")=="0" %] selected[% END %]>[% d.get('Aus') %]</option>
 		</select>
 	</td>
 	[% IF nd.hosts %]
-	<td><select name="[% nd.name %]_add">
-		[% FOREACH nd.hosts %]
-		<option value="[% nd.hosts %]">[% nd.hosts %]</option>
-	[% END %]
-	</select></td>
-	<td><input type="submit" name="[% nd.name %]_add_host" value="[% d.get('Ausnahme hinzuf&uuml;gen') %]"></td>
+	    <td><select name="[% nd.name %]_add">
+		[% FOREACH h IN nd.hosts %]
+			<option value="[% h %]">[% h %]</option>
+		[% END %]
+	    </select></td>
+	    <td><input type="submit" name="[% nd.name %]_add_host" value="[% d.get('Ausnahme hinzuf&uuml;gen') %]"></td>
 	[% ELSE %]
 	<td colspan="2"></td>
 	[% END %]
@@ -116,23 +116,23 @@
 	<td>[% nd.name %]</td>
 	<td>
 		<select name="[% nd.name %]_internet">
-		<option value="-1">-</option>
-		<option value="1">[% d.get('An') %]</option>
-		<option value="0">[% d.get('Aus') %]</option>
+		<option value="-1"[% IF valueof("${nd.name}_internet")=="-1" %] selected[% END %]>-</option>
+		<option value="1"[% IF valueof("${nd.name}_internet")=="1" %] selected[% END %]>[% d.get('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_internet")=="0" %] selected[% END %]>[% d.get('Aus') %]</option>
 		</select>
 	</td>
 	<td>
 		<select name="[% nd.name %]_intranet">
-		<option value="-1">-</option>
-		<option value="1">[% d.get('An') %]</option>
-		<option value="0">[% d.get('Aus') %]</option>
+		<option value="-1"[% IF valueof("${nd.name}_intranet")=="-1" %] selected[% END %]>-</option>
+		<option value="1"[% IF valueof("${nd.name}_intranet")=="1" %] selected[% END %]>[% d.get('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_intranet")=="0" %] selected[% END %]>[% d.get('Aus') %]</option>
 		</select>
 	</td>
 	<td>
 		<select name="[% nd.name %]_webfilter">
-		<option value="-1">-</option>
-		<option value="1">[% d.get('An') %]</option>
-		<option value="0">[% d.get('Aus') %]</option>
+		<option value="-1"[% IF valueof("${nd.name}_webfilter")=="-1" %] selected[% END %]>-</option>
+		<option value="1"[% IF valueof("${nd.name}_webfilter")=="1" %] selected[% END %]>[% d.get('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_webfilter")=="0" %] selected[% END %]>[% d.get('Aus') %]</option>
 		</select>
 	</td>
 	<td colspan="2"></td>
@@ -152,9 +152,5 @@
 [% END %]
 <input type="submit" name="accept" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]">
 </p>
-
-</form>
-
-
 
 </form>
