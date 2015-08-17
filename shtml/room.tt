@@ -1,5 +1,5 @@
 [% page = {
-      title    => d.get('Schulkonsole - aktueller Raum') . ": $room",
+      title    => d.get('Schulkonsole - aktueller Raum') _ ": " _ $room,
       menu     => 1,
       submenu  => "room",
       info     => d.get('<p>Sie m&uuml;ssen den &#8222;Unterricht beginnen&#8220;, damit Sie die Funktionen zur Steuerung des Unterrichts im aktuellen Raum nutzen k&ouml;nnen.<br>Beenden Sie den Unterricht entweder &uuml;ber den Button &#8222;sofort beenden&#8220; oder stellen Sie das Unterrichtsende &uuml;ber die Dropdown-Men&uuml;s ein und best&auml;tigen es mit &#8222;beenden lassen&#8220;.</p><p>Im Bereich &#8222;&Uuml;bersicht PCs&#8220; k&ouml;nnen Sie den Zugriff der Sch&uuml;lerarbeitspl&auml;tze auf Intranet, Internet, Webfilter, Drucker und das globale Tauschverzeichnis &uuml;ber Checkboxen steuern.</p><p>Im Bereich &#8222;&Uuml;bersicht Drucker&#8220; k&ouml;nnen Sie den Zugriff auf die Raumdrucker f&uuml;r alle Benutzer, nicht nur die des Raumes, freigeben oder sperren.</p>'),

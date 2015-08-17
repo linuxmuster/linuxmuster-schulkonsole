@@ -1,5 +1,5 @@
 [% page = {
-      title    => d.get('Schulkonsole - aktueller Raum') . ": $room - " . d.get('Klassenarbeitsmodus'),
+      title    => d.get('Schulkonsole - aktueller Raum') _ ": $room - " _ d.get('Klassenarbeitsmodus'),
       menu     => 1,
       submenu  => "room",
       info     => d.get('<p>Die Sch&uuml;ler/innen m&uuml;ssen ihre Ergebnisse im Heimatverzeichnis der Arbeitsstation im Ordner &#8222;__einsammeln&#8220; ablegen, damit sie hier aufgelistet werden und eingesammelt werden k&ouml;nnen. Laden Sie die Seite eventuell neu, um den aktuellen Status zu sehen.</p><p>&#8222;Kopien einsammeln&#8220; sammelt den aktuellen Stand der Ergebnisse ein.</p><p>&#8222;Einsammeln und beenden&#8220; sammelt alle Ergebnisse ein, l&ouml;scht den Inhalt des Ordners &#8222;__einsammeln&#8220; der Arbeitsstation und beendet die Klassenarbeit.</p>'),

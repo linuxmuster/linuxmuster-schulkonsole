@@ -1,5 +1,5 @@
 [% page = {
-      title    => d.get('Schulkonsole - aktueller Raum') . ": $room - " . d.get('Tauschordner'),
+      title    => d.get('Schulkonsole - aktueller Raum') _ ": $room - " _ d.get('Tauschordner'),
       menu     => 1,
       submenu  => "room",
       info     => d.get('<p>Steuern Sie hier den Zugriff auf das globale Tauschverzeichnis, indem Sie entweder einzelne Arbeitspl&auml;tze &uuml;ber die Checkboxen ausw&auml;hlen oder &uuml;ber die &#8222;Schnellauswahl&#8220; f&uuml;r alle.<br>Mit &#8222;&Auml;nderungen &uuml;bernehmen&#8220; aktivieren Sie Ihre Auswahl.</p>'),

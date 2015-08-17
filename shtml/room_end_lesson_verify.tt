@@ -1,5 +1,5 @@
 [% page = {
-      title    => d.get('Schulkonsole - aktueller Raum') . ": $room",
+      title    => d.get('Schulkonsole - aktueller Raum') _ ": $room",
       menu     => 1,
       submenu  => "room",
       info     => d.get('<p></p>'),
