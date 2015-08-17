@@ -48,7 +48,7 @@
 </tr>
 <tr>
 [% FOREACH m IN mountpoints %]
-<td><input size="6" maxlength="5" name="[% m %]_quotateacher" id="[% m %]_quotateacher"> MB</td>
+<td><input size="6" maxlength="5" name="[% m %]_quotateacher" id="[% m %]_quotateacher" [% dovalue("${m}_quotateacher") %]> MB</td>
 [% END %]
 </tr>
 </table>
@@ -66,7 +66,7 @@
 </tr>
 <tr>
 [% FOREACH m IN mountpoints %]
-<td><input size="6" maxlength="5" name="[% m %]_quotastudent" id="[% m %]_quotastudent"> MB</td>
+<td><input size="6" maxlength="5" name="[% m %]_quotastudent" id="[% m %]_quotastudent" [% dovalue("${m}_quotastudent") %]> MB</td>
 [% END %]
 </tr>
 </table>
@@ -101,7 +101,7 @@
 </tr>
 <tr class="odd">
 <td><label [% labelfor("randompasswordlengthteacher") %]>[% d.get('Zufallspasswortzeichen') %]</label></td>
-<td><input type="text" size="3" name="randompasswordlengthteacher" id="randompasswordlengthteacher"></td>
+<td><input type="text" size="3" name="randompasswordlengthteacher" id="randompasswordlengthteacher" value="[% randompasswordlengthteacher %]"></td>
 </tr>
 <tr class="even">
 <td><label [% labelfor("activatesshteacher") %]>[% d.get('Shell aktivieren') %]</label></td>
@@ -167,11 +167,11 @@
 </colgroup>
 <tr class="even">
 <td><label [% labelfor("tolerateteacher") %]>[% d.get('Duldungszeitraum') %]</label></td>
-<td><input size="5" maxlength="4" name="tolerateteacher" id="tolerateteacher"> Tage</td>
+<td><input size="5" maxlength="4" name="tolerateteacher" id="tolerateteacher" value="[% tolerateteacher %]"> Tage</td>
 </tr>
 <tr class="odd">
 <td><label [% labelfor("deactivateteacher") %]>[% d.get('Deaktivierungszeitraum') %]</label></td>
-<td><input size="5" maxlength="4" name="deactivateteacher" id="deactivateteacher"> Tage</td>
+<td><input size="5" maxlength="4" name="deactivateteacher" id="deactivateteacher" value="[% deactivateteacher %]"> Tage</td>
 </tr>
 </table>
 
@@ -184,11 +184,11 @@
 </colgroup>
 <tr class="even">
 <td><label [% labelfor("toleratestudent") %]>[% d.get('Duldungszeitraum') %]</label></td>
-<td><input size="5" maxlength="4" name="toleratestudent" id="toleratestudent"> Tage</td>
+<td><input size="5" maxlength="4" name="toleratestudent" id="toleratestudent" value="[% toleratestudent %]"> Tage</td>
 </tr>
 <tr class="odd">
 <td><label [% labelfor("deactivatestudent") %]>[% d.get('Deaktivierungszeitraum') %]</label></td>
-<td><input size="5" maxlength="4" name="deactivatestudent" id="deactivatestudent"> Tage</td>
+<td><input size="5" maxlength="4" name="deactivatestudent" id="deactivatestudent" value="[% deactivatestudent %]"> Tage</td>
 </tr>
 </table>
 
