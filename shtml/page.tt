@@ -36,13 +36,11 @@
     [% IF page.menu %]
         [% INCLUDE menu.inc.tt %]
     [% END %]
-    <div id="submenu">
-        [% IF page.submenu %]
-            [% INCLUDE "submenu-${page.submenu}.inc.tt" %]
-        [% ELSE %]
-            [% INCLUDE "footer_submenu.inc.tt" %]
-        [% END %]
-    </div>
+    [% IF page.submenu %]
+        <div id="submenu">
+        [% INCLUDE "submenu-${page.submenu}.inc.tt" %]
+        </div>
+    [% END %]
 
     <div id="content"[% IF action %] class="[% action %]"[% END %]>
         [% INCLUDE dialog.inc.tt %]

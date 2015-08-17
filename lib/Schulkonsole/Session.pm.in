@@ -633,7 +633,8 @@ sub print_page {
         $vars->{dohref} = sub { return 'href="'.@_[0].($vars->{no_cookies}?'?'.CGI::Session->name().'='.$this->{session}->id.'"':'"'); };
         $vars->{dovalue} = sub { return 'value="' . $this->{query}->param(@_[0]) . '"'; };
         $vars->{valueof} = sub { return $this->{query}->param(@_[0]); };
-        $template->process($file, $vars) or die $template->error();
+
+        $template->process($file, $vars) or die "$0: " . $template->error()->as_string() . "!\n";
 
 	# occasionally the session is not automatically flushed
 	$this->{session}->flush();
