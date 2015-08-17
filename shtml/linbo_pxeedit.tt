@@ -27,7 +27,7 @@
 <h2>[% d.get('PXE-Start-Dateien der Rechnergruppen editieren') %]: [% editfilename %]</h2>
 
 <form method="post" accept-charset="UTF-8">
-<p><textarea wrap="off" name="pxestart" rows="20" cols="70"></textarea></p>
+<p><textarea wrap="off" name="pxestart" rows="20" cols="70">[% pxestart %]</textarea></p>
 <p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% d.get('&Auml;nderungen speichern') %]">
 <input type="submit" name="abort" value="[% d.get('Schlie&szlig;en') %]"></p>
 

@@ -39,9 +39,9 @@
 </td>
 <td>
 <select name="[% p.gid %]_wlan">
-<option value="-1">-</option>
-<option value="1">[% d.get('An') %]</option>
-<option value="0">[% d.get('Aus') %]</option>
+<option value="-1"[% IF valueof("${p.gid}_wlan") == "-1" %] selected[% END %]>-</option>
+<option value="1"[% IF valueof("${p.gid}_wlan") == "1" %] selected[% END %]>[% d.get('An') %]</option>
+<option value="0"[% IF valueof("${p.gid}_wlan") == "0" %] selected[% END %]>[% d.get('Aus') %]</option>
 </select>
 </td>
 </tr>
