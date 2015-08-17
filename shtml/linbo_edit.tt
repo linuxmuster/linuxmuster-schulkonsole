@@ -33,16 +33,16 @@
 <tr class="odd">
 [% IF iscached %]
 <td>[% d.get('Cache-Partition auf dem Arbeitsplatzrechner') %]:</td>
-<td>[% cache %]<input type="hidden" name="linbo_cache"></td>
+<td>[% cache %]<input type="hidden" name="linbo_cache" value="[% linbo_cache %]"></td>
 [% ELSE %]
 <tr class="odd">
 <td><label [% labelfor("linbo_cache") %]>[% d.get('Cache-Partition auf dem Arbeitsplatzrechner') %]:</label></td>
-<td><input id="linbo_cache" name="linbo_cache"></td>
+<td><input id="linbo_cache" name="linbo_cache" value="[% linbo_cache %]"></td>
 [% END %]
 </tr>
 <tr class="even">
 <td><label [% labelfor("linbo_server") %]>[% d.get('IP des TFTP-Servers, der Images vorh&auml;lt') %]:</label></td>
-<td><input id="linbo_server" name="linbo_server" size="16" maxlength="15"></td>
+<td><input id="linbo_server" name="linbo_server" value="[% linbo_server %]" size="16" maxlength="15"></td>
 </tr>
 <tr class="odd">
 <td>[% d.get('Rechnergruppenname') %]:</td>
@@ -60,12 +60,12 @@
 </tr>
 <tr class="odd">
 <td><label [% labelfor("linbo_roottimeout") %]>[% d.get('automatischer Rootlogout nach') %]:</label></td>
-<td><input id="linbo_roottimeout" name="linbo_roottimeout"> [% d.get('Sekunden') %]</td>
+<td><input id="linbo_roottimeout" name="linbo_roottimeout" value="[% linbo_roottimeout %]"> [% d.get('Sekunden') %]</td>
 </tr>
 <tr class="even">
 <td><label [% labelfor("linbo_autopartition") %]>[% d.get('Automatische Partitionsreparatur') %]:</label></td>
-<td>[% IF linbo_autopartition %]<input type="checkbox" id="linbo_autopartition" name="linbo_autopartition" checked>
-[% ELSE %]<input type="checkbox" id="linbo_autopartition" name="linbo_autopartition">[% END %]</td>
+<td><input type="checkbox" id="linbo_autopartition" name="linbo_autopartition"
+[% IF linbo_autopartition %] checked[% END %]></td>
 </tr>
 <tr class="odd">
 <td><label [% labelfor("linbo_autoformat") %]>[% d.get('Automatisches Formatieren') %]:</label></td>
@@ -101,7 +101,7 @@
 </tr>
 <tr class="odd">
 <td><label [% labelfor("linbo_kerneloptions") %]>[% d.get('LINBO-Kerneloptionen') %]:</label></td>
-<td><input id="linbo_kerneloptions" name="linbo_kerneloptions" value="[% d.get('') %]"></td>
+<td><input id="linbo_kerneloptions" name="linbo_kerneloptions" value="[% linbo_kerneloptions %]"></td>
 </tr>
 </table>
 
@@ -147,7 +147,7 @@
 </colgroup>
 <tr class="even">
 <td><b>[% d.get('System') %]:</b></td>
-<td><input type="hidden" name="[% ds.n %]_type" value="[% devs_type %]"><b>
+<td><input type="hidden" name="[% ds.n %]_type" [% dovalue("${ds.n}_type") %]><b>
 [% IF ds.iswindows %]
 	[% d.get('MS Windows') %]
 [% ELSE %]
@@ -158,15 +158,15 @@
 [% IF dos.isfirst %]
 <tr class="odd">
 <td><label [% labelfor("${ds.n}_label") %]>[% d.get('Name der Partition') %]:</label></td>
-<td><input id="[% ds.n %]_label" name="[% ds.n %]_label"></td>
+<td><input id="[% ds.n %]_label" name="[% ds.n %]_label" [% dovalue("${ds.n}_label") %]></td>
 </tr>
 <tr class="even">
 <td><label [% labelfor("${ds.n}_dev") %]>[% d.get('Devicename der Partition') %]:</label></td>
-<td><input id="[% ds.n %]_dev" name="[% ds.n %]_dev"></td>
+<td><input id="[% ds.n %]_dev" name="[% ds.n %]_dev" [% dovalue("${ds.n}_dev") %]></td>
 </tr>
 <tr class="odd">
 <td><label [% labelfor("${ds.n}_size") %]>[% d.get('Partitionsgr&ouml;&szlig;e in KB') %]:</label></td>
-<td><input id="[% ds.n %]_size" name="[% ds.n %]_size"></td>
+<td><input id="[% ds.n %]_size" name="[% ds.n %]_size" [% dovalue("${ds.n}_size") %]></td>
 </tr>
 <tr class="even">
 <td><label [% labelfor("${ds.n}_fstype") %]>[% d.get('Dateisystem') %]:</label></td>
@@ -213,45 +213,45 @@
 [% END %]
 <tr class="even">
 <td><label [% labelfor("${dos.n}_name") %]>[% d.get('Name des Betriebssystems') %]:</label></td>
-<td><input id="[% dos.n %]_name" name="[% dos.n %]_name"></td>
+<td><input id="[% dos.n %]_name" name="[% dos.n %]_name" [% dovalue("${dos.n}_name") %]></td>
 </tr>
 <tr class="odd">
 <td><label [% labelfor("${dos.n}_version") %]>[% d.get('Betriebssystemversion (optional)') %]:</label></td>
-<td><input id="[% dos.n %]_version" name="[% dos.n %]_version"></td>
+<td><input id="[% dos.n %]_version" name="[% dos.n %]_version" [% dovalue("${dos.n}_version") %]></td>
 </tr>
 <tr class="even">
 <td><label [% labelfor("${dos.n}_description") %]>[% d.get('Beschreibung (optional)') %]:</label></td>
-<td><input id="[% dos.n %]_description" name="[% dos.n %]_description"></td>
+<td><input id="[% dos.n %]_description" name="[% dos.n %]_description" [% dovalue("${dos.n}_description") %]></td>
 </tr>
 </tr>
 <tr class="odd">
 <td><label [% labelfor("${dos.n}_iconname") %]>[% d.get('Dateiname des Icons f&uuml;r den Startbutton') %]:</label></td>
-<td><input id="[% dos.n %]_iconname" name="[% dos.n %]_iconname"></td>
+<td><input id="[% dos.n %]_iconname" name="[% dos.n %]_iconname" [% dovalue("${dos.n}_iconname") %]></td>
 </tr>
 <tr class="even">
 <td><label [% labelfor("${dos.n}_image") %]>[% d.get('Dateiname des differenziellen Image') %]:</label></td>
-<td><input id="[% dos.n %]_image" name="[% dos.n %]_image">.rsync</td>
+<td><input id="[% dos.n %]_image" name="[% dos.n %]_image" [% dovalue("${dos.n}_image") %]>.rsync</td>
 </tr>
 <tr class="odd">
 <td><label [% labelfor("${dos.n}_baseimage") %]>[% d.get('Dateiname des Basis-Image') %]:</label></td>
-<td><input id="[% dos.n %]_baseimage" name="[% dos.n %]_baseimage">.cloop</td>
+<td><input id="[% dos.n %]_baseimage" name="[% dos.n %]_baseimage" [% dovalue("${dos.n}_baseiimage") %]>.cloop</td>
 </tr>
 [% IF ds.isgnulinux %]
 <tr class="even">
 <td><label [% labelfor("${dos.n}_boot") %]>[% d.get('Partition, die Kernel und initrd enth&auml;lt') %]:</label></td>
-<td><input id="[% dos.n %]_boot" name="[% dos.n %]_boot"></td>
+<td><input id="[% dos.n %]_boot" name="[% dos.n %]_boot" [% dovalue("${dos.n}_boot") %]></td>
 </tr>
 <tr class="odd">
 <td><label [% labelfor("${dos.n}_kernel") %]>[% d.get('Pfad zum kernel') %]:</label></td>
-<td><input id="[% dos.n %]_kernel" name="[% dos.n %]_kernel"></td>
+<td><input id="[% dos.n %]_kernel" name="[% dos.n %]_kernel" [% dovalue("${dos.n}_kernel") %]></td>
 </tr>
 <tr class="even">
 <td><label [% labelfor("${dos.n}_initrd") %]>[% d.get('Relativer Pfad zur initrd') %]:</label></td>
-<td><input id="[% dos.n %]_initrd" name="[% dos.n %]_initrd"></td>
+<td><input id="[% dos.n %]_initrd" name="[% dos.n %]_initrd" [% dovalue("${dos.n}_initrd") %]></td>
 </tr>
 <tr class="odd">
 <td><label [% labelfor("${dos.n}_append") %]>[% d.get('Bootoptionen') %]:</label></td>
-<td><input id="[% dos.n %]_append" name="[% dos.n %]_append"></td>
+<td><input id="[% dos.n %]_append" name="[% dos.n %]_append" [% dovalue("${dos.n}_append") %]></td>
 </tr>
 [% END %]
 <tr class="even">
@@ -292,7 +292,8 @@
 </tr>
 <tr class="even">
 <td><label [% labelfor("${dos.n}_autostarttimeout") %]>[% d.get('Autostart-Timeout in Sek.') %]:</label></td>
-<td><input id="[% dos.n %]_autostarttimeout" name="[% dos.n %]_autostarttimeout""></td>
+<td><input id="[% dos.n %]_autostarttimeout" name="[% dos.n %]_autostarttimeout"
+ [% dovalue("${dos.n}_autostarttimeout") %]></td>
 </tr>
 <tr class="odd">
 <td><label [% labelfor("${dos.n}_defaultaction") %]>[% d.get('Standard-Autostart-Aktion ausw&auml;hlen') %]:</label></td>
@@ -333,7 +334,7 @@
 <tr class="even">
 <td><b>[% d.get('System') %]:</b></td>
 <td>
-<input type="hidden" name="[% ds.n %]_type" value="[% ds.type %]"><b>
+<input type="hidden" name="[% ds.n %]_type" [% dovalue("${ds.n}_type") %]><b>
 [% IF ds.isdata %]
         [% d.get('Daten') %]
 [% ELSIF ds.isswap %]
@@ -350,36 +351,37 @@
 </tr>
 <tr class="odd">
 <td><label [% labelfor("${ds.n}_label") %]>[% d.get('Name der Partition') %]:</label></td>
-<td><input id="[% ds.n %]_label" name="[% ds.n %]_label"></td>
+<td><input id="[% ds.n %]_label" name="[% ds.n %]_label" [% dovalue("${ds.n}_label") %]></td>
 </tr>
 <tr class="even">
 <td><label [% labelfor("${ds.n}_dev") %]>[% d.get('Devicename der Partition') %]:</label></td>
-<td><input id="[% ds.n %]_dev" name="[% ds.n %]_dev"></td>
+<td><input id="[% ds.n %]_dev" name="[% ds.n %]_dev" [% dovalue("${ds.n}_dev") %]></td>
 </tr>
 <tr class="odd">
 <td><label [% labelfor("${ds.n}_size") %]>[% d.get('Partitionsgr&ouml;&szlig;e in KB') %]:</label></td>
-<td><input id="[% ds.n %]_size" name="[% ds.n %]_size">
+<td><input id="[% ds.n %]_size" name="[% ds.n %]_size" [% dovalue("${ds.n}_size") %]>
 [% IF ds.bootable %]<input type="hidden" id="[% ds.n %]_bootable" name="[% ds.n %]_bootable" value="1">[% END %]
 [% IF ds.isswap %]
-<input type="hidden" name="[% ds.n %]_fstype" value="[% d.get('swap') %]"></td>
+<input type="hidden" name="[% ds.n %]_fstype" value="swap"></td>
 </tr>
 [% ELSE %]
 	[% IF ds.isext %]
-<input type="hidden" name="[% ds.n %]_fstype" value="[% d.get('') %]"></td>
+<input type="hidden" name="[% ds.n %]_fstype" value=""></td>
 </tr>
 	[% ELSE %]</td>
 </tr>
 <tr class="even">
 <td><label [% labelfor("${ds.n}_fstype") %]>[% d.get('Dateisystem') %]:</label></td>
 <td>[% IF ds.iscache %]
-<input type="hidden" name="[% ds.n %]_iscache" value="1"><select id="[% ds.n %]_fstype" name="[% ds.n %]_fstype">
+<input type="hidden" name="[% ds.n %]_iscache" value="1">
+<select id="[% ds.n %]_fstype" name="[% ds.n %]_fstype">
 <option value="ext3">[% d.get('EXT3') %]</option>
 <option value="ext4">[% d.get('EXT4') %]</option>
 <option value="reiserfs">[% d.get('ReiserFS') %]</option>
 </select>
 [% ELSE %]
 [% IF ds.isefi %]
-<input type="hidden" id="[% ds.n %]_fstype" name="[% ds.n %]_fstype" value="[% d.get('vfat') %]"><label>[% d.get('VFAT') %]</label>
+<input type="hidden" id="[% ds.n %]_fstype" name="[% ds.n %]_fstype" value="vfat"><label>[% d.get('VFAT') %]</label>
 [% ELSE %]
 <select id="[% ds.n %]_fstype" name="[% ds.n %]_fstype">
 <option value="vfat">[% d.get('VFAT') %]</option>

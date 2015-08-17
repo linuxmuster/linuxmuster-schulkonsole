@@ -615,8 +615,10 @@ sub print_page {
             WRAPPER => 'page.tt',
         });
 
-        my $vars = $this->{template_vars};
-
+	my $vars = $this->{template_vars};
+	foreach my $key ($this->{query}->param) {
+		$vars->{$key} = $this->{query}->param($key) unless exists $vars->{$key};
+	}
         $vars->{no_cookies} = $this->send_cookie();
         $vars->{parent_page} = $this->{parent_page};
 	$vars->{is_error} = $this->{is_error};
@@ -629,6 +631,7 @@ sub print_page {
         # colored labels an Stelle von for="text" jetzt [% labelfor("text") %]
         $vars->{labelfor} = sub { return 'for="'.@_[0].'"'.($this->{input_errors}{@_[0]}? ' class="error"':''); };
         $vars->{dohref} = sub { return 'href="'.@_[0].($vars->{no_cookies}?'?'.CGI::Session->name().'='.$this->{session}->id.'"':'"'); };
+        $vars->{valueof} = sub { return 'value="' . $this->{query}->param(@_[0]) . '"'; };
         $template->process($file, $vars) or die $template->error();
 
 	# occasionally the session is not automatically flushed
