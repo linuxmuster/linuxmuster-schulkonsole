@@ -45,7 +45,7 @@
 	    [% w.name %]
 	    [% END %]</td>
 	[% IF w.login %]
-	<td>[% .login %]</td>
+	<td>[% w.login %]</td>
 	<td>[% FOREACH wf IN w.files %]
 	[% IF wf.isdir %]
 	*[% END %][% wf.name %]<br>
