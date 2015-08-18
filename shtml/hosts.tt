@@ -60,7 +60,7 @@
 <th class="wsdel" title="l&ouml;schen">[% d.get('X') %]</th>
 </tr>
 [% FOREACH w IN workstations %]
-    <tr class="[% IF lfdnr%2==1 %]odd[% ELSE %]even[% END %]">
+    <tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
     <td class="lfdnr">[% lfdnr %].</td>
     <td><input name="[% w %]_room" [% dovalue("${w}_room") %] size="10"></td>
     <td><input name="[% w %]_name" [% dovalue("${w}_name") %] size="12"></td>
@@ -84,7 +84,7 @@
     </tr>
 [% END %]
 [% FOREACH a IN add %]
-    <tr class="[% IF lfdnr%2==1 %]odd[% ELSE %]even[% END %]">
+    <tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
     <td>[% lfdnr %].</td>
     <td><input name="[% a %]_addroom" size="10"></td>
     <td><input name="[% a %]_addname" size="12"></td>
@@ -107,7 +107,7 @@
     [% lfdnr=lfdnr+1 %]
     </tr>
 [% END %]
-<tr class="[% IF lfdnr%2==1 %]odd[% ELSE %]even[% END %]">
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
 <td><p></p></td>
 <td><select name="addcnt">
 <option value="1">1</option>

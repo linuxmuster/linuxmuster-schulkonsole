@@ -91,7 +91,7 @@
 <th>[% d.get('Nachname') %]</th>
 <th>[% d.get('Vorname') %]</th>
 <th>[% d.get('Geburtsdatum') %]</th>
-<th>[% d.get('K&uuml;rzel') %]</th>
+<th>[% d.get('Login') %]</th>
 </tr>
 [% FOREACH t IN teachers %]
 <tr>
