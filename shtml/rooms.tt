@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Räume - Standardeinstellungen'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Räume') _ " - " _ d.get('Standardeinstellungen'),
       menu     => 1,
       submenu  => "rooms",
-      info     => d.get('<p>Legen Sie hier die Standardeinstellungen für die Workstations in den Räumen fest.</p><p>Um eine Ausnahme für eine Workstation anzulegen, muss ein Eintrag für den Raum hinzugefügt worden sein.</p><p>Um einen Eintrag zu löschen, setzen Sie das Häkchen in der entsprechenden Checkbox am Zeilenende.</p><p>Schliessen Sie die Aktion mit &#8222;Änderungen übernehmen&#8220; ab.</p><p>Um die Rechner in einem Raum oder einzelne Rechner zurückzusetzen, setzen Sie das Häkchen in der entsprechenden Checkbox und wählen die Aktion &#8222;Auswahl zurücksetzen&#8220;.</p>'),
+      info     => d.get('<p>Legen Sie hier die Standardeinstellungen für die Workstations in den Räumen fest.</p><p>Um eine Ausnahme für eine Workstation anzulegen, muss ein Eintrag für den Raum hinzugefügt worden sein.</p><p>Um einen Eintrag zu löschen, setzen Sie das Häkchen in der entsprechenden Checkbox am Zeilenende.</p><p>Schliessen Sie die Aktion mit &bdquo;Änderungen übernehmen&ldquo; ab.</p><p>Um die Rechner in einem Raum oder einzelne Rechner zurückzusetzen, setzen Sie das Häkchen in der entsprechenden Checkbox und wählen die Aktion &bdquo;Auswahl zurücksetzen&ldquo;.</p>'),
    }
 %]
 

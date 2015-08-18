@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - aktueller Raum') _ ": $room - " _ d.get('Tauschordner'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('aktueller Raum') _ ":  $room - " _ d.get('Tauschordner'),
       menu     => 1,
       submenu  => "room",
-      info     => d.get('<p>Steuern Sie hier den Zugriff auf das globale Tauschverzeichnis, indem Sie entweder einzelne Arbeitsplätze über die Checkboxen auswählen oder über die &#8222;Schnellauswahl&#8220; für alle.<br>Mit &#8222;Änderungen übernehmen&#8220; aktivieren Sie Ihre Auswahl.</p>'),
+      info     => d.get('<p>Steuern Sie hier den Zugriff auf das globale Tauschverzeichnis, indem Sie entweder einzelne Arbeitsplätze über die Checkboxen auswählen oder über die &bdquo;Schnellauswahl&ldquo; für alle.<br>Mit &bdquo;Änderungen übernehmen&ldquo; aktivieren Sie Ihre Auswahl.</p>'),
    }
 %]
 

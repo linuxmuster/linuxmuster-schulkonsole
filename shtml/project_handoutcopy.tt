@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Austeilen'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Projekte') _ ":  $project - " _ d.get('Austeilen'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get('<p>Legen Sie die auszuteilenden Dateien in Ihrem Heimatverzeichnis unter &#8222;_auszuteilen -&gt; auszuteilen-[% project %]&#8220; ab.</p><p>Wählen Sie die Mitglieder, an die Sie austeilen wollen, oder das ganze Projekt aus.</p><p>Nach dem Austeilen finden die Projektmitglieder Ihre Materialen in ihrem Heimatverzeichnis unter &#8222;__austeilen -&gt; austeilen-') . "${project}&#8220;.</p>",
+      info     => d.get("<p>Legen Sie die auszuteilenden Dateien in Ihrem Heimatverzeichnis unter &bdquo;_auszuteilen-&gt;auszuteilen-{project}&ldquo; ab.</p><p>Wählen Sie die Mitglieder, an die Sie austeilen wollen, oder das ganze Projekt aus.</p><p>Nach dem Austeilen finden die Projektmitglieder Ihre Materialen in ihrem Heimatverzeichnis unter &bdquo;__austeilen-&gt;austeilen-{project}&ldquo;.</p>",project => $project),
    }
 %]
 

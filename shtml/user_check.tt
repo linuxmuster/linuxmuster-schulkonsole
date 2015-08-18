@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Benutzer - Benutzerlisten prüfen'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Benutzer') _ " - " _ d.get('Benutzerlisten prüfen'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Hier überprüfen Sie die zuvor eingepflegten Benutzerdaten auf Konsistenz.</p><p>Nach Ende der Überprüfung sehen Sie die Konsolenausgabe von &#8222;sophomorix-check&#8220; mit Hinweisen auf die weitere Verfahrensweise.</p><p>War der Check erfolgreich, gelangen Sie über den Link &#8222;Benutzerdaten übernehmen&#8220; zum nächsten Schritt.</p><p>Wurden Änderungen an den Benutzerdaten festgestellt, die eine weitere Überprüfung notwendig machen, wird ein &#8222;Teach-In&#8220; vorgeschlagen.</p>'),
+      info     => d.get('<p>Hier überprüfen Sie die zuvor eingepflegten Benutzerdaten auf Konsistenz.</p><p>Nach Ende der Überprüfung sehen Sie die Konsolenausgabe von &bdquo;sophomorix-check&ldquo; mit Hinweisen auf die weitere Verfahrensweise.</p><p>War der Check erfolgreich, gelangen Sie über den Link &bdquo;Benutzerdaten übernehmen&ldquo; zum nächsten Schritt.</p><p>Wurden Änderungen an den Benutzerdaten festgestellt, die eine weitere Überprüfung notwendig machen, wird ein &bdquo;Teach-In&ldquo; vorgeschlagen.</p>'),
    }
 %]
 

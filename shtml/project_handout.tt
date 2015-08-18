@@ -1,25 +1,25 @@
 [% page = {
-      title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Bereitstellen'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Projekte') _ ":  $project - " _ d.get('Bereitstellen'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get('<p>Legen Sie Ihre bereitzustellenden Vorlagen in Ihrem Heimatverzeichnis unter &#8222;_bereitstellen -&gt; bereitstellen-[% project %]&#8220; ab.</p><p>Nach Betätigen der Schaltfläche &#8222;Bereitstellen&#8220; finden die Projektmitglieder Ihre Vorlagen in ihrem Homeverzeichnis unter &#8222;__vorlagen -&gt; vorlagen-') . "${project}&#8220;.</p>",
+      info     => d.get('<p>Legen Sie Ihre bereitzustellenden Vorlagen in Ihrem Heimatverzeichnis unter &bdquo;_bereitstellen-&gt;bereitstellen-{project}&ldquo; ab.</p><p>Nach Betätigen der Schaltfläche &bdquo;Bereitstellen&ldquo; finden die Projektmitglieder Ihre Vorlagen in ihrem Homeverzeichnis unter &bdquo;__vorlagen-&gt;vorlagen-{project}&ldquo;.</p>',project => $project),
    }
 %]
 
 [% IF projects %]
-<form method="post" accept-charset="UTF-8">
-<p class="selectdomain"> <select name="projects">
-<optgroup label="Projekte">
-[% FOREACH p IN projects %] <option value="[% p.gid %]">[% projects.name %]</option>
-p
-</optgroup>
-<optgroup label="aktuelles Projekt">
-<option value="[% project_gid %]" selected>[% project %]</option>
-</optgroup>
-</select>
-<input type="submit" value="[% d.get('Wechseln') %]">
-</p>
-</form>
+    <form method="post" accept-charset="UTF-8">
+    <p class="selectdomain">
+    <select name="projects">
+    <optgroup label="Projekte">
+    [% FOREACH p IN projects %] <option value="[% p.gid %]">[% projects.name %]</option>[% END %]
+    </optgroup>
+    <optgroup label="aktuelles Projekt">
+    <option value="[% project_gid %]" selected>[% project %]</option>
+    </optgroup>
+    </select>
+    <input type="submit" value="[% d.get('Wechseln') %]">
+    </p>
+    </form>
 [% END %]
 
 

@@ -615,9 +615,13 @@ sub print_page {
         });
 
 	my $vars = $this->{template_vars};
-	foreach my $key ($this->{query}->param) {
-		$vars->{$key} = $this->{query}->param($key) unless exists $vars->{$key};
-	}
+	#foreach my $key ($this->{query}->param) {
+	#	$vars->{$key} = $this->{query}->param($key);
+	#}
+	my $params = $this->{session}->dataref();
+	foreach my $key (keys \%$params) {
+                $vars->{$key} = $$params{$key};
+        }
         $vars->{no_cookies} = $this->send_cookie();
         $vars->{parent_page} = $this->{parent_page};
 	$vars->{is_error} = $this->{is_error};
@@ -625,7 +629,7 @@ sub print_page {
 	$vars->{d} = $this->{d};
 	$vars->{lang} = $this->{lang};
 	$vars->{input_errors} = %{ $this->{input_errors} };
-	$vars->{session_id} = $this->{session}->id;
+	$vars->{session_id} = $vars->{id};
         $vars->{action} = $action;
         # colored labels an Stelle von for="text" jetzt [% labelfor("text") %]
         $vars->{labelfor} = sub { return 'for="'.@_[0].'"'.($this->{input_errors}{@_[0]}? ' class="error"':''); };

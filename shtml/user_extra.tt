@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Benutzer - Schülerliste pflegen'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Benutzer') _ " - " _ d.get('Extralisten pflegen'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Hier pflegen Sie Extraschüler und Extrakurse.</p><p>Editieren Sie die Listen in den entsprechenden Textfeldern. Geänderte Daten werden über die Schaltfläche &#8222;Änderungen speichern&#8220; im System gespeichert. Fahren Sie dann mit dem Menüpunkt &#8222;Benutzerlisten prüfen&#8220; fort.</p><p>Kommentarzeilen beginnen mit einem Gatter (#) und werden nicht ausgewertet.</p>'),
+      info     => d.get('<p>Hier pflegen Sie Extraschüler und Extrakurse.</p><p>Editieren Sie die Listen in den entsprechenden Textfeldern. Geänderte Daten werden über die Schaltfläche &bdquo;Änderungen speichern&ldquo; im System gespeichert. Fahren Sie dann mit dem Menüpunkt &bdquo;Benutzerlisten prüfen&ldquo; fort.</p><p>Kommentarzeilen beginnen mit einem Gatter (#) und werden nicht ausgewertet.</p>'),
    }
 %]
 

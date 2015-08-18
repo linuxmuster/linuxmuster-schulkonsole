@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Projekte'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Projekte'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get('<p>Wählen Sie &#8222;Ja&#8220;, um das Projekt wirklich zu löschen.</p>'),
+      info     => d.get('<p>Wählen Sie &bdquo;Ja&ldquo;, um das Projekt wirklich zu löschen.</p>'),
    }
 %]
 

@@ -1,5 +1,5 @@
 [% page = {
-      title    => d.get('Schulkonsole - Drucker'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Drucker'),
       classes  => "widecontent",
       menu     => 1,
       info     => d.get('<p>Legen Sie hier fest, welche Räume bzw. einzelne Rechner Zugriff auf welche Drucker haben.</p>'),

@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Benutzer - Änderungen durchführen'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Benutzer') _ " - " _ d.get('Änderungen durchführen'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Auf dieser Seite bekommen Sie zunächst einen Überblick über die durchzuführenden Änderungen.</p><p>Sie können die anstehenden Aktionen entweder in einem Durchgang oder nacheinander ausführen lassen.</p><p>Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund ausgeführt wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen Prozesses können Sie sich über die Schaltfläche &#8222;Letze Logdatei ansehen&#8220; anzeigen lassen.</p>'),
+      info     => d.get('<p>Auf dieser Seite bekommen Sie zunächst einen Überblick über die durchzuführenden Änderungen.</p><p>Sie können die anstehenden Aktionen entweder in einem Durchgang oder nacheinander ausführen lassen.</p><p>Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund ausgeführt wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen Prozesses können Sie sich über die Schaltfläche &bdquo;Letze Logdatei ansehen&ldquo; anzeigen lassen.</p>'),
    }
 %]
 
