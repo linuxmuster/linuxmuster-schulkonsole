@@ -1,11 +1,11 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Drucker'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Drucker'),
       menu     => 1,
-      info     => d.get('<p>Wählen Sie unter &bdquo;abgewählt&ldquo; die Räume oder Rechner aus, die Zugriff auf diesen Drucker bekommen sollen.</p><p>Übernehmen Sie die Auswahl durch Betätigen der Schaltfläche &bdquo;&lt;&lt;&ldquo;.</p><p>Mehrfachauswahl mit gedrückter Strg-Taste ist möglich.</p><p>Schliessen Sie die Aktion mit &bdquo;Änderungen übernehmen&ldquo; ab.</p>'),
+      info     => loc('<p>Wählen Sie unter &bdquo;abgewählt&ldquo; die Räume oder Rechner aus, die Zugriff auf diesen Drucker bekommen sollen.</p><p>Übernehmen Sie die Auswahl durch Betätigen der Schaltfläche &bdquo;&lt;&lt;&ldquo;.</p><p>Mehrfachauswahl mit gedrückter Strg-Taste ist möglich.</p><p>Schliessen Sie die Aktion mit &bdquo;Änderungen übernehmen&ldquo; ab.</p>'),
    }
 %]
 
-<h2>[% d.get('Drucker') %] [% printer %]</h2>
+<h2>[% loc('Drucker') %] [% printer %]</h2>
 
 
 [% IF editrooms %]
@@ -16,9 +16,9 @@
 <col id="action" width="20%">
 <col id="deselected" width="40%">
 <tr>
-<th>[% d.get('ausgewählt') %]</th>
+<th>[% loc('ausgewählt') %]</th>
 <th></th>
-<th>[% d.get('abgewählt') %]</th>
+<th>[% loc('abgewählt') %]</th>
 </tr>
 <td>
 <select name="roomdeselect" multiple>
@@ -28,8 +28,8 @@
 </select>
 </td>
 <td>
-<input type="submit" name="[% printer %]_roomselect" value="[% d.get('&lt;&lt;') %]"><br>
-<input type="submit" name="[% printer %]_roomdeselect" value="[% d.get('&gt;&gt;') %]">
+<input type="submit" name="[% printer %]_roomselect" value="[% loc('&lt;&lt;') %]"><br>
+<input type="submit" name="[% printer %]_roomdeselect" value="[% loc('&gt;&gt;') %]">
 </td>
 <td>
 <select name="roomselect" multiple>
@@ -43,7 +43,7 @@
 
 <p>
 [% FOREACH r IN roomsselected %]<input type="hidden" name="roomsselected" value="[% r %]">[% END %]
-<input type="submit" name="[% printer %]_acceptrooms" value="[% d.get('Änderungen übernehmen') %]">
+<input type="submit" name="[% printer %]_acceptrooms" value="[% loc('Änderungen übernehmen') %]">
 </p>
 
 </form>
@@ -55,9 +55,9 @@
 <col id="action" width="20%">
 <col id="deselected" width="40%">
 <tr>
-<th>[% d.get('ausgewählt') %]</th>
+<th>[% loc('ausgewählt') %]</th>
 <th></th>
-<th>[% d.get('abgewählt') %]</th>
+<th>[% loc('abgewählt') %]</th>
 </tr>
 <td>
 <select name="hostdeselect" multiple>
@@ -67,8 +67,8 @@
 </select>
 </td>
 <td>
-<input type="submit" name="[% printer %]_hostselect" value="[% d.get('&lt;&lt;') %]"><br>
-<input type="submit" name="[% printer %]_hostdeselect" value="[% d.get('&gt;&gt;') %]">
+<input type="submit" name="[% printer %]_hostselect" value="[% loc('&lt;&lt;') %]"><br>
+<input type="submit" name="[% printer %]_hostdeselect" value="[% loc('&gt;&gt;') %]">
 </td>
 <td>
 <select name="hostselect" multiple>
@@ -82,7 +82,7 @@
 
 <p>
 [% FOREACH h IN hostsselected %]<input type="hidden" name="hostsselected" value="[% h %]">[% END %]
-<input type="submit" name="[% printer %]_accepthosts" value="[% d.get('Änderungen übernehmen') %]">
+<input type="submit" name="[% printer %]_accepthosts" value="[% loc('Änderungen übernehmen') %]">
 </p>
 
 </form>

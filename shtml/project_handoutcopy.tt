@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Projekte') _ ":  $project - " _ d.get('Austeilen'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Projekte') _ ":  $project - " _ loc('Austeilen'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get("<p>Legen Sie die auszuteilenden Dateien in Ihrem Heimatverzeichnis unter &bdquo;_auszuteilen-&gt;auszuteilen-{project}&ldquo; ab.</p><p>Wählen Sie die Mitglieder, an die Sie austeilen wollen, oder das ganze Projekt aus.</p><p>Nach dem Austeilen finden die Projektmitglieder Ihre Materialen in ihrem Heimatverzeichnis unter &bdquo;__austeilen-&gt;austeilen-{project}&ldquo;.</p>",project => $project),
+      info     => loc("<p>Legen Sie die auszuteilenden Dateien in Ihrem Heimatverzeichnis unter &bdquo;_auszuteilen-&gt;auszuteilen-{project}&ldquo; ab.</p><p>Wählen Sie die Mitglieder, an die Sie austeilen wollen, oder das ganze Projekt aus.</p><p>Nach dem Austeilen finden die Projektmitglieder Ihre Materialen in ihrem Heimatverzeichnis unter &bdquo;__austeilen-&gt;austeilen-{project}&ldquo;.</p>",project => $project),
    }
 %]
 
@@ -17,21 +17,21 @@
 <option value="[% project_gid %]" selected>[% project %]</option>
 </optgroup>
 </select>
-<input type="submit" value="[% d.get('Wechseln') %]">
+<input type="submit" value="[% loc('Wechseln') %]">
 </p>
 </form>
 [% END %]
 
 
-<h2>[% d.get('Projekte') %] :: [% d.get('Austeilen') %]</h2>
+<h2>[% loc('Projekte') %] :: [% loc('Austeilen') %]</h2>
 
-<h3>[% d.get('Ausgewähltes Projekt:') %] [% project %]</h3>
+<h3>[% loc('Ausgewähltes Projekt:') %] [% project %]</h3>
 
 
 <form method="post" accept-charset="UTF-8">
 
 
-<h3>[% d.get('Auszuteilende Dateien') %]</h3>
+<h3>[% loc('Auszuteilende Dateien') %]</h3>
 
 [% IF admin_share_files %]
 <ul>
@@ -41,16 +41,16 @@
 [% END %]
 </ul>
 [% ELSE %]
-<p>[% d.get('Keine Dateien') %]<p>
+<p>[% loc('Keine Dateien') %]<p>
 [% END %]
-<p><input type="submit" value="[% d.get('Ansicht aktualisieren') %]"></p>
+<p><input type="submit" value="[% loc('Ansicht aktualisieren') %]"></p>
 
 
 <table id="projecthandoutcopy" class="liste">
 <tr>
-<th>[% d.get('Login') %]</th>
-<th>[% d.get('Name') %]</th>
-<th>[% d.get('Auswahl') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Auswahl') %]</th>
 </tr>
 [% FOREACH m IN members %]
 [% IF odd %][% odd=0 %]<tr class="odd">
@@ -65,10 +65,10 @@
 <td>|</td>
 </tr>
 <tr class="quickselection">
-<td colspan="2">[% d.get('Schnellauswahl') %]</td>
-<td><input class="button" type="button" value="[% d.get('Aus') %]" name="handout" onClick="check_uncheck(this)" checked></td>
+<td colspan="2">[% loc('Schnellauswahl') %]</td>
+<td><input class="button" type="button" value="[% loc('Aus') %]" name="handout" onClick="check_uncheck(this)" checked></td>
 </tr>
 </table>
 
-<p><input type="submit" name="handoutcopy" value="[% d.get('Austeilen') %]"></p>
+<p><input type="submit" name="handoutcopy" value="[% loc('Austeilen') %]"></p>
 </form>

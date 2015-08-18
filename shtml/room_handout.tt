@@ -1,36 +1,36 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('aktueller Raum') _ ":  $room - " _ d.get('Austeilen'),
+      title    => loc('Schulkonsole') _ " - " _ loc('aktueller Raum') _ ":  $room - " _ loc('Austeilen'),
       menu     => 1,
       submenu  => "room",
-      info     => d.get('<p>Auszuteilende Dateien müssen in Ihrem Heimatverzeichnis unter &bdquo;_auszuteilen -&gt; auszuteilen-aktueller_raum&ldquo; abgelegt sein. Der Inhalt dieses Ordners wird hier aufgelistet.<br>Nachträglich dorthin abgelegte Dateien können Sie über die Schaltfläche &bdquo;Ansicht aktualiseren&ldquo; sichtbar machen.</p><p>Die Schüler/innen finden die ausgeteilten Dateien in ihrem Heimatverzeichnis unter &bdquo;__austeilen -&gt; austeilen-aktueller_raum.&ldquo;</p>'),
+      info     => loc('<p>Auszuteilende Dateien müssen in Ihrem Heimatverzeichnis unter &bdquo;_auszuteilen -&gt; auszuteilen-aktueller_raum&ldquo; abgelegt sein. Der Inhalt dieses Ordners wird hier aufgelistet.<br>Nachträglich dorthin abgelegte Dateien können Sie über die Schaltfläche &bdquo;Ansicht aktualiseren&ldquo; sichtbar machen.</p><p>Die Schüler/innen finden die ausgeteilten Dateien in ihrem Heimatverzeichnis unter &bdquo;__austeilen -&gt; austeilen-aktueller_raum.&ldquo;</p>'),
 
    }
 %]
 
-<h2>[% d.get('Aktueller Raum') %]: [% room %]
-:: [% d.get('Austeilen') %]</h2>
+<h2>[% loc('Aktueller Raum') %]: [% room %]
+:: [% loc('Austeilen') %]</h2>
 
 <p>
-[% d.get('Nutzung:') %]
+[% loc('Nutzung:') %]
 
-[% editinguser %] [% d.get('unterrichtet in Raum') %]
+[% editinguser %] [% loc('unterrichtet in Raum') %]
 [% room %].
 [% IF endedittime %]
-[% d.get('Unterrichtsende um') %] [% endedittime %].
+[% loc('Unterrichtsende um') %] [% endedittime %].
 [% END %]
 </p>
 
 [% IF exammode %]
-<p>[% d.get('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
+<p>[% loc('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
 [% ELSE %]
-<p>[% d.get('Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.') %]</p>
+<p>[% loc('Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.') %]</p>
 [% END %]
 
 
 <form method="post" accept-charset="UTF-8">
 
 
-<h3>[% d.get('Auszuteilende Dateien') %]</h3>
+<h3>[% loc('Auszuteilende Dateien') %]</h3>
 
 [% IF teacher_share_files %]
 <ul>
@@ -40,16 +40,16 @@
 [% END %]
 </ul>
 [% ELSE %]
-<p>[% d.get('Keine Dateien') %]<p>
+<p>[% loc('Keine Dateien') %]<p>
 [% END %]
-<p><input type="submit" value="[% d.get('Ansicht aktualisieren') %]"></p>
+<p><input type="submit" value="[% loc('Ansicht aktualisieren') %]"></p>
 
 
 <table id="roomhandoutcopy" class="liste">
 <tr>
-<th>[% d.get('Hostname') %]</th>
-<th>[% d.get('Login') %]</th>
-<th>[% d.get('Auswahl') %]</th>
+<th>[% loc('Hostname') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Auswahl') %]</th>
 </tr>
 [% FOREACH w IN overview_workstations %]
 [% IF w.editing %]
@@ -82,10 +82,10 @@
 <td>|</td>
 </tr>
 <tr class="quickselection">
-<td colspan="2">[% d.get('Schnellauswahl') %]</td>
-<td><input class="button" type="button" value="[% d.get('Aus') %]" name="handout" onClick="check_uncheck(this)" checked></td>
+<td colspan="2">[% loc('Schnellauswahl') %]</td>
+<td><input class="button" type="button" value="[% loc('Aus') %]" name="handout" onClick="check_uncheck(this)" checked></td>
 </tr>
 </table>
 
-<p><input type="submit" name="handoutcopy" value="[% d.get('Austeilen') %]"></p>
+<p><input type="submit" name="handoutcopy" value="[% loc('Austeilen') %]"></p>
 </form>

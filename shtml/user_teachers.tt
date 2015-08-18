@@ -1,23 +1,23 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Benutzer') _ " - " _ d.get('Lehrerliste pflegen'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Benutzer') _ " - " _ loc('Lehrerliste pflegen'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Hier können Sie die Passwörter der Lehrkräfte ändern. Sie haben folgende Funktionen zur Verfügung:</p><ul><li>Setzen des Passwortes auf das Erstpasswort</li><li>Setzen des Passwortes und des Erstpasswortes auf einen zufälligen Wert</li><li>Setzen des Passwortes und des Erstpasswortes auf einen eingegebenen Wert</li></ul><p>Sie können sich das Passwort eines Lehrers nach der Vergabe anzeigen lassen. Außerdem können Sie sich die Passwortliste der Lehrkräfte im PDF- oder CSV-Format herunterladen, um Sie dann ausdrucken zu lassen.</p>'),
+      info     => loc('<p>Hier können Sie die Passwörter der Lehrkräfte ändern. Sie haben folgende Funktionen zur Verfügung:</p><ul><li>Setzen des Passwortes auf das Erstpasswort</li><li>Setzen des Passwortes und des Erstpasswortes auf einen zufälligen Wert</li><li>Setzen des Passwortes und des Erstpasswortes auf einen eingegebenen Wert</li></ul><p>Sie können sich das Passwort eines Lehrers nach der Vergabe anzeigen lassen. Außerdem können Sie sich die Passwortliste der Lehrkräfte im PDF- oder CSV-Format herunterladen, um Sie dann ausdrucken zu lassen.</p>'),
    }
 %]
 
-<h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('Lehrerliste pflegen') %]</h2>
+<h2>[% loc('Benutzerverwaltung') %] :: [% loc('Lehrerliste pflegen') %]</h2>
 
 
 <form method="post" accept-charset="UTF-8">
-<h3>[% d.get('Lehrer hinzufügen') %]</h3>
+<h3>[% loc('Lehrer hinzufügen') %]</h3>
 
 <table id="teachersadd" class="liste">
 <tr>
-<th><label [% labelfor("newsurname") %]>[% d.get('Nachname') %]</label></th>
-<th><label [% labelfor("newfirstname") %]>[% d.get('Vorname') %]</label></th>
-<th><label [% labelfor("newbirthdate") %]>[% d.get('Geburtsdatum') %]</label></th>
-<th><label [% labelfor("newlogin") %]>[% d.get('Login') %]</label></th>
+<th><label [% labelfor("newsurname") %]>[% loc('Nachname') %]</label></th>
+<th><label [% labelfor("newfirstname") %]>[% loc('Vorname') %]</label></th>
+<th><label [% labelfor("newbirthdate") %]>[% loc('Geburtsdatum') %]</label></th>
+<th><label [% labelfor("newlogin") %]>[% loc('Login') %]</label></th>
 </tr>
 <tr>
 <td><input id="newsurname" name="newsurname"></td>
@@ -27,7 +27,7 @@
 </tr>
 </table>
 
-<p><input type="submit" name="newteacher" value="[% d.get('Änderungen in Lehrerliste speichern') %]"></p>
+<p><input type="submit" name="newteacher" value="[% loc('Änderungen in Lehrerliste speichern') %]"></p>
 </form>
 
 
@@ -37,10 +37,10 @@
 [% IF teachersuploadallowed %]
 
 <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
-<h3><label [% labelfor("teachersfilename") %]>[% d.get('Datei importieren') %]</label></h3>
+<h3><label [% labelfor("teachersfilename") %]>[% loc('Datei importieren') %]</label></h3>
 <p>
 <input type="file" id="teachersfilename" name="teachersfilename">
-<input type="submit" name="teachersupload" value="[% d.get('Hochladen') %]">
+<input type="submit" name="teachersupload" value="[% loc('Hochladen') %]">
 </p>
 </form>
 
@@ -51,14 +51,14 @@
 <form method="post" accept-charset="UTF-8">
 
 
-<h3>[% d.get('Fehler korrigieren') %]</h3>
+<h3>[% loc('Fehler korrigieren') %]</h3>
 
 <table id="errorteachersedit" class="liste">
 <tr>
-<th>[% d.get('Nachname') %]</th>
-<th>[% d.get('Vorname') %]</th>
-<th>[% d.get('Geburtsdatum') %]</th>
-<th>[% d.get('Login') %]</th>
+<th>[% loc('Nachname') %]</th>
+<th>[% loc('Vorname') %]</th>
+<th>[% loc('Geburtsdatum') %]</th>
+<th>[% loc('Login') %]</th>
 </tr>
 [% FOREACH et IN error_teachers %]
 <tr>
@@ -70,7 +70,7 @@
 [% END %]
 </table>
 
-<p><input type="submit" name="acceptteachers" value="[% d.get('Änderungen in Lehrerliste speichern') %]"></p>
+<p><input type="submit" name="acceptteachers" value="[% loc('Änderungen in Lehrerliste speichern') %]"></p>
 
 </form>
 
@@ -83,15 +83,15 @@
 
 <form method="post" accept-charset="UTF-8">
 
-<h3>[% d.get('Editieren') %]</h3>
+<h3>[% loc('Editieren') %]</h3>
 
 
 <table id="teachersedit" class="liste">
 <tr>
-<th>[% d.get('Nachname') %]</th>
-<th>[% d.get('Vorname') %]</th>
-<th>[% d.get('Geburtsdatum') %]</th>
-<th>[% d.get('Login') %]</th>
+<th>[% loc('Nachname') %]</th>
+<th>[% loc('Vorname') %]</th>
+<th>[% loc('Geburtsdatum') %]</th>
+<th>[% loc('Login') %]</th>
 </tr>
 [% FOREACH t IN teachers %]
 <tr>
@@ -103,7 +103,7 @@
 [% END %]
 </table>
 
-<p><input type="submit" name="acceptteachers" value="[% d.get('Änderungen in Lehrerliste speichern') %]"></p>
+<p><input type="submit" name="acceptteachers" value="[% loc('Änderungen in Lehrerliste speichern') %]"></p>
 
 </form>
 
@@ -116,13 +116,13 @@
 
 
 <form method="post" accept-charset="UTF-8">
-<h3>[% d.get('Lehrer entfernen') %]</h3>
+<h3>[% loc('Lehrer entfernen') %]</h3>
 
 <table id="teachersdelete" class="liste">
 <tr>
 <th></th>
-<th>[% d.get('Nachname') %]</th>
-<th>[% d.get('Vorname') %]</th>
+<th>[% loc('Nachname') %]</th>
+<th>[% loc('Vorname') %]</th>
 </tr>
 [% FOREACH t IN teachers %]
 <tr>
@@ -133,5 +133,5 @@
 [% END %]
 </table>
 
-<p><input type="submit" name="acceptteachers" value="[% d.get('Änderungen in Lehrerliste speichern') %]"></p>
+<p><input type="submit" name="acceptteachers" value="[% loc('Änderungen in Lehrerliste speichern') %]"></p>
 </form>

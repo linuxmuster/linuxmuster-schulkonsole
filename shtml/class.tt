@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Klassen'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Klassen'),
       menu     => 1,
       submenu  => "class",
-      info     => d.get('<p>Um Zugriff zu den Klassenfunktionen zu bekommen, müssen Sie sich unter &bdquo;Eintragen in Klassen&ldquo; in die Klasse eintragen.</p><p>Wählen Sie eine Klasse aus dem Pull-Down-Menü und betätigen dann die Schaltfläche &bdquo;Wechseln&ldquo;, oder klicken Sie eine Klasse aus der Liste unter &bdquo;Klassenname&ldquo; an.</p><p>Über den Button &bdquo;Austragen&ldquo; können Sie sich aus einer Klasse austragen, wenn Sie nicht mehr in ihr unterrichten.</p>'),
+      info     => loc('<p>Um Zugriff zu den Klassenfunktionen zu bekommen, müssen Sie sich unter &bdquo;Eintragen in Klassen&ldquo; in die Klasse eintragen.</p><p>Wählen Sie eine Klasse aus dem Pull-Down-Menü und betätigen dann die Schaltfläche &bdquo;Wechseln&ldquo;, oder klicken Sie eine Klasse aus der Liste unter &bdquo;Klassenname&ldquo; an.</p><p>Über den Button &bdquo;Austragen&ldquo; können Sie sich aus einer Klasse austragen, wenn Sie nicht mehr in ihr unterrichten.</p>'),
    }
 %]
 
@@ -18,36 +18,36 @@
 <option value="[% class_gid %]" selected>[% class_name %]</option>
 </optgroup>
 </select>
-<input type="submit" value="[% d.get('Wechseln') %]">
+<input type="submit" value="[% loc('Wechseln') %]">
 </p>
 </form>
 [% END %]
 
 
-<h2>[% d.get('Klassen') %]</h2>
+<h2>[% loc('Klassen') %]</h2>
 
 [% IF class_name %]
-<h3>[% d.get('Ausgewählte Klasse') %]: [% class_name %]</h3>
+<h3>[% loc('Ausgewählte Klasse') %]: [% class_name %]</h3>
 [% ELSE %]
-<h3>[% d.get('Bitte Klasse auswählen') %]</h3>
+<h3>[% loc('Bitte Klasse auswählen') %]</h3>
 [% END %]
 
 
 [% IF classes %]
 <form method="post" accept-charset="UTF-8">
 
-<h4>[% d.get('Übersicht der Klassen') %]</h4>
+<h4>[% loc('Übersicht der Klassen') %]</h4>
 
 <table id="classesoverview" class="liste">
 <tr>
-<th>[% d.get('Klassenname') %]</th>
+<th>[% loc('Klassenname') %]</th>
 <th></th>
 </tr>
 [% FOREACH c IN classes %]
     [% IF odd %][% odd=0 %]<tr class="odd">
     [% ELSE %][% odd=1 %]<tr class="even">[% END %]
     <td><input type="submit" name="[% c.gid %]_list" value="[% c.name %]"></td>
-    <td><input type="submit" name="[% c.gid %]_remove" value="[% d.get('Austragen') %]"></td>
+    <td><input type="submit" name="[% c.gid %]_remove" value="[% loc('Austragen') %]"></td>
     </tr>
 [% END %]
 </table>
@@ -59,7 +59,7 @@
 [% IF other_classes %]
 <form method="post" accept-charset="UTF-8">
 
-<h4>[% d.get('Eintragen in Klassen') %]</h4>
+<h4>[% loc('Eintragen in Klassen') %]</h4>
 
 <p>
 <select name="class_add">
@@ -67,7 +67,7 @@
     <option value="[% c.gid %]">[% c.name %]</option>
 [% END %]
 </select>
-<input type="submit" value="[% d.get('Eintragen') %]">
+<input type="submit" value="[% loc('Eintragen') %]">
 </p>
 </form>
 [% END %]

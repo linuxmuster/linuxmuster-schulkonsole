@@ -1,15 +1,15 @@
 [% page = {
-        title   => d.get('Schulkonsole') _ " - " _ d.get('Startseite'),
+        title   => loc('Schulkonsole') _ " - " _ loc('Startseite'),
         classes => "widecontent",
         menu    => 1,
-        info    => d.get('<p>Auf dieser Seite können Sie eigene Druckaufträge löschen und Ihr Passwort ändern.<p>Weiterhin können Sie eine Mail-Weiterleitung an eine oder mehrere durch Komma getrennte Mail-Adressen einrichten und festlegen, ob eine Kopie im Postfach verbleiben soll.<p>Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch auf dem Server und in Ihrem Postfach. Alle Werte sind in Kilobyte angegeben. Zusätzlich wird angezeigt in welchen Projekten Sie Mitglied sind.</p><p>Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden. Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner &bdquo;OpenVPN&ldquo; abgelegt.</p>'),
+        info    => loc('<p>Auf dieser Seite können Sie eigene Druckaufträge löschen und Ihr Passwort ändern.<p>Weiterhin können Sie eine Mail-Weiterleitung an eine oder mehrere durch Komma getrennte Mail-Adressen einrichten und festlegen, ob eine Kopie im Postfach verbleiben soll.<p>Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch auf dem Server und in Ihrem Postfach. Alle Werte sind in Kilobyte angegeben. Zusätzlich wird angezeigt in welchen Projekten Sie Mitglied sind.</p><p>Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden. Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner &bdquo;OpenVPN&ldquo; abgelegt.</p>'),
    }
 %]
 
-<h2>[% d.get('Konto von') %] [% firstname %] [% surname %]</h2>
+<h2>[% loc('Konto von') %] [% firstname %] [% surname %]</h2>
 
 
-<h3>[% d.get('Druckaufträge') %]</h3>
+<h3>[% loc('Druckaufträge') %]</h3>
 
 [% IF printjobs %]
 <form method="post" accept-charset="UTF-8">
@@ -22,43 +22,43 @@
 [% END %]
 </select>
 </p>
-<p><input type="submit" value="[% d.get('Druckaufträge löschen') %]"></p>
+<p><input type="submit" value="[% loc('Druckaufträge löschen') %]"></p>
 </form>
 [% ELSE %]
-<p>[% d.get('Keine Druckaufträge') %]</p>
+<p>[% loc('Keine Druckaufträge') %]</p>
 [% END %]
 
 <hr>
 
-<h3>[% d.get('Passwortänderung') %]</h3>
+<h3>[% loc('Passwortänderung') %]</h3>
 <form method="post" accept-charset="UTF-8">
 <table>
 <tr>
-<td><label [% labelfor("oldpassword") %]>[% d.get('Altes Passwort') %]</label>: </td>
+<td><label [% labelfor("oldpassword") %]>[% loc('Altes Passwort') %]</label>: </td>
 <td><input id="oldpassword" name="oldpassword" type="password"></td>
 </tr>
 <tr>
-<td><label [% labelfor("newpassword") %]>[% d.get('Neues Passwort') %]</label>: </td>
+<td><label [% labelfor("newpassword") %]>[% loc('Neues Passwort') %]</label>: </td>
 <td><input id="newpassword" name="newpassword" type="password"></td>
 <tr>
-<td><label [% labelfor("newpasswordagain") %]>[% d.get('nochmal') %]</label>: </td>
+<td><label [% labelfor("newpasswordagain") %]>[% loc('nochmal') %]</label>: </td>
 <td><input id="newpasswordagain" name="newpasswordagain" type="password"></td>
 </tr>
 </table>
-<p><input type="submit" value="[% d.get('Passwort ändern') %]"></p>
+<p><input type="submit" value="[% loc('Passwort ändern') %]"></p>
 </form>
 
-<h3>[% d.get('Mail-Weiterleitung') %]</h3>
+<h3>[% loc('Mail-Weiterleitung') %]</h3>
 <form meth="post" accept-charset="UTF-8">
 <table id="mailforward">
 <col width="30%">
 <col width="70%">
 <tr>
-<td><label [% labelfor("mailforwards") %]>[% d.get('Weiterleitung(en)') %]</label>: </td>
+<td><label [% labelfor("mailforwards") %]>[% loc('Weiterleitung(en)') %]</label>: </td>
 <td><input id="mailforwards" name="mailforwards" value="[% mailforwards %]"></td>
 </tr>
 <tr>
-<td><label [% labelfor("mailkeep") %]>[% d.get('Kopie behalten') %]</label>: </td>
+<td><label [% labelfor("mailkeep") %]>[% loc('Kopie behalten') %]</label>: </td>
 <td>
 [% IF mailkeep %]
 <input id="mailkeep" name="mailkeep" type="checkbox" checked>
@@ -68,16 +68,16 @@
 </td>
 </tr>
 </table>
-<p><input type="submit" name="mailchange" value="[% d.get('Mailadresse(n) ändern') %]">
+<p><input type="submit" name="mailchange" value="[% loc('Mailadresse(n) ändern') %]">
 
 <hr>
 
-<h3>[% d.get('Info') %]</h3>
+<h3>[% loc('Info') %]</h3>
 
-<h4>[% d.get('Quota') %]</h4>
+<h4>[% loc('Quota') %]</h4>
 
 [% IF diskquotas %]
-<p>[% d.get('Festplattenquota:') %]</p></p>
+<p>[% loc('Festplattenquota:') %]</p></p>
 
 <table id="diskquotas">
 <col width="30%">
@@ -93,18 +93,18 @@
 
 <p>
 [% diskquota.path %]:<br>
-    [% d.get('Speicherplatz/KB:') %]
+    [% loc('Speicherplatz/KB:') %]
     [% diskquota.blocks_usage %]/[% diskquota.blocks_soft %]
     - max: [% diskquota.blocks_hard %]
     - [% diskquota.blocks_percent %]%<br>
     [% IF diskquota.blocks_grace %]
-    [% d.get('verbleibende Zeit:') %] [% diskquota.blocks_grace %]<br>[% END %]
-    [% d.get('Dateien:') %]
+    [% loc('verbleibende Zeit:') %] [% diskquota.blocks_grace %]<br>[% END %]
+    [% loc('Dateien:') %]
     [% diskquota.files_usage %]/[% diskquota.files_soft %]
     - max: [% diskquota.files_hard %]
     - [% diskquota.files_percent %]%<br>
     [% IF diskquota.files_grace %]
-    [% d.get('verbleibende Zeit:') %] [% diskquota.files_grace %]<br>[% END %]<br>
+    [% loc('verbleibende Zeit:') %] [% diskquota.files_grace %]<br>[% END %]<br>
 </p>
 
 <ul>
@@ -126,10 +126,10 @@
 
 
 [% ELSE %]
-<p>[% d.get('Keine Quota') %]</p>
+<p>[% loc('Keine Quota') %]</p>
 [% END %]
 
-<p>[% d.get('Mailquota von') %] [% mailaddresses_str %]:</p>
+<p>[% loc('Mailquota von') %] [% mailaddresses_str %]:</p>
 [% IF mailquotas %]
 <table id="mailquotas">
 <col width="30%">
@@ -144,7 +144,7 @@
 
 
 <p>
-    [% d.get('E-Mail-Speicher/KB:') %]
+    [% loc('E-Mail-Speicher/KB:') %]
     [% mailquota.usage %]/[% mailquota.limit %]
     - [% mailquota.percent %]%
 </p>
@@ -156,7 +156,7 @@
 [% ELSE %]
 <li>
 [% END %]
-<span title="[% d.get('E-Mail') %]: [% mailquota.usage %]/[% mailquota.limit %] [% mailquota.percent %]%" style="width: [% mailquota.percent_rounded %]%;">&nbsp;</span>
+<span title="[% loc('E-Mail') %]: [% mailquota.usage %]/[% mailquota.limit %] [% mailquota.percent %]%" style="width: [% mailquota.percent_rounded %]%;">&nbsp;</span>
 </li>
 </ul>
 [% ELSE %]-[% END %]</td>
@@ -171,7 +171,7 @@
 
 
 [% IF printquota %]
-<p>[% d.get('Druckquota:') %]</p>
+<p>[% loc('Druckquota:') %]</p>
 
 <table id="printquota">
 <col width="30%">
@@ -179,13 +179,13 @@
 
 <tr>
 
-<td>[% d.get('Seiten') %]</td>
+<td>[% loc('Seiten') %]</td>
 
 <td>
 
 
 <p>
-    [% d.get('Seiten:') %]
+    [% loc('Seiten:') %]
     [% printquota.usage %]/[% printquota.limit %]
     - [% printquota.percent %]%
 </p>
@@ -209,13 +209,13 @@
 
 <hr>
 
-<h4>[% d.get('Projekte') %]</h4>
+<h4>[% loc('Projekte') %]</h4>
 
 <p>
 [% IF projects %]
 [% projects %]
 [% ELSE %]
-[% d.get('keine Projekte vorhanden') %]
+[% loc('keine Projekte vorhanden') %]
 [% END %]
 </p>
 
@@ -223,25 +223,25 @@
 
 [% IF link_start_openvpn %]
 <form method="post" accept-charset="UTF-8">
-<h3>[% d.get('OpenVPN-Zertifikat') %]</h3>
+<h3>[% loc('OpenVPN-Zertifikat') %]</h3>
 [% IF has_ovpn %]
-<p>[% d.get('Ein OpenVPN-Zertifikat wurde für Sie erstellt.') %]</p>
-<p><input type="submit" name="ovpndownload" value="[% d.get('OpenVPN-Zertifikat herunterladen') %]"></p>
+<p>[% loc('Ein OpenVPN-Zertifikat wurde für Sie erstellt.') %]</p>
+<p><input type="submit" name="ovpndownload" value="[% loc('OpenVPN-Zertifikat herunterladen') %]"></p>
 [% ELSE %]
-<h4>[% d.get('OpenVPN-Zertifikat erstellen') %]</h4>
+<h4>[% loc('OpenVPN-Zertifikat erstellen') %]</h4>
 
 <table>
 <tr>
-<td><label [% labelfor("ovpnpassword") %]>[% d.get('Zertifikatspasswort (mind. 6 Zeichen):') %]</label></td>
+<td><label [% labelfor("ovpnpassword") %]>[% loc('Zertifikatspasswort (mind. 6 Zeichen):') %]</label></td>
 <td><input type="password" id="ovpnpassword" name="ovpnpassword"></td>
 </tr>
 <tr>
-<td><label [% labelfor("ovpnpasswordagain") %]>[% d.get('Zertifikatspasswort bestätigen:') %]</label></td>
+<td><label [% labelfor("ovpnpasswordagain") %]>[% loc('Zertifikatspasswort bestätigen:') %]</label></td>
 <td><input type="password" id="ovpnpasswordagain" name="ovpnpasswordagain"></td>
 </tr>
 </table>
 
-<p><input type="submit" value="[% d.get('Zertifikat erstellen und herunterladen') %]"></p>
+<p><input type="submit" value="[% loc('Zertifikat erstellen und herunterladen') %]"></p>
 
 [% END %]
 </form>

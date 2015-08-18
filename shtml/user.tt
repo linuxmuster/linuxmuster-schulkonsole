@@ -1,27 +1,27 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Benutzer'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Benutzer'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Hier legen Sie Benutzer an und pflegen die Schüler- und Lehrerlisten.</p><p>Benutzer und Kurse, die nicht aus dem Schulverwaltungsprogramm exportiert werden können, verwalten Sie in den &bdquo;Extralisten&ldquo;.</p>'),
+      info     => loc('<p>Hier legen Sie Benutzer an und pflegen die Schüler- und Lehrerlisten.</p><p>Benutzer und Kurse, die nicht aus dem Schulverwaltungsprogramm exportiert werden können, verwalten Sie in den &bdquo;Extralisten&ldquo;.</p>'),
    }
 %]
 
-<h2>[% d.get('Benutzerverwaltung') %]</h2>
+<h2>[% loc('Benutzerverwaltung') %]</h2>
 
 [% IF link_user_students %]
 <p>
 [% IF link_user_teachers %]
-[% d.get('Bearbeiten Sie zunächst die <a href="user_students">Schüler-</a> und <a href="user_teachers">Lehrerlisten</a>.') %]
+[% loc('Bearbeiten Sie zunächst die <a href="user_students">Schüler-</a> und <a href="user_teachers">Lehrerlisten</a>.') %]
 [% ELSE %]
-[% d.get('Bearbeiten Sie zunächst die <a href="user_students">Schülerlisten</a>.') %]
+[% loc('Bearbeiten Sie zunächst die <a href="user_students">Schülerlisten</a>.') %]
 [% END %]
 </p>
 [% END %]
 
 [% IF link_user_check %]
-<p>[% d.get('Mit der <a href="user_check">Überprüfung der Benutzerlisten</a> werden die Daten zur Übertragung ins System vorbereitet.') %]</p>
+<p>[% loc('Mit der <a href="user_check">Überprüfung der Benutzerlisten</a> werden die Daten zur Übertragung ins System vorbereitet.') %]</p>
 [% END %]
 
 [% IF link_user_commit %]
-<p>[% d.get('Auf der Seite zur <a href="user_commit">Übernahme der Benutzerdaten</a> können Sie die Übertragung ins System starten und sich Informationen zum Prozess anzeigen lassen.') %]</p>
+<p>[% loc('Auf der Seite zur <a href="user_commit">Übernahme der Benutzerdaten</a> können Sie die Übertragung ins System starten und sich Informationen zum Prozess anzeigen lassen.') %]</p>
 [% END %]

@@ -6,21 +6,21 @@
 [% END %]
 [% IF REMOTE_ADDR %]
 <p class="info">
-[% d.get('Sitzungsdauer:') %] [% session_time %]<br>
-[% d.get('verbleibend:') %] <span id="timer">[% max_idle_hh_mm_ss %]</span></p>
-<p class="info">[% d.get('Benutzer:') %]
+[% loc('Sitzungsdauer:') %] [% session_time %]<br>
+[% loc('verbleibend:') %] <span id="timer">[% max_idle_hh_mm_ss %]</span></p>
+<p class="info">[% loc('Benutzer:') %]
 <strong>[% firstname %] [% surname %]</strong><br>
-[% d.get('Raum:') %]
+[% loc('Raum:') %]
 [% IF remote_room %]
 <strong>[% remote_room %]</strong><br>
 [% ELSE %]
-<strong>[% d.get('unbekannt') %]</strong><br>
+<strong>[% loc('unbekannt') %]</strong><br>
 [% END %]
-[% d.get('Workstation:') %]
+[% loc('Workstation:') %]
 <strong>[% remote_workstation %]</strong><br>
-[% d.get('IP:') %] <strong>[% REMOTE_ADDR %]</strong><br>
+[% loc('IP:') %] <strong>[% REMOTE_ADDR %]</strong><br>
 [% IF class %]
-<p class="info">[% d.get('aktive Klasse:') %]
+<p class="info">[% loc('aktive Klasse:') %]
 <strong>[% class %]</strong></p>
 [% END %]
 [% END %]

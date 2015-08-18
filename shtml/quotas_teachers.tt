@@ -1,12 +1,12 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Quota') _ " - " _ d.get('Lehrer'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Quota') _ " - " _ loc('Lehrer'),
       menu     => 1,
       submenu  => "quotas",
-      info     => d.get('<p>Hier können Sie die Disk- und Mailquota für Lehrer/innen individuell anpassen. Die Darstellung der Diskquota hängt von Ihrer Partitionierung ab.</p><p>Leere Felder bedeuten, dass in dem Fall die Standardeinstellungen gelten.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),
+      info     => loc('<p>Hier können Sie die Disk- und Mailquota für Lehrer/innen individuell anpassen. Die Darstellung der Diskquota hängt von Ihrer Partitionierung ab.</p><p>Leere Felder bedeuten, dass in dem Fall die Standardeinstellungen gelten.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),
    }
 %]
 
-<h2>[% d.get('Quota') %] :: [% d.get('Lehrer') %]</h2>
+<h2>[% loc('Quota') %] :: [% loc('Lehrer') %]</h2>
 
 
 [% IF teachers %]
@@ -15,12 +15,12 @@
 
 <table id="quotasteachers" class="liste">
 <tr>
-<th>[% d.get('Login') %]</th>
-<th>[% d.get('Name') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Name') %]</th>
 [% IF mountpoints %]
-<th colspan="[% mountpoints_cnt %]">[% d.get('Diskquota') %]</th>
+<th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
 [% END %]
-<th>[% d.get('Mailquota') %]</th>
+<th>[% loc('Mailquota') %]</th>
 </tr>
 [% IF mountpoints %]
 <tr>
@@ -44,10 +44,10 @@
 [% END %]
 </table>
 
-<p><input type="submit" name="acceptteachers" value="[% d.get('Änderungen übernehmen') %]"></p>
+<p><input type="submit" name="acceptteachers" value="[% loc('Änderungen übernehmen') %]"></p>
 
 </form>
 
 [% ELSE %]
-<p>[% d.get('Es gibt keine Lehrer.') %]</p>
+<p>[% loc('Es gibt keine Lehrer.') %]</p>
 [% END %]

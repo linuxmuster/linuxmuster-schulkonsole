@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Projekte') _ ":  $project - " _ d.get('Einsammeln'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Projekte') _ ":  $project - " _ loc('Einsammeln'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get("<p>Einzusammelnde Dateien müssen von den Projektmitgliedern in ihrem Heimatverzeichnis im Ordner &bdquo;__einsammeln&ldquo; abgelegt werden.</p><p>Wählen Sie aus, ob die einzusammelnden Dateien erhalten bleiben oder gelöscht werden sollen.</p><p>Wählen Sie die Projektmitglieder aus, von denen Sie einsammeln wollen. In der Spalte &bdquo;Dateien&ldquo; können Sie sehen, welche Dateien zum Einsammeln zur Verfügung stehen.</p><p>Sie finden die eingesammelten Arbeiten in Ihrem Heimatverzeichnis unter &bdquo;_eingesammelt-&gt;eingesammelt-{project}&ldquo;.</p>",project => $project),
+      info     => loc("<p>Einzusammelnde Dateien müssen von den Projektmitgliedern in ihrem Heimatverzeichnis im Ordner &bdquo;__einsammeln&ldquo; abgelegt werden.</p><p>Wählen Sie aus, ob die einzusammelnden Dateien erhalten bleiben oder gelöscht werden sollen.</p><p>Wählen Sie die Projektmitglieder aus, von denen Sie einsammeln wollen. In der Spalte &bdquo;Dateien&ldquo; können Sie sehen, welche Dateien zum Einsammeln zur Verfügung stehen.</p><p>Sie finden die eingesammelten Arbeiten in Ihrem Heimatverzeichnis unter &bdquo;_eingesammelt-&gt;eingesammelt-{project}&ldquo;.</p>",project => $project),
    }
 %]
 
@@ -17,44 +17,44 @@
 <option value="[% project_gid %]" selected>[% project %]</option>
 </optgroup>
 </select>
-<input type="submit" value="[% d.get('Wechseln') %]">
+<input type="submit" value="[% loc('Wechseln') %]">
 </p>
 </form>
 [% END %]
 
 
-<h2>[% d.get('Projekte') %] :: [% d.get('Einsammeln') %]</h2>
+<h2>[% loc('Projekte') %] :: [% loc('Einsammeln') %]</h2>
 
-<h3>[% d.get('Ausgewähltes Projekt:') %] [% project %]</h3>
+<h3>[% loc('Ausgewähltes Projekt:') %] [% project %]</h3>
 
 
-<h3>[% d.get('Einsammeln') %]</h3>
+<h3>[% loc('Einsammeln') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 
-<p><input type="submit" value="[% d.get('Ansicht aktualisieren') %]"></p>
+<p><input type="submit" value="[% loc('Ansicht aktualisieren') %]"></p>
 
 
 <table>
 <tr>
 	<td><input type="radio" id="deletetop" name="deletetop" value="1"></td>
-	<td><label [% labelfor("deletetop") %]>[% d.get('Original wird gelöscht') %]</label></td>
+	<td><label [% labelfor("deletetop") %]>[% loc('Original wird gelöscht') %]</label></td>
 </tr>
 <tr>
 	<td><input type="radio" id="copytop" name="deletetop" value="0" checked></td>
-	<td><label [% labelfor("copytop") %]>[% d.get('Original bleibt erhalten') %]</label></td>
+	<td><label [% labelfor("copytop") %]>[% loc('Original bleibt erhalten') %]</label></td>
 </tr>
 </table>
-<p><input type="submit" name="collecttop" value="[% d.get('Einsammeln') %]"></p>
+<p><input type="submit" name="collecttop" value="[% loc('Einsammeln') %]"></p>
 
 <table id="projectcollect" class="liste">
 <colgroup span="3"></colgroup>
 <colgroup width="50%"></colgroup>
 <tr>
-<th>[% d.get('Login') %]</th>
-<th>[% d.get('Name') %]</th>
-<th>[% d.get('Auswahl') %]</th>
-<th>[% d.get('Dateien') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Auswahl') %]</th>
+<th>[% loc('Dateien') %]</th>
 </tr>
 [% FOREACH m IN members %]
 [% IF odd %][% odd=0 %]<tr class="odd">
@@ -75,8 +75,8 @@
 <td></td>
 </tr>
 <tr class="quickselection">
-<td colspan="2">[% d.get('Schnellauswahl') %]</td>
-<td><input class="button" type="button" value="[% d.get('Aus') %]" name="collect" onClick="check_uncheck(this)" checked></td>
+<td colspan="2">[% loc('Schnellauswahl') %]</td>
+<td><input class="button" type="button" value="[% loc('Aus') %]" name="collect" onClick="check_uncheck(this)" checked></td>
 <td></td>
 </tr>
 </table>
@@ -84,13 +84,13 @@
 <table>
 <tr>
 	<td><input type="radio" id="deletebottom" name="deletebottom" value="1"></td>
-	<td><label [% labelfor("deletebottom") %]>[% d.get('Original wird gelöscht') %]</label></td>
+	<td><label [% labelfor("deletebottom") %]>[% loc('Original wird gelöscht') %]</label></td>
 </tr>
 <tr>
 	<td><input type="radio" id="copybottom" name="deletebottom" value="0" checked></td>
-	<td><label [% labelfor("copybottom") %]>[% d.get('Original bleibt erhalten') %]</label></td>
+	<td><label [% labelfor("copybottom") %]>[% loc('Original bleibt erhalten') %]</label></td>
 </tr>
 </table>
-<p><input type="submit" name="collectbottom" value="[% d.get('Einsammeln') %]"></p>
+<p><input type="submit" name="collectbottom" value="[% loc('Einsammeln') %]"></p>
 
 </form>

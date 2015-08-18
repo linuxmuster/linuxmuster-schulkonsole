@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Klassen') _ ":  $class_name - " _ d.get('Bereitstellen'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Klassen') _ ":  $class_name - " _ loc('Bereitstellen'),
       menu     => 1,
       submenu  => "class",
-      info     => d.get('<p>Ihre Vorlagen müssen in Ihrem Heimatverzeichnis unter &bdquo;_bereitstellen -&gt; bereitstellen-Klasse&ldquo; abgelegt sein.</p> <p>Nach dem Betätigen der Schaltfläche &bdquo;Bereitstellen&ldquo; finden die Schüler/innen Ihre Vorlagen in ihrem Heimatverzeichnis unter &bdquo;__vorlagen -&gt; vorlagen-Klasse&ldquo;.</p>'),
+      info     => loc('<p>Ihre Vorlagen müssen in Ihrem Heimatverzeichnis unter &bdquo;_bereitstellen -&gt; bereitstellen-Klasse&ldquo; abgelegt sein.</p> <p>Nach dem Betätigen der Schaltfläche &bdquo;Bereitstellen&ldquo; finden die Schüler/innen Ihre Vorlagen in ihrem Heimatverzeichnis unter &bdquo;__vorlagen -&gt; vorlagen-Klasse&ldquo;.</p>'),
    }
 %]
 
@@ -18,21 +18,21 @@
 <option value="[% class_gid %]" selected>[% class_name %]</option>
 </optgroup>
 </select>
-<input type="submit" value="[% d.get('Wechseln') %]">
+<input type="submit" value="[% loc('Wechseln') %]">
 </p>
 </form>
 [% END %]
 
 
-<h2>[% d.get('Klassen') %] :: [% d.get('Bereitstellen') %]</h2>
+<h2>[% loc('Klassen') %] :: [% loc('Bereitstellen') %]</h2>
 
-<h3>[% d.get('Ausgewählte Klasse:') %] [% class_name %]</h3>
+<h3>[% loc('Ausgewählte Klasse:') %] [% class_name %]</h3>
 
 
 <form method="post" accept-charset="UTF-8">
 
 
-<h3>[% d.get('Vorlagen') %]</h3>
+<h3>[% loc('Vorlagen') %]</h3>
 
 [% IF teacher_share_files %]
 <ul>
@@ -42,10 +42,10 @@
 [% END %]
 </ul>
 [% ELSE %]
-<p>[% d.get('Keine Dateien') %]<p>
+<p>[% loc('Keine Dateien') %]<p>
 [% END %]
-<p><input type="submit" value="[% d.get('Ansicht aktualisieren') %]"></p>
+<p><input type="submit" value="[% loc('Ansicht aktualisieren') %]"></p>
 
 
-<p><input type="submit" name="handout" value="[% d.get('Bereitstellen') %]"></p>
+<p><input type="submit" name="handout" value="[% loc('Bereitstellen') %]"></p>
 </form>

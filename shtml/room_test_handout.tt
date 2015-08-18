@@ -1,29 +1,29 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('aktueller Raum') _ ":  $room - " _ d.get('Klassenarbeitsmodus'),
+      title    => loc('Schulkonsole') _ " - " _ loc('aktueller Raum') _ ":  $room - " _ loc('Klassenarbeitsmodus'),
       menu     => 1,
       submenu  => "room",
-      info     => d.get('<p>Falls zu Beginn der Klassenarbeit noch nicht alle Schüler angemeldet waren, können Sie über die Schaltfläche &bdquo;Anmeldestatus überprüfen&ldquo; die Ansicht aktualisieren.</p><p>Um die Ansicht der bereitzustellenden Dateien zu aktualisieren, klicken Sie einfach oben auf den Link &bdquo;Bereitstellen&ldquo;.</p><p>Mit Betätigen der Schaltfläche &bdquo;bereitstellen&ldquo; gelangen Sie zum nächsten Schritt. Gleichzeitig werden Ihre Dateien den Klassenarbeitsteilnehmern bereitgestellt.</p>'),
+      info     => loc('<p>Falls zu Beginn der Klassenarbeit noch nicht alle Schüler angemeldet waren, können Sie über die Schaltfläche &bdquo;Anmeldestatus überprüfen&ldquo; die Ansicht aktualisieren.</p><p>Um die Ansicht der bereitzustellenden Dateien zu aktualisieren, klicken Sie einfach oben auf den Link &bdquo;Bereitstellen&ldquo;.</p><p>Mit Betätigen der Schaltfläche &bdquo;bereitstellen&ldquo; gelangen Sie zum nächsten Schritt. Gleichzeitig werden Ihre Dateien den Klassenarbeitsteilnehmern bereitgestellt.</p>'),
    }
 %]
 
 [% INCLUDE "subsubmenu-room_test.inc.tt" %]
 
-<h2>[% d.get('Aktueller Raum') %]: [% room %]
-::  [% d.get('Klassenarbeitsmodus') %]</h2>
+<h2>[% loc('Aktueller Raum') %]: [% room %]
+::  [% loc('Klassenarbeitsmodus') %]</h2>
 
 <p>
-[% d.get('Nutzung:') %]
+[% loc('Nutzung:') %]
 
 [% IF editinguser %]
 [% editinguser %]
-[% d.get('unterrichtet in Raum') %]
+[% loc('unterrichtet in Raum') %]
 [% room %].
 [% IF endedittime %]
-[% d.get('Unterrichtsende um') %] [% endedittime %].
+[% loc('Unterrichtsende um') %] [% endedittime %].
 [% END %]
 </p>
 
-<p>[% d.get('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
+<p>[% loc('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
 
 <hr>
 
@@ -32,8 +32,8 @@
 
 <table id="roomhandout" class="liste">
 <tr>
-<th>[% d.get('Hostname') %]</th>
-<th>[% d.get('Login') %]</th>
+<th>[% loc('Hostname') %]</th>
+<th>[% loc('Login') %]</th>
 </tr>
 [% FOREACH w IN overview_workstations %]
 [% IF odd %][% odd=0 %]<tr class="odd">
@@ -49,10 +49,10 @@
 [% END %]
 </table>
 
-<p><input type="submit" value="[% d.get('Aktualisieren') %]"></p>
+<p><input type="submit" value="[% loc('Aktualisieren') %]"></p>
 
 
-<h3>[% d.get('Bereitzustellende Dateien') %]</h3>
+<h3>[% loc('Bereitzustellende Dateien') %]</h3>
 
 [% IF teacher_share_files %]
 <ul>
@@ -61,11 +61,11 @@
 	*[% END %][% tsf.name %]</li>
 [% END %]
 </ul>
-<p>[% d.get('Allen') %] <input type="submit" name="handouttest" value="[% d.get('bereitstellen') %]">
+<p>[% loc('Allen') %] <input type="submit" name="handouttest" value="[% loc('bereitstellen') %]">
 </p>
 [% ELSE %]
-<p>[% d.get('Keine Dateien') %]<p>
-<p><input type="submit" name="continue" value="[% d.get('weiter') %]">
+<p>[% loc('Keine Dateien') %]<p>
+<p><input type="submit" name="continue" value="[% loc('weiter') %]">
 </p>
 [% END %]
 

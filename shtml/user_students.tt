@@ -1,30 +1,30 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Benutzer') _ " - " _ d.get('Schülerliste pflegen'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Benutzer') _ " - " _ loc('Schülerliste pflegen'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Hier können Sie die aus dem Schulverwaltungsprogramm exportierte Datei &bdquo;schueler.txt&ldquo; ins System hochladen.</p><p>Zudem haben Sie hier die Möglichkeit, Änderungen an den Schülerdaten von Hand einzupflegen.</p>'),
+      info     => loc('<p>Hier können Sie die aus dem Schulverwaltungsprogramm exportierte Datei &bdquo;schueler.txt&ldquo; ins System hochladen.</p><p>Zudem haben Sie hier die Möglichkeit, Änderungen an den Schülerdaten von Hand einzupflegen.</p>'),
    }
 %]
 
-<h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('Schülerliste pflegen') %]</h2>
+<h2>[% loc('Benutzerverwaltung') %] :: [% loc('Schülerliste pflegen') %]</h2>
 
 <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
-<h3><label [% labelfor("studentsfilename") %]>[% d.get('Datei importieren') %]</label></h3>
+<h3><label [% labelfor("studentsfilename") %]>[% loc('Datei importieren') %]</label></h3>
 <p>
 <input type="file" id="studentsfilename" name="studentsfilename">
-<input type="submit" name="studentsupload" value="[% d.get('Hochladen') %]">
+<input type="submit" name="studentsupload" value="[% loc('Hochladen') %]">
 </p>
 </form>
 
 <hr>
 
 <form method="post" accept-charset="UTF-8">
-<h3><label [% labelfor("students") %]>[% d.get('Editieren') %]</label></h3>
+<h3><label [% labelfor("students") %]>[% loc('Editieren') %]</label></h3>
 
 <p>
 <textarea id="students" name="students" rows="20" cols="70">[% students %]</textarea>
 </p>
 
-<p><input type="submit" name="studentsedit" value="[% d.get('Änderungen speichern') %]"></p>
+<p><input type="submit" name="studentsedit" value="[% loc('Änderungen speichern') %]"></p>
 
 </form>

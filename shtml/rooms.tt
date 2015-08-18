@@ -1,12 +1,12 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Räume') _ " - " _ d.get('Standardeinstellungen'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Räume') _ " - " _ loc('Standardeinstellungen'),
       menu     => 1,
       submenu  => "rooms",
-      info     => d.get('<p>Legen Sie hier die Standardeinstellungen für die Workstations in den Räumen fest.</p><p>Um eine Ausnahme für eine Workstation anzulegen, muss ein Eintrag für den Raum hinzugefügt worden sein.</p><p>Um einen Eintrag zu löschen, setzen Sie das Häkchen in der entsprechenden Checkbox am Zeilenende.</p><p>Schliessen Sie die Aktion mit &bdquo;Änderungen übernehmen&ldquo; ab.</p><p>Um die Rechner in einem Raum oder einzelne Rechner zurückzusetzen, setzen Sie das Häkchen in der entsprechenden Checkbox und wählen die Aktion &bdquo;Auswahl zurücksetzen&ldquo;.</p>'),
+      info     => loc('<p>Legen Sie hier die Standardeinstellungen für die Workstations in den Räumen fest.</p><p>Um eine Ausnahme für eine Workstation anzulegen, muss ein Eintrag für den Raum hinzugefügt worden sein.</p><p>Um einen Eintrag zu löschen, setzen Sie das Häkchen in der entsprechenden Checkbox am Zeilenende.</p><p>Schliessen Sie die Aktion mit &bdquo;Änderungen übernehmen&ldquo; ab.</p><p>Um die Rechner in einem Raum oder einzelne Rechner zurückzusetzen, setzen Sie das Häkchen in der entsprechenden Checkbox und wählen die Aktion &bdquo;Auswahl zurücksetzen&ldquo;.</p>'),
    }
 %]
 
-<h2>[% d.get('Standardeinstellungen für Räume') %]</h2>
+<h2>[% loc('Standardeinstellungen für Räume') %]</h2>
 
 <form method="post" accept-charset="UTF-8">
 
@@ -18,41 +18,41 @@
 <colgroup span="2" width="3%"></colgroup>
 <tr>
 <th></th>
-<th>[% d.get('Internet') %]</th>
-<th>[% d.get('Intranet') %]</th>
-<th>[% d.get('Webfilter') %]</th>
+<th>[% loc('Internet') %]</th>
+<th>[% loc('Intranet') %]</th>
+<th>[% loc('Webfilter') %]</th>
 <th colspan="2"></th>
 <th><img title="zurücksetzen" src="img/reset.png" alt="0"></th>
 <th><img title="löschen" src="img/trash.png" alt="X"></th>
 </tr>
 <tr>
-<td>[% d.get('default') %]</td>
+<td>[% loc('default') %]</td>
 <td>
 <select name="default_internet">
 <option value="-1"[% IF default_internet == "-1" %] selected[% END %]>-</option>
-<option value="1"[% IF default_internet == "1" %] selected[% END %]>[% d.get('An') %]</option>
-<option value="0"[% IF default_internet == "0" %] selected[% END %]>[% d.get('Aus') %]</option>
+<option value="1"[% IF default_internet == "1" %] selected[% END %]>[% loc('An') %]</option>
+<option value="0"[% IF default_internet == "0" %] selected[% END %]>[% loc('Aus') %]</option>
 </select>
 </td>
 <td>
 <select name="default_intranet">
 <option value="-1"[% IF default_intranet == "-1" %] selected[% END %]>-</option>
-<option value="1"[% IF default_intranet == "1" %] selected[% END %]>[% d.get('An') %]</option>
-<option value="0"[% IF default_intranet == "0" %] selected[% END %]>[% d.get('Aus') %]</option>
+<option value="1"[% IF default_intranet == "1" %] selected[% END %]>[% loc('An') %]</option>
+<option value="0"[% IF default_intranet == "0" %] selected[% END %]>[% loc('Aus') %]</option>
 </select>
 </td>
 <td>
 <select name="default_webfilter">
 <option value="-1"[% IF default_webfilter == "-1" %] selected[% END %]>-</option>
-<option value="1"[% IF default_webfilter == "1" %] selected[% END %]>[% d.get('An') %]</option>
-<option value="0"[% IF default_webfilter == "0" %] selected[% END %]>[% d.get('Aus') %]</option>
+<option value="1"[% IF default_webfilter == "1" %] selected[% END %]>[% loc('An') %]</option>
+<option value="0"[% IF default_webfilter == "0" %] selected[% END %]>[% loc('Aus') %]</option>
 </select>
 </td>
 [% IF defaultrooms %]<td><select name="default_add">
 [% FOREACH dr IN defaultrooms %]	<option value="[% dr %]">[% dr %]</option>
 [% END %]
 </select></td>
-<td><input type="submit" name="add_room" value="[% d.get('Ausnahme hinzufügen') %]"></td>
+<td><input type="submit" name="add_room" value="[% loc('Ausnahme hinzufügen') %]"></td>
 [% ELSE %]
 <td colspan="2"></td>
 [% END %]
@@ -80,22 +80,22 @@
 	<td>
 		<select name="[% nd.name %]_room_internet">
 		<option value="-1"[% IF valueof("${nd.name}_room_internet")=="-1" %] selected[% END %]>-</option>
-		<option value="1"[% IF valueof("${nd.name}_room_internet")=="1" %] selected[% END %]>[% d.get('An') %]</option>
-		<option value="0"[% IF valueof("${nd.name}_room_internet")=="0" %] selected[% END %]>[% d.get('Aus') %]</option>
+		<option value="1"[% IF valueof("${nd.name}_room_internet")=="1" %] selected[% END %]>[% loc('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_room_internet")=="0" %] selected[% END %]>[% loc('Aus') %]</option>
 		</select>
 	</td>
 	<td>
 		<select name="[% nd.name %]_room_intranet">
 		<option value="-1"[% IF valueof("${nd.name}_room_intranet")=="-1" %] selected[% END %]>-</option>
-		<option value="1"[% IF valueof("${nd.name}_room_intranet")=="1" %] selected[% END %]>[% d.get('An') %]</option>
-		<option value="0"[% IF valueof("${nd.name}_room_intranet")=="0" %] selected[% END %]>[% d.get('Aus') %]</option>
+		<option value="1"[% IF valueof("${nd.name}_room_intranet")=="1" %] selected[% END %]>[% loc('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_room_intranet")=="0" %] selected[% END %]>[% loc('Aus') %]</option>
 		</select>
 	</td>
 	<td>
 		<select name="[% nd.name %]_room_webfilter">
 		<option value="-1"[% IF valueof("${nd.name}_room_webfilter")=="-1" %] selected[% END %]>-</option>
-		<option value="1"[% IF valueof("${nd.name}_room_webfilter")=="1" %] selected[% END %]>[% d.get('An') %]</option>
-		<option value="0"[% IF valueof("${nd.name}_room_webfilter")=="0" %] selected[% END %]>[% d.get('Aus') %]</option>
+		<option value="1"[% IF valueof("${nd.name}_room_webfilter")=="1" %] selected[% END %]>[% loc('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_room_webfilter")=="0" %] selected[% END %]>[% loc('Aus') %]</option>
 		</select>
 	</td>
 	[% IF nd.hosts %]
@@ -104,7 +104,7 @@
 			<option value="[% h %]">[% h %]</option>
 		[% END %]
 	    </select></td>
-	    <td><input type="submit" name="[% nd.name %]_add_host" value="[% d.get('Ausnahme hinzufügen') %]"></td>
+	    <td><input type="submit" name="[% nd.name %]_add_host" value="[% loc('Ausnahme hinzufügen') %]"></td>
 	[% ELSE %]
 	<td colspan="2"></td>
 	[% END %]
@@ -117,22 +117,22 @@
 	<td>
 		<select name="[% nd.name %]_internet">
 		<option value="-1"[% IF valueof("${nd.name}_internet")=="-1" %] selected[% END %]>-</option>
-		<option value="1"[% IF valueof("${nd.name}_internet")=="1" %] selected[% END %]>[% d.get('An') %]</option>
-		<option value="0"[% IF valueof("${nd.name}_internet")=="0" %] selected[% END %]>[% d.get('Aus') %]</option>
+		<option value="1"[% IF valueof("${nd.name}_internet")=="1" %] selected[% END %]>[% loc('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_internet")=="0" %] selected[% END %]>[% loc('Aus') %]</option>
 		</select>
 	</td>
 	<td>
 		<select name="[% nd.name %]_intranet">
 		<option value="-1"[% IF valueof("${nd.name}_intranet")=="-1" %] selected[% END %]>-</option>
-		<option value="1"[% IF valueof("${nd.name}_intranet")=="1" %] selected[% END %]>[% d.get('An') %]</option>
-		<option value="0"[% IF valueof("${nd.name}_intranet")=="0" %] selected[% END %]>[% d.get('Aus') %]</option>
+		<option value="1"[% IF valueof("${nd.name}_intranet")=="1" %] selected[% END %]>[% loc('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_intranet")=="0" %] selected[% END %]>[% loc('Aus') %]</option>
 		</select>
 	</td>
 	<td>
 		<select name="[% nd.name %]_webfilter">
 		<option value="-1"[% IF valueof("${nd.name}_webfilter")=="-1" %] selected[% END %]>-</option>
-		<option value="1"[% IF valueof("${nd.name}_webfilter")=="1" %] selected[% END %]>[% d.get('An') %]</option>
-		<option value="0"[% IF valueof("${nd.name}_webfilter")=="0" %] selected[% END %]>[% d.get('Aus') %]</option>
+		<option value="1"[% IF valueof("${nd.name}_webfilter")=="1" %] selected[% END %]>[% loc('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_webfilter")=="0" %] selected[% END %]>[% loc('Aus') %]</option>
 		</select>
 	</td>
 	<td colspan="2"></td>
@@ -146,11 +146,11 @@
 
 <p>
 [% IF nondefaults %]
-<input type="submit" name="reset" value="[% d.get('Auswahl zurücksetzen') %]">
+<input type="submit" name="reset" value="[% loc('Auswahl zurücksetzen') %]">
 [% ELSE %]
-<input type="submit" name="reset" value="[% d.get('Auswahl zurücksetzen') %]" disabled>
+<input type="submit" name="reset" value="[% loc('Auswahl zurücksetzen') %]" disabled>
 [% END %]
-<input type="submit" name="accept" value="[% d.get('Änderungen übernehmen') %]">
+<input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
 </p>
 
 </form>

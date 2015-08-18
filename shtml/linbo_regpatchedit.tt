@@ -1,41 +1,41 @@
 [% page = {
-      title   => d.get('Schulkonsole') _ " - " _ d.get('Linbo'),
+      title   => loc('Schulkonsole') _ " - " _ loc('Linbo'),
       menu     => 1,
       submenu  => "linbo",
-      info     => d.get('<p>Klicken Sie auf den Namen einer Registrypatch-Datei, um sie zu editieren.</p><p>Wollen Sie eine neue Registrypatch-Datei erstellen, wählen Sie zunächst die Image-Datei aus dem oberen Dropdown-Menü. Im unteren Dropdown-Menü wählen Sie die Registrypatch-Datei aus, die als Vorlage für die neue Datei dienen soll.</p>'),
+      info     => loc('<p>Klicken Sie auf den Namen einer Registrypatch-Datei, um sie zu editieren.</p><p>Wollen Sie eine neue Registrypatch-Datei erstellen, wählen Sie zunächst die Image-Datei aus dem oberen Dropdown-Menü. Im unteren Dropdown-Menü wählen Sie die Registrypatch-Datei aus, die als Vorlage für die neue Datei dienen soll.</p>'),
    }
 %]
 
 
 [% IF deletefilename %]
 
-<h2>[% d.get('Registrypatch-Dateien der Rechnergruppen editieren') %]</h2>
+<h2>[% loc('Registrypatch-Dateien der Rechnergruppen editieren') %]</h2>
 
-<h3>[% d.get('Bitte bestätigen') %]</h3>
+<h3>[% loc('Bitte bestätigen') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
-<p>[% deletefilename %] [% d.get('wirklich löschen?') %]</p>
+<p>[% deletefilename %] [% loc('wirklich löschen?') %]</p>
 
-<p><input type="hidden" name="filename" value="[% deletefilename %]"><input type="submit" name="delete" value="[% d.get('Bestätigen') %]">
-<input type="submit" name="abort" value="[% d.get('Abbrechen') %]"></p>
+<p><input type="hidden" name="filename" value="[% deletefilename %]"><input type="submit" name="delete" value="[% loc('Bestätigen') %]">
+<input type="submit" name="abort" value="[% loc('Abbrechen') %]"></p>
 
 </form>
 
 [% ELSE %]
 [% IF editfilename %]
 
-<h2>[% d.get('Registrypatch-Dateien der Rechnergruppen editieren') %]: [% editfilename %]</h2>
+<h2>[% loc('Registrypatch-Dateien der Rechnergruppen editieren') %]: [% editfilename %]</h2>
 
 <form method="post" accept-charset="UTF-8">
 <p><textarea wrap="off" name="regpatch" rows="20" cols="70"></textarea></p>
-<p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% d.get('Änderungen speichern') %]">
-<input type="submit" name="abort" value="[% d.get('Schließen') %]"></p>
+<p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% loc('Änderungen speichern') %]">
+<input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
 
 </form>
 
 [% ELSE %]
 
-<h2>[% d.get('Registrypatch-Dateien der Rechnergruppen editieren') %]</h2>
+<h2>[% loc('Registrypatch-Dateien der Rechnergruppen editieren') %]</h2>
 
 [% IF regpatches %]
 <form method="post" accept-charset="UTF-8">
@@ -44,27 +44,27 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td><input type="submit" name="[% rp %]_edit" value="[% rp %]"></td>
-<td><input type="submit" name="[% rp %]_delete" value="[% d.get('löschen') %]"></td>
+<td><input type="submit" name="[% rp %]_delete" value="[% loc('löschen') %]"></td>
 </tr>
 [% END %]
 </table>
 </form>
 [% ELSE %]
-<p>[% d.get('Es sind keine Registrypatch-Dateien vorhanden.') %]</p>
+<p>[% loc('Es sind keine Registrypatch-Dateien vorhanden.') %]</p>
 [% END %]
 
 
-<h2>[% d.get('Registrypatch-Datei erstellen') %]</h2>
+<h2>[% loc('Registrypatch-Datei erstellen') %]</h2>
 
 [% IF images %]
 [% IF hastemplates %]
 <form method="post" accept-charset="UTF-8">
 
-<p>[% d.get('Für') %]
+<p>[% loc('Für') %]
 <select name="image">[% FOREACH i IN images %]
 <option value="[% i %]">[% i %]</option>
 [% END %]</select>
-<input type="submit" name="create" value="[% d.get('Registrypatch-Datei erstellen aus') %]">
+<input type="submit" name="create" value="[% loc('Registrypatch-Datei erstellen aus') %]">
 <select name="template">
 [% IF regpatches %]
 <optgroup label="Verwendete Dateien">[% FOREACH rp IN regpatches %]
@@ -79,13 +79,13 @@
 
 </form>
 [% ELSE %]
-<p>[% d.get('Es sind keine Templateedateien vorhanden.') %]</p>
+<p>[% loc('Es sind keine Templateedateien vorhanden.') %]</p>
 [% END %]
 [% ELSE %]
 [% IF regpatches %]
-<p>[% d.get('Es gibt keine Imagedateien ohne Registrypatch.') %]</p>
+<p>[% loc('Es gibt keine Imagedateien ohne Registrypatch.') %]</p>
 [% ELSE %]
-<p>[% d.get('Es gibt keine Imagedateien.') %]</p>
+<p>[% loc('Es gibt keine Imagedateien.') %]</p>
 [% END %]
 [% END %]
 

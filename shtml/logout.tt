@@ -1,9 +1,9 @@
 [% page = {
-      title   => d.get('Schulkonsole') _ " - " _ d.get('Logout'),
-      info    => d.get('<p></p>'),
+      title   => loc('Schulkonsole') _ " - " _ loc('Logout'),
+      info    => loc('<p></p>'),
    }
 %]
 
-<h2>[% d.get('Abgemeldet') %]</h2>
+<h2>[% loc('Abgemeldet') %]</h2>
 <p>
 </p>

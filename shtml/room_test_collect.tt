@@ -1,42 +1,42 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('aktueller Raum') _ ":  $room - " _ d.get('Klassenarbeitsmodus'),
+      title    => loc('Schulkonsole') _ " - " _ loc('aktueller Raum') _ ":  $room - " _ loc('Klassenarbeitsmodus'),
       menu     => 1,
       submenu  => "room",
-      info     => d.get('<p>Die Schüler/innen müssen ihre Ergebnisse im Heimatverzeichnis der Arbeitsstation im Ordner &bdquo;__einsammeln&ldquo; ablegen, damit sie hier aufgelistet werden und eingesammelt werden können. Laden Sie die Seite eventuell neu, um den aktuellen Status zu sehen.</p><p>&bdquo;Kopien einsammeln&ldquo; sammelt den aktuellen Stand der Ergebnisse ein.</p><p>&bdquo;Einsammeln und beenden&ldquo; sammelt alle Ergebnisse ein, löscht den Inhalt des Ordners &bdquo;__einsammeln&ldquo; der Arbeitsstation und beendet die Klassenarbeit.</p>'),
+      info     => loc('<p>Die Schüler/innen müssen ihre Ergebnisse im Heimatverzeichnis der Arbeitsstation im Ordner &bdquo;__einsammeln&ldquo; ablegen, damit sie hier aufgelistet werden und eingesammelt werden können. Laden Sie die Seite eventuell neu, um den aktuellen Status zu sehen.</p><p>&bdquo;Kopien einsammeln&ldquo; sammelt den aktuellen Stand der Ergebnisse ein.</p><p>&bdquo;Einsammeln und beenden&ldquo; sammelt alle Ergebnisse ein, löscht den Inhalt des Ordners &bdquo;__einsammeln&ldquo; der Arbeitsstation und beendet die Klassenarbeit.</p>'),
    }
 %]
 
 [% INCLUDE "subsubmenu-room_test.inc.tt" %]
 
-<h2>[% d.get('Aktueller Raum') %]: [% room %]
-::  [% d.get('Klassenarbeitsmodus') %]</h2>
+<h2>[% loc('Aktueller Raum') %]: [% room %]
+::  [% loc('Klassenarbeitsmodus') %]</h2>
 
 <p>
-[% d.get('Nutzung:') %]
+[% loc('Nutzung:') %]
 
 [% IF editinguser %]
 [% editinguser %]
-[% d.get('unterrichtet in Raum') %]
+[% loc('unterrichtet in Raum') %]
 [% room %].
 [% IF endedittime %]
-[% d.get('Unterrichtsende um') %] [% endedittime %].
+[% loc('Unterrichtsende um') %] [% endedittime %].
 [% END %]
 </p>
 
-<p>[% d.get('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
+<p>[% loc('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
 
 <hr>
 
 <form method="post" accept-charset="UTF-8">
 
-<p><input type="submit" name="collectcopy" value="[% d.get('Kopien einsammeln') %]">
-   <input type="submit" name="collectmove" value="[% d.get('Einsammeln und beenden') %]"></p>
+<p><input type="submit" name="collectcopy" value="[% loc('Kopien einsammeln') %]">
+   <input type="submit" name="collectmove" value="[% loc('Einsammeln und beenden') %]"></p>
 
 <table id="roomcollect" class="liste">
 <tr>
-<th>[% d.get('Hostname') %]</th>
-<th>[% d.get('Login') %]</th>
-<th>[% d.get('Dateien') %]</th>
+<th>[% loc('Hostname') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Dateien') %]</th>
 </tr>
 [% FOREACH w IN overview_workstations %]
 [% IF odd %][% odd=0 %]<tr class="odd">
@@ -59,10 +59,10 @@
 [% END %]
 </table>
 
-<p><input type="submit" name="collectcopy" value="[% d.get('Kopien einsammeln') %]">
-   <input type="submit" name="collectmove" value="[% d.get('Einsammeln und beenden') %]"></p>
+<p><input type="submit" name="collectcopy" value="[% loc('Kopien einsammeln') %]">
+   <input type="submit" name="collectmove" value="[% loc('Einsammeln und beenden') %]"></p>
 
 
-<p><input type="submit" value="[% d.get('Aktualisieren') %]"></p>
+<p><input type="submit" value="[% loc('Aktualisieren') %]"></p>
 
 </form>

@@ -1,24 +1,24 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Quota'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Quota'),
       menu     => 1,
       submenu  => "quotas",
-      info     => d.get('<p>Wählen Sie aus in welchem Bereich Sie Quota-Anpassungen vornehmen wollen.</p>'),
+      info     => loc('<p>Wählen Sie aus in welchem Bereich Sie Quota-Anpassungen vornehmen wollen.</p>'),
    }
 %]
 
-<h2>[% d.get('Quota') %]</h2>
+<h2>[% loc('Quota') %]</h2>
 
 
 [% IF quotaactivated %]
     <p>
-    [% IF link_quotas_teachers %]<a [% dohref("quotas_teachers") %]>[% d.get('Lehrer') %]</a></br>[% END %]
-    [% IF link_quotas_classes %]<a [% dohref("quotas_classes") %]>[% d.get('Klassen') %]</a></br>[% END %]
-    [% IF link_quotas_projects %]<a [% dohref("quotas_projects") %]>[% d.get('Projekte') %]</a></br>[% END %]
-    [% IF link_quotas_others %]<a [% dohref("quotas_others") %]>[% d.get('Sonderquota') %]</a></br>[% END %]
+    [% IF link_quotas_teachers %]<a [% dohref("quotas_teachers") %]>[% loc('Lehrer') %]</a></br>[% END %]
+    [% IF link_quotas_classes %]<a [% dohref("quotas_classes") %]>[% loc('Klassen') %]</a></br>[% END %]
+    [% IF link_quotas_projects %]<a [% dohref("quotas_projects") %]>[% loc('Projekte') %]</a></br>[% END %]
+    [% IF link_quotas_others %]<a [% dohref("quotas_others") %]>[% loc('Sonderquota') %]</a></br>[% END %]
     </p>
 [% ELSE %]
-    <p>[% d.get('Quota sind nicht aktiviert.') %]</p>
+    <p>[% loc('Quota sind nicht aktiviert.') %]</p>
     [% IF link_settings %]
-        <p>[% d.get('Gehen Sie auf <a href="settings">Einstellungen</a> um Quota zu aktivieren.') %]</p>
+        <p>[% loc('Gehen Sie auf <a href="settings">Einstellungen</a> um Quota zu aktivieren.') %]</p>
     [% END %]
 [% END %]

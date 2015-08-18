@@ -1,41 +1,41 @@
 [% page = {
-      title   => d.get('Schulkonsole') _ " - " _ d.get('Linbo'),
+      title   => loc('Schulkonsole') _ " - " _ loc('Linbo'),
       menu     => 1,
       submenu  => "linbo",
-      info     => d.get('.'),
+      info     => loc('.'),
    }
 %]
 
 
 [% IF deletefilename %]
 
-<h2>[% d.get('PXE-Start-Dateien der Rechnergruppen editieren') %]</h2>
+<h2>[% loc('PXE-Start-Dateien der Rechnergruppen editieren') %]</h2>
 
-<h3>[% d.get('Bitte bestätigen') %]</h3>
+<h3>[% loc('Bitte bestätigen') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
-<p>[% deletefilename %] [% d.get('wirklich löschen?') %]</p>
+<p>[% deletefilename %] [% loc('wirklich löschen?') %]</p>
 
-<p><input type="hidden" name="filename" value="[% deletefilename %]"><input type="submit" name="delete" value="[% d.get('Bestätigen') %]">
-<input type="submit" name="abort" value="[% d.get('Abbrechen') %]"></p>
+<p><input type="hidden" name="filename" value="[% deletefilename %]"><input type="submit" name="delete" value="[% loc('Bestätigen') %]">
+<input type="submit" name="abort" value="[% loc('Abbrechen') %]"></p>
 
 </form>
 
 [% ELSE %]
 [% IF editfilename %]
 
-<h2>[% d.get('PXE-Start-Dateien der Rechnergruppen editieren') %]: [% editfilename %]</h2>
+<h2>[% loc('PXE-Start-Dateien der Rechnergruppen editieren') %]: [% editfilename %]</h2>
 
 <form method="post" accept-charset="UTF-8">
 <p><textarea wrap="off" name="pxestart" rows="20" cols="70">[% pxestart %]</textarea></p>
-<p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% d.get('Änderungen speichern') %]">
-<input type="submit" name="abort" value="[% d.get('Schließen') %]"></p>
+<p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% loc('Änderungen speichern') %]">
+<input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
 
 </form>
 
 [% ELSE %]
 
-<h2>[% d.get('PXE-Start-Dateien der Rechnergruppen editieren') %]</h2>
+<h2>[% loc('PXE-Start-Dateien der Rechnergruppen editieren') %]</h2>
 
 [% IF pxestarts %]
 <form method="post" accept-charset="UTF-8">
@@ -44,13 +44,13 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td><input type="submit" name="[% p %]_edit" value="[% p %]"></td>
-<td><input type="submit" name="[% p %]_delete" value="[% d.get('löschen') %]"></td>
+<td><input type="submit" name="[% p %]_delete" value="[% loc('löschen') %]"></td>
 </tr>
 [% END %]
 </table>
 </form>
 [% ELSE %]
-<p>[% d.get('Es sind keine PXE-Start-Dateien vorhanden.') %]</p>
+<p>[% loc('Es sind keine PXE-Start-Dateien vorhanden.') %]</p>
 [% END %]
 
 

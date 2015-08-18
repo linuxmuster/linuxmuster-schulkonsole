@@ -1,65 +1,65 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Hosts'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Hosts'),
       classes  => "widecontent",
       menu     => 1,
-      info     => d.get('<p>Hier können Sie die Liste der importierten Arbeitsstationen  bearbeiten.</p><p>Ändern Sie einfach die entsprechenden Felder in der Liste.</p><p>Für einen neuen Rechner füllen Sie die nächste freie Zeile aus.</p><p>Um einen Eintrag zu löschen, setzen Sie das Häkchen in der entsprechenden Checkbox am Zeilenende.</p><p>Stellen Sie dem Raumnamen ein # voran, um einen Eintrag auszukommentieren und entfernen Sie ein vorangestelltes #, um einen auskommentierten Eintrag wieder zu aktivieren.</p><p>Schliessen Sie die Aktion mit &bdquo;Änderungen übernehmen&ldquo;  ab.</p>'),
+      info     => loc('<p>Hier können Sie die Liste der importierten Arbeitsstationen  bearbeiten.</p><p>Ändern Sie einfach die entsprechenden Felder in der Liste.</p><p>Für einen neuen Rechner füllen Sie die nächste freie Zeile aus.</p><p>Um einen Eintrag zu löschen, setzen Sie das Häkchen in der entsprechenden Checkbox am Zeilenende.</p><p>Stellen Sie dem Raumnamen ein # voran, um einen Eintrag auszukommentieren und entfernen Sie ein vorangestelltes #, um einen auskommentierten Eintrag wieder zu aktivieren.</p><p>Schliessen Sie die Aktion mit &bdquo;Änderungen übernehmen&ldquo;  ab.</p>'),
    }
 %]
 
-<h2>[% d.get('Hosts') %]</h2>
+<h2>[% loc('Hosts') %]</h2>
 
 <form method="post" accept-charset="UTF-8">
 
 [% IF isimporting %]
-    <p>[% d.get('Importieren läuft.') %]</p>
+    <p>[% loc('Importieren läuft.') %]</p>
     [% IF logimport %]
         <pre>[% logimport %]</pre>
-        <p><input type="submit" name="showlogimport" value="[% d.get('Aktualisieren') %]"></p>
+        <p><input type="submit" name="showlogimport" value="[% loc('Aktualisieren') %]"></p>
     [% ELSE %]
-        <p><input type="submit" name="showlogimport" value="[% d.get('Letzte Logdatei ansehen') %]"></p>
+        <p><input type="submit" name="showlogimport" value="[% loc('Letzte Logdatei ansehen') %]"></p>
     [% END %]
 [% ELSE %]
     [% IF unconfigured %]
         <form method="post" accept-charset="UTF-8">
-        <p class="important">[% d.get('Die Liste der konfigurierten Hosts stimmt nicht mit den tatsächlich im System vorhandenen Hosts überein.') %]</p>
-        <p><input type="submit" name="import" value="[% d.get('Hosts jetzt übernehmen') %]"></p>
+        <p class="important">[% loc('Die Liste der konfigurierten Hosts stimmt nicht mit den tatsächlich im System vorhandenen Hosts überein.') %]</p>
+        <p><input type="submit" name="import" value="[% loc('Hosts jetzt übernehmen') %]"></p>
         </form>
     [% ELSIF unimported %]
         <form method="post" accept-charset="UTF-8">
-        <p class="important">[% d.get('Es wurden noch nicht alle Hosts in das System übernommen.') %]</p>
-        <p><input type="submit" name="import" value="[% d.get('Hosts jetzt übernehmen') %]"></p>
+        <p class="important">[% loc('Es wurden noch nicht alle Hosts in das System übernommen.') %]</p>
+        <p><input type="submit" name="import" value="[% loc('Hosts jetzt übernehmen') %]"></p>
         </form>
     [% END %]
 
     [% IF logimport %]
         <pre>[% logimport %]</pre>
-        <p><input type="submit" name="showlogimport" value="[% d.get('Aktualisieren') %]"></p>
+        <p><input type="submit" name="showlogimport" value="[% loc('Aktualisieren') %]"></p>
     [% ELSE %]
-        <p><input type="submit" name="showlogimport" value="[% d.get('Letzte Logdatei ansehen') %]"></p>
+        <p><input type="submit" name="showlogimport" value="[% loc('Letzte Logdatei ansehen') %]"></p>
     [% END %]
 
     <p></p>
-    <h2>[% d.get('Kommentare bearbeiten') %]</h2>
+    <h2>[% loc('Kommentare bearbeiten') %]</h2>
 
     <p><textarea wrap="off" name="commentlines" rows="5" cols="100">[% commentlines %]</textarea></p>
-    <p><input type="submit" name="accept" value="[% d.get('Änderungen übernehmen') %]">
+    <p><input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
     </p>
 
     <p></p>
-    <h2>[% d.get('Rechner bearbeiten') %]</h2>
+    <h2>[% loc('Rechner bearbeiten') %]</h2>
 
     [% lfdnr=1 %]
     <table id="hosts" class="liste">
     <tr>
     <th>Nr.</th>
-    <th><a [% dohref("$newsort.room") %]>[% sort.room %][% d.get('Raum') %]</a></th>
-    <th><a [% dohref("$newsort.name") %]>[% sort.name %][% d.get('Hostname') %]</a></th>
-    <th><a [% dohref("$newsort.groups") %]>[% sort.groups %][% d.get('Gruppen') %]</a></th>
-    <th><a [% dohref("$newsort.mac") %]>[% sort.mac %][% d.get('MAC') %]</a></th>
-    <th><a [% dohref("$newsort.ip") %]>[% sort.ip %][% d.get('IP') %]</a></th>
-    <th><a [% dohref("$newsort.pxe") %]>[% sort.pxe %][% d.get('PXE') %]</a></th>
-    <th><a [% dohref("$newsort.opts") %]>[% sort.opts %][% d.get('Optionen') %]</a></th>
-    <th class="wsdel" title="löschen">[% d.get('X') %]</th>
+    <th><a [% dohref("$newsort.room") %]>[% sort.room %][% loc('Raum') %]</a></th>
+    <th><a [% dohref("$newsort.name") %]>[% sort.name %][% loc('Hostname') %]</a></th>
+    <th><a [% dohref("$newsort.groups") %]>[% sort.groups %][% loc('Gruppen') %]</a></th>
+    <th><a [% dohref("$newsort.mac") %]>[% sort.mac %][% loc('MAC') %]</a></th>
+    <th><a [% dohref("$newsort.ip") %]>[% sort.ip %][% loc('IP') %]</a></th>
+    <th><a [% dohref("$newsort.pxe") %]>[% sort.pxe %][% loc('PXE') %]</a></th>
+    <th><a [% dohref("$newsort.opts") %]>[% sort.opts %][% loc('Optionen') %]</a></th>
+    <th class="wsdel" title="löschen">[% loc('X') %]</th>
     </tr>
     [% FOREACH w IN workstations %]
         <tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
@@ -70,10 +70,10 @@
         <td><input name="[% w %]_mac" [% dovalue("${w}_mac") %]" size="18" maxlength="17"></td>
         <td><input name="[% w %]_ip" [% dovalue("${w}_ip") %]" size="17" maxlength="15"></td>
         <td><select class="wspxe" name="[% w %]_pxe">
-        <option value="1" [% IF valueof("${w}_pxe") == "1" %]selected[% END %]>[% d.get('PXE') %]</option>
-        <option value="2" [% IF valueof("${w}_pxe") == "2" %]selected[% END %]>[% d.get('PXE mit Opsi') %]</option>
-        <option value="3" [% IF valueof("${w}_pxe") == "3" %]selected[% END %]>[% d.get('Opsi PXE') %]</option>
-        <option value="0" [% IF valueof("${w}_pxe") == "0" %]selected[% END %]>[% d.get('Aus') %]</option>
+        <option value="1" [% IF valueof("${w}_pxe") == "1" %]selected[% END %]>[% loc('PXE') %]</option>
+        <option value="2" [% IF valueof("${w}_pxe") == "2" %]selected[% END %]>[% loc('PXE mit Opsi') %]</option>
+        <option value="3" [% IF valueof("${w}_pxe") == "3" %]selected[% END %]>[% loc('Opsi PXE') %]</option>
+        <option value="0" [% IF valueof("${w}_pxe") == "0" %]selected[% END %]>[% loc('Aus') %]</option>
         </select></td>
         <td><select class="wsopts" name="[% w %]_opts">
         <option value="" [% IF valueof("${w}_opts") == "" %]selected[% END %]>-</option>
@@ -94,10 +94,10 @@
         <td><input name="[% a %]_addmac" size="18" maxlength="17"></td>
         <td><input name="[% a %]_addip" size="17" maxlength="15"></td>
         <td><select name="[% a %]_addpxe">
-        <option value="1">[% d.get('PXE') %]</option>
-        <option value="2">[% d.get('PXE mit Opsi') %]</option>
-        <option value="3">[% d.get('Opsi PXE') %]</option>
-        <option value="0" selected>[% d.get('Aus') %]</option>
+        <option value="1">[% loc('PXE') %]</option>
+        <option value="2">[% loc('PXE mit Opsi') %]</option>
+        <option value="3">[% loc('Opsi PXE') %]</option>
+        <option value="0" selected>[% loc('Aus') %]</option>
         </select></td>
         <td><select name="[% a %]_addopts">
         <option value="" selected>-</option>
@@ -117,13 +117,13 @@
     <option value="10">10</option>
     <option value="30">30</option>
     </select></td>
-    <td colspan="7"><input type="submit" name="addrows" value="[% d.get('Zeilen hinzufügen') %]"></td>
+    <td colspan="7"><input type="submit" name="addrows" value="[% loc('Zeilen hinzufügen') %]"></td>
     </tr>
     </table>
 
     <p>
-    <input type="submit" name="accept" value="[% d.get('Änderungen übernehmen') %]">
-    <input type="reset" value="[% d.get('Zurücksetzen') %]">
+    <input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
+    <input type="reset" value="[% loc('Zurücksetzen') %]">
     </p>
 
     </form>
