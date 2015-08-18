@@ -1,30 +1,30 @@
 [% IF link_quotas %]
-	<a class="separator" [% dohref("quotas") %]>[% d.get('Start') %]</a>
+	<a class="separator" [% dohref("quotas") %]>[% loc('Start') %]</a>
 [% END %]
 [% IF quotaactivated %]
 [% IF link_quotas_teachers %]
-	<a [% dohref("quotas_teachers") %]>[% d.get('Lehrer') %]</a>
+	<a [% dohref("quotas_teachers") %]>[% loc('Lehrer') %]</a>
 [% END %]
 [% IF link_quotas_classes %]
-	<a [% dohref("quotas_classes") %]>[% d.get('Klassen') %]</a>
+	<a [% dohref("quotas_classes") %]>[% loc('Klassen') %]</a>
 [% END %]
 [% IF link_quotas_projects %]
-	<a [% dohref("quotas_projects") %]>[% d.get('Projekte') %]</a>
+	<a [% dohref("quotas_projects") %]>[% loc('Projekte') %]</a>
 [% END %]
 [% IF link_quotas_others %]
-	<a class="end" [% dohref("quotas_others") %]>[% d.get('Sonderquota') %]</a>
+	<a class="end" [% dohref("quotas_others") %]>[% loc('Sonderquota') %]</a>
 [% END %]
 [% ELSE %]
 [% IF link_quotas_teachers %]
-	<span class="disabled">[% d.get('Lehrer') %]</span>
+	<span class="disabled">[% loc('Lehrer') %]</span>
 [% END %]
 [% IF link_quotas_classes %]
-	<span class="disabled">[% d.get('Klassen') %]</span>
+	<span class="disabled">[% loc('Klassen') %]</span>
 [% END %]
 [% IF link_quotas_projects %]
-	<span class="disabled">[% d.get('Projekte') %]</span>
+	<span class="disabled">[% loc('Projekte') %]</span>
 [% END %]
 [% IF link_quotas_others %]
-	<span class="disabledend">[% d.get('Sonderquota') %]</span>
+	<span class="disabledend">[% loc('Sonderquota') %]</span>
 [% END %]
 [% END %]

@@ -1,23 +1,23 @@
 [% IF link_room %]
-	<a class="separator" [% dohref("room") %]>[% d.get('Start') %]</a>
+	<a class="separator" [% dohref("room") %]>[% loc('Start') %]</a>
 [% END %]
 [% IF edit %]
 [% IF link_room_shares %]
-	<a [% dohref("room_shares") %]>[% d.get('Tauschen') %]</a>
+	<a [% dohref("room_shares") %]>[% loc('Tauschen') %]</a>
 [% END %]
 [% IF exammode %]
 [% IF link_room_handout %]
-	<span class="disabled">[% d.get('Austeilen') %]</span>
+	<span class="disabled">[% loc('Austeilen') %]</span>
 [% END %]
 [% IF link_room_collect %]
-	<span class="disabledseparator">[% d.get('Einsammeln') %]</span>
+	<span class="disabledseparator">[% loc('Einsammeln') %]</span>
 [% END %]
 [% ELSE %]
 [% IF link_room_handout %]
-	<a [% dohref("room_handout") %]>[% d.get('Austeilen') %]</a>
+	<a [% dohref("room_handout") %]>[% loc('Austeilen') %]</a>
 [% END %]
 [% IF link_room_collect %]
-	<a class="separator" [% dohref("room_collect") %]>[% d.get('Einsammeln') %]</a>
+	<a class="separator" [% dohref("room_collect") %]>[% loc('Einsammeln') %]</a>
 [% END %]
 [% END %]
 [% IF link_room_test %]
@@ -35,19 +35,19 @@
 [% END %]
 [% END %]
 [% END %]
-	[% d.get('Klassenarbeit') %]</a>
+	[% loc('Klassenarbeit') %]</a>
 [% END %]
 [% ELSE %]
 [% IF link_room_shares %]
-	<span class="disabled">[% d.get('Tauschen') %]</a></span>
+	<span class="disabled">[% loc('Tauschen') %]</a></span>
 [% END %]
 [% IF link_room_handout %]
-	<span class="disabled">[% d.get('Austeilen') %]</span>
+	<span class="disabled">[% loc('Austeilen') %]</span>
 [% END %]
 [% IF link_room_collect %]
-	<span class="disabledseparator">[% d.get('Einsammeln') %]</span>
+	<span class="disabledseparator">[% loc('Einsammeln') %]</span>
 [% END %]
 [% IF link_room_test %]
-	<span class="disabledend">[% d.get('Klassenarbeit') %]</span>
+	<span class="disabledend">[% loc('Klassenarbeit') %]</span>
 [% END %]
 [% END %]

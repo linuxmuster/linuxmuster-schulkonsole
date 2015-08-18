@@ -1,60 +1,60 @@
 [% IF link_project %]
-	<a class="separator" [% dohref("project") %]>[% d.get('Start') %]</a>
+	<a class="separator" [% dohref("project") %]>[% loc('Start') %]</a>
 [% END %]
 [% IF project %]
 [% IF link_project_members %]
-	<a class="separator" [% dohref("project_members") %]>[% d.get('Mitglieder') %]</a>
+	<a class="separator" [% dohref("project_members") %]>[% loc('Mitglieder') %]</a>
 [% END %]
 [% IF link_project_passwords %]
-        <a class="separator" [% dohref("project_passwords") %]>[% d.get('Passw&ouml;rter') %]</a>
+        <a class="separator" [% dohref("project_passwords") %]>[% loc('Passw&ouml;rter') %]</a>
 [% END %]
 [% IF isadmin %]
 [% IF link_project_handoutcopy %]
-	<a [% dohref("project_handoutcopy") %]>[% d.get('Austeilen') %]</a>
+	<a [% dohref("project_handoutcopy") %]>[% loc('Austeilen') %]</a>
 [% END %]
 [% IF link_project_handout %]
-	<a [% dohref("project_handout") %]>[% d.get('Bereitstellen') %]</a>
+	<a [% dohref("project_handout") %]>[% loc('Bereitstellen') %]</a>
 [% END %]
 [% IF link_project_collect %]
-	<a class="separator" [% dohref("project_collect") %]>[% d.get('Einsammeln') %]</a>
+	<a class="separator" [% dohref("project_collect") %]>[% loc('Einsammeln') %]</a>
 [% END %]
 [% IF link_project_shares %]
-	<a class="separator" [% dohref("project_shares") %]>[% d.get('Tauschen') %]</a>
+	<a class="separator" [% dohref("project_shares") %]>[% loc('Tauschen') %]</a>
 [% END %]
 [% ELSE %]
 [% IF link_project_handoutcopy %]
-	<span class="disabled">[% d.get('Austeilen') %]</span>
+	<span class="disabled">[% loc('Austeilen') %]</span>
 [% END %]
 [% IF link_project_handout %]
-	<span class="disabled">[% d.get('Bereitstellen') %]</span>
+	<span class="disabled">[% loc('Bereitstellen') %]</span>
 [% END %]
 [% IF link_project_collect %]
-	<span class="disabled">[% d.get('Einsammeln') %]</span>
+	<span class="disabled">[% loc('Einsammeln') %]</span>
 [% END %]
 [% IF link_project_shares %]
-	<span class="disabled">[% d.get('Tauschen') %]</span>
+	<span class="disabled">[% loc('Tauschen') %]</span>
 [% END %]
 [% IF link_project_lesson %]
-        <span class="disabled">[% d.get('Unterricht') %]</span>
+        <span class="disabled">[% loc('Unterricht') %]</span>
 [% END %]
 [% END %]
 [% ELSE %]
 [% IF link_project_members %]
-	<span class="disabledseparator">[% d.get('Mitglieder') %]</span>
+	<span class="disabledseparator">[% loc('Mitglieder') %]</span>
 [% END %]
 [% IF link_project_passwords %]
-        <span class="disabledseparator">[% d.get('Passw&ouml;rter') %]</span>
+        <span class="disabledseparator">[% loc('Passw&ouml;rter') %]</span>
 [% END %]
 [% IF link_project_handoutcopy %]
-	<span class="disabled">[% d.get('Austeilen') %]</span>
+	<span class="disabled">[% loc('Austeilen') %]</span>
 [% END %]
 [% IF link_project_handout %]
-	<span class="disabled">[% d.get('Bereitstellen') %]</span>
+	<span class="disabled">[% loc('Bereitstellen') %]</span>
 [% END %]
 [% IF link_project_collect %]
-	<span class="disabledseparator">[% d.get('Einsammeln') %]</span>
+	<span class="disabledseparator">[% loc('Einsammeln') %]</span>
 [% END %]
 [% IF link_project_shares %]
-	<span class="disabledseparator">[% d.get('Tauschen') %]</span>
+	<span class="disabledseparator">[% loc('Tauschen') %]</span>
 [% END %]
 [% END %]

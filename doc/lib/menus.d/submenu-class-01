@@ -1,52 +1,52 @@
 [% IF link_class %]
-	<a class="separator" [% dohref("class") %]>[% d.get('Start') %]</a>
+	<a class="separator" [% dohref("class") %]>[% loc('Start') %]</a>
 [% END %]
 [% IF link_class_list %]
 [% IF class %]
-	<a [% dohref("class_list") %]>[% d.get('Klassenliste') %]</a>
+	<a [% dohref("class_list") %]>[% loc('Klassenliste') %]</a>
 [% ELSE %]
-	<span class="disabled">[% d.get('Klassenliste') %]</span>
+	<span class="disabled">[% loc('Klassenliste') %]</span>
 [% END %]
 [% END %]
 [% IF link_class_passwords %]
 [% IF class %]
-	<a class="separator" [% dohref("class_passwords") %]>[% d.get('Passw&ouml;rter') %]</a>
+	<a class="separator" [% dohref("class_passwords") %]>[% loc('Passw&ouml;rter') %]</a>
 [% ELSE %]
-	<span class="disabledseparator">[% d.get('Passw&ouml;rter') %]</span>
+	<span class="disabledseparator">[% loc('Passw&ouml;rter') %]</span>
 [% END %]
 [% END %]
 [% IF link_class_handoutcopy %]
 [% IF class %]
-	<a [% dohref("class_handoutcopy") %]>[% d.get('Austeilen') %]</a>
+	<a [% dohref("class_handoutcopy") %]>[% loc('Austeilen') %]</a>
 [% ELSE %]
-	<span class="disabled">[% d.get('Austeilen') %]</span>
+	<span class="disabled">[% loc('Austeilen') %]</span>
 [% END %]
 [% END %]
 [% IF link_class_handout %]
 [% IF class %]
-	<a [% dohref("class_handout") %]>[% d.get('Bereitstellen') %]</a>
+	<a [% dohref("class_handout") %]>[% loc('Bereitstellen') %]</a>
 [% ELSE %]
-	<span class="disabled">[% d.get('Bereitstellen') %]</span>
+	<span class="disabled">[% loc('Bereitstellen') %]</span>
 [% END %]
 [% END %]
 [% IF link_class_collect %]
 [% IF class %]
-	<a class="separator" [% dohref("class_collect") %]>[% d.get('Einsammeln') %]</a>
+	<a class="separator" [% dohref("class_collect") %]>[% loc('Einsammeln') %]</a>
 [% ELSE %]
-	<span class="disabledseparator">[% d.get('Einsammeln') %]</span>
+	<span class="disabledseparator">[% loc('Einsammeln') %]</span>
 [% END %]
 [% END %]
 [% IF link_class_shares %]
 [% IF class %]
-	<a class="separator" [% dohref("class_shares") %]>[% d.get('Tauschen') %]</a>
+	<a class="separator" [% dohref("class_shares") %]>[% loc('Tauschen') %]</a>
 [% ELSE %]
-	<span class="disabledseparator">[% d.get('Tauschen') %]</span>
+	<span class="disabledseparator">[% loc('Tauschen') %]</span>
 [% END %]
 [% END %]
 [% IF link_room_test %]
 [% IF class %]
-	<a class="separator" [% dohref("room_test") %]>[% d.get('Klassenarbeit') %]</a>
+	<a class="separator" [% dohref("room_test") %]>[% loc('Klassenarbeit') %]</a>
 [% ELSE %]
-	<span class="disabledseparator">[% d.get('Klassenarbeit') %]</span>
+	<span class="disabledseparator">[% loc('Klassenarbeit') %]</span>
 [% END %]
 [% END %]
