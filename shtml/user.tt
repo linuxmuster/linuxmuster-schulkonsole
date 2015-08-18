@@ -11,12 +11,9 @@
 [% IF link_user_students %]
 <p>
 [% IF link_user_teachers %]
-[% d.get('Bearbeiten Sie zun&auml;chst die
-<a href="user_students">Sch&uuml;ler-</a>
-und <a href="user_teachers">Lehrerlisten</a>.') %]
+[% d.get('Bearbeiten Sie zun&auml;chst die <a href="user_students">Sch&uuml;ler-</a> und <a href="user_teachers">Lehrerlisten</a>.') %]
 [% ELSE %]
-[% d.get('Bearbeiten Sie zun&auml;chst die
-<a href="user_students">Sch&uuml;lerlisten</a>.') %]
+[% d.get('Bearbeiten Sie zun&auml;chst die <a href="user_students">Sch&uuml;lerlisten</a>.') %]
 [% END %]
 </p>
 [% END %]
@@ -26,8 +23,5 @@ und <a href="user_teachers">Lehrerlisten</a>.') %]
 [% END %]
 
 [% IF link_user_commit %]
-<p>[% d.get('Auf der Seite zur
-<a href="user_commit">&Uuml;bernahme der Benutzerdaten</a> k&ouml;nnen Sie
-die &Uuml;bertragung ins System starten und sich Informationen zum Prozess
-anzeigen lassen.') %]</p>
+<p>[% d.get('Auf der Seite zur <a href="user_commit">&Uuml;bernahme der Benutzerdaten</a> k&ouml;nnen Sie die &Uuml;bertragung ins System starten und sich Informationen zum Prozess anzeigen lassen.') %]</p>
 [% END %]

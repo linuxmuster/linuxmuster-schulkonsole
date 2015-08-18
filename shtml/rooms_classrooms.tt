@@ -8,21 +8,13 @@
 
 [% IF unconfigured %]
 <p class="important">
-[% d.get('Die Liste der konfigurierten Hosts und ihrer R&auml;me stimmt nicht
-mit den tats&auml;chlich im System vorhandenen Hosts &uuml;berein.') %]
-[% d.get('Bitte &uuml;berpr&uuml;fen Sie die <a href="hosts">Hosts-Liste</a>.') %]
+[% d.get('Die Liste der konfigurierten Hosts und ihrer R&auml;me stimmt nicht mit den tats&auml;chlich im System vorhandenen Hosts &uuml;berein. Bitte &uuml;berpr&uuml;fen Sie die <a href="hosts">Hosts-Liste</a>.') %]
 </p>
-[% ELSE %]
-[% IF unimported %]
+[% ELSIF unimported %]
 <p class="important">
-[% d.get('Es wurden noch nicht alle Hosts mit ihren R&auml;men in das
-System &uuml;bernommen.') %]
-[% d.get('Bitte &uuml;berpr&uuml;fen Sie die <a href="hosts">Hosts-Liste</a>.') %]
+[% d.get('Es wurden noch nicht alle Hosts mit ihren R&auml;men in das System &uuml;bernommen. Bitte &uuml;berpr&uuml;fen Sie die <a href="hosts">Hosts-Liste</a>.') %]
 </p>
 [% END %]
-[% END %]
-
-
 
 <h2>[% d.get('R&auml;ume') %]</h2>
 
@@ -30,22 +22,23 @@ System &uuml;bernommen.') %]
 
 
 <table id="rooms" class="liste">
-<col width="80%">
+<col width="10%">
+<col width="70%">
 <col width="20%">
 <tr>
+<th>[% d.get('Nr.') %]</th>
 <th>[% d.get('Raumbezeichnung') %]</th>
 <th>[% d.get('Computerraum') %]</th>
 </tr>
+[% lfdnr=1 %]
 [% FOREACH r IN rooms %]
-[% IF odd %][% odd=0 %]<tr class="odd">
-[% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><label [% labelfor("${r.name}_classroom") %]>[% r.name %]</label></td>
-[% IF r.selected %]
-<td><input type="checkbox" id="[% r.name %]_classroom" name="[% r.name %]_classroom" checked></td>
-[% ELSE %]
-<td><input type="checkbox" id="[% r.name %]_classroom" name="[% r.name %]_classroom"></td>
-[% END %]
-</tr>
+    <tr class="[% IF lfdnr%2==1 %]odd[% ELSE %]even[% END %]">
+        <td class="lfdnr">[% lfdnr %].</td>
+        <td><label [% labelfor("${r.name}_classroom") %]>[% r.name %]</label></td>
+        <td><input type="checkbox" id="[% r.name %]_classroom" name="[% r.name %]_classroom"
+        [% IF r.selected %] checked[% END %]></td>
+    </tr>
+    [% lfdnr=lfdnr+1 %]
 [% END %]
 </table>
 
