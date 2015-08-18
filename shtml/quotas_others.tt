@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Quota - Sonderquota'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Quota') _ " - " _ d.get('Sonderquota'),
       menu     => 1,
       submenu  => "quotas",
-      info     => d.get('<p>Hier ändern Sie die Quotawerte spezieller Benutzer und einzelner Schüler/innen.</p><p>Unter &#8222;Neu anlegen&#8220; können Sie einem bisher hier nicht aufgeführten Benutzer Sonderquota zuweisen. Geben Sie dazu den Login ein und passen Sie die Quotawerte entsprechend an.</p><p>Unter &#8222;Webspace&#8220; legen Sie fest, wieviel Platz alle veröffentlichten Webseiten insgesamt belegen dürfen. Ändern Sie hierzu den Quotawert für &#8222;www-data&#8220; auf &#8222;/var&#8220;.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),
+      info     => d.get('<p>Hier ändern Sie die Quotawerte spezieller Benutzer und einzelner Schüler/innen.</p><p>Unter &bdquo;Neu anlegen&ldquo; können Sie einem bisher hier nicht aufgeführten Benutzer Sonderquota zuweisen. Geben Sie dazu den Login ein und passen Sie die Quotawerte entsprechend an.</p><p>Unter &bdquo;Webspace&ldquo; legen Sie fest, wieviel Platz alle veröffentlichten Webseiten insgesamt belegen dürfen. Ändern Sie hierzu den Quotawert für &bdquo;www-data&ldquo; auf &bdquo;/var&ldquo;.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),
    }
 %]
 

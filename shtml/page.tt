@@ -74,9 +74,12 @@
                 [% d.get('Workstation:') %]
                 <strong>[% remote_workstation %]</strong><br>
                 [% d.get('IP:') %] <strong>[% REMOTE_ADDR %]</strong><br>
-                [% IF class %]
+                [% IF class_name %]
                     <p class="info">[% d.get('aktive Klasse:') %]
-                    <strong>[% class %]</strong></p>
+                    <strong>[% class_name %]</strong></p>
+                [% ELSIF project %]
+                    <p class="info">[% d.get('aktives Projekt:') %]
+                    <strong>[% project %]</strong></p>                
                 [% END %]
             [% END %]
         </div>

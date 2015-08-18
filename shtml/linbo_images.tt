@@ -1,5 +1,5 @@
 [% page = {
-      title   => d.get('Schulkonsole - Linbo'),
+      title   => d.get('Schulkonsole') _ " - " _ d.get('Linbo'),
       menu    => 1,
       submenu => 'linbo',
       info    => d.get('<p>Wenn Sie die Maus auf die Symbole bewegen, werden Hilfetexte angezeigt.</p><p>Zum Umbennenen und Kopieren von Images, müssen Sie einen neuen Dateinamen eingeben. Dateierweiterungen (.cloop/.rsync) können weggelassen werden.</p>'),

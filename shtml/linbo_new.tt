@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Linbo'),
+      title   => d.get('Schulkonsole') _ " - " _ d.get('Linbo'),
       menu     => 1,
       submenu  => "linbo",
-      info     => d.get('<p>Kopieren Sie hier die Konfiguration einer bestehenden Rechnergruppe oder erstellen Sie eine neue Gruppenkonfiguration.</p><p>Beachten Sie, dass ab LINBO 1.1.0 IDE-Platten wie SATA-Platten angesprochen werden. Deshalb ist im Dropdown-Menü keine andere Auswahl möglich.</p><p>Ist die neue Gruppenkonfiguration erstellt, können Sie im Untermenü &#8222;Gruppenkonfiguration editieren&#8220; gegebenenfalls weitere Anpassungen an der neuen Konfiguration vornehmen.</p>'),
+      info     => d.get('<p>Kopieren Sie hier die Konfiguration einer bestehenden Rechnergruppe oder erstellen Sie eine neue Gruppenkonfiguration.</p><p>Beachten Sie, dass ab LINBO 1.1.0 IDE-Platten wie SATA-Platten angesprochen werden. Deshalb ist im Dropdown-Menü keine andere Auswahl möglich.</p><p>Ist die neue Gruppenkonfiguration erstellt, können Sie im Untermenü &bdquo;Gruppenkonfiguration editieren&ldquo; gegebenenfalls weitere Anpassungen an der neuen Konfiguration vornehmen.</p>'),
    }
 %]
 

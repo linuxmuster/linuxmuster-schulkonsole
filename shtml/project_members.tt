@@ -1,25 +1,24 @@
 [% page = {
-      title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Mitglieder'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Projekte') _ ":  $project - " _ d.get('Mitglieder'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get('<p>Als Projektmitglied sehen Sie hier Informationen zum aktiven Projekt $project.</p><p>Als Projektleiter können Sie hier Mitglieder zum aktiven Projekt $project hinzufügen oder entfernen.</p><p>Um Mitglieder hinzuzufügen wählen Sie zunächst, ob Sie einzelne Schüler/innen, Lehrer/innen, alle Mitglieder einer Klasse oder eines Projekts hinzufügen wollen. Geben Sie dann einen Suchbegriff ein und betätigen die Schaltfläche &#8222;Suche&#8220;. Ein * im Suchbegriff als Wildcard ist erlaubt.</p>'),
+      info     => d.get('<p>Als Projektmitglied sehen Sie hier Informationen zum aktiven Projekt $project.</p><p>Als Projektleiter können Sie hier Mitglieder zum aktiven Projekt $project hinzufügen oder entfernen.</p><p>Um Mitglieder hinzuzufügen wählen Sie zunächst, ob Sie einzelne Schüler/innen, Lehrer/innen, alle Mitglieder einer Klasse oder eines Projekts hinzufügen wollen. Geben Sie dann einen Suchbegriff ein und betätigen die Schaltfläche &bdquo;Suche&ldquo;. Ein * im Suchbegriff als Wildcard ist erlaubt.</p>'),
    }
 %]
 
 [% IF projects %]
-<form method="post" accept-charset="UTF-8">
-<p class="selectdomain"> <select name="projects">
-<optgroup label="Projekte">
-[% FOREACH p IN projects %] <option value="[% p.gid %]">[% p.name %]</option>
-[% END %]
-</optgroup>
-<optgroup label="aktuelles Projekt">
-<option value="[% project_gid %]" selected>[% project %]</option>
-</optgroup>
-</select>
-<input type="submit" value="[% d.get('Wechseln') %]">
-</p>
-</form>
+    <form method="post" accept-charset="UTF-8">
+    <p class="selectdomain"> <select name="projects">
+    <optgroup label="Projekte">
+    [% FOREACH p IN projects %] <option value="[% p.gid %]">[% p.name %]</option>[% END %]
+    </optgroup>
+    <optgroup label="aktuelles Projekt">
+    <option value="[% project_gid %]" selected>[% project %]</option>
+    </optgroup>
+    </select>
+    <input type="submit" value="[% d.get('Wechseln') %]">
+    </p>
+    </form>
 [% END %]
 
 
@@ -28,34 +27,33 @@
 <h3>[% d.get('Ausgewähltes Projekt:') %] [% project %]</h3>
 
 [% IF isadmin %]
+    <form method="post" accept-charset="UTF-8">
+    <p><label [% labelfor("projectisopen") %]>Offenes Projekt</label>
+    [% IF isopen %]
+        <input type="checkbox" id="projectisopen" name="projectisopen" checked><br>
+    [% ELSE %]
+        <input type="checkbox" id="projectisopen" name="projectisopen"><br>
+    [% END %]
+    <input type="submit" name="projectisopenaccept" value="[% d.get('Änderungen speichern') %]">
+    </p>
+    </form>
 
-<form method="post" accept-charset="UTF-8">
-<p><label [% labelfor("projectisopen") %]>Offenes Projekt</label>
-[% IF isopen %]
-<input type="checkbox" id="projectisopen" name="projectisopen" checked><br>
-[% ELSE %]
-<input type="checkbox" id="projectisopen" name="projectisopen"><br>
-[% END %]
-<input type="submit" name="projectisopenaccept" value="[% d.get('Änderungen speichern') %]">
-</p>
-</form>
+    <h3>[% d.get('Mitglieder hinzufügen') %]</h3>
 
-<h3>[% d.get('Mitglieder hinzufügen') %]</h3>
-
-<form method="post" accept-charset="UTF-8" action="project_addmembers">
-<p>
-<label [% labelfor("query") %]>[% d.get('Suche:') %]</label>
-<input id="query" name="query">
-<input type="submit" name="search" value="[% d.get('Suche') %]"></p>
-<p><input type="radio" name="scope" id="radiostudent" value="[% d.get('student') %]" checked>
-   <label [% labelfor("radiostudent") %]>[% d.get('Schüler') %]</label>
-   <input type="radio" name="scope" id="radioteacher" value="[% d.get('teacher') %]">
-   <label [% labelfor("radioteacher") %]>[% d.get('Lehrer') %]</label>
-   <input type="radio" name="scope" id="radioclass" value="[% d.get('class') %]">
-   <label [% labelfor("radioclass") %]>[% d.get('Klasse') %]</label>
-   <input type="radio" name="scope" id="radioproject" value="[% d.get('project') %]">
-   <label [% labelfor("radioproject") %]>[% d.get('Projekt') %]</label></p>
-</form>
+    <form method="post" accept-charset="UTF-8" action="project_addmembers">
+    <p>
+    <label [% labelfor("query") %]>[% d.get('Suche:') %]</label>
+    <input id="query" name="query">
+    <input type="submit" name="search" value="[% d.get('Suche') %]"></p>
+    <p><input type="radio" name="scope" id="radiostudent" value="[% d.get('student') %]" checked>
+    <label [% labelfor("radiostudent") %]>[% d.get('Schüler') %]</label>
+    <input type="radio" name="scope" id="radioteacher" value="[% d.get('teacher') %]">
+    <label [% labelfor("radioteacher") %]>[% d.get('Lehrer') %]</label>
+    <input type="radio" name="scope" id="radioclass" value="[% d.get('class') %]">
+    <label [% labelfor("radioclass") %]>[% d.get('Klasse') %]</label>
+    <input type="radio" name="scope" id="radioproject" value="[% d.get('project') %]">
+    <label [% labelfor("radioproject") %]>[% d.get('Projekt') %]</label></p>
+    </form>
 [% END %]
 
 
@@ -64,56 +62,52 @@
 <h3>[% d.get('Mitglieder im Projekt') %]</h3>
 
 [% IF membersclasses %]
+    <table id="projectmemberclasses" class="liste">
+    <tr>
+    <th>[% d.get('Klassenname') %]</th>
+    <th>[% d.get('Mitgliedschaft beenden') %]</th>
+    </tr>
+    [% FOREACH mc IN membersclasses %]
+        [% IF odd %][% odd=0 %]<tr class="odd">
+        [% ELSE %][% odd=1 %]<tr class="even">[% END %]
+        [% IF mc.ismember %]
+        <td><input type="submit" name="[% mc.gid %]_gotoclass" value="[% mc.name %]"></td>
+        [% ELSE %]
+        <td>[% mc.name %]</td>
+        [% END %]
+        <td><input type="submit" name="[% mc.gid %]_removeclass" value="[% d.get('Mitgliedschaft beenden') %]"></td>
+        </tr>
+    [% END %]
+    <tr>
+    <th>[% d.get('Klassenname') %]</th>
+    <th>[% d.get('Mitgliedschaft beenden') %]</th>
+    </tr>
+    </table>
 
-<table id="projectmemberclasses" class="liste">
-<tr>
-<th>[% d.get('Klassenname') %]</th>
-<th>[% d.get('Mitgliedschaft beenden') %]</th>
-</tr>
-[% FOREACH mc IN membersclasses %]
-[% IF odd %][% odd=0 %]<tr class="odd">
-[% ELSE %][% odd=1 %]<tr class="even">[% END %]
-[% IF mc.ismember %]
-<td><input type="submit" name="[% mc.gid %]_gotoclass" value="[% mc.name %]"></td>
-[% ELSE %]
-<td>[% mc.name %]</td>
+    <hr>
 [% END %]
-<td><input type="submit" name="[% mc.gid %]_removeclass" value="[% d.get('Mitgliedschaft beenden') %]"></td>
-</tr>
-[% END %]
-<tr>
-<th>[% d.get('Klassenname') %]</th>
-<th>[% d.get('Mitgliedschaft beenden') %]</th>
-</tr>
-</table>
-
-<hr>
-[% END %]
-
-
 
 [% IF membersprojects %]
-[% odd=0 %]
-
-<table id="projectmemberprojects" class="liste">
-<tr>
-<th>[% d.get('Projektname') %]</th>
-<th>[% d.get('Offenes Projekt') %]</th>
-<th>[% d.get('Mitgliedschaft beenden') %]</th>
-</tr>
-[% FOREACH mp IN membersprojects %]
-[% IF odd %][% odd=0 %]<tr class="odd">
-[% ELSE %][% odd=1 %]<tr class="even">[% END %]
-[% IF mp.ismember %]
-<td><input type="submit" name="[% mp.gid %]_gotoproject" value="[% mp.name %]"></td>
-[% ELSE %]
-<td>[% mp.name %]</td>
-[% END %]
-<td><input type="checkbox" disabled checked></td>
-<td><input type="submit" name="[% mp.gid %]_removeproject" value="[% d.get('Mitgliedschaft beenden') %]"></td>
-<td></td>
-[% END %]
-</tr>
+    [% odd=0 %]
+    <table id="projectmemberprojects" class="liste">
+    <tr>
+    <th>[% d.get('Projektname') %]</th>
+    <th>[% d.get('Offenes Projekt') %]</th>
+    <th>[% d.get('Mitgliedschaft beenden') %]</th>
+    </tr>
+    [% FOREACH mp IN membersprojects %]
+        [% IF odd %][% odd=0 %]<tr class="odd">
+        [% ELSE %][% odd=1 %]<tr class="even">[% END %]
+        [% IF mp.ismember %]
+        <td><input type="submit" name="[% mp.gid %]_gotoproject" value="[% mp.name %]"></td>
+        [% ELSE %]
+        <td>[% mp.name %]</td>
+        [% END %]
+        <td><input type="checkbox" disabled checked></td>
+        <td><input type="submit" name="[% mp.gid %]_removeproject" value="[% d.get('Mitgliedschaft beenden') %]"></td>
+        <td></td>
+    [% END %]
+    </tr>
 [% END %]
 <tr>
 <th>[% d.get('Projektname') %]</th>
@@ -123,42 +117,39 @@
 </table>
 
 <hr>
-[% END %]
-
-
 
 [% IF membersteachers %]
-[% odd=0 %]
+    [% odd=0 %]
 
-<table id="projectmemberteachers" class="liste">
-<tr>
-<th>[% d.get('Login') %]</th>
-<th>[% d.get('Name') %]</th>
-<th>[% d.get('Projektleitung') %]</th>
-<th>[% d.get('Mitgliedschaft beenden') %]</th>
-</tr>
-[% FOREACH mt IN membersteachers %]
-[% IF odd %][% odd=0 %]<tr class="odd">
-[% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% mt.login %]</td>
-<td>[% mt.firstname %] [% mt.surname %]</td>
-[% IF mt.isadmin %]
-<td><input type="checkbox" disabled checked></td>
-[% ELSE %]
-<td><input type="checkbox" disabled></td>
-[% END %]
-<td><input type="submit" name="[% mt.login %]_removeuser" value="[% d.get('Mitgliedschaft beenden') %]"></td>
-</tr>
-[% END %]
-<tr>
-<th>[% d.get('Login') %]</th>
-<th>[% d.get('Name') %]</th>
-<th>[% d.get('Projektleitung') %]</th>
-<th>[% d.get('Mitgliedschaft beenden') %]</th>
-</tr>
-</table>
+    <table id="projectmemberteachers" class="liste">
+    <tr>
+    <th>[% d.get('Login') %]</th>
+    <th>[% d.get('Name') %]</th>
+    <th>[% d.get('Projektleitung') %]</th>
+    <th>[% d.get('Mitgliedschaft beenden') %]</th>
+    </tr>
+    [% FOREACH mt IN membersteachers %]
+    [% IF odd %][% odd=0 %]<tr class="odd">
+    [% ELSE %][% odd=1 %]<tr class="even">[% END %]
+    <td>[% mt.login %]</td>
+    <td>[% mt.firstname %] [% mt.surname %]</td>
+    [% IF mt.isadmin %]
+    <td><input type="checkbox" disabled checked></td>
+    [% ELSE %]
+    <td><input type="checkbox" disabled></td>
+    [% END %]
+    <td><input type="submit" name="[% mt.login %]_removeuser" value="[% d.get('Mitgliedschaft beenden') %]"></td>
+    </tr>
+    [% END %]
+    <tr>
+    <th>[% d.get('Login') %]</th>
+    <th>[% d.get('Name') %]</th>
+    <th>[% d.get('Projektleitung') %]</th>
+    <th>[% d.get('Mitgliedschaft beenden') %]</th>
+    </tr>
+    </table>
 
-<hr>
+    <hr>
 [% END %]
 
 
@@ -181,42 +172,35 @@
 <td>[% ms.login %]</td>
 <td>[% ms.firstname %] [% ms.surname %]</td>
 <td>
+
 [% IF ms.diskquotas %]
-
-<p>
-
-[% FOREACH msq IN ms.diskquotas %]
-
-[% msq.path %]:<br>
-	[% d.get('Speicherplatz/KB:') %]
-	[% msq.blocks_usage %]/[% msq.blocks_soft %]
-	- max: [% msq.blocks_hard %]
-	- [% msq.blocks_percent %]%<br>
-	[% IF msq.blocks_grace %]
-	[% d.get('verbleibende Zeit:') %] [% msq.blocks_grace %]<br>[% END %]
-	[% d.get('Dateien:') %]
-	[% msq.files_usage %]/[% msq.files_soft %]
-	- max: [% msq.files_hard %]
-	- [% msq.files_percent %]%<br>
-	[% IF msq.files_grace %]
-	[% d.get('verbleibende Zeit:') %] [% msq.files_grace %]<br>[% END %]<br>
-
-[% END %]
-</p>
-
-
-<ul>
-[% FOREACH msq IN ms.diskquotas %]
-[% IF msq.warn %]
-<li class="warn">
+    <p>
+    [% FOREACH msq IN ms.diskquotas %]
+        [% msq.path %]:<br>
+        [% d.get('Speicherplatz/KB:') %]
+        [% msq.blocks_usage %]/[% msq.blocks_soft %]
+        - max: [% msq.blocks_hard %]
+        - [% msq.blocks_percent %]%<br>
+        [% IF msq.blocks_grace %]
+        [% d.get('verbleibende Zeit:') %] [% msq.blocks_grace %]<br>[% END %]
+        [% d.get('Dateien:') %]
+        [% msq.files_usage %]/[% msq.files_soft %]
+        - max: [% msq.files_hard %]
+        - [% msq.files_percent %]%<br>
+        [% IF msq.files_grace %]
+        [% d.get('verbleibende Zeit:') %] [% msq.files_grace %]<br>[% END %]<br>
+    [% END %]
+    </p>
+    <ul>
+    [% FOREACH msq IN ms.diskquotas %]
+        [% IF msq.warn %]<li class="warn">[% ELSE %]<li>[% END %]
+        <span title="[% msq.path %]: [% msq.blocks_percent %]%" style="width: [% msq.blocks_percent_rounded %]%;">&nbsp;</span>
+        </li>
+    [% END %]
+    </ul>
 [% ELSE %]
-<li>
-[% END %]
-<span title="[% msq.path %]: [% msq.blocks_percent %]%" style="width: [% msq.blocks_percent_rounded %]%;">&nbsp;</span>
-</li>
-[% END %]
-</ul>
-[% ELSE %]-[% END %]</td>
+    -
+[% END %]</td>
 <td>[% IF ms.mailquotas.limit %]
 
 

@@ -1,5 +1,5 @@
 [% page = {
-      title    => d.get('Schulkonsole - Linbo'),
+      title   => d.get('Schulkonsole') _ " - " _ d.get('Linbo'),
       menu     => 1,
       submenu  => "linbo",
       info     => d.get('Wählen Sie ein Untermenü.'),

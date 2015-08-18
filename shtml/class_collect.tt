@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Klassen') . ": $class - " . d.get('Einsammeln'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Klassen') _ ": $class_name - " _ d.get('Einsammeln'),
       menu     => 1,
       submenu  => "class",
-      info     => d.get('<p>Einzusammelnde Dateien müssen von den Schüler/innen in ihrem Heimatverzeichnis im Ordner &#8222;__einsammeln&#8220; abgelegt werden.</p><p> Wählen Sie aus, ob die einzusammelnden Dateien erhalten bleiben oder gelöscht werden sollen.</p><p>Wählen Sie die Schüler/innen, von denen Sie einsammeln wollen, oder die ganze Klasse aus. In der Spalte &#8222;Dateien&#8220; können Sie sehen, welche Dateien zum Einsammeln zur Verfügung stehen.</p> <p>Sie finden die eingesammelten Arbeiten in Ihrem Heimatverzeichnis unter &#8222;_eingesammelt -&gt; eingesammelt-Klasse&#8220;.</p>'),
+      info     => d.get('<p>Einzusammelnde Dateien müssen von den Schüler/innen in ihrem Heimatverzeichnis im Ordner &bdquo;__einsammeln&ldquo; abgelegt werden.</p><p> Wählen Sie aus, ob die einzusammelnden Dateien erhalten bleiben oder gelöscht werden sollen.</p><p>Wählen Sie die Schüler/innen, von denen Sie einsammeln wollen, oder die ganze Klasse aus. In der Spalte &bdquo;Dateien&ldquo; können Sie sehen, welche Dateien zum Einsammeln zur Verfügung stehen.</p> <p>Sie finden die eingesammelten Arbeiten in Ihrem Heimatverzeichnis unter &bdquo;_eingesammelt -&gt; eingesammelt-Klasse&ldquo;.</p>'),
    }
 %]
 
@@ -15,7 +15,7 @@
 [% END %]
 </optgroup>
 <optgroup label="aktuelle Klasse">
-<option value="[% class_gid %]" selected>[% class %]</option>
+<option value="[% class_gid %]" selected>[% class_name %]</option>
 </optgroup>
 </select>
 <input type="submit" value="[% d.get('Wechseln') %]">
@@ -26,7 +26,7 @@
 
 <h2>[% d.get('Klassen') %] :: [% d.get('Einsammeln') %]</h2>
 
-<h3>[% d.get('Ausgewählte Klasse:') %] [% class %]</h3>
+<h3>[% d.get('Ausgewählte Klasse:') %] [% class_name %]</h3>
 
 
 <h3>[% d.get('Einsammeln') %]</h3>

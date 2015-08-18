@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Benutzer'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Benutzer'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Hier legen Sie Benutzer an und pflegen die Schüler- und Lehrerlisten.</p><p>Benutzer und Kurse, die nicht aus dem Schulverwaltungsprogramm exportiert werden können, verwalten Sie in den &#8222;Extralisten&#8220;.</p>'),
+      info     => d.get('<p>Hier legen Sie Benutzer an und pflegen die Schüler- und Lehrerlisten.</p><p>Benutzer und Kurse, die nicht aus dem Schulverwaltungsprogramm exportiert werden können, verwalten Sie in den &bdquo;Extralisten&ldquo;.</p>'),
    }
 %]
 

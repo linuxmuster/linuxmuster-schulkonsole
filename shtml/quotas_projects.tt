@@ -1,5 +1,5 @@
 [% page = {
-      title    => d.get('Schulkonsole - Quota - Projekte'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Quota') _ " - " _ d.get('Projekte'),
       menu     => 1,
       submenu  => "quotas",
       info     => d.get('<p>Hier können Sie den Mitgliedern eines Projekts zusätzliche Quota zuweisen.</p><p>Leere Felder bedeuten, dass für dieses Projekt bisher keine Zusatzquota vergeben wurden.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),

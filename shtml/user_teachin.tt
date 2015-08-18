@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Benutzer - Änderungen durchführen'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Benutzer') _ " - " _ d.get('Änderungen durchführen'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Während der Teach-In-Sitzung müssen Sie nicht eindeutig zuordenbare Benutzerdaten mit den richtigen Benutzernamen verknüpfen.</p><p>Bestätigen Sie alle Änderungen einer Seite jedes Mal über die Schaltfläche &#8222;Änderungen übernehmen&#8220;.</p><p>Beenden Sie die Teach-In-Sitzung erst, wenn Sie alle Seiten geprüft haben.</p>'),
+      info     => d.get('<p>Während der Teach-In-Sitzung müssen Sie nicht eindeutig zuordenbare Benutzerdaten mit den richtigen Benutzernamen verknüpfen.</p><p>Bestätigen Sie alle Änderungen einer Seite jedes Mal über die Schaltfläche &bdquo;Änderungen übernehmen&ldquo;.</p><p>Beenden Sie die Teach-In-Sitzung erst, wenn Sie alle Seiten geprüft haben.</p>'),
    }
 %]
 

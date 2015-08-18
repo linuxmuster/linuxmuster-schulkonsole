@@ -1,5 +1,5 @@
 [% page = {
-      title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Tauschen'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Projekte') _ ":  $project - " _ d.get('Tauschen'),
       menu     => 1,
       submenu  => "project",
       info     => d.get('<p>Hier können Sie festlegen, ob die Schüler/innen des Projekts Zugriff auf die Tauschordner in ihrem Homeverzeichnis haben.</p>'),

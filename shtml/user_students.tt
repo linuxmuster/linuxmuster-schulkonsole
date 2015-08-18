@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Benutzer - Schülerliste pflegen'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Benutzer') _ " - " _ d.get('Schülerliste pflegen'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Hier können Sie die aus dem Schulverwaltungsprogramm exportierte Datei &#8222;schueler.txt&#8220; ins System hochladen.</p><p>Zudem haben Sie hier die Möglichkeit, Änderungen an den Schülerdaten von Hand einzupflegen.</p>'),
+      info     => d.get('<p>Hier können Sie die aus dem Schulverwaltungsprogramm exportierte Datei &bdquo;schueler.txt&ldquo; ins System hochladen.</p><p>Zudem haben Sie hier die Möglichkeit, Änderungen an den Schülerdaten von Hand einzupflegen.</p>'),
    }
 %]
 

@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Projekte'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Projekte'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get('<p>Wählen Sie ein Projekt aus dem Pull-Down-Menü oben rechts oder aus der Liste, um damit arbeiten zu können.</p><p>Tragen Sie sich aus einem Projekt aus, wenn Sie darin nicht mehr mitarbeiten.</p><p>Tragen Sie sich in ein Projekt ein, indem Sie es im Pull-Down-Menü auswählen und dann die Schaltfläche &#8222;Eintragen&#8220; betätigen.</p><p>Erlaubte Zeichen für den Kurznamen eines neuen Projekts sind a-z und 0-9 sowie _ und -. Der Name muss zwischen 3 und 14 Zeichen lang sein.</p><p>&#8222;Offenes&#8220; Projekt bedeutet, andere Lehrer können sich in das Projekt eintragen.</p>'),
+      info     => d.get('<p>Wählen Sie ein Projekt aus dem Pull-Down-Menü oben rechts oder aus der Liste, um damit arbeiten zu können.</p><p>Tragen Sie sich aus einem Projekt aus, wenn Sie darin nicht mehr mitarbeiten.</p><p>Tragen Sie sich in ein Projekt ein, indem Sie es im Pull-Down-Menü auswählen und dann die Schaltfläche &bdquo;Eintragen&ldquo; betätigen.</p><p>Erlaubte Zeichen für den Kurznamen eines neuen Projekts sind a-z und 0-9 sowie _ und -. Der Name muss zwischen 3 und 14 Zeichen lang sein.</p><p>&bdquo;Offenes&ldquo; Projekt bedeutet, andere Lehrer können sich in das Projekt eintragen.</p>'),
    }
 %]
 

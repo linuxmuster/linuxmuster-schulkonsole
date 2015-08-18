@@ -1,5 +1,5 @@
 [% page = {
-      title    => d.get('Schulkonsole - Einstellungen - Projekte'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Einstellungen') _ " - " _ d.get('Projekte'),
       menu     => 1,
       submenu  => "settings",
       info     => d.get('<p>Bearbeiten Sie hier die Projektstandardeinstellungen.</p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</p>'),

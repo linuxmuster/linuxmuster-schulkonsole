@@ -1,8 +1,8 @@
 [% page = {
-        title   => d.get('Schulkonsole - Startseite'),
+        title   => d.get('Schulkonsole') _ " - " _ d.get('Startseite'),
         classes => "widecontent",
         menu    => 1,
-        info    => d.get('<p>Auf dieser Seite können Sie eigene Druckaufträge löschen und Ihr Passwort ändern.<p>Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch auf dem Server und in Ihrem Postfach. Alle Werte sind in Kilobyte angegeben. Zusätzlich wird angezeigt in welchen Projekten Sie Mitglied sind.</p><p>Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden. Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner &#8222;OpenVPN&#8220; abgelegt.</p>'),
+        info    => d.get('<p>Auf dieser Seite können Sie eigene Druckaufträge löschen und Ihr Passwort ändern.<p>Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch auf dem Server und in Ihrem Postfach. Alle Werte sind in Kilobyte angegeben. Zusätzlich wird angezeigt in welchen Projekten Sie Mitglied sind.</p><p>Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden. Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner &bdquo;OpenVPN&ldquo; abgelegt.</p>'),
    }
 %]
 

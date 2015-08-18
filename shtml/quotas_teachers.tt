@@ -1,5 +1,5 @@
 [% page = {
-      title    => d.get('Schulkonsole - Quota - Lehrer'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Quota') _ " - " _ d.get('Lehrer'),
       menu     => 1,
       submenu  => "quotas",
       info     => d.get('<p>Hier können Sie die Disk- und Mailquota für Lehrer/innen individuell anpassen. Die Darstellung der Diskquota hängt von Ihrer Partitionierung ab.</p><p>Leere Felder bedeuten, dass in dem Fall die Standardeinstellungen gelten.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),

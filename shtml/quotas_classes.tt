@@ -1,5 +1,5 @@
 [% page = {
-      title    => d.get('Schulkonsole - Quota - Klassen'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Quota') _ " - " _ d.get('Klassen'),
       menu     => 1,
       submenu  => "quotas",
       info     => d.get('<p>Hier ändern Sie die Quotawerte aller Schüler/innen einer Klasse.</p><p>Leere Felder bedeuten, dass in dem Fall die Standardeinstellungen gelten.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),

@@ -1,5 +1,5 @@
 [% page = {
-      title   => d.get('Schulkonsole - Login'),
+      title   => d.get('Schulkonsole') _ " - " _ d.get('Login'),
       info    => d.get('<p>Bitte melden Sie sich mit Benutzername und Passwort an.</p>'),
       special => 1,
    }

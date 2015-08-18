@@ -208,13 +208,13 @@ The GID of the selected class (if a class is selected)
 
 	$sk_session->set_var('class_gid', $class);
 
-=item C<class>
+=item C<class_name>
 
 The name of the selected class (if a class is selected)
 
 =cut
 
-	$sk_session->set_var('class', $$classs{$class}{displayname});
+	$sk_session->set_var('class_name', $$classs{$class}{displayname});
 }
 
 $sk_session->print_page("$this_file.tt", $this_file);

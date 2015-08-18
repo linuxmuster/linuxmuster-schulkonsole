@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - aktueller Raum') _ ": $room - " _ d.get('Einsammeln'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('aktueller Raum') _ ":  $room - " _ d.get('Einsammeln'),
       menu     => 1,
       submenu  => "room",
-      info     => d.get('<p>Einzusammelnde Dateien müssen im Heimatverzeichnis der Schüler/innen im Ordner &#8222;__einsammeln&#8220; abgelegt sein, damit sie hier aufgelistet werden.<br>Nachträglich von den Schüler/innen dorthin abgelegte Dateien können Sie über &#8222;Ansicht aktualisieren&#8220; sichtbar machen.</p><p>Wählen Sie aus, ob die Originaldateien auf Schülerseite gelöscht werden oder erhalten bleiben sollen.</p><p>Sie finden die eingesammelten Dateien in Ihrem Heimatverzeichnis unter &#8222;_eingesammelt -&gt; eingesammelt-aktueller_raum&#8220;.</p>'),
+      info     => d.get('<p>Einzusammelnde Dateien müssen im Heimatverzeichnis der Schüler/innen im Ordner &bdquo;__einsammeln&ldquo; abgelegt sein, damit sie hier aufgelistet werden.<br>Nachträglich von den Schüler/innen dorthin abgelegte Dateien können Sie über &bdquo;Ansicht aktualisieren&ldquo; sichtbar machen.</p><p>Wählen Sie aus, ob die Originaldateien auf Schülerseite gelöscht werden oder erhalten bleiben sollen.</p><p>Sie finden die eingesammelten Dateien in Ihrem Heimatverzeichnis unter &bdquo;_eingesammelt -&gt; eingesammelt-aktueller_raum&ldquo;.</p>'),
    }
 %]
 

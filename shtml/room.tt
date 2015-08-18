@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - aktueller Raum') _ ": " _ $room,
+      title    => d.get('Schulkonsole') _ " - " _ d.get('aktueller Raum') _ ":  $room",
       menu     => 1,
       submenu  => "room",
-      info     => d.get('<p>Sie müssen den &#8222;Unterricht beginnen&#8220;, damit Sie die Funktionen zur Steuerung des Unterrichts im aktuellen Raum nutzen können.<br>Beenden Sie den Unterricht entweder über den Button &#8222;sofort beenden&#8220; oder stellen Sie das Unterrichtsende über die Dropdown-Menüs ein und bestätigen es mit &#8222;beenden lassen&#8220;.</p><p>Im Bereich &#8222;Übersicht PCs&#8220; können Sie den Zugriff der Schülerarbeitsplätze auf Intranet, Internet, Webfilter, Drucker und das globale Tauschverzeichnis über Checkboxen steuern.</p><p>Im Bereich &#8222;Übersicht Drucker&#8220; können Sie den Zugriff auf die Raumdrucker für alle Benutzer, nicht nur die des Raumes, freigeben oder sperren.</p>'),
+      info     => d.get('<p>Sie müssen den &bdquo;Unterricht beginnen&ldquo;, damit Sie die Funktionen zur Steuerung des Unterrichts im aktuellen Raum nutzen können.<br>Beenden Sie den Unterricht entweder über den Button &bdquo;sofort beenden&ldquo; oder stellen Sie das Unterrichtsende über die Dropdown-Menüs ein und bestätigen es mit &bdquo;beenden lassen&ldquo;.</p><p>Im Bereich &bdquo;Übersicht PCs&ldquo; können Sie den Zugriff der Schülerarbeitsplätze auf Intranet, Internet, Webfilter, Drucker und das globale Tauschverzeichnis über Checkboxen steuern.</p><p>Im Bereich &bdquo;Übersicht Drucker&ldquo; können Sie den Zugriff auf die Raumdrucker für alle Benutzer, nicht nur die des Raumes, freigeben oder sperren.</p>'),
    }
 %]
 

@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Mitglieder hinzufügen'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Projekte') _ ":  $project - " _ d.get('Mitglieder hinzufügen'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get('<p>Wählen Sie die Mitglieder aus, die Sie neu ins Projekt aufnehmen wollen und klicken Sie dann auf die Schaltfläche &#8222;Aufnehmen&#8220;.</p><p>Falls das Suchergebnis nicht Ihren Erwartungen entspricht, können Sie unten eine neue Suche starten.</p>'),
+      info     => d.get('<p>Wählen Sie die Mitglieder aus, die Sie neu ins Projekt aufnehmen wollen und klicken Sie dann auf die Schaltfläche &bdquo;Aufnehmen&ldquo;.</p><p>Falls das Suchergebnis nicht Ihren Erwartungen entspricht, können Sie unten eine neue Suche starten.</p>'),
    }
 %]
 

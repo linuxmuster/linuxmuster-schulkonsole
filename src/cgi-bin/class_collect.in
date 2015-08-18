@@ -205,13 +205,13 @@ The name of the class
 $sk_session->set_var('classes', \@classs);
 
 
-=item C<class>
+=item C<class_name>
 
 The name of the class
 
 =cut
 
-$sk_session->set_var('class', $$classs{$class}{displayname});
+$sk_session->set_var('class_name', $$classs{$class}{displayname});
 
 
 

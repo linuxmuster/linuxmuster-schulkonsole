@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - aktueller Raum') _ ": $room - " _ d.get('Klassenarbeitsmodus'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('aktueller Raum') _ ":  $room - " _ d.get('Klassenarbeitsmodus'),
       menu     => 1,
       submenu  => "room",
-      info     => d.get('<p>Bestätigen Sie das Beenden der Klassenarbeit. Die eingesammelten Ergebnisse finden Sie danach in Ihrem Heimatverzeichnis unter &#8222;_eingesammelt -&gt; eingesammelt-klassenarbeit&#8220;.</p><p>Falls Sie doch noch nicht beenden wollen, können Sie über den Link &#8222;Einsammeln&#8220; wieder zur vorigen Seite zurückkehren.</p>'),
+      info     => d.get('<p>Bestätigen Sie das Beenden der Klassenarbeit. Die eingesammelten Ergebnisse finden Sie danach in Ihrem Heimatverzeichnis unter &bdquo;_eingesammelt -&gt; eingesammelt-klassenarbeit&ldquo;.</p><p>Falls Sie doch noch nicht beenden wollen, können Sie über den Link &bdquo;Einsammeln&ldquo; wieder zur vorigen Seite zurückkehren.</p>'),
    }
 %]
 

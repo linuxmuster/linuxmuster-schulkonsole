@@ -1,5 +1,5 @@
 [% page = {
-      title    => d.get('Schulkonsole - Linbo'),
+      title   => d.get('Schulkonsole') _ " - " _ d.get('Linbo'),
       menu     => 1,
       submenu  => "linbo",
       info     => d.get('<p>Klicken Sie auf einen Gruppennamen, um den Editor zu öffnen.</p><p>Beachten Sie, daß sich im Editor der Radio-Button zur Deaktivierung des Autostarts am Seitenende befindet.</p><p>Beachten Sie außerdem, daß beim reboot-workaround in der gruppenspezifischen Linbo-Startdatei unter &quot;pxelinux.cfg/&lt;gruppe&gt;&quot; der Eintrag &quot;DEFAULT reboot&quot; aktiviert ist und der Rechner über PXE startet.</p>'),

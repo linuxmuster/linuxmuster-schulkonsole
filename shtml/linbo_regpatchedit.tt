@@ -1,5 +1,5 @@
 [% page = {
-      title    => d.get('Schulkonsole - Linbo'),
+      title   => d.get('Schulkonsole') _ " - " _ d.get('Linbo'),
       menu     => 1,
       submenu  => "linbo",
       info     => d.get('<p>Klicken Sie auf den Namen einer Registrypatch-Datei, um sie zu editieren.</p><p>Wollen Sie eine neue Registrypatch-Datei erstellen, wählen Sie zunächst die Image-Datei aus dem oberen Dropdown-Menü. Im unteren Dropdown-Menü wählen Sie die Registrypatch-Datei aus, die als Vorlage für die neue Datei dienen soll.</p>'),

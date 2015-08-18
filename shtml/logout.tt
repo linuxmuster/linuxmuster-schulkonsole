@@ -1,5 +1,5 @@
 [% page = {
-      title   => d.get('Schulkonsole - Logout'),
+      title   => d.get('Schulkonsole') _ " - " _ d.get('Logout'),
       info    => d.get('<p></p>'),
    }
 %]

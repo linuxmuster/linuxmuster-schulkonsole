@@ -1,5 +1,5 @@
 [% page = {
-      title    => d.get('Schulkonsole - Quota'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Quota'),
       menu     => 1,
       submenu  => "quotas",
       info     => d.get('<p>Wählen Sie aus in welchem Bereich Sie Quota-Anpassungen vornehmen wollen.</p>'),

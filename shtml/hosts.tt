@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Hosts'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Hosts'),
       classes  => "widecontent",
       menu     => 1,
-      info     => d.get('<p>Hier können Sie die Liste der importierten Arbeitsstationen  bearbeiten.</p><p>Ändern Sie einfach die entsprechenden Felder in der Liste.</p><p>Für einen neuen Rechner füllen Sie die nächste freie Zeile aus.</p><p>Um einen Eintrag zu löschen, setzen Sie das Häkchen in der entsprechenden Checkbox am Zeilenende.</p><p>Stellen Sie dem Raumnamen ein # voran, um einen Eintrag auszukommentieren und entfernen Sie ein vorangestelltes #, um einen auskommentierten Eintrag wieder zu aktivieren.</p><p>Schliessen Sie die Aktion mit &#8222;Änderungen übernehmen&#8220;  ab.</p>'),
+      info     => d.get('<p>Hier können Sie die Liste der importierten Arbeitsstationen  bearbeiten.</p><p>Ändern Sie einfach die entsprechenden Felder in der Liste.</p><p>Für einen neuen Rechner füllen Sie die nächste freie Zeile aus.</p><p>Um einen Eintrag zu löschen, setzen Sie das Häkchen in der entsprechenden Checkbox am Zeilenende.</p><p>Stellen Sie dem Raumnamen ein # voran, um einen Eintrag auszukommentieren und entfernen Sie ein vorangestelltes #, um einen auskommentierten Eintrag wieder zu aktivieren.</p><p>Schliessen Sie die Aktion mit &bdquo;Änderungen übernehmen&ldquo;  ab.</p>'),
    }
 %]
 

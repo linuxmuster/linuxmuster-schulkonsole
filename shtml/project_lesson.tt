@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Unterricht'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Projekte') _ ":  $project - " _ d.get('Unterricht'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get('<p>Sie müssen den &#8222;Unterricht beginnen&#8220;, damit Sie die Funktionen zur Steuerung des Unterrichts im ausgewählten Projekt nutzen können.<br>Beenden Sie den Unterricht entweder über den Button &#8222;sofort beenden&#8220; oder stellen Sie das Unterrichtsende über die Dropdown-Menüs ein und bestätigen es mit &#8222;beenden lassen&#8220;.</p><p>Im Bereich &#8222;Übersicht&#8220; können Sie den Zugriff der Schüler auf das WLAN über eine Checkbox steuern.</p>'),
+      info     => d.get('<p>Sie müssen den &bdquo;Unterricht beginnen&ldquo;, damit Sie die Funktionen zur Steuerung des Unterrichts im ausgewählten Projekt nutzen können.<br>Beenden Sie den Unterricht entweder über den Button &bdquo;sofort beenden&ldquo; oder stellen Sie das Unterrichtsende über die Dropdown-Menüs ein und bestätigen es mit &bdquo;beenden lassen&ldquo;.</p><p>Im Bereich &bdquo;Übersicht&ldquo; können Sie den Zugriff der Schüler auf das WLAN über eine Checkbox steuern.</p>'),
    }
 %]
 

@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Klassen') . ": $class - " . d.get('Austeilen'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('Klassen') _ ": $class_name - " _ d.get('Austeilen'),
       menu     => 1,
       submenu  => "class",
-      info     => d.get('<p>Auszuteilende Dateien müssen Sie in Ihrem Heimatverzeichnis unter &#8222;_auszuteilen -&gt; auszuteilen-Klasse&#8220; ablegen.</p> <p>Wählen Sie die Schüler, an die Sie austeilen wollen, oder die ganze Klasse aus.</p><p>Beachten Sie, dass beim Betätigen der Schaltfläche &#8222;Austeilen&#8220; Ihre Materialen in das Heimatverzeichnis der Schüler/innen in den Ordner &#8222;__austeilen -&gt; austeilen-Klasse&#8220; kopiert werden.</p>'),
+      info     => d.get('<p>Auszuteilende Dateien müssen Sie in Ihrem Heimatverzeichnis unter &bdquo;_auszuteilen -&gt; auszuteilen-Klasse&ldquo; ablegen.</p> <p>Wählen Sie die Schüler, an die Sie austeilen wollen, oder die ganze Klasse aus.</p><p>Beachten Sie, dass beim Betätigen der Schaltfläche &bdquo;Austeilen&ldquo; Ihre Materialen in das Heimatverzeichnis der Schüler/innen in den Ordner &bdquo;__austeilen -&gt; austeilen-Klasse&ldquo; kopiert werden.</p>'),
    }
 %]
 
@@ -15,7 +15,7 @@
 [% END %]
 </optgroup>
 <optgroup label="aktuelle Klasse">
-<option value="[% class_gid %]" selected>[% class %]</option>
+<option value="[% class_gid %]" selected>[% class_name %]</option>
 </optgroup>
 </select>
 <input type="submit" value="[% d.get('Wechseln') %]">
@@ -26,7 +26,7 @@
 
 <h2>[% d.get('Klassen') %] :: [% d.get('Austeilen') %]</h2>
 
-<h3>[% d.get('Ausgewählte Klasse:') %] [% class %]</h3>
+<h3>[% d.get('Ausgewählte Klasse:') %] [% class_name %]</h3>
 
 
 <form method="post" accept-charset="UTF-8">

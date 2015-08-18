@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - aktueller Raum') _ ": $room - " _ d.get('Klassenarbeitsmodus'),
+      title    => d.get('Schulkonsole') _ " - " _ d.get('aktueller Raum') _ ":  $room - " _ d.get('Klassenarbeitsmodus'),
       menu     => 1,
       submenu  => "room",
-      info     => d.get('<p>Falls zu Beginn der Klassenarbeit noch nicht alle Schüler angemeldet waren, können Sie über die Schaltfläche &#8222;Anmeldestatus überprüfen&#8220; die Ansicht aktualisieren.</p><p>Um die Ansicht der bereitzustellenden Dateien zu aktualisieren, klicken Sie einfach oben auf den Link &#8222;Bereitstellen&#8220;.</p><p>Mit Betätigen der Schaltfläche &#8222;bereitstellen&#8220; gelangen Sie zum nächsten Schritt. Gleichzeitig werden Ihre Dateien den Klassenarbeitsteilnehmern bereitgestellt.</p>'),
+      info     => d.get('<p>Falls zu Beginn der Klassenarbeit noch nicht alle Schüler angemeldet waren, können Sie über die Schaltfläche &bdquo;Anmeldestatus überprüfen&ldquo; die Ansicht aktualisieren.</p><p>Um die Ansicht der bereitzustellenden Dateien zu aktualisieren, klicken Sie einfach oben auf den Link &bdquo;Bereitstellen&ldquo;.</p><p>Mit Betätigen der Schaltfläche &bdquo;bereitstellen&ldquo; gelangen Sie zum nächsten Schritt. Gleichzeitig werden Ihre Dateien den Klassenarbeitsteilnehmern bereitgestellt.</p>'),
    }
 %]
 
