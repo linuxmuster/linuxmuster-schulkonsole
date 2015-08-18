@@ -1,7 +1,7 @@
 [% IF link_class_lesson %]
 [% IF class %]
-	<a class="end" [% dohref("class_lesson") %]>[% d.get('Unterricht') %]</a>
+	<a class="end" [% dohref("class_lesson") %]>[% loc('Unterricht') %]</a>
 [% ELSE %]
-	<span class="disabledend">[% d.get('Unterricht') %]</span>
+	<span class="disabledend">[% loc('Unterricht') %]</span>
 [% END %]
 [% END %]

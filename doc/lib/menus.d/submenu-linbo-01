@@ -1,18 +1,18 @@
 [% IF link_linbo %]
-	<a class="separator" [% dohref("linbo") %]>[% d.get('Start') %]</a>
+	<a class="separator" [% dohref("linbo") %]>[% loc('Start') %]</a>
 [% END %]
 [% IF link_linbo_edit %]
-	<a class="tworow" [% dohref("linbo_edit") %]>[% d.get('Gruppenkonfiguration editieren') %]</a></br>
+	<a class="tworow" [% dohref("linbo_edit") %]>[% loc('Gruppenkonfiguration editieren') %]</a></br>
 [% END %]
 [% IF link_linbo_new %]
-	<a class="tworowseparator"  [% dohref("linbo_new") %]>[% d.get('Gruppenkonfiguration erstellen') %]</a></br>
+	<a class="tworowseparator"  [% dohref("linbo_new") %]>[% loc('Gruppenkonfiguration erstellen') %]</a></br>
 [% END %]
 [% IF link_linbo_regpatchedit %]
-	<a [% dohref("linbo_regpatchedit") %]>[% d.get('Registrypatch editieren') %]</a></br>
+	<a [% dohref("linbo_regpatchedit") %]>[% loc('Registrypatch editieren') %]</a></br>
 [% END %]
 [% IF link_linbo_pxeedit %]
-	<a class="separator" [% dohref("linbo_pxeedit") %]>[% d.get('PXE-Start') %]</a></br>
+	<a class="separator" [% dohref("linbo_pxeedit") %]>[% loc('PXE-Start') %]</a></br>
 [% END %]
 [% IF link_linbo_images %]
-	<a class="end" [% dohref("linbo_images") %]>[% d.get('Imageverwaltung') %]</a></br>
+	<a class="end" [% dohref("linbo_images") %]>[% loc('Imageverwaltung') %]</a></br>
 [% END %]
