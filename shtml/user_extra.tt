@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Benutzer - Sch&uuml;lerliste pflegen'),
+      title    => d.get('Schulkonsole - Benutzer - Schülerliste pflegen'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Hier pflegen Sie Extrasch&uuml;ler und Extrakurse.</p><p>Editieren Sie die Listen in den entsprechenden Textfeldern. Ge&auml;nderte Daten werden &uuml;ber die Schaltfl&auml;che &#8222;&Auml;nderungen speichern&#8220; im System gespeichert. Fahren Sie dann mit dem Men&uuml;punkt &#8222;Benutzerlisten pr&uuml;fen&#8220; fort.</p><p>Kommentarzeilen beginnen mit einem Gatter (#) und werden nicht ausgewertet.</p>'),
+      info     => d.get('<p>Hier pflegen Sie Extraschüler und Extrakurse.</p><p>Editieren Sie die Listen in den entsprechenden Textfeldern. Geänderte Daten werden über die Schaltfläche &#8222;Änderungen speichern&#8220; im System gespeichert. Fahren Sie dann mit dem Menüpunkt &#8222;Benutzerlisten prüfen&#8220; fort.</p><p>Kommentarzeilen beginnen mit einem Gatter (#) und werden nicht ausgewertet.</p>'),
    }
 %]
 
@@ -10,13 +10,13 @@
 
 
 <form method="post" accept-charset="UTF-8">
-<h3><label [% labelfor("extrauser") %]>[% d.get('Extrasch&uuml;ler editieren') %]</label></h3>
+<h3><label [% labelfor("extrauser") %]>[% d.get('Extraschüler editieren') %]</label></h3>
 
 <p>
 <textarea id="extrauser" name="extrauser" rows="20" cols="70">[% extrauser %]</textarea>
 </p>
 
-<p><input type="submit" name="extrauseredit" value="[% d.get('&Auml;nderungen speichern') %]"></p>
+<p><input type="submit" name="extrauseredit" value="[% d.get('Änderungen speichern') %]"></p>
 
 </form>
 
@@ -29,6 +29,6 @@
 <textarea id="extracourse" name="extracourse" rows="20" cols="70">[% extracourse %]</textarea>
 </p>
 
-<p><input type="submit" name="extracourseedit" value="[% d.get('&Auml;nderungen speichern') %]"></p>
+<p><input type="submit" name="extracourseedit" value="[% d.get('Änderungen speichern') %]"></p>
 
 </form>

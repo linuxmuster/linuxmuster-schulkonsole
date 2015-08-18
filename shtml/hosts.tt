@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Hosts'),
       classes  => "widecontent",
       menu     => 1,
-      info     => d.get('<p>Hier k&ouml;nnen Sie die Liste der importierten Arbeitsstationen  bearbeiten.</p><p>&Auml;ndern Sie einfach die entsprechenden Felder in der Liste.</p><p>F&uuml;r einen neuen Rechner f&uuml;llen Sie die n&auml;chste freie Zeile aus.</p><p>Um einen Eintrag zu l&ouml;schen, setzen Sie das H&auml;kchen in der entsprechenden Checkbox am Zeilenende.</p><p>Stellen Sie dem Raumnamen ein # voran, um einen Eintrag auszukommentieren und entfernen Sie ein vorangestelltes #, um einen auskommentierten Eintrag wieder zu aktivieren.</p><p>Schliessen Sie die Aktion mit &#8222;&Auml;nderungen &uuml;bernehmen&#8220;  ab.</p>'),
+      info     => d.get('<p>Hier können Sie die Liste der importierten Arbeitsstationen  bearbeiten.</p><p>Ändern Sie einfach die entsprechenden Felder in der Liste.</p><p>Für einen neuen Rechner füllen Sie die nächste freie Zeile aus.</p><p>Um einen Eintrag zu löschen, setzen Sie das Häkchen in der entsprechenden Checkbox am Zeilenende.</p><p>Stellen Sie dem Raumnamen ein # voran, um einen Eintrag auszukommentieren und entfernen Sie ein vorangestelltes #, um einen auskommentierten Eintrag wieder zu aktivieren.</p><p>Schliessen Sie die Aktion mit &#8222;Änderungen übernehmen&#8220;  ab.</p>'),
    }
 %]
 
@@ -11,7 +11,7 @@
 <form method="post" accept-charset="UTF-8">
 
 [% IF isimporting %]
-    <p>[% d.get('Importieren l&auml;uft.') %]</p>
+    <p>[% d.get('Importieren läuft.') %]</p>
     [% IF logimport %]
         <pre>[% logimport %]</pre>
         <p><input type="submit" name="showlogimport" value="[% d.get('Aktualisieren') %]"></p>
@@ -21,13 +21,13 @@
 [% ELSE %]
     [% IF unconfigured %]
         <form method="post" accept-charset="UTF-8">
-        <p class="important">[% d.get('Die Liste der konfigurierten Hosts stimmt nicht mit den tats&auml;chlich im System vorhandenen Hosts &uuml;berein.') %]</p>
-        <p><input type="submit" name="import" value="[% d.get('Hosts jetzt &uuml;bernehmen') %]"></p>
+        <p class="important">[% d.get('Die Liste der konfigurierten Hosts stimmt nicht mit den tatsächlich im System vorhandenen Hosts überein.') %]</p>
+        <p><input type="submit" name="import" value="[% d.get('Hosts jetzt übernehmen') %]"></p>
         </form>
     [% ELSIF unimported %]
         <form method="post" accept-charset="UTF-8">
-        <p class="important">[% d.get('Es wurden noch nicht alle Hosts in das System &uuml;bernommen.') %]</p>
-        <p><input type="submit" name="import" value="[% d.get('Hosts jetzt &uuml;bernehmen') %]"></p>
+        <p class="important">[% d.get('Es wurden noch nicht alle Hosts in das System übernommen.') %]</p>
+        <p><input type="submit" name="import" value="[% d.get('Hosts jetzt übernehmen') %]"></p>
         </form>
     [% END %]
 
@@ -42,7 +42,7 @@
     <h2>[% d.get('Kommentare bearbeiten') %]</h2>
 
     <p><textarea wrap="off" name="commentlines" rows="5" cols="100">[% commentlines %]</textarea></p>
-    <p><input type="submit" name="accept" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]">
+    <p><input type="submit" name="accept" value="[% d.get('Änderungen übernehmen') %]">
     </p>
 
     <p></p>
@@ -59,7 +59,7 @@
     <th><a [% dohref("$newsort.ip") %]>[% sort.ip %][% d.get('IP') %]</a></th>
     <th><a [% dohref("$newsort.pxe") %]>[% sort.pxe %][% d.get('PXE') %]</a></th>
     <th><a [% dohref("$newsort.opts") %]>[% sort.opts %][% d.get('Optionen') %]</a></th>
-    <th class="wsdel" title="l&ouml;schen">[% d.get('X') %]</th>
+    <th class="wsdel" title="löschen">[% d.get('X') %]</th>
     </tr>
     [% FOREACH w IN workstations %]
         <tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
@@ -81,7 +81,7 @@
         <option value="unicast" [% IF valueof("${w}_opts") == "unicast" %]selected[% END %]>unicast</option>
         <option value="noudma,unicast" [% IF valueof("${w}_opts") == "noudma,unicast" %]selected[% END %]>noudma+unicast</option>
         </select></td>
-        <td><input class="wsdel" title="l&ouml;schen" type="checkbox" name="[% w %]_delete"></td>
+        <td><input class="wsdel" title="löschen" type="checkbox" name="[% w %]_delete"></td>
         [% lfdnr=lfdnr+1 %]
         </tr>
     [% END %]
@@ -117,13 +117,13 @@
     <option value="10">10</option>
     <option value="30">30</option>
     </select></td>
-    <td colspan="7"><input type="submit" name="addrows" value="[% d.get('Zeilen hinzuf&uuml;gen') %]"></td>
+    <td colspan="7"><input type="submit" name="addrows" value="[% d.get('Zeilen hinzufügen') %]"></td>
     </tr>
     </table>
 
     <p>
-    <input type="submit" name="accept" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]">
-    <input type="reset" value="[% d.get('Zur&uuml;cksetzen') %]">
+    <input type="submit" name="accept" value="[% d.get('Änderungen übernehmen') %]">
+    <input type="reset" value="[% d.get('Zurücksetzen') %]">
     </p>
 
     </form>

@@ -1,12 +1,12 @@
 [% page = {
-      title    => d.get('Schulkonsole - Benutzer - Sch&uuml;lerliste pflegen'),
+      title    => d.get('Schulkonsole - Benutzer - Schülerliste pflegen'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Hier k&ouml;nnen Sie die aus dem Schulverwaltungsprogramm exportierte Datei &#8222;schueler.txt&#8220; ins System hochladen.</p><p>Zudem haben Sie hier die M&ouml;glichkeit, &Auml;nderungen an den Sch&uuml;lerdaten von Hand einzupflegen.</p>'),
+      info     => d.get('<p>Hier können Sie die aus dem Schulverwaltungsprogramm exportierte Datei &#8222;schueler.txt&#8220; ins System hochladen.</p><p>Zudem haben Sie hier die Möglichkeit, Änderungen an den Schülerdaten von Hand einzupflegen.</p>'),
    }
 %]
 
-<h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('Sch&uuml;lerliste pflegen') %]</h2>
+<h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('Schülerliste pflegen') %]</h2>
 
 <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
 <h3><label [% labelfor("studentsfilename") %]>[% d.get('Datei importieren') %]</label></h3>
@@ -25,6 +25,6 @@
 <textarea id="students" name="students" rows="20" cols="70">[% students %]</textarea>
 </p>
 
-<p><input type="submit" name="studentsedit" value="[% d.get('&Auml;nderungen speichern') %]"></p>
+<p><input type="submit" name="studentsedit" value="[% d.get('Änderungen speichern') %]"></p>
 
 </form>

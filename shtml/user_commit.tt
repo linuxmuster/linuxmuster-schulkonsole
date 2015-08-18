@@ -1,22 +1,22 @@
 [% page = {
-      title    => d.get('Schulkonsole - Benutzer - &Auml;nderungen durchf&uuml;hren'),
+      title    => d.get('Schulkonsole - Benutzer - Änderungen durchführen'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Auf dieser Seite bekommen Sie zun&auml;chst einen &Uuml;berblick &uuml;ber die durchzuf&uuml;hrenden &Auml;nderungen.</p><p>Sie k&ouml;nnen die anstehenden Aktionen entweder in einem Durchgang oder nacheinander ausf&uuml;hren lassen.</p><p>Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund ausgef&uuml;hrt wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen Prozesses k&ouml;nnen Sie sich &uuml;ber die Schaltfl&auml;che &#8222;Letze Logdatei ansehen&#8220; anzeigen lassen.</p>'),
+      info     => d.get('<p>Auf dieser Seite bekommen Sie zunächst einen Überblick über die durchzuführenden Änderungen.</p><p>Sie können die anstehenden Aktionen entweder in einem Durchgang oder nacheinander ausführen lassen.</p><p>Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund ausgeführt wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen Prozesses können Sie sich über die Schaltfläche &#8222;Letze Logdatei ansehen&#8220; anzeigen lassen.</p>'),
    }
 %]
 
-<h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('&Auml;nderungen durchf&uuml;hren') %]</h2>
+<h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('Änderungen durchführen') %]</h2>
 
 <form method="post" accept-charset="UTF-8">
 
 [% IF isalling %]
 <p>
-[% d.get('Benutzer anlegen/versetzen/l&ouml;schen l&auml;uft.') %]
+[% d.get('Benutzer anlegen/versetzen/löschen läuft.') %]
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="all" value="[% d.get('Benutzer anlegen/versetzen/l&ouml;schen') %]">
+<input type="submit" name="all" value="[% d.get('Benutzer anlegen/versetzen/löschen') %]">
 </p>
 [% END %]
 
@@ -26,7 +26,7 @@
 
 [% IF isadding %]
 <p>
-[% d.get('Anlegen l&auml;uft.') %]
+[% d.get('Anlegen läuft.') %]
 </p>
 [% ELSE %]
 <p>
@@ -67,7 +67,7 @@
 
 [% IF ismoving %]
 <p>
-[% d.get('Versetzen l&auml;uft.') %]
+[% d.get('Versetzen läuft.') %]
 </p>
 [% ELSE %]
 <p>
@@ -112,11 +112,11 @@
 
 [% IF iskilling %]
 <p>
-[% d.get('L&ouml;schen l&auml;uft.') %]
+[% d.get('Löschen läuft.') %]
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="kill" value="[% d.get('Benutzer l&ouml;schen') %]">
+<input type="submit" name="kill" value="[% d.get('Benutzer löschen') %]">
 </p>
 [% END %]
 

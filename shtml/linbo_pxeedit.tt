@@ -11,12 +11,12 @@
 
 <h2>[% d.get('PXE-Start-Dateien der Rechnergruppen editieren') %]</h2>
 
-<h3>[% d.get('Bitte best&auml;tigen') %]</h3>
+<h3>[% d.get('Bitte bestätigen') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
-<p>[% deletefilename %] [% d.get('wirklich l&ouml;schen?') %]</p>
+<p>[% deletefilename %] [% d.get('wirklich löschen?') %]</p>
 
-<p><input type="hidden" name="filename" value="[% deletefilename %]"><input type="submit" name="delete" value="[% d.get('Best&auml;tigen') %]">
+<p><input type="hidden" name="filename" value="[% deletefilename %]"><input type="submit" name="delete" value="[% d.get('Bestätigen') %]">
 <input type="submit" name="abort" value="[% d.get('Abbrechen') %]"></p>
 
 </form>
@@ -28,8 +28,8 @@
 
 <form method="post" accept-charset="UTF-8">
 <p><textarea wrap="off" name="pxestart" rows="20" cols="70">[% pxestart %]</textarea></p>
-<p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% d.get('&Auml;nderungen speichern') %]">
-<input type="submit" name="abort" value="[% d.get('Schlie&szlig;en') %]"></p>
+<p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% d.get('Änderungen speichern') %]">
+<input type="submit" name="abort" value="[% d.get('Schließen') %]"></p>
 
 </form>
 
@@ -44,7 +44,7 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td><input type="submit" name="[% p %]_edit" value="[% p %]"></td>
-<td><input type="submit" name="[% p %]_delete" value="[% d.get('l&ouml;schen') %]"></td>
+<td><input type="submit" name="[% p %]_delete" value="[% d.get('löschen') %]"></td>
 </tr>
 [% END %]
 </table>

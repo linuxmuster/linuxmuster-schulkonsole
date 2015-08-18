@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Mitglieder'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get('<p>Als Projektmitglied sehen Sie hier Informationen zum aktiven Projekt $project.</p><p>Als Projektleiter k&ouml;nnen Sie hier Mitglieder zum aktiven Projekt $project hinzuf&uuml;gen oder entfernen.</p><p>Um Mitglieder hinzuzuf&uuml;gen w&auml;hlen Sie zun&auml;chst, ob Sie einzelne Sch&uuml;ler/innen, Lehrer/innen, alle Mitglieder einer Klasse oder eines Projekts hinzuf&uuml;gen wollen. Geben Sie dann einen Suchbegriff ein und bet&auml;tigen die Schaltfl&auml;che &#8222;Suche&#8220;. Ein * im Suchbegriff als Wildcard ist erlaubt.</p>'),
+      info     => d.get('<p>Als Projektmitglied sehen Sie hier Informationen zum aktiven Projekt $project.</p><p>Als Projektleiter können Sie hier Mitglieder zum aktiven Projekt $project hinzufügen oder entfernen.</p><p>Um Mitglieder hinzuzufügen wählen Sie zunächst, ob Sie einzelne Schüler/innen, Lehrer/innen, alle Mitglieder einer Klasse oder eines Projekts hinzufügen wollen. Geben Sie dann einen Suchbegriff ein und betätigen die Schaltfläche &#8222;Suche&#8220;. Ein * im Suchbegriff als Wildcard ist erlaubt.</p>'),
    }
 %]
 
@@ -25,7 +25,7 @@
 
 <h2>[% d.get('Projekte') %] :: [% d.get('Mitglieder') %]</h2>
 
-<h3>[% d.get('Ausgew&auml;hltes Projekt:') %] [% project %]</h3>
+<h3>[% d.get('Ausgewähltes Projekt:') %] [% project %]</h3>
 
 [% IF isadmin %]
 
@@ -36,11 +36,11 @@
 [% ELSE %]
 <input type="checkbox" id="projectisopen" name="projectisopen"><br>
 [% END %]
-<input type="submit" name="projectisopenaccept" value="[% d.get('&Auml;nderungen speichern') %]">
+<input type="submit" name="projectisopenaccept" value="[% d.get('Änderungen speichern') %]">
 </p>
 </form>
 
-<h3>[% d.get('Mitglieder hinzuf&uuml;gen') %]</h3>
+<h3>[% d.get('Mitglieder hinzufügen') %]</h3>
 
 <form method="post" accept-charset="UTF-8" action="project_addmembers">
 <p>
@@ -48,7 +48,7 @@
 <input id="query" name="query">
 <input type="submit" name="search" value="[% d.get('Suche') %]"></p>
 <p><input type="radio" name="scope" id="radiostudent" value="[% d.get('student') %]" checked>
-   <label [% labelfor("radiostudent") %]>[% d.get('Sch&uuml;ler') %]</label>
+   <label [% labelfor("radiostudent") %]>[% d.get('Schüler') %]</label>
    <input type="radio" name="scope" id="radioteacher" value="[% d.get('teacher') %]">
    <label [% labelfor("radioteacher") %]>[% d.get('Lehrer') %]</label>
    <input type="radio" name="scope" id="radioclass" value="[% d.get('class') %]">

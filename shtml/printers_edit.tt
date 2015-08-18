@@ -1,7 +1,7 @@
 [% page = {
       title    => d.get('Schulkonsole - Drucker'),
       menu     => 1,
-      info     => d.get('<p>W&auml;hlen Sie unter &#8222;abgew&auml;hlt&#8220; die R&auml;ume oder Rechner aus, die Zugriff auf diesen Drucker bekommen sollen.</p><p>&Uuml;bernehmen Sie die Auswahl durch Bet&auml;tigen der Schaltfl&auml;che &#8222;&lt;&lt;&#8220;.</p><p>Mehrfachauswahl mit gedr&uuml;ckter Strg-Taste ist m&ouml;glich.</p><p>Schliessen Sie die Aktion mit &#8222;&Auml;nderungen &uuml;bernehmen&#8220; ab.</p>'),
+      info     => d.get('<p>Wählen Sie unter &#8222;abgewählt&#8220; die Räume oder Rechner aus, die Zugriff auf diesen Drucker bekommen sollen.</p><p>Übernehmen Sie die Auswahl durch Betätigen der Schaltfläche &#8222;&lt;&lt;&#8220;.</p><p>Mehrfachauswahl mit gedrückter Strg-Taste ist möglich.</p><p>Schliessen Sie die Aktion mit &#8222;Änderungen übernehmen&#8220; ab.</p>'),
    }
 %]
 
@@ -16,9 +16,9 @@
 <col id="action" width="20%">
 <col id="deselected" width="40%">
 <tr>
-<th>[% d.get('ausgew&auml;hlt') %]</th>
+<th>[% d.get('ausgewählt') %]</th>
 <th></th>
-<th>[% d.get('abgew&auml;hlt') %]</th>
+<th>[% d.get('abgewählt') %]</th>
 </tr>
 <td>
 <select name="roomdeselect" multiple>
@@ -43,7 +43,7 @@
 
 <p>
 [% FOREACH r IN roomsselected %]<input type="hidden" name="roomsselected" value="[% r %]">[% END %]
-<input type="submit" name="[% printer %]_acceptrooms" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]">
+<input type="submit" name="[% printer %]_acceptrooms" value="[% d.get('Änderungen übernehmen') %]">
 </p>
 
 </form>
@@ -55,9 +55,9 @@
 <col id="action" width="20%">
 <col id="deselected" width="40%">
 <tr>
-<th>[% d.get('ausgew&auml;hlt') %]</th>
+<th>[% d.get('ausgewählt') %]</th>
 <th></th>
-<th>[% d.get('abgew&auml;hlt') %]</th>
+<th>[% d.get('abgewählt') %]</th>
 </tr>
 <td>
 <select name="hostdeselect" multiple>
@@ -82,7 +82,7 @@
 
 <p>
 [% FOREACH h IN hostsselected %]<input type="hidden" name="hostsselected" value="[% h %]">[% END %]
-<input type="submit" name="[% printer %]_accepthosts" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]">
+<input type="submit" name="[% printer %]_accepthosts" value="[% d.get('Änderungen übernehmen') %]">
 </p>
 
 </form>

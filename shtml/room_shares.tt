@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - aktueller Raum') _ ": $room - " _ d.get('Tauschordner'),
       menu     => 1,
       submenu  => "room",
-      info     => d.get('<p>Steuern Sie hier den Zugriff auf das globale Tauschverzeichnis, indem Sie entweder einzelne Arbeitspl&auml;tze &uuml;ber die Checkboxen ausw&auml;hlen oder &uuml;ber die &#8222;Schnellauswahl&#8220; f&uuml;r alle.<br>Mit &#8222;&Auml;nderungen &uuml;bernehmen&#8220; aktivieren Sie Ihre Auswahl.</p>'),
+      info     => d.get('<p>Steuern Sie hier den Zugriff auf das globale Tauschverzeichnis, indem Sie entweder einzelne Arbeitsplätze über die Checkboxen auswählen oder über die &#8222;Schnellauswahl&#8220; für alle.<br>Mit &#8222;Änderungen übernehmen&#8220; aktivieren Sie Ihre Auswahl.</p>'),
    }
 %]
 
@@ -26,7 +26,7 @@
 [% END %]
 
 
-<h3>[% d.get('&Uuml;bersicht Tauschverzeichnisse') %]</h3>
+<h3>[% d.get('Übersicht Tauschverzeichnisse') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 <table id="roomshares" class="liste">
@@ -74,5 +74,5 @@
 <td><input class="button" type="button" value="[% d.get('Aus') %]" name="shares" onClick="check_uncheck(this)"></td>
 </tr>
 </table>
-<p><input type="submit" name="acceptshares" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]"></p>
+<p><input type="submit" name="acceptshares" value="[% d.get('Änderungen übernehmen') %]"></p>
 </form>

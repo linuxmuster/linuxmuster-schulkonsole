@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Drucker'),
       classes  => "widecontent",
       menu     => 1,
-      info     => d.get('<p>Legen Sie hier fest, welche R&auml;ume bzw. einzelne Rechner Zugriff auf welche Drucker haben.</p>'),
+      info     => d.get('<p>Legen Sie hier fest, welche Räume bzw. einzelne Rechner Zugriff auf welche Drucker haben.</p>'),
    }
 %]
 
@@ -21,7 +21,7 @@
 </colgroup>
 <tr>
 <th>[% d.get('Drucker') %]</th>
-<th colspan="2">[% d.get('R&auml;ume') %]</th>
+<th colspan="2">[% d.get('Räume') %]</th>
 <th colspan="2">[% d.get('Rechner') %]</th>
 </tr>
 [% FOREACH p IN printers %]

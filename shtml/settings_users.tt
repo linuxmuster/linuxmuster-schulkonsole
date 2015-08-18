@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Einstellungen - Benutzerverwaltung'),
       menu     => 1,
       submenu  => "settings",
-      info     => d.get('<p>Bearbeiten Sie hier die globalen Einstellungen f&uuml;r die Benutzerverwaltung.</p><p>F&uuml;r eine detaillierte Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</p>'),
+      info     => d.get('<p>Bearbeiten Sie hier die globalen Einstellungen für die Benutzerverwaltung.</p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</p>'),
    }
 %]
 
@@ -16,7 +16,7 @@
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
-<td><label [% labelfor("birthlimitlow") %] accesskey="g">[% d.get('Geburtsjahreszahl f&uuml;r Sch&uuml;ler') %]</label></td>
+<td><label [% labelfor("birthlimitlow") %] accesskey="g">[% d.get('Geburtsjahreszahl für Schüler') %]</label></td>
 <td><input type="text" size="5" maxlength="4" name="birthlimitlow" id="birthlimitlow" value="[% birthlimitlow %]">
   - <input type="text" size="5" maxlength="4" name="birthlimitup" id="birthlimitup" value="[% birthlimitup %]"></td>
 </tr>
@@ -57,7 +57,7 @@
 </td>
 </tr>
 <tr class="even">
-<td>[% d.get('Standardquota Sch&uuml;ler') %]</td>
+<td>[% d.get('Standardquota Schüler') %]</td>
 <td>
 
 <table class="tabletable">
@@ -114,7 +114,7 @@
 [% END %]
 </tr>
 <tr class="odd">
-<td><label [% labelfor("changesmbpasswordteacher") %]>[% d.get('Sambapasswort bei Erstanmeldung &auml;ndern') %]</label></td>
+<td><label [% labelfor("changesmbpasswordteacher") %]>[% d.get('Sambapasswort bei Erstanmeldung ändern') %]</label></td>
 [% IF changesmbpasswordteacher %]
 <td><input type="checkbox" name="changesmbpasswordteacher" id="changesmbpasswordteacher" checked></td>
 [% ELSE %]
@@ -125,7 +125,7 @@
 
 <hr>
 
-<h3>[% d.get('Login') %] [% d.get('(Sch&uuml;ler)') %]</h3>
+<h3>[% d.get('Login') %] [% d.get('(Schüler)') %]</h3>
 
 <table class="settings">
 <colgroup span="2" width="50%">
@@ -151,7 +151,7 @@
 [% END %]
 </tr>
 <tr class="odd">
-<td><label [% labelfor("changesmbpasswordstudent") %]>[% d.get('Sambapasswort bei Erstanmeldung &auml;ndern') %]</label></td>
+<td><label [% labelfor("changesmbpasswordstudent") %]>[% d.get('Sambapasswort bei Erstanmeldung ändern') %]</label></td>
 [% IF changesmbpasswordstudent %]
 <td><input type="checkbox" name="changesmbpasswordstudent" id="changesmbpasswordstudent" checked></td>
 [% ELSE %]
@@ -162,7 +162,7 @@
 
 <hr>
 
-<h3>[% d.get('L&ouml;schen') %] [% d.get('(Lehrer)') %]</h3>
+<h3>[% d.get('Löschen') %] [% d.get('(Lehrer)') %]</h3>
 
 <table class="settings">
 <colgroup span="2" width="50%">
@@ -179,7 +179,7 @@
 
 <hr>
 
-<h3>[% d.get('L&ouml;schen') %] [% d.get('(Sch&uuml;ler)') %]</h3>
+<h3>[% d.get('Löschen') %] [% d.get('(Schüler)') %]</h3>
 
 <table class="settings">
 <colgroup span="2" width="50%">
@@ -195,7 +195,7 @@
 </table>
 
 <p>
-<input type="submit" name="accept" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]">
+<input type="submit" name="accept" value="[% d.get('Änderungen übernehmen') %]">
 </p>
 
 </form>

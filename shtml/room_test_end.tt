@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - aktueller Raum') _ ": $room - " _ d.get('Klassenarbeitsmodus'),
       menu     => 1,
       submenu  => "room",
-      info     => d.get('<p>Best&auml;tigen Sie das Beenden der Klassenarbeit. Die eingesammelten Ergebnisse finden Sie danach in Ihrem Heimatverzeichnis unter &#8222;_eingesammelt -&gt; eingesammelt-klassenarbeit&#8220;.</p><p>Falls Sie doch noch nicht beenden wollen, k&ouml;nnen Sie &uuml;ber den Link &#8222;Einsammeln&#8220; wieder zur vorigen Seite zur&uuml;ckkehren.</p>'),
+      info     => d.get('<p>Bestätigen Sie das Beenden der Klassenarbeit. Die eingesammelten Ergebnisse finden Sie danach in Ihrem Heimatverzeichnis unter &#8222;_eingesammelt -&gt; eingesammelt-klassenarbeit&#8220;.</p><p>Falls Sie doch noch nicht beenden wollen, können Sie über den Link &#8222;Einsammeln&#8220; wieder zur vorigen Seite zurückkehren.</p>'),
    }
 %]
 
@@ -27,10 +27,10 @@
 
 <form method="post" accept-charset="UTF-8">
 
-<h3>[% d.get('Bitte best&auml;tigen') %]</h3>
+<h3>[% d.get('Bitte bestätigen') %]</h3>
 
 <p>[% d.get('Mit dem Einsammeln der Dateien wird die Klassenarbeit beendet.') %]
 
-<p><input type="submit" name="collectmove" value="[% d.get('Best&auml;tigen') %]"></p>
+<p><input type="submit" name="collectmove" value="[% d.get('Bestätigen') %]"></p>
 
 </form>

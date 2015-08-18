@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole') -  d.get('Klassen'):  class -  d.get('Tauschen'),
       menu     => 1,
       submenu  => "class",
-      info     => d.get('<p>Hier k&ouml;nnen Sie festlegen, ob die Sch&uuml;ler/innen der Klasse Zugriff auf die Tauschordner in ihrem Homeverzeichnis haben.</p>'),
+      info     => d.get('<p>Hier können Sie festlegen, ob die Schüler/innen der Klasse Zugriff auf die Tauschordner in ihrem Homeverzeichnis haben.</p>'),
    }
 %]
 
@@ -26,7 +26,7 @@
 
 <h2>[% d.get('Klassen') %] :: [% d.get('Tauschen') %]</h2>
 
-<h3>[% d.get('Ausgew&auml;hlte Klasse:') %] [% class %]</h3>
+<h3>[% d.get('Ausgewählte Klasse:') %] [% class %]</h3>
 
 
 <form method="post" accept-charset="UTF-8">
@@ -60,5 +60,5 @@
 <td><input class="button" type="button" value="[% d.get('Aus') %]" name="shares" onClick="check_uncheck(this)"></td>
 </tr>
 </table>
-<p><input type="submit" name="acceptshares" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]"></p>
+<p><input type="submit" name="acceptshares" value="[% d.get('Änderungen übernehmen') %]"></p>
 </form>

@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Quota - Klassen'),
       menu     => 1,
       submenu  => "quotas",
-      info     => d.get('<p>Hier &auml;ndern Sie die Quotawerte aller Sch&uuml;ler/innen einer Klasse.</p><p>Leere Felder bedeuten, dass in dem Fall die Standardeinstellungen gelten.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),
+      info     => d.get('<p>Hier ändern Sie die Quotawerte aller Schüler/innen einer Klasse.</p><p>Leere Felder bedeuten, dass in dem Fall die Standardeinstellungen gelten.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),
    }
 %]
 
@@ -43,7 +43,7 @@
 [% END %]
 </table>
 
-<p><input type="submit" name="acceptclasses" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]"></p>
+<p><input type="submit" name="acceptclasses" value="[% d.get('Änderungen übernehmen') %]"></p>
 
 </form>
 
