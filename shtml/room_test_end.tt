@@ -18,6 +18,7 @@
 [% editinguser %]
 [% loc('unterrichtet in Raum') %]
 [% room %].
+[% END %]
 [% IF endedittime %]
 [% loc('Unterrichtsende um') %] [% endedittime %].
 [% END %]
