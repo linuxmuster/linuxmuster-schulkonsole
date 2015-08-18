@@ -1,35 +1,35 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('aktueller Raum') _ ":  $room",
+      title    => loc('Schulkonsole') _ " - " _ loc('aktueller Raum') _ ":  $room",
       menu     => 1,
       submenu  => "room",
-      info     => d.get('<p></p>'),
+      info     => loc('<p></p>'),
    }
 %]
 
-<h2>[% d.get('Aktueller Raum') %]: [% room %]</h2>
+<h2>[% loc('Aktueller Raum') %]: [% room %]</h2>
 
 <p>
-[% d.get('Nutzung:') %]
+[% loc('Nutzung:') %]
 
 [% IF editinguser %]
 [% editinguser %]
-[% d.get('unterrichtet in Raum') %]
+[% loc('unterrichtet in Raum') %]
 [% room %].
 [% IF endedittime %]
-[% d.get('Unterrichtsende um') %] [% endedittime %].
+[% loc('Unterrichtsende um') %] [% endedittime %].
 [% END %]
 </p>
 
-<p>[% d.get('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
+<p>[% loc('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
 
 <form method="post" accept-charset="UTF-8">
 
-<h3>[% d.get('Bitte bestätigen') %]</h3>
+<h3>[% loc('Bitte bestätigen') %]</h3>
 
-<p>[% d.get('In diesem Raum findet eine Klassenarbeit statt.') %]
-[% d.get('Soll der Unterricht wirklich beendet werden?') %]</p>
+<p>[% loc('In diesem Raum findet eine Klassenarbeit statt.') %]
+[% loc('Soll der Unterricht wirklich beendet werden?') %]</p>
 
 <p><input type="hidden" name="force" value="1">
-<input type="submit" name="end_lesson_now" value="[% d.get('Bestätigen') %]"></p>
+<input type="submit" name="end_lesson_now" value="[% loc('Bestätigen') %]"></p>
 
 </form>

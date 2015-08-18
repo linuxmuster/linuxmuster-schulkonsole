@@ -2,6 +2,9 @@ AUTOMAKE_OPTIONS = foreign
 
 SUFFIXES = .po .pot .mo
 
+# use xgettext.pl for tt files
+XGETTEXTTT = xgettext.pl
+
 # these are the supported languages, 
 ALL_LINGUAS = de en
 POFILES = $(ALL_LINGUAS:=.po)
@@ -35,24 +38,19 @@ messages: $(POFILES)
 # refresh the template from the source code
 template: $(TEMPLATE)
 
-$(TEMPLATE): POTFILES.tt.in
-	$(XGETTEXT) \
-	--from-code=UTF-8 --language=Perl \
-	--sort-by-file --output=$(TEMPLATE) \
+$(TEMPLATE): POTFILES.tt.in POTFILES.perl.in
+	$(XGETTEXTTT) --plugin tt2 --gnu-gettext --use-gettext-style \
+	--output=$(TEMPLATE) --files-from=POTFILES.tt.in
+	sed 's/CHARSET/UTF-8/' -i $(TEMPLATE)
+	$(XGETTEXT) --join-existing \
+	--from-code=UTF-8 --language=Perl --output=$(TEMPLATE) \
 	--package-name="schulkonsole" --package-version=$(VERSION) \
 	--copyright-holder='This file is put in the public domain' \
 	--msgid-bugs-address=fschuett@gymnasium-himmelsthuer.de \
 	--keyword=get --files-from=POTFILES.perl.in
-	$(XGETTEXT) --join-existing \
-	--from-code=UTF-8 --language=Python \
-	--sort-by-file --output=$(TEMPLATE) \
-	--package-name="schulkonsole" --package-version=$(VERSION) \
-	--copyright-holder='This file is put in the public domain' \
-	--msgid-bugs-address=fschuett@gymnasium-himmelsthuer.de \
-	--keyword=get --files-from=POTFILES.tt.in
 
 $(POFILES): $(TEMPLATE)
-	$(MSGMERGE) $@ $< -o $@
+	$(MSGMERGE) -s $@ $< -o $@
 
 
 %.mo: %.po

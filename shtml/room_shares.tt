@@ -1,39 +1,39 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('aktueller Raum') _ ":  $room - " _ d.get('Tauschordner'),
+      title    => loc('Schulkonsole') _ " - " _ loc('aktueller Raum') _ ":  $room - " _ loc('Tauschordner'),
       menu     => 1,
       submenu  => "room",
-      info     => d.get('<p>Steuern Sie hier den Zugriff auf das globale Tauschverzeichnis, indem Sie entweder einzelne Arbeitsplätze über die Checkboxen auswählen oder über die &bdquo;Schnellauswahl&ldquo; für alle.<br>Mit &bdquo;Änderungen übernehmen&ldquo; aktivieren Sie Ihre Auswahl.</p>'),
+      info     => loc('<p>Steuern Sie hier den Zugriff auf das globale Tauschverzeichnis, indem Sie entweder einzelne Arbeitsplätze über die Checkboxen auswählen oder über die &bdquo;Schnellauswahl&ldquo; für alle.<br>Mit &bdquo;Änderungen übernehmen&ldquo; aktivieren Sie Ihre Auswahl.</p>'),
    }
 %]
 
-<h2>[% d.get('Aktueller Raum') %]: [% room %]
-:: [% d.get('Tauschordner') %]</h2>
+<h2>[% loc('Aktueller Raum') %]: [% room %]
+:: [% loc('Tauschordner') %]</h2>
 
 <p>
-[% d.get('Nutzung:') %]
+[% loc('Nutzung:') %]
 
-[% editinguser %] [% d.get('unterrichtet in Raum') %]
+[% editinguser %] [% loc('unterrichtet in Raum') %]
 [% room %].
 [% IF endedittime %]
-[% d.get('Unterrichtsende um') %] [% endedittime %].
+[% loc('Unterrichtsende um') %] [% endedittime %].
 [% END %]
 </p>
 
 [% IF exammode %]
-<p>[% d.get('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
+<p>[% loc('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
 [% ELSE %]
-<p>[% d.get('Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.') %]</p>
+<p>[% loc('Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.') %]</p>
 [% END %]
 
 
-<h3>[% d.get('Übersicht Tauschverzeichnisse') %]</h3>
+<h3>[% loc('Übersicht Tauschverzeichnisse') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 <table id="roomshares" class="liste">
 <tr>
-<th>[% d.get('Hostname') %]</th>
-<th>[% d.get('Login') %]</th>
-<th>[% d.get('Tauschen<br>global') %]</th>
+<th>[% loc('Hostname') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Tauschen<br>global') %]</th>
 </tr>
 [% FOREACH w IN overview_workstations %]
 [% IF w.editing %]
@@ -70,9 +70,9 @@
 <td>|</td>
 </tr>
 <tr class="quickselection">
-<td colspan="2">[% d.get('Schnellauswahl') %]</td>
-<td><input class="button" type="button" value="[% d.get('Aus') %]" name="shares" onClick="check_uncheck(this)"></td>
+<td colspan="2">[% loc('Schnellauswahl') %]</td>
+<td><input class="button" type="button" value="[% loc('Aus') %]" name="shares" onClick="check_uncheck(this)"></td>
 </tr>
 </table>
-<p><input type="submit" name="acceptshares" value="[% d.get('Änderungen übernehmen') %]"></p>
+<p><input type="submit" name="acceptshares" value="[% loc('Änderungen übernehmen') %]"></p>
 </form>

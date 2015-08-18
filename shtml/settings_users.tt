@@ -1,27 +1,27 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Einstellungen') _ " - " _ d.get('Benutzerverwaltung'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Einstellungen') _ " - " _ loc('Benutzerverwaltung'),
       menu     => 1,
       submenu  => "settings",
-      info     => d.get('<p>Bearbeiten Sie hier die globalen Einstellungen für die Benutzerverwaltung.</p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</p>'),
+      info     => loc('<p>Bearbeiten Sie hier die globalen Einstellungen für die Benutzerverwaltung.</p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</p>'),
    }
 %]
 
-<h2>[% d.get('Einstellungen') %] :: [% d.get('Benutzerverwaltung') %]</h2>
+<h2>[% loc('Einstellungen') %] :: [% loc('Benutzerverwaltung') %]</h2>
 
 <form method="post" accept-charset="UTF-8">
 
-<h3>[% d.get('Global') %]</h3>
+<h3>[% loc('Global') %]</h3>
 
 <table class="settings">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
-<td><label [% labelfor("birthlimitlow") %] accesskey="g">[% d.get('Geburtsjahreszahl für Schüler') %]</label></td>
+<td><label [% labelfor("birthlimitlow") %] accesskey="g">[% loc('Geburtsjahreszahl für Schüler') %]</label></td>
 <td><input type="text" size="5" maxlength="4" name="birthlimitlow" id="birthlimitlow" value="[% birthlimitlow %]">
   - <input type="text" size="5" maxlength="4" name="birthlimitup" id="birthlimitup" value="[% birthlimitup %]"></td>
 </tr>
 <tr class="odd">
-<td><label [% labelfor("filterstarclass") %] accesskey="f">[% d.get('Sternchenklassen filtern') %]</label></td>
+<td><label [% labelfor("filterstarclass") %] accesskey="f">[% loc('Sternchenklassen filtern') %]</label></td>
 [% IF filterstarclass %]
 <td><input type="checkbox" name="filterstarclass" id="filterstarclass" checked></td>
 [% ELSE %]
@@ -29,7 +29,7 @@
 [% END %]
 </tr>
 <tr class="even">
-<td><label [% labelfor("activatequota") %]>[% d.get('Quota aktivieren') %]</label></td>
+<td><label [% labelfor("activatequota") %]>[% loc('Quota aktivieren') %]</label></td>
 [% IF activatequota %]
 <td><input type="checkbox" name="activatequota" id="activatequota" checked></td>
 [% ELSE %]
@@ -38,7 +38,7 @@
 </tr>
 [% IF mountpoints %]
 <tr class="odd">
-<td>[% d.get('Standardquota Lehrer') %]</td>
+<td>[% loc('Standardquota Lehrer') %]</td>
 <td>
 
 <table class="tabletable">
@@ -57,7 +57,7 @@
 </td>
 </tr>
 <tr class="even">
-<td>[% d.get('Standardquota Schüler') %]</td>
+<td>[% loc('Standardquota Schüler') %]</td>
 <td>
 
 <table class="tabletable">
@@ -77,7 +77,7 @@
 </tr>
 [% END %]
 <tr class="odd">
-<td><label [% labelfor("activateglobalshares") %]>[% d.get('Schulweites Tauschen aktivieren') %]</label></td>
+<td><label [% labelfor("activateglobalshares") %]>[% loc('Schulweites Tauschen aktivieren') %]</label></td>
 [% IF activateglobalshares %]
 <td><input type="checkbox" name="activateglobalshares" id="activateglobalshares" checked></td>
 [% ELSE %]
@@ -88,13 +88,13 @@
 
 <hr>
 
-<h3>[% d.get('Login') %] [% d.get('(Lehrer)') %]</h3>
+<h3>[% loc('Login') %] [% loc('(Lehrer)') %]</h3>
 
 <table class="settings">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
-<td><label [% labelfor("activaterandompasswordteacher") %]>[% d.get('Zufallspasswort') %]</label></td>
+<td><label [% labelfor("activaterandompasswordteacher") %]>[% loc('Zufallspasswort') %]</label></td>
 [% IF activaterandompasswordteacher %]
 <td><input type="checkbox" name="activaterandompasswordteacher" id="activaterandompasswordteacher" checked></td>
 [% ELSE %]
@@ -102,11 +102,11 @@
 [% END %]
 </tr>
 <tr class="odd">
-<td><label [% labelfor("randompasswordlengthteacher") %]>[% d.get('Zufallspasswortzeichen') %]</label></td>
+<td><label [% labelfor("randompasswordlengthteacher") %]>[% loc('Zufallspasswortzeichen') %]</label></td>
 <td><input type="text" size="3" name="randompasswordlengthteacher" id="randompasswordlengthteacher" value="[% randompasswordlengthteacher %]"></td>
 </tr>
 <tr class="even">
-<td><label [% labelfor("activatesshteacher") %]>[% d.get('Shell aktivieren') %]</label></td>
+<td><label [% labelfor("activatesshteacher") %]>[% loc('Shell aktivieren') %]</label></td>
 [% IF activatesshteacher %]
 <td><input type="checkbox" name="activatesshteacher" id="activatesshteacher" checked></td>
 [% ELSE %]
@@ -114,7 +114,7 @@
 [% END %]
 </tr>
 <tr class="odd">
-<td><label [% labelfor("changesmbpasswordteacher") %]>[% d.get('Sambapasswort bei Erstanmeldung ändern') %]</label></td>
+<td><label [% labelfor("changesmbpasswordteacher") %]>[% loc('Sambapasswort bei Erstanmeldung ändern') %]</label></td>
 [% IF changesmbpasswordteacher %]
 <td><input type="checkbox" name="changesmbpasswordteacher" id="changesmbpasswordteacher" checked></td>
 [% ELSE %]
@@ -125,13 +125,13 @@
 
 <hr>
 
-<h3>[% d.get('Login') %] [% d.get('(Schüler)') %]</h3>
+<h3>[% loc('Login') %] [% loc('(Schüler)') %]</h3>
 
 <table class="settings">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
-<td><label [% labelfor("activaterandompasswordstudent") %]>[% d.get('Zufallspasswort') %]</label></td>
+<td><label [% labelfor("activaterandompasswordstudent") %]>[% loc('Zufallspasswort') %]</label></td>
 [% IF activaterandompasswordstudent %]
 <td><input type="checkbox" name="activaterandompasswordstudent" id="activaterandompasswordstudent" checked></td>
 [% ELSE %]
@@ -139,11 +139,11 @@
 [% END %]
 </tr>
 <tr class="odd">
-<td><label [% labelfor("randompasswordlengthstudent") %]>[% d.get('Zufallspasswortzeichen') %]</label></td>
+<td><label [% labelfor("randompasswordlengthstudent") %]>[% loc('Zufallspasswortzeichen') %]</label></td>
 <td><input type="text" size="3" name="randompasswordlengthstudent" id="randompasswordlengthstudent"></td>
 </tr>
 <tr class="even">
-<td><label [% labelfor("activatesshstudent") %]>[% d.get('Shell aktivieren') %]</label></td>
+<td><label [% labelfor("activatesshstudent") %]>[% loc('Shell aktivieren') %]</label></td>
 [% IF activatesshstudent %]
 <td><input type="checkbox" name="activatesshstudent" id="activatesshstudent" checked></td>
 [% ELSE %]
@@ -151,7 +151,7 @@
 [% END %]
 </tr>
 <tr class="odd">
-<td><label [% labelfor("changesmbpasswordstudent") %]>[% d.get('Sambapasswort bei Erstanmeldung ändern') %]</label></td>
+<td><label [% labelfor("changesmbpasswordstudent") %]>[% loc('Sambapasswort bei Erstanmeldung ändern') %]</label></td>
 [% IF changesmbpasswordstudent %]
 <td><input type="checkbox" name="changesmbpasswordstudent" id="changesmbpasswordstudent" checked></td>
 [% ELSE %]
@@ -162,40 +162,40 @@
 
 <hr>
 
-<h3>[% d.get('Löschen') %] [% d.get('(Lehrer)') %]</h3>
+<h3>[% loc('Löschen') %] [% loc('(Lehrer)') %]</h3>
 
 <table class="settings">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
-<td><label [% labelfor("tolerateteacher") %]>[% d.get('Duldungszeitraum') %]</label></td>
+<td><label [% labelfor("tolerateteacher") %]>[% loc('Duldungszeitraum') %]</label></td>
 <td><input size="5" maxlength="4" name="tolerateteacher" id="tolerateteacher" value="[% tolerateteacher %]"> Tage</td>
 </tr>
 <tr class="odd">
-<td><label [% labelfor("deactivateteacher") %]>[% d.get('Deaktivierungszeitraum') %]</label></td>
+<td><label [% labelfor("deactivateteacher") %]>[% loc('Deaktivierungszeitraum') %]</label></td>
 <td><input size="5" maxlength="4" name="deactivateteacher" id="deactivateteacher" value="[% deactivateteacher %]"> Tage</td>
 </tr>
 </table>
 
 <hr>
 
-<h3>[% d.get('Löschen') %] [% d.get('(Schüler)') %]</h3>
+<h3>[% loc('Löschen') %] [% loc('(Schüler)') %]</h3>
 
 <table class="settings">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
-<td><label [% labelfor("toleratestudent") %]>[% d.get('Duldungszeitraum') %]</label></td>
+<td><label [% labelfor("toleratestudent") %]>[% loc('Duldungszeitraum') %]</label></td>
 <td><input size="5" maxlength="4" name="toleratestudent" id="toleratestudent" value="[% toleratestudent %]"> Tage</td>
 </tr>
 <tr class="odd">
-<td><label [% labelfor("deactivatestudent") %]>[% d.get('Deaktivierungszeitraum') %]</label></td>
+<td><label [% labelfor("deactivatestudent") %]>[% loc('Deaktivierungszeitraum') %]</label></td>
 <td><input size="5" maxlength="4" name="deactivatestudent" id="deactivatestudent" value="[% deactivatestudent %]"> Tage</td>
 </tr>
 </table>
 
 <p>
-<input type="submit" name="accept" value="[% d.get('Änderungen übernehmen') %]">
+<input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
 </p>
 
 </form>

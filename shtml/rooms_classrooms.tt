@@ -1,22 +1,22 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Räume') _ " - " _ d.get('EDV-Räume'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Räume') _ " - " _ loc('EDV-Räume'),
       menu     => 1,
       submenu  => "rooms",
-      info     => d.get('<p>Legen Sie hier fest, welche Räume von der Schulkonsole als Computerraum unter &bdquo;aktueller Raum&ldquo; verwaltbar sein sollen.</p>'),
+      info     => loc('<p>Legen Sie hier fest, welche Räume von der Schulkonsole als Computerraum unter &bdquo;aktueller Raum&ldquo; verwaltbar sein sollen.</p>'),
    }
 %]
 
 [% IF unconfigured %]
 <p class="important">
-[% d.get('Die Liste der konfigurierten Hosts und ihrer Räme stimmt nicht mit den tatsächlich im System vorhandenen Hosts überein. Bitte überprüfen Sie die <a href="hosts">Hosts-Liste</a>.') %]
+[% loc('Die Liste der konfigurierten Hosts und ihrer Räme stimmt nicht mit den tatsächlich im System vorhandenen Hosts überein. Bitte überprüfen Sie die <a href="hosts">Hosts-Liste</a>.') %]
 </p>
 [% ELSIF unimported %]
 <p class="important">
-[% d.get('Es wurden noch nicht alle Hosts mit ihren Rämen in das System übernommen. Bitte überprüfen Sie die <a href="hosts">Hosts-Liste</a>.') %]
+[% loc('Es wurden noch nicht alle Hosts mit ihren Rämen in das System übernommen. Bitte überprüfen Sie die <a href="hosts">Hosts-Liste</a>.') %]
 </p>
 [% END %]
 
-<h2>[% d.get('Räume') %]</h2>
+<h2>[% loc('Räume') %]</h2>
 
 <form method="post" accept-charset="UTF-8">
 
@@ -26,9 +26,9 @@
 <col width="70%">
 <col width="20%">
 <tr>
-<th>[% d.get('Nr.') %]</th>
-<th>[% d.get('Raumbezeichnung') %]</th>
-<th>[% d.get('Computerraum') %]</th>
+<th>[% loc('Nr.') %]</th>
+<th>[% loc('Raumbezeichnung') %]</th>
+<th>[% loc('Computerraum') %]</th>
 </tr>
 [% lfdnr=1 %]
 [% FOREACH r IN rooms %]
@@ -45,7 +45,7 @@
 
 
 <p>
-<input type="submit" name="accept" value="[% d.get('Änderungen übernehmen') %]">
+<input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
 </p>
 
 </form>

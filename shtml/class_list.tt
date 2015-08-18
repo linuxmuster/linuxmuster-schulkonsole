@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Klassen') _ ":  $class_name - " _ d.get('Klassenliste'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Klassen') _ ":  $class_name - " _ loc('Klassenliste'),
       menu     => 1,
       submenu  => "class",
-      info     => d.get('<p>Hier sehen Sie Informationen zu den Schüler/innen der aktuell ausgewählten Klasse {class}</p>',class => $class_name),
+      info     => loc('<p>Hier sehen Sie Informationen zu den Schüler/innen der aktuell ausgewählten Klasse {class}</p>',class => $class_name),
    }
 %]
 
@@ -18,24 +18,24 @@
 <option value="[% class_gid %]" selected>[% class_name %]</option>
 </optgroup>
 </select>
-<input type="submit" value="[% d.get('Wechseln') %]">
+<input type="submit" value="[% loc('Wechseln') %]">
 </p>
 </form>
 [% END %]
 
 
-<h2>[% d.get('Klassen') %] :: [% d.get('Klassenliste') %]</h2>
+<h2>[% loc('Klassen') %] :: [% loc('Klassenliste') %]</h2>
 
-<h3>[% d.get('Ausgewählte Klasse:') %] [% class_name %]</h3>
+<h3>[% loc('Ausgewählte Klasse:') %] [% class_name %]</h3>
 
 <table id="classoverview" class="liste">
 <tr>
-<th>[% d.get('Login') %]</th>
-<th>[% d.get('Name') %]</th>
-<th>[% d.get('Festplattenquota') %]</th>
-<th>[% d.get('E-Mailquota') %]</th>
-<th>[% d.get('Subklasse') %]</th>
-<th>[% d.get('Projekte') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Festplattenquota') %]</th>
+<th>[% loc('E-Mailquota') %]</th>
+<th>[% loc('Subklasse') %]</th>
+<th>[% loc('Projekte') %]</th>
 </tr>
 [% FOREACH s IN students %]
 [% IF odd %][% odd=0 %]<tr class="odd">
@@ -50,18 +50,18 @@
 [% FOREACH sd IN s.diskquotas %]
 
 [% sd.path %]:<br>
-	[% d.get('Speicherplatz/KB:') %]
+	[% loc('Speicherplatz/KB:') %]
 	[% sd.blocks_usage %]/[% sd.blocks_soft %]
 	- max: [% sd.blocks_hard %]
 	- [% sd.blocks_percent %]%<br>
 	[% IF sd.blocks_grace %]
-	[% d.get('verbleibende Zeit:') %] [% sd.blocks_grace %]<br>[% END %]
-	[% d.get('Dateien:') %]
+	[% loc('verbleibende Zeit:') %] [% sd.blocks_grace %]<br>[% END %]
+	[% loc('Dateien:') %]
 	[% sd.files_usage %]/[% sd.files_soft %]
 	- max: [% sd.files_hard %]
 	- [% sd.files_percent %]%<br>
 	[% IF sd.files_grace %]
-	[% d.get('verbleibende Zeit:') %] [% sd.files_grace %]<br>[% END %]<br>
+	[% loc('verbleibende Zeit:') %] [% sd.files_grace %]<br>[% END %]<br>
 
 [% END %]
 </p>
@@ -83,7 +83,7 @@
 
 
 <p>
-	[% d.get('E-Mail-Speicher/KB:') %]
+	[% loc('E-Mail-Speicher/KB:') %]
 	[% students.mailquotas.usage %]/[% students.mailquotas.limit %]
 	- [% students.mailquotas.percent %]%
 </p>
@@ -104,11 +104,11 @@
 </tr>
 [% END %]
 <tr>
-<th>[% d.get('Login') %]</th>
-<th>[% d.get('Name') %]</th>
-<th>[% d.get('Festplattenquota') %]</th>
-<th>[% d.get('E-Mailquota') %]</th>
-<th>[% d.get('Subklasse') %]</th>
-<th>[% d.get('Projekte') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Festplattenquota') %]</th>
+<th>[% loc('E-Mailquota') %]</th>
+<th>[% loc('Subklasse') %]</th>
+<th>[% loc('Projekte') %]</th>
 </tr>
 </table>

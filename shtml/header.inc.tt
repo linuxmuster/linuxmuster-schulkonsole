@@ -1,15 +1,15 @@
 <div id="container">
 <div id="header">
 [% IF link_settings %]
-<h1>[% d.get('Schulkonsole für Netzwerkberater/innen') %]</h1>
+<h1>[% loc('Schulkonsole für Netzwerkberater/innen') %]</h1>
 [% ELSIF link_class %]
-<h1>[% d.get('Schulkonsole für Lehrer/innen') %]</h1>
+<h1>[% loc('Schulkonsole für Lehrer/innen') %]</h1>
 [% ELSIF link_start %]
-<h1>[% d.get('Schulkonsole für Schüler/innen') %]</h1>
+<h1>[% loc('Schulkonsole für Schüler/innen') %]</h1>
 [% ELSE %]
-<h1>[% d.get('Schulkonsole') %]</h1>
+<h1>[% loc('Schulkonsole') %]</h1>
 [% END %]
-[% d.get('Version') %] [% version %]
+[% loc('Version') %] [% version %]
 [% action %]
 </div>
 </div>

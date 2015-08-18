@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Klassen') _ ": $class_name - " _ d.get('Unterricht'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Klassen') _ ": $class_name - " _ loc('Unterricht'),
       menu     => 1,
       submenu  => "class",
-      info     => d.get('<p>Sie müssen den &bdquo;Unterricht beginnen&ldquo;, damit Sie die Funktionen zur Steuerung des Unterrichts in der ausgewählten Klasse nutzen können.<br>Beenden Sie den Unterricht entweder über den Button &bdquo;sofort beenden&ldquo; oder stellen Sie das Unterrichtsende über die Dropdown-Menüs ein und bestätigen es mit &bdquo;beenden lassen&ldquo;.</p><p>Im Bereich &bdquo;Übersicht&ldquo; können Sie den Zugriff der Schüler auf das WLAN über eine Checkbox steuern.</p>'),
+      info     => loc('<p>Sie müssen den &bdquo;Unterricht beginnen&ldquo;, damit Sie die Funktionen zur Steuerung des Unterrichts in der ausgewählten Klasse nutzen können.<br>Beenden Sie den Unterricht entweder über den Button &bdquo;sofort beenden&ldquo; oder stellen Sie das Unterrichtsende über die Dropdown-Menüs ein und bestätigen es mit &bdquo;beenden lassen&ldquo;.</p><p>Im Bereich &bdquo;Übersicht&ldquo; können Sie den Zugriff der Schüler auf das WLAN über eine Checkbox steuern.</p>'),
    }
 %]
 
@@ -18,34 +18,34 @@
 <option value="[% class_gid %]" selected>[% class_name %]</option>
 </optgroup>
 </select>
-<input type="submit" value="[% d.get('Wechseln') %]">
+<input type="submit" value="[% loc('Wechseln') %]">
 </p>
 </form>
 [% END %]
 
-<h2>[% d.get('Klassen') %] :: [% d.get('Unterricht') %]</h2>
+<h2>[% loc('Klassen') %] :: [% loc('Unterricht') %]</h2>
 
-<h3>[% d.get('Ausgewählte Klasse') %]: [% class_name %]</h3>
+<h3>[% loc('Ausgewählte Klasse') %]: [% class_name %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 <p>
-[% d.get('Nutzung:') %]
+[% loc('Nutzung:') %]
 
 [% IF editinguser %]
 [% editinguser %]
-[% d.get('unterrichtet in der Klasse') %]
+[% loc('unterrichtet in der Klasse') %]
 [% class_name %].
 [% IF endedittime %]
-[% d.get('Unterrichtsende um') %] [% endedittime %].
+[% loc('Unterrichtsende um') %] [% endedittime %].
 [% END %]
 </p>
 
 [% IF stopedit %]
-<p>[% d.get('Unterricht beenden:') %]
-<input type="submit" name="end_lesson_now" value="[% d.get('sofort beenden') %]">
+<p>[% loc('Unterricht beenden:') %]
+<input type="submit" name="end_lesson_now" value="[% loc('sofort beenden') %]">
 
 [% IF edit %]
-[% d.get('- oder -') %] [% d.get('um') %] 
+[% loc('- oder -') %] [% loc('um') %] 
 
 <select name="lesson_end_hours">
 	<option value="0">00</option>
@@ -86,19 +86,19 @@
 	<option value="50">50</option>
 	<option value="55">55</option>
 </select>
-[% d.get('Uhr') %]
-<input type="submit" name="end_lesson_at" value="[% d.get('beenden lassen') %]">.
+[% loc('Uhr') %]
+<input type="submit" name="end_lesson_at" value="[% loc('beenden lassen') %]">.
 [% END %]
 [% END %]
 [% ELSE %]
 
 [% IF privilegeduser %]
-[% privilegeduser %] [% d.get('ist in der Klasse') %]
+[% privilegeduser %] [% loc('ist in der Klasse') %]
 [% class_name %]
-[% d.get('angemeldet,') %]
+[% loc('angemeldet,') %]
 [% END %]
-[% d.get('kein Unterricht.') %]
-<input type="submit" name="start_lesson" value="[% d.get('Unterricht beginnen') %]">
+[% loc('kein Unterricht.') %]
+<input type="submit" name="start_lesson" value="[% loc('Unterricht beginnen') %]">
 
 [% END %]
 </p>
@@ -107,12 +107,12 @@
 
 [% IF edit %]
 
-<h3>[% d.get('Übersicht') %]</h3>
+<h3>[% loc('Übersicht') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 <table id="lessonoverview" class="liste">
 <tr>
-<th>[% d.get('WLAN') %]</th>
+<th>[% loc('WLAN') %]</th>
 </tr>
 <tr class="odd">
 <td>
@@ -124,17 +124,17 @@
 </td>
 </tr>
 </table>
-<p><input type="submit" name="acceptlesson" value="[% d.get('Änderungen übernehmen') %]"></p>
+<p><input type="submit" name="acceptlesson" value="[% loc('Änderungen übernehmen') %]"></p>
 </form>
 
 [% ELSE %]
 
-<h3>[% d.get('Übersicht') %]</h3>
+<h3>[% loc('Übersicht') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 <table id="lessonoverview" class="liste">
 <tr>
-<th>[% d.get('WLAN') %]</th>
+<th>[% loc('WLAN') %]</th>
 </tr>
 <tr class="odd">
 <td>

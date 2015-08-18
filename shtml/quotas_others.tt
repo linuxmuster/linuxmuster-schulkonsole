@@ -1,25 +1,25 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Quota') _ " - " _ d.get('Sonderquota'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Quota') _ " - " _ loc('Sonderquota'),
       menu     => 1,
       submenu  => "quotas",
-      info     => d.get('<p>Hier ändern Sie die Quotawerte spezieller Benutzer und einzelner Schüler/innen.</p><p>Unter &bdquo;Neu anlegen&ldquo; können Sie einem bisher hier nicht aufgeführten Benutzer Sonderquota zuweisen. Geben Sie dazu den Login ein und passen Sie die Quotawerte entsprechend an.</p><p>Unter &bdquo;Webspace&ldquo; legen Sie fest, wieviel Platz alle veröffentlichten Webseiten insgesamt belegen dürfen. Ändern Sie hierzu den Quotawert für &bdquo;www-data&ldquo; auf &bdquo;/var&ldquo;.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),
+      info     => loc('<p>Hier ändern Sie die Quotawerte spezieller Benutzer und einzelner Schüler/innen.</p><p>Unter &bdquo;Neu anlegen&ldquo; können Sie einem bisher hier nicht aufgeführten Benutzer Sonderquota zuweisen. Geben Sie dazu den Login ein und passen Sie die Quotawerte entsprechend an.</p><p>Unter &bdquo;Webspace&ldquo; legen Sie fest, wieviel Platz alle veröffentlichten Webseiten insgesamt belegen dürfen. Ändern Sie hierzu den Quotawert für &bdquo;www-data&ldquo; auf &bdquo;/var&ldquo;.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),
    }
 %]
 
-<h2>[% d.get('Quota') %] :: [% d.get('Sonderquota') %]</h2>
+<h2>[% loc('Quota') %] :: [% loc('Sonderquota') %]</h2>
 
 
-<h3>[% d.get('Neu anlegen') %]</h3>
+<h3>[% loc('Neu anlegen') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 
 <table id="quotasothersnew" class="liste">
 <tr>
-<th><label [% labelfor("newlogin") %]>[% d.get('Login') %]</label></th>
+<th><label [% labelfor("newlogin") %]>[% loc('Login') %]</label></th>
 [% IF mountpoints %]
-<th colspan="[% mountpoints_cnt %]">[% d.get('Diskquota') %]</th>
+<th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
 [% END %]
-<th>[% d.get('Mailquota') %]</th>
+<th>[% loc('Mailquota') %]</th>
 </tr>
 [% IF mountpoints %]
 <tr>
@@ -39,7 +39,7 @@
 </tr>
 </table>
 
-<p><input type="submit" name="acceptusers" value="[% d.get('Änderungen übernehmen') %]"></p>
+<p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
 
 </form>
 
@@ -47,7 +47,7 @@
 
 [% IF www %]
 
-<h3>[% d.get('Webspace') %]</h3>
+<h3>[% loc('Webspace') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 
@@ -59,11 +59,11 @@
 	<col>
 </colgroup>
 <tr>
-<th>[% d.get('Login') %]</th>
+<th>[% loc('Login') %]</th>
 [% IF mountpoints %]
-<th colspan="[% mountpoints_cnt %]">[% d.get('Diskquota') %]</th>
+<th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
 [% END %]
-<th>[% d.get('Mailquota') %]</th>
+<th>[% loc('Mailquota') %]</th>
 </tr>
 [% IF mountpoints %]
 <tr>
@@ -83,7 +83,7 @@
 </tr>
 </table>
 
-<p><input type="submit" name="acceptusers" value="[% d.get('Änderungen übernehmen') %]"></p>
+<p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
 
 </form>
 
@@ -94,7 +94,7 @@
 
 [% IF admins %]
 
-<h3>[% d.get('Administratoren') %]</h3>
+<h3>[% loc('Administratoren') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 
@@ -106,12 +106,12 @@
 	<col>
 </colgroup>
 <tr>
-<th>[% d.get('Login') %]</th>
-<th>[% d.get('Name') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Name') %]</th>
 [% IF mountpoints %]
-<th colspan="[% mountpoints_cnt %]">[% d.get('Diskquota') %]</th>
+<th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
 [% END %]
-<th>[% d.get('Mailquota') %]</th>
+<th>[% loc('Mailquota') %]</th>
 </tr>
 [% IF mountpoints %]
 <tr>
@@ -135,7 +135,7 @@
 [% END %]
 </table>
 
-<p><input type="submit" name="acceptusers" value="[% d.get('Änderungen übernehmen') %]"></p>
+<p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
 
 </form>
 
@@ -145,7 +145,7 @@
 
 [% IF users %]
 
-<h3>[% d.get('Schüler') %]</h3>
+<h3>[% loc('Schüler') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 
@@ -157,12 +157,12 @@
 	<col>
 </colgroup>
 <tr>
-<th>[% d.get('Login') %]</th>
-<th>[% d.get('Name') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Name') %]</th>
 [% IF mountpoints %]
-<th colspan="[% mountpoints_cnt %]">[% d.get('Diskquota') %]</th>
+<th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
 [% END %]
-<th>[% d.get('Mailquota') %]</th>
+<th>[% loc('Mailquota') %]</th>
 </tr>
 [% IF mountpoints %]
 <tr>
@@ -186,7 +186,7 @@
 [% END %]
 </table>
 
-<p><input type="submit" name="acceptusers" value="[% d.get('Änderungen übernehmen') %]"></p>
+<p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
 
 </form>
 
@@ -197,7 +197,7 @@
 
 [% IF workstations %]
 
-<h3>[% d.get('Workstationaccounts') %]</h3>
+<h3>[% loc('Workstationaccounts') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 
@@ -209,11 +209,11 @@
 	<col>
 </colgroup>
 <tr>
-<th>[% d.get('Login') %]</th>
+<th>[% loc('Login') %]</th>
 [% IF mountpoints %]
-<th colspan="[% mountpoints_cnt %]">[% d.get('Diskquota') %]</th>
+<th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
 [% END %]
-<th>[% d.get('Mailquota') %]</th>
+<th>[% loc('Mailquota') %]</th>
 </tr>
 [% IF mountpoints %]
 <tr>
@@ -235,7 +235,7 @@
 </tr>
 [% END %]
 
-<p><input type="submit" name="acceptusers" value="[% d.get('Änderungen übernehmen') %]"></p>
+<p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
 
 </form>
 
@@ -245,7 +245,7 @@
 
 [% IF systems %]
 
-<h3>[% d.get('Systembenutzer') %]</h3>
+<h3>[% loc('Systembenutzer') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 
@@ -257,11 +257,11 @@
 	<col>
 </colgroup>
 <tr>
-<th>[% d.get('Login') %]</th>
+<th>[% loc('Login') %]</th>
 [% IF mountpoints %]
-<th colspan="[% mountpoints_cnt %]">[% d.get('Diskquota') %]</th>
+<th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
 [% END %]
-<th>[% d.get('Mailquota') %]</th>
+<th>[% loc('Mailquota') %]</th>
 </tr>
 [% IF mountpoints %]
 <tr>
@@ -284,7 +284,7 @@
 [% END %]
 </table>
 
-<p><input type="submit" name="acceptusers" value="[% d.get('Änderungen übernehmen') %]"></p>
+<p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
 
 </form>
 

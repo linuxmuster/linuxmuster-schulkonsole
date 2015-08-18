@@ -627,6 +627,7 @@ sub print_page {
 	$vars->{is_error} = $this->{is_error};
 	# localization: [% d.get('Text') %]
 	$vars->{d} = $this->{d};
+	$vars->{loc} = sub { return $vars->{d}->get(@_); };
 	$vars->{lang} = $this->{lang};
 	$vars->{input_errors} = %{ $this->{input_errors} };
 	$vars->{session_id} = $vars->{id};

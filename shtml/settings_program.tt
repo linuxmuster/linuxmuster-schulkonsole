@@ -1,28 +1,28 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Einstellungen') _ " - " _ d.get('Schulkonsole'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Einstellungen') _ " - " _ loc('Schulkonsole'),
       menu     => 1,
       submenu  => "settings",
-      info     => d.get('<p>Bearbeiten Sie hier die globalen Einstellungen für die Schulkonsole.</p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</p>'),
+      info     => loc('<p>Bearbeiten Sie hier die globalen Einstellungen für die Schulkonsole.</p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</p>'),
    }
 %]
 
-<h2>[% d.get('Einstellungen') %] :: [% d.get('Schulkonsole') %]</h2>
+<h2>[% loc('Einstellungen') %] :: [% loc('Schulkonsole') %]</h2>
 
 <form method="post" accept-charset="UTF-8">
 
-<h3>[% d.get('Global') %]</h3>
+<h3>[% loc('Global') %]</h3>
 
 <table class="settings">
 <colgroup span="2" width="50%">
 </colgroup>
 <tr class="even">
-<td><label [% labelfor("conf_max_idle_time") %] accesskey="i">[% d.get('Sitzungsdauer') %]</label></td>
-<td><input type="text" size="5" maxlength="4" name="conf_max_idle_time" id="conf_max_idle_time" value="[% conf_max_idle_time %]"> [% d.get('Minuten') %]</td>
+<td><label [% labelfor("conf_max_idle_time") %] accesskey="i">[% loc('Sitzungsdauer') %]</label></td>
+<td><input type="text" size="5" maxlength="4" name="conf_max_idle_time" id="conf_max_idle_time" value="[% conf_max_idle_time %]"> [% loc('Minuten') %]</td>
 </tr>
 </table>
 
 <p>
-<input type="submit" name="accept" value="[% d.get('Änderungen übernehmen') %]">
+<input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
 </p>
 
 </form>

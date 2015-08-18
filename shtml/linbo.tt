@@ -1,31 +1,31 @@
 [% page = {
-      title   => d.get('Schulkonsole') _ " - " _ d.get('Linbo'),
+      title   => loc('Schulkonsole') _ " - " _ loc('Linbo'),
       menu     => 1,
       submenu  => "linbo",
-      info     => d.get('Wählen Sie ein Untermenü.'),
+      info     => loc('Wählen Sie ein Untermenü.'),
    }
 %]
 
-<h2>[% d.get('linbo') %]</h2>
+<h2>[% loc('linbo') %]</h2>
 
 
 <p>
 [% IF link_linbo_edit %]
-<a [% dohref("$linbo_edit") %]>[% d.get('Gruppenkonfiguration editieren') %]</a></br>
+<a [% dohref("$linbo_edit") %]>[% loc('Gruppenkonfiguration editieren') %]</a></br>
 [% END %]
 [% IF link_linbo_new %]
-<a [% dohref("$linbo_new") %]>[% d.get('Gruppenkonfiguration erstellen') %]</a></br>
+<a [% dohref("$linbo_new") %]>[% loc('Gruppenkonfiguration erstellen') %]</a></br>
 [% END %]
 [% IF link_linbo_regpatchedit %]
-<a [% dohref("$linbo_regpatchedit") %]>[% d.get('Registrypatch editieren') %]</a></br>
+<a [% dohref("$linbo_regpatchedit") %]>[% loc('Registrypatch editieren') %]</a></br>
 [% END %]
 [% IF link_linbo_pxeedit %]
-<a [% dohref("$linbo_pxeedit") %]>[% d.get('PXE-Start') %]</a></br>
+<a [% dohref("$linbo_pxeedit") %]>[% loc('PXE-Start') %]</a></br>
 [% END %]
 [% IF link_linbo_menuedit %]
-<a [% dohref("$linbo_menuedit") %]>[% d.get('menu.lst editieren') %]</a></br>
+<a [% dohref("$linbo_menuedit") %]>[% loc('menu.lst editieren') %]</a></br>
 [% END %]
 [% IF link_linbo_images %]
-<a [% dohref("$linbo_images") %]>[% d.get('Imageverwaltung') %]</a></br>
+<a [% dohref("$linbo_images") %]>[% loc('Imageverwaltung') %]</a></br>
 [% END %]
 </p>

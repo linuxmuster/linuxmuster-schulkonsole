@@ -1,32 +1,32 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Benutzer') _ " - " _ d.get('Benutzerlisten prüfen'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Benutzer') _ " - " _ loc('Benutzerlisten prüfen'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Hier überprüfen Sie die zuvor eingepflegten Benutzerdaten auf Konsistenz.</p><p>Nach Ende der Überprüfung sehen Sie die Konsolenausgabe von &bdquo;sophomorix-check&ldquo; mit Hinweisen auf die weitere Verfahrensweise.</p><p>War der Check erfolgreich, gelangen Sie über den Link &bdquo;Benutzerdaten übernehmen&ldquo; zum nächsten Schritt.</p><p>Wurden Änderungen an den Benutzerdaten festgestellt, die eine weitere Überprüfung notwendig machen, wird ein &bdquo;Teach-In&ldquo; vorgeschlagen.</p>'),
+      info     => loc('<p>Hier überprüfen Sie die zuvor eingepflegten Benutzerdaten auf Konsistenz.</p><p>Nach Ende der Überprüfung sehen Sie die Konsolenausgabe von &bdquo;sophomorix-check&ldquo; mit Hinweisen auf die weitere Verfahrensweise.</p><p>War der Check erfolgreich, gelangen Sie über den Link &bdquo;Benutzerdaten übernehmen&ldquo; zum nächsten Schritt.</p><p>Wurden Änderungen an den Benutzerdaten festgestellt, die eine weitere Überprüfung notwendig machen, wird ein &bdquo;Teach-In&ldquo; vorgeschlagen.</p>'),
    }
 %]
 
-<h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('Benutzerlisten prüfen') %]</h2>
+<h2>[% loc('Benutzerverwaltung') %] :: [% loc('Benutzerlisten prüfen') %]</h2>
 
 <form method="post" accept-charset="UTF-8">
 <p>
-<input type="submit" name="check" value="[% d.get('Benutzerlisten überprüfen') %]">
+<input type="submit" name="check" value="[% loc('Benutzerlisten überprüfen') %]">
 </p>
 
 [% IF teachin %]
 
 [% IF usersdelete %]
 
-<p>[% d.get('Folgende Benutzer werden automatisch entfernt:') %]</p>
+<p>[% loc('Folgende Benutzer werden automatisch entfernt:') %]</p>
 
 <table id="usersdelete" class="liste">
 <col width="25%">
 <col width="10%">
 <col width="50%">
 <tr>
-<th>[% d.get('Benutzername') %]</th>
-<th>[% d.get('Klasse') %]</th>
-<th>[% d.get('Bezeichner') %]</th>
+<th>[% loc('Benutzername') %]</th>
+<th>[% loc('Klasse') %]</th>
+<th>[% loc('Bezeichner') %]</th>
 </tr>
 [% FOREACH ud IN usersdelete %]
 [% IF odd %][% odd=0 %]<tr class="odd">
@@ -41,15 +41,15 @@
 
 [% END %]
 
-<p>[% d.get('Die Daten mancher Benutzer wurden geändert. Bearbeiten Sie die <a href="user_teachin">Verknüpfungen</a> der alten mit neuen Benutzern fürs <a href="user_teachin">Teach-In</a>.') %]</p>
+<p>[% loc('Die Daten mancher Benutzer wurden geändert. Bearbeiten Sie die <a href="user_teachin">Verknüpfungen</a> der alten mit neuen Benutzern fürs <a href="user_teachin">Teach-In</a>.') %]</p>
 
 [% ELSE %]
 
 [% IF checklog %]
-<p>[% d.get('Sie können jetzt die <a href="user_commit">Benutzerdaten übernehmen</a>.') %]</p>
+<p>[% loc('Sie können jetzt die <a href="user_commit">Benutzerdaten übernehmen</a>.') %]</p>
 
 
-<p>[% d.get('Bei der Überprüfung der Benutzerdaten wurde Folgendes ausgegeben:') %]</p>
+<p>[% loc('Bei der Überprüfung der Benutzerdaten wurde Folgendes ausgegeben:') %]</p>
 <pre>
 [% checklog %]
 </pre>

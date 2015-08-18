@@ -1,22 +1,22 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Benutzer') _ " - " _ d.get('Änderungen durchführen'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Benutzer') _ " - " _ loc('Änderungen durchführen'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Auf dieser Seite bekommen Sie zunächst einen Überblick über die durchzuführenden Änderungen.</p><p>Sie können die anstehenden Aktionen entweder in einem Durchgang oder nacheinander ausführen lassen.</p><p>Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund ausgeführt wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen Prozesses können Sie sich über die Schaltfläche &bdquo;Letze Logdatei ansehen&ldquo; anzeigen lassen.</p>'),
+      info     => loc('<p>Auf dieser Seite bekommen Sie zunächst einen Überblick über die durchzuführenden Änderungen.</p><p>Sie können die anstehenden Aktionen entweder in einem Durchgang oder nacheinander ausführen lassen.</p><p>Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund ausgeführt wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen Prozesses können Sie sich über die Schaltfläche &bdquo;Letze Logdatei ansehen&ldquo; anzeigen lassen.</p>'),
    }
 %]
 
-<h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('Änderungen durchführen') %]</h2>
+<h2>[% loc('Benutzerverwaltung') %] :: [% loc('Änderungen durchführen') %]</h2>
 
 <form method="post" accept-charset="UTF-8">
 
 [% IF isalling %]
 <p>
-[% d.get('Benutzer anlegen/versetzen/löschen läuft.') %]
+[% loc('Benutzer anlegen/versetzen/löschen läuft.') %]
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="all" value="[% d.get('Benutzer anlegen/versetzen/löschen') %]">
+<input type="submit" name="all" value="[% loc('Benutzer anlegen/versetzen/löschen') %]">
 </p>
 [% END %]
 
@@ -26,11 +26,11 @@
 
 [% IF isadding %]
 <p>
-[% d.get('Anlegen läuft.') %]
+[% loc('Anlegen läuft.') %]
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="add" value="[% d.get('Benutzer anlegen') %]">
+<input type="submit" name="add" value="[% loc('Benutzer anlegen') %]">
 </p>
 [% END %]
 
@@ -39,19 +39,19 @@
 [% logadd %]
 </pre>
 <p>
-<input type="submit" name="showlogadd" value="[% d.get('Aktualisieren') %]">
+<input type="submit" name="showlogadd" value="[% loc('Aktualisieren') %]">
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="showlogadd" value="[% d.get('Letzte Logdatei ansehen') %]">
+<input type="submit" name="showlogadd" value="[% loc('Letzte Logdatei ansehen') %]">
 </p>
 [% END %]
 
 [% IF addlist %]
 <table id="commitadd" class="liste">
 <tr>
-<th>[% d.get('Bezeichner') %]</th>
-<th>[% d.get('Gruppe') %]</th>
+<th>[% loc('Bezeichner') %]</th>
+<th>[% loc('Gruppe') %]</th>
 </tr>
 [% FOREACH al IN addlist %]
 <tr>
@@ -67,11 +67,11 @@
 
 [% IF ismoving %]
 <p>
-[% d.get('Versetzen läuft.') %]
+[% loc('Versetzen läuft.') %]
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="move" value="[% d.get('Benutzer versetzen') %]">
+<input type="submit" name="move" value="[% loc('Benutzer versetzen') %]">
 </p>
 [% END %]
 
@@ -80,21 +80,21 @@
 [% logmove %]
 </pre>
 <p>
-<input type="submit" name="showlogmove" value="[% d.get('Aktualisieren') %]">
+<input type="submit" name="showlogmove" value="[% loc('Aktualisieren') %]">
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="showlogmove" value="[% d.get('Letzte Logdatei ansehen') %]">
+<input type="submit" name="showlogmove" value="[% loc('Letzte Logdatei ansehen') %]">
 </p>
 [% END %]
 
 [% IF movelist %]
 <table id="commitmove" class="liste">
 <tr>
-<th>[% d.get('Benutzer') %]</th>
-<th>[% d.get('von') %]</th>
-<th>[% d.get('nach') %]</th>
-<th>[% d.get('Status') %]</th>
+<th>[% loc('Benutzer') %]</th>
+<th>[% loc('von') %]</th>
+<th>[% loc('nach') %]</th>
+<th>[% loc('Status') %]</th>
 </tr>
 [% FOREACH ml IN movelist %]
 <tr>
@@ -112,11 +112,11 @@
 
 [% IF iskilling %]
 <p>
-[% d.get('Löschen läuft.') %]
+[% loc('Löschen läuft.') %]
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="kill" value="[% d.get('Benutzer löschen') %]">
+<input type="submit" name="kill" value="[% loc('Benutzer löschen') %]">
 </p>
 [% END %]
 
@@ -125,19 +125,19 @@
 [% logkill %]
 </pre>
 <p>
-<input type="submit" name="showlogkill" value="[% d.get('Aktualisieren') %]">
+<input type="submit" name="showlogkill" value="[% loc('Aktualisieren') %]">
 </p>
 [% ELSE %]
 <p>
-<input type="submit" name="showlogkill" value="[% d.get('Letzte Logdatei ansehen') %]">
+<input type="submit" name="showlogkill" value="[% loc('Letzte Logdatei ansehen') %]">
 </p>
 [% END %]
 
 [% IF killlist %]
 <table id="commitkill" class="liste">
 <tr>
-<th>[% d.get('Benutzer') %]</th>
-<th>[% d.get('Bezeichner') %]</th>
+<th>[% loc('Benutzer') %]</th>
+<th>[% loc('Bezeichner') %]</th>
 </tr>
 [% FOREACH kl IN killlist %]
 <tr>

@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Projekte'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Projekte'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get('<p>Wählen Sie ein Projekt aus dem Pull-Down-Menü oben rechts oder aus der Liste, um damit arbeiten zu können.</p><p>Tragen Sie sich aus einem Projekt aus, wenn Sie darin nicht mehr mitarbeiten.</p><p>Tragen Sie sich in ein Projekt ein, indem Sie es im Pull-Down-Menü auswählen und dann die Schaltfläche &bdquo;Eintragen&ldquo; betätigen.</p><p>Erlaubte Zeichen für den Kurznamen eines neuen Projekts sind a-z und 0-9 sowie _ und -. Der Name muss zwischen 3 und 14 Zeichen lang sein.</p><p>&bdquo;Offenes&ldquo; Projekt bedeutet, andere Lehrer können sich in das Projekt eintragen.</p>'),
+      info     => loc('<p>Wählen Sie ein Projekt aus dem Pull-Down-Menü oben rechts oder aus der Liste, um damit arbeiten zu können.</p><p>Tragen Sie sich aus einem Projekt aus, wenn Sie darin nicht mehr mitarbeiten.</p><p>Tragen Sie sich in ein Projekt ein, indem Sie es im Pull-Down-Menü auswählen und dann die Schaltfläche &bdquo;Eintragen&ldquo; betätigen.</p><p>Erlaubte Zeichen für den Kurznamen eines neuen Projekts sind a-z und 0-9 sowie _ und -. Der Name muss zwischen 3 und 14 Zeichen lang sein.</p><p>&bdquo;Offenes&ldquo; Projekt bedeutet, andere Lehrer können sich in das Projekt eintragen.</p>'),
    }
 %]
 
@@ -18,31 +18,31 @@
 <option value="[% project_gid %]" selected>[% project %]</option>
 </optgroup>
 </select>
-<input type="submit" value="[% d.get('Wechseln') %]">
+<input type="submit" value="[% loc('Wechseln') %]">
 </p>
 </form>
 [% END %]
 
 
-<h2>[% d.get('Projekte') %]</h2>
+<h2>[% loc('Projekte') %]</h2>
 
 [% IF project %]
-<h3>[% d.get('Ausgewähltes Projekt') %]: [% project %]</h3>
+<h3>[% loc('Ausgewähltes Projekt') %]: [% project %]</h3>
 [% ELSE %]
-<h3>[% d.get('Bitte ein Projekt auswählen') %]</h3>
+<h3>[% loc('Bitte ein Projekt auswählen') %]</h3>
 [% END %]
 
 
 [% IF projects %]
 <form method="post" accept-charset="UTF-8">
 
-<h4>[% d.get('Übersicht der Projekte') %]</h4>
+<h4>[% loc('Übersicht der Projekte') %]</h4>
 
 <table id="projectsoverview" class="liste">
 <tr>
-<th>[% d.get('Projektename') %]</th>
-<th>[% d.get('Zusatzquota') %]</th>
-<th>[% d.get('Offenes Projekt') %]</th>
+<th>[% loc('Projektename') %]</th>
+<th>[% loc('Zusatzquota') %]</th>
+<th>[% loc('Offenes Projekt') %]</th>
 <th></th>
 <th></th>
 </tr>
@@ -62,14 +62,14 @@
 [% IF p.islastadmin %]
 <td></td>
 [% ELSE %]
-<td><input type="submit" name="[% p.gid %]_remove" value="[% d.get('Austragen') %]"></td>
+<td><input type="submit" name="[% p.gid %]_remove" value="[% loc('Austragen') %]"></td>
 [% END %]
 [% ELSE %]
 <td></td>
 [% END %]
 
 [% IF p.isadmin %]
-<td><input type="submit" name="[% p.gid %]_drop" value="[% d.get('Löschen') %]"></td>
+<td><input type="submit" name="[% p.gid %]_drop" value="[% loc('Löschen') %]"></td>
 [% ELSE %]
 <td></td>
 [% END %]
@@ -85,7 +85,7 @@
 [% IF other_projects %]
 <form method="post" accept-charset="UTF-8">
 
-<h4>[% d.get('Eintragen in Projekte') %]</h4>
+<h4>[% loc('Eintragen in Projekte') %]</h4>
 
 <p>
 <select name="project_add">
@@ -93,7 +93,7 @@
 <option value="[% other_p.gid %]">[% other_projects.name %]</option>
 [% END %]
 </select>
-<input type="submit" value="[% d.get('Eintragen') %]">
+<input type="submit" value="[% loc('Eintragen') %]">
 </p>
 </form>
 [% END %]
@@ -103,7 +103,7 @@
 
 <form method="post" accept-charset="UTF-8">
 
-<h4>[% d.get('Neues Projekt anlegen') %]</h4>
+<h4>[% loc('Neues Projekt anlegen') %]</h4>
 
 <p>
 <label [% labelfor("projectname") %]>Kurzname</label>:
@@ -111,5 +111,5 @@ p_<input id="projectname" name="projectname">
 <input type="checkbox" id="projectisopen" name="projectisopen" checked>
 <label [% labelfor("projectisopen") %]>offenes Projekt</label><br>
 
-<input type="submit" name="createproject" value="[% d.get('Anlegen') %]">
+<input type="submit" name="createproject" value="[% loc('Anlegen') %]">
 </p>

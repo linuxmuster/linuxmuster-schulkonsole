@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('aktueller Raum') _ ":  $room",
+      title    => loc('Schulkonsole') _ " - " _ loc('aktueller Raum') _ ":  $room",
       menu     => 1,
       submenu  => "room",
-      info     => d.get('<p>Sie müssen den &bdquo;Unterricht beginnen&ldquo;, damit Sie die Funktionen zur Steuerung des Unterrichts im aktuellen Raum nutzen können.<br>Beenden Sie den Unterricht entweder über den Button &bdquo;sofort beenden&ldquo; oder stellen Sie das Unterrichtsende über die Dropdown-Menüs ein und bestätigen es mit &bdquo;beenden lassen&ldquo;.</p><p>Im Bereich &bdquo;Übersicht PCs&ldquo; können Sie den Zugriff der Schülerarbeitsplätze auf Intranet, Internet, Webfilter, Drucker und das globale Tauschverzeichnis über Checkboxen steuern.</p><p>Im Bereich &bdquo;Übersicht Drucker&ldquo; können Sie den Zugriff auf die Raumdrucker für alle Benutzer, nicht nur die des Raumes, freigeben oder sperren.</p>'),
+      info     => loc('<p>Sie müssen den &bdquo;Unterricht beginnen&ldquo;, damit Sie die Funktionen zur Steuerung des Unterrichts im aktuellen Raum nutzen können.<br>Beenden Sie den Unterricht entweder über den Button &bdquo;sofort beenden&ldquo; oder stellen Sie das Unterrichtsende über die Dropdown-Menüs ein und bestätigen es mit &bdquo;beenden lassen&ldquo;.</p><p>Im Bereich &bdquo;Übersicht PCs&ldquo; können Sie den Zugriff der Schülerarbeitsplätze auf Intranet, Internet, Webfilter, Drucker und das globale Tauschverzeichnis über Checkboxen steuern.</p><p>Im Bereich &bdquo;Übersicht Drucker&ldquo; können Sie den Zugriff auf die Raumdrucker für alle Benutzer, nicht nur die des Raumes, freigeben oder sperren.</p>'),
    }
 %]
 
@@ -17,39 +17,39 @@
 <option value="[% room %]" selected>[% room %]</option>
 </optgroup>
 </select>
-<input type="submit" value="[% d.get('Wechseln') %]">
+<input type="submit" value="[% loc('Wechseln') %]">
 </p>
 </form>
 
 [% IF room %]
-<h2>[% d.get('Aktueller Raum') %]: [% room %]</h2>
+<h2>[% loc('Aktueller Raum') %]: [% room %]</h2>
 
 <form method="post" accept-charset="UTF-8">
 <p>
-[% d.get('Nutzung:') %]
+[% loc('Nutzung:') %]
 
 [% IF editinguser %]
 [% editinguser %]
-[% d.get('unterrichtet in Raum') %]
+[% loc('unterrichtet in Raum') %]
 [% room %].
 [% IF endedittime %]
-[% d.get('Unterrichtsende um') %] [% endedittime %].
+[% loc('Unterrichtsende um') %] [% endedittime %].
 [% END %]
 </p>
 
 [% IF exammode %]
-<p class="important">[% d.get('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
-<p><input type="submit" name="end_lesson_now" value="[% d.get('Klassenarbeitsmodus beenden') %]"></p>
+<p class="important">[% loc('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
+<p><input type="submit" name="end_lesson_now" value="[% loc('Klassenarbeitsmodus beenden') %]"></p>
 [% ELSE %]
-<p>[% d.get('Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.') %]</p>
+<p>[% loc('Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.') %]</p>
 
 
 [% IF stopedit %]
-<p>[% d.get('Unterricht beenden:') %]
-<input type="submit" name="end_lesson_now" value="[% d.get('sofort beenden') %]">
+<p>[% loc('Unterricht beenden:') %]
+<input type="submit" name="end_lesson_now" value="[% loc('sofort beenden') %]">
 
 [% IF edit %]
-[% d.get('- oder -') %] [% d.get('um') %] 
+[% loc('- oder -') %] [% loc('um') %] 
 
 <select name="lesson_end_hours">
 	<option value="0">00</option>
@@ -90,20 +90,20 @@
 	<option value="50">50</option>
 	<option value="55">55</option>
 </select>
-[% d.get('Uhr') %]
-<input type="submit" name="end_lesson_at" value="[% d.get('beenden lassen') %]">.
+[% loc('Uhr') %]
+<input type="submit" name="end_lesson_at" value="[% loc('beenden lassen') %]">.
 [% END %]
 [% END %]
 [% END %]
 [% ELSE %]
 
 [% IF privilegeduser %]
-[% privilegeduser %] [% d.get('ist in Raum') %]
+[% privilegeduser %] [% loc('ist in Raum') %]
 [% room %]
-[% d.get('angemeldet,') %]
+[% loc('angemeldet,') %]
 [% END %]
-[% d.get('kein Unterricht.') %]
-<input type="submit" name="start_lesson" value="[% d.get('Unterricht beginnen') %]">
+[% loc('kein Unterricht.') %]
+<input type="submit" name="start_lesson" value="[% loc('Unterricht beginnen') %]">
 
 [% END %]
 </p>
@@ -112,20 +112,20 @@
 
 [% IF edit %]
 
-<h3>[% d.get('Übersicht PCs') %]</h3>
+<h3>[% loc('Übersicht PCs') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 <table id="roomoverview" class="liste">
 <tr>
-<th>[% d.get('Hostname') %]</th>
-<th>[% d.get('Login') %]</th>
-<th>[% d.get('Internet') %]</th>
-<th>[% d.get('Intranet') %]</th>
-<th>[% d.get('Webfilter') %]</th>
+<th>[% loc('Hostname') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Internet') %]</th>
+<th>[% loc('Intranet') %]</th>
+<th>[% loc('Webfilter') %]</th>
 [% FOREACH p IN printers %]
-<th>[% d.get('Drucker') %]<br>[% p %]</th>
+<th>[% loc('Drucker') %]<br>[% p %]</th>
 [% END %]
-<th>[% d.get('Tauschen<br>global') %]</th>
+<th>[% loc('Tauschen<br>global') %]</th>
 </tr>
 [% FOREACH w IN overview_workstations %]
 [% IF w.editing %]
@@ -224,44 +224,44 @@
 <td>|</td>
 </tr>
 <tr class="quickselection">
-<td colspan="2">[% d.get('Schnellauswahl') %]</td>
+<td colspan="2">[% loc('Schnellauswahl') %]</td>
 [% IF quickinternetoff %]
-<td><input type="button" value="[% d.get('Aus') %]" name="internet" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% loc('Aus') %]" name="internet" checked onClick="check_uncheck(this)"></td>
 [% ELSE %]
-<td><input type="button" value="[% d.get('An') %]" name="internet" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% loc('An') %]" name="internet" checked onClick="check_uncheck(this)"></td>
 [% END %]
 [% IF quickintranetoff %]
-<td><input type="button" value="[% d.get('Aus') %]" name="intranet" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% loc('Aus') %]" name="intranet" checked onClick="check_uncheck(this)"></td>
 [% ELSE %]
-<td><input type="button" value="[% d.get('An') %]" name="intranet" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% loc('An') %]" name="intranet" checked onClick="check_uncheck(this)"></td>
 [% END %]
 [% IF quickwebfilteroff %]
-<td><input type="button" value="[% d.get('Aus') %]" name="webfilter" onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% loc('Aus') %]" name="webfilter" onClick="check_uncheck(this)"></td>
 [% ELSE %]
-<td><input type="button" value="[% d.get('An') %]" name="webfilter" onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% loc('An') %]" name="webfilter" onClick="check_uncheck(this)"></td>
 [% END %]
 [% FOREACH p IN printers %]
-<td><input type="button" value="[% d.get('Aus') %]" name="[% p %];printer" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% loc('Aus') %]" name="[% p %];printer" checked onClick="check_uncheck(this)"></td>
 [% END %]
 [% IF quicksharesoff %]
-<td><input type="button" value="[% d.get('Aus') %]" name="shares" onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% loc('Aus') %]" name="shares" onClick="check_uncheck(this)"></td>
 [% ELSE %]
-<td><input type="button" value="[% d.get('An') %]" name="shares" onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% loc('An') %]" name="shares" onClick="check_uncheck(this)"></td>
 [% END %]
 </tr>
 </table>
-<p><input type="submit" name="acceptfirewall" value="[% d.get('Änderungen übernehmen') %]"></p>
+<p><input type="submit" name="acceptfirewall" value="[% loc('Änderungen übernehmen') %]"></p>
 </form>
 
-<h3>[% d.get('Übersicht Drucker') %]</h3>
+<h3>[% loc('Übersicht Drucker') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 <table id="printersoverview" class="liste">
 <colgroup span="2" width="40%"></colgroup>
 <tr>
-<th>[% d.get('Name') %]</th>
-<th>[% d.get('Status') %]</th>
-<th>[% d.get('freigeschaltet') %]</th>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Status') %]</th>
+<th>[% loc('freigeschaltet') %]</th>
 </tr>
 [% FOREACH d IN overview_devices %]
 [% IF odd %][% odd=0 %]<tr class="odd">
@@ -285,34 +285,34 @@
 <td>|</td>
 </tr>
 <tr class="quickselection">
-<td>[% d.get('Schnellauswahl') %]</td>
+<td>[% loc('Schnellauswahl') %]</td>
 <td></td>
 [% IF quickprinteroff %]
-<td><input type="button" value="[% d.get('Aus') %]" name="printer" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% loc('Aus') %]" name="printer" checked onClick="check_uncheck(this)"></td>
 [% ELSE %]
-<td><input type="button" value="[% d.get('An') %]" name="printer" checked onClick="check_uncheck(this)"></td>
+<td><input type="button" value="[% loc('An') %]" name="printer" checked onClick="check_uncheck(this)"></td>
 [% END %]
 </tr>
 </table>
-<p><input type="submit" name="acceptprinter" value="[% d.get('Änderungen übernehmen') %]"></p>
+<p><input type="submit" name="acceptprinter" value="[% loc('Änderungen übernehmen') %]"></p>
 </form>
 
 [% ELSE %]
 
-<h3>[% d.get('Übersicht PCs') %]</h3>
+<h3>[% loc('Übersicht PCs') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 <table id="roomoverview" class="liste">
 <tr>
-<th>[% d.get('Hostname') %]</th>
-<th>[% d.get('Login') %]</th>
-<th>[% d.get('Internet') %]</th>
-<th>[% d.get('Intranet') %]</th>
-<th>[% d.get('Webfilter') %]</th>
+<th>[% loc('Hostname') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Internet') %]</th>
+<th>[% loc('Intranet') %]</th>
+<th>[% loc('Webfilter') %]</th>
 [% FOREACH p IN printers %]
-<th>[% d.get('Drucker') %]<br>[% p %]</th>
+<th>[% loc('Drucker') %]<br>[% p %]</th>
 [% END %]
-<th>[% d.get('Tauschen<br>global') %]</th>
+<th>[% loc('Tauschen<br>global') %]</th>
 </tr>
 [% FOREACH w %]
 [% IF odd %][% odd=0 %]<tr class="odd">
@@ -377,14 +377,14 @@
 </table>
 
 
-<h3>[% d.get('Übersicht Drucker') %]</h3>
+<h3>[% loc('Übersicht Drucker') %]</h3>
 
 [% odd=0 %]<table id="printersoverview" class="liste">
 <colgroup span="2" width="40%"></colgroup>
 <tr>
-<th>[% d.get('Name') %]</th>
-<th>[% d.get('Status') %]</th>
-<th>[% d.get('freigeschaltet') %]</th>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Status') %]</th>
+<th>[% loc('freigeschaltet') %]</th>
 </tr>
 [% FOREACH d IN overview_devices %]
 [% IF odd %][% odd=0 %]<tr class="odd">
@@ -406,5 +406,5 @@
 
 [% END %]
 [% ELSE %]
-<h2>[% d.get('Aktueller Raum') %]: [% d.get('unbekannt') %]</h2>
+<h2>[% loc('Aktueller Raum') %]: [% loc('unbekannt') %]</h2>
 [% END %]

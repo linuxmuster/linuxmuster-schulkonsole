@@ -1,16 +1,16 @@
 [% page = {
-      title    => d.get('Schulkonsole') _ " - " _ d.get('Benutzer') _ " - " _ d.get('Änderungen durchführen'),
+      title    => loc('Schulkonsole') _ " - " _ loc('Benutzer') _ " - " _ loc('Änderungen durchführen'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Während der Teach-In-Sitzung müssen Sie nicht eindeutig zuordenbare Benutzerdaten mit den richtigen Benutzernamen verknüpfen.</p><p>Bestätigen Sie alle Änderungen einer Seite jedes Mal über die Schaltfläche &bdquo;Änderungen übernehmen&ldquo;.</p><p>Beenden Sie die Teach-In-Sitzung erst, wenn Sie alle Seiten geprüft haben.</p>'),
+      info     => loc('<p>Während der Teach-In-Sitzung müssen Sie nicht eindeutig zuordenbare Benutzerdaten mit den richtigen Benutzernamen verknüpfen.</p><p>Bestätigen Sie alle Änderungen einer Seite jedes Mal über die Schaltfläche &bdquo;Änderungen übernehmen&ldquo;.</p><p>Beenden Sie die Teach-In-Sitzung erst, wenn Sie alle Seiten geprüft haben.</p>'),
    }
 %]
 
-<h2>[% d.get('Benutzerverwaltung') %] :: [% d.get('Teach-In') %]</h2>
+<h2>[% loc('Benutzerverwaltung') %] :: [% loc('Teach-In') %]</h2>
 
 <form method="post" accept-charset="UTF-8">
 
-<p><label [% labelfor("max") %]>[% d.get('Benutzer pro Seite:') %]</label>
+<p><label [% labelfor("max") %]>[% loc('Benutzer pro Seite:') %]</label>
 <select name="max" id="max">
 <option value="10" selected>10</option>
 <option value="20">20</option>
@@ -18,27 +18,27 @@
 <option value="100">100</option>
 <option value="500">500</option>
 </select>
-<input type="submit" name="changemax" value="[% d.get('ändern') %]"></p>
+<input type="submit" name="changemax" value="[% loc('ändern') %]"></p>
 
 </form>
 
-<p>[% d.get('Seite') %]
+<p>[% loc('Seite') %]
 [% currentpage %]/[% maxpage %]</p>
 
 <form method="post" accept-charset="UTF-8">
 <p>
 [% IF firstpage %]
-<input type="submit" name="prev" value="[% d.get('zurück') %]" disabled>
+<input type="submit" name="prev" value="[% loc('zurück') %]" disabled>
 [% ELSE %]
-<input type="submit" name="prev" value="[% d.get('zurück') %]">
+<input type="submit" name="prev" value="[% loc('zurück') %]">
 [% END %]
 [% FOREACH p IN pages %]
 <input type="submit" name="[% p %]_page" value="[% p %]">
 [% END %]
 [% IF lastpage %]
-<input type="submit" name="next" value="[% d.get('weiter') %]" disabled>
+<input type="submit" name="next" value="[% loc('weiter') %]" disabled>
 [% ELSE %]
-<input type="submit" name="next" value="[% d.get('weiter') %]">
+<input type="submit" name="next" value="[% loc('weiter') %]">
 [% END %]
 </p>
 
@@ -50,18 +50,18 @@
 <col width="30%">
 
 <tr>
-<th>[% d.get('Benutzername') %]</th>
-<th>[% d.get('verknüpfen mit') %]</th>
-<th>[% d.get('Klasse') %]</th>
-<th>[% d.get('Bezeichner') %]</th>
+<th>[% loc('Benutzername') %]</th>
+<th>[% loc('verknüpfen mit') %]</th>
+<th>[% loc('Klasse') %]</th>
+<th>[% loc('Bezeichner') %]</th>
 </tr>
 [% FOREACH u IN users %]
 <tr class="sameuser">
 <td>[% u.login %]</td>
 <td>[% IF u.delete %]
-<input type="radio" name="[% u.login %]_user" id="[% u.login %];[% u.id %]" value="[% d.get('::') %]" checked>
+<input type="radio" name="[% u.login %]_user" id="[% u.login %];[% u.id %]" value="[% loc('::') %]" checked>
 [% ELSE %]
-<input type="radio" name="[% u.login %]_user" id="[% u.login %];[% u.id %]" value="[% d.get('') %]">
+<input type="radio" name="[% u.login %]_user" id="[% u.login %];[% u.id %]" value="[% loc('') %]">
 [% END %]</td>
 <td>[% u.class %]</td>
 <td><label [% labelfor("${u.login};${u.id}") %]>[% u.id %]</label></td>
@@ -85,25 +85,25 @@
 
 <p>
 [% IF firstpage %]
-<input type="submit" name="prev" value="[% d.get('zurück') %]" disabled>
+<input type="submit" name="prev" value="[% loc('zurück') %]" disabled>
 [% ELSE %]
-<input type="submit" name="prev" value="[% d.get('zurück') %]">
+<input type="submit" name="prev" value="[% loc('zurück') %]">
 [% END %]
 [% FOREACH pages %]
 <input type="submit" name="[% pages %]_page" value="[% pages %]">
 [% END %]
 [% IF lastpage %]
-<input type="submit" name="next" value="[% d.get('weiter') %]" disabled>
+<input type="submit" name="next" value="[% loc('weiter') %]" disabled>
 [% ELSE %]
-<input type="submit" name="next" value="[% d.get('weiter') %]">
+<input type="submit" name="next" value="[% loc('weiter') %]">
 [% END %]
 </p>
 
 
-<p><input type="submit" name="accept" value="[% d.get('Änderungen übernehmen') %]"></p>
+<p><input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]"></p>
 
 <hr>
 
-<p><input type="submit" name="write" value="[% d.get('Beenden') %]"></p>
+<p><input type="submit" name="write" value="[% loc('Beenden') %]"></p>
 
 </form>
