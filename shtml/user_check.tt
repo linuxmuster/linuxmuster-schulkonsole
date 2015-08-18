@@ -41,20 +41,15 @@
 
 [% END %]
 
-<p>[% d.get('Die Daten mancher Benutzer wurden ge&auml;ndert.') %]
-[% d.get('Bearbeiten Sie die
-<a href="user_teachin">Verkn&uuml;pfungen</a>
-der alten mit neuen Benutzern f&uuml;rs <a href="user_teachin">Teach-In</a>.') %]</p>
+<p>[% d.get('Die Daten mancher Benutzer wurden ge&auml;ndert. Bearbeiten Sie die <a href="user_teachin">Verkn&uuml;pfungen</a> der alten mit neuen Benutzern f&uuml;rs <a href="user_teachin">Teach-In</a>.') %]</p>
 
 [% ELSE %]
 
 [% IF checklog %]
-<p>[% d.get('Sie k&ouml;nnen jetzt die <a href="user_commit">Benutzerdaten
-&uuml;bernehmen</a>.') %]</p>
+<p>[% d.get('Sie k&ouml;nnen jetzt die <a href="user_commit">Benutzerdaten &uuml;bernehmen</a>.') %]</p>
 
 
-<p>[% d.get('Bei der &Uuml;berpr&uuml;fung der Benutzerdaten wurde Folgendes
-ausgegeben:') %]</p>
+<p>[% d.get('Bei der &Uuml;berpr&uuml;fung der Benutzerdaten wurde Folgendes ausgegeben:') %]</p>
 <pre>
 [% checklog %]
 </pre>

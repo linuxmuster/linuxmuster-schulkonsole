@@ -134,8 +134,7 @@
 [% ELSE %]
 <li>
 [% END %]
-<span title="E-Mail: [% mailquota.usage %]/[% mailquota.limit %] [% mailquota.percent %]%" style="width: [% mailquota.
-percent_rounded %]%;">&nbsp;</span>
+<span title="[% d.get('E-Mail') %]: [% mailquota.usage %]/[% mailquota.limit %] [% mailquota.percent %]%" style="width: [% mailquota.percent_rounded %]%;">&nbsp;</span>
 </li>
 </ul>
 [% ELSE %]-[% END %]</td>
