@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Einsammeln'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get('<p>Einzusammelnde Dateien m&uuml;ssen von den Projektmitgliedern in ihrem Heimatverzeichnis im Ordner &#8222;__einsammeln&#8220; abgelegt werden.</p><p>W&auml;hlen Sie aus, ob die einzusammelnden Dateien erhalten bleiben oder gel&ouml;scht werden sollen.</p><p>W&auml;hlen Sie die Projektmitglieder aus, von denen Sie einsammeln wollen. In der Spalte &#8222;Dateien&#8220; k&ouml;nnen Sie sehen, welche Dateien zum Einsammeln zur Verf&uuml;gung stehen.</p><p>Sie finden die eingesammelten Arbeiten in Ihrem Heimatverzeichnis unter &#8222;_eingesammelt -&gt; eingesammelt-[% project %]&#8220;.</p>'),
+      info     => d.get('<p>Einzusammelnde Dateien müssen von den Projektmitgliedern in ihrem Heimatverzeichnis im Ordner &#8222;__einsammeln&#8220; abgelegt werden.</p><p>Wählen Sie aus, ob die einzusammelnden Dateien erhalten bleiben oder gelöscht werden sollen.</p><p>Wählen Sie die Projektmitglieder aus, von denen Sie einsammeln wollen. In der Spalte &#8222;Dateien&#8220; können Sie sehen, welche Dateien zum Einsammeln zur Verfügung stehen.</p><p>Sie finden die eingesammelten Arbeiten in Ihrem Heimatverzeichnis unter &#8222;_eingesammelt -&gt; eingesammelt-[% project %]&#8220;.</p>'),
    }
 %]
 
@@ -25,7 +25,7 @@
 
 <h2>[% d.get('Projekte') %] :: [% d.get('Einsammeln') %]</h2>
 
-<h3>[% d.get('Ausgew&auml;hltes Projekt:') %] [% project %]</h3>
+<h3>[% d.get('Ausgewähltes Projekt:') %] [% project %]</h3>
 
 
 <h3>[% d.get('Einsammeln') %]</h3>
@@ -38,7 +38,7 @@
 <table>
 <tr>
 	<td><input type="radio" id="deletetop" name="deletetop" value="1"></td>
-	<td><label [% labelfor("deletetop") %]>[% d.get('Original wird gel&ouml;scht') %]</label></td>
+	<td><label [% labelfor("deletetop") %]>[% d.get('Original wird gelöscht') %]</label></td>
 </tr>
 <tr>
 	<td><input type="radio" id="copytop" name="deletetop" value="0" checked></td>
@@ -84,7 +84,7 @@
 <table>
 <tr>
 	<td><input type="radio" id="deletebottom" name="deletebottom" value="1"></td>
-	<td><label [% labelfor("deletebottom") %]>[% d.get('Original wird gel&ouml;scht') %]</label></td>
+	<td><label [% labelfor("deletebottom") %]>[% d.get('Original wird gelöscht') %]</label></td>
 </tr>
 <tr>
 	<td><input type="radio" id="copybottom" name="deletebottom" value="0" checked></td>

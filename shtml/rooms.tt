@@ -1,12 +1,12 @@
 [% page = {
-      title    => d.get('Schulkonsole - R&auml;ume - Standardeinstellungen'),
+      title    => d.get('Schulkonsole - Räume - Standardeinstellungen'),
       menu     => 1,
       submenu  => "rooms",
-      info     => d.get('<p>Legen Sie hier die Standardeinstellungen f&uuml;r die Workstations in den R&auml;umen fest.</p><p>Um eine Ausnahme f&uuml;r eine Workstation anzulegen, muss ein Eintrag f&uuml;r den Raum hinzugef&uuml;gt worden sein.</p><p>Um einen Eintrag zu l&ouml;schen, setzen Sie das H&auml;kchen in der entsprechenden Checkbox am Zeilenende.</p><p>Schliessen Sie die Aktion mit &#8222;&Auml;nderungen &uuml;bernehmen&#8220; ab.</p><p>Um die Rechner in einem Raum oder einzelne Rechner zur&uuml;ckzusetzen, setzen Sie das H&auml;kchen in der entsprechenden Checkbox und w&auml;hlen die Aktion &#8222;Auswahl zur&uuml;cksetzen&#8220;.</p>'),
+      info     => d.get('<p>Legen Sie hier die Standardeinstellungen für die Workstations in den Räumen fest.</p><p>Um eine Ausnahme für eine Workstation anzulegen, muss ein Eintrag für den Raum hinzugefügt worden sein.</p><p>Um einen Eintrag zu löschen, setzen Sie das Häkchen in der entsprechenden Checkbox am Zeilenende.</p><p>Schliessen Sie die Aktion mit &#8222;Änderungen übernehmen&#8220; ab.</p><p>Um die Rechner in einem Raum oder einzelne Rechner zurückzusetzen, setzen Sie das Häkchen in der entsprechenden Checkbox und wählen die Aktion &#8222;Auswahl zurücksetzen&#8220;.</p>'),
    }
 %]
 
-<h2>[% d.get('Standardeinstellungen f&uuml;r R&auml;ume') %]</h2>
+<h2>[% d.get('Standardeinstellungen für Räume') %]</h2>
 
 <form method="post" accept-charset="UTF-8">
 
@@ -22,8 +22,8 @@
 <th>[% d.get('Intranet') %]</th>
 <th>[% d.get('Webfilter') %]</th>
 <th colspan="2"></th>
-<th><img title="zur&uuml;cksetzen" src="img/reset.png" alt="0"></th>
-<th><img title="l&ouml;schen" src="img/trash.png" alt="X"></th>
+<th><img title="zurücksetzen" src="img/reset.png" alt="0"></th>
+<th><img title="löschen" src="img/trash.png" alt="X"></th>
 </tr>
 <tr>
 <td>[% d.get('default') %]</td>
@@ -52,7 +52,7 @@
 [% FOREACH dr IN defaultrooms %]	<option value="[% dr %]">[% dr %]</option>
 [% END %]
 </select></td>
-<td><input type="submit" name="add_room" value="[% d.get('Ausnahme hinzuf&uuml;gen') %]"></td>
+<td><input type="submit" name="add_room" value="[% d.get('Ausnahme hinzufügen') %]"></td>
 [% ELSE %]
 <td colspan="2"></td>
 [% END %]
@@ -104,7 +104,7 @@
 			<option value="[% h %]">[% h %]</option>
 		[% END %]
 	    </select></td>
-	    <td><input type="submit" name="[% nd.name %]_add_host" value="[% d.get('Ausnahme hinzuf&uuml;gen') %]"></td>
+	    <td><input type="submit" name="[% nd.name %]_add_host" value="[% d.get('Ausnahme hinzufügen') %]"></td>
 	[% ELSE %]
 	<td colspan="2"></td>
 	[% END %]
@@ -146,11 +146,11 @@
 
 <p>
 [% IF nondefaults %]
-<input type="submit" name="reset" value="[% d.get('Auswahl zur&uuml;cksetzen') %]">
+<input type="submit" name="reset" value="[% d.get('Auswahl zurücksetzen') %]">
 [% ELSE %]
-<input type="submit" name="reset" value="[% d.get('Auswahl zur&uuml;cksetzen') %]" disabled>
+<input type="submit" name="reset" value="[% d.get('Auswahl zurücksetzen') %]" disabled>
 [% END %]
-<input type="submit" name="accept" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]">
+<input type="submit" name="accept" value="[% d.get('Änderungen übernehmen') %]">
 </p>
 
 </form>

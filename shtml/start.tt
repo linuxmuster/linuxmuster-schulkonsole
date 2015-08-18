@@ -2,7 +2,7 @@
         title   => d.get('Schulkonsole - Startseite'),
         classes => "widecontent",
         menu    => 1,
-        info    => d.get('<p>Auf dieser Seite k&ouml;nnen Sie eigene Druckauftr&auml;ge l&ouml;schen und Ihr Passwort &auml;ndern.<p>Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch auf dem Server und in Ihrem Postfach. Alle Werte sind in Kilobyte angegeben. Zus&auml;tzlich wird angezeigt in welchen Projekten Sie Mitglied sind.</p><p>Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden. Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner &#8222;OpenVPN&#8220; abgelegt.</p>'),
+        info    => d.get('<p>Auf dieser Seite können Sie eigene Druckaufträge löschen und Ihr Passwort ändern.<p>Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch auf dem Server und in Ihrem Postfach. Alle Werte sind in Kilobyte angegeben. Zusätzlich wird angezeigt in welchen Projekten Sie Mitglied sind.</p><p>Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden. Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner &#8222;OpenVPN&#8220; abgelegt.</p>'),
    }
 %]
 
@@ -22,15 +22,15 @@
 [% END %]
 </select>
 </p>
-<p><input type="submit" value="[% d.get('Druckauftr&auml;ge l&ouml;schen') %]"></p>
+<p><input type="submit" value="[% d.get('Druckaufträge löschen') %]"></p>
 </form>
 [% ELSE %]
-<p>[% d.get('Keine Druckauftr&auml;ge') %]</p>
+<p>[% d.get('Keine Druckaufträge') %]</p>
 [% END %]
 
 <hr>
 
-<h3>[% d.get('Passwort&auml;nderung') %]</h3>
+<h3>[% d.get('Passwortänderung') %]</h3>
 <form method="post" accept-charset="UTF-8">
 <table>
 <tr>
@@ -45,7 +45,7 @@
 <td><input id="newpasswordagain" name="newpasswordagain" type="password"></td>
 </tr>
 </table>
-<p><input type="submit" value="[% d.get('Passwort &auml;ndern') %]"></p>
+<p><input type="submit" value="[% d.get('Passwort ändern') %]"></p>
 </form>
 
 <hr>
@@ -204,7 +204,7 @@
 <form method="post" accept-charset="UTF-8">
 <h3>[% d.get('OpenVPN-Zertifikat') %]</h3>
 [% IF has_ovpn %]
-<p>[% d.get('Ein OpenVPN-Zertifikat wurde f&uuml;r Sie erstellt.') %]</p>
+<p>[% d.get('Ein OpenVPN-Zertifikat wurde für Sie erstellt.') %]</p>
 <p><input type="submit" name="ovpndownload" value="[% d.get('OpenVPN-Zertifikat herunterladen') %]"></p>
 [% ELSE %]
 <h4>[% d.get('OpenVPN-Zertifikat erstellen') %]</h4>
@@ -215,7 +215,7 @@
 <td><input type="password" id="ovpnpassword" name="ovpnpassword"></td>
 </tr>
 <tr>
-<td><label [% labelfor("ovpnpasswordagain") %]>[% d.get('Zertifikatspasswort best&auml;tigen:') %]</label></td>
+<td><label [% labelfor("ovpnpasswordagain") %]>[% d.get('Zertifikatspasswort bestätigen:') %]</label></td>
 <td><input type="password" id="ovpnpasswordagain" name="ovpnpasswordagain"></td>
 </tr>
 </table>

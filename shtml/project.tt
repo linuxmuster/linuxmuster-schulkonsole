@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Projekte'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get('<p>W&auml;hlen Sie ein Projekt aus dem Pull-Down-Men&uuml; oben rechts oder aus der Liste, um damit arbeiten zu k&ouml;nnen.</p><p>Tragen Sie sich aus einem Projekt aus, wenn Sie darin nicht mehr mitarbeiten.</p><p>Tragen Sie sich in ein Projekt ein, indem Sie es im Pull-Down-Men&uuml; ausw&auml;hlen und dann die Schaltfl&auml;che &#8222;Eintragen&#8220; bet&auml;tigen.</p><p>Erlaubte Zeichen f&uuml;r den Kurznamen eines neuen Projekts sind a-z und 0-9 sowie _ und -. Der Name muss zwischen 3 und 14 Zeichen lang sein.</p><p>&#8222;Offenes&#8220; Projekt bedeutet, andere Lehrer k&ouml;nnen sich in das Projekt eintragen.</p>'),
+      info     => d.get('<p>Wählen Sie ein Projekt aus dem Pull-Down-Menü oben rechts oder aus der Liste, um damit arbeiten zu können.</p><p>Tragen Sie sich aus einem Projekt aus, wenn Sie darin nicht mehr mitarbeiten.</p><p>Tragen Sie sich in ein Projekt ein, indem Sie es im Pull-Down-Menü auswählen und dann die Schaltfläche &#8222;Eintragen&#8220; betätigen.</p><p>Erlaubte Zeichen für den Kurznamen eines neuen Projekts sind a-z und 0-9 sowie _ und -. Der Name muss zwischen 3 und 14 Zeichen lang sein.</p><p>&#8222;Offenes&#8220; Projekt bedeutet, andere Lehrer können sich in das Projekt eintragen.</p>'),
    }
 %]
 
@@ -27,16 +27,16 @@
 <h2>[% d.get('Projekte') %]</h2>
 
 [% IF project %]
-<h3>[% d.get('Ausgew&auml;hltes Projekt') %]: [% project %]</h3>
+<h3>[% d.get('Ausgewähltes Projekt') %]: [% project %]</h3>
 [% ELSE %]
-<h3>[% d.get('Bitte ein Projekt ausw&auml;hlen') %]</h3>
+<h3>[% d.get('Bitte ein Projekt auswählen') %]</h3>
 [% END %]
 
 
 [% IF projects %]
 <form method="post" accept-charset="UTF-8">
 
-<h4>[% d.get('&Uuml;bersicht der Projekte') %]</h4>
+<h4>[% d.get('Übersicht der Projekte') %]</h4>
 
 <table id="projectsoverview" class="liste">
 <tr>
@@ -69,7 +69,7 @@
 [% END %]
 
 [% IF p.isadmin %]
-<td><input type="submit" name="[% p.gid %]_drop" value="[% d.get('L&ouml;schen') %]"></td>
+<td><input type="submit" name="[% p.gid %]_drop" value="[% d.get('Löschen') %]"></td>
 [% ELSE %]
 <td></td>
 [% END %]

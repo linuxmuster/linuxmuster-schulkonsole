@@ -2,20 +2,20 @@
       title   => d.get('Schulkonsole - Linbo'),
       menu    => 1,
       submenu => 'linbo',
-      info    => d.get('<p>Wenn Sie die Maus auf die Symbole bewegen, werden Hilfetexte angezeigt.</p><p>Zum Umbennenen und Kopieren von Images, m&uuml;ssen Sie einen neuen Dateinamen eingeben. Dateierweiterungen (.cloop/.rsync) k&ouml;nnen weggelassen werden.</p>'),
+      info    => d.get('<p>Wenn Sie die Maus auf die Symbole bewegen, werden Hilfetexte angezeigt.</p><p>Zum Umbennenen und Kopieren von Images, müssen Sie einen neuen Dateinamen eingeben. Dateierweiterungen (.cloop/.rsync) können weggelassen werden.</p>'),
 }
 %]
 
 [% IF deleteimage %]
 
-    <h2>[% d.get('Imagedatei l&ouml;schen') %]</h2>
+    <h2>[% d.get('Imagedatei löschen') %]</h2>
 
-    <h3>[% d.get('Bitte best&auml;tigen') %]</h3>
+    <h3>[% d.get('Bitte bestätigen') %]</h3>
 
     <form method="post" accept-charset="UTF-8">
-    <p>[% deleteimage %] [% d.get('wirklich l&ouml;schen?') %]</p>
+    <p>[% deleteimage %] [% d.get('wirklich löschen?') %]</p>
 
-    <p><input type="hidden" name="image" value="[% deleteimage %]"><input type="submit" name="delete" value="[% d.get('Best&auml;tigen') %]">
+    <p><input type="hidden" name="image" value="[% deleteimage %]"><input type="submit" name="delete" value="[% d.get('Bestätigen') %]">
     <input type="submit" name="abort" value="[% d.get('Abbrechen') %]"></p>
 
     </form>
@@ -23,12 +23,12 @@
 [% ELSIF moveimage %]
     <h2>[% d.get('Imagedatei umbenennen') %]</h2>
 
-    <h3>[% d.get('Bitte best&auml;tigen') %]</h3>
+    <h3>[% d.get('Bitte bestätigen') %]</h3>
 
     <form method="post" accept-charset="UTF-8">
-    <p>[% moveimage %] [% d.get('&uuml;berschreiben?') %]</p>
+    <p>[% moveimage %] [% d.get('überschreiben?') %]</p>
 
-    <p><input type="hidden" name="src" value="[% src %]"><input type="hidden" name="dst" value="[% moveimage %]"><input type="submit" name="move" value="[% d.get('&Uuml;berschreiben') %]">
+    <p><input type="hidden" name="src" value="[% src %]"><input type="hidden" name="dst" value="[% moveimage %]"><input type="submit" name="move" value="[% d.get('Überschreiben') %]">
     <input type="submit" name="abort" value="[% d.get('Abbrechen') %]"></p>
 
     </form>
@@ -36,12 +36,12 @@
 [% ELSIF copyimage %]
     <h2>[% d.get('Imagedatei kopieren') %]</h2>
 
-    <h3>[% d.get('Bitte best&auml;tigen') %]</h3>
+    <h3>[% d.get('Bitte bestätigen') %]</h3>
 
     <form method="post" accept-charset="UTF-8">
-    <p>[% copyimage %] [% d.get('&uuml;berschreiben?') %]</p>
+    <p>[% copyimage %] [% d.get('überschreiben?') %]</p>
 
-    <p><input type="hidden" name="src" value="[% src %]"><input type="hidden" name="dst" value="[% copyimage %]"><input type="submit" name="copy" value="[% d.get('&Uuml;berschreiben') %]">
+    <p><input type="hidden" name="src" value="[% src %]"><input type="hidden" name="dst" value="[% copyimage %]"><input type="submit" name="copy" value="[% d.get('Überschreiben') %]">
     <input type="submit" name="abort" value="[% d.get('Abbrechen') %]"></p>
 
     </form>
@@ -52,8 +52,8 @@
 
     <form method="post" accept-charset="UTF-8">
     <p><textarea wrap="off" name="imagedesc" rows="20" cols="70"></textarea></p>
-    <p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% d.get('&Auml;nderungen speichern') %]">
-    <input type="submit" name="abort" value="[% d.get('Schlie&szlig;en') %]"></p>
+    <p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% d.get('Änderungen speichern') %]">
+    <input type="submit" name="abort" value="[% d.get('Schließen') %]"></p>
 
     </form>
 
@@ -63,7 +63,7 @@
 
     <form method="post" accept-charset="UTF-8">
     <pre id="imageinfo">[% imageinfo %]</pre>
-    <p><input type="submit" name="abort" value="[% d.get('Schlie&szlig;en') %]"></p>
+    <p><input type="submit" name="abort" value="[% d.get('Schließen') %]"></p>
 
     </form>
 [% ELSIF imagelist %]
@@ -72,7 +72,7 @@
 
     <form method="post" accept-charset="UTF-8">
     <pre id="imagelist">[% imagelist %]</pre>
-    <p><input type="submit" name="abort" value="[% d.get('Schlie&szlig;en') %]"></p>
+    <p><input type="submit" name="abort" value="[% d.get('Schließen') %]"></p>
 
     </form>
 [% ELSE %]
@@ -106,7 +106,7 @@
         <td><input id="[% image_base %]_newimage" name="[% image_base %]_newimage" [% dovalue("${image_base}_newimage") %]></td>
         <td><input title="Image umbenennen" type="submit" class="btn-linbo-move" alt="Umbenennen" name="[% image_base %]_move" value="[% d.get('U') %]"></td>
         <td><input title="Image kopieren" type="submit" class="btn-linbo-copy" alt="Kopieren" name="[% image_base %]_copy" value="[% d.get('K') %]"></td>
-        <td><input title="Image l&ouml;schen" type="submit" class="btn-linbo-trash" alt="L&ouml;schen" name="[% image_base %]_delete" value="[% d.get('L') %]"></td>
+        <td><input title="Image löschen" type="submit" class="btn-linbo-trash" alt="Löschen" name="[% image_base %]_delete" value="[% d.get('L') %]"></td>
         [% lfdnr=lfdnr+1 %]
         </tr>
     [% END %]
@@ -144,7 +144,7 @@
         <td><input id="[% image_diff %]_newimage" name="[% image_diff %]_newimage" [% dovalue("${image_diff}_newimage") %]></td>
         <td><input title="Image umbenennen" type="submit" class="btn-linbo-move" alt="Umbenennen" name="[% image_diff %]_move" value="[% d.get('U') %]"></td>
         <td><input title="Image kopieren" type="submit" class="btn-linbo-copy" alt="Kopieren" name="[% image_diff %]_copy" value="[% d.get('K') %]"></td>
-        <td><input title="Image l&ouml;schen" type="submit" class="btn-linbo-trash alt="L&ouml;schen" name="[% image_diff %]_delete" value="[% d.get('L') %]"></td>
+        <td><input title="Image löschen" type="submit" class="btn-linbo-trash alt="Löschen" name="[% image_diff %]_delete" value="[% d.get('L') %]"></td>
         [% lfdnr=lfdnr+1 %]
         </tr>
     [% END %]

@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Austeilen'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get('<p>Legen Sie die auszuteilenden Dateien in Ihrem Heimatverzeichnis unter &#8222;_auszuteilen -&gt; auszuteilen-[% project %]&#8220; ab.</p><p>W&auml;hlen Sie die Mitglieder, an die Sie austeilen wollen, oder das ganze Projekt aus.</p><p>Nach dem Austeilen finden die Projektmitglieder Ihre Materialen in ihrem Heimatverzeichnis unter &#8222;__austeilen -&gt; austeilen-') . "${project}&#8220;.</p>",
+      info     => d.get('<p>Legen Sie die auszuteilenden Dateien in Ihrem Heimatverzeichnis unter &#8222;_auszuteilen -&gt; auszuteilen-[% project %]&#8220; ab.</p><p>Wählen Sie die Mitglieder, an die Sie austeilen wollen, oder das ganze Projekt aus.</p><p>Nach dem Austeilen finden die Projektmitglieder Ihre Materialen in ihrem Heimatverzeichnis unter &#8222;__austeilen -&gt; austeilen-') . "${project}&#8220;.</p>",
    }
 %]
 
@@ -25,7 +25,7 @@
 
 <h2>[% d.get('Projekte') %] :: [% d.get('Austeilen') %]</h2>
 
-<h3>[% d.get('Ausgew&auml;hltes Projekt:') %] [% project %]</h3>
+<h3>[% d.get('Ausgewähltes Projekt:') %] [% project %]</h3>
 
 
 <form method="post" accept-charset="UTF-8">

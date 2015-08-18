@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - aktueller Raum') _ ": $room - " _ d.get('Einsammeln'),
       menu     => 1,
       submenu  => "room",
-      info     => d.get('<p>Einzusammelnde Dateien m&uuml;ssen im Heimatverzeichnis der Sch&uuml;ler/innen im Ordner &#8222;__einsammeln&#8220; abgelegt sein, damit sie hier aufgelistet werden.<br>Nachtr&auml;glich von den Sch&uuml;ler/innen dorthin abgelegte Dateien k&ouml;nnen Sie &uuml;ber &#8222;Ansicht aktualisieren&#8220; sichtbar machen.</p><p>W&auml;hlen Sie aus, ob die Originaldateien auf Sch&uuml;lerseite gel&ouml;scht werden oder erhalten bleiben sollen.</p><p>Sie finden die eingesammelten Dateien in Ihrem Heimatverzeichnis unter &#8222;_eingesammelt -&gt; eingesammelt-aktueller_raum&#8220;.</p>'),
+      info     => d.get('<p>Einzusammelnde Dateien müssen im Heimatverzeichnis der Schüler/innen im Ordner &#8222;__einsammeln&#8220; abgelegt sein, damit sie hier aufgelistet werden.<br>Nachträglich von den Schüler/innen dorthin abgelegte Dateien können Sie über &#8222;Ansicht aktualisieren&#8220; sichtbar machen.</p><p>Wählen Sie aus, ob die Originaldateien auf Schülerseite gelöscht werden oder erhalten bleiben sollen.</p><p>Sie finden die eingesammelten Dateien in Ihrem Heimatverzeichnis unter &#8222;_eingesammelt -&gt; eingesammelt-aktueller_raum&#8220;.</p>'),
    }
 %]
 
@@ -36,7 +36,7 @@
 <table>
 <tr>
     <td><input type="radio" id="deletetop" name="deletetop" value="1"></td>
-	<td><label [% labelfor("deletetop") %]>[% d.get('Original wird gel&ouml;scht') %]</label></td>
+	<td><label [% labelfor("deletetop") %]>[% d.get('Original wird gelöscht') %]</label></td>
 </tr>
 <tr>
 	<td><input type="radio" id="copytop" name="deletetop" value="0" checked></td>
@@ -107,7 +107,7 @@
 <table>
 <tr>
 	<td><input type="radio" id="deletebottom" name="deletebottom" value="1"></td>
-	<td><label [% labelfor("deletebottom") %]>[% d.get('Original wird gel&ouml;scht') %]</label></td>
+	<td><label [% labelfor("deletebottom") %]>[% d.get('Original wird gelöscht') %]</label></td>
 </tr>
 <tr>
 	<td><input type="radio" id="copybottom" name="deletebottom" value="0" checked></td>

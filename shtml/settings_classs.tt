@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Einstellungen - Klassen'),
       menu     => 1,
       submenu  => "settings",
-      info     => d.get('<p>Bearbeiten Sie hier die sichtbaren Klassen.</p><p>F&uuml;r eine detaillierte Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</p>'),
+      info     => d.get('<p>Bearbeiten Sie hier die sichtbaren Klassen.</p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</p>'),
    }
 %]
 
@@ -55,7 +55,7 @@
 </table>
 
 <p>
-<input type="submit" name="accept" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]">
+<input type="submit" name="accept" value="[% d.get('Änderungen übernehmen') %]">
 </p>
 
 </form>

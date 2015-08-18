@@ -1,8 +1,8 @@
 [% page = {
-      title    => d.get('Schulkonsole - Benutzer - &Auml;nderungen durchf&uuml;hren'),
+      title    => d.get('Schulkonsole - Benutzer - Änderungen durchführen'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>W&auml;hrend der Teach-In-Sitzung m&uuml;ssen Sie nicht eindeutig zuordenbare Benutzerdaten mit den richtigen Benutzernamen verkn&uuml;pfen.</p><p>Best&auml;tigen Sie alle &Auml;nderungen einer Seite jedes Mal &uuml;ber die Schaltfl&auml;che &#8222;&Auml;nderungen &uuml;bernehmen&#8220;.</p><p>Beenden Sie die Teach-In-Sitzung erst, wenn Sie alle Seiten gepr&uuml;ft haben.</p>'),
+      info     => d.get('<p>Während der Teach-In-Sitzung müssen Sie nicht eindeutig zuordenbare Benutzerdaten mit den richtigen Benutzernamen verknüpfen.</p><p>Bestätigen Sie alle Änderungen einer Seite jedes Mal über die Schaltfläche &#8222;Änderungen übernehmen&#8220;.</p><p>Beenden Sie die Teach-In-Sitzung erst, wenn Sie alle Seiten geprüft haben.</p>'),
    }
 %]
 
@@ -18,7 +18,7 @@
 <option value="100">100</option>
 <option value="500">500</option>
 </select>
-<input type="submit" name="changemax" value="[% d.get('&auml;ndern') %]"></p>
+<input type="submit" name="changemax" value="[% d.get('ändern') %]"></p>
 
 </form>
 
@@ -28,9 +28,9 @@
 <form method="post" accept-charset="UTF-8">
 <p>
 [% IF firstpage %]
-<input type="submit" name="prev" value="[% d.get('zur&uuml;ck') %]" disabled>
+<input type="submit" name="prev" value="[% d.get('zurück') %]" disabled>
 [% ELSE %]
-<input type="submit" name="prev" value="[% d.get('zur&uuml;ck') %]">
+<input type="submit" name="prev" value="[% d.get('zurück') %]">
 [% END %]
 [% FOREACH p IN pages %]
 <input type="submit" name="[% p %]_page" value="[% p %]">
@@ -51,7 +51,7 @@
 
 <tr>
 <th>[% d.get('Benutzername') %]</th>
-<th>[% d.get('verkn&uuml;pfen mit') %]</th>
+<th>[% d.get('verknüpfen mit') %]</th>
 <th>[% d.get('Klasse') %]</th>
 <th>[% d.get('Bezeichner') %]</th>
 </tr>
@@ -85,9 +85,9 @@
 
 <p>
 [% IF firstpage %]
-<input type="submit" name="prev" value="[% d.get('zur&uuml;ck') %]" disabled>
+<input type="submit" name="prev" value="[% d.get('zurück') %]" disabled>
 [% ELSE %]
-<input type="submit" name="prev" value="[% d.get('zur&uuml;ck') %]">
+<input type="submit" name="prev" value="[% d.get('zurück') %]">
 [% END %]
 [% FOREACH pages %]
 <input type="submit" name="[% pages %]_page" value="[% pages %]">
@@ -100,7 +100,7 @@
 </p>
 
 
-<p><input type="submit" name="accept" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]"></p>
+<p><input type="submit" name="accept" value="[% d.get('Änderungen übernehmen') %]"></p>
 
 <hr>
 

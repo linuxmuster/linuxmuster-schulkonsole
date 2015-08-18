@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Benutzer - Berichte'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Hier rufen Sie die Berichte der jeweils letzten Aktion ab.</p><p>Unter &#8222;Administrator-Report&#8220; erhalten Sie ein Protokoll des letzten Durchlaufs von &#8222;anlegen/versetzen/l&ouml;schen&#8220;.</p><p>Unter &#8222;Report f&uuml;r das Sekretariat&#8220; finden Sie Angaben zu Datens&auml;tzen, die nicht den Vorgaben von Sophomorix entsprechen und evtl. im Schulverwaltungsprogramm korrigiert werden m&uuml;ssen.</p>'),
+      info     => d.get('<p>Hier rufen Sie die Berichte der jeweils letzten Aktion ab.</p><p>Unter &#8222;Administrator-Report&#8220; erhalten Sie ein Protokoll des letzten Durchlaufs von &#8222;anlegen/versetzen/löschen&#8220;.</p><p>Unter &#8222;Report für das Sekretariat&#8220; finden Sie Angaben zu Datensätzen, die nicht den Vorgaben von Sophomorix entsprechen und evtl. im Schulverwaltungsprogramm korrigiert werden müssen.</p>'),
    }
 %]
 
@@ -10,7 +10,7 @@
 
 <form method="post" accept-charset="UTF-8">
 <input type="submit" name="showadmin" value="[% d.get('Administrator-Report') %]">
-<input type="submit" name="showoffice" value="[% d.get('Report f&uuml;r das Sekretariat') %]">
+<input type="submit" name="showoffice" value="[% d.get('Report für das Sekretariat') %]">
 </form>
 
 [% IF content %]

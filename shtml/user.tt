@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Benutzer'),
       menu     => 1,
       submenu  => "user",
-      info     => d.get('<p>Hier legen Sie Benutzer an und pflegen die Sch&uuml;ler- und Lehrerlisten.</p><p>Benutzer und Kurse, die nicht aus dem Schulverwaltungsprogramm exportiert werden k&ouml;nnen, verwalten Sie in den &#8222;Extralisten&#8220;.</p>'),
+      info     => d.get('<p>Hier legen Sie Benutzer an und pflegen die Schüler- und Lehrerlisten.</p><p>Benutzer und Kurse, die nicht aus dem Schulverwaltungsprogramm exportiert werden können, verwalten Sie in den &#8222;Extralisten&#8220;.</p>'),
    }
 %]
 
@@ -11,17 +11,17 @@
 [% IF link_user_students %]
 <p>
 [% IF link_user_teachers %]
-[% d.get('Bearbeiten Sie zun&auml;chst die <a href="user_students">Sch&uuml;ler-</a> und <a href="user_teachers">Lehrerlisten</a>.') %]
+[% d.get('Bearbeiten Sie zunächst die <a href="user_students">Schüler-</a> und <a href="user_teachers">Lehrerlisten</a>.') %]
 [% ELSE %]
-[% d.get('Bearbeiten Sie zun&auml;chst die <a href="user_students">Sch&uuml;lerlisten</a>.') %]
+[% d.get('Bearbeiten Sie zunächst die <a href="user_students">Schülerlisten</a>.') %]
 [% END %]
 </p>
 [% END %]
 
 [% IF link_user_check %]
-<p>[% d.get('Mit der <a href="user_check">&Uuml;berpr&uuml;fung der Benutzerlisten</a> werden die Daten zur &Uuml;bertragung ins System vorbereitet.') %]</p>
+<p>[% d.get('Mit der <a href="user_check">Überprüfung der Benutzerlisten</a> werden die Daten zur Übertragung ins System vorbereitet.') %]</p>
 [% END %]
 
 [% IF link_user_commit %]
-<p>[% d.get('Auf der Seite zur <a href="user_commit">&Uuml;bernahme der Benutzerdaten</a> k&ouml;nnen Sie die &Uuml;bertragung ins System starten und sich Informationen zum Prozess anzeigen lassen.') %]</p>
+<p>[% d.get('Auf der Seite zur <a href="user_commit">Übernahme der Benutzerdaten</a> können Sie die Übertragung ins System starten und sich Informationen zum Prozess anzeigen lassen.') %]</p>
 [% END %]

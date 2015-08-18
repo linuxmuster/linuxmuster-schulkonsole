@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Linbo'),
       menu     => 1,
       submenu  => "linbo",
-      info     => d.get('<p>Kopieren Sie hier die Konfiguration einer bestehenden Rechnergruppe oder erstellen Sie eine neue Gruppenkonfiguration.</p><p>Beachten Sie, dass ab LINBO 1.1.0 IDE-Platten wie SATA-Platten angesprochen werden. Deshalb ist im Dropdown-Men&uuml; keine andere Auswahl m&ouml;glich.</p><p>Ist die neue Gruppenkonfiguration erstellt, k&ouml;nnen Sie im Untermen&uuml; &#8222;Gruppenkonfiguration editieren&#8220; gegebenenfalls weitere Anpassungen an der neuen Konfiguration vornehmen.</p>'),
+      info     => d.get('<p>Kopieren Sie hier die Konfiguration einer bestehenden Rechnergruppe oder erstellen Sie eine neue Gruppenkonfiguration.</p><p>Beachten Sie, dass ab LINBO 1.1.0 IDE-Platten wie SATA-Platten angesprochen werden. Deshalb ist im Dropdown-Menü keine andere Auswahl möglich.</p><p>Ist die neue Gruppenkonfiguration erstellt, können Sie im Untermenü &#8222;Gruppenkonfiguration editieren&#8220; gegebenenfalls weitere Anpassungen an der neuen Konfiguration vornehmen.</p>'),
    }
 %]
 
@@ -34,7 +34,7 @@
 <td><input id="group" name="group"></td>
 </tr>
 <tr>
-<td><label [% labelfor("disksize") %]>[% d.get('Festplattengr&ouml;&szlig;e in MB') %]:</label></td>
+<td><label [% labelfor("disksize") %]>[% d.get('Festplattengröße in MB') %]:</label></td>
 <td><input id="disksize" name="disksize"></td>
 </tr>
 <tr>
@@ -50,7 +50,7 @@
 <tr>
 <th>[% d.get('Partition') %]</th>
 <th>[% d.get('Betriebssystem') %]</th>
-<th>[% d.get('Partitionsgr&ouml;&szlig;en in MB') %]</td>
+<th>[% d.get('Partitionsgrößen in MB') %]</td>
 </tr>
 [% IF templatesoswin %]
 <tr>

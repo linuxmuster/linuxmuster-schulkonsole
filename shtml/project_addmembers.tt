@@ -1,14 +1,14 @@
 [% page = {
-      title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Mitglieder hinzuf&uuml;gen'),
+      title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Mitglieder hinzufügen'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get('<p>W&auml;hlen Sie die Mitglieder aus, die Sie neu ins Projekt aufnehmen wollen und klicken Sie dann auf die Schaltfl&auml;che &#8222;Aufnehmen&#8220;.</p><p>Falls das Suchergebnis nicht Ihren Erwartungen entspricht, k&ouml;nnen Sie unten eine neue Suche starten.</p>'),
+      info     => d.get('<p>Wählen Sie die Mitglieder aus, die Sie neu ins Projekt aufnehmen wollen und klicken Sie dann auf die Schaltfläche &#8222;Aufnehmen&#8220;.</p><p>Falls das Suchergebnis nicht Ihren Erwartungen entspricht, können Sie unten eine neue Suche starten.</p>'),
    }
 %]
 
-<h2>[% d.get('Projekte') %] :: [% d.get('Mitglieder hinzuf&uuml;gen') %]</h2>
+<h2>[% d.get('Projekte') %] :: [% d.get('Mitglieder hinzufügen') %]</h2>
 
-<h3>[% d.get('Ausgew&auml;hltes Projekt:') %] [% project %]</h3>
+<h3>[% d.get('Ausgewähltes Projekt:') %] [% project %]</h3>
 
 
 <form method="post" accept-charset="UTF-8">
@@ -135,7 +135,7 @@
 <input id="query" name="query">
 <input type="submit" name="search" value="[% d.get('Suche') %]"></p>
 <p><input type="radio" name="scope" id="radiostudent" value="[% d.get('student') %]" checked>
-   <label [% labelfor("radiostudent") %]>[% d.get('Sch&uuml;ler') %]</label>
+   <label [% labelfor("radiostudent") %]>[% d.get('Schüler') %]</label>
    <input type="radio" name="scope" id="radioteacher" value="[% d.get('teacher') %]">
    <label [% labelfor("radioteacher") %]>[% d.get('Lehrer') %]</label>
    <input type="radio" name="scope" id="radioclass" value="[% d.get('class') %]">

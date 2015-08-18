@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Unterricht'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get('<p>Sie m&uuml;ssen den &#8222;Unterricht beginnen&#8220;, damit Sie die Funktionen zur Steuerung des Unterrichts im ausgew&auml;hlten Projekt nutzen k&ouml;nnen.<br>Beenden Sie den Unterricht entweder &uuml;ber den Button &#8222;sofort beenden&#8220; oder stellen Sie das Unterrichtsende &uuml;ber die Dropdown-Men&uuml;s ein und best&auml;tigen es mit &#8222;beenden lassen&#8220;.</p><p>Im Bereich &#8222;&Uuml;bersicht&#8220; k&ouml;nnen Sie den Zugriff der Sch&uuml;ler auf das WLAN &uuml;ber eine Checkbox steuern.</p>'),
+      info     => d.get('<p>Sie müssen den &#8222;Unterricht beginnen&#8220;, damit Sie die Funktionen zur Steuerung des Unterrichts im ausgewählten Projekt nutzen können.<br>Beenden Sie den Unterricht entweder über den Button &#8222;sofort beenden&#8220; oder stellen Sie das Unterrichtsende über die Dropdown-Menüs ein und bestätigen es mit &#8222;beenden lassen&#8220;.</p><p>Im Bereich &#8222;Übersicht&#8220; können Sie den Zugriff der Schüler auf das WLAN über eine Checkbox steuern.</p>'),
    }
 %]
 
@@ -25,7 +25,7 @@
 
 <h2>[% d.get('Projekte') %] :: [% d.get('Unterricht') %]</h2>
 
-<h3>[% d.get('Ausgew&auml;hltes Projekt') %]: [% project %]</h3>
+<h3>[% d.get('Ausgewähltes Projekt') %]: [% project %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 <p>
@@ -107,7 +107,7 @@
 
 [% IF edit %]
 
-<h3>[% d.get('&Uuml;bersicht') %]</h3>
+<h3>[% d.get('Übersicht') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 <table id="lessonoverview" class="liste">
@@ -124,12 +124,12 @@
 </td>
 </tr>
 </table>
-<p><input type="submit" name="acceptlesson" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]"></p>
+<p><input type="submit" name="acceptlesson" value="[% d.get('Änderungen übernehmen') %]"></p>
 </form>
 
 [% ELSE %]
 
-<h3>[% d.get('&Uuml;bersicht') %]</h3>
+<h3>[% d.get('Übersicht') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 <table id="lessonoverview" class="liste">

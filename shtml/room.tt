@@ -2,14 +2,14 @@
       title    => d.get('Schulkonsole - aktueller Raum') _ ": " _ $room,
       menu     => 1,
       submenu  => "room",
-      info     => d.get('<p>Sie m&uuml;ssen den &#8222;Unterricht beginnen&#8220;, damit Sie die Funktionen zur Steuerung des Unterrichts im aktuellen Raum nutzen k&ouml;nnen.<br>Beenden Sie den Unterricht entweder &uuml;ber den Button &#8222;sofort beenden&#8220; oder stellen Sie das Unterrichtsende &uuml;ber die Dropdown-Men&uuml;s ein und best&auml;tigen es mit &#8222;beenden lassen&#8220;.</p><p>Im Bereich &#8222;&Uuml;bersicht PCs&#8220; k&ouml;nnen Sie den Zugriff der Sch&uuml;lerarbeitspl&auml;tze auf Intranet, Internet, Webfilter, Drucker und das globale Tauschverzeichnis &uuml;ber Checkboxen steuern.</p><p>Im Bereich &#8222;&Uuml;bersicht Drucker&#8220; k&ouml;nnen Sie den Zugriff auf die Raumdrucker f&uuml;r alle Benutzer, nicht nur die des Raumes, freigeben oder sperren.</p>'),
+      info     => d.get('<p>Sie müssen den &#8222;Unterricht beginnen&#8220;, damit Sie die Funktionen zur Steuerung des Unterrichts im aktuellen Raum nutzen können.<br>Beenden Sie den Unterricht entweder über den Button &#8222;sofort beenden&#8220; oder stellen Sie das Unterrichtsende über die Dropdown-Menüs ein und bestätigen es mit &#8222;beenden lassen&#8220;.</p><p>Im Bereich &#8222;Übersicht PCs&#8220; können Sie den Zugriff der Schülerarbeitsplätze auf Intranet, Internet, Webfilter, Drucker und das globale Tauschverzeichnis über Checkboxen steuern.</p><p>Im Bereich &#8222;Übersicht Drucker&#8220; können Sie den Zugriff auf die Raumdrucker für alle Benutzer, nicht nur die des Raumes, freigeben oder sperren.</p>'),
    }
 %]
 
 <form method="post" accept-charset="UTF-8">
 <p style="float: right;">
 <select name="rooms">
-<optgroup label="R&auml;ume">
+<optgroup label="Räume">
 [% FOREACH r IN rooms %] <option value="[% r %]">[% r %]</option>
 [% END %]
 </optgroup>
@@ -112,7 +112,7 @@
 
 [% IF edit %]
 
-<h3>[% d.get('&Uuml;bersicht PCs') %]</h3>
+<h3>[% d.get('Übersicht PCs') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 <table id="roomoverview" class="liste">
@@ -250,10 +250,10 @@
 [% END %]
 </tr>
 </table>
-<p><input type="submit" name="acceptfirewall" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]"></p>
+<p><input type="submit" name="acceptfirewall" value="[% d.get('Änderungen übernehmen') %]"></p>
 </form>
 
-<h3>[% d.get('&Uuml;bersicht Drucker') %]</h3>
+<h3>[% d.get('Übersicht Drucker') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 <table id="printersoverview" class="liste">
@@ -294,12 +294,12 @@
 [% END %]
 </tr>
 </table>
-<p><input type="submit" name="acceptprinter" value="[% d.get('&Auml;nderungen &uuml;bernehmen') %]"></p>
+<p><input type="submit" name="acceptprinter" value="[% d.get('Änderungen übernehmen') %]"></p>
 </form>
 
 [% ELSE %]
 
-<h3>[% d.get('&Uuml;bersicht PCs') %]</h3>
+<h3>[% d.get('Übersicht PCs') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
 <table id="roomoverview" class="liste">
@@ -377,7 +377,7 @@
 </table>
 
 
-<h3>[% d.get('&Uuml;bersicht Drucker') %]</h3>
+<h3>[% d.get('Übersicht Drucker') %]</h3>
 
 [% odd=0 %]<table id="printersoverview" class="liste">
 <colgroup span="2" width="40%"></colgroup>

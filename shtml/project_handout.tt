@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Projekte') . ":  $project - " . d.get('Bereitstellen'),
       menu     => 1,
       submenu  => "project",
-      info     => d.get('<p>Legen Sie Ihre bereitzustellenden Vorlagen in Ihrem Heimatverzeichnis unter &#8222;_bereitstellen -&gt; bereitstellen-[% project %]&#8220; ab.</p><p>Nach Bet&auml;tigen der Schaltfl&auml;che &#8222;Bereitstellen&#8220; finden die Projektmitglieder Ihre Vorlagen in ihrem Homeverzeichnis unter &#8222;__vorlagen -&gt; vorlagen-') . "${project}&#8220;.</p>",
+      info     => d.get('<p>Legen Sie Ihre bereitzustellenden Vorlagen in Ihrem Heimatverzeichnis unter &#8222;_bereitstellen -&gt; bereitstellen-[% project %]&#8220; ab.</p><p>Nach Betätigen der Schaltfläche &#8222;Bereitstellen&#8220; finden die Projektmitglieder Ihre Vorlagen in ihrem Homeverzeichnis unter &#8222;__vorlagen -&gt; vorlagen-') . "${project}&#8220;.</p>",
    }
 %]
 
@@ -25,7 +25,7 @@ p
 
 <h2>[% d.get('Projekte') %] :: [% d.get('Bereitstellen') %]</h2>
 
-<h3>[% d.get('Ausgew&auml;hltes Projekt:') %] [% project %]</h3>
+<h3>[% d.get('Ausgewähltes Projekt:') %] [% project %]</h3>
 
 
 <form method="post" accept-charset="UTF-8">

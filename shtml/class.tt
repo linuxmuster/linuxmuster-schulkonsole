@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Klassen'),
       menu     => 1,
       submenu  => "class",
-      info     => d.get('<p>Um Zugriff zu den Klassenfunktionen zu bekommen, m&uuml;ssen Sie sich unter &#8222;Eintragen in Klassen&#8220; in die Klasse eintragen.</p><p>W&auml;hlen Sie eine Klasse aus dem Pull-Down-Men&uuml; und bet&auml;tigen dann die Schaltfl&auml;che &#8222;Wechseln&#8220;, oder klicken Sie eine Klasse aus der Liste unter &#8222;Klassenname&#8220; an.</p><p>&Uuml;ber den Button &#8222;Austragen&#8220; k&ouml;nnen Sie sich aus einer Klasse austragen, wenn Sie nicht mehr in ihr unterrichten.</p>'),
+      info     => d.get('<p>Um Zugriff zu den Klassenfunktionen zu bekommen, müssen Sie sich unter &#8222;Eintragen in Klassen&#8220; in die Klasse eintragen.</p><p>Wählen Sie eine Klasse aus dem Pull-Down-Menü und betätigen dann die Schaltfläche &#8222;Wechseln&#8220;, oder klicken Sie eine Klasse aus der Liste unter &#8222;Klassenname&#8220; an.</p><p>Über den Button &#8222;Austragen&#8220; können Sie sich aus einer Klasse austragen, wenn Sie nicht mehr in ihr unterrichten.</p>'),
    }
 %]
 
@@ -27,16 +27,16 @@
 <h2>[% d.get('Klassen') %]</h2>
 
 [% IF class %]
-<h3>[% d.get('Ausgew&auml;hlte Klasse') %]: [% class %]</h3>
+<h3>[% d.get('Ausgewählte Klasse') %]: [% class %]</h3>
 [% ELSE %]
-<h3>[% d.get('Bitte Klasse ausw&auml;hlen') %]</h3>
+<h3>[% d.get('Bitte Klasse auswählen') %]</h3>
 [% END %]
 
 
 [% IF classes %]
 <form method="post" accept-charset="UTF-8">
 
-<h4>[% d.get('&Uuml;bersicht der Klassen') %]</h4>
+<h4>[% d.get('Übersicht der Klassen') %]</h4>
 
 <table id="classesoverview" class="liste">
 <tr>

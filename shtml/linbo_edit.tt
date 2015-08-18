@@ -2,7 +2,7 @@
       title    => d.get('Schulkonsole - Linbo'),
       menu     => 1,
       submenu  => "linbo",
-      info     => d.get('<p>Klicken Sie auf einen Gruppennamen, um den Editor zu &ouml;ffnen.</p><p>Beachten Sie, da&szlig; sich im Editor der Radio-Button zur Deaktivierung des Autostarts am Seitenende befindet.</p><p>Beachten Sie au&szlig;erdem, da&szlig; beim reboot-workaround in der gruppenspezifischen Linbo-Startdatei unter &quot;pxelinux.cfg/&lt;gruppe&gt;&quot; der Eintrag &quot;DEFAULT reboot&quot; aktiviert ist und der Rechner &uuml;ber PXE startet.</p>'),
+      info     => d.get('<p>Klicken Sie auf einen Gruppennamen, um den Editor zu öffnen.</p><p>Beachten Sie, daß sich im Editor der Radio-Button zur Deaktivierung des Autostarts am Seitenende befindet.</p><p>Beachten Sie außerdem, daß beim reboot-workaround in der gruppenspezifischen Linbo-Startdatei unter &quot;pxelinux.cfg/&lt;gruppe&gt;&quot; der Eintrag &quot;DEFAULT reboot&quot; aktiviert ist und der Rechner über PXE startet.</p>'),
    }
 %]
 
@@ -13,7 +13,7 @@
 [% FOREACH g IN groups %] <option value="[% g %]">[% g %]</option>
 [% END %]
 </select>
-<input type="submit" value="[% d.get('Datei w&auml;hlen') %]">
+<input type="submit" value="[% d.get('Datei wählen') %]">
 </p>
 </form>
 [% END %]
@@ -41,7 +41,7 @@
 [% END %]
 </tr>
 <tr class="even">
-<td><label [% labelfor("linbo_server") %]>[% d.get('IP des TFTP-Servers, der Images vorh&auml;lt') %]:</label></td>
+<td><label [% labelfor("linbo_server") %]>[% d.get('IP des TFTP-Servers, der Images vorhält') %]:</label></td>
 <td><input id="linbo_server" name="linbo_server" value="[% linbo_server %]" size="16" maxlength="15"></td>
 </tr>
 <tr class="odd">
@@ -78,7 +78,7 @@
 [% ELSE %]<input type="checkbox" id="linbo_autoinitcache" name="linbo_autoinitcache">[% END %]</td>
 </tr>
 <tr class="odd">
-<td><label [% labelfor("linbo_downloadtype") %]>[% d.get('Downloadtype ausw&auml;hlen') %]:</label></td>
+<td><label [% labelfor("linbo_downloadtype") %]>[% d.get('Downloadtype auswählen') %]:</label></td>
 <td>
 <select name="linbo_downloadtype">
 <option value="rsync">[% d.get('rsync') %]</option>
@@ -96,7 +96,7 @@
 <td><input id="linbo_consolefontcolorstdout" name="linbo_consolefontcolorstdout" value="[% d.get('white') %]"></td>
 </tr>
 <tr class="even">
-<td><label [% labelfor("linbo_consolefontcolorstderr") %]>[% d.get('Konsolenschriftfarbe f&uuml;r Fehler- und Warnmeldungen') %]:</label></td>
+<td><label [% labelfor("linbo_consolefontcolorstderr") %]>[% d.get('Konsolenschriftfarbe für Fehler- und Warnmeldungen') %]:</label></td>
 <td><input id="linbo_consolefontcolorstderr" name="linbo_consolefontcolorstderr" value="[% d.get('red') %]"></td>
 </tr>
 <tr class="odd">
@@ -105,8 +105,8 @@
 </tr>
 </table>
 
-<p><input type="submit" name="accept" value="[% d.get('&Auml;nderungen speichern') %]"></p>
-<p><input type="submit" name="adddevtop" value="[% d.get('Neues System hinzuf&uuml;gen') %]">
+<p><input type="submit" name="accept" value="[% d.get('Änderungen speichern') %]"></p>
+<p><input type="submit" name="adddevtop" value="[% d.get('Neues System hinzufügen') %]">
 <select name="adddevnewtop">
 <option value="windows">[% d.get('MS Windows') %]</option>
 <option value="gnulinux">[% d.get('GNU/Linux') %]</option>
@@ -165,7 +165,7 @@
 <td><input id="[% ds.n %]_dev" name="[% ds.n %]_dev" [% dovalue("${ds.n}_dev") %]></td>
 </tr>
 <tr class="odd">
-<td><label [% labelfor("${ds.n}_size") %]>[% d.get('Partitionsgr&ouml;&szlig;e in KB') %]:</label></td>
+<td><label [% labelfor("${ds.n}_size") %]>[% d.get('Partitionsgröße in KB') %]:</label></td>
 <td><input id="[% ds.n %]_size" name="[% ds.n %]_size" [% dovalue("${ds.n}_size") %]></td>
 </tr>
 <tr class="even">
@@ -198,7 +198,7 @@
 <td>[% ds.dev %]</td>
 </tr>
 <tr class="odd">
-<td>[% d.get('Partitionsgr&ouml;&szlig;e in KB') %]:</td>
+<td>[% d.get('Partitionsgröße in KB') %]:</td>
 <td>[% ds.size %]</td>
 </tr>
 <tr class="even">
@@ -225,7 +225,7 @@
 </tr>
 </tr>
 <tr class="odd">
-<td><label [% labelfor("${dos.n}_iconname") %]>[% d.get('Dateiname des Icons f&uuml;r den Startbutton') %]:</label></td>
+<td><label [% labelfor("${dos.n}_iconname") %]>[% d.get('Dateiname des Icons für den Startbutton') %]:</label></td>
 <td><input id="[% dos.n %]_iconname" name="[% dos.n %]_iconname" [% dovalue("${dos.n}_iconname") %]></td>
 </tr>
 <tr class="even">
@@ -238,7 +238,7 @@
 </tr>
 [% IF ds.isgnulinux %]
 <tr class="even">
-<td><label [% labelfor("${dos.n}_boot") %]>[% d.get('Partition, die Kernel und initrd enth&auml;lt') %]:</label></td>
+<td><label [% labelfor("${dos.n}_boot") %]>[% d.get('Partition, die Kernel und initrd enthält') %]:</label></td>
 <td><input id="[% dos.n %]_boot" name="[% dos.n %]_boot" [% dovalue("${dos.n}_boot") %]></td>
 </tr>
 <tr class="odd">
@@ -255,17 +255,17 @@
 </tr>
 [% END %]
 <tr class="even">
-<td><label [% labelfor("${dos.n}_startenabled") %]>[% d.get('Start-Button f&uuml;r dieses Betriebssystem anzeigen') %]:</label></td>
+<td><label [% labelfor("${dos.n}_startenabled") %]>[% d.get('Start-Button für dieses Betriebssystem anzeigen') %]:</label></td>
 <td>[% IF dos.startenabled %]<input type="checkbox" id="[% dos.n %]_startenabled" name="[% dos.n %]_startenabled" checked>
 [% ELSE %]<input type="checkbox" id="[% dos.n %]_startenabled" name="[% dos.n %]_startenabled">[% END %]</td>
 </tr>
 <tr class="odd">
-<td><label [% labelfor("${dos.n}_syncenabled") %]>[% d.get('Sync+Start-Button f&uuml;r dieses Betriebssystem anzeigen') %]:</label></td>
+<td><label [% labelfor("${dos.n}_syncenabled") %]>[% d.get('Sync+Start-Button für dieses Betriebssystem anzeigen') %]:</label></td>
 <td>[% IF dos.syncenabled %]<input type="checkbox" id="[% dos.n %]_syncenabled" name="[% dos.n %]_syncenabled" checked>
 [% ELSE %]<input type="checkbox" id="[% dos.n %]_syncenabled" name="[% dos.n %]_syncenabled">[% END %]</td>
 </tr>
 <tr class="even">
-<td><label [% labelfor("${dos.n}_newenabled") %]>[% d.get('Neu+Start-Button f&uuml;r dieses Betriebssystem anzeigen') %]:</label></td>
+<td><label [% labelfor("${dos.n}_newenabled") %]>[% d.get('Neu+Start-Button für dieses Betriebssystem anzeigen') %]:</label></td>
 <td>[% IF dos.newenabled %]<input type="checkbox" id="[% dos.n %]_newenabled" name="[% dos.n %]_newenabled" checked>
 [% ELSE %]<input type="checkbox" id="[% dos.n %]_newenabled" name="[% dos.n %]_newenabled">[% END %]</td>
 </tr>
@@ -296,7 +296,7 @@
  [% dovalue("${dos.n}_autostarttimeout") %]></td>
 </tr>
 <tr class="odd">
-<td><label [% labelfor("${dos.n}_defaultaction") %]>[% d.get('Standard-Autostart-Aktion ausw&auml;hlen') %]:</label></td>
+<td><label [% labelfor("${dos.n}_defaultaction") %]>[% d.get('Standard-Autostart-Aktion auswählen') %]:</label></td>
 <td>
 <select name="[% dos.n %]_defaultaction">
 <option value="start">[% d.get('start') %]</option>
@@ -306,7 +306,7 @@
 </td>
 </tr>
 </table>
-<p><input type="submit" name="accept" value="[% d.get('&Auml;nderungen speichern') %]"></p>
+<p><input type="submit" name="accept" value="[% d.get('Änderungen speichern') %]"></p>
 [% IF dos.isfirst %]
 <p><select name="[% ds.n %]_modifynew">
 [% IF ds.iswindows %][% ELSE %]<option value="windows">[% d.get('MS Windows') %]</option>[% END %]
@@ -316,10 +316,10 @@
 [% IF ds.iscache %][% ELSE %][% IF iscached %][% ELSE %]<option value="cache">[% d.get('Cache') %]</option>[% END %][% END %]
 [% IF ds.isext %][% ELSE %]<option value="ext">[% d.get('erweitert') %]</option>[% END %]
 [% IF ds.isefi %][% ELSE %]<option value="efi">[% d.get('EFI') %]</option>[% END %]
-</select>&nbsp;<input type="submit" name="[% ds.n %]_modify" value="[% d.get('System &auml;ndern') %]"></p>
+</select>&nbsp;<input type="submit" name="[% ds.n %]_modify" value="[% d.get('System ändern') %]"></p>
 [% END %]
-<p><input type="submit" name="[% dos.n %]_deleteos" value="[% d.get('Betriebssystem l&ouml;schen') %]"><br>
-<input type="submit" name="[% ds.n %]_addos" value="[% d.get('Betriebssystem hinzuf&uuml;gen') %]">
+<p><input type="submit" name="[% dos.n %]_deleteos" value="[% d.get('Betriebssystem löschen') %]"><br>
+<input type="submit" name="[% ds.n %]_addos" value="[% d.get('Betriebssystem hinzufügen') %]">
 
 
 
@@ -358,7 +358,7 @@
 <td><input id="[% ds.n %]_dev" name="[% ds.n %]_dev" [% dovalue("${ds.n}_dev") %]></td>
 </tr>
 <tr class="odd">
-<td><label [% labelfor("${ds.n}_size") %]>[% d.get('Partitionsgr&ouml;&szlig;e in KB') %]:</label></td>
+<td><label [% labelfor("${ds.n}_size") %]>[% d.get('Partitionsgröße in KB') %]:</label></td>
 <td><input id="[% ds.n %]_size" name="[% ds.n %]_size" [% dovalue("${ds.n}_size") %]>
 [% IF ds.bootable %]<input type="hidden" id="[% ds.n %]_bootable" name="[% ds.n %]_bootable" value="1">[% END %]
 [% IF ds.isswap %]
@@ -404,8 +404,8 @@
 	[% END %]
 [% END %]
 </table>
-<p><input type="submit" name="accept" value="[% d.get('&Auml;nderungen speichern') %]"></p>
-<p><input type="submit" name="[% ds.n %]_delete" value="[% d.get('System l&ouml;schen') %]"><br>
+<p><input type="submit" name="accept" value="[% d.get('Änderungen speichern') %]"></p>
+<p><input type="submit" name="[% ds.n %]_delete" value="[% d.get('System löschen') %]"><br>
 <select name="[% ds.n %]_modifynew">
 [% IF ds.iswindows %][% ELSE %]<option value="windows">[% d.get('MS Windows') %]</option>[% END %]
 [% IF ds.isgnulinux %][% ELSE %]<option value="gnulinux">[% d.get('GNU/Linux') %]</option>[% END %]
@@ -414,7 +414,7 @@
 [% IF ds.iscache %][% ELSE %][% IF iscached %][% ELSE %]<option value="cache">[% d.get('Cache') %]</option>[% END %][% END %]
 [% IF ds.isext %][% ELSE %]<option value="ext">[% d.get('erweitert') %]</option>[% END %]
 [% IF ds.isefi %][% ELSE %]<option value="efi">[% d.get('EFI') %]</option>[% END %]
-</select>&nbsp;<input type="submit" name="[% ds.n %]_modify" value="[% d.get('System &auml;ndern') %]">
+</select>&nbsp;<input type="submit" name="[% ds.n %]_modify" value="[% d.get('System ändern') %]">
 
 
 
@@ -438,7 +438,7 @@
 </table>
 [% END %]
 
-<p><input type="submit" name="adddevbottom" value="[% d.get('Neues System hinzuf&uuml;gen') %]">
+<p><input type="submit" name="adddevbottom" value="[% d.get('Neues System hinzufügen') %]">
 <select name="adddevnewbottom">
 <option value="windows">[% d.get('MS Windows') %]</option>
 <option value="gnulinux">[% d.get('GNU/Linux') %]</option>
@@ -449,7 +449,7 @@
 <option value="efi">[% d.get('EFI') %]</option>
 </select>
 </p>
-<p><input type="submit" name="accept" value="[% d.get('&Auml;nderungen speichern') %]"></p>
+<p><input type="submit" name="accept" value="[% d.get('Änderungen speichern') %]"></p>
 
 </form>
 
@@ -457,12 +457,12 @@
 
 
 [% IF groups %]
-<h3>[% d.get('Bitte Rechnergruppe ausw&auml;hlen') %]</h3>
+<h3>[% d.get('Bitte Rechnergruppe auswählen') %]</h3>
 
 
 <form method="post" accept-charset="UTF-8">
 
-<h4>[% d.get('&Uuml;bersicht der Rechnergruppen') %]</h4>
+<h4>[% d.get('Übersicht der Rechnergruppen') %]</h4>
 
 <table id="linbooverview" class="liste">
 <tr>
@@ -473,7 +473,7 @@
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
 <td><input type="submit" name="[% g %]_edit_start_conf" value="[% g %]"></td>
-<td><input type="submit" name="[% g %]_delete_start_conf" value="[% d.get('l&ouml;schen') %]"></td>
+<td><input type="submit" name="[% g %]_delete_start_conf" value="[% d.get('löschen') %]"></td>
 </tr>
 [% END %]
 </table>
