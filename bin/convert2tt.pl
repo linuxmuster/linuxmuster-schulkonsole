@@ -37,8 +37,8 @@ sub substitute {
     $line =~ s/<!--#echo var="(.*?)\{(.*?)\}\{(.*?)\}" -->/[% $1.$2.$3 %]/g;
     $line =~ s/<!--#echo var="(.*?)\{(.*?)\}" -->/[% $1.$2 %]/g;
     $line =~ s/<!--#echo var="(.*?)" -->/[% $1 %]/g;
-    $line =~ s/<gettext>(.*?)<\/gettext>/[% d.get('$1') %]/g;
-    $line =~ s/<gettext>/[% d.get('/g;
+    $line =~ s/<gettext>(.*?)<\/gettext>/[% loc('$1') %]/g;
+    $line =~ s/<gettext>/[% loc('/g;
     $line =~ s/<\/gettext>/') %]/g;
     $line =~ s/<!--#if expr="\$loop_(.*?)\{(.*?)\}" -->/[% FOREACH $1.$2 %]/g;
     $line =~ s/<!--#if expr="\$loop_(.*?)" -->/[% FOREACH $1 %]/g;
@@ -62,7 +62,7 @@ sub substitute {
     $line =~ s/[^\(]"\$(.*?)\{(.*?)\}"/"[% $1.$2 %]"/g;
     $line =~ s/[^\(]"\$(.*?)"/"[% $1 %]"/g;
     # <input - values need to be translated
-    $line =~ s/<input ([^>]*?) value="([^"\[\]\%0-1]*?)"/<input $1 value="[% d.get('$2') %]"/g;
+    $line =~ s/<input ([^>]*?) value="([^"\[\]\%0-1]*?)"/<input $1 value="[% loc('$2') %]"/g;
     $line =~ s/\.shtml\.inc/.inc.tt/g;
     $line =~ s/\.shtml/.tt/g;
     return $line;
