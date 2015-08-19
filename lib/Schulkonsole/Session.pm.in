@@ -615,10 +615,7 @@ sub print_page {
 	my $this = shift;
 	my $file = shift;
 	my $action = shift;
-	my $textdomain;
-	if(@_ == 4) {
-            $textdomain = shift;
-        }
+
 	my $template = Template->new({
             INCLUDE_PATH => ['/usr/share/schulkonsole/shtml','/usr/share/schulkonsole/css'],
             WRAPPER => 'page.tt',
@@ -648,9 +645,8 @@ sub print_page {
 	$vars->{input_errors} = %{ $this->{input_errors} };
 	$vars->{session_id} = $vars->{id};
         $vars->{action} = $action;
-        if(defined $textdomain) {
-            $vars->{dplugin} = Locale::gettext->domain($textdomain);
-            $vars->{dplugin}->dir('@datadir@/locale');
+        if(defined $this->{dplugin}) {
+            $vars->{dplugin} = $this->{dplugin};
         }
         # colored labels an Stelle von for="text" jetzt [% labelfor("text") %]
         $vars->{labelfor} = sub { return 'for="'.@_[0].'"'.($this->{input_errors}{@_[0]}? ' class="error"':''); };
@@ -1446,7 +1442,7 @@ sub init_l10n
 	$this->{d}->dir('@datadir@/locale');
         if(defined $plugin) {
             $this->{dplugin} = Locale::gettext->domain($plugin);
-            $this->{dplugin}-dir('@datadir@/locale');
+            $this->{dplugin}->dir('@datadir@/locale');
         }
 
 	my $lang = 'C';
