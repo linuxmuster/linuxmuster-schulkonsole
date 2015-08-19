@@ -24,7 +24,7 @@
    <a [% dohref("quotas") %]>[% loc('Quota') %]</a>
 [% END %]
 [% IF link_rooms %]
-   <a [% dohref("rooms") %]>[% loc('R&auml;ume') %]</a>
+   <a [% dohref("rooms") %]>[% loc('Räume') %]</a>
 [% END %]
 [% IF link_printers %]
    <a [% dohref("printers") %]>[% loc('Drucker') %]</a>

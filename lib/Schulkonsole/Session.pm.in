@@ -635,7 +635,7 @@ sub print_page {
 	# localization: [% d.get('Text') %]
 	$vars->{d} = $this->{d};
 	$vars->{loc} = sub { 
-            if(defined $vars->{dplugin} {
+            if(defined $vars->{dplugin}) {
                 return $vars->{dplugin}->get(@_);
             } else {
                 return $vars->{d}->get(@_);
