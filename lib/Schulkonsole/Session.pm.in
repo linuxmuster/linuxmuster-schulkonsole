@@ -571,7 +571,7 @@ sub mark_input_error {
 
 
 
-=head3 C<print_page($filename, $action)>
+=head3 C<print_page($filename, $action, $textdomain)>
 
 Output of an HTML page
 
@@ -587,6 +587,10 @@ template directory.
 =item C<$action>
 
 The default action to be set in a <form> unless already specified.
+
+=item C<$textdomain>
+
+The text domain to use for the localized strings in the template.
 
 =back
 
@@ -608,7 +612,10 @@ sub print_page {
 	my $this = shift;
 	my $file = shift;
 	my $action = shift;
-
+	my $textdomain;
+	if(@_ == 4) {
+            $textdomain = shift;
+        }
 	my $template = Template->new({
             INCLUDE_PATH => ['/usr/share/schulkonsole/shtml','/usr/share/schulkonsole/css'],
             WRAPPER => 'page.tt',
@@ -627,11 +634,21 @@ sub print_page {
 	$vars->{is_error} = $this->{is_error};
 	# localization: [% d.get('Text') %]
 	$vars->{d} = $this->{d};
-	$vars->{loc} = sub { return $vars->{d}->get(@_); };
+	$vars->{loc} = sub { 
+            if(defined $vars->{dplugin} {
+                return $vars->{dplugin}->get(@_);
+            } else {
+                return $vars->{d}->get(@_);
+            }
+        };
 	$vars->{lang} = $this->{lang};
 	$vars->{input_errors} = %{ $this->{input_errors} };
 	$vars->{session_id} = $vars->{id};
         $vars->{action} = $action;
+        if(defined $textdomain) {
+            $vars->{dplugin} = Locale::gettext->domain($textdomain);
+            $vars->{dplugin}->dir('@datadir@/locale');
+        }
         # colored labels an Stelle von for="text" jetzt [% labelfor("text") %]
         $vars->{labelfor} = sub { return 'for="'.@_[0].'"'.($this->{input_errors}{@_[0]}? ' class="error"':''); };
         $vars->{dohref} = sub { return 'href="'.@_[0].($vars->{no_cookies}?'?'.CGI::Session->name().'='.$this->{session}->id.'"':'"'); };
