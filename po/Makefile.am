@@ -54,4 +54,4 @@ $(POFILES): $(TEMPLATE)
 
 
 %.mo: %.po
-	$(MSGFMT) -o $@  $<
+	$(MSGFMT) -f -o $@  $<
