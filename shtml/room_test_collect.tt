@@ -18,6 +18,7 @@
 [% editinguser %]
 [% loc('unterrichtet in Raum') %]
 [% room %].
+[% END %]
 [% IF endedittime %]
 [% loc('Unterrichtsende um') %] [% endedittime %].
 [% END %]
@@ -39,23 +40,21 @@
 <th>[% loc('Dateien') %]</th>
 </tr>
 [% FOREACH w IN overview_workstations %]
-[% IF odd %][% odd=0 %]<tr class="odd">
-[% ELSE %][% odd=1 %]<tr class="even">[% END %]
-	<td>[% IF w.first %]
-	    [% w.name %]
-	    [% END %]</td>
-	[% IF w.login %]
-	<td>[% w.login %]</td>
-	<td>[% FOREACH wf IN w.files %]
-	[% IF wf.isdir %]
-	*[% END %][% wf.name %]<br>
-	[% END %]
-	</td>
-	[% ELSE %]
-	<td>-</td>
-	<td>-</td>
-	[% END %]
-</tr>
+    [% IF odd %][% odd=0 %]<tr class="odd">
+    [% ELSE %][% odd=1 %]<tr class="even">[% END %]
+    <td>[% IF w.first %][% w.name %][% END %]</td>
+    [% IF w.login %]
+        <td>[% w.login %]</td>
+        <td>
+        [% FOREACH wf IN w.files %]
+            [% IF wf.isdir %]*[% END %][% wf.name %]<br>
+        [% END %]
+        </td>
+    [% ELSE %]
+        <td>-</td>
+        <td>-</td>
+    [% END %]
+    </tr>
 [% END %]
 </table>
 
