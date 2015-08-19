@@ -30,10 +30,12 @@ Schulkonsole::Session - session management for schulkonsole
 
  # create new session
  my $session = new Schulkonsole::Session('file.cgi');
-
+ # create new session for plugin 'name'
+ my $session = new Schulkonsole::Session('file.cgi','name');
+ 
  my $q = $session->query(); # get CGI-object
  my $d = $session->d(); # get Locale::gettext-object
-
+ my $d = $session->dplugin(); # get Locale::gettext-object for plugin
 
  # get information from user data
  my $username = $session->userdata('uid');
@@ -160,7 +162,8 @@ Corresponds to the environment variable SERVER_NAME
 sub new {
 	my $class = shift;
 	my $page = shift;
-
+        my $plugin = shift;
+        
 	my $this = {
 		template_vars => {},
 		input_errors => {},
@@ -169,7 +172,7 @@ sub new {
 	bless $this, $class;
 
 
-	$this->init($page);
+	$this->init($page,$plugin);
 
 	return $this;
 }
@@ -1034,6 +1037,31 @@ sub d {
 
 
 
+=head3 C<dplugin()>
+
+Get the Locale::gettext-object of this session for a plugin
+
+=head4 Return value
+
+An object of type Locale::gettext
+
+=head4 Description
+
+Returns a Locale::gettext-object which is set to the user's most preferred
+and available language.
+
+=cut
+
+sub d {
+	my $this = shift;
+
+	return $this->{dplugin};
+}
+
+
+
+
+
 =head3 C<read_groups_from_db()>
 
 =head4 Description
@@ -1199,7 +1227,8 @@ sub init {
 	my $this = shift;
 
 	my $page = shift;
-
+        my $plugin = shift;
+        
 	$this->{query} = new CGI;
 
 	$this->{query}->charset('UTF-8');
@@ -1234,7 +1263,8 @@ sub init {
 		       or not defined $this->{session}->{_DATA};
 
 	$this->{page} = $page;
-
+        $this->{plugin} = $plugin;
+        
 	$this->init_l10n();
 
 	$this->authenticate();
@@ -1410,10 +1440,14 @@ sub init_l10n
 	my $this = shift;
 
 	my $session = $this->{session};
+	my $plugin  = $this->{plugin};
 
 	$this->{d} = Locale::gettext->domain('@PACKAGE@');
 	$this->{d}->dir('@datadir@/locale');
-
+        if(defined $plugin) {
+            $this->{dplugin} = Locale::gettext->domain($plugin);
+            $this->{dplugin}-dir('@datadir@/locale');
+        }
 
 	my $lang = 'C';
 	if (defined $ENV{HTTP_ACCEPT_LANGUAGE}) {
