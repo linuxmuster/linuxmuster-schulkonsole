@@ -574,7 +574,7 @@ sub mark_input_error {
 
 
 
-=head3 C<print_page($filename, $action)>
+=head3 C<print_page($filename, $action, $textdomain)>
 
 Output of an HTML page
 
@@ -590,6 +590,10 @@ template directory.
 =item C<$action>
 
 The default action to be set in a <form> unless already specified.
+
+=item C<$textdomain>
+
+An additional msg catalog to be used for translations.
 
 =back
 
@@ -611,6 +615,7 @@ sub print_page {
 	my $this = shift;
 	my $file = shift;
 	my $action = shift;
+	my $textdomain = shift;
 
 	my $template = Template->new({
             INCLUDE_PATH => ['/usr/share/schulkonsole/shtml','/usr/share/schulkonsole/css'],
@@ -630,6 +635,7 @@ sub print_page {
 	$vars->{is_error} = $this->{is_error};
 	# localization: [% d.get('Text') %]
 	$vars->{d} = $this->{d};
+	$vars->{page}{textdomain} = $textdomain if defined $textdomain;
 	$vars->{loc} = sub {
             my $stash = $template->context()->stash();
             my $textdomain = $stash->get(['page',0,'textdomain',0]);
