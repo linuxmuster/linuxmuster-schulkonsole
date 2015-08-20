@@ -30,12 +30,12 @@ Schulkonsole::Session - session management for schulkonsole
 
  # create new session
  my $session = new Schulkonsole::Session('file.cgi');
- # create new session for plugin 'name'
+ # create new session with additional textdomain 'name'
  my $session = new Schulkonsole::Session('file.cgi','name');
  
  my $q = $session->query(); # get CGI-object
  my $d = $session->d(); # get Locale::gettext-object
- my $d = $session->dplugin(); # get Locale::gettext-object for plugin
+ my $d = $session->d($textdomain); # get Locale::gettext-object for $textdomain
 
  # get information from user data
  my $username = $session->userdata('uid');
@@ -634,12 +634,16 @@ sub print_page {
 	$vars->{is_error} = $this->{is_error};
 	# localization: [% d.get('Text') %]
 	$vars->{d} = $this->{d};
-	$vars->{loc} = sub { 
-            if(defined $vars->{dplugin}) {
-                return $vars->{dplugin}->get(@_);
-            } else {
-                return $vars->{d}->get(@_);
-            }
+	$vars->{loc} = sub {
+            my $stash = $template->context()->stash();
+            my $textdomain = $stash->get(['page','textdomain']);
+            my $usetextdomain = $stash->get(['page','usetextdomain']);
+
+            return $vars->{d}{default}->get(@_) if $textdomain eq '';
+            return $vars->{d}{default}->get(@_) if $usetextdomain eq '';
+            return $vars->{d}{$textdomain}->get(@_) if defined $vars->{d}{$textdomain};
+
+            return $vars->{d}{default}->get(@_);
         };
 	$vars->{lang} = $this->{lang};
 	$vars->{input_errors} = %{ $this->{input_errors} };
@@ -1008,9 +1012,13 @@ sub q_param {
 
 
 
-=head3 C<d()>
+=head3 C<d($textdomain)>
 
 Get the Locale::gettext-object of this session
+
+=head4 Parameter C<$textdomain>
+
+Optional parameter use C<$textdomain>
 
 =head4 Return value
 
@@ -1025,8 +1033,14 @@ and available language.
 
 sub d {
 	my $this = shift;
+	my $textdomain = shift;
 
-	return $this->{d};
+	return $this->{d}{default} unless defined $textdomain;
+	return $this->{d}{$textdomain} if defined $this->{d}{$textdomain};
+
+	$this->{d}{$textdomain} = Locale::gettext->domain($textdomain);
+	$this->{d}{$textdomain}->dir('@datadir@/locale');
+	return $this->{d}{$textdomain};
 }
 
 
@@ -1272,7 +1286,7 @@ sub init {
 		$this->{session}->clear('statusredirectiserror');
 	} elsif ($this->{session}->param('statusbg')) {
 		$this->set_status(
-			  $this->{d}->get('Ausgabe des Hintergrundprozess: ')
+			  $this->{d}{default}->get('Ausgabe des Hintergrundprozess: ')
 			. $this->{session}->param('statusbg'), 
 		$this->{session}->param('statusbgiserror'));
 
@@ -1385,10 +1399,10 @@ sub authenticate {
 			$this->save_password($password);
 
 
-			$this->set_status($this->{d}->get('Angemeldet'), 0);
+			$this->set_status($this->{d}{default}->get('Angemeldet'), 0);
 
 		} else { # authentication failed
-			$this->set_status($this->{d}->get('Login fehlgeschlagen'), 1);
+			$this->set_status($this->{d}{default}->get('Login fehlgeschlagen'), 1);
 			$this->exit_with_login_page($page);
 		}
 
@@ -1414,13 +1428,13 @@ sub authenticate {
 	}
 
 	if (not $this->{pages}{$page}) {
-		$this->set_status("$page: " . $this->{d}->get('Zugriff verweigert'), 1);
+		$this->set_status("$page: " . $this->{d}{default}->get('Zugriff verweigert'), 1);
 		$this->exit_with_login_page($page);
 	}
 
 
 	my $groupname = join(', ', sort @groupnames);
-	$groupname = $this->{d}->get('Schueler') unless $groupname;
+	$groupname = $this->{d}{default}->get('Schueler') unless $groupname;
 	$this->set_var('groupname', $groupname);
 
 	my $parent_page = $page;
@@ -1438,11 +1452,11 @@ sub init_l10n
 	my $session = $this->{session};
 	my $plugin  = $this->{plugin};
 
-	$this->{d} = Locale::gettext->domain('@PACKAGE@');
-	$this->{d}->dir('@datadir@/locale');
+	$this->{d}{default} = Locale::gettext->domain('@PACKAGE@');
+	$this->{d}{default}->dir('@datadir@/locale');
         if(defined $plugin) {
-            $this->{dplugin} = Locale::gettext->domain($plugin);
-            $this->{dplugin}->dir('@datadir@/locale');
+            $this->{d}{$plugin} = Locale::gettext->domain($plugin);
+            $this->{d}{$plugin}->dir('@datadir@/locale');
         }
 
 	my $lang = 'C';
@@ -1474,7 +1488,7 @@ sub init_l10n
 			}
 
 			POSIX::setlocale(POSIX::LC_ALL, $lang);
-			if ($this->{d}->get('')) {
+			if ($this->{d}{default}->get('')) {
 				($this->{'lang'}) = $lang =~ /^(..)/;
 				last;
 			}
