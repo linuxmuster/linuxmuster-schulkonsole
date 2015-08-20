@@ -574,7 +574,7 @@ sub mark_input_error {
 
 
 
-=head3 C<print_page($filename, $action, $textdomain)>
+=head3 C<print_page($filename, $action)>
 
 Output of an HTML page
 
@@ -590,10 +590,6 @@ template directory.
 =item C<$action>
 
 The default action to be set in a <form> unless already specified.
-
-=item C<$textdomain>
-
-The text domain to use for the localized strings in the template.
 
 =back
 
@@ -636,11 +632,11 @@ sub print_page {
 	$vars->{d} = $this->{d};
 	$vars->{loc} = sub {
             my $stash = $template->context()->stash();
-            my $textdomain = $stash->get(['page','textdomain']);
-            my $usetextdomain = $stash->get(['page','usetextdomain']);
-
+            my $textdomain = $stash->get(['page',0,'textdomain',0]);
+            my $default = $stash->get(['page',0,'default',0]);
+            
             return $vars->{d}{default}->get(@_) if $textdomain eq '';
-            return $vars->{d}{default}->get(@_) if $usetextdomain eq '';
+            return $vars->{d}{default}->get(@_) unless $default eq '';
             return $vars->{d}{$textdomain}->get(@_) if defined $vars->{d}{$textdomain};
 
             return $vars->{d}{default}->get(@_);
@@ -1016,7 +1012,9 @@ sub q_param {
 
 Get the Locale::gettext-object of this session
 
-=head4 Parameter C<$textdomain>
+=head4 Parameter 
+
+=item C<$textdomain>
 
 Optional parameter use C<$textdomain>
 
@@ -1041,31 +1039,6 @@ sub d {
 	$this->{d}{$textdomain} = Locale::gettext->domain($textdomain);
 	$this->{d}{$textdomain}->dir('@datadir@/locale');
 	return $this->{d}{$textdomain};
-}
-
-
-
-
-
-=head3 C<dplugin()>
-
-Get the Locale::gettext-object of this session for a plugin
-
-=head4 Return value
-
-An object of type Locale::gettext
-
-=head4 Description
-
-Returns a Locale::gettext-object which is set to the user's most preferred
-and available language.
-
-=cut
-
-sub d {
-	my $this = shift;
-
-	return $this->{dplugin};
 }
 
 
