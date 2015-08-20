@@ -2,15 +2,15 @@
 # Copyright (C) 2014 Landesmedienzentrum Baden-Wuerttemberg
 # This file is distributed under the same license as the schulkonsole package.
 #
+#: ../lib/Schulkonsole/Session.pm.in:1477
 # root <root@linuxmuster.lokal>, 2014.
 # Frank Schütte <fschuett@gymnasium-himmelsthuer.de>, 2015.
-#: ../lib/Schulkonsole/Session.pm.in:1477
 msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2015-08-19 14:26+0200\n"
-"PO-Revision-Date: 2015-08-19 10:15+0100\n"
+"POT-Creation-Date: 2015-08-19 22:32+0200\n"
+"PO-Revision-Date: 2015-08-20 08:34+0100\n"
 "Last-Translator: Frank Schütte <fschuett@gymnasium-himmelsthuer.de>\n"
 "Language-Team: German <>\n"
 "Language: en\n"
@@ -248,7 +248,6 @@ msgstr ""
 "Wildcard &ldquo;*&rdquo; can be used.</p>"
 
 #: ../shtml/user_commit.tt:1
-#, fuzzy
 msgid ""
 "<p>Auf dieser Seite bekommen Sie zunächst einen Überblick über die "
 "durchzuführenden Änderungen.</p><p>Sie können die anstehenden Aktionen "
@@ -258,12 +257,14 @@ msgid ""
 "Ausgabe des jeweiligen Prozesses können Sie sich über die Schaltfläche "
 "&bdquo;Letze Logdatei ansehen&ldquo; anzeigen lassen.</p>"
 msgstr ""
-"Note that the process of user creation is running in the background\n"
-"and does not create output on the school console. You can view the current\n"
-"output of the respective process with the button &#8222;View log file&#8220;."
+"<p>On this page there is a overview over the planned changes.</p> "
+"<p>You can process the actions in one run or one after the other.</p>"
+"<p>Note that the process of user creation is running in the background "
+"and does not create output on the school console. You can view the current "
+"output of the respective process with the button &ldquo;View log "
+"file&rdquo;.</p>"
 
 #: ../shtml/start.tt:1
-#, fuzzy
 msgid ""
 "<p>Auf dieser Seite können Sie eigene Druckaufträge löschen und Ihr Passwort "
 "ändern.<p>Weiterhin können Sie eine Mail-Weiterleitung an eine oder mehrere "
@@ -275,14 +276,18 @@ msgid ""
 "erstellt werden. Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im "
 "Ordner &bdquo;OpenVPN&ldquo; abgelegt.</p>"
 msgstr ""
-"On this page, you can delete your own print jobs and change your\n"
-"password.  In the info area, you can see your storage space  usage on the "
-"server and in your mailbox.\n"
-"All values are given in kilobytes.  Additionally, \n"
-"you can see which projects you are a member of. "
+"<p>On this page, you can delete your own print jobs and change your "
+"password.</p> "
+"<p>You can add  one or more comma separated mail forward addresses "
+"and keep an optional copy of the original mail sent.</p>"
+"<p>In the info area, you can see your storage space  usage on the "
+"server and in your mailbox. All values are given in kilobytes. Additionally, "
+"you can see which projects you are a member of.</p> "
+"<p>In the last part you can create an OpenVPN certificate. The certificate "
+"will be "
+"saved to your home folder(H:) to the folder &ldquo;OpenVPN&rdquo;.</p>"
 
 #: ../shtml/class_handoutcopy.tt:0
-#, fuzzy
 msgid ""
 "<p>Auszuteilende Dateien müssen Sie in Ihrem Heimatverzeichnis unter &bdquo;"
 "_auszuteilen -&gt; auszuteilen-Klasse&ldquo; ablegen.</p> <p>Wählen Sie die "
@@ -292,12 +297,16 @@ msgid ""
 "in den Ordner &bdquo;__austeilen -&gt; austeilen-Klasse&ldquo; kopiert "
 "werden.</p>"
 msgstr ""
-"Note that by pressing the button &#8222;Distribute&#8220;\n"
-"your materials will be copied into the home directory of\n"
-"the students in the folder &#8222;__austeilen -&gt; austeilen-Klasse&#8220;."
+"<p>Please place files to be distributed have to be put into the folder "
+"&ldquo;_auszuteilen-&gt;auszuteilen-{class}&ldquo;</p> "
+"<p>Next select either some individual students or the whole class to "
+"distribute to</p>"
+"<p>Note that by pressing the button &ldquo;Distribute&rdquo;"
+"your materials will be copied into the home folder of"
+"the students to the folder &ldquo;__austeilen -&gt; austeilen-Klasse&rdquo;.<"
+"/p>"
 
 #: ../shtml/room_handout.tt:0
-#, fuzzy
 msgid ""
 "<p>Auszuteilende Dateien müssen in Ihrem Heimatverzeichnis unter &bdquo;"
 "_auszuteilen -&gt; auszuteilen-aktueller_raum&ldquo; abgelegt sein. Der "
@@ -307,67 +316,67 @@ msgid ""
 "ausgeteilten Dateien in ihrem Heimatverzeichnis unter &bdquo;__austeilen -"
 "&gt; austeilen-aktueller_raum.&ldquo;</p>"
 msgstr ""
-"Files to be distributed must be filed away in your home directory \n"
-"under &#8222;_auszuteilen -&gt; auszuteilen-aktueller_raum&#8220. The "
-"content of this folder is listed\n"
-"here.<br>\n"
-"Afterwards, you can make any files filed away there visible with the button "
-"&#8222;Update view&#8220;."
+"<p>Files to be distributed must be filed in your home folder in"
+"&ldquo;_auszuteilen -&gt; auszuteilen-aktueller_raum&rdquo;. The "
+"content of this folder is listed here.<br>"
+"<p>Afterwards, you can make any files filed away there visible with the "
+"button "
+"&ldquo;Update view&rdquo;.</p> "
+"<p>Students do find distributed files in their home folder in "
+"&ldquo;__austeilen-&gt;austeilen-aktueller_Raum&rdquo;.</p>"
 
 #: ../shtml/settings_projects.tt:1
-#, fuzzy
 msgid ""
 "<p>Bearbeiten Sie hier die Projektstandardeinstellungen.</p><p>Für eine "
 "detaillierte Beschreibung der einzelnen Punkte konsultieren Sie bitte die "
 "Dokumentation.</p>"
 msgstr ""
-"For a detailed description of individual points, please\n"
-"consult the documentation."
+"<p>Modify default settings for projects.</p><p>For a detailed description of "
+"individual points, please"
+"consult the documentation.</p>"
 
 #: ../shtml/settings_users.tt:1
-#, fuzzy
 msgid ""
 "<p>Bearbeiten Sie hier die globalen Einstellungen für die Benutzerverwaltung."
 "</p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren "
 "Sie bitte die Dokumentation.</p>"
 msgstr ""
-"For a detailed description of individual points, please\n"
-"consult the documentation."
+"<p>Modify the global settings for users.</p>"
+"<p>For a detailed description of individual points, please"
+"consult the documentation.</p>"
 
 #: ../shtml/settings.tt:1
-#, fuzzy
 msgid ""
 "<p>Bearbeiten Sie hier die globalen Einstellungen für die Schulkonsole, die "
 "Benutzerverwaltung und die Klassensichtbarkeit.</p><p>Für eine detaillierte "
 "Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</"
 "p>"
 msgstr ""
-"Edit the global settings for the school console,\n"
-"user administration, class visibility and the server \n"
-"backup here."
+"<p>Edit the global settings for the school console,"
+"user administration, class visibility.</p> "
+"<p>For details consult the documentation.</p>"
 
 #: ../shtml/settings_program.tt:1
-#, fuzzy
 msgid ""
 "<p>Bearbeiten Sie hier die globalen Einstellungen für die Schulkonsole.</"
 "p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren "
 "Sie bitte die Dokumentation.</p>"
 msgstr ""
-"For a detailed description of individual points, please\n"
-"consult the documentation."
+"<p>Modify the global settings of the school console.</p>"
+"<p>For a detailed description of individual points, please"
+"consult the documentation.</p>"
 
 #: ../shtml/settings_classs.tt:1
-#, fuzzy
 msgid ""
 "<p>Bearbeiten Sie hier die sichtbaren Klassen.</p><p>Für eine detaillierte "
 "Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</"
 "p>"
 msgstr ""
-"For a detailed description of individual points, please\n"
-"consult the documentation."
+"<p>Modify the visibility of classes.</p>"
+"<p>For a detailed description of individual points, please"
+"consult the documentation.</p>"
 
 #: ../shtml/room_test_end.tt:0
-#, fuzzy
 msgid ""
 "<p>Bestätigen Sie das Beenden der Klassenarbeit. Die eingesammelten "
 "Ergebnisse finden Sie danach in Ihrem Heimatverzeichnis unter &bdquo;"
@@ -375,17 +384,17 @@ msgid ""
 "noch nicht beenden wollen, können Sie über den Link &bdquo;Einsammeln&ldquo; "
 "wieder zur vorigen Seite zurückkehren.</p>"
 msgstr ""
-"Confirm the ending of the exam. Find the collected results\n"
-"afterwards in your home directory under \n"
-"&#8222;_eingesammelt -&gt; eingesammelt-klassenarbeit&#8220;."
+"<p>Confirm the ending of the exam. Find the collected results"
+"afterwards in your home folder below"
+"&ldquo;_eingesammelt -&gt; eingesammelt-klassenarbeit&rdquo;.</p> "
+"<p>If you choose to continue the exam you can go back to the previous "
+"page by clicking on &ldquo;Collect&rdquo;.</p>"
 
 #: ../shtml/login.tt:1
-#, fuzzy
 msgid "<p>Bitte melden Sie sich mit Benutzername und Passwort an.</p>"
-msgstr "Please login with your username and password"
+msgstr "<p>Please login with your username and password</p>"
 
 #: ../shtml/room_test_collect.tt:0
-#, fuzzy
 msgid ""
 "<p>Die Schüler/innen müssen ihre Ergebnisse im Heimatverzeichnis der "
 "Arbeitsstation im Ordner &bdquo;__einsammeln&ldquo; ablegen, damit sie hier "
@@ -396,13 +405,12 @@ msgid ""
 "löscht den Inhalt des Ordners &bdquo;__einsammeln&ldquo; der Arbeitsstation "
 "und beendet die Klassenarbeit.</p>"
 msgstr ""
-"The students must file away their results in the workstation's home \n"
-"directory in the folder &#8222;__collect&#8220; so that they are listed "
-"here\n"
-"and can be collected. Restart the page to see the current status."
+"The students must file away their results in the workstation's home "
+"folder in the folder &ldquo;__einsammeln&rdquo; so that they are listed "
+"here and can be collected. Reload the page to see the current status.</p> "
+"<p>"
 
 #: ../shtml/room_collect.tt:0
-#, fuzzy
 msgid ""
 "<p>Einzusammelnde Dateien müssen im Heimatverzeichnis der Schüler/innen im "
 "Ordner &bdquo;__einsammeln&ldquo; abgelegt sein, damit sie hier aufgelistet "
@@ -413,15 +421,17 @@ msgid ""
 "Ihrem Heimatverzeichnis unter &bdquo;_eingesammelt -&gt; eingesammelt-"
 "aktueller_raum&ldquo;.</p>"
 msgstr ""
-"Files to be collected must be filed away in the students' home directory\n"
-"in the folder &#8222;__einsammeln&#8220; so that they are registered here."
-"<br>\n"
-"Afterwards, you can make the given students' files viewable with \n"
-"&#8222;Update view&#8220;."
+"<p>Files to be collected must be filed away in the students' home folder"
+"to the folder &ldquo;__einsammeln&rdquo; to be listed here.<br>"
+"You can update the content by clicking on &ldquo;Update view&rdquo;</p> "
+"<p>You can either choose to delete orinigals or keep a copy during collect.<"
+"/p> "
+"<p>You will find the collected files in your home folder below "
+"&ldquo;_eingesammelt-&gt; "
+"eingesammelt-aktueller_raum&rdquo;.</p>"
 
 #. ({ 'project' => project })
 #: ../shtml/project_collect.tt:0
-#, fuzzy
 msgid ""
 "<p>Einzusammelnde Dateien müssen von den Projektmitgliedern in ihrem "
 "Heimatverzeichnis im Ordner &bdquo;__einsammeln&ldquo; abgelegt werden.</"
@@ -432,11 +442,17 @@ msgid ""
 "die eingesammelten Arbeiten in Ihrem Heimatverzeichnis unter &bdquo;"
 "_eingesammelt-&gt;eingesammelt-{project}&ldquo;.</p>"
 msgstr ""
-"Files to be collected must be filed away in the students' home directory\n"
-"in the folder &#8222;__einsammeln&#8220; so that they are registered here."
-"<br>\n"
-"Afterwards, you can make the given students' files viewable with \n"
-"&#8222;Update view&#8220;."
+"<p>Files to be collected must be filed away by the students in their home "
+"folder"
+"in the folder &ldquo;__einsammeln&rdquo; so that they are liested here.<br>"
+"<p>Choose to keep a copy of the collected files or to delete the original "
+"from the "
+"students folder.</p><p>Choose the project members to collect from. In the "
+"column "
+"&ldquo;files&rdquo; the collectable files are listed.</p><p>You will find the "
+"collected "
+"files in you home folder below &ldquo;_eingesammelt-&gt;eingesammelt-{project}"
+"&rdquo;.</p>"
 
 #: ../shtml/class_collect.tt:0
 msgid ""
@@ -476,26 +492,29 @@ msgstr ""
 "supply will be served to the examined students.</p>"
 
 #: ../shtml/quotas_projects.tt:1
-#, fuzzy
 msgid ""
 "<p>Hier können Sie den Mitgliedern eines Projekts zusätzliche Quota zuweisen."
 "</p><p>Leere Felder bedeuten, dass für dieses Projekt bisher keine "
 "Zusatzquota vergeben wurden.</p><p>Alle Werte sind in Megabyte (MB) "
 "einzugeben.</p>"
 msgstr ""
-"Here you can adjust the disk and mail quotas for teachers individually.\n"
-"The representation of the disk quota depends on your partition."
+"<p>Here you can adjust the disk and mail quotas for project members "
+"individually.</p>"
+"<p>There is no special quota for a project, if the input fields are empty.</p>"
+" "
+"<p>All values are in mega byte (MB).</p>"
 
 #: ../shtml/quotas_teachers.tt:1
-#, fuzzy
 msgid ""
 "<p>Hier können Sie die Disk- und Mailquota für Lehrer/innen individuell "
 "anpassen. Die Darstellung der Diskquota hängt von Ihrer Partitionierung ab.</"
 "p><p>Leere Felder bedeuten, dass in dem Fall die Standardeinstellungen "
 "gelten.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>"
 msgstr ""
-"Here you can adjust the disk and mail quotas for teachers individually.\n"
-"The representation of the disk quota depends on your partition."
+"<p>Here you can adjust the disk and mail quotas for teachers individually."
+"The representation of the disk quota depends on your partition.</p> "
+"<p>If the input fields are empty, the default values will be used.</p> "
+"<p>All values are in mega bytes (MB).</p>"
 
 #: ../shtml/hosts.tt:1
 msgid ""
@@ -564,47 +583,44 @@ msgid ""
 msgstr "<p>"
 
 #: ../shtml/user_students.tt:1
-#, fuzzy
 msgid ""
 "<p>Hier können Sie die aus dem Schulverwaltungsprogramm exportierte Datei "
 "&bdquo;schueler.txt&ldquo; ins System hochladen.</p><p>Zudem haben Sie hier "
 "die Möglichkeit, Änderungen an den Schülerdaten von Hand einzupflegen.</p>"
 msgstr ""
-"You can upload the file exported from the school administrative program\n"
-"&#8222;schueler.txt&#8220; to the system here."
+"<p>You can upload the file exported from the school administrative program"
+"&ldquo;schueler.txt&rdquo; to the system here.</p> "
+"<p>In addition you can modify students data by hand.</p>"
 
 #: ../shtml/class_shares.tt:0
-#, fuzzy
 msgid ""
 "<p>Hier können Sie festlegen, ob die Schüler/innen der Klasse Zugriff auf "
 "die Tauschordner in ihrem Homeverzeichnis haben.</p>"
 msgstr ""
-"You can determine whether the students in the class\n"
-"have access to the exchange folder in your home directory\n"
-"here."
+"<p>You can determine whether the students in the class"
+"have access to the exchange folders in their home folder"
+"here.</p>"
 
 #: ../shtml/project_shares.tt:0
-#, fuzzy
 msgid ""
 "<p>Hier können Sie festlegen, ob die Schüler/innen des Projekts Zugriff auf "
 "die Tauschordner in ihrem Homeverzeichnis haben.</p>"
 msgstr ""
-"You can determine here whether the students of the project\n"
-"have access to the exchange folder in your home directory."
+"<p>You can determine whether the project students "
+"have access to the exchange folders in their home folder"
+"here.</p>"
 
 #: ../shtml/user.tt:1
-#, fuzzy
 msgid ""
 "<p>Hier legen Sie Benutzer an und pflegen die Schüler- und Lehrerlisten.</"
 "p><p>Benutzer und Kurse, die nicht aus dem Schulverwaltungsprogramm "
 "exportiert werden können, verwalten Sie in den &bdquo;Extralisten&ldquo;.</p>"
 msgstr ""
-"Manage users and courses that cannot be exported from the school "
-"administrative\n"
-"program in the, &#8222;Extra lists&#8220;."
+"<p>Here you can manage users and modify students and teachers lists.</p> "
+"<p>Manage users and courses that cannot be exported from the school "
+"administrative program in the, &ldquo;Extra lists&rdquo;."
 
 #: ../shtml/user_extra.tt:1
-#, fuzzy
 msgid ""
 "<p>Hier pflegen Sie Extraschüler und Extrakurse.</p><p>Editieren Sie die "
 "Listen in den entsprechenden Textfeldern. Geänderte Daten werden über die "
@@ -613,13 +629,13 @@ msgid ""
 "p><p>Kommentarzeilen beginnen mit einem Gatter (#) und werden nicht "
 "ausgewertet.</p>"
 msgstr ""
-"Edit the lists in the corresponding text fields. \n"
-"Altered data can be saved in the system with the button, \n"
-"&#8222;&Save changes&#8220;.\n"
-"Then, continue with the menu item &#8222;Check user lists&#8220;."
+"<p>Here you edit extra students and extra courses.</p> "
+"<p>Edit the lists in the corresponding input areas. To save you changes "
+"click on the button &ldquo;Save changes&rdquo;. Proceed to the "
+"next step &ldquo;check user data&rdquo;.</p> "
+"<p>Comment lines begin with &ldquo;#&rdquo; and will not be processed.</p>"
 
 #: ../shtml/user_reports.tt:1
-#, fuzzy
 msgid ""
 "<p>Hier rufen Sie die Berichte der jeweils letzten Aktion ab.</p><p>Unter "
 "&bdquo;Administrator-Report&ldquo; erhalten Sie ein Protokoll des letzten "
@@ -628,30 +644,31 @@ msgid ""
 "nicht den Vorgaben von Sophomorix entsprechen und evtl. im "
 "Schulverwaltungsprogramm korrigiert werden müssen.</p>"
 msgstr ""
-"Under &#8222;Report for the secretary's office&#8220; find information on "
-"data sets\n"
-"that do not correspond to the guidelines of sophomorix andthat must "
-"potentially\n"
-"be corrected in the school administration program."
+"<p>Here you can check the last actions reports.</p> "
+"<p>Under &ldquo;administrator report&rdquo; you will find information on "
+"the last run of &ldquo;create/move/delete&ldquo;.</p> "
+"<p>&ldquo;secretary office report&rdquo; shows information to "
+"data sets that do not conform to sophomorix' conventions. you should "
+"manage to correct the data sets in the schools administrative program.</p>"
 
 #. ({ 'class' => class_name })
 #: ../shtml/class_list.tt:0
-#, fuzzy
 msgid ""
 "<p>Hier sehen Sie Informationen zu den Schüler/innen der aktuell "
 "ausgewählten Klasse {class}</p>"
 msgstr ""
-"Here you can see information on the students of the current selected class "
+"<p>Here you can see information on the students of the current selected class "
+"{class}.</p>"
 
 #: ../shtml/quotas_classes.tt:1
-#, fuzzy
 msgid ""
 "<p>Hier ändern Sie die Quotawerte aller Schüler/innen einer Klasse.</"
 "p><p>Leere Felder bedeuten, dass in dem Fall die Standardeinstellungen "
 "gelten.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>"
 msgstr ""
-"Here you can adjust the disk and mail quotas for teachers individually.\n"
-"The representation of the disk quota depends on your partition."
+"<p>Here you can adjust the disk and mail quotas for the classes students.</p>"
+"<p>For empty fields the default settings will beused.</p> "
+"<p>All values are in mega byte (MB).</p>"
 
 #: ../shtml/quotas_others.tt:1
 msgid ""
@@ -689,7 +706,6 @@ msgstr ""
 "to fix the problems.</p>"
 
 #: ../shtml/class_handout.tt:0
-#, fuzzy
 msgid ""
 "<p>Ihre Vorlagen müssen in Ihrem Heimatverzeichnis unter &bdquo;"
 "_bereitstellen -&gt; bereitstellen-Klasse&ldquo; abgelegt sein.</p> <p>Nach "
@@ -697,12 +713,13 @@ msgid ""
 "Schüler/innen Ihre Vorlagen in ihrem Heimatverzeichnis unter &bdquo;"
 "__vorlagen -&gt; vorlagen-Klasse&ldquo;.</p>"
 msgstr ""
-"After pressing the button &#8222;Supply&#8220; the students\n"
-"will find their submissions in their home directory under\n"
-"&#8222;__vorlagen -&gt; vorlagen-Klasse&#8220;."
+"<p>Please place your templates in your home folder below "
+"&ldquo;_bereitstellen-&gt;bereitstellen-{class}&rdquo;.</p>"
+"<p>After pressing the button &ldquo;Supply&rdquo; the students"
+"will find your templates in their home folders below"
+"&ldquo;__vorlagen -&gt; vorlagen-{class}&rdquo;."
 
 #: ../shtml/linbo_regpatchedit.tt:1
-#, fuzzy
 msgid ""
 "<p>Klicken Sie auf den Namen einer Registrypatch-Datei, um sie zu editieren."
 "</p><p>Wollen Sie eine neue Registrypatch-Datei erstellen, wählen Sie "
@@ -710,14 +727,14 @@ msgid ""
 "Menü wählen Sie die Registrypatch-Datei aus, die als Vorlage für die neue "
 "Datei dienen soll.</p>"
 msgstr ""
-"If you want to create a new registry patch file, first choose the imagefile "
-"from\n"
-"the dropdown menu above. In the dropdown menu below, select the registry "
-"patch file,\n"
-"which should serve as a template for the new file."
+"<p> Click on a registry patch name to edit the corresponding file.</p>"
+"<p>If you want to create a new registry patch file, first choose the "
+"imagefile "
+"from the drop down menu above. In the dropdown menu below, select the "
+"registry "
+"patch file, which should serve as a template for the new file.</p>"
 
 #: ../shtml/linbo_edit.tt:1
-#, fuzzy
 msgid ""
 "<p>Klicken Sie auf einen Gruppennamen, um den Editor zu öffnen.</"
 "p><p>Beachten Sie, daß sich im Editor der Radio-Button zur Deaktivierung des "
@@ -726,8 +743,8 @@ msgid ""
 "pxelinux.cfg/&lt;gruppe&gt;&quot; der Eintrag &quot;DEFAULT reboot&quot; "
 "aktiviert ist und der Rechner über PXE startet.</p>"
 msgstr ""
-"</p>\n"
-"<p><getext>Also, note that with the reboot workaround in the group-specific "
+"</p>"
+"<p>Also, note that with the reboot workaround in the group-specific "
 "Linbo start file under &quot;pxelinux.cfg/&lt;gruppe&gt;&quot;, the entry, "
 "&quot;DEFAULT reboot&quot; is activated and the computer will start with PXE."
 
@@ -749,7 +766,6 @@ msgstr ""
 
 #. ({ 'project' => project })
 #: ../shtml/project_handout.tt:0
-#, fuzzy
 msgid ""
 "<p>Legen Sie Ihre bereitzustellenden Vorlagen in Ihrem Heimatverzeichnis "
 "unter &bdquo;_bereitstellen-&gt;bereitstellen-{project}&ldquo; ab.</"
@@ -757,14 +773,15 @@ msgid ""
 "Projektmitglieder Ihre Vorlagen in ihrem Homeverzeichnis unter &bdquo;"
 "__vorlagen-&gt;vorlagen-{project}&ldquo;.</p>"
 msgstr ""
-"After pressing the button &#8222;Supply&#8220; the project members \n"
-"will find their submissions in their home directory under &#8222;__vorlagen -"
-"&gt;\n"
-"vorlagen-"
+"<p>Please place your templates in your home folder below "
+"&ldquo;_bereitstellen-&gt;bereitstellen-{project}&rdquo;.</p>"
+"<p>Press the button &ldquo;Supply&rdquo; to supply the templates to project "
+"members "
+"to their home folders below &ldquo;__vorlagen-&gt;vorlagen-{project}&rdquo;.</"
+"p>"
 
 #. ({ 'project' => project })
 #: ../shtml/project_handoutcopy.tt:0
-#, fuzzy
 msgid ""
 "<p>Legen Sie die auszuteilenden Dateien in Ihrem Heimatverzeichnis unter "
 "&bdquo;_auszuteilen-&gt;auszuteilen-{project}&ldquo; ab.</p><p>Wählen Sie "
@@ -773,10 +790,11 @@ msgid ""
 "ihrem Heimatverzeichnis unter &bdquo;__austeilen-&gt;austeilen-{project}"
 "&ldquo;.</p>"
 msgstr ""
-"After pressing the button &#8222;Supply&#8220; the project members \n"
-"will find their submissions in their home directory under &#8222;__vorlagen -"
-"&gt;\n"
-"vorlagen-"
+"<p>Please put the files to be distributed in your home folder below "
+"&ldquo;_auszuteilen-&gt;auszuteilen-{project}&rdquo;.</p>"
+"<p>After pressing the button &ldquo;Distribute&rdquo; the project members "
+"will find your files in their home folders below "
+"&ldquo;__vorlagen-&gt;vorlagen-{project}&rdquo;.</p>"
 
 #: ../shtml/rooms.tt:1
 msgid ""
@@ -799,24 +817,22 @@ msgstr ""
 "</p>"
 
 #: ../shtml/printers.tt:1
-#, fuzzy
 msgid ""
 "<p>Legen Sie hier fest, welche Räume bzw. einzelne Rechner Zugriff auf "
 "welche Drucker haben.</p>"
 msgstr ""
-"Here, set which rooms, or which computers, have access to which printers."
+"<p>Here, set which rooms, or which computers, have access to which printers.<"
+"/p>"
 
 #: ../shtml/rooms_classrooms.tt:1
-#, fuzzy
 msgid ""
 "<p>Legen Sie hier fest, welche Räume von der Schulkonsole als Computerraum "
 "unter &bdquo;aktueller Raum&ldquo; verwaltbar sein sollen.</p>"
 msgstr ""
-"Set which rooms should be administrated from the school console as\n"
-"computer rooms under &#8222;Current room&#8220;."
+"<p>Set which rooms should be administrated from the school console as"
+"computer rooms under &ldquo;Current room&rdquo;.</p>"
 
 #: ../shtml/room.tt:0
-#, fuzzy
 msgid ""
 "<p>Sie müssen den &bdquo;Unterricht beginnen&ldquo;, damit Sie die "
 "Funktionen zur Steuerung des Unterrichts im aktuellen Raum nutzen können."
@@ -829,14 +845,19 @@ msgid ""
 "können Sie den Zugriff auf die Raumdrucker für alle Benutzer, nicht nur die "
 "des Raumes, freigeben oder sperren.</p>"
 msgstr ""
-"You must &#8222;Begin lessons&#8220;, so that\n"
-"you can use the functions for management of the lessons. <br>\n"
-"End lessons either with the button &#8222;Immediately end&#8220; \n"
-"or set the end of lessons with the drop down menu and confirm with \n"
-"&#8222;End&#8220;."
+"<p>You have to &ldquo;Begin lesson&rdquo; before "
+"you can use the lesson management functions. <br>"
+"End lessons either with the button &ldquo;Immediately end&rdquo; "
+"or set the end of lessons with the drop down menu and confirm with "
+"&ldquo;End&rdquo;.</p> "
+"<p>You can manage the hosts access to internet, intranet, webfilter, printers "
+"and global "
+"exchange folder by means of check boxes in &ldquo;Overview PCs&rdquo;.<p> "
+"<p>You can manage access to room printers for all users (including those not "
+"in the "
+"room) in the area &ldquo;Overview printers&rdquo;.</p>"
 
 #: ../shtml/project_lesson.tt:0
-#, fuzzy
 msgid ""
 "<p>Sie müssen den &bdquo;Unterricht beginnen&ldquo;, damit Sie die "
 "Funktionen zur Steuerung des Unterrichts im ausgewählten Projekt nutzen "
@@ -846,14 +867,16 @@ msgid ""
 "&bdquo;Übersicht&ldquo; können Sie den Zugriff der Schüler auf das WLAN über "
 "eine Checkbox steuern.</p>"
 msgstr ""
-"You must &#8222;Begin lessons&#8220;, so that\n"
-"you can use the functions for management of the lessons. <br>\n"
-"End lessons either with the button &#8222;Immediately end&#8220; \n"
-"or set the end of lessons with the drop down menu and confirm with \n"
-"&#8222;End&#8220;."
+"<p>You have to &ldquo;Begin lesson&rdquo; to be able to use the "
+"lesson management function for the selected project.<br> "
+"End the lesson either by means of the button &ldquo;Immediately end&rdquo; or "
+"select an end time through the drop down menus and confirm with "
+"&ldquo;End&rdquo;.</p> "
+"<p>In the area &ldquo;Overview&rdquo; you can manage members access to the "
+"wlan "
+"by means of a check box.</p>"
 
 #: ../shtml/class_lesson.tt:0
-#, fuzzy
 msgid ""
 "<p>Sie müssen den &bdquo;Unterricht beginnen&ldquo;, damit Sie die "
 "Funktionen zur Steuerung des Unterrichts in der ausgewählten Klasse nutzen "
@@ -863,14 +886,16 @@ msgid ""
 "&bdquo;Übersicht&ldquo; können Sie den Zugriff der Schüler auf das WLAN über "
 "eine Checkbox steuern.</p>"
 msgstr ""
-"You must &#8222;Begin lessons&#8220;, so that\n"
-"you can use the functions for management of the lessons. <br>\n"
-"End lessons either with the button &#8222;Immediately end&#8220; \n"
-"or set the end of lessons with the drop down menu and confirm with \n"
-"&#8222;End&#8220;."
+"<p>You have to &ldquo;Begin lesson&rdquo; to be able to use the "
+"lesson management function for the selected class.<br> "
+"End the lesson either by means of the button &ldquo;Immediately end&rdquo; or "
+"select an end time through the drop down menus and confirm with "
+"&ldquo;End&rdquo;.</p> "
+"<p>In the area &ldquo;Overview&rdquo; you can manage students access to the "
+"wlan "
+"by means of a check box.</p>"
 
 #: ../shtml/room_shares.tt:0
-#, fuzzy
 msgid ""
 "<p>Steuern Sie hier den Zugriff auf das globale Tauschverzeichnis, indem Sie "
 "entweder einzelne Arbeitsplätze über die Checkboxen auswählen oder über die "
@@ -878,9 +903,9 @@ msgid ""
 "übernehmen&ldquo; aktivieren Sie Ihre Auswahl.</p>"
 msgstr ""
 "<p>Manage access to the global exchange directory here, in which you select "
-"either single work stations with the check boxes or everyone with the &#8222;"
-"Quick selection&#8220;<br>Activate your selection with &#8222;Apply "
-"changes&#8220;.</p>"
+"either single work stations with the check boxes or everyone with the &ldquo;"
+"Quick selection&rdquo;<br>Activate your selection with &ldquo;Apply "
+"changes&rdquo;.</p>"
 
 #: ../shtml/class.tt:1
 msgid ""
@@ -900,42 +925,38 @@ msgstr ""
 "p>"
 
 #: ../shtml/linbo_images.tt:1
-#, fuzzy
 msgid ""
 "<p>Wenn Sie die Maus auf die Symbole bewegen, werden Hilfetexte angezeigt.</"
 "p><p>Zum Umbennenen und Kopieren von Images, müssen Sie einen neuen "
 "Dateinamen eingeben. Dateierweiterungen (.cloop/.rsync) können weggelassen "
 "werden.</p>"
 msgstr ""
-"To rename and copy images, you must enter a new file name.\n"
-"File extensions (.cloop/.rsync) can be omitted."
+"<p>Hover over the symbols to see help texts.</p>"
+"<p>To rename and copy images, you must enter a new file name.\n"
+"File extensions (.cloop/.rsync) can be omitted.</p>"
 
 #: ../shtml/project_drop_verify.tt:1
-#, fuzzy
 msgid "<p>Wählen Sie &bdquo;Ja&ldquo;, um das Projekt wirklich zu löschen.</p>"
 msgstr ""
-"Select &#8222;Yes&#8220;, to actually delete\n"
-"the project."
+"<p>Select &ldquo;Yes&rdquo;, to actually delete"
+"the project.</p>"
 
 #: ../shtml/quotas.tt:1
-#, fuzzy
 msgid ""
 "<p>Wählen Sie aus in welchem Bereich Sie Quota-Anpassungen vornehmen wollen."
 "</p>"
-msgstr ""
-"Select the field in which you want to make\n"
-"quota adjustments."
+msgstr "<p>Select the field in which you want to make quota adjustments.</p>"
 
 #: ../shtml/project_addmembers.tt:0
-#, fuzzy
 msgid ""
 "<p>Wählen Sie die Mitglieder aus, die Sie neu ins Projekt aufnehmen wollen "
 "und klicken Sie dann auf die Schaltfläche &bdquo;Aufnehmen&ldquo;.</"
 "p><p>Falls das Suchergebnis nicht Ihren Erwartungen entspricht, können Sie "
 "unten eine neue Suche starten.</p>"
 msgstr ""
-"Select the members, who you want to incorporate newly into the\n"
-"project and click on the button &#8222;Incorporate&#8220;."
+"<p>Select the members, who you want to incorporate newly into the\n"
+"project and click on the button &ldquo;Incorporate&rdquo;.</p> "
+"<p>You can start a new selection by starting a new search.</p>"
 
 #: ../shtml/project.tt:1
 msgid ""
@@ -998,7 +1019,6 @@ msgstr ""
 "Password&rdquo;.</p>"
 
 #: ../shtml/room_test.tt:0
-#, fuzzy
 msgid ""
 "<p>Übernehmen Sie entweder das vorgegebene Zufallspasswort oder geben Sie "
 "ein eigenes Passwort ein.</p><p>Mit Betätigung der Schaltfläche &bdquo;"
@@ -1006,10 +1026,10 @@ msgid ""
 "im Raum verteilt, und die Schüler/innen können sich mit dem Namen der "
 "Arbeitsstation und dem eben vergebenen Passwort anmelden.</p>"
 msgstr ""
-"With activation of the button &#8222;Start exam&#8220;, the new\n"
+"<p>Confirm the provided random password or type in an own.</p>"
+"<p>With activation of the button &ldquo;Start exam&rdquo;, the new"
 "password will be distributed to all work stations and the students/can sign "
-"in\n"
-"with the name of the work station and assigned password."
+"in with the name of the work station and assigned password.</p>"
 
 #: ../shtml/linbo_images.tt:19 ../shtml/linbo_images.tt:32
 #: ../shtml/linbo_images.tt:45 ../shtml/linbo_menuedit.tt:20
@@ -1086,7 +1106,6 @@ msgid "Anlegen l&auml;uft schon"
 msgstr "Creation is already running"
 
 #: ../shtml/user_commit.tt:29
-#, fuzzy
 msgid "Anlegen läuft."
 msgstr "Create is running."
 
@@ -1118,16 +1137,13 @@ msgid "Assistent zur Erstellung einer neuen Rechnergruppe"
 msgstr "Assistant for the creation of a new computer group"
 
 #: ../shtml/user.tt:26
-#, fuzzy
 msgid ""
 "Auf der Seite zur <a href=\"user_commit\">Übernahme der Benutzerdaten</a> "
 "können Sie die Übertragung ins System starten und sich Informationen zum "
 "Prozess anzeigen lassen."
 msgstr ""
-"On the page with\n"
-"<a href=\"user_commit\">&Acceptance of User Data</a>, you can\n"
-"start the transfer into the system and see information regarding the \n"
-"process."
+"On the page with <a href=\"user_commit\">&Acceptance of User Data</a>, you can"
+"start the transfer into the system and see information regarding the process."
 
 #: ../src/cgi-bin/project_addmembers.in:291
 msgid "Aufgenommen"
@@ -1188,7 +1204,6 @@ msgid "Ausgewählte Klasse:"
 msgstr "Selected class:"
 
 #: ../shtml/project.tt:30 ../shtml/project_lesson.tt:28
-#, fuzzy
 msgid "Ausgewähltes Projekt"
 msgstr "selected project"
 
@@ -1196,12 +1211,10 @@ msgstr "selected project"
 #: ../shtml/project_drop_verify.tt:11 ../shtml/project_handout.tt:28
 #: ../shtml/project_handoutcopy.tt:28 ../shtml/project_members.tt:27
 #: ../shtml/project_passwords.tt:29 ../shtml/project_shares.tt:28
-#, fuzzy
 msgid "Ausgewähltes Projekt:"
 msgstr "Selected project:"
 
 #: ../shtml/rooms.tt:107 ../shtml/rooms.tt:55
-#, fuzzy
 msgid "Ausnahme hinzufügen"
 msgstr "add exception"
 
@@ -1228,7 +1241,6 @@ msgid "Auswahl zur&uuml;ckgesetzt"
 msgstr "Selection reset"
 
 #: ../shtml/rooms.tt:149 ../shtml/rooms.tt:151
-#, fuzzy
 msgid "Auswahl zurücksetzen"
 msgstr "reset selection"
 
@@ -1258,41 +1270,33 @@ msgid "Basisimages"
 msgstr "Basis images"
 
 #: ../shtml/printers.tt:32 ../shtml/printers.tt:34
-#, fuzzy
 msgid "Bearbeiten"
 msgstr "Edit"
 
 #: ../shtml/user.tt:14
-#, fuzzy
 msgid ""
 "Bearbeiten Sie zunächst die <a href=\"user_students\">Schüler-</a> und <a "
 "href=\"user_teachers\">Lehrerlisten</a>."
 msgstr ""
-"First, edit the\n"
-"<a href=\"user_students\">student</a>\n"
-"and <a href=\"user_teachers\">teacher lists</a>."
+"First, edit the <a href=\"user_students\">student</a> and <a "
+"href=\"user_teachers\">teacher lists</a>."
 
 #: ../shtml/user.tt:16
-#, fuzzy
 msgid ""
 "Bearbeiten Sie zunächst die <a href=\"user_students\">Schülerlisten</a>."
-msgstr ""
-"First, edit the\n"
-"<a href=\"user_students\">student lists</a>."
+msgstr "First, edit the <a href=\"user_students\">student lists</a>."
 
 #: ../shtml/user_teachin.tt:107
 msgid "Beenden"
 msgstr "End"
 
 #: ../shtml/user_check.tt:52
-#, fuzzy
 msgid "Bei der Überprüfung der Benutzerdaten wurde Folgendes ausgegeben:"
-msgstr "With the review of user data, the following was outputted:"
+msgstr "User data review produced the following output:"
 
 #: ../shtml/example.tt:1
-#, fuzzy
 msgid "Beispielseite"
-msgstr "Example files"
+msgstr "Example page"
 
 #: ../src/cgi-bin/linbo_regpatchedit.in:82
 #, perl-format
@@ -1340,17 +1344,14 @@ msgid "Benutzer anlegen"
 msgstr "Create user"
 
 #: ../shtml/user_commit.tt:19
-#, fuzzy
 msgid "Benutzer anlegen/versetzen/löschen"
 msgstr "Create/move/delete user is running."
 
 #: ../shtml/user_commit.tt:15
-#, fuzzy
 msgid "Benutzer anlegen/versetzen/löschen läuft."
 msgstr "Create/move/delete user is running."
 
 #: ../shtml/user_commit.tt:119
-#, fuzzy
 msgid "Benutzer löschen"
 msgstr "Delete user"
 
@@ -1367,12 +1368,10 @@ msgid "Benutzer:"
 msgstr "User:"
 
 #: ../shtml/user_check.tt:1 ../shtml/user_check.tt:9
-#, fuzzy
 msgid "Benutzerlisten prüfen"
 msgstr "Check user lists"
 
 #: ../shtml/user_check.tt:13
-#, fuzzy
 msgid "Benutzerlisten überprüfen"
 msgstr "Check user lists"
 
@@ -1415,12 +1414,10 @@ msgstr "Copy existing group configuration of a computer group"
 #: ../shtml/linbo_images.tt:18 ../shtml/linbo_menuedit.tt:19
 #: ../shtml/linbo_pxeedit.tt:19 ../shtml/linbo_regpatchedit.tt:19
 #: ../shtml/room_end_lesson_verify.tt:34 ../shtml/room_test_end.tt:35
-#, fuzzy
 msgid "Bestätigen"
 msgstr "Please confirm"
 
 #: ../shtml/linbo_new.tt:52
-#, fuzzy
 msgid "Betriebssystem"
 msgstr "Name of operating system"
 
@@ -1461,12 +1458,10 @@ msgid "Betriebssystem automatisch starten"
 msgstr "Start operating system automatically"
 
 #: ../shtml/linbo_edit.tt:322
-#, fuzzy
 msgid "Betriebssystem hinzufügen"
 msgstr "Add operating system"
 
 #: ../shtml/linbo_edit.tt:321
-#, fuzzy
 msgid "Betriebssystem löschen"
 msgstr "Delete operating system"
 
@@ -1500,7 +1495,6 @@ msgid "Bitte Klasse auswählen"
 msgstr "Please select class"
 
 #: ../shtml/linbo_edit.tt:460
-#, fuzzy
 msgid "Bitte Rechnergruppe auswählen"
 msgstr "Please select computer group"
 
@@ -1513,12 +1507,10 @@ msgstr "Please confirm"
 #: ../shtml/linbo_pxeedit.tt:14 ../shtml/linbo_regpatchedit.tt:14
 #: ../shtml/project_drop_verify.tt:15 ../shtml/room_end_lesson_verify.tt:28
 #: ../shtml/room_test_end.tt:31
-#, fuzzy
 msgid "Bitte bestätigen"
 msgstr "Please confirm"
 
 #: ../shtml/project.tt:32
-#, fuzzy
 msgid "Bitte ein Projekt auswählen"
 msgstr "Please select a project"
 
@@ -1587,7 +1579,6 @@ msgid "Datei wurde geschrieben"
 msgstr "File was written"
 
 #: ../shtml/linbo_edit.tt:16
-#, fuzzy
 msgid "Datei wählen"
 msgstr "Choose file"
 
@@ -1606,7 +1597,6 @@ msgid "Dateiname des Basis-Image"
 msgstr "File name of basis image"
 
 #: ../shtml/linbo_edit.tt:228
-#, fuzzy
 msgid "Dateiname des Icons für den Startbutton"
 msgstr "File name of icons for start button"
 
@@ -1666,34 +1656,30 @@ msgid ""
 msgstr "The user data still must be taken over into the system."
 
 #: ../shtml/user_check.tt:44
-#, fuzzy
 msgid ""
 "Die Daten mancher Benutzer wurden geändert. Bearbeiten Sie die <a href="
 "\"user_teachin\">Verknüpfungen</a> der alten mit neuen Benutzern fürs <a "
 "href=\"user_teachin\">Teach-In</a>."
 msgstr ""
-"Edit the \n"
-"<a href=\"user_teachin\">Connections</a>\n"
+"Edit the <a href=\"user_teachin\">Connections</a>"
 "of old users with new users for the <a href=\"user_teachin\">Teach in</a>."
 
 #: ../shtml/hosts.tt:24
-#, fuzzy
 msgid ""
 "Die Liste der konfigurierten Hosts stimmt nicht mit den tatsächlich im "
 "System vorhandenen Hosts überein."
 msgstr ""
-"The list of the configured hosts does not match\n"
-"with the available hosts actually in the system."
+"The list of the configured hosts does not match the available hosts actually "
+"in the system."
 
 #: ../shtml/rooms_classrooms.tt:11
-#, fuzzy
 msgid ""
 "Die Liste der konfigurierten Hosts und ihrer Räme stimmt nicht mit den "
 "tatsächlich im System vorhandenen Hosts überein. Bitte überprüfen Sie die <a "
 "href=\"hosts\">Hosts-Liste</a>."
 msgstr ""
-"The list of the configured hosts does not match\n"
-"with the available hosts actually in the system."
+"The list of the configured hosts does not match the available hosts actually "
+"in the system."
 
 #: ../src/cgi-bin/settings.in:172 ../src/cgi-bin/settings_users.in:172
 msgid "Die Passwortl&auml;nge muss eine Zahl > 0 sein"
@@ -1712,19 +1698,16 @@ msgid "Diskquota"
 msgstr "Disk quota"
 
 #: ../shtml/linbo_edit.tt:81
-#, fuzzy
 msgid "Downloadtype auswählen"
 msgstr "Select download type"
 
 #: ../shtml/start.tt:12
-#, fuzzy
 msgid "Druckaufträge"
 msgstr "Print jobs"
 
 #: ../shtml/start.tt:25
-#, fuzzy
 msgid "Druckaufträge löschen"
-msgstr "Print jobs"
+msgstr "Delete print jobs"
 
 #: ../shtml/printers.tt:1 ../shtml/printers.tt:23 ../shtml/printers.tt:9
 #: ../shtml/printers_edit.tt:1 ../shtml/printers_edit.tt:8
@@ -1733,9 +1716,8 @@ msgid "Drucker"
 msgstr "Printer"
 
 #: ../shtml/start.tt:174
-#, fuzzy
 msgid "Druckquota:"
-msgstr "Disk quota"
+msgstr "print quota:"
 
 #: ../shtml/settings_users.tt:171 ../shtml/settings_users.tt:188
 msgid "Duldungszeitraum"
@@ -1746,9 +1728,8 @@ msgid "E"
 msgstr "E"
 
 #: ../shtml/start.tt:159
-#, fuzzy
 msgid "E-Mail"
-msgstr "Email quota"
+msgstr "E-mail"
 
 #: ../shtml/class_list.tt:86 ../shtml/project_members.tt:208
 #: ../shtml/start.tt:147
@@ -1761,9 +1742,8 @@ msgid "E-Mailquota"
 msgstr "Email quota"
 
 #: ../shtml/rooms_classrooms.tt:1
-#, fuzzy
 msgid "EDV-Räume"
-msgstr "EDV rooms"
+msgstr "computer labs"
 
 #: ../shtml/linbo_edit.tt:117 ../shtml/linbo_edit.tt:318
 #: ../shtml/linbo_edit.tt:347 ../shtml/linbo_edit.tt:416
@@ -1794,7 +1774,6 @@ msgid "Editieren"
 msgstr "edit"
 
 #: ../shtml/start.tt:228
-#, fuzzy
 msgid "Ein OpenVPN-Zertifikat wurde für Sie erstellt."
 msgstr "An open VPN certificate was created for you."
 
@@ -1897,9 +1876,8 @@ msgid "Es sind keine Templateedateien vorhanden."
 msgstr "There are not any template files available."
 
 #: ../shtml/linbo_menuedit.tt:68
-#, fuzzy
 msgid "Es sind keine menu.lst-Dateien vorhanden."
-msgstr "There are not any template files available."
+msgstr "There are no menu.lst files available."
 
 #: ../src/cgi-bin/user_teachin.in:121
 msgid "Es sind noch nicht alle Verkn&uuml;pfungen eindeutig festgelegt"
@@ -1914,16 +1892,16 @@ msgid "Es wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> abgelegt"
 msgstr "It was filed away in your home directory in the folder <q>OpenVPN</q>"
 
 #: ../shtml/hosts.tt:29
-#, fuzzy
 msgid "Es wurden noch nicht alle Hosts in das System übernommen."
-msgstr "Not all hosts were applied into the system."
+msgstr "Not all host entries were applied into the system."
 
 #: ../shtml/rooms_classrooms.tt:15
-#, fuzzy
 msgid ""
 "Es wurden noch nicht alle Hosts mit ihren Rämen in das System übernommen. "
 "Bitte überprüfen Sie die <a href=\"hosts\">Hosts-Liste</a>."
-msgstr "Please check the <a href=\"hosts\">Host's list</a>."
+msgstr ""
+"Not all host entries were applied to the system."
+"Please check the <a href=\"hosts\">Host's list</a>."
 
 #: ../shtml/user_extra.tt:26
 msgid "Extrakurse editieren"
@@ -1934,7 +1912,6 @@ msgid "Extralisten pflegen"
 msgstr "Maintain extra lists"
 
 #: ../shtml/user_extra.tt:13
-#, fuzzy
 msgid "Extraschüler editieren"
 msgstr "Edit extra students"
 
@@ -1972,7 +1949,6 @@ msgid "Festplattengr&ouml;&szlig;e muss eine Zahl sein"
 msgstr "Hard drive size must be a number"
 
 #: ../shtml/linbo_new.tt:37
-#, fuzzy
 msgid "Festplattengröße in MB"
 msgstr "Size of hard drive in MB"
 
@@ -2013,17 +1989,13 @@ msgid "Geburtsdatum"
 msgstr "Date of birth"
 
 #: ../shtml/settings_users.tt:19
-#, fuzzy
 msgid "Geburtsjahreszahl für Schüler"
-msgstr "Birth year for student"
+msgstr "Students birth year"
 
 #: ../shtml/quotas.tt:22
-#, fuzzy
 msgid ""
 "Gehen Sie auf <a href=\"settings\">Einstellungen</a> um Quota zu aktivieren."
-msgstr ""
-"Go to <a href=\"settings\">Settings</a>\n"
-"to activate quota."
+msgstr "Go to <a href=\"settings\">Settings</a> to activate quota."
 
 #: ../shtml/settings_classs.tt:13 ../shtml/settings_program.tt:13
 #: ../shtml/settings_projects.tt:13 ../shtml/settings_users.tt:13
@@ -2072,9 +2044,8 @@ msgid "Hallo "
 msgstr "Hello "
 
 #: ../shtml/linbo_menuedit.tt:50
-#, fuzzy
 msgid "Hinzufügen"
-msgstr "Add teacher"
+msgstr "Add"
 
 #: ../shtml/user_students.tt:15 ../shtml/user_teachers.tt:43
 msgid "Hochladen"
@@ -2092,7 +2063,6 @@ msgid "Hosts"
 msgstr "Hosts"
 
 #: ../shtml/hosts.tt:25 ../shtml/hosts.tt:30
-#, fuzzy
 msgid "Hosts jetzt übernehmen"
 msgstr "Apply hosts now"
 
@@ -2105,9 +2075,8 @@ msgid "IP"
 msgstr "IP"
 
 #: ../shtml/linbo_edit.tt:44
-#, fuzzy
 msgid "IP des TFTP-Servers, der Images vorhält"
-msgstr "IP of the TFTP Server, that has images available"
+msgstr "IP of the TFTP Server, that provides images"
 
 #: ../shtml/page.tt:76 ../shtml/status.inc.tt:21
 msgid "IP:"
@@ -2143,7 +2112,6 @@ msgid "Imagedatei kopieren"
 msgstr "Copy image file"
 
 #: ../shtml/linbo_images.tt:11
-#, fuzzy
 msgid "Imagedatei löschen"
 msgstr "Delete image file"
 
@@ -2160,7 +2128,6 @@ msgid "Import l&auml;uft bereits"
 msgstr "Current import ..."
 
 #: ../shtml/hosts.tt:14
-#, fuzzy
 msgid "Importieren läuft."
 msgstr "Move is running."
 
@@ -2176,14 +2143,12 @@ msgstr "Entered into project %s"
 
 #: ../src/cgi-bin/project_lesson.in:108 ../src/cgi-bin/project_lesson.in:158
 #: ../src/cgi-bin/project_lesson.in:180
-#, fuzzy
 msgid "In diesem Projekt findet kein Unterricht statt."
-msgstr "Lessons are not taking place in this room."
+msgstr "No lesson is active in this project."
 
 #: ../src/cgi-bin/project_lesson.in:137
-#, fuzzy
 msgid "In diesem Projekt wird bereits unterrichtet."
-msgstr "Lessons are already being given in this room."
+msgstr "In this project a lesson is already active."
 
 #: ../shtml/room_end_lesson_verify.tt:30 ../src/cgi-bin/room.in:344
 msgid "In diesem Raum findet eine Klassenarbeit statt."
@@ -2199,19 +2164,16 @@ msgid "In diesem Raum wird bereits unterrichtet."
 msgstr "Lessons are already being given in this room."
 
 #: ../src/cgi-bin/class_lesson.in:104
-#, fuzzy
 msgid "In dieser Klasse Projekt findet kein Unterricht statt."
-msgstr "Lessons are not taking place in this room."
+msgstr "No lesson is active in this project."
 
 #: ../src/cgi-bin/class_lesson.in:154 ../src/cgi-bin/class_lesson.in:176
-#, fuzzy
 msgid "In dieser Klasse findet kein Unterricht statt."
-msgstr "Lessons are not taking place in this room."
+msgstr "No lesson is active in this class."
 
 #: ../src/cgi-bin/class_lesson.in:133
-#, fuzzy
 msgid "In dieser Klasse wird bereits unterrichtet."
-msgstr "Lessons are already being given in this room."
+msgstr "In this class a lesson is already active."
 
 #: ../shtml/page.tt:86 ../shtml/start.tt:75
 msgid "Info"
@@ -2289,9 +2251,8 @@ msgid "Keine Dateien"
 msgstr "No files"
 
 #: ../shtml/start.tt:28
-#, fuzzy
 msgid "Keine Druckaufträge"
-msgstr "Print jobs"
+msgstr "No print jobs"
 
 #: ../src/cgi-bin/linbo_new.in:134
 msgid "Keine Festplattengr&ouml;&szlig;e angegeben"
@@ -2407,9 +2368,8 @@ msgid "Klassenname"
 msgstr "Class name"
 
 #: ../shtml/hosts.tt:42
-#, fuzzy
 msgid "Kommentare bearbeiten"
-msgstr "Edit"
+msgstr "Edit coment lines"
 
 #: ../src/cgi-bin/linbo_new.in:281
 msgid "Konfigurationsdatei erstellt"
@@ -2436,23 +2396,20 @@ msgid "Konsolenschriftfarbe"
 msgstr "Console font color"
 
 #: ../shtml/linbo_edit.tt:99
-#, fuzzy
 msgid "Konsolenschriftfarbe für Fehler- und Warnmeldungen"
-msgstr "Console font color for mistake and warning notifications"
+msgstr "Console font color for error and warn notifications"
 
 #: ../shtml/start.tt:9
 msgid "Konto von"
 msgstr "Account of "
 
 #: ../shtml/start.tt:61
-#, fuzzy
 msgid "Kopie behalten"
 msgstr "Collect copies"
 
 #: ../shtml/room_test_collect.tt:33 ../shtml/room_test_collect.tt:61
-#, fuzzy
 msgid "Kopien einsammeln"
-msgstr "Collect"
+msgstr "Collect copes"
 
 #: ../src/cgi-bin/room_test_collect.in:76 ../src/cgi-bin/room_collect.in:105
 msgid "Kopiert"
@@ -2494,7 +2451,6 @@ msgid "Lehrer entfernen"
 msgstr "Delete teacher"
 
 #: ../shtml/user_teachers.tt:13
-#, fuzzy
 msgid "Lehrer hinzufügen"
 msgstr "Add teacher"
 
@@ -2507,7 +2463,6 @@ msgid "Lehrerliste pflegen"
 msgstr "Maintain teacher list"
 
 #: ../shtml/user_teacherpasswords.tt:1 ../shtml/user_teacherpasswords.tt:9
-#, fuzzy
 msgid "Lehrerpasswörter"
 msgstr "Teacher passwords"
 
@@ -2519,12 +2474,10 @@ msgstr "View last log file"
 #: ../shtml/linbo.tt:1 ../shtml/linbo_edit.tt:1 ../shtml/linbo_images.tt:1
 #: ../shtml/linbo_menuedit.tt:1 ../shtml/linbo_new.tt:1
 #: ../shtml/linbo_pxeedit.tt:1 ../shtml/linbo_regpatchedit.tt:1
-#, fuzzy
 msgid "Linbo"
 msgstr "linbo"
 
 #: ../shtml/settings_classs.tt:19 ../shtml/settings_projects.tt:19
-#, fuzzy
 msgid "Liste"
 msgstr "Image list"
 
@@ -2571,12 +2524,10 @@ msgstr "Logout"
 
 #: ../shtml/project.tt:72 ../shtml/project_drop_verify.tt:9
 #: ../shtml/settings_users.tt:165 ../shtml/settings_users.tt:182
-#, fuzzy
 msgid "Löschen"
-msgstr "Exchange"
+msgstr "Delete"
 
 #: ../shtml/user_commit.tt:115
-#, fuzzy
 msgid "Löschen läuft."
 msgstr "Delete is running."
 
@@ -2625,12 +2576,10 @@ msgid "Minuten"
 msgstr "Minutes"
 
 #: ../shtml/room_test_end.tt:33
-#, fuzzy
 msgid "Mit dem Einsammeln der Dateien wird die Klassenarbeit beendet."
 msgstr "The exam ends with collection of the files."
 
 #: ../shtml/user.tt:22
-#, fuzzy
 msgid ""
 "Mit der <a href=\"user_check\">Überprüfung der Benutzerlisten</a> werden die "
 "Daten zur Übertragung ins System vorbereitet."
@@ -2644,7 +2593,6 @@ msgstr "Members"
 
 #: ../shtml/project_addmembers.tt:0 ../shtml/project_addmembers.tt:9
 #: ../shtml/project_members.tt:41
-#, fuzzy
 msgid "Mitglieder hinzufügen"
 msgstr "Add member"
 
@@ -2669,7 +2617,6 @@ msgid "Mitgliedschaft beenden"
 msgstr "End membership"
 
 #: ../shtml/project_drop_verify.tt:17
-#, fuzzy
 msgid "Möchten Sie das Projekt wirklich löschen?"
 msgstr "Are you sure that you want to delete the project?"
 
@@ -2711,9 +2658,8 @@ msgstr "Name"
 
 #: ../shtml/linbo_edit.tt:160 ../shtml/linbo_edit.tt:193
 #: ../shtml/linbo_edit.tt:353
-#, fuzzy
 msgid "Name der Partition"
-msgstr "Device name of partition"
+msgstr "name of the partition"
 
 #: ../shtml/linbo_edit.tt:215
 msgid "Name des Betriebssystems"
@@ -2728,7 +2674,6 @@ msgid "Neu anlegen"
 msgstr "Create new"
 
 #: ../shtml/linbo_edit.tt:268
-#, fuzzy
 msgid "Neu+Start-Button für dieses Betriebssystem anzeigen"
 msgstr "Show new+start button for this operating system"
 
@@ -2757,7 +2702,6 @@ msgid "Neues Projekt anlegen"
 msgstr "Create new project"
 
 #: ../shtml/linbo_edit.tt:109 ../shtml/linbo_edit.tt:441
-#, fuzzy
 msgid "Neues System hinzufügen"
 msgstr "Add new system"
 
@@ -2874,18 +2818,15 @@ msgid "Partition bootbar:"
 msgstr "Partition bootable:"
 
 #: ../shtml/linbo_edit.tt:241
-#, fuzzy
 msgid "Partition, die Kernel und initrd enthält"
 msgstr "Partition that contains kernel and initrd"
 
 #: ../shtml/linbo_edit.tt:168 ../shtml/linbo_edit.tt:201
 #: ../shtml/linbo_edit.tt:361
-#, fuzzy
 msgid "Partitionsgröße in KB"
 msgstr "Size of partition in KB"
 
 #: ../shtml/linbo_new.tt:53
-#, fuzzy
 msgid "Partitionsgrößen in MB"
 msgstr "Size of partition in MB"
 
@@ -2924,7 +2865,6 @@ msgid "Passwort und Ertspasswort setzen (Eingabewert)"
 msgstr "Set password and first password (input value)"
 
 #: ../shtml/room_test_password.tt:34 ../shtml/start.tt:48
-#, fuzzy
 msgid "Passwort ändern"
 msgstr "Change your password"
 
@@ -2943,15 +2883,13 @@ msgid "Passwortliste als PDF"
 msgstr "Password list as PDF"
 
 #: ../shtml/start.tt:33
-#, fuzzy
 msgid "Passwortänderung"
-msgstr "Change your password"
+msgstr "Password change"
 
 #: ../shtml/class_passwords.tt:0 ../shtml/class_passwords.tt:27
 #: ../shtml/project_passwords.tt:0 ../shtml/project_passwords.tt:27
-#, fuzzy
 msgid "Passwörter"
-msgstr "Password"
+msgstr "Passwords"
 
 #: ../shtml/linbo_edit.tt:245
 msgid "Pfad zum kernel"
@@ -3073,9 +3011,8 @@ msgid "Rechner"
 msgstr "Computer"
 
 #: ../shtml/hosts.tt:49
-#, fuzzy
 msgid "Rechner bearbeiten"
-msgstr "Edit"
+msgstr "Edit hosts"
 
 #: ../shtml/linbo_new.tt:33
 msgid "Rechnergruppe"
@@ -3121,7 +3058,6 @@ msgid "Relativer Pfad zur initrd"
 msgstr "Relative path to initrd"
 
 #: ../shtml/user_reports.tt:13
-#, fuzzy
 msgid "Report für das Sekretariat"
 msgstr "Report for the secretary's office"
 
@@ -3135,14 +3071,12 @@ msgid "SATA"
 msgstr "SATA"
 
 #: ../shtml/settings_users.tt:117 ../shtml/settings_users.tt:154
-#, fuzzy
 msgid "Sambapasswort bei Erstanmeldung ändern"
 msgstr "Change samba password during initial log in"
 
 #: ../shtml/linbo_images.tt:56 ../shtml/linbo_images.tt:66
 #: ../shtml/linbo_images.tt:75 ../shtml/linbo_menuedit.tt:32
 #: ../shtml/linbo_pxeedit.tt:32 ../shtml/linbo_regpatchedit.tt:32
-#, fuzzy
 msgid "Schließen"
 msgstr "Close"
 
@@ -3194,17 +3128,14 @@ msgid "Schulkonsole"
 msgstr "School console"
 
 #: ../shtml/header.inc.tt:6 ../shtml/page.tt:23
-#, fuzzy
 msgid "Schulkonsole für Lehrer/innen"
 msgstr "School console for teachers"
 
 #: ../shtml/header.inc.tt:4 ../shtml/page.tt:21
-#, fuzzy
 msgid "Schulkonsole für Netzwerkberater/innen"
 msgstr "School console for network consultants"
 
 #: ../shtml/header.inc.tt:8 ../shtml/page.tt:25
-#, fuzzy
 msgid "Schulkonsole für Schüler/innen"
 msgstr "School console for students"
 
@@ -3214,12 +3145,10 @@ msgstr "Activate school-wide exchange"
 
 #: ../shtml/project_addmembers.tt:138 ../shtml/project_members.tt:49
 #: ../shtml/quotas_others.tt:148
-#, fuzzy
 msgid "Schüler"
-msgstr "(Student)"
+msgstr "Student"
 
 #: ../shtml/user_students.tt:1 ../shtml/user_students.tt:9
-#, fuzzy
 msgid "Schülerliste pflegen"
 msgstr "maintain student list"
 
@@ -3244,18 +3173,16 @@ msgid "Shell aktivieren"
 msgstr "Activate shell"
 
 #: ../src/cgi-bin/project_lesson.in:163 ../src/cgi-bin/project_lesson.in:185
-#, fuzzy
 msgid "Sie d&uuml;rfen den Unterricht in diesem Projekt nicht beenden."
-msgstr "You are not allowed to end the lesson in this room."
+msgstr "You are not allowed to end the lesson in this project."
 
 #: ../src/cgi-bin/room.in:303 ../src/cgi-bin/room.in:335
 msgid "Sie d&uuml;rfen den Unterricht in diesem Raum nicht beenden."
 msgstr "You are not allowed to end the lesson in this room."
 
 #: ../src/cgi-bin/class_lesson.in:159 ../src/cgi-bin/class_lesson.in:181
-#, fuzzy
 msgid "Sie d&uuml;rfen den Unterricht in dieser Klasse nicht beenden."
-msgstr "You are not allowed to end the lesson in this room."
+msgstr "You are not allowed to end the lesson in this class."
 
 #: ../src/cgi-bin/project.in:170
 #, perl-format
@@ -3263,28 +3190,25 @@ msgid "Sie d&uuml;rfen die Benutzerliste von %s nicht &auml;ndern"
 msgstr "You are not allowed to change the user list of %s"
 
 #: ../src/cgi-bin/project_lesson.in:113
-#, fuzzy
 msgid "Sie halten keinen Unterricht in diesem Projekt."
-msgstr "You are not giving lessons in this room."
+msgstr "You are not giving lessons in this project."
 
 #: ../src/cgi-bin/room.in:103 ../src/cgi-bin/room.in:245
 msgid "Sie halten keinen Unterricht in diesem Raum."
 msgstr "You are not giving lessons in this room."
 
 #: ../src/cgi-bin/class_lesson.in:109
-#, fuzzy
 msgid "Sie halten keinen Unterricht in dieser Klasse."
-msgstr "You are not giving lessons in this room."
+msgstr "You are not giving lessons in this class."
 
 #: ../src/cgi-bin/user_teachin.in:134 ../src/cgi-bin/user_check.in:103
 msgid "Sie k&ouml;nnen die Benutzerdaten jetzt &uuml;bernehmen"
 msgstr "You can now apply the user data"
 
 #: ../shtml/user_check.tt:49
-#, fuzzy
 msgid ""
 "Sie können jetzt die <a href=\"user_commit\">Benutzerdaten übernehmen</a>."
-msgstr "You can now apply the <a href=\"user_commit\">User data</a>."
+msgstr "You can apply the <a href=\"user_commit\">User data</a> now."
 
 #: ../src/cgi-bin/project.in:89
 msgid "Sie m&uuml;ssen einen Projektnamen angeben."
@@ -3351,7 +3275,6 @@ msgid "Speicherplatz/KB:"
 msgstr "Storage space/KB:"
 
 #: ../shtml/linbo_edit.tt:299
-#, fuzzy
 msgid "Standard-Autostart-Aktion auswählen"
 msgstr "Select standard autostart action"
 
@@ -3360,21 +3283,18 @@ msgid "Standardeinstellungen"
 msgstr "Standard settings"
 
 #: ../shtml/rooms.tt:9
-#, fuzzy
 msgid "Standardeinstellungen für Räume"
-msgstr "Standard settings for rooms"
+msgstr "Default settings for rooms"
 
 #: ../shtml/settings_users.tt:41
 msgid "Standardquota Lehrer"
 msgstr "Standard quota teacher"
 
 #: ../shtml/settings_users.tt:60
-#, fuzzy
 msgid "Standardquota Schüler"
-msgstr "Standard quota student"
+msgstr "Default quota for students"
 
 #: ../shtml/linbo_edit.tt:258
-#, fuzzy
 msgid "Start-Button für dieses Betriebssystem anzeigen"
 msgstr "Show start button for this operating system"
 
@@ -3413,7 +3333,6 @@ msgid "Swap"
 msgstr "Swap"
 
 #: ../shtml/linbo_edit.tt:263
-#, fuzzy
 msgid "Sync+Start-Button für dieses Betriebssystem anzeigen"
 msgstr "Show sync+start button for this operating system"
 
@@ -3422,19 +3341,16 @@ msgid "System"
 msgstr "System"
 
 #: ../shtml/linbo_edit.tt:408
-#, fuzzy
 msgid "System löschen"
 msgstr "Delete system"
 
 #: ../shtml/linbo_edit.tt:319 ../shtml/linbo_edit.tt:417
-#, fuzzy
 msgid "System ändern"
 msgstr "Change system"
 
 #: ../shtml/linbo_edit.tt:52
-#, fuzzy
 msgid "System-Typ"
-msgstr "System"
+msgstr "System type"
 
 #: ../shtml/quotas_others.tt:248
 msgid "Systembenutzer"
@@ -3503,9 +3419,8 @@ msgstr "Invalid target group name"
 
 #: ../shtml/class_lesson.tt:0 ../shtml/class_lesson.tt:26
 #: ../shtml/project_lesson.tt:0 ../shtml/project_lesson.tt:26
-#, fuzzy
 msgid "Unterricht"
-msgstr "No Lessons."
+msgstr "Lesson"
 
 #: ../shtml/class_lesson.tt:44 ../shtml/project_lesson.tt:44
 #: ../shtml/room.tt:48
@@ -3557,7 +3472,6 @@ msgid "Versetzen l&auml;uft schon"
 msgstr "Transfer is already running"
 
 #: ../shtml/user_commit.tt:70
-#, fuzzy
 msgid "Versetzen läuft."
 msgstr "Move is running."
 
@@ -3566,7 +3480,6 @@ msgid "Versetzen wurde gestartet"
 msgstr "Transfer was already started"
 
 #: ../shtml/header.inc.tt:12 ../shtml/page.tt:29
-#, fuzzy
 msgid "Version"
 msgstr "Version"
 
@@ -3648,7 +3561,6 @@ msgid "Workstations werden importiert"
 msgstr "Work stations are being imported"
 
 #: ../shtml/linbo.tt:1
-#, fuzzy
 msgid "Wählen Sie ein Untermenü."
 msgstr "Choose a submenu."
 
@@ -3657,7 +3569,6 @@ msgid "X"
 msgstr "X"
 
 #: ../shtml/hosts.tt:120
-#, fuzzy
 msgid "Zeilen hinzufügen"
 msgstr "Add Lines"
 
@@ -3678,7 +3589,6 @@ msgid "Zertifikatspasswort (mind. 6 Zeichen):"
 msgstr "Certificate password (at least 6 characters):"
 
 #: ../shtml/start.tt:239
-#, fuzzy
 msgid "Zertifikatspasswort bestätigen:"
 msgstr "Confirm certificate password:"
 
@@ -3701,7 +3611,6 @@ msgid "Zugriff verweigert"
 msgstr "Access denied"
 
 #: ../shtml/hosts.tt:126
-#, fuzzy
 msgid "Zurücksetzen"
 msgstr "Reset"
 
@@ -3724,7 +3633,6 @@ msgid "abgelaufen"
 msgstr "expired"
 
 #: ../shtml/printers_edit.tt:21 ../shtml/printers_edit.tt:60
-#, fuzzy
 msgid "abgewählt"
 msgstr "Deselected"
 
@@ -3733,16 +3641,14 @@ msgid "aktive Klasse:"
 msgstr "active class:"
 
 #: ../shtml/page.tt:81
-#, fuzzy
 msgid "aktives Projekt:"
-msgstr "current project"
+msgstr "current project:"
 
 #: ../shtml/room.tt:1 ../shtml/room_collect.tt:1
 #: ../shtml/room_end_lesson_verify.tt:1 ../shtml/room_handout.tt:1
 #: ../shtml/room_shares.tt:1 ../shtml/room_test.tt:1
 #: ../shtml/room_test_collect.tt:1 ../shtml/room_test_end.tt:1
 #: ../shtml/room_test_handout.tt:1 ../shtml/room_test_password.tt:1
-#, fuzzy
 msgid "aktueller Raum"
 msgstr "Current Room"
 
@@ -3752,9 +3658,8 @@ msgid "angemeldet,"
 msgstr "Signed in,"
 
 #: ../shtml/printers_edit.tt:19 ../shtml/printers_edit.tt:58
-#, fuzzy
 msgid "ausgewählt"
-msgstr "Selected"
+msgstr "selected"
 
 #: ../shtml/linbo_edit.tt:62
 msgid "automatischer Rootlogout nach"
@@ -3799,18 +3704,16 @@ msgid "ignoriert: "
 msgstr "ignored: "
 
 #: ../shtml/project_lesson.tt:96
-#, fuzzy
 msgid "ist im Projekt"
-msgstr "Members in project"
+msgstr "is project member"
 
 #: ../shtml/room.tt:101
 msgid "ist in Raum"
 msgstr "is in room"
 
 #: ../shtml/class_lesson.tt:96
-#, fuzzy
 msgid "ist in der Klasse"
-msgstr "There are not any classes."
+msgstr "is in the class"
 
 #: ../shtml/linbo_edit.tt:432
 msgid "kein Betriebssystem automatisch starten"
@@ -3843,20 +3746,17 @@ msgstr "linbo"
 
 #: ../shtml/linbo_edit.tt:476 ../shtml/linbo_menuedit.tt:62
 #: ../shtml/linbo_pxeedit.tt:47 ../shtml/linbo_regpatchedit.tt:47
-#, fuzzy
 msgid "löschen"
-msgstr "Exchange"
+msgstr "delete"
 
 #: ../shtml/linbo.tt:26
-#, fuzzy
 msgid "menu.lst editieren"
-msgstr "Edit registry patch"
+msgstr "edit menu.lst"
 
 #: ../shtml/linbo_menuedit.tt:12 ../shtml/linbo_menuedit.tt:27
 #: ../shtml/linbo_menuedit.tt:38
-#, fuzzy
 msgid "menu.lst-Dateien der Rechnergruppen editieren"
-msgstr "Edit registry patch files of the computer group"
+msgstr "edit menu.lst files for host groups"
 
 #: ../shtml/linbo_edit.tt:85
 msgid "multicast"
@@ -3908,19 +3808,19 @@ msgid "start"
 msgstr "start"
 
 #: ../src/cgi-bin/linbo_edit.in:74
-#, fuzzy, perl-format
+#, perl-format
 msgid "start.conf.%s existiert nicht"
-msgstr "%s does not exist"
+msgstr "start.conf.%s does not exist"
 
 #: ../src/cgi-bin/linbo_edit.in:87
-#, fuzzy, perl-format
+#, perl-format
 msgid "start.conf.%s gel&ouml;scht"
-msgstr "%s deleted"
+msgstr "start.conf.%s deleted"
 
 #: ../src/cgi-bin/linbo_edit.in:90
-#, fuzzy, perl-format
+#, perl-format
 msgid "start.conf.%s konnte nicht gel&ouml;scht werden"
-msgstr "%s could not be deleted"
+msgstr "start.conf.%s could not be deleted"
 
 #: ../shtml/project_addmembers.tt:137 ../shtml/project_members.tt:48
 msgid "student"
@@ -3985,14 +3885,12 @@ msgid "unterrichtet in Raum"
 msgstr "lessons taught in room"
 
 #: ../shtml/project_lesson.tt:36
-#, fuzzy
 msgid "unterrichtet in dem Projekt"
-msgstr "lessons taught in room"
+msgstr "teaches in project"
 
 #: ../shtml/class_lesson.tt:36
-#, fuzzy
 msgid "unterrichtet in der Klasse"
-msgstr "lessons taught in room"
+msgstr "teaches in class"
 
 #: ../shtml/page.tt:65 ../shtml/status.inc.tt:10
 msgid "verbleibend:"
@@ -4005,7 +3903,6 @@ msgid "verbleibende Zeit:"
 msgstr "remaining time:"
 
 #: ../shtml/user_teachin.tt:54
-#, fuzzy
 msgid "verknüpfen mit"
 msgstr "connect with"
 
@@ -4029,7 +3926,6 @@ msgstr "white"
 
 #: ../shtml/linbo_images.tt:16 ../shtml/linbo_menuedit.tt:17
 #: ../shtml/linbo_pxeedit.tt:17 ../shtml/linbo_regpatchedit.tt:17
-#, fuzzy
 msgid "wirklich löschen?"
 msgstr "Are you sure you want to delete?"
 
@@ -4040,13 +3936,11 @@ msgstr "back"
 
 #: ../shtml/user_commit.tt:1 ../shtml/user_commit.tt:9
 #: ../shtml/user_teachin.tt:1
-#, fuzzy
 msgid "Änderungen durchführen"
 msgstr "Implement changes"
 
 #: ../shtml/user_teachers.tt:106 ../shtml/user_teachers.tt:136
 #: ../shtml/user_teachers.tt:30 ../shtml/user_teachers.tt:73
-#, fuzzy
 msgid "Änderungen in Lehrerliste speichern"
 msgstr "Save changes to teacher list"
 
@@ -4056,7 +3950,6 @@ msgstr "Save changes to teacher list"
 #: ../shtml/linbo_pxeedit.tt:31 ../shtml/linbo_regpatchedit.tt:31
 #: ../shtml/project_members.tt:37 ../shtml/user_extra.tt:19
 #: ../shtml/user_extra.tt:32 ../shtml/user_students.tt:28
-#, fuzzy
 msgid "Änderungen speichern"
 msgstr "Save changes"
 
@@ -4073,58 +3966,49 @@ msgstr "Save changes"
 #: ../shtml/settings_classs.tt:58 ../shtml/settings_program.tt:25
 #: ../shtml/settings_projects.tt:52 ../shtml/settings_users.tt:198
 #: ../shtml/user_teachin.tt:103
-#, fuzzy
 msgid "Änderungen übernehmen"
-msgstr "Implement changes"
+msgstr "uImplement changes"
 
 #: ../shtml/linbo_images.tt:31 ../shtml/linbo_images.tt:44
-#, fuzzy
 msgid "Überschreiben"
 msgstr "Overwrite?"
 
 #: ../shtml/class_lesson.tt:110 ../shtml/class_lesson.tt:132
 #: ../shtml/project_lesson.tt:110 ../shtml/project_lesson.tt:132
-#, fuzzy
 msgid "Übersicht"
-msgstr "Overview PCs"
+msgstr "Overview"
 
 #: ../shtml/room.tt:256 ../shtml/room.tt:380
-#, fuzzy
 msgid "Übersicht Drucker"
 msgstr "Overview printer"
 
 #: ../shtml/room.tt:115 ../shtml/room.tt:302
-#, fuzzy
 msgid "Übersicht PCs"
 msgstr "Overview PCs"
 
 #: ../shtml/room_shares.tt:29
-#, fuzzy
 msgid "Übersicht Tauschverzeichnisse"
-msgstr "Overview exchange directory"
+msgstr "Overview exchange folders"
 
 #: ../shtml/class.tt:39
 msgid "Übersicht der Klassen"
 msgstr "Overview of classes"
 
 #: ../shtml/project.tt:39
-#, fuzzy
 msgid "Übersicht der Projekte"
 msgstr "Overview of projects"
 
 #: ../shtml/linbo_edit.tt:465
-#, fuzzy
 msgid "Übersicht der Rechnergruppen"
-msgstr "Overview of Computer Group"
+msgstr "host groups overview"
 
 #: ../shtml/user_teachin.tt:21
 msgid "ändern"
 msgstr "change"
 
 #: ../shtml/linbo_images.tt:29 ../shtml/linbo_images.tt:42
-#, fuzzy
 msgid "überschreiben?"
-msgstr "Overwrite?"
+msgstr "overwrite?"
 
 #~ msgid ""
 #~ "&#8222;Einsammeln und beenden&#8220; sammelt alle Ergebnisse ein, l&ouml;"

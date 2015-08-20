@@ -1,3 +1,4 @@
+[% page.default = '1' %]
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,9 +48,10 @@
         [% IF page.subsubmenu %]
             [% INCLUDE "subsubmenu-${page.subsubmenu}.inc.tt" %]
         [% END %]
-        
+
+        [% page.default = '' %]
         [% content %]
-        
+        [% page.default = '1' %]
     </div>
 
     <div id="info" style="display: block;">
@@ -84,7 +86,9 @@
             [% END %]
         </div>
         <h2>[% loc('Info') %]</h2>
+        [% page.default = '' %]
         [% page.info %]
+        [% page.default = '1' %]
         [% INCLUDE "footer_info.inc.tt" %]
     </div>
     <div id="authors">
