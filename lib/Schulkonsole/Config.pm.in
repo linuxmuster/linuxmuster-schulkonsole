@@ -156,6 +156,7 @@ $VERSION = 0.06;
 	PRINTERGETQUOTAAPP
 	SHARESTATESAPP
 	SHARESONOFFAPP
+	FILEMANAPP
 	LSHANDOUTAPP
 	LSCOLLECTAPP
 	HANDOUTAPP
@@ -346,6 +347,10 @@ C<share_states>
 
 C<shares_on_off>
 
+=item C<FILEMANAPP>
+
+C<fileman>
+
 =item C<LSHANDOUTAPP>
 
 C<ls_handout>
@@ -500,6 +505,7 @@ use constant {
 	CHANGEMAILLISTCLASSAPP => 8030,
 	CHANGEMAILALIASPROJECTAPP => 8031,
 	CHANGEMAILLISTPROJECTAPP => 8032,
+	FILEMANAPP => 8033,
 };
 
 =head3 Constants for wrapper-cyrus
@@ -1283,6 +1289,7 @@ $_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
 	PRINTERGETQUOTAAPP() => 'print_quota',
 	SHARESTATESAPP() => 'share_states',
 	SHARESONOFFAPP() => 'shares_on_off',
+	FILEMANAPP() => 'fileman',
 	LSHANDOUTAPP() => 'ls_handout',
 	LSCOLLECTAPP() => 'ls_collect',
 	HANDOUTAPP() => 'handout',

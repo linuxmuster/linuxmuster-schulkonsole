@@ -346,6 +346,16 @@ sub what {
 		and return 'Ungueltiger Wert fuer mailquota';
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_IS_JOIN
 		and return 'Erwarte 1 oder 0 fuer is_open';
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_ACTION
+		and return 'Ungueltiger Wert, action sollte eine Zahl sein';
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
+		and return 'Ungueltiger Wert fuer Dateiname';
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_FILE
+		and return 'Konnte Datei nicht finden';
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_ACTION_NOT_SUPPORTED
+		and return 'Erwarte 1,2 oder 3 fuer action';
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILETYPE
+		and return 'Erwarte Verzeichnis, fand Datei (oder umgekehrt)';
 	$this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_SECTION
 		and return 'Ungueltiger Debconf-Bereich';
 	$this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_NAME
