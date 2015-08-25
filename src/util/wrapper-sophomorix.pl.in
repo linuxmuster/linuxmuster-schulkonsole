@@ -43,7 +43,6 @@ my %supported_encodings = qw(
     win1252  cp1252
     utf8     utf8
 );
-
 my $id = <>;
 $id = int($id);
 my $password = <>;
@@ -196,6 +195,184 @@ $app_id == Schulkonsole::Config::SHARESONOFFAPP and do {
 	exec Schulkonsole::Encode::to_cli(
 	     	"$Schulkonsole::Config::_cmd_sophomorix_teacher $opts")
 		or last SWITCH;
+};
+
+=head3 fileman
+
+numeric constant: C<Schulkonsole::Config::FILEMANAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item remove/add
+
+=item do_copy
+
+=item type
+
+=item project (if type 8)
+
+=item filename
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::FILEMANAPP and do {
+	my $action = <>;
+	($action) = $action =~ /^(\d+)$/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_ACTION
+		  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $action;
+	
+	my $do_copy = <>;
+	($do_copy) = $do_copy =~ /^(\d+)$/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_COPY
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $do_copy;
+
+
+	my $share_dir = "$$userdata{homedirectory}/";
+
+
+	if ($do_copy) {
+		$share_dir .=
+			"$Language::to_handoutcopy_dir/$Language::to_handoutcopy_string";
+	} else {
+		$share_dir .= "$Language::handout_dir/$Language::handout_string";
+	}
+
+	my $type = <>;
+	($type) = $type =~ /^(\d+)/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_TYPE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $type;
+
+	LSHANDOUTTYPE: {
+	($type & 1 or $type & 2) and do {
+		if ($do_copy) {
+				$share_dir .= $Language::current_room;
+		} else {
+				$share_dir .= $Language::exam;
+		}
+		last LSHANDOUTTYPE;
+	};
+	($type & 4) and do {
+		my $project = <>;
+		($project) = $project =~ /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $project;
+		$share_dir .= $project;
+		last LSHANDOUTTYPE;
+	};
+	($type & 8) and do {
+		my $class = <>;
+		($class) = $class =~ /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $class;
+		$share_dir .= $class;
+		last LSHANDOUTTYPE;
+	};
+	($type & 16) and do {
+		my $subclass = <>;
+		($subclass) = $subclass =~ /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_SUBCLASS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $subclass;
+		$share_dir .= $subclass;
+		last LSHANDOUTTYPE;
+	};
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FROM
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+	}
+
+	chdir Schulkonsole::Encode::to_fs($share_dir)
+		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY
+		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+	
+	my $filename = <>;
+	($filename) = $filename =~ /^([^\.\/]\S+)$/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
+		  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $filename;
+	
+	my $isdir = <>;
+	($isdir) = $isdir =~ /^(\d+)$/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILETYPE
+		  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		  unless (defined $isdir) and ($isdir =~ /0|1/);
+	
+	if($action == 1) { # remove
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_FILE
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless -e "$share_dir/$filename";
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILETYPE
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless (-d "$share_dir/$filename" and $isdir) or 
+			  		 (! -d "$share_dir/$filename" and ! $isdir);
+		if($isdir) {
+			system("rm -rf $share_dir/$filename");
+		} else {
+			system("rm -f $share_dir/$filename");
+		}
+	} elsif($action == 2) { # add
+		my $fromfile = <>;
+		($fromfile) = $fromfile =~ /^(\S+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless defined $fromfile;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_FILE
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless -e "$Schulkonsole::Config::_runtimedir/$fromfile";
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILETYPE
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless (-d "$Schulkonsole::Config::_runtimedir/$fromfile" and $isdir) or 
+			  		 (! -d "$Schulkonsole::Config::_runtimedir/$fromfile" and ! $isdir);
+		if( -e "$share_dir/$filename") { # make room for new file
+			if( -d "$share_dir/$filename") {
+				system("rm -rf $share_dir/$filename");
+			} else {
+				system("rm -f $share_dir/$filename");
+			}
+		}
+		system("mv -f $Schulkonsole::Config::_runtimedir/$fromfile $share_dir/$filename");
+	} elsif($action == 3) { # download
+		my $tofile = <>;
+		($tofile) = $tofile =~ /^(\S+)$/;
+		
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless defined $tofile;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_FILE
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless -e "$share_dir/$filename";
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILETYPE
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless (-d "$share_dir/$filename" and $isdir) or 
+			  		 (! -d "$share_dir/$filename" and ! $isdir);
+		if( -e "$Schulkonsole::Config::_runtimedir/$tofile") { # make room for the file
+			if( -e "$Schulkonsole::Config::_runtimedir/$tofile") {
+				system("rm -rf $Schulkonsole::Config::_runtimedir/$tofile");
+			} else {
+				system("rm -f $Schulkonsole::Config::_runtimedir/$tofile");
+			}
+		}
+		if($isdir){
+			system("cp -R $share_dir/$filename/* $Schulkonsole::Config::_runtimedir/$tofile");
+			system("chown -R www-data:www-data $Schulkonsole::Config::_runtimedir/$tofile");
+		} else {
+			system("cp $share_dir/$filename $Schulkonsole::Config::_runtimedir/$tofile");			
+			system("chown www-data:www-data $Schulkonsole::Config::_runtimedir/$tofile");
+		}
+	} else {
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_ACTION_NOT_SUPPORTED
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+	}
+	
+	exit 0;
 };
 
 =head3 ls_handout

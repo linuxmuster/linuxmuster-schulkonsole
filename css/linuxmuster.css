@@ -558,7 +558,7 @@ td:hover p {
     white-space: pre;
 }
 
-input.btn-linbo-move {
+input.btn-download, input.btn-linbo-move {
     background: url("img/rename.png") no-repeat scroll center center transparent;
     border: 0 none;
     color: transparent;
@@ -568,7 +568,7 @@ input.btn-linbo-copy {
     border: 0 none;
     color: transparent;
 }
-input.btn-linbo-trash {
+input.btn-delete, input.btn-linbo-trash {
     background: url("img/edit-delete.png") no-repeat scroll center center transparent;
     border: 0 none;
     color: transparent;
@@ -597,4 +597,10 @@ input.btn-linbo-list {
 }
 .wsdel {
     width: 1.2em;
+}
+
+# file upload
+.bar {
+    height: 18px;
+    background: green;
 }

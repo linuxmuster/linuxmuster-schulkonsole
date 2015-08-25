@@ -29,12 +29,14 @@ use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Room;
 use Schulkonsole::Sophomorix;
 use Schulkonsole::Session;
+use File::Basename;
 
 my $this_file = 'room_test_handout';
 
 
 my $sk_session = new Schulkonsole::Session($this_file);
 my $q = $sk_session->query();
+my $d = $sk_session->d();
 
 my $room_session = new Schulkonsole::Room($sk_session);
 
@@ -46,10 +48,10 @@ if (   not $room_session
 	$sk_session->redirect($url);
 }
 
-
-
-if ($q->param('handouttest')) {
-	eval {
+eval {
+	
+SWITCHCOMMAND: {
+$q->param('handouttest') and do {
 	Schulkonsole::Sophomorix::handout_from_room(
 		$sk_session->userdata('id'),
 		$sk_session->get_password(),
@@ -64,11 +66,11 @@ if ($q->param('handouttest')) {
 	my $url = $q->url( -absolute => 1 );
 	$url =~ s/$this_file$/room_test_password/g;
 	$sk_session->redirect($url);
-	};
-	if ($@) {
-		$sk_session->standard_error_handling($this_file, $@);
-	}
-} elsif ($q->param('continue')) {
+	
+	last SWITCHCOMMAND;
+};
+
+$q->param('continue') and do {
 	$room_session->param('test_step', Schulkonsole::Config::TEST_PASSWORD)
 		if (  $room_session->param('test_step')
 		    < Schulkonsole::Config::TEST_PASSWORD);
@@ -76,10 +78,109 @@ if ($q->param('handouttest')) {
 	my $url = $q->url( -absolute => 1 );
 	$url =~ s/$this_file$/room_test_password/g;
 	$sk_session->redirect($url);
+	last SWITCHCOMMAND;
+};
+
+$q->param('upload_test_handout') and do {
+	my $file = $q->param('upload_test_handout');
+	my $tmpfile = "$Schulkonsole::Config::_runtimedir/upload_test_handout_".$sk_session->session_id() . '_' . time;
+	if(! open(DAT,'>'.$tmpfile)) {
+		$sk_session->set_status($d->get('Es konnte keine temporäre Datei erzeugt werden.'),1);
+		last SWITCHCOMMAND;
+	}
+	binmode($file);
+	binmode(DAT);
+	my $buffer = "";
+	while( read($file, $buffer, 1024)) {
+		print DAT $buffer;
+	}
+	close(DAT);
+	my $filename = basename($file);
+	
+	Schulkonsole::Sophomorix::add_handout_exam(
+		$sk_session->userdata('id'), $sk_session->get_password(), $filename, 0, basename($tmpfile));
+	
+	last SWITCHCOMMAND;	
+}; 
+
+foreach my $param ($q->param) {
+	if (my ($file, $action)
+	    	= $param =~ /^(.+);(delete|download)$/) {
+		my $teacher_share_files = Schulkonsole::Sophomorix::ls_handout_exam(
+				$sk_session->userdata('id'), $sk_session->get_password());
+		
+		SWITCHACTION: {
+		$action =~ /delete/ and do {
+			if(not defined $$teacher_share_files{$file}) {
+				$sk_session->set_status(
+					$d->get('Datei ') . $file . $d->get(' nicht als Vorlagendatei vorhanden.'),
+					1);
+				last SWITCHACTION;
+			}
+			Schulkonsole::Sophomorix::rm_handout_exam(
+				$sk_session->userdata('id'), $sk_session->get_password(),
+				$file, ($$teacher_share_files{$file}?1:0));
+			
+			last SWITCHACTION;
+		};
+		
+		$action =~ /download/ and do {
+			if(not defined $$teacher_share_files{$file}) {
+				$sk_session->set_status(
+					$d->get('Datei ') . $file . $d->get(' nicht als Vorlagendatei vorhanden.'),
+					1);
+				last SWITCHACTION;
+			}
+			my $tmpfile = "download_test_handout_".$sk_session->session_id() . '_' . time;
+			
+			Schulkonsole::Sophomorix::dl_handout_exam(
+				$sk_session->userdata('id'), $sk_session->get_password(),
+				$file, ($$teacher_share_files{$file}?1:0), $tmpfile);
+			
+			if( -e "$Schulkonsole::Config::_runtimedir/$tmpfile") {
+				print $q->header( -type           => "application/x-download",
+						          -attachment     => $file,
+								   -Content_length => -s "$Schulkonsole::Config::_runtimedir/$tmpfile");
+							
+				if(! open(FILE, "<$Schulkonsole::Config::_runtimedir/$tmpfile")) {
+					$sk_session->set_status($d->get('Die temporäre Datei konnte nicht geöffnet werden.'),1);
+					last SWITCHCOMMAND;
+				}
+				binmode(FILE);
+				print while <FILE>;
+				if(!close(FILE)) {
+					$sk_session->set_status($d->get('Die temporäre Datei konnte nicht geschlossen werden.'),1);
+					last SWITCHCOMMAND;
+				}
+				
+				if($$teacher_share_files{$file}){
+					system("rm -rf $Schulkonsole::Config::_runtimedir/$tmpfile");
+				} else {
+					system("rm -f $Schulkonsole::Config::_runtimedir/$tmpfile");
+				}
+
+				$sk_session->set_status($d->get('Die Datei wurde heruntergeladen.'),0);
+				exit 0;
+				
+			} else {
+				$sk_session->set_status($d->get('Es konnte keine temporäre Datei erzeugt werden.'),1);
+				last SWITCHCOMMAND;				
+			}
+			
+			last SWITCHACTION;
+		};
+		
+		} #SWITCHACTION
+	}
+} # foreach param
+
 }
 
+}; #eval SWITCHCOMMAND
 
-
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
 
 eval {
 my $teacher_share_files
