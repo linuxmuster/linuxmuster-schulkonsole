@@ -26,63 +26,76 @@
 <p>[% loc('Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.') %]</p>
 [% END %]
 
-
-<form method="post" accept-charset="UTF-8">
-
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
 
 <h3>[% loc('Auszuteilende Dateien') %]</h3>
 
 [% IF teacher_share_files %]
-<ul>
-[% FOREACH tsf IN teacher_share_files %]
-	<li>[% IF tsf.isdir %]<img src="img/folder.gif" alt="*">[% ELSE %]<img src="img/file.gif" alt="">[% END %]
-	    [% tsf.name %]</li>
+    <table id="roomhandoutfiles" class="liste">
+    [% lfdnr = 1 %]
+    <tr>
+        <th>[% loc('Nr.') %]</th>
+        <th>[% loc('Dateiname') %]<th>
+        <th colspan=2 ></th>
+    </tr>
+    [% FOREACH tsf IN teacher_share_files %]
+    	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+        <td class="lfdnr">[% lfdnr %]</td>
+        <td>[% IF tsf.isdir %]*[% END %][% tsf.name %]</td>
+        <td><input title="Download" type="submit" class="btn-download" alt="[% loc('Herunterladen') %]" 
+            name="[% tsf.name %];download" value="[% loc('H') %]"></td>
+        <td><input title="Löschen" type="submit" class="btn-delete" alt="[% loc('Löschen') %]" 
+            name="[% tsf.name %];delete" value="[% loc('L') %]"></td>
+        [% lfdnr=lfdnr+1 %]
+        </tr>
+    [% END %]
+    </table>
 [% END %]
-</ul>
-[% ELSE %]
-<p>[% loc('Keine Dateien') %]<p>
-[% END %]
-<p><input type="submit" value="[% loc('Ansicht aktualisieren') %]"></p>
 
+<h4>[% loc('Datei hochladen') %]</h4>
+<p>
+    <input id="fileupload" type="file" name="upload_handoutcopy">
+    <input type="submit" id="upload">
+</p>
 
 <table id="roomhandoutcopy" class="liste">
 <tr>
+<th>[% loc('Nr.') %]</th>
 <th>[% loc('Hostname') %]</th>
 <th>[% loc('Login') %]</th>
 <th>[% loc('Auswahl') %]</th>
 </tr>
+[% lfdnr = 1 %]
 [% FOREACH w IN overview_workstations %]
-[% IF w.editing %]
-<tr class="editing">
-[% IF odd %][% odd=0 %]
-[% ELSE %][% odd=1 %][% END %]
-[% ELSE %]
-[% IF odd %][% odd=0 %]<tr class="odd">
-[% ELSE %][% odd=1 %]<tr class="even">[% END %]
-[% END %]
-	<td>[% IF w.first %]
-	    [% w.name %]
-	    [% END %]</td>
-	[% IF w.login %]
-	<td>
-	    [% w.login %]
-	</td>
-	<td>[% IF w.editing %]
-		<input type="checkbox" disabled>[% ELSE %]
-		<input type="checkbox" name="[% w.login %];handout" checked>
-	[% END %]</td>
+	[% IF w.editing %]
+		<tr class="editing">
 	[% ELSE %]
-	<td>-</td>
-	<td></td>
+		<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
 	[% END %]
-</tr>
+		<td class="lfdnr">[% lfdnr %].</td>
+		<td>[% IF w.first %][% w.name %][% END %]</td>
+		[% IF w.login %]
+			<td>[% w.login %]</td>
+			<td>
+				[% IF w.editing %]
+					<input type="checkbox" disabled>
+				[% ELSE %]
+					<input type="checkbox" name="[% w.login %];handout" checked>
+				[% END %]
+			</td>
+		[% ELSE %]
+			<td>-</td>
+			<td></td>
+		[% END %]
+	</tr>
+	[% lfdnr = lfdnr + 1 %]
 [% END %]
 <tr>
-<td colspan="2"></td>
+<td colspan="3"></td>
 <td>|</td>
 </tr>
 <tr class="quickselection">
-<td colspan="2">[% loc('Schnellauswahl') %]</td>
+<td colspan="3">[% loc('Schnellauswahl') %]</td>
 <td><input class="button" type="button" value="[% loc('Aus') %]" name="handout" onClick="check_uncheck(this)" checked></td>
 </tr>
 </table>
