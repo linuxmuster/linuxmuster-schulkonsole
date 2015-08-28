@@ -34,38 +34,56 @@
 <h3>[% loc('Auszuteilende Dateien') %]</h3>
 
 [% IF admin_share_files %]
-<ul>
-[% FOREACH asf IN admin_share_files %]
-	<li>[% IF asf.isdir %]
-	*[% END %][% asf.name %]</li>
+    <table id="projecthandoutcopyfiles" class="liste">
+    [% lfdnr = 1 %]
+    <tr>
+        <th>[% loc('Nr.') %]</th>
+        <th>[% loc('Dateiname') %]<th>
+        <th colspan=2 ></th>
+    </tr>
+    [% FOREACH asf IN admin_share_files %]
+    	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+        <td class="lfdnr">[% lfdnr %]</td>
+        <td>[% IF asf.isdir %]*[% END %][% asf.name %]</td>
+        <td><input title="Download" type="submit" class="btn-download" alt="[% loc('Herunterladen') %]" 
+            name="[% asf.name %];download" value="[% loc('H') %]"></td>
+        <td><input title="Löschen" type="submit" class="btn-delete" alt="[% loc('Löschen') %]" 
+            name="[% asf.name %];delete" value="[% loc('L') %]"></td>
+        [% lfdnr = lfdnr + 1 %]
+        </tr>
+    [% END %]
+    </table>
 [% END %]
-</ul>
-[% ELSE %]
-<p>[% loc('Keine Dateien') %]<p>
-[% END %]
-<p><input type="submit" value="[% loc('Ansicht aktualisieren') %]"></p>
 
+<h4>[% loc('Datei hochladen') %]</h4>
+<p>
+    <input id="fileupload" type="file" name="upload_handoutcopy_project">
+    <input type="submit" id="upload">
+</p>
 
 <table id="projecthandoutcopy" class="liste">
 <tr>
+<th>[% loc('Nr.') %]</th>
 <th>[% loc('Login') %]</th>
 <th>[% loc('Name') %]</th>
 <th>[% loc('Auswahl') %]</th>
 </tr>
+[% lfdnr = 1 %]
 [% FOREACH m IN members %]
-[% IF odd %][% odd=0 %]<tr class="odd">
-[% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% m.login %]</td>
-<td>[% m.firstname %] [% m.surname %]</td>
-<td><input type="checkbox" name="[% m.login %];handout" checked></td>
-</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+	<td class="lfdnr">[% lfdnr %].</td>
+	<td>[% m.login %]</td>
+	<td>[% m.firstname %] [% m.surname %]</td>
+	<td><input type="checkbox" name="[% m.login %];handout" checked></td>
+	</tr>
+	[% lfdnr = lfdnr + 1 %]
 [% END %]
 <tr>
-<td colspan="2"></td>
+<td colspan="3"></td>
 <td>|</td>
 </tr>
 <tr class="quickselection">
-<td colspan="2">[% loc('Schnellauswahl') %]</td>
+<td colspan="3">[% loc('Schnellauswahl') %]</td>
 <td><input class="button" type="button" value="[% loc('Aus') %]" name="handout" onClick="check_uncheck(this)" checked></td>
 </tr>
 </table>
