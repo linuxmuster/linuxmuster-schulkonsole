@@ -1,4 +1,4 @@
 [% IF link_logout %]
-   <a [% dohref("logout") %]>[% loc('Abmelden') %]</a>
+   <li><a [% dohref("logout") %]>[% loc('Abmelden') %]</a></li>
 [% END %]
-</div>
+</ul>
