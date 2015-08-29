@@ -1,52 +1,21 @@
-[% IF link_class %]
-	<a class="separator" [% dohref("class") %]>[% loc('Start') %]</a>
-[% END %]
 [% IF link_class_list %]
-[% IF class %]
-	<a [% dohref("class_list") %]>[% loc('Klassenliste') %]</a>
-[% ELSE %]
-	<span class="disabled">[% loc('Klassenliste') %]</span>
-[% END %]
+	<li><a [% dohref("class_list") %]>[% loc('Klassenliste') %]</a></li>
 [% END %]
 [% IF link_class_passwords %]
-[% IF class %]
-	<a class="separator" [% dohref("class_passwords") %]>[% loc('Passw&ouml;rter') %]</a>
-[% ELSE %]
-	<span class="disabledseparator">[% loc('Passw&ouml;rter') %]</span>
-[% END %]
+	<li><a class="separator" [% dohref("class_passwords") %]>[% loc('Passw&ouml;rter') %]</a></li>
 [% END %]
 [% IF link_class_handoutcopy %]
-[% IF class %]
-	<a [% dohref("class_handoutcopy") %]>[% loc('Austeilen') %]</a>
-[% ELSE %]
-	<span class="disabled">[% loc('Austeilen') %]</span>
-[% END %]
+	<li><a [% dohref("class_handoutcopy") %]>[% loc('Austeilen') %]</a></li>
 [% END %]
 [% IF link_class_handout %]
-[% IF class %]
-	<a [% dohref("class_handout") %]>[% loc('Bereitstellen') %]</a>
-[% ELSE %]
-	<span class="disabled">[% loc('Bereitstellen') %]</span>
-[% END %]
+	<li><a [% dohref("class_handout") %]>[% loc('Bereitstellen') %]</a></li>
 [% END %]
 [% IF link_class_collect %]
-[% IF class %]
-	<a class="separator" [% dohref("class_collect") %]>[% loc('Einsammeln') %]</a>
-[% ELSE %]
-	<span class="disabledseparator">[% loc('Einsammeln') %]</span>
-[% END %]
+	<li><a class="separator" [% dohref("class_collect") %]>[% loc('Einsammeln') %]</a></li>
 [% END %]
 [% IF link_class_shares %]
-[% IF class %]
-	<a class="separator" [% dohref("class_shares") %]>[% loc('Tauschen') %]</a>
-[% ELSE %]
-	<span class="disabledseparator">[% loc('Tauschen') %]</span>
-[% END %]
+	<li><a class="separator" [% dohref("class_shares") %]>[% loc('Tauschen') %]</a></li>
 [% END %]
 [% IF link_room_test %]
-[% IF class %]
-	<a class="separator" [% dohref("room_test") %]>[% loc('Klassenarbeit') %]</a>
-[% ELSE %]
-	<span class="disabledseparator">[% loc('Klassenarbeit') %]</span>
-[% END %]
+	<li><a class="separator" [% dohref("room_test") %]>[% loc('Klassenarbeit') %]</a></li>
 [% END %]

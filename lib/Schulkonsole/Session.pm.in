@@ -623,15 +623,15 @@ sub print_page {
         });
 
 	my $vars = $this->{template_vars};
-	#foreach my $key ($this->{query}->param) {
-	#	$vars->{$key} = $this->{query}->param($key);
-	#}
+	foreach my $key ($this->{query}->param) {
+		$vars->{$key} = $this->{query}->param($key);
+	}
 	my $params = $this->{session}->dataref();
 	foreach my $key (keys \%$params) {
-                $vars->{$key} = $$params{$key};
-        }
-        $vars->{no_cookies} = $this->send_cookie();
-        $vars->{parent_page} = $this->{parent_page};
+            $vars->{$key} = $$params{$key};
+    }
+    $vars->{no_cookies} = $this->send_cookie();
+    $vars->{parent_page} = $this->{parent_page};
 	$vars->{is_error} = $this->{is_error};
 	# localization: [% d.get('Text') %]
 	$vars->{d} = $this->{d};
@@ -650,17 +650,17 @@ sub print_page {
 	$vars->{lang} = $this->{lang};
 	$vars->{input_errors} = %{ $this->{input_errors} };
 	$vars->{session_id} = $vars->{id};
-        $vars->{action} = $action;
-        if(defined $this->{dplugin}) {
-            $vars->{dplugin} = $this->{dplugin};
-        }
-        # colored labels an Stelle von for="text" jetzt [% labelfor("text") %]
-        $vars->{labelfor} = sub { return 'for="'.@_[0].'"'.($this->{input_errors}{@_[0]}? ' class="error"':''); };
-        $vars->{dohref} = sub { return 'href="'.@_[0].($vars->{no_cookies}?'?'.CGI::Session->name().'='.$this->{session}->id.'"':'"'); };
-        $vars->{dovalue} = sub { return 'value="' . $this->{query}->param(@_[0]) . '"'; };
-        $vars->{valueof} = sub { return $this->{query}->param(@_[0]); };
+    $vars->{action} = $action;
+    if(defined $this->{dplugin}) {
+        $vars->{dplugin} = $this->{dplugin};
+    }
+    # colored labels an Stelle von for="text" jetzt [% labelfor("text") %]
+    $vars->{labelfor} = sub { return 'for="'.@_[0].'"'.($this->{input_errors}{@_[0]}? ' class="error"':''); };
+    $vars->{dohref} = sub { return 'href="'.@_[0].($vars->{no_cookies}?'?'.CGI::Session->name().'='.$this->{session}->id.'"':'"'); };
+    $vars->{dovalue} = sub { return 'value="' . $this->{query}->param(@_[0]) . '"'; };
+    $vars->{valueof} = sub { return $this->{query}->param(@_[0]); };
 
-        $template->process($file, $vars) or die "$0: " . $template->error()->as_string() . "!\n";
+    $template->process($file, $vars) or die "$0: " . $template->error()->as_string() . "!\n";
 
 	# occasionally the session is not automatically flushed
 	$this->{session}->flush();

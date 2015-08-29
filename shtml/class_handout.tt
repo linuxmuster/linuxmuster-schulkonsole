@@ -7,20 +7,19 @@
 %]
 
 [% IF classes %]
-<form method="post" accept-charset="UTF-8">
-<p class="selectdomain">
-<select name="classes">
-<optgroup label="Klassen">
-[% FOREACH c IN classes %] <option value="[% c.gid %]">[% c.name %]</option>
-[% END %]
-</optgroup>
-<optgroup label="aktuelle Klasse">
-<option value="[% class_gid %]" selected>[% class_name %]</option>
-</optgroup>
-</select>
-<input type="submit" value="[% loc('Wechseln') %]">
-</p>
-</form>
+	<form method="post" accept-charset="UTF-8">
+	<p class="selectdomain">
+	<select name="classes">
+	<optgroup label="Klassen">
+	[% FOREACH c IN classes %] <option value="[% c.gid %]">[% c.name %]</option>[% END %]
+	</optgroup>
+	<optgroup label="aktuelle Klasse">
+	<option value="[% class_gid %]" selected>[% class_name %]</option>
+	</optgroup>
+	</select>
+	<input type="submit" value="[% loc('Wechseln') %]">
+	</p>
+	</form>
 [% END %]
 
 
@@ -29,23 +28,40 @@
 <h3>[% loc('Ausgewählte Klasse:') %] [% class_name %]</h3>
 
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
 
 
 <h3>[% loc('Vorlagen') %]</h3>
 
 [% IF teacher_share_files %]
-<ul>
-[% FOREACH tsf IN teacher_share_files %]
-	<li>[% IF tsf.isdir %]
-	*[% END %][% tsf.name %]</li>
+    <table id="classhandoutfiles" class="liste">
+    [% lfdnr = 1 %]
+    <tr>
+        <th>[% loc('Nr.') %]</th>
+        <th>[% loc('Dateiname') %]<th>
+        <th colspan=2 ></th>
+    </tr>
+    [% FOREACH tsf IN teacher_share_files %]
+    	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+        <td class="lfdnr">[% lfdnr %]</td>
+        <td>[% IF tsf.isdir %]*[% END %][% tsf.name %]</td>
+        <td><input title="Download" type="submit" class="btn-download" alt="[% loc('Herunterladen') %]" 
+            name="[% tsf.name %];download" value="[% loc('H') %]"></td>
+        <td><input title="Löschen" type="submit" class="btn-delete" alt="[% loc('Löschen') %]" 
+            name="[% tsf.name %];delete" value="[% loc('L') %]"></td>
+        [% lfdnr=lfdnr+1 %]
+        </tr>
+    [% END %]
+    </table>
 [% END %]
-</ul>
-[% ELSE %]
-<p>[% loc('Keine Dateien') %]<p>
-[% END %]
-<p><input type="submit" value="[% loc('Ansicht aktualisieren') %]"></p>
+
+<h4>[% loc('Datei hochladen') %]</h4>
+<p>
+    <input id="fileupload" type="file" name="upload_handout_class">
+    <input type="submit" id="upload">
+</p>
 
 
 <p><input type="submit" name="handout" value="[% loc('Bereitstellen') %]"></p>
+
 </form>

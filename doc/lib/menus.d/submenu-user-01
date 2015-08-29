@@ -1,24 +1,21 @@
-[% IF link_user %]
-	<a class="separator" [% dohref("user") %]>[% loc('Start') %]</a>
-[% END %]
 [% IF link_user_students %]
-	<a [% dohref("user_students") %]>[% loc('Sch&uuml;lerliste pflegen') %]</a>
+	<li><a [% dohref("user_students") %]>[% loc('Sch&uuml;lerliste pflegen') %]</a></li>
 [% END %]
 [% IF link_user_teachers %]
-	<a [% dohref("user_teachers") %]>[% loc('Lehrerliste pflegen') %]</a>
+	<li><a [% dohref("user_teachers") %]>[% loc('Lehrerliste pflegen') %]</a></li>
 [% END %]
 [% IF link_user_extra %]
-	<a class="separator" [% dohref("user_extra") %]>[% loc('Extralisten pflegen') %]</a>
+	<li><a class="separator" [% dohref("user_extra") %]>[% loc('Extralisten pflegen') %]</a></li>
 [% END %]
 [% IF link_user_check %]
-	<a [% dohref("user_check") %]>[% loc('Benutzerlisten pr&uuml;fen') %]</a>
+	<li><a [% dohref("user_check") %]>[% loc('Benutzerlisten pr&uuml;fen') %]</a></li>
 [% END %]
 [% IF link_user_commit %]
-	<a class="tworowseparator" [% dohref("user_commit") %]>[% loc('Benutzerdaten &uuml;bernehmen') %]</a>
+	<li><a class="tworowseparator" [% dohref("user_commit") %]>[% loc('Benutzerdaten &uuml;bernehmen') %]</a></li>
 [% END %]
 [% IF link_user_teacherpasswords %]
-	<a [% dohref("user_teacherpasswords") %]>[% loc('Lehrerpassw&ouml;rter') %]</a>
+	<li><a [% dohref("user_teacherpasswords") %]>[% loc('Lehrerpassw&ouml;rter') %]</a></li>
 [% END %]
 [% IF link_user_reports %]
-	<a class="end" [% dohref("user_reports") %]>[% loc('Berichte') %]</a>
+	<li><a class="end" [% dohref("user_reports") %]>[% loc('Berichte') %]</a></li>
 [% END %]

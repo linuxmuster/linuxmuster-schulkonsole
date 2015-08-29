@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/jquery/jquery-ui.css"/>
     <script src="/jquery/jquery.js"></script>
     <script src="/jquery/jquery-ui.js"></script>
+    <script src="/jquery/jMenu.jquery.js"></script>
     <!--[if lt IE 7]>
     <style type="text/css">@import url(css/linuxmuster_IE.css);</style>
     </style>
@@ -36,18 +37,16 @@
     [% END %]
     [% IF page.menu %]
         [% INCLUDE menu.inc.tt %]
-    [% END %]
-    [% IF page.submenu %]
-        <div id="submenu">
-        [% INCLUDE "submenu-${page.submenu}.inc.tt" %]
-        </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    // simple jMenu plugin called
+    $("#jMenu").jMenu({absoluteTop:24});
+  });
+</script>
     [% END %]
 
     <div id="content" class="content[% IF action %] [% action %][% END %][% IF page.classes %] [% page.classes %][% END %]">
         [% INCLUDE dialog.inc.tt %]
-        [% IF page.subsubmenu %]
-            [% INCLUDE "subsubmenu-${page.subsubmenu}.inc.tt" %]
-        [% END %]
 
         [% page.default = '' %]
         [% content %]
