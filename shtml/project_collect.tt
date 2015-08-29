@@ -28,9 +28,32 @@
 <h3>[% loc('Ausgewähltes Projekt:') %] [% project %]</h3>
 
 
-<h3>[% loc('Einsammeln') %]</h3>
+<h3>[% loc('Bisher eingesammelte Dateien') %]</h3>
 
 <form method="post" accept-charset="UTF-8">
+[% IF admin_collected_files %]
+    <table id="projectcollectedfiles" class="liste">
+    [% lfdnr = 1 %]
+    <tr>
+        <th>[% loc('Nr.') %]</th>
+        <th>[% loc('Dateiname') %]<th>
+        <th colspan=2 ></th>
+    </tr>
+    [% FOREACH acf IN admin_collected_files %]
+    	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+        <td class="lfdnr">[% lfdnr %]</td>
+        <td>[% IF acf.isdir %]*[% END %][% acf.name %]</td>
+        <td><input title="Download" type="submit" class="btn-download" alt="[% loc('Herunterladen') %]" 
+            name="[% acf.name %];download" value="[% loc('H') %]"></td>
+        <td><input title="Löschen" type="submit" class="btn-delete" alt="[% loc('Löschen') %]" 
+            name="[% acf.name %];delete" value="[% loc('L') %]"></td>
+        [% lfdnr=lfdnr+1 %]
+        </tr>
+    [% END %]
+    </table>
+[% END %]
+
+<h3>[% loc('Einsammeln') %]</h3>
 
 <p><input type="submit" value="[% loc('Ansicht aktualisieren') %]"></p>
 

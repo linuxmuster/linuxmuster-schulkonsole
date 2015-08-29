@@ -191,6 +191,9 @@ eval {
 
 	} # SWITCHCOMMAND
 }; # eval
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
 
 eval {
 my $teacher_collected_files = Schulkonsole::Sophomorix::ls_collected_class(
@@ -198,7 +201,7 @@ my $teacher_collected_files = Schulkonsole::Sophomorix::ls_collected_class(
 	$sk_session->get_password(),
 	$class);
 
-=item C<teacher_share_files>
+=item C<teacher_collected_files>
 
 Available files as returned by C<Schulkonsole::Sophomorix::create_file_list()>
 

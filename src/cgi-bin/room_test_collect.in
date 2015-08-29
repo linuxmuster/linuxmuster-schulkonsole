@@ -35,6 +35,7 @@ my $this_file = 'room_test_collect';
 
 my $sk_session = new Schulkonsole::Session($this_file);
 my $q = $sk_session->query();
+my $d = $sk_session->d();
 
 my $room_session = new Schulkonsole::Room($sk_session);
 
@@ -61,25 +62,135 @@ foreach my $host (keys %$workstations) {
 }
 
 
+eval {
+	SWITCHCOMMAND: {
+		$q->param('collectmove') and do {
+			my $url = $q->url( -absolute => 1 );
+			$url =~ s/$this_file$/room_test_end/g;
+			$sk_session->redirect($url);
+			
+			last SWITCHCOMMAND;
+		};
+		
+		$q->param('collectcopy') and do {
+			eval {
+				Schulkonsole::Sophomorix::collectcopy_exam($sk_session->userdata('id'),
+					$sk_session->get_password(),
+					$room_session->info('name'));
+			
+				$sk_session->set_status($sk_session->d()->get('Kopiert'), 0);
+			};
+			if ($@) {
+				$sk_session->standard_error_handling($this_file, $@);
+			}
+			
+			last SWITCHCOMMAND;
+		};
 
-if ($q->param('collectmove')) {
-	my $url = $q->url( -absolute => 1 );
-	$url =~ s/$this_file$/room_test_end/g;
-	$sk_session->redirect($url);
+		foreach my $param ($q->param) {
+			if (my ($file, $action)
+			    	= $param =~ /^(.+);(delete|download)$/) {
+				my $room_collected_files = Schulkonsole::Sophomorix::ls_collected_exam(
+						$sk_session->userdata('id'), $sk_session->get_password());
+				
+				SWITCHACTION: {
+				$action =~ /delete/ and do {
+					if(not defined $$room_collected_files{$file}) {
+						$sk_session->set_status(
+							$d->get('Datei ') . $file . $d->get(' nicht als eingesammelte Datei vorhanden.'), 1);
+						last SWITCHACTION;
+					}
+					Schulkonsole::Sophomorix::rm_collected_exam(
+						$sk_session->userdata('id'), $sk_session->get_password(),
+						$file, ($$room_collected_files{$file}?1:0));
+					
+					$sk_session->set_status($d->get('Datei gelöscht.'),0);
+					
+					last SWITCHACTION;
+				};
+				
+				$action =~ /download/ and do {
+					if(not defined $$room_collected_files{$file}) {
+						$sk_session->set_status(
+							$d->get('Datei ') . $file . $d->get(' nicht als eingesammelte Datei vorhanden.'),	1);
+						last SWITCHACTION;
+					}
+					my $tmpfile = "dl_collected_".$sk_session->session_id() . '_' . time;
+					my $dlfile = $file;
+					
+					Schulkonsole::Sophomorix::dl_collected_exam(
+						$sk_session->userdata('id'), $sk_session->get_password(),
+						$file, ($$room_collected_files{$file}?1:0), $tmpfile);
+					if($$room_collected_files{$file}) {
+						$tmpfile .= ".zip";
+						$dlfile .= ".zip";
+					}
+					
+					if( -e "$Schulkonsole::Config::_runtimedir/$tmpfile") {
+						print $q->header( -type           => "application/x-download",
+								          -attachment     => $dlfile,
+										  -Content_length => -s "$Schulkonsole::Config::_runtimedir/$tmpfile");
+						
+						if(! open(FILE, "<$Schulkonsole::Config::_runtimedir/$tmpfile")) {
+							$sk_session->set_status($d->get('Die temporäre Datei konnte nicht geöffnet werden.'), 1);
+							last SWITCHCOMMAND;
+						}
+						binmode(FILE);
+						print while <FILE>;
+						if(!close(FILE)) {
+							$sk_session->set_status($d->get('Die temporäre Datei konnte nicht geschlossen werden.'), 1);
+							last SWITCHCOMMAND;
+						}
+						
+						system("rm -f $Schulkonsole::Config::_runtimedir/$tmpfile");
+						
+						$sk_session->set_status($d->get('Die Datei wurde heruntergeladen.'), 0);
+						exit 0;
+						
+					} else {
+						$sk_session->set_status($d->get('Es konnte keine temporäre Datei erzeugt werden.'), 1);
+						last SWITCHCOMMAND;				
+					}
+					
+					last SWITCHACTION;
+				};
+				
+				} #SWITCHACTION
+			}
+		} # foreach param
 
-} elsif ($q->param('collectcopy')) {
-	eval {
-	Schulkonsole::Sophomorix::collectcopy_exam($sk_session->userdata('id'),
-		$sk_session->get_password(),
-		$room_session->info('name'));
+	} # SWITCHCOMMAND
+}; # eval
 
-	$sk_session->set_status($sk_session->d()->get('Kopiert'), 0);
-	};
-	if ($@) {
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+eval {
+my $room_collected_files = Schulkonsole::Sophomorix::ls_collected_exam(
+	$sk_session->userdata('id'),
+	$sk_session->get_password());
+
+=item C<room_collected_files>
+
+Available files as returned by C<Schulkonsole::Sophomorix::create_file_list()>
+
+=cut
+
+$sk_session->set_var('room_collected_files',
+	Schulkonsole::Sophomorix::create_file_list($room_collected_files));
+};
+if ($@) {
+	if (    ref $@
+	    and $@->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY) {
+		$sk_session->set_status(
+			$sk_session->d()->get(
+				'Verzeichnis zum Einsammeln nicht gefunden'),
+				1);
+	} else {
 		$sk_session->standard_error_handling($this_file, $@);
 	}
 }
-
 
 eval {
 my $user_share_files = Schulkonsole::Sophomorix::ls_collect(
