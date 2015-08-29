@@ -2,21 +2,21 @@
 <p>[% loc('Klassenarbeit:') %]
 [% IF done_test_start %]
 [% IF todo_test_handout %]
-<li><a [% dohref("room_test_handout") %] class="todo">[% loc('Bereitstellen') %]</a></li>
+<a [% dohref("room_test_handout") %] class="todo">[% loc('Bereitstellen') %]</a>
 [% ELSE %]
-<li><a [% dohref("room_test_handout") %]>[% loc('Bereitstellen') %]</a></li>
+<a [% dohref("room_test_handout") %]>[% loc('Bereitstellen') %]</a>
 [% END %]
 -
 [% IF todo_test_password %]
-<li><a [% dohref("room_test_password") %] class="todo">[% loc('Passwort &auml;ndern') %]</a></li>
+<a [% dohref("room_test_password") %] class="todo">[% loc('Passwort &auml;ndern') %]</a>
 [% ELSE %]
-<li><a [% dohref("room_test_password") %]>[% loc('Passwort &auml;ndern') %]</a></li>
+<a [% dohref("room_test_password") %]>[% loc('Passwort &auml;ndern') %]</a>
 [% END %]
 -
 [% IF todo_test_collect %]
-<li><a [% dohref("room_test_collect") %] class="todo">[% loc('Einsammeln') %]</a></li>
+<a [% dohref("room_test_collect") %] class="todo">[% loc('Einsammeln') %]</a>
 [% ELSE %]
-<li><a [% dohref("room_test_collect") %]>[% loc('Einsammeln') %]</a></li>
+<a [% dohref("room_test_collect") %]>[% loc('Einsammeln') %]</a>
 [% END %]
 [% ELSE %]
 [% loc('Bereitstellen') %]
