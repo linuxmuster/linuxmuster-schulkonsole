@@ -45,7 +45,7 @@ if (not $sk_session->get_password()) {
 }
 
 my $q = $sk_session->query();
-
+my $d = $sk_session->d();
 
 my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
 my $class = $q->param('classes');
@@ -68,51 +68,156 @@ my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
 
 my $id = $sk_session->userdata('id');
 my $password = $sk_session->get_password();
-if (   $q->param('collecttop')
-    or $q->param('collectbottom')) {
-	my @users;
-	my $is_all_users = 1;
-	foreach my $user (keys %$class_userdatas) {
-		if ($q->param("$user;collect")) {
-			push @users, $user;
-		} elsif ($is_all_users) {
-			$is_all_users = 0;
-		}
-	}
 
-	if (@users) {
-		eval {
-			if (   (    $q->param('collecttop')
-			        and $q->param('deletetop'))
-			    or (    $q->param('collectbottom')
-			        and $q->param('deletebottom'))) {
-				Schulkonsole::Sophomorix::collect_from_class_users(
-					$id, $password, $class, @users);
-			} else {
-				Schulkonsole::Sophomorix::collectcopy_from_class_users(
-					$id, $password, $class, @users);
+eval {
+	SWITCHCOMMAND: {
+		($q->param('collecttop')
+		    or $q->param('collectbottom')) and do {
+			my @users;
+			my $is_all_users = 1;
+			foreach my $user (keys %$class_userdatas) {
+				if ($q->param("$user;collect")) {
+					push @users, $user;
+				} elsif ($is_all_users) {
+					$is_all_users = 0;
+				}
 			}
-
-			if ($is_all_users) {
-				$sk_session->set_status(
-					$sk_session->d()->get('Eingesammelt'),
-					0);
+		
+			if (@users) {
+				eval {
+					if (   (    $q->param('collecttop')
+					        and $q->param('deletetop'))
+					    or (    $q->param('collectbottom')
+					        and $q->param('deletebottom'))) {
+						Schulkonsole::Sophomorix::collect_from_class_users(
+							$id, $password, $class, @users);
+					} else {
+						Schulkonsole::Sophomorix::collectcopy_from_class_users(
+							$id, $password, $class, @users);
+					}
+		
+					if ($is_all_users) {
+						$sk_session->set_status(
+							$sk_session->d()->get('Eingesammelt'),
+							0);
+					} else {
+						$sk_session->set_status(
+							  $sk_session->d()->get('Eingesammelt von')
+							. ' ' . join(', ', @users),
+							0);
+					}
+				};
+				if ($@) {
+					$sk_session->standard_error_handling($this_file, $@);
+				}
 			} else {
-				$sk_session->set_status(
-					  $sk_session->d()->get('Eingesammelt von')
-					. ' ' . join(', ', @users),
-					0);
+				$sk_session->set_status($sk_session->d()->get(
+					'Keine Benutzer ausgew&auml;hlt'), 1);
 			}
+			last SWITCHCOMMAND;
 		};
-		if ($@) {
-			$sk_session->standard_error_handling($this_file, $@);
-		}
+		
+		foreach my $param ($q->param) {
+			if (my ($file, $action)
+			    	= $param =~ /^(.+);(delete|download)$/) {
+				my $teacher_collected_files = Schulkonsole::Sophomorix::ls_collected_class(
+						$sk_session->userdata('id'), $sk_session->get_password(), $class);
+				
+				SWITCHACTION: {
+				$action =~ /delete/ and do {
+					if(not defined $$teacher_collected_files{$file}) {
+						$sk_session->set_status(
+							$d->get('Datei ') . $file . $d->get(' nicht als eingesammelte Datei vorhanden.'), 1);
+						last SWITCHACTION;
+					}
+					Schulkonsole::Sophomorix::rm_collected_class(
+						$sk_session->userdata('id'), $sk_session->get_password(), $class,
+						$file, ($$teacher_collected_files{$file}?1:0));
+					
+					$sk_session->set_status($d->get('Datei gelöscht.'),0);
+					
+					last SWITCHACTION;
+				};
+				
+				$action =~ /download/ and do {
+					if(not defined $$teacher_collected_files{$file}) {
+						$sk_session->set_status(
+							$d->get('Datei ') . $file . $d->get(' nicht als eingesammelte Datei vorhanden.'),	1);
+						last SWITCHACTION;
+					}
+					my $tmpfile = "dl_collected_".$sk_session->session_id() . '_' . time;
+					my $dlfile = $file;
+					
+					Schulkonsole::Sophomorix::dl_collected_class(
+						$sk_session->userdata('id'), $sk_session->get_password(), $class,
+						$file, ($$teacher_collected_files{$file}?1:0), $tmpfile);
+					if($$teacher_collected_files{$file}) {
+						$tmpfile .= ".zip";
+						$dlfile .= ".zip";
+					}
+					
+					if( -e "$Schulkonsole::Config::_runtimedir/$tmpfile") {
+						print $q->header( -type           => "application/x-download",
+								          -attachment     => $dlfile,
+										  -Content_length => -s "$Schulkonsole::Config::_runtimedir/$tmpfile");
+						
+						if(! open(FILE, "<$Schulkonsole::Config::_runtimedir/$tmpfile")) {
+							$sk_session->set_status($d->get('Die temporäre Datei konnte nicht geöffnet werden.'), 1);
+							last SWITCHCOMMAND;
+						}
+						binmode(FILE);
+						print while <FILE>;
+						if(!close(FILE)) {
+							$sk_session->set_status($d->get('Die temporäre Datei konnte nicht geschlossen werden.'), 1);
+							last SWITCHCOMMAND;
+						}
+						
+						system("rm -f $Schulkonsole::Config::_runtimedir/$tmpfile");
+						
+						$sk_session->set_status($d->get('Die Datei wurde heruntergeladen.'), 0);
+						exit 0;
+						
+					} else {
+						$sk_session->set_status($d->get('Es konnte keine temporäre Datei erzeugt werden.'), 1);
+						last SWITCHCOMMAND;				
+					}
+					
+					last SWITCHACTION;
+				};
+				
+				} #SWITCHACTION
+			}
+		} # foreach param
+
+	} # SWITCHCOMMAND
+}; # eval
+
+eval {
+my $teacher_collected_files = Schulkonsole::Sophomorix::ls_collected_class(
+	$sk_session->userdata('id'),
+	$sk_session->get_password(),
+	$class);
+
+=item C<teacher_share_files>
+
+Available files as returned by C<Schulkonsole::Sophomorix::create_file_list()>
+
+=cut
+
+$sk_session->set_var('teacher_collected_files',
+	Schulkonsole::Sophomorix::create_file_list($teacher_collected_files));
+};
+if ($@) {
+	if (    ref $@
+	    and $@->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY) {
+		$sk_session->set_status(
+			$sk_session->d()->get(
+				'Verzeichnis zum Einsammeln nicht gefunden'),
+				1);
 	} else {
-		$sk_session->set_status($sk_session->d()->get(
-			'Keine Benutzer ausgew&auml;hlt'), 1);
+		$sk_session->standard_error_handling($this_file, $@);
 	}
 }
-
 
 
 

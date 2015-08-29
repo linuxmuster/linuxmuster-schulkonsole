@@ -207,7 +207,7 @@ numeric constant: C<Schulkonsole::Config::FILEMANAPP>
 
 =item remove/add
 
-=item do_copy
+=item category
 
 =item type
 
@@ -226,17 +226,19 @@ $app_id == Schulkonsole::Config::FILEMANAPP and do {
 		  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 		unless defined $action;
 	
-	my $do_copy = <>;
-	($do_copy) = $do_copy =~ /^(\d+)$/;
+	my $category = <>;
+	($category) = $category =~ /^(\d+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_COPY
 	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
-		unless defined $do_copy;
+		unless defined $category;
 
 
 	my $share_dir = "$$userdata{homedirectory}/";
 
-
-	if ($do_copy) {
+	if ($category == 2) {
+		$share_dir .=
+			"$Language::collected_dir/$Language::collected_string";
+	} elsif ($category == 1) {
 		$share_dir .=
 			"$Language::to_handoutcopy_dir/$Language::to_handoutcopy_string";
 	} else {
@@ -251,7 +253,7 @@ $app_id == Schulkonsole::Config::FILEMANAPP and do {
 
 	LSHANDOUTTYPE: {
 	($type & 1 or $type & 2) and do {
-		if ($do_copy) {
+		if ($category) {
 				$share_dir .= $Language::current_room;
 		} else {
 				$share_dir .= $Language::exam;
@@ -361,8 +363,11 @@ $app_id == Schulkonsole::Config::FILEMANAPP and do {
 			}
 		}
 		if($isdir){
+			system("mkdir -p $Schulkonsole::Config::_runtimedir/$tofile");
 			system("cp -R $share_dir/$filename/* $Schulkonsole::Config::_runtimedir/$tofile");
-			system("chown -R www-data:www-data $Schulkonsole::Config::_runtimedir/$tofile");
+			system("cd $Schulkonsole::Config::_runtimedir/$tofile;zip -r ../${tofile}.zip .");
+			system("chown www-data:www-data $Schulkonsole::Config::_runtimedir/${tofile}.zip");
+			system("rm -rf $Schulkonsole::Config::_runtimedir/$tofile");
 		} else {
 			system("cp $share_dir/$filename $Schulkonsole::Config::_runtimedir/$tofile");			
 			system("chown www-data:www-data $Schulkonsole::Config::_runtimedir/$tofile");
@@ -383,7 +388,7 @@ numeric constant: C<Schulkonsole::Config::LSHANDOUTAPP>
 
 =over
 
-=item do_copy
+=item category
 
 =item type
 
@@ -394,17 +399,19 @@ numeric constant: C<Schulkonsole::Config::LSHANDOUTAPP>
 =cut
 
 $app_id == Schulkonsole::Config::LSHANDOUTAPP and do {
-	my $do_copy = <>;
-	($do_copy) = $do_copy =~ /^(\d+)$/;
+	my $category = <>;
+	($category) = $category =~ /^(\d+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_COPY
 	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
-		unless defined $do_copy;
+		unless defined $category;
 
 
 	my $share_dir = "$$userdata{homedirectory}/";
 
-
-	if ($do_copy) {
+	if ($category == 2) {
+		$share_dir .=
+			"$Language::collected_dir/$Language::collected_string";
+	} elsif ($category) {
 		$share_dir .=
 			"$Language::to_handoutcopy_dir/$Language::to_handoutcopy_string";
 	} else {
@@ -419,7 +426,7 @@ $app_id == Schulkonsole::Config::LSHANDOUTAPP and do {
 
 	LSHANDOUTTYPE: {
 	($type & 1 or $type & 2) and do {
-		if ($do_copy) {
+		if ($category) {
 				$share_dir .= $Language::current_room;
 		} else {
 				$share_dir .= $Language::exam;
