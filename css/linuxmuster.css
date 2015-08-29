@@ -36,16 +36,25 @@ body {
     visibility:0;
 }
 
-.jMenu {
-	display: table;
-	border: none;
-    height: 20px;
-	margin: 0;
+#menu {
+    border: none;
+    height: 23px;
+    background-color: #83a5d2;
+    margin: 0;
     margin-bottom: 1px;
     margin-right: 1px;
-	background-color: #83a5d2;
-	padding: 0;
-	list-style: none;
+}
+
+.jMenu {
+    display: table;
+    border: none;
+    height: 20px;
+    margin: 0;
+    margin-bottom: 1px;
+    margin-right: 1px;
+    background-color: #83a5d2;
+    padding: 0;
+    list-style: none;
 }
 
 .jMenu li {
