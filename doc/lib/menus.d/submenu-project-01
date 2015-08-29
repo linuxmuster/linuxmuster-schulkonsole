@@ -1,10 +1,10 @@
 [% IF link_project_members %]
 	<li><a class="separator" [% dohref("project_members") %]>[% loc('Mitglieder') %]</a></li>
 [% END %]
+[% IF isadmin %]
 [% IF link_project_passwords %]
         <li><a class="separator" [% dohref("project_passwords") %]>[% loc('Passw&ouml;rter') %]</a></li>
 [% END %]
-[% IF isadmin %]
 [% IF link_project_handoutcopy %]
 	<li><a [% dohref("project_handoutcopy") %]>[% loc('Austeilen') %]</a></li>
 [% END %]
