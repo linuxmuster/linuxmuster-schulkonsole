@@ -29,6 +29,33 @@
 <h3>[% loc('Ausgewählte Klasse:') %] [% class_name %]</h3>
 
 
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+
+
+<h3>[% loc('Bsiher eingesammelte Dateien') %]</h3>
+
+[% IF teacher_collected_files %]
+    <table id="classhandoutfiles" class="liste">
+    [% lfdnr = 1 %]
+    <tr>
+        <th>[% loc('Nr.') %]</th>
+        <th>[% loc('Dateiname') %]<th>
+        <th colspan=2 ></th>
+    </tr>
+    [% FOREACH tcf IN teacher_collected_files %]
+    	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+        <td class="lfdnr">[% lfdnr %]</td>
+        <td>[% IF tcf.isdir %]*[% END %][% tcf.name %]</td>
+        <td><input title="Download" type="submit" class="btn-download" alt="[% loc('Herunterladen') %]" 
+            name="[% tcf.name %];download" value="[% loc('H') %]"></td>
+        <td><input title="Löschen" type="submit" class="btn-delete" alt="[% loc('Löschen') %]" 
+            name="[% tcf.name %];delete" value="[% loc('L') %]"></td>
+        [% lfdnr=lfdnr+1 %]
+        </tr>
+    [% END %]
+    </table>
+[% END %]
+
 <h3>[% loc('Einsammeln') %]</h3>
 
 <form method="post" accept-charset="UTF-8">

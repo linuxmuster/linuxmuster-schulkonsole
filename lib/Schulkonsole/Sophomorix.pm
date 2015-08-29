@@ -1969,6 +1969,188 @@ sub ls_handoutcopy_project {
 
 
 
+=head3 C<dl_collected_class($id, $password, $class, $filename, $isdir, $tmpfile)>
+
+Download the filename from the collected directory of the class
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$class>
+
+The class to download the collected from
+
+=item C<$filename>
+
+The name of the teachers file to be added
+
+=item C<$isdir>
+
+If the file to be added is a directory (isdir == 1)
+
+=item C<$tmpfile>
+
+The temporary filename to put the file data to
+
+=back
+
+=head4 Description
+
+Downloads a file from the class' collected directory.
+
+=cut
+
+sub dl_collected_class {
+	my $id = shift;
+	my $password = shift;
+	my $class = shift;
+	my $filename = shift;
+	my $isdir = shift;
+	my $tmpfile = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "3\n2\n8\n$class\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+}
+
+
+
+
+=head3 C<rm_collected_class($id, $password, $filename)>
+
+Removes the filename from the collected directory of the class
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$class>
+
+The name of the class
+
+=item C<$filename>
+
+The name of the teachers file to be deleted
+
+=item C<$isdir>
+
+If the file to be deleted is a directory (isdir == 1)
+
+=back
+
+=head4 Description
+
+Removes a file from the class' collected directory.
+
+=cut
+
+sub rm_collected_class {
+	my $id = shift;
+	my $password = shift;
+	my $class = shift;
+	my $filename = shift;
+	my $isdir = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "1\n2\n8\n$class\n$filename\n".($isdir?"1\n":"0\n");
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+}
+
+
+
+
+=head3 C<ls_collected_class($id, $password, $class)>
+
+Returns the contents of the collected directory current_room
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$class>
+
+The class
+
+=back
+
+=head4 Return value
+
+A reference to an array of the files
+
+=head4 Description
+
+Returns a list of the files in the teacher's collected directory.
+
+=cut
+
+sub ls_collected_class {
+	my $id = shift;
+	my $password = shift;
+	my $class = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::LSHANDOUTAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "2\n8\n$class\n";
+
+	my $in;
+	{
+		local $/ = undef;
+		$in = <SCRIPTIN>;
+	}
+
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	my $compartment = new Safe;
+
+	return $compartment->reval($in);
+}
+
+
+
+
 =head3 C<ls_collect($id, $password, @login_ids)>
 
 Returns the contents of collect directories
