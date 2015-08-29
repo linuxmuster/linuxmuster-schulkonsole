@@ -36,7 +36,9 @@
         <div id="special"> </div>
     [% END %]
     [% IF page.menu %]
-        [% INCLUDE menu.inc.tt %]
+        <div id="menu">
+            [% INCLUDE menu.inc.tt %]
+        </div>
 <script type="text/javascript">
   $(document).ready(function(){
     // simple jMenu plugin called
