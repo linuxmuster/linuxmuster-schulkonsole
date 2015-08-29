@@ -36,147 +36,99 @@ body {
     visibility:0;
 }
 
-#menu {
-    border: none;
-    height: 23px;
-    background-color: #83a5d2;
-    margin: 0;
+.jMenu {
+	display: table;
+	border: none;
+    height: 20px;
+	margin: 0;
     margin-bottom: 1px;
     margin-right: 1px;
+	background-color: #83a5d2;
+	padding: 0;
+	list-style: none;
 }
 
-#menu a {
-    font-size: 11px;
+.jMenu li {
+	display: table-cell;
+	background-color: #83a5d2;
     margin: 0;
-    float: left;
+	list-style: none
+}
+
+.jMenu li a {
+	display: block;
+	background-color: transparent;
+	color: #fff;
+	text-decoration: none;
+	cursor: pointer;
     height: 20px;
     padding-top: 3px;
     padding-left: 10px;
     padding-right: 10px;
-    color: #fff;
-    font-weight: bold;
-    background-color: #83a5d2;
-    text-decoration: none;
-    border:0;
-    border-right: 1px solid #FBFAF9;
+	font-size: 12px
 }
 
-#submenu a.current,
-#submenu a.tworowseparatorcurrent,
-#submenu a.tworowcurrent,
-#submenu a.separatorcurrent,
-#submenu a.endcurrent,
-#menu a.current,
-#menu a.currentparent {
-  color: #fff;
-  font-weight: bold;
-  background-color: #3465A4;
-  }
+.jMenu li a:hover {
+	background-color: #3465A4;
+}
 
-#menu a:hover {
-    color: #888;
+.jMenu li:hover>a {
+	background-color: #3465A4;
+}
+
+.jMenu li ul {
+	display: none;
+	font-size: 11px;
+	position: absolute;
+	z-index: 9999;
+	padding: 0;
+	margin: 0;
+	list-style: none
+}
+
+.jMenu li ul li {
+	background-color: #83a5d2;
+	display: block;
+	border-bottom: 1px solid transparent;
+	list-style: none;
+	position: relative
+}
+
+.jMenu li ul li a {
+	font-size: 11px;
+	background-color: #3465A4;
+  	text-transform: none;
+	display: block;
+	border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent
+}
+
+.jMenu li ul li a.isParent {
+	background-color: #3a3a3a
+}
+
+.jMenu li ul li a:hover {
+	color: #000;
     background-color: #3C587B;
+    border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent
 }
 
-#submenu {
-    position: absolute;
-    font-size: 11px;
-    margin: 0;
-    padding: 0;
-    width: 180px;
-    margin-top: 2px;
-    top: 120px;
-    bottom: 20px;
-    overflow: hidden;
-    color: #444;
-    font-weight: bold;
-    background-color: transparent;
-    text-decoration: none;
-}
-
-#submenu a,
-#submenu .disabled,
-#submenu .disabledseparator,
-#submenu .disabledend,
-#submenu .tworowdisabled,
-#submenu .tworowdisabledseparator,
-#submenu .tworowdisabledend
-{
-    margin: 0 0 1px 0;
-    display: block;
-    height: 20px;
-    width: 179px;
-    padding-top: 6px;
-    padding-left: 4px;
-    left: 0;
-    top: 0;
-    float: left;
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-    background-color: #83a5d2;
-}
-
-
-#submenu a.tworow,
-#submenu a.tworowseparatorcurrent,
-#submenu a.tworowcurrent,
-#submenu a.tworowseparator,
-#submenu a.tworowdisabled,
-#submenu a.tworowdisabledseparator,
-#submenu a.tworowdisabledend
-{
-    height: 36px;
-}
-
-
-#submenu a {
- text-decoration: none;
-}
-#submenu .disabled,
-#submenu .disabledseparator,
-#submenu .disabledend {
- color: #ccc;
-}
-
-#submenu a:hover {
-    color: #000;
-    background-color: #3C587B;
-}
-
-#submenu a.current:hover,
-#submenu a.separatorcurrent:hover,
-#submenu a.tworowseparatorcurrent:hover,
-#submenu a.tworowcurrent:hover,
-#submenu a.endcurrent:hover
-{
-  color: #fff;
-  background-color: #3465A4;
-}
-
-
-#subsubmenu a.todo, #subsubmenu a.todocurrent {
-    color: #666666;
-    background-color: #ffdbdb;
-}
-
-.content {
+.content, .widecontent {
     position: absolute;
     margin: 0;
     padding: 0;
-    width: 560px;
+    width: 780px;
     padding-left: 15px;
     padding-right: 15px;
     margin-top: 3px;
     top: 120px;
-    left: 190px;
+    left: 0px;
     bottom: 36px;
 
 
     font-weight: normal;
 }
-
-.widecontent { width:780px; left:0px}
 
 .content h2 {
     margin-top: 10px;

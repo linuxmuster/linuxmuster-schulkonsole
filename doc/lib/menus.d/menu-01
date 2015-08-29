@@ -1,37 +1,34 @@
-<div id="menu">
+<ul id="jMenu">
 [% IF link_start %]
-   <a [% dohref("start") %]>[% loc('Mein Konto') %]</a>
+ <li><a [% dohref("start") %]>[% loc('Mein Konto') %]</a></li>
 [% END %]
 [% IF link_settings %]
-[% ELSE %]
+ <li><a [% dohref("settings") %]>[% loc('Einstellungen') %]</a><ul>[% INCLUDE "submenu-settings.inc.tt" %]</ul></li>
+[% END %]
 [% IF link_room %]
-   <a [% dohref("room") %]>[% loc('aktueller Raum') %]</a>
+ <li><a [% dohref("room") %]>[% loc('aktueller Raum') %]</a><ul>[% INCLUDE "submenu-room.inc.tt" %]</ul></li>
 [% END %]
 [% IF link_class %]
-   <a [% dohref("class") %]>[% loc('Klassen') %]</a>
+ <li><a [% dohref("class") %]>[% loc('Klassen') %]</a><ul>[% INCLUDE "submenu-class.inc.tt" %]</ul></li>
 [% END %]
 [% IF link_project %]
-   <a [% dohref("project") %]>[% loc('Projekte') %]</a>
-[% END %]
-[% END %]
-[% IF link_settings %]
-   <a [% dohref("settings") %]>[% loc('Einstellungen') %]</a>
+ <li><a [% dohref("project") %]>[% loc('Projekte') %]</a><ul>[% INCLUDE "submenu-project.inc.tt" %]</ul></li>
 [% END %]
 [% IF link_user %]
-   <a [% dohref("user") %]>[% loc('Benutzer') %]</a>
+ <li><a [% dohref("user") %]>[% loc('Benutzer') %]</a><ul>[% INCLUDE "submenu-user.inc.tt" %]</ul></li>
 [% END %]
 [% IF link_quotas %]
-   <a [% dohref("quotas") %]>[% loc('Quota') %]</a>
+ <li><a [% dohref("quotas") %]>[% loc('Quota') %]</a><ul>[% INCLUDE "submenu-quotas.inc.tt" %]</ul></li>
 [% END %]
 [% IF link_rooms %]
-   <a [% dohref("rooms") %]>[% loc('Räume') %]</a>
+ <li><a [% dohref("rooms") %]>[% loc('Räume') %]</a><ul>[% INCLUDE "submenu-rooms.inc.tt" %]</ul></li>
 [% END %]
 [% IF link_printers %]
-   <a [% dohref("printers") %]>[% loc('Drucker') %]</a>
+ <li><a [% dohref("printers") %]>[% loc('Drucker') %]</a></li>
 [% END %]
 [% IF link_hosts %]
-   <a [% dohref("hosts") %]>[% loc('Hosts') %]</a>
+ <li><a [% dohref("hosts") %]>[% loc('Hosts') %]</a></li>
 [% END %]
 [% IF link_linbo %]
-   <a [% dohref("linbo") %]>[% loc('LINBO') %]</a>
+ <li><a [% dohref("linbo") %]>[% loc('LINBO') %]</a><ul>[% INCLUDE "submenu-linbo.inc.tt" %]</ul></li>
 [% END %]
