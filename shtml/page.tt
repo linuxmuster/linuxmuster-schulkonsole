@@ -1,6 +1,6 @@
 [% page.default = '1' %]
 <!DOCTYPE  HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
-<html[% IF lang %] lang="[% lang %]"[% END %]>
+<html lang="[% IF lang %][% lang %][% ELSE %]de[% END %]">
 <head>
     <title>[% page.title %]</title>
     <link rel="stylesheet" title="linuxmuster.net::Schulkonsole" href="css/linuxmuster.css" type="text/css">
