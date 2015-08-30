@@ -8,9 +8,9 @@
 [% END %]
 -
 [% IF todo_test_password %]
-<a [% dohref("room_test_password") %] class="todo">[% loc('Passwort &auml;ndern') %]</a>
+<a [% dohref("room_test_password") %] class="todo">[% loc('Passwort ändern') %]</a>
 [% ELSE %]
-<a [% dohref("room_test_password") %]>[% loc('Passwort &auml;ndern') %]</a>
+<a [% dohref("room_test_password") %]>[% loc('Passwort ändern') %]</a>
 [% END %]
 -
 [% IF todo_test_collect %]
@@ -21,7 +21,7 @@
 [% ELSE %]
 [% loc('Bereitstellen') %]
 -
-[% loc('Passwort &auml;ndern') %]
+[% loc('Passwort ändern') %]
 -
 [% loc('Einsammeln') %]
 [% END %]</p>
