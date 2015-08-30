@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the schulkonsole package.
 # root <root@linuxmuster.lokal>, 2014.
 #
-#: ../lib/Schulkonsole/Session.pm.in:1491
+#: ../lib/Schulkonsole/Session.pm.in:1468
 msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2015-08-20 10:51+0200\n"
+"POT-Creation-Date: 2015-08-30 11:22+0200\n"
 "PO-Revision-Date: 2014-04-06 14:22+0200\n"
 "Last-Translator: root <root@linuxmuster.lokal>\n"
 "Language-Team: German\n"
@@ -18,180 +18,205 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/cgi-bin/start.in:521 ../src/cgi-bin/start.in:540
-#: ../src/cgi-bin/class_list.in:130 ../src/cgi-bin/class_list.in:149
-#: ../src/cgi-bin/project_members.in:366 ../src/cgi-bin/project_members.in:385
+#: ../src/cgi-bin/room_test_handout.in:117
+#: ../src/cgi-bin/room_test_handout.in:131
+msgid " nicht als Vorlagendatei vorhanden."
+msgstr ""
+
+#: ../src/cgi-bin/class_handoutcopy.in:144
+#: ../src/cgi-bin/class_handoutcopy.in:159
+#: ../src/cgi-bin/project_handoutcopy.in:168
+#: ../src/cgi-bin/project_handoutcopy.in:183
+msgid " nicht als auszuteilende Datei vorhanden."
+msgstr ""
+
+#: ../src/cgi-bin/project_handout.in:133 ../src/cgi-bin/project_handout.in:148
+#: ../src/cgi-bin/class_handout.in:123 ../src/cgi-bin/class_handout.in:138
+msgid " nicht als bereitzustellende Datei vorhanden."
+msgstr ""
+
+#: ../src/cgi-bin/room_test_collect.in:101
+#: ../src/cgi-bin/room_test_collect.in:116
+#: ../src/cgi-bin/project_collect.in:152 ../src/cgi-bin/project_collect.in:167
+#: ../src/cgi-bin/class_collect.in:131 ../src/cgi-bin/class_collect.in:146
+#: ../src/cgi-bin/room_collect.in:138 ../src/cgi-bin/room_collect.in:153
+msgid " nicht als eingesammelte Datei vorhanden."
+msgstr ""
+
+#: ../src/cgi-bin/start.in:522 ../src/cgi-bin/start.in:541
+#: ../src/cgi-bin/class_list.in:131 ../src/cgi-bin/class_list.in:150
+#: ../src/cgi-bin/project_members.in:367 ../src/cgi-bin/project_members.in:386
 #, perl-format
 msgid "%d Minuten"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:518 ../src/cgi-bin/start.in:537
-#: ../src/cgi-bin/class_list.in:127 ../src/cgi-bin/class_list.in:146
-#: ../src/cgi-bin/project_members.in:363 ../src/cgi-bin/project_members.in:382
+#: ../src/cgi-bin/start.in:519 ../src/cgi-bin/start.in:538
+#: ../src/cgi-bin/class_list.in:128 ../src/cgi-bin/class_list.in:147
+#: ../src/cgi-bin/project_members.in:364 ../src/cgi-bin/project_members.in:383
 #, perl-format
 msgid "%d Stunden"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:515 ../src/cgi-bin/start.in:534
-#: ../src/cgi-bin/class_list.in:124 ../src/cgi-bin/class_list.in:143
-#: ../src/cgi-bin/project_members.in:360 ../src/cgi-bin/project_members.in:379
+#: ../src/cgi-bin/start.in:516 ../src/cgi-bin/start.in:535
+#: ../src/cgi-bin/class_list.in:125 ../src/cgi-bin/class_list.in:144
+#: ../src/cgi-bin/project_members.in:361 ../src/cgi-bin/project_members.in:380
 #, perl-format
 msgid "%d Tage"
 msgstr ""
 
-#: ../src/cgi-bin/project_members.in:195 ../src/cgi-bin/project_members.in:206
-#: ../src/cgi-bin/project_members.in:221 ../src/cgi-bin/project_members.in:236
+#: ../src/cgi-bin/project_members.in:196 ../src/cgi-bin/project_members.in:207
+#: ../src/cgi-bin/project_members.in:222 ../src/cgi-bin/project_members.in:237
 #, perl-format
 msgid "%s aus Projekt %s ausgetragen"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_images.in:357 ../src/cgi-bin/linbo_menuedit.in:72
+#: ../src/cgi-bin/linbo_images.in:358 ../src/cgi-bin/linbo_menuedit.in:73
 #, perl-format
 msgid "%s existiert bereits"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_images.in:72 ../src/cgi-bin/linbo_images.in:110
-#: ../src/cgi-bin/linbo_images.in:171 ../src/cgi-bin/linbo_images.in:205
-#: ../src/cgi-bin/linbo_pxeedit.in:72 ../src/cgi-bin/linbo_pxeedit.in:98
-#: ../src/cgi-bin/linbo_pxeedit.in:131 ../src/cgi-bin/linbo_menuedit.in:118
-#: ../src/cgi-bin/linbo_menuedit.in:144 ../src/cgi-bin/linbo_menuedit.in:177
-#: ../src/cgi-bin/linbo_regpatchedit.in:149
-#: ../src/cgi-bin/linbo_regpatchedit.in:182
-#: ../src/cgi-bin/linbo_regpatchedit.in:215
+#: ../src/cgi-bin/linbo_images.in:73 ../src/cgi-bin/linbo_images.in:111
+#: ../src/cgi-bin/linbo_images.in:172 ../src/cgi-bin/linbo_images.in:206
+#: ../src/cgi-bin/linbo_pxeedit.in:73 ../src/cgi-bin/linbo_pxeedit.in:99
+#: ../src/cgi-bin/linbo_pxeedit.in:132 ../src/cgi-bin/linbo_menuedit.in:119
+#: ../src/cgi-bin/linbo_menuedit.in:145 ../src/cgi-bin/linbo_menuedit.in:178
+#: ../src/cgi-bin/linbo_regpatchedit.in:150
+#: ../src/cgi-bin/linbo_regpatchedit.in:183
+#: ../src/cgi-bin/linbo_regpatchedit.in:216
 #, perl-format
 msgid "%s existiert nicht"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_images.in:85 ../src/cgi-bin/linbo_pxeedit.in:85
-#: ../src/cgi-bin/linbo_menuedit.in:131
-#: ../src/cgi-bin/linbo_regpatchedit.in:162
+#: ../src/cgi-bin/linbo_images.in:86 ../src/cgi-bin/linbo_pxeedit.in:86
+#: ../src/cgi-bin/linbo_menuedit.in:132
+#: ../src/cgi-bin/linbo_regpatchedit.in:163
 #, perl-format
 msgid "%s gel&ouml;scht"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_images.in:186 ../src/cgi-bin/linbo_pxeedit.in:113
-#: ../src/cgi-bin/linbo_menuedit.in:159
-#: ../src/cgi-bin/linbo_regpatchedit.in:197
+#: ../src/cgi-bin/linbo_images.in:187 ../src/cgi-bin/linbo_pxeedit.in:114
+#: ../src/cgi-bin/linbo_menuedit.in:160
+#: ../src/cgi-bin/linbo_regpatchedit.in:198
 #, perl-format
 msgid "%s geschrieben"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_menuedit.in:98
+#: ../src/cgi-bin/linbo_menuedit.in:99
 #, perl-format
 msgid "%s hinzugefügt"
 msgstr ""
 
-#: ../src/cgi-bin/quotas_others.in:98 ../src/cgi-bin/quotas_projects.in:184
+#: ../src/cgi-bin/quotas_others.in:99 ../src/cgi-bin/quotas_projects.in:185
 #, perl-format
 msgid "%s ist ein Lehrer"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_images.in:66 ../src/cgi-bin/linbo_images.in:104
+#: ../src/cgi-bin/linbo_images.in:67 ../src/cgi-bin/linbo_images.in:105
 #, perl-format
 msgid "%s ist kein Image"
 msgstr ""
 
-#: ../src/cgi-bin/user_teacherpasswords.in:232
+#: ../src/cgi-bin/user_teacherpasswords.in:233
 #, perl-format
 msgid "%s ist kein Lehrer"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_regpatchedit.in:143
-#: ../src/cgi-bin/linbo_regpatchedit.in:176
+#: ../src/cgi-bin/linbo_regpatchedit.in:144
+#: ../src/cgi-bin/linbo_regpatchedit.in:177
 #, perl-format
 msgid "%s ist kein Registrypatch"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_images.in:164
+#: ../src/cgi-bin/linbo_images.in:165
 #, perl-format
 msgid "%s ist keine Beschreibungsdatei"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_pxeedit.in:66
+#: ../src/cgi-bin/linbo_pxeedit.in:67
 #, perl-format
 msgid "%s ist keine PXE-Start-Datei"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_menuedit.in:66 ../src/cgi-bin/linbo_menuedit.in:112
+#: ../src/cgi-bin/linbo_menuedit.in:67 ../src/cgi-bin/linbo_menuedit.in:113
 #, perl-format
 msgid "%s ist keine menu.lst-Datei"
 msgstr ""
 
-#: ../src/cgi-bin/printers_edit.in:267
+#: ../src/cgi-bin/printers_edit.in:268
 #, perl-format
 msgid "%s ist schon &uuml;ber Raum %s zug&auml;nglich"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_images.in:88 ../src/cgi-bin/linbo_pxeedit.in:88
-#: ../src/cgi-bin/linbo_menuedit.in:134
-#: ../src/cgi-bin/linbo_regpatchedit.in:165
+#: ../src/cgi-bin/linbo_images.in:89 ../src/cgi-bin/linbo_pxeedit.in:89
+#: ../src/cgi-bin/linbo_menuedit.in:135
+#: ../src/cgi-bin/linbo_regpatchedit.in:166
 #, perl-format
 msgid "%s konnte nicht gel&ouml;scht werden"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_menuedit.in:101
+#: ../src/cgi-bin/linbo_menuedit.in:102
 #, perl-format
 msgid "%s konnte nicht hinzugefügt werden"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_images.in:151 ../src/cgi-bin/linbo_images.in:404
+#: ../src/cgi-bin/linbo_images.in:152 ../src/cgi-bin/linbo_images.in:405
 #, perl-format
 msgid "%s konnte nicht in %s umbenannt werden"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_images.in:152 ../src/cgi-bin/linbo_images.in:405
+#: ../src/cgi-bin/linbo_images.in:153 ../src/cgi-bin/linbo_images.in:406
 #, perl-format
 msgid "%s konnte nicht nach %s kopiert werden"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_images.in:146 ../src/cgi-bin/linbo_images.in:399
+#: ../src/cgi-bin/linbo_images.in:147 ../src/cgi-bin/linbo_images.in:400
 #, perl-format
 msgid "%s nach %s kopiert"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_images.in:145 ../src/cgi-bin/linbo_images.in:398
+#: ../src/cgi-bin/linbo_images.in:146 ../src/cgi-bin/linbo_images.in:399
 #, perl-format
 msgid "%s nach %s umbenannt"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_regpatchedit.in:111
+#: ../src/cgi-bin/linbo_regpatchedit.in:112
 #, perl-format
 msgid "%s.reg erstellt"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_regpatchedit.in:74
+#: ../src/cgi-bin/linbo_regpatchedit.in:75
 #, perl-format
 msgid "%s.reg existiert bereits"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_regpatchedit.in:108
+#: ../src/cgi-bin/linbo_regpatchedit.in:109
 #, perl-format
 msgid "%s.reg konnte nicht erstellt werden"
 msgstr ""
 
-#: ../src/cgi-bin/quotas_others.in:153 ../src/cgi-bin/quotas_projects.in:95
-#: ../src/cgi-bin/quotas_projects.in:239 ../src/cgi-bin/quotas_teachers.in:94
-#: ../src/cgi-bin/quotas_classes.in:95
+#: ../src/cgi-bin/quotas_others.in:154 ../src/cgi-bin/quotas_projects.in:96
+#: ../src/cgi-bin/quotas_projects.in:240 ../src/cgi-bin/quotas_teachers.in:95
+#: ../src/cgi-bin/quotas_classes.in:96
 #, perl-format
 msgid "%s: Quota muss eine Zahl sein"
 msgstr ""
 
-#: ../src/cgi-bin/rooms.in:173 ../src/cgi-bin/settings_program.in:97
-#: ../src/cgi-bin/user_teachers.in:224 ../src/cgi-bin/settings.in:278
-#: ../src/cgi-bin/settings_users.in:279 ../src/cgi-bin/printers_edit.in:252
-#: ../src/cgi-bin/printers_edit.in:284 ../src/cgi-bin/rooms_classrooms.in:90
+#: ../src/cgi-bin/rooms.in:174 ../src/cgi-bin/settings_program.in:98
+#: ../src/cgi-bin/user_teachers.in:225 ../src/cgi-bin/settings.in:279
+#: ../src/cgi-bin/settings_users.in:280 ../src/cgi-bin/printers_edit.in:253
+#: ../src/cgi-bin/printers_edit.in:285 ../src/cgi-bin/rooms_classrooms.in:91
 msgid "&Auml;nderungen &uuml;bernommen"
 msgstr ""
 
-#: ../src/cgi-bin/class_shares.in:102 ../src/cgi-bin/settings_classs.in:149
-#: ../src/cgi-bin/project_shares.in:124 ../src/cgi-bin/class_lesson.in:128
-#: ../src/cgi-bin/quotas_others.in:201 ../src/cgi-bin/quotas_projects.in:161
-#: ../src/cgi-bin/quotas_projects.in:287 ../src/cgi-bin/room.in:233
-#: ../src/cgi-bin/room.in:272 ../src/cgi-bin/quotas_teachers.in:132
-#: ../src/cgi-bin/hosts.in:232 ../src/cgi-bin/room_shares.in:103
-#: ../src/cgi-bin/quotas_classes.in:160
-#: ../src/cgi-bin/settings_projects.in:125
-#: ../src/cgi-bin/project_lesson.in:132
+#: ../src/cgi-bin/class_shares.in:103 ../src/cgi-bin/settings_classs.in:150
+#: ../src/cgi-bin/project_shares.in:125 ../src/cgi-bin/class_lesson.in:129
+#: ../src/cgi-bin/quotas_others.in:202 ../src/cgi-bin/quotas_projects.in:162
+#: ../src/cgi-bin/quotas_projects.in:288 ../src/cgi-bin/room.in:234
+#: ../src/cgi-bin/room.in:273 ../src/cgi-bin/quotas_teachers.in:133
+#: ../src/cgi-bin/hosts.in:233 ../src/cgi-bin/room_shares.in:104
+#: ../src/cgi-bin/quotas_classes.in:161
+#: ../src/cgi-bin/settings_projects.in:126
+#: ../src/cgi-bin/project_lesson.in:133
 msgid "&Auml;nderungen &uuml;bernommen."
 msgstr ""
 
@@ -212,7 +237,7 @@ msgid "(Schüler)"
 msgstr ""
 
 #: ../shtml/class_lesson.tt:48 ../shtml/project_lesson.tt:48
-#: ../shtml/room.tt:52
+#: ../shtml/room.tt:49
 msgid "- oder -"
 msgstr ""
 
@@ -775,13 +800,13 @@ msgstr ""
 msgid "Administratoren"
 msgstr ""
 
-#: ../shtml/hosts.tt:17 ../shtml/hosts.tt:36 ../shtml/room_test_collect.tt:65
-#: ../shtml/room_test_handout.tt:53 ../shtml/user_commit.tt:128
+#: ../shtml/hosts.tt:17 ../shtml/hosts.tt:36 ../shtml/room_test_collect.tt:91
+#: ../shtml/room_test_handout.tt:51 ../shtml/user_commit.tt:128
 #: ../shtml/user_commit.tt:42 ../shtml/user_commit.tt:83
 msgid "Aktualisieren"
 msgstr ""
 
-#: ../shtml/room.tt:25 ../shtml/room.tt:409 ../shtml/room_collect.tt:9
+#: ../shtml/room.tt:27 ../shtml/room_collect.tt:9
 #: ../shtml/room_end_lesson_verify.tt:9 ../shtml/room_handout.tt:10
 #: ../shtml/room_shares.tt:9 ../shtml/room_test.tt:11
 #: ../shtml/room_test_collect.tt:11 ../shtml/room_test_end.tt:11
@@ -793,7 +818,7 @@ msgstr ""
 msgid "Aliase"
 msgstr ""
 
-#: ../shtml/room_test_handout.tt:65
+#: ../shtml/room_test_handout.tt:76
 msgid "Allen"
 msgstr ""
 
@@ -801,17 +826,17 @@ msgstr ""
 msgid "Altes Passwort"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:243
+#: ../src/cgi-bin/start.in:244
 msgid "Altes Passwort eingeben"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:248
+#: ../src/cgi-bin/start.in:249
 msgid "Altes Passwort stimmt nicht"
 msgstr ""
 
 #: ../shtml/class_passwords.tt:78 ../shtml/project_passwords.tt:77
-#: ../shtml/room.tt:231 ../shtml/room.tt:236 ../shtml/room.tt:241
-#: ../shtml/room.tt:249 ../shtml/room.tt:293 ../shtml/rooms.tt:120
+#: ../shtml/room.tt:168 ../shtml/room.tt:171 ../shtml/room.tt:174
+#: ../shtml/room.tt:181 ../shtml/room.tt:225 ../shtml/rooms.tt:120
 #: ../shtml/rooms.tt:127 ../shtml/rooms.tt:134 ../shtml/rooms.tt:33
 #: ../shtml/rooms.tt:40 ../shtml/rooms.tt:47 ../shtml/rooms.tt:83
 #: ../shtml/rooms.tt:90 ../shtml/rooms.tt:97 ../shtml/settings_classs.tt:49
@@ -819,7 +844,7 @@ msgstr ""
 msgid "An"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1402
+#: ../lib/Schulkonsole/Session.pm.in:1379
 msgid "Angemeldet"
 msgstr ""
 
@@ -827,7 +852,7 @@ msgstr ""
 msgid "Anlegen"
 msgstr ""
 
-#: ../src/cgi-bin/user_commit.in:103
+#: ../src/cgi-bin/user_commit.in:104
 msgid "Anlegen l&auml;uft schon"
 msgstr ""
 
@@ -835,11 +860,11 @@ msgstr ""
 msgid "Anlegen läuft."
 msgstr ""
 
-#: ../src/cgi-bin/user_commit.in:109
+#: ../src/cgi-bin/user_commit.in:110
 msgid "Anlegen wurde gestartet"
 msgstr ""
 
-#: ../src/cgi-bin/user_commit.in:94
+#: ../src/cgi-bin/user_commit.in:95
 msgid "Anlegen, L&ouml;schen und Versetzen wurden gestartet"
 msgstr ""
 
@@ -851,10 +876,8 @@ msgstr ""
 msgid "Anmeldung"
 msgstr ""
 
-#: ../shtml/class_collect.tt:36 ../shtml/class_handout.tt:47
-#: ../shtml/class_handoutcopy.tt:47 ../shtml/project_collect.tt:35
-#: ../shtml/project_handout.tt:46 ../shtml/project_handoutcopy.tt:46
-#: ../shtml/room_collect.tt:33 ../shtml/room_handout.tt:45
+#: ../shtml/class_collect.tt:63 ../shtml/project_collect.tt:58
+#: ../shtml/room_collect.tt:59
 msgid "Ansicht aktualisieren"
 msgstr ""
 
@@ -869,7 +892,7 @@ msgid ""
 "Prozess anzeigen lassen."
 msgstr ""
 
-#: ../src/cgi-bin/project_addmembers.in:291
+#: ../src/cgi-bin/project_addmembers.in:292
 msgid "Aufgenommen"
 msgstr ""
 
@@ -878,13 +901,13 @@ msgstr ""
 msgid "Aufnehmen"
 msgstr ""
 
-#: ../shtml/class_collect.tt:80 ../shtml/class_handoutcopy.tt:70
+#: ../shtml/class_collect.tt:107 ../shtml/class_handoutcopy.tt:88
 #: ../shtml/class_shares.tt:60 ../shtml/hosts.tt:100 ../shtml/hosts.tt:76
-#: ../shtml/project_collect.tt:79 ../shtml/project_handoutcopy.tt:69
-#: ../shtml/project_shares.tt:59 ../shtml/room.tt:229 ../shtml/room.tt:234
-#: ../shtml/room.tt:239 ../shtml/room.tt:244 ../shtml/room.tt:247
-#: ../shtml/room.tt:291 ../shtml/room_collect.tt:101
-#: ../shtml/room_handout.tt:86 ../shtml/room_shares.tt:74
+#: ../shtml/project_collect.tt:102 ../shtml/project_handoutcopy.tt:87
+#: ../shtml/project_shares.tt:59 ../shtml/room.tt:168 ../shtml/room.tt:171
+#: ../shtml/room.tt:174 ../shtml/room.tt:177 ../shtml/room.tt:181
+#: ../shtml/room.tt:225 ../shtml/room_collect.tt:126
+#: ../shtml/room_handout.tt:99 ../shtml/room_shares.tt:74
 #: ../shtml/rooms.tt:121 ../shtml/rooms.tt:128 ../shtml/rooms.tt:135
 #: ../shtml/rooms.tt:34 ../shtml/rooms.tt:41 ../shtml/rooms.tt:48
 #: ../shtml/rooms.tt:84 ../shtml/rooms.tt:91 ../shtml/rooms.tt:98
@@ -892,28 +915,28 @@ msgstr ""
 msgid "Aus"
 msgstr ""
 
-#: ../src/cgi-bin/class.in:121
+#: ../src/cgi-bin/class.in:122
 #, perl-format
 msgid "Aus Klasse %s ausgetragen"
 msgstr ""
 
-#: ../src/cgi-bin/project.in:201
+#: ../src/cgi-bin/project.in:202
 #, perl-format
 msgid "Aus Projekt %s ausgetragen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1289
+#: ../lib/Schulkonsole/Session.pm.in:1266
 msgid "Ausgabe des Hintergrundprozess: "
 msgstr ""
 
-#: ../src/cgi-bin/room_test_handout.in:58
-#: ../src/cgi-bin/class_handoutcopy.in:87 ../src/cgi-bin/room_handout.in:87
-#: ../src/cgi-bin/project_handoutcopy.in:111
+#: ../src/cgi-bin/room_test_handout.in:61
+#: ../src/cgi-bin/class_handoutcopy.in:93 ../src/cgi-bin/room_handout.in:88
+#: ../src/cgi-bin/project_handoutcopy.in:117
 msgid "Ausgeteilt"
 msgstr ""
 
-#: ../src/cgi-bin/class_handoutcopy.in:89 ../src/cgi-bin/room_handout.in:89
-#: ../src/cgi-bin/project_handoutcopy.in:113
+#: ../src/cgi-bin/class_handoutcopy.in:95 ../src/cgi-bin/room_handout.in:90
+#: ../src/cgi-bin/project_handoutcopy.in:119
 msgid "Ausgeteilt an"
 msgstr ""
 
@@ -921,7 +944,7 @@ msgstr ""
 msgid "Ausgewählte Klasse"
 msgstr ""
 
-#: ../shtml/class_collect.tt:29 ../shtml/class_handout.tt:29
+#: ../shtml/class_collect.tt:29 ../shtml/class_handout.tt:28
 #: ../shtml/class_handoutcopy.tt:29 ../shtml/class_list.tt:29
 #: ../shtml/class_passwords.tt:29 ../shtml/class_shares.tt:29
 msgid "Ausgewählte Klasse:"
@@ -943,10 +966,10 @@ msgid "Ausnahme hinzufügen"
 msgstr ""
 
 #: ../shtml/class_handoutcopy.tt:0 ../shtml/class_handoutcopy.tt:27
-#: ../shtml/class_handoutcopy.tt:74 ../shtml/project_handoutcopy.tt:0
-#: ../shtml/project_handoutcopy.tt:26 ../shtml/project_handoutcopy.tt:73
-#: ../shtml/room_handout.tt:0 ../shtml/room_handout.tt:11
-#: ../shtml/room_handout.tt:90
+#: ../shtml/class_handoutcopy.tt:92 ../shtml/project_handoutcopy.tt:0
+#: ../shtml/project_handoutcopy.tt:26 ../shtml/project_handoutcopy.tt:91
+#: ../shtml/room_handout.tt:0 ../shtml/room_handout.tt:103
+#: ../shtml/room_handout.tt:11
 msgid "Austeilen"
 msgstr ""
 
@@ -954,13 +977,13 @@ msgstr ""
 msgid "Austragen"
 msgstr ""
 
-#: ../shtml/class_collect.tt:57 ../shtml/class_handoutcopy.tt:54
-#: ../shtml/project_collect.tt:56 ../shtml/project_handoutcopy.tt:53
-#: ../shtml/room_collect.tt:56 ../shtml/room_handout.tt:52
+#: ../shtml/class_collect.tt:84 ../shtml/class_handoutcopy.tt:70
+#: ../shtml/project_collect.tt:79 ../shtml/project_handoutcopy.tt:69
+#: ../shtml/room_collect.tt:81 ../shtml/room_handout.tt:66
 msgid "Auswahl"
 msgstr ""
 
-#: ../src/cgi-bin/rooms.in:235
+#: ../src/cgi-bin/rooms.in:236
 msgid "Auswahl zur&uuml;ckgesetzt"
 msgstr ""
 
@@ -969,7 +992,7 @@ msgid "Auswahl zurücksetzen"
 msgstr ""
 
 #: ../shtml/class_handoutcopy.tt:35 ../shtml/project_handoutcopy.tt:34
-#: ../shtml/room_handout.tt:33
+#: ../shtml/room_handout.tt:31
 msgid "Auszuteilende Dateien"
 msgstr ""
 
@@ -1020,7 +1043,7 @@ msgstr ""
 msgid "Beispielseite"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_regpatchedit.in:82
+#: ../src/cgi-bin/linbo_regpatchedit.in:83
 #, perl-format
 msgid "Beispieltemplate %s nicht vorhanden"
 msgstr ""
@@ -1033,30 +1056,30 @@ msgstr ""
 msgid "Benutzer"
 msgstr ""
 
-#: ../src/cgi-bin/project_addmembers.in:96
-#: ../src/cgi-bin/project_addmembers.in:143
-#: ../src/cgi-bin/project_members.in:162
+#: ../src/cgi-bin/project_addmembers.in:97
+#: ../src/cgi-bin/project_addmembers.in:144
+#: ../src/cgi-bin/project_members.in:163
 #, perl-format
 msgid "Benutzer %s gibt es nicht."
 msgstr ""
 
-#: ../src/cgi-bin/quotas_others.in:183 ../src/cgi-bin/quotas_projects.in:269
+#: ../src/cgi-bin/quotas_others.in:184 ../src/cgi-bin/quotas_projects.in:270
 #, perl-format
 msgid "Benutzer %s hat keine Sonderquota"
 msgstr ""
 
-#: ../src/cgi-bin/project_addmembers.in:125
-#: ../src/cgi-bin/project_addmembers.in:155
+#: ../src/cgi-bin/project_addmembers.in:126
+#: ../src/cgi-bin/project_addmembers.in:156
 #, perl-format
 msgid "Benutzer %s ist bereits Projektmitglied."
 msgstr ""
 
-#: ../src/cgi-bin/project_addmembers.in:109
+#: ../src/cgi-bin/project_addmembers.in:110
 #, perl-format
 msgid "Benutzer %s ist kein Lehrer."
 msgstr ""
 
-#: ../src/cgi-bin/quotas_others.in:104 ../src/cgi-bin/quotas_projects.in:190
+#: ../src/cgi-bin/quotas_others.in:105 ../src/cgi-bin/quotas_projects.in:191
 #, perl-format
 msgid "Benutzer %s unbekannt"
 msgstr ""
@@ -1085,7 +1108,7 @@ msgstr ""
 msgid "Benutzer versetzen"
 msgstr ""
 
-#: ../shtml/page.tt:67 ../shtml/status.inc.tt:11
+#: ../shtml/page.tt:68 ../shtml/status.inc.tt:11
 msgid "Benutzer:"
 msgstr ""
 
@@ -1111,13 +1134,13 @@ msgstr ""
 msgid "Benutzerverwaltung"
 msgstr ""
 
-#: ../shtml/class_handout.tt:0 ../shtml/class_handout.tt:27
-#: ../shtml/class_handout.tt:50 ../shtml/project_handout.tt:0
-#: ../shtml/project_handout.tt:26 ../shtml/project_handout.tt:49
+#: ../shtml/class_handout.tt:0 ../shtml/class_handout.tt:26
+#: ../shtml/class_handout.tt:65 ../shtml/project_handout.tt:0
+#: ../shtml/project_handout.tt:26 ../shtml/project_handout.tt:65
 msgid "Bereitstellen"
 msgstr ""
 
-#: ../shtml/room_test_handout.tt:56
+#: ../shtml/room_test_handout.tt:54
 msgid "Bereitzustellende Dateien"
 msgstr ""
 
@@ -1147,7 +1170,7 @@ msgstr ""
 msgid "Betriebssystem 1 (Partition 1)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:159
+#: ../src/cgi-bin/linbo_new.in:160
 msgid "Betriebssystem 1 muss Windows sein"
 msgstr ""
 
@@ -1155,7 +1178,7 @@ msgstr ""
 msgid "Betriebssystem 2 (Partition 2)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:186
+#: ../src/cgi-bin/linbo_new.in:187
 msgid "Betriebssystem 2 muss Windows sein"
 msgstr ""
 
@@ -1163,7 +1186,7 @@ msgstr ""
 msgid "Betriebssystem 3 (Partition 5)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:213
+#: ../src/cgi-bin/linbo_new.in:214
 msgid "Betriebssystem 3 darf nicht Windows sein"
 msgstr ""
 
@@ -1171,7 +1194,7 @@ msgstr ""
 msgid "Betriebssystem 4 (Partition 6)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:240
+#: ../src/cgi-bin/linbo_new.in:241
 msgid "Betriebssystem 4 darf nicht Windows sein"
 msgstr ""
 
@@ -1212,6 +1235,11 @@ msgstr ""
 msgid "Bios64"
 msgstr ""
 
+#: ../shtml/class_collect.tt:35 ../shtml/project_collect.tt:31
+#: ../shtml/room_collect.tt:33 ../shtml/room_test_collect.tt:33
+msgid "Bisher eingesammelte Dateien"
+msgstr ""
+
 #: ../shtml/class.tt:32
 msgid "Bitte Klasse auswählen"
 msgstr ""
@@ -1220,7 +1248,7 @@ msgstr ""
 msgid "Bitte Rechnergruppe auswählen"
 msgstr ""
 
-#: ../src/cgi-bin/project.in:238 ../src/cgi-bin/room_test_end.in:82
+#: ../src/cgi-bin/project.in:239 ../src/cgi-bin/room_test_end.in:83
 msgid "Bitte best&auml;tigen"
 msgstr ""
 
@@ -1254,19 +1282,19 @@ msgstr ""
 msgid "Computerraum"
 msgstr ""
 
-#: ../src/cgi-bin/project_members.in:98
+#: ../src/cgi-bin/project_members.in:99
 msgid "Das Projekt ist bereits ge&ouml;ffnet"
 msgstr ""
 
-#: ../src/cgi-bin/project_members.in:114
+#: ../src/cgi-bin/project_members.in:115
 msgid "Das Projekt ist bereits geschlossen"
 msgstr ""
 
-#: ../src/cgi-bin/project_members.in:93
+#: ../src/cgi-bin/project_members.in:94
 msgid "Das Projekt wurde ge&ouml;ffnet"
 msgstr ""
 
-#: ../src/cgi-bin/project_members.in:110
+#: ../src/cgi-bin/project_members.in:111
 msgid "Das Projekt wurde geschlossen"
 msgstr ""
 
@@ -1274,29 +1302,62 @@ msgstr ""
 msgid "Das ist eine Beispiel-Seite."
 msgstr ""
 
-#: ../src/cgi-bin/linbo_images.in:277 ../src/cgi-bin/linbo_images.in:320
+#: ../src/cgi-bin/room_test_collect.in:101
+#: ../src/cgi-bin/room_test_collect.in:116
+#: ../src/cgi-bin/project_handout.in:133 ../src/cgi-bin/project_handout.in:148
+#: ../src/cgi-bin/class_handout.in:123 ../src/cgi-bin/class_handout.in:138
+#: ../src/cgi-bin/project_collect.in:152 ../src/cgi-bin/project_collect.in:167
+#: ../src/cgi-bin/room_test_handout.in:117
+#: ../src/cgi-bin/room_test_handout.in:131
+#: ../src/cgi-bin/class_handoutcopy.in:144
+#: ../src/cgi-bin/class_handoutcopy.in:159
+#: ../src/cgi-bin/project_handoutcopy.in:168
+#: ../src/cgi-bin/project_handoutcopy.in:183
+#: ../src/cgi-bin/class_collect.in:131 ../src/cgi-bin/class_collect.in:146
+#: ../src/cgi-bin/room_collect.in:138 ../src/cgi-bin/room_collect.in:153
+msgid "Datei "
+msgstr ""
+
+#: ../src/cgi-bin/linbo_images.in:278 ../src/cgi-bin/linbo_images.in:321
 #, perl-format
 msgid "Datei %s ist leer"
 msgstr ""
 
-#: ../src/cgi-bin/user_students.in:63
+#: ../src/cgi-bin/room_test_collect.in:108
+#: ../src/cgi-bin/project_handout.in:140 ../src/cgi-bin/class_handout.in:130
+#: ../src/cgi-bin/project_collect.in:159
+#: ../src/cgi-bin/class_handoutcopy.in:151
+#: ../src/cgi-bin/project_handoutcopy.in:175
+#: ../src/cgi-bin/class_collect.in:138 ../src/cgi-bin/room_collect.in:145
+msgid "Datei gelöscht."
+msgstr ""
+
+#: ../src/cgi-bin/project_handout.in:118 ../src/cgi-bin/class_handout.in:108
+#: ../src/cgi-bin/user_students.in:64 ../src/cgi-bin/class_handoutcopy.in:129
+#: ../src/cgi-bin/project_handoutcopy.in:153
 msgid "Datei hochgeladen"
 msgstr ""
 
-#: ../src/cgi-bin/user_teachers.in:152
+#: ../src/cgi-bin/user_teachers.in:153
 msgid "Datei hochgeladen."
+msgstr ""
+
+#: ../shtml/class_handout.tt:58 ../shtml/class_handoutcopy.tt:59
+#: ../shtml/project_handout.tt:58 ../shtml/project_handoutcopy.tt:58
+#: ../shtml/room_handout.tt:55 ../shtml/room_test_handout.tt:87
+msgid "Datei hochladen"
 msgstr ""
 
 #: ../shtml/user_students.tt:12 ../shtml/user_teachers.tt:40
 msgid "Datei importieren"
 msgstr ""
 
-#: ../src/cgi-bin/user_students.in:67 ../src/cgi-bin/user_teachers.in:159
+#: ../src/cgi-bin/user_students.in:68 ../src/cgi-bin/user_teachers.in:160
 msgid "Datei kann nicht gelesen werden"
 msgstr ""
 
-#: ../src/cgi-bin/user_students.in:83 ../src/cgi-bin/user_extra.in:63
-#: ../src/cgi-bin/user_extra.in:78
+#: ../src/cgi-bin/user_students.in:84 ../src/cgi-bin/user_extra.in:64
+#: ../src/cgi-bin/user_extra.in:79
 msgid "Datei wurde geschrieben"
 msgstr ""
 
@@ -1304,14 +1365,22 @@ msgstr ""
 msgid "Datei wählen"
 msgstr ""
 
-#: ../shtml/class_collect.tt:58 ../shtml/project_collect.tt:57
-#: ../shtml/room_collect.tt:57 ../shtml/room_test_collect.tt:40
+#: ../shtml/class_collect.tt:85 ../shtml/project_collect.tt:80
+#: ../shtml/room_collect.tt:82 ../shtml/room_test_collect.tt:66
 msgid "Dateien"
 msgstr ""
 
 #: ../shtml/class_list.tt:59 ../shtml/project_members.tt:186
 #: ../shtml/start.tt:102
 msgid "Dateien:"
+msgstr ""
+
+#: ../shtml/class_collect.tt:42 ../shtml/class_handout.tt:41
+#: ../shtml/class_handoutcopy.tt:42 ../shtml/project_collect.tt:39
+#: ../shtml/project_handout.tt:41 ../shtml/project_handoutcopy.tt:41
+#: ../shtml/room_collect.tt:40 ../shtml/room_handout.tt:38
+#: ../shtml/room_test_collect.tt:40 ../shtml/room_test_handout.tt:61
+msgid "Dateiname"
 msgstr ""
 
 #: ../shtml/linbo_edit.tt:236
@@ -1337,7 +1406,7 @@ msgstr ""
 msgid "Daten"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:268
+#: ../src/cgi-bin/start.in:269
 msgid "Daten zur Passwort&auml;nderung unvollst&auml;ndig"
 msgstr ""
 
@@ -1345,19 +1414,19 @@ msgstr ""
 msgid "Deaktivierungszeitraum"
 msgstr ""
 
-#: ../src/cgi-bin/settings.in:188 ../src/cgi-bin/settings_users.in:188
+#: ../src/cgi-bin/settings.in:189 ../src/cgi-bin/settings_users.in:189
 msgid "Der Deaktivierungszeitraum muss eine Zahl sein"
 msgstr ""
 
-#: ../src/cgi-bin/settings.in:180 ../src/cgi-bin/settings_users.in:180
+#: ../src/cgi-bin/settings.in:181 ../src/cgi-bin/settings_users.in:181
 msgid "Der Duldungszeitraum muss eine Zahl sein"
 msgstr ""
 
-#: ../src/cgi-bin/user_teachers.in:245
+#: ../src/cgi-bin/user_teachers.in:246
 msgid "Der Loginname muss aus 2 bis 16 Kleinbuchstaben (ohne Umlaute) bestehen"
 msgstr ""
 
-#: ../src/cgi-bin/project.in:96
+#: ../src/cgi-bin/project.in:97
 msgid ""
 "Der Projektnamen darf nur aus Kleinbuchstaben (ohne Umlaute), Zahlen, dem "
 "Unterstrich und Bindestrich bestehen und muss zwischen 3 und 14 Zeichen lang "
@@ -1369,9 +1438,19 @@ msgstr ""
 msgid "Devicename der Partition"
 msgstr ""
 
-#: ../src/cgi-bin/user_teachers.in:154 ../src/cgi-bin/user_teachers.in:226
+#: ../src/cgi-bin/user_teachers.in:155 ../src/cgi-bin/user_teachers.in:227
 msgid ""
 "Die Benutzerdaten m&uuml;ssen noch in das System &uuml;bernommen werden."
+msgstr ""
+
+#: ../src/cgi-bin/room_test_collect.in:148
+#: ../src/cgi-bin/project_handout.in:179 ../src/cgi-bin/class_handout.in:169
+#: ../src/cgi-bin/project_collect.in:199
+#: ../src/cgi-bin/room_test_handout.in:163
+#: ../src/cgi-bin/class_handoutcopy.in:190
+#: ../src/cgi-bin/project_handoutcopy.in:214
+#: ../src/cgi-bin/class_collect.in:178 ../src/cgi-bin/room_collect.in:185
+msgid "Die Datei wurde heruntergeladen."
 msgstr ""
 
 #: ../shtml/user_check.tt:44
@@ -1394,12 +1473,32 @@ msgid ""
 "href=\"hosts\">Hosts-Liste</a>."
 msgstr ""
 
-#: ../src/cgi-bin/settings.in:172 ../src/cgi-bin/settings_users.in:172
+#: ../src/cgi-bin/settings.in:173 ../src/cgi-bin/settings_users.in:173
 msgid "Die Passwortl&auml;nge muss eine Zahl > 0 sein"
 msgstr ""
 
-#: ../src/cgi-bin/settings_program.in:75
+#: ../src/cgi-bin/settings_program.in:76
 msgid "Die Sitzungsdauer muss in Minuten angegeben werden"
+msgstr ""
+
+#: ../src/cgi-bin/room_test_collect.in:142
+#: ../src/cgi-bin/project_handout.in:169 ../src/cgi-bin/class_handout.in:159
+#: ../src/cgi-bin/project_collect.in:193
+#: ../src/cgi-bin/room_test_handout.in:153
+#: ../src/cgi-bin/class_handoutcopy.in:180
+#: ../src/cgi-bin/project_handoutcopy.in:204
+#: ../src/cgi-bin/class_collect.in:172 ../src/cgi-bin/room_collect.in:179
+msgid "Die temporäre Datei konnte nicht geschlossen werden."
+msgstr ""
+
+#: ../src/cgi-bin/room_test_collect.in:136
+#: ../src/cgi-bin/project_handout.in:163 ../src/cgi-bin/class_handout.in:153
+#: ../src/cgi-bin/project_collect.in:187
+#: ../src/cgi-bin/room_test_handout.in:147
+#: ../src/cgi-bin/class_handoutcopy.in:174
+#: ../src/cgi-bin/project_handoutcopy.in:198
+#: ../src/cgi-bin/class_collect.in:166 ../src/cgi-bin/room_collect.in:173
+msgid "Die temporäre Datei konnte nicht geöffnet werden."
 msgstr ""
 
 #: ../shtml/quotas_classes.tt:21 ../shtml/quotas_others.tt:112
@@ -1424,7 +1523,7 @@ msgstr ""
 
 #: ../shtml/printers.tt:1 ../shtml/printers.tt:23 ../shtml/printers.tt:9
 #: ../shtml/printers_edit.tt:1 ../shtml/printers_edit.tt:8
-#: ../shtml/room.tt:126 ../shtml/room.tt:313 ../src/cgi-bin/room.in:519
+#: ../shtml/room.tt:101 ../src/cgi-bin/room.in:520
 msgid "Drucker"
 msgstr ""
 
@@ -1490,31 +1589,32 @@ msgstr ""
 msgid "Ein OpenVPN-Zertifikat wurde für Sie erstellt."
 msgstr ""
 
-#: ../src/cgi-bin/start.in:303
+#: ../src/cgi-bin/start.in:304
 msgid "Eine oder mehrere Mail-Adressen sind ungültig."
 msgstr ""
 
-#: ../src/cgi-bin/project_collect.in:119 ../src/cgi-bin/class_collect.in:98
-#: ../src/cgi-bin/room_test_end.in:64 ../src/cgi-bin/room_collect.in:91
+#: ../src/cgi-bin/project_collect.in:123 ../src/cgi-bin/class_collect.in:102
+#: ../src/cgi-bin/room_test_end.in:65 ../src/cgi-bin/room_collect.in:96
 msgid "Eingesammelt"
 msgstr ""
 
-#: ../src/cgi-bin/project_collect.in:123 ../src/cgi-bin/class_collect.in:102
-#: ../src/cgi-bin/room_collect.in:95
+#: ../src/cgi-bin/project_collect.in:127 ../src/cgi-bin/class_collect.in:106
+#: ../src/cgi-bin/room_collect.in:100
 msgid "Eingesammelt von"
 msgstr ""
 
-#: ../shtml/class_collect.tt:0 ../shtml/class_collect.tt:27
-#: ../shtml/class_collect.tt:32 ../shtml/class_collect.tt:49
-#: ../shtml/class_collect.tt:95 ../shtml/project_collect.tt:0
-#: ../shtml/project_collect.tt:26 ../shtml/project_collect.tt:31
-#: ../shtml/project_collect.tt:48 ../shtml/project_collect.tt:94
+#: ../shtml/class_collect.tt:0 ../shtml/class_collect.tt:122
+#: ../shtml/class_collect.tt:27 ../shtml/class_collect.tt:59
+#: ../shtml/class_collect.tt:76 ../shtml/project_collect.tt:0
+#: ../shtml/project_collect.tt:117 ../shtml/project_collect.tt:26
+#: ../shtml/project_collect.tt:56 ../shtml/project_collect.tt:71
 #: ../shtml/room_collect.tt:0 ../shtml/room_collect.tt:10
-#: ../shtml/room_collect.tt:117 ../shtml/room_collect.tt:46
+#: ../shtml/room_collect.tt:142 ../shtml/room_collect.tt:57
+#: ../shtml/room_collect.tt:71 ../shtml/room_test_collect.tt:57
 msgid "Einsammeln"
 msgstr ""
 
-#: ../shtml/room_test_collect.tt:34 ../shtml/room_test_collect.tt:62
+#: ../shtml/room_test_collect.tt:60 ../shtml/room_test_collect.tt:88
 msgid "Einsammeln und beenden"
 msgstr ""
 
@@ -1534,7 +1634,7 @@ msgstr ""
 msgid "Eintragen in Klassen"
 msgstr ""
 
-#: ../src/cgi-bin/project.in:156
+#: ../src/cgi-bin/project.in:157
 #, perl-format
 msgid "Eintragen in Projekt %s ist nicht erlaubt"
 msgstr ""
@@ -1552,7 +1652,7 @@ msgstr ""
 msgid "Erstpasswort anzeigen"
 msgstr ""
 
-#: ../src/cgi-bin/rooms.in:195
+#: ../src/cgi-bin/rooms.in:196
 msgid "Es gibt keine Eintr&auml;ge f&uuml;r R&auml;ume oder Rechner"
 msgstr ""
 
@@ -1576,6 +1676,20 @@ msgstr ""
 msgid "Es gibt keine Projekte."
 msgstr ""
 
+#: ../src/cgi-bin/room_test_collect.in:152
+#: ../src/cgi-bin/project_handout.in:104 ../src/cgi-bin/project_handout.in:183
+#: ../src/cgi-bin/class_handout.in:94 ../src/cgi-bin/class_handout.in:173
+#: ../src/cgi-bin/project_collect.in:203
+#: ../src/cgi-bin/room_test_handout.in:89
+#: ../src/cgi-bin/room_test_handout.in:167
+#: ../src/cgi-bin/class_handoutcopy.in:115
+#: ../src/cgi-bin/class_handoutcopy.in:194
+#: ../src/cgi-bin/project_handoutcopy.in:139
+#: ../src/cgi-bin/project_handoutcopy.in:218
+#: ../src/cgi-bin/class_collect.in:182 ../src/cgi-bin/room_collect.in:189
+msgid "Es konnte keine temporäre Datei erzeugt werden."
+msgstr ""
+
 #: ../shtml/linbo_pxeedit.tt:53
 msgid "Es sind keine PXE-Start-Dateien vorhanden."
 msgstr ""
@@ -1592,15 +1706,15 @@ msgstr ""
 msgid "Es sind keine menu.lst-Dateien vorhanden."
 msgstr ""
 
-#: ../src/cgi-bin/user_teachin.in:121
+#: ../src/cgi-bin/user_teachin.in:122
 msgid "Es sind noch nicht alle Verkn&uuml;pfungen eindeutig festgelegt"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:369
+#: ../src/cgi-bin/start.in:370
 msgid "Es wurde bereits ein OpenVPN-Zertifikat erstellt"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:422
+#: ../src/cgi-bin/start.in:423
 msgid "Es wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> abgelegt"
 msgstr ""
 
@@ -1626,20 +1740,20 @@ msgstr ""
 msgid "Extraschüler editieren"
 msgstr ""
 
-#: ../src/cgi-bin/quotas_others.in:108 ../src/cgi-bin/quotas_projects.in:194
+#: ../src/cgi-bin/quotas_others.in:109 ../src/cgi-bin/quotas_projects.in:195
 #, perl-format
 msgid "F&uuml;r Benutzer %s gibt es bereits einen Eintrag"
 msgstr ""
 
-#: ../src/cgi-bin/class_passwords.in:122 ../src/cgi-bin/class_passwords.in:142
-#: ../src/cgi-bin/user_teacherpasswords.in:69
-#: ../src/cgi-bin/user_teacherpasswords.in:87
-#: ../src/cgi-bin/project_passwords.in:156
-#: ../src/cgi-bin/project_passwords.in:176
+#: ../src/cgi-bin/class_passwords.in:123 ../src/cgi-bin/class_passwords.in:143
+#: ../src/cgi-bin/user_teacherpasswords.in:70
+#: ../src/cgi-bin/user_teacherpasswords.in:88
+#: ../src/cgi-bin/project_passwords.in:157
+#: ../src/cgi-bin/project_passwords.in:177
 msgid "Fehler bei der Erzeugung des Dokuments"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:428
+#: ../src/cgi-bin/start.in:429
 msgid "Fehler bei der Zertifikatserstellung."
 msgstr ""
 
@@ -1647,7 +1761,7 @@ msgstr ""
 msgid "Fehler korrigieren"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:262
+#: ../src/cgi-bin/linbo_new.in:263
 msgid "Festplatte f&uuml;r die gew&auml;hlte Gruppenkonfiguration zu klein"
 msgstr ""
 
@@ -1655,7 +1769,7 @@ msgstr ""
 msgid "Festplattencontroller (ab LINBO 1.1.0 immer SATA (sda))"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:138
+#: ../src/cgi-bin/linbo_new.in:139
 msgid "Festplattengr&ouml;&szlig;e muss eine Zahl sein"
 msgstr ""
 
@@ -1686,11 +1800,11 @@ msgstr ""
 msgid "GNU/Linux"
 msgstr ""
 
-#: ../src/cgi-bin/settings.in:164 ../src/cgi-bin/settings_users.in:164
+#: ../src/cgi-bin/settings.in:165 ../src/cgi-bin/settings_users.in:165
 msgid "Geben Sie eine g&uuml;ltige 4-stellige Jahreszahl ein"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_images.in:117 ../src/cgi-bin/linbo_images.in:346
+#: ../src/cgi-bin/linbo_images.in:118 ../src/cgi-bin/linbo_images.in:347
 msgid "Geben Sie einen Namen f&uuml;r das neue Image an"
 msgstr ""
 
@@ -1713,19 +1827,19 @@ msgstr ""
 msgid "Global"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:167
+#: ../src/cgi-bin/linbo_new.in:168
 msgid "Gr&ouml;&szlig;e f&uuml;r Betriebssystem 1 muss eine Zahl sein"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:194
+#: ../src/cgi-bin/linbo_new.in:195
 msgid "Gr&ouml;&szlig;e f&uuml;r Betriebssystem 2 muss eine Zahl sein"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:221
+#: ../src/cgi-bin/linbo_new.in:222
 msgid "Gr&ouml;&szlig;e f&uuml;r Betriebssystem 3 muss eine Zahl sein"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:248
+#: ../src/cgi-bin/linbo_new.in:249
 msgid "Gr&ouml;&szlig;e f&uuml;r Betriebssystem 4 muss eine Zahl sein"
 msgstr ""
 
@@ -1733,7 +1847,7 @@ msgstr ""
 msgid "Gruppe"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:69
+#: ../src/cgi-bin/linbo_new.in:70
 #, perl-format
 msgid "Gruppe %s existiert nicht"
 msgstr ""
@@ -1750,8 +1864,24 @@ msgstr ""
 msgid "Gruppenkonfiguration erstellen"
 msgstr ""
 
+#: ../shtml/class_collect.tt:50 ../shtml/class_handout.tt:49
+#: ../shtml/class_handoutcopy.tt:50 ../shtml/project_collect.tt:47
+#: ../shtml/project_handout.tt:49 ../shtml/project_handoutcopy.tt:49
+#: ../shtml/room_collect.tt:48 ../shtml/room_handout.tt:46
+#: ../shtml/room_test_collect.tt:48 ../shtml/room_test_handout.tt:69
+msgid "H"
+msgstr ""
+
 #: ../shtml/example.tt:10
 msgid "Hallo "
+msgstr ""
+
+#: ../shtml/class_collect.tt:49 ../shtml/class_handout.tt:48
+#: ../shtml/class_handoutcopy.tt:49 ../shtml/project_collect.tt:46
+#: ../shtml/project_handout.tt:48 ../shtml/project_handoutcopy.tt:48
+#: ../shtml/room_collect.tt:47 ../shtml/room_handout.tt:45
+#: ../shtml/room_test_collect.tt:47 ../shtml/room_test_handout.tt:68
+msgid "Herunterladen"
 msgstr ""
 
 #: ../shtml/linbo_menuedit.tt:50
@@ -1762,10 +1892,9 @@ msgstr ""
 msgid "Hochladen"
 msgstr ""
 
-#: ../shtml/hosts.tt:56 ../shtml/room.tt:120 ../shtml/room.tt:307
-#: ../shtml/room_collect.tt:53 ../shtml/room_handout.tt:50
-#: ../shtml/room_shares.tt:34 ../shtml/room_test_collect.tt:38
-#: ../shtml/room_test_handout.tt:36
+#: ../shtml/hosts.tt:56 ../shtml/room.tt:95 ../shtml/room_collect.tt:78
+#: ../shtml/room_handout.tt:64 ../shtml/room_shares.tt:34
+#: ../shtml/room_test_collect.tt:64 ../shtml/room_test_handout.tt:38
 msgid "Hostname"
 msgstr ""
 
@@ -1789,17 +1918,17 @@ msgstr ""
 msgid "IP des TFTP-Servers, der Images vorhält"
 msgstr ""
 
-#: ../shtml/page.tt:77 ../shtml/status.inc.tt:21
+#: ../shtml/page.tt:78 ../shtml/status.inc.tt:21
 msgid "IP:"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:446
+#: ../src/cgi-bin/start.in:447
 msgid ""
 "Ihr Zertifikat wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> "
 "abgelegt"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_regpatchedit.in:69
+#: ../src/cgi-bin/linbo_regpatchedit.in:70
 #, perl-format
 msgid "Image %s nicht vorhanden"
 msgstr ""
@@ -1832,7 +1961,7 @@ msgstr ""
 msgid "Imageverwaltung"
 msgstr ""
 
-#: ../src/cgi-bin/hosts.in:69 ../src/cgi-bin/hosts.in:265
+#: ../src/cgi-bin/hosts.in:70 ../src/cgi-bin/hosts.in:266
 msgid "Import l&auml;uft bereits"
 msgstr ""
 
@@ -1840,63 +1969,63 @@ msgstr ""
 msgid "Importieren läuft."
 msgstr ""
 
-#: ../src/cgi-bin/class.in:102
+#: ../src/cgi-bin/class.in:103
 #, perl-format
 msgid "In Klasse %s eingetragen."
 msgstr ""
 
-#: ../src/cgi-bin/project.in:146
+#: ../src/cgi-bin/project.in:147
 #, perl-format
 msgid "In Projekt %s eingetragen"
 msgstr ""
 
-#: ../src/cgi-bin/project_lesson.in:108 ../src/cgi-bin/project_lesson.in:158
-#: ../src/cgi-bin/project_lesson.in:180
+#: ../src/cgi-bin/project_lesson.in:109 ../src/cgi-bin/project_lesson.in:159
+#: ../src/cgi-bin/project_lesson.in:181
 msgid "In diesem Projekt findet kein Unterricht statt."
 msgstr ""
 
-#: ../src/cgi-bin/project_lesson.in:137
+#: ../src/cgi-bin/project_lesson.in:138
 msgid "In diesem Projekt wird bereits unterrichtet."
 msgstr ""
 
-#: ../shtml/room_end_lesson_verify.tt:30 ../src/cgi-bin/room.in:344
+#: ../shtml/room_end_lesson_verify.tt:30 ../src/cgi-bin/room.in:345
 msgid "In diesem Raum findet eine Klassenarbeit statt."
 msgstr ""
 
-#: ../src/cgi-bin/room.in:98 ../src/cgi-bin/room.in:240
-#: ../src/cgi-bin/room.in:298 ../src/cgi-bin/room.in:330
+#: ../src/cgi-bin/room.in:99 ../src/cgi-bin/room.in:241
+#: ../src/cgi-bin/room.in:299 ../src/cgi-bin/room.in:331
 msgid "In diesem Raum findet kein Unterricht statt."
 msgstr ""
 
-#: ../src/cgi-bin/room.in:277
+#: ../src/cgi-bin/room.in:278
 msgid "In diesem Raum wird bereits unterrichtet."
 msgstr ""
 
-#: ../src/cgi-bin/class_lesson.in:104
+#: ../src/cgi-bin/class_lesson.in:105
 msgid "In dieser Klasse Projekt findet kein Unterricht statt."
 msgstr ""
 
-#: ../src/cgi-bin/class_lesson.in:154 ../src/cgi-bin/class_lesson.in:176
+#: ../src/cgi-bin/class_lesson.in:155 ../src/cgi-bin/class_lesson.in:177
 msgid "In dieser Klasse findet kein Unterricht statt."
 msgstr ""
 
-#: ../src/cgi-bin/class_lesson.in:133
+#: ../src/cgi-bin/class_lesson.in:134
 msgid "In dieser Klasse wird bereits unterrichtet."
 msgstr ""
 
-#: ../shtml/page.tt:87 ../shtml/start.tt:75
+#: ../shtml/page.tt:88 ../shtml/start.tt:75
 msgid "Info"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1133
+#: ../lib/Schulkonsole/Session.pm.in:1111
 msgid "Interner Fehler"
 msgstr ""
 
-#: ../shtml/room.tt:122 ../shtml/room.tt:309 ../shtml/rooms.tt:21
+#: ../shtml/room.tt:97 ../shtml/rooms.tt:21
 msgid "Internet"
 msgstr ""
 
-#: ../shtml/room.tt:123 ../shtml/room.tt:310 ../shtml/rooms.tt:22
+#: ../shtml/room.tt:98 ../shtml/rooms.tt:22
 msgid "Intranet"
 msgstr ""
 
@@ -1908,54 +2037,52 @@ msgstr ""
 msgid "K"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_images.in:232 ../src/cgi-bin/linbo_images.in:283
-#: ../src/cgi-bin/linbo_images.in:326 ../src/cgi-bin/linbo_pxeedit.in:160
-#: ../src/cgi-bin/linbo_menuedit.in:206
-#: ../src/cgi-bin/linbo_regpatchedit.in:129
-#: ../src/cgi-bin/linbo_regpatchedit.in:244
+#: ../src/cgi-bin/linbo_images.in:233 ../src/cgi-bin/linbo_images.in:284
+#: ../src/cgi-bin/linbo_images.in:327 ../src/cgi-bin/linbo_pxeedit.in:161
+#: ../src/cgi-bin/linbo_menuedit.in:207
+#: ../src/cgi-bin/linbo_regpatchedit.in:130
+#: ../src/cgi-bin/linbo_regpatchedit.in:245
 #, perl-format
 msgid "Kann Datei %s nicht &ouml;ffnen"
 msgstr ""
 
-#: ../src/cgi-bin/user_commit.in:131 ../src/cgi-bin/user_commit.in:167
-#: ../src/cgi-bin/user_commit.in:203 ../src/cgi-bin/hosts.in:306
+#: ../src/cgi-bin/user_commit.in:132 ../src/cgi-bin/user_commit.in:168
+#: ../src/cgi-bin/user_commit.in:204 ../src/cgi-bin/hosts.in:307
 msgid "Kann Logdatei nicht &ouml;ffnen"
 msgstr ""
 
-#: ../src/cgi-bin/class_passwords.in:327
-#: ../src/cgi-bin/user_teacherpasswords.in:164
-#: ../src/cgi-bin/project_passwords.in:369
+#: ../src/cgi-bin/class_passwords.in:328
+#: ../src/cgi-bin/user_teacherpasswords.in:165
+#: ../src/cgi-bin/project_passwords.in:370
 msgid "Kein Passwort eingegeben"
 msgstr ""
 
-#: ../src/cgi-bin/room_test.in:54 ../src/cgi-bin/room_test_password.in:51
+#: ../src/cgi-bin/room_test.in:55 ../src/cgi-bin/room_test_password.in:52
 msgid "Kein Workstationpasswort angegeben."
 msgstr ""
 
-#: ../src/cgi-bin/class_shares.in:105 ../src/cgi-bin/settings_classs.in:152
-#: ../src/cgi-bin/project_shares.in:127 ../src/cgi-bin/quotas_others.in:205
-#: ../src/cgi-bin/quotas_projects.in:164 ../src/cgi-bin/quotas_projects.in:291
-#: ../src/cgi-bin/quotas_teachers.in:136 ../src/cgi-bin/hosts.in:237
-#: ../src/cgi-bin/room_shares.in:106 ../src/cgi-bin/quotas_classes.in:163
-#: ../src/cgi-bin/settings_projects.in:128
+#: ../src/cgi-bin/class_shares.in:106 ../src/cgi-bin/settings_classs.in:153
+#: ../src/cgi-bin/project_shares.in:128 ../src/cgi-bin/quotas_others.in:206
+#: ../src/cgi-bin/quotas_projects.in:165 ../src/cgi-bin/quotas_projects.in:292
+#: ../src/cgi-bin/quotas_teachers.in:137 ../src/cgi-bin/hosts.in:238
+#: ../src/cgi-bin/room_shares.in:107 ../src/cgi-bin/quotas_classes.in:164
+#: ../src/cgi-bin/settings_projects.in:129
 msgid "Keine &Auml;nderungen."
 msgstr ""
 
-#: ../src/cgi-bin/project_collect.in:133 ../src/cgi-bin/class_passwords.in:295
-#: ../src/cgi-bin/class_passwords.in:310 ../src/cgi-bin/class_passwords.in:332
-#: ../src/cgi-bin/user_teacherpasswords.in:131
-#: ../src/cgi-bin/project_passwords.in:337
-#: ../src/cgi-bin/project_passwords.in:352
-#: ../src/cgi-bin/project_passwords.in:374
-#: ../src/cgi-bin/class_handoutcopy.in:99 ../src/cgi-bin/room_handout.in:99
-#: ../src/cgi-bin/project_handoutcopy.in:123
-#: ../src/cgi-bin/class_collect.in:112 ../src/cgi-bin/room_collect.in:118
+#: ../src/cgi-bin/project_collect.in:137 ../src/cgi-bin/class_passwords.in:296
+#: ../src/cgi-bin/class_passwords.in:311 ../src/cgi-bin/class_passwords.in:333
+#: ../src/cgi-bin/user_teacherpasswords.in:132
+#: ../src/cgi-bin/project_passwords.in:338
+#: ../src/cgi-bin/project_passwords.in:353
+#: ../src/cgi-bin/project_passwords.in:375
+#: ../src/cgi-bin/class_handoutcopy.in:105 ../src/cgi-bin/room_handout.in:100
+#: ../src/cgi-bin/project_handoutcopy.in:129
+#: ../src/cgi-bin/class_collect.in:116 ../src/cgi-bin/room_collect.in:123
 msgid "Keine Benutzer ausgew&auml;hlt"
 msgstr ""
 
-#: ../shtml/class_handout.tt:45 ../shtml/class_handoutcopy.tt:45
-#: ../shtml/project_handout.tt:44 ../shtml/project_handoutcopy.tt:44
-#: ../shtml/room_handout.tt:43 ../shtml/room_test_handout.tt:68
+#: ../shtml/room_test_handout.tt:79
 msgid "Keine Dateien"
 msgstr ""
 
@@ -1963,11 +2090,11 @@ msgstr ""
 msgid "Keine Druckaufträge"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:134
+#: ../src/cgi-bin/linbo_new.in:135
 msgid "Keine Festplattengr&ouml;&szlig;e angegeben"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:63
+#: ../src/cgi-bin/linbo_new.in:64
 msgid "Keine Gruppe ausgew&auml;hlt"
 msgstr ""
 
@@ -1979,15 +2106,15 @@ msgstr ""
 msgid "Keine Templates vorhanden."
 msgstr ""
 
-#: ../src/cgi-bin/hosts.in:283
+#: ../src/cgi-bin/hosts.in:284
 msgid "Keine Workstations zu importieren"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:78
+#: ../src/cgi-bin/linbo_new.in:79
 msgid "Keine Zielgruppe angegeben"
 msgstr ""
 
-#: ../src/cgi-bin/project_addmembers.in:301
+#: ../src/cgi-bin/project_addmembers.in:302
 msgid "Keine neuen Mitglieder ausgew&auml;hlt"
 msgstr ""
 
@@ -1999,30 +2126,30 @@ msgstr ""
 msgid "Klasse"
 msgstr ""
 
-#: ../src/cgi-bin/class.in:84
+#: ../src/cgi-bin/class.in:85
 #, perl-format
 msgid "Klasse %s gibt es nicht"
 msgstr ""
 
-#: ../src/cgi-bin/project_addmembers.in:168
-#: ../src/cgi-bin/project_addmembers.in:179
+#: ../src/cgi-bin/project_addmembers.in:169
+#: ../src/cgi-bin/project_addmembers.in:180
 #, perl-format
 msgid "Klasse %s gibt es nicht."
 msgstr ""
 
-#: ../src/cgi-bin/project_addmembers.in:191
+#: ../src/cgi-bin/project_addmembers.in:192
 #, perl-format
 msgid "Klasse %s ist bereits Projektmitglied."
 msgstr ""
 
-#: ../src/cgi-bin/quotas_classes.in:130
+#: ../src/cgi-bin/quotas_classes.in:131
 #, perl-format
 msgid "Klasse %s unbekannt"
 msgstr ""
 
 #: ../shtml/class.tt:1 ../shtml/class.tt:27 ../shtml/class_collect.tt:1
 #: ../shtml/class_collect.tt:27 ../shtml/class_handout.tt:1
-#: ../shtml/class_handout.tt:27 ../shtml/class_handoutcopy.tt:1
+#: ../shtml/class_handout.tt:26 ../shtml/class_handoutcopy.tt:1
 #: ../shtml/class_handoutcopy.tt:27 ../shtml/class_lesson.tt:1
 #: ../shtml/class_lesson.tt:26 ../shtml/class_list.tt:1
 #: ../shtml/class_list.tt:27 ../shtml/class_passwords.tt:1
@@ -2046,7 +2173,7 @@ msgstr ""
 msgid "Klassenarbeitsmodus"
 msgstr ""
 
-#: ../src/cgi-bin/room.in:310
+#: ../src/cgi-bin/room.in:311
 msgid "Klassenarbeitsmodus aktiv"
 msgstr ""
 
@@ -2080,19 +2207,19 @@ msgstr ""
 msgid "Kommentare bearbeiten"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:281
+#: ../src/cgi-bin/linbo_new.in:282
 msgid "Konfigurationsdatei erstellt"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_edit.in:385
+#: ../src/cgi-bin/linbo_edit.in:386
 msgid "Konfigurationsdatei geschrieben"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:100
+#: ../src/cgi-bin/linbo_new.in:101
 msgid "Konfigurationsdatei konnte nicht kopiert werden"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:97
+#: ../src/cgi-bin/linbo_new.in:98
 msgid "Konfigurationsdatei kopiert"
 msgstr ""
 
@@ -2116,27 +2243,32 @@ msgstr ""
 msgid "Kopie behalten"
 msgstr ""
 
-#: ../shtml/room_test_collect.tt:33 ../shtml/room_test_collect.tt:61
+#: ../shtml/room_test_collect.tt:59 ../shtml/room_test_collect.tt:87
 msgid "Kopien einsammeln"
 msgstr ""
 
-#: ../src/cgi-bin/room_test_collect.in:76 ../src/cgi-bin/room_collect.in:105
+#: ../src/cgi-bin/room_test_collect.in:82 ../src/cgi-bin/room_collect.in:110
 msgid "Kopiert"
 msgstr ""
 
-#: ../src/cgi-bin/room_collect.in:107
+#: ../src/cgi-bin/room_collect.in:112
 msgid "Kopiert von"
 msgstr ""
 
-#: ../shtml/linbo_images.tt:109 ../shtml/linbo_images.tt:147
+#: ../shtml/class_collect.tt:52 ../shtml/class_handout.tt:51
+#: ../shtml/class_handoutcopy.tt:52 ../shtml/linbo_images.tt:109
+#: ../shtml/linbo_images.tt:147 ../shtml/project_collect.tt:49
+#: ../shtml/project_handout.tt:51 ../shtml/project_handoutcopy.tt:51
+#: ../shtml/room_collect.tt:50 ../shtml/room_handout.tt:48
+#: ../shtml/room_test_collect.tt:50 ../shtml/room_test_handout.tt:71
 msgid "L"
 msgstr ""
 
-#: ../src/cgi-bin/user_commit.in:175
+#: ../src/cgi-bin/user_commit.in:176
 msgid "L&ouml;schen l&auml;uft schon"
 msgstr ""
 
-#: ../src/cgi-bin/user_commit.in:181
+#: ../src/cgi-bin/user_commit.in:182
 msgid "L&ouml;schen wurde gestartet"
 msgstr ""
 
@@ -2150,7 +2282,7 @@ msgstr ""
 msgid "Lehrer"
 msgstr ""
 
-#: ../src/cgi-bin/user_teachers.in:211 ../src/cgi-bin/quotas_teachers.in:119
+#: ../src/cgi-bin/user_teachers.in:212 ../src/cgi-bin/quotas_teachers.in:120
 #, perl-format
 msgid "Lehrer %s unbekannt"
 msgstr ""
@@ -2163,7 +2295,7 @@ msgstr ""
 msgid "Lehrer hinzufügen"
 msgstr ""
 
-#: ../src/cgi-bin/user_teachers.in:293
+#: ../src/cgi-bin/user_teachers.in:294
 msgid "Lehrer hinzugefuegt"
 msgstr ""
 
@@ -2190,13 +2322,13 @@ msgstr ""
 msgid "Liste"
 msgstr ""
 
-#: ../shtml/class_collect.tt:55 ../shtml/class_handoutcopy.tt:52
+#: ../shtml/class_collect.tt:82 ../shtml/class_handoutcopy.tt:68
 #: ../shtml/class_list.tt:107 ../shtml/class_list.tt:33
 #: ../shtml/class_passwords.tt:54 ../shtml/class_passwords.tt:83
 #: ../shtml/class_shares.tt:35 ../shtml/login.tt:1
 #: ../shtml/project_addmembers.tt:19 ../shtml/project_addmembers.tt:34
 #: ../shtml/project_addmembers.tt:49 ../shtml/project_addmembers.tt:64
-#: ../shtml/project_collect.tt:54 ../shtml/project_handoutcopy.tt:51
+#: ../shtml/project_collect.tt:77 ../shtml/project_handoutcopy.tt:67
 #: ../shtml/project_members.tt:126 ../shtml/project_members.tt:145
 #: ../shtml/project_members.tt:162 ../shtml/project_members.tt:229
 #: ../shtml/project_passwords.tt:54 ../shtml/project_passwords.tt:82
@@ -2204,26 +2336,25 @@ msgstr ""
 #: ../shtml/quotas_others.tt:160 ../shtml/quotas_others.tt:18
 #: ../shtml/quotas_others.tt:212 ../shtml/quotas_others.tt:260
 #: ../shtml/quotas_others.tt:62 ../shtml/quotas_teachers.tt:18
-#: ../shtml/room.tt:121 ../shtml/room.tt:308 ../shtml/room_collect.tt:54
-#: ../shtml/room_handout.tt:51 ../shtml/room_shares.tt:35
-#: ../shtml/room_test_collect.tt:39 ../shtml/room_test_handout.tt:37
-#: ../shtml/settings_users.tt:128 ../shtml/settings_users.tt:91
-#: ../shtml/user_teacherpasswords.tt:35 ../shtml/user_teacherpasswords.tt:56
-#: ../shtml/user_teachers.tt:20 ../shtml/user_teachers.tt:61
-#: ../shtml/user_teachers.tt:94
+#: ../shtml/room.tt:96 ../shtml/room_collect.tt:79 ../shtml/room_handout.tt:65
+#: ../shtml/room_shares.tt:35 ../shtml/room_test_collect.tt:65
+#: ../shtml/room_test_handout.tt:39 ../shtml/settings_users.tt:128
+#: ../shtml/settings_users.tt:91 ../shtml/user_teacherpasswords.tt:35
+#: ../shtml/user_teacherpasswords.tt:56 ../shtml/user_teachers.tt:20
+#: ../shtml/user_teachers.tt:61 ../shtml/user_teachers.tt:94
 msgid "Login"
 msgstr ""
 
-#: ../src/cgi-bin/user_teachers.in:193
+#: ../src/cgi-bin/user_teachers.in:194
 #, perl-format
 msgid "Login %s schon vorhanden"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1405
+#: ../lib/Schulkonsole/Session.pm.in:1382
 msgid "Login fehlgeschlagen"
 msgstr ""
 
-#: ../src/cgi-bin/user_teachers.in:249
+#: ../src/cgi-bin/user_teachers.in:250
 msgid "Loginname ist schon belegt"
 msgstr ""
 
@@ -2231,7 +2362,12 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: ../shtml/project.tt:72 ../shtml/project_drop_verify.tt:9
+#: ../shtml/class_collect.tt:51 ../shtml/class_handout.tt:50
+#: ../shtml/class_handoutcopy.tt:51 ../shtml/project.tt:72
+#: ../shtml/project_collect.tt:48 ../shtml/project_drop_verify.tt:9
+#: ../shtml/project_handout.tt:50 ../shtml/project_handoutcopy.tt:50
+#: ../shtml/room_collect.tt:49 ../shtml/room_handout.tt:47
+#: ../shtml/room_test_collect.tt:49 ../shtml/room_test_handout.tt:70
 #: ../shtml/settings_users.tt:165 ../shtml/settings_users.tt:182
 msgid "Löschen"
 msgstr ""
@@ -2270,11 +2406,11 @@ msgstr ""
 msgid "Mailquota von"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:316
+#: ../src/cgi-bin/start.in:317
 msgid "Mailweiterleitung erfolgreich ge&auml;ndert"
 msgstr ""
 
-#: ../src/cgi-bin/class.in:105
+#: ../src/cgi-bin/class.in:106
 msgid ""
 "Melden Sie sich unter Windows erneut an, damit Sie auf die "
 "Gruppenverzeichnisse zugreifen k&ouml;nnen."
@@ -2327,7 +2463,7 @@ msgstr ""
 msgid "Möchten Sie das Projekt wirklich löschen?"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_edit.in:139 ../src/cgi-bin/linbo_edit.in:141
+#: ../src/cgi-bin/linbo_edit.in:140 ../src/cgi-bin/linbo_edit.in:142
 msgid "NEU"
 msgstr ""
 
@@ -2340,25 +2476,25 @@ msgstr ""
 msgid "Nachname"
 msgstr ""
 
-#: ../src/cgi-bin/user_teachers.in:255
+#: ../src/cgi-bin/user_teachers.in:256
 msgid "Nachname ist leer"
 msgstr ""
 
-#: ../shtml/class_collect.tt:56 ../shtml/class_handoutcopy.tt:53
+#: ../shtml/class_collect.tt:83 ../shtml/class_handoutcopy.tt:69
 #: ../shtml/class_list.tt:108 ../shtml/class_list.tt:34
 #: ../shtml/class_passwords.tt:55 ../shtml/class_passwords.tt:84
 #: ../shtml/class_shares.tt:36 ../shtml/project_addmembers.tt:105
 #: ../shtml/project_addmembers.tt:116 ../shtml/project_addmembers.tt:20
 #: ../shtml/project_addmembers.tt:35 ../shtml/project_addmembers.tt:50
 #: ../shtml/project_addmembers.tt:65 ../shtml/project_addmembers.tt:80
-#: ../shtml/project_addmembers.tt:91 ../shtml/project_collect.tt:55
-#: ../shtml/project_handoutcopy.tt:52 ../shtml/project_members.tt:127
+#: ../shtml/project_addmembers.tt:91 ../shtml/project_collect.tt:78
+#: ../shtml/project_handoutcopy.tt:68 ../shtml/project_members.tt:127
 #: ../shtml/project_members.tt:146 ../shtml/project_members.tt:163
 #: ../shtml/project_members.tt:230 ../shtml/project_passwords.tt:55
 #: ../shtml/project_passwords.tt:83 ../shtml/project_shares.tt:35
 #: ../shtml/quotas_others.tt:110 ../shtml/quotas_others.tt:161
-#: ../shtml/quotas_teachers.tt:19 ../shtml/room.tt:262 ../shtml/room.tt:385
-#: ../shtml/room_collect.tt:55 ../shtml/user_teacherpasswords.tt:36
+#: ../shtml/quotas_teachers.tt:19 ../shtml/room.tt:199
+#: ../shtml/room_collect.tt:80 ../shtml/user_teacherpasswords.tt:36
 #: ../shtml/user_teacherpasswords.tt:57
 msgid "Name"
 msgstr ""
@@ -2392,15 +2528,15 @@ msgstr ""
 msgid "Neues Passwort"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:255
+#: ../src/cgi-bin/start.in:256
 msgid "Neues Passwort eingeben"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:274
+#: ../src/cgi-bin/start.in:275
 msgid "Neues Passwort nicht richtig wiederholt"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:262
+#: ../src/cgi-bin/start.in:263
 msgid "Neues Passwort zur Kontrolle zweimal eingeben"
 msgstr ""
 
@@ -2412,14 +2548,14 @@ msgstr ""
 msgid "Neues System hinzufügen"
 msgstr ""
 
-#: ../src/cgi-bin/rooms.in:223
+#: ../src/cgi-bin/rooms.in:224
 msgid "Nichts ausgew&auml;hlt"
 msgstr ""
 
-#: ../src/cgi-bin/project_addmembers.in:455
-#: ../src/cgi-bin/project_addmembers.in:507
-#: ../src/cgi-bin/project_addmembers.in:563
-#: ../src/cgi-bin/project_addmembers.in:609
+#: ../src/cgi-bin/project_addmembers.in:456
+#: ../src/cgi-bin/project_addmembers.in:508
+#: ../src/cgi-bin/project_addmembers.in:564
+#: ../src/cgi-bin/project_addmembers.in:610
 msgid "Nichts gefunden"
 msgstr ""
 
@@ -2429,12 +2565,19 @@ msgstr ""
 msgid "Nr"
 msgstr ""
 
+#: ../shtml/class_collect.tt:41 ../shtml/class_handout.tt:40
+#: ../shtml/class_handoutcopy.tt:41 ../shtml/class_handoutcopy.tt:67
+#: ../shtml/project_collect.tt:38 ../shtml/project_handout.tt:40
+#: ../shtml/project_handoutcopy.tt:40 ../shtml/project_handoutcopy.tt:66
+#: ../shtml/room.tt:94 ../shtml/room_collect.tt:39 ../shtml/room_handout.tt:37
+#: ../shtml/room_handout.tt:63 ../shtml/room_test_collect.tt:39
+#: ../shtml/room_test_handout.tt:37 ../shtml/room_test_handout.tt:60
 #: ../shtml/rooms_classrooms.tt:29
 msgid "Nr."
 msgstr ""
 
 #: ../shtml/class_lesson.tt:32 ../shtml/project_lesson.tt:32
-#: ../shtml/room.tt:29 ../shtml/room_collect.tt:13
+#: ../shtml/room.tt:32 ../shtml/room_collect.tt:13
 #: ../shtml/room_end_lesson_verify.tt:12 ../shtml/room_handout.tt:14
 #: ../shtml/room_shares.tt:13 ../shtml/room_test.tt:15
 #: ../shtml/room_test_collect.tt:15 ../shtml/room_test_end.tt:15
@@ -2447,19 +2590,19 @@ msgstr ""
 msgid "Offenes Projekt"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:398
+#: ../src/cgi-bin/start.in:399
 msgid "OpenVPN-Passwort best&auml;tigen"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:378
+#: ../src/cgi-bin/start.in:379
 msgid "OpenVPN-Passwort eingegeben"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:389
+#: ../src/cgi-bin/start.in:390
 msgid "OpenVPN-Passwort muss mindestens sechs Zeichen haben"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:409
+#: ../src/cgi-bin/start.in:410
 msgid "OpenVPN-Passwort nicht richtig wiederholt"
 msgstr ""
 
@@ -2483,15 +2626,15 @@ msgstr ""
 msgid "Optionen"
 msgstr ""
 
-#: ../shtml/class_collect.tt:46 ../shtml/class_collect.tt:92
-#: ../shtml/project_collect.tt:45 ../shtml/project_collect.tt:91
-#: ../shtml/room_collect.tt:114 ../shtml/room_collect.tt:43
+#: ../shtml/class_collect.tt:119 ../shtml/class_collect.tt:73
+#: ../shtml/project_collect.tt:114 ../shtml/project_collect.tt:68
+#: ../shtml/room_collect.tt:139 ../shtml/room_collect.tt:68
 msgid "Original bleibt erhalten"
 msgstr ""
 
-#: ../shtml/class_collect.tt:42 ../shtml/class_collect.tt:88
-#: ../shtml/project_collect.tt:41 ../shtml/project_collect.tt:87
-#: ../shtml/room_collect.tt:110 ../shtml/room_collect.tt:39
+#: ../shtml/class_collect.tt:115 ../shtml/class_collect.tt:69
+#: ../shtml/project_collect.tt:110 ../shtml/project_collect.tt:64
+#: ../shtml/room_collect.tt:135 ../shtml/room_collect.tt:64
 msgid "Original wird gelöscht"
 msgstr ""
 
@@ -2537,15 +2680,15 @@ msgstr ""
 msgid "Partitionsgrößen in MB"
 msgstr ""
 
-#: ../src/cgi-bin/class_passwords.in:324
-#: ../src/cgi-bin/user_teacherpasswords.in:161
-#: ../src/cgi-bin/project_passwords.in:366
+#: ../src/cgi-bin/class_passwords.in:325
+#: ../src/cgi-bin/user_teacherpasswords.in:162
+#: ../src/cgi-bin/project_passwords.in:367
 msgid "Passw&ouml;rter gesetzt"
 msgstr ""
 
-#: ../src/cgi-bin/class_passwords.in:292
-#: ../src/cgi-bin/user_teacherpasswords.in:142
-#: ../src/cgi-bin/project_passwords.in:334
+#: ../src/cgi-bin/class_passwords.in:293
+#: ../src/cgi-bin/user_teacherpasswords.in:143
+#: ../src/cgi-bin/project_passwords.in:335
 msgid "Passw&ouml;rter zur&uuml;ckgesetzt"
 msgstr ""
 
@@ -2575,7 +2718,7 @@ msgstr ""
 msgid "Passwort ändern"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:283
+#: ../src/cgi-bin/start.in:284
 msgid "Passwort&auml;nderung erfolgreich"
 msgstr ""
 
@@ -2607,42 +2750,42 @@ msgstr ""
 msgid "Projekt"
 msgstr ""
 
-#: ../src/cgi-bin/project.in:121
+#: ../src/cgi-bin/project.in:122
 #, perl-format
 msgid "Projekt %s angelegt"
 msgstr ""
 
-#: ../src/cgi-bin/project.in:266
+#: ../src/cgi-bin/project.in:267
 #, perl-format
 msgid "Projekt %s gel&ouml;scht"
 msgstr ""
 
-#: ../src/cgi-bin/project_addmembers.in:207
+#: ../src/cgi-bin/project_addmembers.in:208
 #, perl-format
 msgid "Projekt %s gibt es nicht."
 msgstr ""
 
-#: ../src/cgi-bin/project.in:105
+#: ../src/cgi-bin/project.in:106
 #, perl-format
 msgid "Projekt %s gibt es schon"
 msgstr ""
 
-#: ../src/cgi-bin/project_addmembers.in:219
+#: ../src/cgi-bin/project_addmembers.in:220
 #, perl-format
 msgid "Projekt %s ist bereits Projektmitglied."
 msgstr ""
 
-#: ../src/cgi-bin/project.in:278
+#: ../src/cgi-bin/project.in:279
 #, perl-format
 msgid "Projekt %s konnte nicht gel&ouml;scht werden"
 msgstr ""
 
-#: ../src/cgi-bin/quotas_projects.in:131
+#: ../src/cgi-bin/quotas_projects.in:132
 #, perl-format
 msgid "Projekt %s unbekannt"
 msgstr ""
 
-#: ../src/cgi-bin/project.in:132
+#: ../src/cgi-bin/project.in:133
 msgid "Projekt konnte nicht angelegt werden"
 msgstr ""
 
@@ -2693,7 +2836,7 @@ msgstr ""
 msgid "Quota aktivieren"
 msgstr ""
 
-#: ../src/cgi-bin/settings.in:202 ../src/cgi-bin/settings_users.in:202
+#: ../src/cgi-bin/settings.in:203 ../src/cgi-bin/settings_users.in:203
 msgid "Quota muss eine Zahl sein"
 msgstr ""
 
@@ -2705,7 +2848,7 @@ msgstr ""
 msgid "Raum"
 msgstr ""
 
-#: ../shtml/page.tt:69 ../shtml/status.inc.tt:13
+#: ../shtml/page.tt:70 ../shtml/status.inc.tt:13
 msgid "Raum:"
 msgstr ""
 
@@ -2729,11 +2872,11 @@ msgstr ""
 msgid "Rechnergruppenname"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:128
+#: ../src/cgi-bin/linbo_new.in:129
 msgid "Rechnergruppenname schon vergeben"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_regpatchedit.in:87
+#: ../src/cgi-bin/linbo_regpatchedit.in:88
 #, perl-format
 msgid "Registrypatch %s nicht vorhanden"
 msgstr ""
@@ -2787,17 +2930,17 @@ msgstr ""
 msgid "Schließen"
 msgstr ""
 
-#: ../shtml/class_collect.tt:79 ../shtml/class_handoutcopy.tt:69
+#: ../shtml/class_collect.tt:106 ../shtml/class_handoutcopy.tt:87
 #: ../shtml/class_passwords.tt:77 ../shtml/class_shares.tt:59
-#: ../shtml/project_collect.tt:78 ../shtml/project_handoutcopy.tt:68
+#: ../shtml/project_collect.tt:101 ../shtml/project_handoutcopy.tt:86
 #: ../shtml/project_passwords.tt:76 ../shtml/project_shares.tt:58
-#: ../shtml/room.tt:227 ../shtml/room.tt:288 ../shtml/room_collect.tt:100
-#: ../shtml/room_handout.tt:85 ../shtml/room_shares.tt:73
+#: ../shtml/room.tt:166 ../shtml/room.tt:222 ../shtml/room_collect.tt:125
+#: ../shtml/room_handout.tt:98 ../shtml/room_shares.tt:73
 #: ../shtml/user_teacherpasswords.tt:51
 msgid "Schnellauswahl"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1437
+#: ../lib/Schulkonsole/Session.pm.in:1414
 msgid "Schueler"
 msgstr ""
 
@@ -2809,7 +2952,7 @@ msgstr ""
 #: ../shtml/linbo_images.tt:1 ../shtml/linbo_menuedit.tt:1
 #: ../shtml/linbo_new.tt:1 ../shtml/linbo_pxeedit.tt:1
 #: ../shtml/linbo_regpatchedit.tt:1 ../shtml/login.tt:1 ../shtml/logout.tt:1
-#: ../shtml/page.tt:27 ../shtml/printers.tt:1 ../shtml/printers_edit.tt:1
+#: ../shtml/page.tt:28 ../shtml/printers.tt:1 ../shtml/printers_edit.tt:1
 #: ../shtml/project.tt:1 ../shtml/project_addmembers.tt:1
 #: ../shtml/project_collect.tt:1 ../shtml/project_drop_verify.tt:1
 #: ../shtml/project_handout.tt:1 ../shtml/project_handoutcopy.tt:1
@@ -2834,15 +2977,15 @@ msgstr ""
 msgid "Schulkonsole"
 msgstr ""
 
-#: ../shtml/header.inc.tt:6 ../shtml/page.tt:23
+#: ../shtml/header.inc.tt:6 ../shtml/page.tt:24
 msgid "Schulkonsole für Lehrer/innen"
 msgstr ""
 
-#: ../shtml/header.inc.tt:4 ../shtml/page.tt:21
+#: ../shtml/header.inc.tt:4 ../shtml/page.tt:22
 msgid "Schulkonsole für Netzwerkberater/innen"
 msgstr ""
 
-#: ../shtml/header.inc.tt:8 ../shtml/page.tt:25
+#: ../shtml/header.inc.tt:8 ../shtml/page.tt:26
 msgid "Schulkonsole für Schüler/innen"
 msgstr ""
 
@@ -2879,36 +3022,36 @@ msgstr ""
 msgid "Shell aktivieren"
 msgstr ""
 
-#: ../src/cgi-bin/project_lesson.in:163 ../src/cgi-bin/project_lesson.in:185
+#: ../src/cgi-bin/project_lesson.in:164 ../src/cgi-bin/project_lesson.in:186
 msgid "Sie d&uuml;rfen den Unterricht in diesem Projekt nicht beenden."
 msgstr ""
 
-#: ../src/cgi-bin/room.in:303 ../src/cgi-bin/room.in:335
+#: ../src/cgi-bin/room.in:304 ../src/cgi-bin/room.in:336
 msgid "Sie d&uuml;rfen den Unterricht in diesem Raum nicht beenden."
 msgstr ""
 
-#: ../src/cgi-bin/class_lesson.in:159 ../src/cgi-bin/class_lesson.in:181
+#: ../src/cgi-bin/class_lesson.in:160 ../src/cgi-bin/class_lesson.in:182
 msgid "Sie d&uuml;rfen den Unterricht in dieser Klasse nicht beenden."
 msgstr ""
 
-#: ../src/cgi-bin/project.in:170
+#: ../src/cgi-bin/project.in:171
 #, perl-format
 msgid "Sie d&uuml;rfen die Benutzerliste von %s nicht &auml;ndern"
 msgstr ""
 
-#: ../src/cgi-bin/project_lesson.in:113
+#: ../src/cgi-bin/project_lesson.in:114
 msgid "Sie halten keinen Unterricht in diesem Projekt."
 msgstr ""
 
-#: ../src/cgi-bin/room.in:103 ../src/cgi-bin/room.in:245
+#: ../src/cgi-bin/room.in:104 ../src/cgi-bin/room.in:246
 msgid "Sie halten keinen Unterricht in diesem Raum."
 msgstr ""
 
-#: ../src/cgi-bin/class_lesson.in:109
+#: ../src/cgi-bin/class_lesson.in:110
 msgid "Sie halten keinen Unterricht in dieser Klasse."
 msgstr ""
 
-#: ../src/cgi-bin/user_teachin.in:134 ../src/cgi-bin/user_check.in:103
+#: ../src/cgi-bin/user_teachin.in:135 ../src/cgi-bin/user_check.in:104
 msgid "Sie k&ouml;nnen die Benutzerdaten jetzt &uuml;bernehmen"
 msgstr ""
 
@@ -2917,40 +3060,40 @@ msgid ""
 "Sie können jetzt die <a href=\"user_commit\">Benutzerdaten übernehmen</a>."
 msgstr ""
 
-#: ../src/cgi-bin/project.in:89
+#: ../src/cgi-bin/project.in:90
 msgid "Sie m&uuml;ssen einen Projektnamen angeben."
 msgstr ""
 
-#: ../src/cgi-bin/class.in:91
+#: ../src/cgi-bin/class.in:92
 #, perl-format
 msgid "Sie sind bereits in Klasse %s"
 msgstr ""
 
-#: ../src/cgi-bin/project.in:184 ../src/cgi-bin/project_members.in:174
+#: ../src/cgi-bin/project.in:185 ../src/cgi-bin/project_members.in:175
 #, perl-format
 msgid "Sie sind der letzte Projektleiter von %s"
 msgstr ""
 
-#: ../src/cgi-bin/project_members.in:80
+#: ../src/cgi-bin/project_members.in:81
 msgid "Sie sind kein Administrator dieser Klasse"
 msgstr ""
 
-#: ../src/cgi-bin/project_members.in:136
+#: ../src/cgi-bin/project_members.in:137
 msgid "Sie sind kein Mitglied dieser Klasse"
 msgstr ""
 
-#: ../src/cgi-bin/project_members.in:145
+#: ../src/cgi-bin/project_members.in:146
 msgid "Sie sind kein Mitglied dieses Projekts"
 msgstr ""
 
-#: ../src/cgi-bin/project_handout.in:71 ../src/cgi-bin/project_collect.in:71
-#: ../src/cgi-bin/project_shares.in:72
-#: ../src/cgi-bin/project_handoutcopy.in:71
-#: ../src/cgi-bin/project_addmembers.in:63
+#: ../src/cgi-bin/project_handout.in:73 ../src/cgi-bin/project_collect.in:72
+#: ../src/cgi-bin/project_shares.in:73
+#: ../src/cgi-bin/project_handoutcopy.in:74
+#: ../src/cgi-bin/project_addmembers.in:64
 msgid "Sie sind kein Projektleiter"
 msgstr ""
 
-#: ../src/cgi-bin/project.in:229 ../src/cgi-bin/project_members.in:247
+#: ../src/cgi-bin/project.in:230 ../src/cgi-bin/project_members.in:248
 #, perl-format
 msgid "Sie sind kein Projektleiter von %s"
 msgstr ""
@@ -2959,7 +3102,7 @@ msgstr ""
 msgid "Sitzungsdauer"
 msgstr ""
 
-#: ../shtml/page.tt:65 ../shtml/status.inc.tt:9
+#: ../shtml/page.tt:66 ../shtml/status.inc.tt:9
 msgid "Sitzungsdauer:"
 msgstr ""
 
@@ -2972,7 +3115,7 @@ msgstr ""
 msgid "Sonderquota"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:588
+#: ../src/cgi-bin/start.in:589
 msgid "Speicherplatz"
 msgstr ""
 
@@ -3009,7 +3152,7 @@ msgstr ""
 msgid "Startseite"
 msgstr ""
 
-#: ../shtml/room.tt:263 ../shtml/room.tt:386 ../shtml/user_commit.tt:97
+#: ../shtml/room.tt:200 ../shtml/user_commit.tt:97
 msgid "Status"
 msgstr ""
 
@@ -3021,7 +3164,7 @@ msgstr ""
 msgid "Subklasse"
 msgstr ""
 
-#: ../src/cgi-bin/project_addmembers.in:615
+#: ../src/cgi-bin/project_addmembers.in:616
 msgid "Suchanfrage ist leer"
 msgstr ""
 
@@ -3077,7 +3220,7 @@ msgid "Tauschen"
 msgstr ""
 
 #: ../shtml/class_shares.tt:37 ../shtml/project_shares.tt:36
-#: ../shtml/room.tt:128 ../shtml/room.tt:315 ../shtml/room_shares.tt:36
+#: ../shtml/room.tt:103 ../shtml/room_shares.tt:36
 msgid "Tauschen<br>global"
 msgstr ""
 
@@ -3089,17 +3232,17 @@ msgstr ""
 msgid "Teach-In"
 msgstr ""
 
-#: ../src/cgi-bin/user_check.in:98
+#: ../src/cgi-bin/user_check.in:99
 msgid "Teach-In ist notwendig"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:154 ../src/cgi-bin/linbo_new.in:181
-#: ../src/cgi-bin/linbo_new.in:208 ../src/cgi-bin/linbo_new.in:235
+#: ../src/cgi-bin/linbo_new.in:155 ../src/cgi-bin/linbo_new.in:182
+#: ../src/cgi-bin/linbo_new.in:209 ../src/cgi-bin/linbo_new.in:236
 #, perl-format
 msgid "Template %s nicht vorhanden"
 msgstr ""
 
-#: ../src/cgi-bin/quotas_others.in:136 ../src/cgi-bin/quotas_projects.in:222
+#: ../src/cgi-bin/quotas_others.in:137 ../src/cgi-bin/quotas_projects.in:223
 msgid "Tragen Sie mindestens Disk- oder Mailquota ein"
 msgstr ""
 
@@ -3108,19 +3251,19 @@ msgid "U"
 msgstr ""
 
 #: ../shtml/class_lesson.tt:89 ../shtml/project_lesson.tt:89
-#: ../shtml/room.tt:93
+#: ../shtml/room.tt:70
 msgid "Uhr"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:144
+#: ../src/cgi-bin/linbo_new.in:145
 msgid "Unbekannter Festplattencontroller"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:124
+#: ../src/cgi-bin/linbo_new.in:125
 msgid "Ung&uuml;ltiger Gruppenname"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new.in:84
+#: ../src/cgi-bin/linbo_new.in:85
 msgid "Ung&uuml;ltiger Zielgruppenname"
 msgstr ""
 
@@ -3130,27 +3273,27 @@ msgid "Unterricht"
 msgstr ""
 
 #: ../shtml/class_lesson.tt:44 ../shtml/project_lesson.tt:44
-#: ../shtml/room.tt:48
+#: ../shtml/room.tt:46
 msgid "Unterricht beenden:"
 msgstr ""
 
-#: ../src/cgi-bin/class_lesson.in:168 ../src/cgi-bin/room.in:322
-#: ../src/cgi-bin/project_lesson.in:172
+#: ../src/cgi-bin/class_lesson.in:169 ../src/cgi-bin/room.in:323
+#: ../src/cgi-bin/project_lesson.in:173
 msgid "Unterricht beendet."
 msgstr ""
 
 #: ../shtml/class_lesson.tt:101 ../shtml/project_lesson.tt:101
-#: ../shtml/room.tt:106
+#: ../shtml/room.tt:82
 msgid "Unterricht beginnen"
 msgstr ""
 
-#: ../src/cgi-bin/class_lesson.in:144 ../src/cgi-bin/room.in:288
-#: ../src/cgi-bin/project_lesson.in:148
+#: ../src/cgi-bin/class_lesson.in:145 ../src/cgi-bin/room.in:289
+#: ../src/cgi-bin/project_lesson.in:149
 msgid "Unterricht begonnen."
 msgstr ""
 
-#: ../src/cgi-bin/class_lesson.in:196 ../src/cgi-bin/room.in:358
-#: ../src/cgi-bin/project_lesson.in:200
+#: ../src/cgi-bin/class_lesson.in:197 ../src/cgi-bin/room.in:359
+#: ../src/cgi-bin/project_lesson.in:201
 msgid "Unterrichtsende liegt in der Vergangenheit"
 msgstr ""
 
@@ -3163,9 +3306,9 @@ msgstr ""
 msgid "Unterrichtsende um"
 msgstr ""
 
-#: ../src/cgi-bin/class_lesson.in:146 ../src/cgi-bin/class_lesson.in:204
-#: ../src/cgi-bin/room.in:290 ../src/cgi-bin/room.in:366
-#: ../src/cgi-bin/project_lesson.in:150 ../src/cgi-bin/project_lesson.in:208
+#: ../src/cgi-bin/class_lesson.in:147 ../src/cgi-bin/class_lesson.in:205
+#: ../src/cgi-bin/room.in:291 ../src/cgi-bin/room.in:367
+#: ../src/cgi-bin/project_lesson.in:151 ../src/cgi-bin/project_lesson.in:209
 msgid "Unterrichtsende um %H:%M"
 msgstr ""
 
@@ -3174,7 +3317,7 @@ msgstr ""
 msgid "VFAT"
 msgstr ""
 
-#: ../src/cgi-bin/user_commit.in:139
+#: ../src/cgi-bin/user_commit.in:140
 msgid "Versetzen l&auml;uft schon"
 msgstr ""
 
@@ -3182,33 +3325,39 @@ msgstr ""
 msgid "Versetzen läuft."
 msgstr ""
 
-#: ../src/cgi-bin/user_commit.in:145
+#: ../src/cgi-bin/user_commit.in:146
 msgid "Versetzen wurde gestartet"
 msgstr ""
 
-#: ../shtml/header.inc.tt:12 ../shtml/page.tt:29
+#: ../shtml/header.inc.tt:12 ../shtml/page.tt:30
 msgid "Version"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:431 ../src/cgi-bin/start.in:453
+#: ../src/cgi-bin/start.in:432 ../src/cgi-bin/start.in:454
 msgid "Verst&auml;ndigen Sie den Netzwerkadministrator"
 msgstr ""
 
-#: ../src/cgi-bin/class_handoutcopy.in:129 ../src/cgi-bin/room_handout.in:121
-#: ../src/cgi-bin/project_handoutcopy.in:153
+#: ../src/cgi-bin/class_handoutcopy.in:239 ../src/cgi-bin/room_handout.in:122
+#: ../src/cgi-bin/project_handoutcopy.in:261
 msgid "Verzeichnis zum Austeilen nicht gefunden"
 msgstr ""
 
-#: ../src/cgi-bin/project_handout.in:127 ../src/cgi-bin/class_handout.in:112
-#: ../src/cgi-bin/room_test_handout.in:104
+#: ../src/cgi-bin/project_handout.in:227 ../src/cgi-bin/class_handout.in:216
+#: ../src/cgi-bin/room_test_handout.in:206
 msgid "Verzeichnis zum Bereitstellen nicht gefunden"
 msgstr ""
 
-#: ../shtml/class_handout.tt:35 ../shtml/project_handout.tt:34
+#: ../src/cgi-bin/room_test_collect.in:189
+#: ../src/cgi-bin/project_collect.in:241 ../src/cgi-bin/class_collect.in:219
+#: ../src/cgi-bin/room_collect.in:226
+msgid "Verzeichnis zum Einsammeln nicht gefunden"
+msgstr ""
+
+#: ../shtml/class_handout.tt:34 ../shtml/project_handout.tt:34
 msgid "Vorlagen"
 msgstr ""
 
-#: ../src/cgi-bin/project_handout.in:90 ../src/cgi-bin/class_handout.in:75
+#: ../src/cgi-bin/project_handout.in:93 ../src/cgi-bin/class_handout.in:80
 msgid "Vorlagen bereitgestellt"
 msgstr ""
 
@@ -3217,7 +3366,7 @@ msgstr ""
 msgid "Vorname"
 msgstr ""
 
-#: ../src/cgi-bin/user_teachers.in:261
+#: ../src/cgi-bin/user_teachers.in:262
 msgid "Vorname ist leer"
 msgstr ""
 
@@ -3227,7 +3376,7 @@ msgstr ""
 msgid "WLAN"
 msgstr ""
 
-#: ../shtml/room.tt:124 ../shtml/room.tt:311 ../shtml/rooms.tt:23
+#: ../shtml/room.tt:99 ../shtml/rooms.tt:23
 msgid "Webfilter"
 msgstr ""
 
@@ -3236,14 +3385,14 @@ msgid "Webspace"
 msgstr ""
 
 #: ../shtml/class.tt:21 ../shtml/class_collect.tt:21
-#: ../shtml/class_handout.tt:21 ../shtml/class_handoutcopy.tt:21
+#: ../shtml/class_handout.tt:20 ../shtml/class_handoutcopy.tt:21
 #: ../shtml/class_lesson.tt:21 ../shtml/class_list.tt:21
 #: ../shtml/class_passwords.tt:21 ../shtml/class_shares.tt:21
 #: ../shtml/project.tt:21 ../shtml/project_collect.tt:20
 #: ../shtml/project_handout.tt:20 ../shtml/project_handoutcopy.tt:20
 #: ../shtml/project_lesson.tt:21 ../shtml/project_members.tt:19
 #: ../shtml/project_passwords.tt:21 ../shtml/project_shares.tt:20
-#: ../shtml/room.tt:20
+#: ../shtml/room.tt:22
 msgid "Wechseln"
 msgstr ""
 
@@ -3251,7 +3400,7 @@ msgstr ""
 msgid "Weiterleitung(en)"
 msgstr ""
 
-#: ../shtml/page.tt:75 ../shtml/status.inc.tt:19
+#: ../shtml/page.tt:76 ../shtml/status.inc.tt:19
 msgid "Workstation:"
 msgstr ""
 
@@ -3259,11 +3408,11 @@ msgstr ""
 msgid "Workstationaccounts"
 msgstr ""
 
-#: ../src/cgi-bin/room_test.in:104 ../src/cgi-bin/room_test_password.in:61
+#: ../src/cgi-bin/room_test.in:105 ../src/cgi-bin/room_test_password.in:62
 msgid "Workstationpasswort ge&auml;ndert."
 msgstr ""
 
-#: ../src/cgi-bin/hosts.in:280
+#: ../src/cgi-bin/hosts.in:281
 msgid "Workstations werden importiert"
 msgstr ""
 
@@ -3283,11 +3432,11 @@ msgstr ""
 msgid "Zertifikat erstellen und herunterladen"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:450
+#: ../src/cgi-bin/start.in:451
 msgid "Zertifikat konnte nicht heruntergeladen werden."
 msgstr ""
 
-#: ../src/cgi-bin/start.in:419
+#: ../src/cgi-bin/start.in:420
 msgid "Zertifikat wurde erstellt."
 msgstr ""
 
@@ -3299,9 +3448,9 @@ msgstr ""
 msgid "Zertifikatspasswort bestätigen:"
 msgstr ""
 
-#: ../src/cgi-bin/class_passwords.in:307
-#: ../src/cgi-bin/user_teacherpasswords.in:151
-#: ../src/cgi-bin/project_passwords.in:349
+#: ../src/cgi-bin/class_passwords.in:308
+#: ../src/cgi-bin/user_teacherpasswords.in:152
+#: ../src/cgi-bin/project_passwords.in:350
 msgid "Zufallspassw&ouml;rter gesetzt"
 msgstr ""
 
@@ -3313,7 +3462,7 @@ msgstr ""
 msgid "Zufallspasswortzeichen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1431
+#: ../lib/Schulkonsole/Session.pm.in:1408
 msgid "Zugriff verweigert"
 msgstr ""
 
@@ -3329,13 +3478,13 @@ msgstr ""
 msgid "[LINBO] - globale Konfiguration"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:355
+#: ../src/cgi-bin/start.in:356
 msgid "abgebrochen"
 msgstr ""
 
-#: ../src/cgi-bin/start.in:524 ../src/cgi-bin/start.in:543
-#: ../src/cgi-bin/class_list.in:133 ../src/cgi-bin/class_list.in:152
-#: ../src/cgi-bin/project_members.in:369 ../src/cgi-bin/project_members.in:388
+#: ../src/cgi-bin/start.in:525 ../src/cgi-bin/start.in:544
+#: ../src/cgi-bin/class_list.in:134 ../src/cgi-bin/class_list.in:153
+#: ../src/cgi-bin/project_members.in:370 ../src/cgi-bin/project_members.in:389
 msgid "abgelaufen"
 msgstr ""
 
@@ -3343,11 +3492,11 @@ msgstr ""
 msgid "abgewählt"
 msgstr ""
 
-#: ../shtml/page.tt:79 ../shtml/status.inc.tt:23
+#: ../shtml/page.tt:80 ../shtml/status.inc.tt:23
 msgid "aktive Klasse:"
 msgstr ""
 
-#: ../shtml/page.tt:82
+#: ../shtml/page.tt:83
 msgid "aktives Projekt:"
 msgstr ""
 
@@ -3360,7 +3509,7 @@ msgid "aktueller Raum"
 msgstr ""
 
 #: ../shtml/class_lesson.tt:98 ../shtml/project_lesson.tt:98
-#: ../shtml/room.tt:103
+#: ../shtml/room.tt:79
 msgid "angemeldet,"
 msgstr ""
 
@@ -3373,11 +3522,11 @@ msgid "automatischer Rootlogout nach"
 msgstr ""
 
 #: ../shtml/class_lesson.tt:90 ../shtml/project_lesson.tt:90
-#: ../shtml/room.tt:94
+#: ../shtml/room.tt:71
 msgid "beenden lassen"
 msgstr ""
 
-#: ../shtml/room_test_handout.tt:65
+#: ../shtml/room_test_handout.tt:76
 msgid "bereitstellen"
 msgstr ""
 
@@ -3398,7 +3547,7 @@ msgstr ""
 msgid "erweiterte Partition"
 msgstr ""
 
-#: ../shtml/room.tt:264 ../shtml/room.tt:387
+#: ../shtml/room.tt:201
 msgid "freigeschaltet"
 msgstr ""
 
@@ -3406,7 +3555,7 @@ msgstr ""
 msgid "grub.exe"
 msgstr ""
 
-#: ../src/cgi-bin/hosts.in:242
+#: ../src/cgi-bin/hosts.in:243
 msgid "ignoriert: "
 msgstr ""
 
@@ -3414,7 +3563,7 @@ msgstr ""
 msgid "ist im Projekt"
 msgstr ""
 
-#: ../shtml/room.tt:101
+#: ../shtml/room.tt:77
 msgid "ist in Raum"
 msgstr ""
 
@@ -3427,7 +3576,7 @@ msgid "kein Betriebssystem automatisch starten"
 msgstr ""
 
 #: ../shtml/class_lesson.tt:100 ../shtml/project_lesson.tt:100
-#: ../shtml/room.tt:105
+#: ../shtml/room.tt:81
 msgid "kein Unterricht."
 msgstr ""
 
@@ -3443,7 +3592,7 @@ msgstr ""
 msgid "kopieren nach"
 msgstr ""
 
-#: ../src/cgi-bin/user_teachers.in:139
+#: ../src/cgi-bin/user_teachers.in:140
 msgid "lehrer.txt existiert bereits"
 msgstr ""
 
@@ -3506,7 +3655,7 @@ msgid "sichtbar"
 msgstr ""
 
 #: ../shtml/class_lesson.tt:45 ../shtml/project_lesson.tt:45
-#: ../shtml/room.tt:49
+#: ../shtml/room.tt:47
 msgid "sofort beenden"
 msgstr ""
 
@@ -3514,17 +3663,17 @@ msgstr ""
 msgid "start"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_edit.in:74
+#: ../src/cgi-bin/linbo_edit.in:75
 #, perl-format
 msgid "start.conf.%s existiert nicht"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_edit.in:87
+#: ../src/cgi-bin/linbo_edit.in:88
 #, perl-format
 msgid "start.conf.%s gel&ouml;scht"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_edit.in:90
+#: ../src/cgi-bin/linbo_edit.in:91
 #, perl-format
 msgid "start.conf.%s konnte nicht gel&ouml;scht werden"
 msgstr ""
@@ -3546,44 +3695,44 @@ msgid "torrent"
 msgstr ""
 
 #: ../shtml/class_lesson.tt:48 ../shtml/project_lesson.tt:48
-#: ../shtml/room.tt:52
+#: ../shtml/room.tt:49
 msgid "um"
 msgstr ""
 
-#: ../shtml/page.tt:73 ../shtml/room.tt:409 ../shtml/status.inc.tt:17
+#: ../shtml/page.tt:74 ../shtml/room.tt:27 ../shtml/status.inc.tt:17
 msgid "unbekannt"
 msgstr ""
 
-#: ../src/cgi-bin/hosts.in:471
+#: ../src/cgi-bin/hosts.in:472
 msgid "ung&uuml;ltige Gruppen"
 msgstr ""
 
-#: ../src/cgi-bin/hosts.in:481
+#: ../src/cgi-bin/hosts.in:482
 msgid "ung&uuml;ltige IP"
 msgstr ""
 
-#: ../src/cgi-bin/hosts.in:473
+#: ../src/cgi-bin/hosts.in:474
 msgid "ung&uuml;ltige MAC"
 msgstr ""
 
-#: ../src/cgi-bin/hosts.in:483
+#: ../src/cgi-bin/hosts.in:484
 msgid "ung&uuml;ltige Optionen"
 msgstr ""
 
-#: ../src/cgi-bin/hosts.in:469
+#: ../src/cgi-bin/hosts.in:470
 msgid "ung&uuml;ltiger Name"
 msgstr ""
 
-#: ../src/cgi-bin/hosts.in:466
+#: ../src/cgi-bin/hosts.in:467
 msgid "ung&uuml;ltiger Raumname"
 msgstr ""
 
-#: ../src/cgi-bin/user_teachers.in:180
+#: ../src/cgi-bin/user_teachers.in:181
 #, perl-format
 msgid "ung&uuml;tiges Geburtsdatum f&uuml;r %s"
 msgstr ""
 
-#: ../shtml/room.tt:33 ../shtml/room_collect.tt:15
+#: ../shtml/room.tt:34 ../shtml/room_collect.tt:15
 #: ../shtml/room_end_lesson_verify.tt:16 ../shtml/room_handout.tt:16
 #: ../shtml/room_shares.tt:15 ../shtml/room_test.tt:19
 #: ../shtml/room_test_collect.tt:19 ../shtml/room_test_end.tt:19
@@ -3599,7 +3748,7 @@ msgstr ""
 msgid "unterrichtet in der Klasse"
 msgstr ""
 
-#: ../shtml/page.tt:66 ../shtml/status.inc.tt:10
+#: ../shtml/page.tt:67 ../shtml/status.inc.tt:10
 msgid "verbleibend:"
 msgstr ""
 
@@ -3613,7 +3762,7 @@ msgstr ""
 msgid "verknüpfen mit"
 msgstr ""
 
-#: ../src/cgi-bin/user_teachers.in:268
+#: ../src/cgi-bin/user_teachers.in:269
 msgid "verwenden Sie f&uuml;r das Geburtsdatum das Format TT.MM.JJJJ"
 msgstr ""
 
@@ -3621,7 +3770,7 @@ msgstr ""
 msgid "von"
 msgstr ""
 
-#: ../shtml/room_test_handout.tt:69 ../shtml/user_teachin.tt:39
+#: ../shtml/room_test_handout.tt:80 ../shtml/user_teachin.tt:39
 #: ../shtml/user_teachin.tt:41 ../shtml/user_teachin.tt:96
 #: ../shtml/user_teachin.tt:98
 msgid "weiter"
@@ -3668,7 +3817,7 @@ msgstr ""
 #: ../shtml/quotas_others.tt:238 ../shtml/quotas_others.tt:287
 #: ../shtml/quotas_others.tt:42 ../shtml/quotas_others.tt:86
 #: ../shtml/quotas_projects.tt:46 ../shtml/quotas_teachers.tt:47
-#: ../shtml/room.tt:253 ../shtml/room.tt:297 ../shtml/room_shares.tt:77
+#: ../shtml/room.tt:187 ../shtml/room.tt:232 ../shtml/room_shares.tt:77
 #: ../shtml/rooms.tt:153 ../shtml/rooms_classrooms.tt:48
 #: ../shtml/settings_classs.tt:58 ../shtml/settings_program.tt:25
 #: ../shtml/settings_projects.tt:52 ../shtml/settings_users.tt:198
@@ -3685,11 +3834,11 @@ msgstr ""
 msgid "Übersicht"
 msgstr ""
 
-#: ../shtml/room.tt:256 ../shtml/room.tt:380
+#: ../shtml/room.tt:194
 msgid "Übersicht Drucker"
 msgstr ""
 
-#: ../shtml/room.tt:115 ../shtml/room.tt:302
+#: ../shtml/room.tt:89
 msgid "Übersicht PCs"
 msgstr ""
 
