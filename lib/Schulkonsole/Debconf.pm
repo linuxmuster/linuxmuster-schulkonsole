@@ -1,4 +1,5 @@
 use strict;
+use utf8;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
 use Schulkonsole::Error;

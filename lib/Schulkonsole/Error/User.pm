@@ -1,4 +1,5 @@
 use strict;
+use utf8;
 
 
 package Schulkonsole::Error::User;

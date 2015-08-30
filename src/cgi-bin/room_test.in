@@ -21,6 +21,7 @@ Schulkonsole::Session and Schulkonsole::Room::set_vars().
 =cut
 
 use strict;
+use utf8;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Config;
 use Schulkonsole::Room;

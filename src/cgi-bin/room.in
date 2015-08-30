@@ -28,6 +28,7 @@ Schulkonsole::Room::set_vars() C<room> provides the following variables:
 =cut
 
 use strict;
+use utf8;
 use lib '@datadir@/@PACKAGE@';
 use Time::Local;
 use POSIX;

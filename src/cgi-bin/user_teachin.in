@@ -24,6 +24,7 @@ provides the following variables:
 =cut
 
 use strict;
+use utf8;
 use lib '@datadir@/@PACKAGE@';
 use Proc::ProcessTable;
 use Schulkonsole::Session;
