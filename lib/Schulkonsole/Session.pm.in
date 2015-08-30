@@ -205,20 +205,18 @@ sub end_session {
 
 
 
-=head3 C<send_cookie()>
+=head3 C<print_header()>
 
 =head4 Description
 
-Saves the session data in a cookie for next invocation.
+Saves the session data in a cookie for next invocation and sends header information.
 
 =cut
 
-sub send_cookie{
+sub print_header{
 	my $this = shift;
 
-	binmode(STDOUT, ":utf8");
-
-	# if we have path-info the links within the page will not work
+		# if we have path-info the links within the page will not work
 	# we should not be here
 	my $path = $this->{query}->path_info();
 	if ($path) {
@@ -252,8 +250,8 @@ sub send_cookie{
 				-secure => 1,
 			),
 		);
-		print $this->{query}->header( -cookie => \@cookies,
-		                       -expires => 'now' );
+		print $this->{query}->header(-type => 'text/html', -charset => 'UTF-8',
+								 -cookie => \@cookies, -expires => 'now' );
 	} elsif (   $no_cookies
 	         or $session_id ne $old_session_id) {
 		my $cookie = $this->{query}->cookie(
@@ -262,8 +260,8 @@ sub send_cookie{
 			-path => $Schulkonsole::Config::_http_root,
 			-secure => 1,
 		);
-		print $this->{query}->header( -cookie => $cookie,
-		                       -expires => 'now' );
+		print $this->{query}->header( -type => 'text/html', -charset => 'UTF-8',
+								-cookie => $cookie, -expires => 'now' );
 	} elsif ($this->{key}) {
 		my $cookie = $this->{query}->cookie(
 			-name => 'key',
@@ -271,10 +269,11 @@ sub send_cookie{
 			-path => $Schulkonsole::Config::_http_root,
 			-secure => 1,
 		);
-		print $this->{query}->header( -cookie => $cookie,
-		                       -expires => 'now' );
+		print $this->{query}->header( -type => 'text/html', -charset => 'UTF-8',
+									-cookie => $cookie, -expires => 'now' );
 	} else {
-		print $this->{query}->header( -expires => 'now' );
+		print $this->{query}->header( -type => 'text/html', -charset => 'UTF-8',
+									-expires => 'now' );
 	}
 	
 	return $no_cookies;
@@ -630,7 +629,7 @@ sub print_page {
 	foreach my $key (keys \%$params) {
             $vars->{$key} = $$params{$key};
     }
-    $vars->{no_cookies} = $this->send_cookie();
+    $vars->{no_cookies} = $this->print_header();
     $vars->{parent_page} = $this->{parent_page};
 	$vars->{is_error} = $this->{is_error};
 	# localization: [% d.get('Text') %]
@@ -660,7 +659,7 @@ sub print_page {
     $vars->{dovalue} = sub { return 'value="' . $this->{query}->param(@_[0]) . '"'; };
     $vars->{valueof} = sub { return $this->{query}->param(@_[0]); };
 
-    $template->process($file, $vars) or die "$0: " . $template->error()->as_string() . "!\n";
+	$template->process($file, $vars) or die "$0: " . $template->error()->as_string() . "!\n";
 
 	# occasionally the session is not automatically flushed
 	$this->{session}->flush();
@@ -1043,7 +1042,7 @@ sub d {
 	return $this->{d}{$textdomain} if defined $this->{d}{$textdomain};
 
 	$this->{d}{$textdomain} = Locale::gettext->domain($textdomain);
-	$this->{d}{$textdomain}->dir('@datadir@/locale');
+	$this->{d}{$textdomain}->dir('/usr/share/locale');
 	return $this->{d}{$textdomain};
 }
 
@@ -1219,9 +1218,8 @@ sub init {
         my $plugin = shift;
         
 	$this->{query} = new CGI;
-
-	$this->{query}->charset('UTF-8');
-
+	binmode STDOUT, ':encoding(UTF-8)';
+	
 	umask(umask() | 077);	# session-file mode 0600
 	# create session from query to get the session id
 	$this->{session} = new CGI::Session("driver:File", $this->{query},
