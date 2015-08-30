@@ -25,6 +25,7 @@ C<room_shares> provides the following variables:
 =cut
 
 use strict;
+use utf8;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Room;
 use Schulkonsole::Sophomorix;

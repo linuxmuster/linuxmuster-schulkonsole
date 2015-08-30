@@ -16,6 +16,7 @@ The HTML template is class_list.tt.
 =cut
 
 use strict;
+use utf8;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Cyrus;
 use Schulkonsole::DB;

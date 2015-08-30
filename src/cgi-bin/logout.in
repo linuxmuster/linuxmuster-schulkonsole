@@ -15,6 +15,7 @@ C<logout> ends a session and redirects to the start page.
 =cut
 
 use strict;
+use utf8;
 use lib '@datadir@/@PACKAGE@';
 use Schulkonsole::Encode;
 use Schulkonsole::Session;

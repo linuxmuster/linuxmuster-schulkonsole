@@ -155,6 +155,7 @@ A comma separated list of the user's classes
 =cut
 
 use strict;
+use utf8;
 use lib '@datadir@/@PACKAGE@';
 use Sys::Hostname;
 use Net::CUPS;

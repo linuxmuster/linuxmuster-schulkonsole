@@ -23,6 +23,7 @@ provides the following variables:
 =cut
 
 use strict;
+use utf8;
 use lib '@datadir@/@PACKAGE@';
 use Env::Bash;
 use Schulkonsole::Encode;
