@@ -1,8 +1,7 @@
 [% page.default = '1' %]
-<!DOCTYPE html>
-<html>
+<!DOCTYPE  HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
+<html[% IF lang %] lang="[% lang %]"[% END %]>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>[% page.title %]</title>
     <link rel="stylesheet" title="linuxmuster.net::Schulkonsole" href="css/linuxmuster.css" type="text/css">
     <link rel="stylesheet" href="/jquery/jquery-ui.css"/>
