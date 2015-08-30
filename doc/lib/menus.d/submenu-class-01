@@ -2,7 +2,7 @@
 	<li><a [% dohref("class_list") %]>[% loc('Klassenliste') %]</a></li>
 [% END %]
 [% IF link_class_passwords %]
-	<li><a class="separator" [% dohref("class_passwords") %]>[% loc('Passw&ouml;rter') %]</a></li>
+	<li><a class="separator" [% dohref("class_passwords") %]>[% loc('Passwörter') %]</a></li>
 [% END %]
 [% IF link_class_handoutcopy %]
 	<li><a [% dohref("class_handoutcopy") %]>[% loc('Austeilen') %]</a></li>

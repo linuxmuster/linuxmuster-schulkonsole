@@ -2,5 +2,5 @@
 	<li><a class="separator" [% dohref("rooms") %]>[% loc('Standardeinstellungen') %]</a></li>
 [% END %]
 [% IF link_rooms_classrooms %]
-	<li><a class="end" [% dohref("rooms_classrooms") %]>[% loc('EDV-R&auml;ume') %]</a></li>
+	<li><a class="end" [% dohref("rooms_classrooms") %]>[% loc('EDV-Räume') %]</a></li>
 [% END %]

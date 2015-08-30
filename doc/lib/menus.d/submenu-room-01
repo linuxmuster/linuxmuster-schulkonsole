@@ -36,7 +36,7 @@
 [% END %]
 [% ELSE %]
 [% IF link_room_shares %]
-	<li><span class="disabled">[% loc('Tauschen') %]</a></span></li>
+	<li><span class="disabled">[% loc('Tauschen') %]</span></li>
 [% END %]
 [% IF link_room_handout %]
 	<li><span class="disabled">[% loc('Austeilen') %]</span></li>
