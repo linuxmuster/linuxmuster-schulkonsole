@@ -17,7 +17,8 @@ PERMUSERDIR=/etc/linuxmuster/schulkonsole/permissions.d
 PERMCONF=/etc/linuxmuster/schulkonsole/permissions.conf
 GROUP="all
 teachers
-domadmins"
+domadmins
+students"
 
 rm -f $PERMCONF
 touch $PERMCONF

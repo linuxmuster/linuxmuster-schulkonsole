@@ -157,6 +157,8 @@ $VERSION = 0.06;
 	SHARESTATESAPP
 	SHARESONOFFAPP
 	FILEMANAPP
+	STUDENTSFILEMANAPP
+	LSHANDEDOUTAPP
 	LSHANDOUTAPP
 	LSCOLLECTAPP
 	HANDOUTAPP
@@ -351,6 +353,14 @@ C<shares_on_off>
 
 C<fileman>
 
+=item C<STUDENTSFILEMANAPP>
+
+C<studentsfileman>
+
+=item C<LSHANDEDOUTAPP>
+
+C<ls_handedout>
+
 =item C<LSHANDOUTAPP>
 
 C<ls_handout>
@@ -506,6 +516,8 @@ use constant {
 	CHANGEMAILALIASPROJECTAPP => 8031,
 	CHANGEMAILLISTPROJECTAPP => 8032,
 	FILEMANAPP => 8033,
+	STUDENTSFILEMANAPP => 8034,
+	LSHANDEDOUTAPP =>8035,
 };
 
 =head3 Constants for wrapper-cyrus
@@ -1286,6 +1298,8 @@ $_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
 	SHARESTATESAPP() => 'share_states',
 	SHARESONOFFAPP() => 'shares_on_off',
 	FILEMANAPP() => 'fileman',
+	STUDENTSFILEMANAPP() => 'studentsfileman',
+	LSHANDEDOUTAPP() => 'ls_handedout',
 	LSHANDOUTAPP() => 'ls_handout',
 	LSCOLLECTAPP() => 'ls_collect',
 	HANDOUTAPP() => 'handout',
