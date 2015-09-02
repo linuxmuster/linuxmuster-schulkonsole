@@ -18,6 +18,7 @@ pkglibexec_SCRIPTS=example start logout \
 	quotas quotas_teachers quotas_classes quotas_projects quotas_others \
 	linbo linbo_edit linbo_new linbo_regpatchedit linbo_pxeedit linbo_images \
 	linbo_menuedit \
+	myclass myclass_handedout \
 	config.php
 
 CLEANFILES = $(pkglibexec_SCRIPTS)
@@ -42,6 +43,7 @@ EXTRA_DIST = example.in start.in logout.in \
 	quotas_teachers.in quotas_classes.in quotas_projects.in quotas_others.in \
 	linbo.in linbo_edit.in linbo_new.in linbo_regpatchedit.in \
 	linbo_pxeedit.in linbo_images.in linbo_menuedit.in \
+	myclass.in myclass_handedout.in \
 	config.php.in
 
 

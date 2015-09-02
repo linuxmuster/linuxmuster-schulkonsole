@@ -1397,6 +1397,10 @@ sub authenticate {
 	$this->read_groups_from_db();
 	my @groupnames = keys %{ $this->{groups} };
 
+	# FIXME: workaround for non existing students group!
+	if(! (grep(/^teachers$/,@groupnames) or grep(/^domadmins$/,@groupnames))) {
+		push @groupnames, 'students';
+	}
 	foreach my $group (('ALL', @groupnames)) {
 		foreach my $page (keys %{ $$permissions{$group} }) {
 			$this->{pages}{$page} = 1;

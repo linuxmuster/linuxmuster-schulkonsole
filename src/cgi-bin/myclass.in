@@ -1,0 +1,75 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+myclass - overview of the logged in students class
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/myclass
+
+=head1 DESCRIPTION
+
+C<myclass> is the students class page. The HTML template is myclass.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<myclass>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use CGI::Inspect;
+use utf8;
+use lib '@datadir@/@PACKAGE@';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::Sophomorix;
+
+my $this_file = 'myclass';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+my $class = $sk_session->param('class');
+
+if((not $class) and $classs){
+	my @keys = keys $classs;
+	$sk_session->param('class',$$classs{$keys[0]});
+}
+
+$class = $sk_session->param('class');
+
+if ($class) {
+
+=item C<class>
+
+The hash of the selected class (if a class is selected)
+
+=cut
+
+	$sk_session->set_var('class', $class);
+
+}
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+

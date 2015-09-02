@@ -68,7 +68,11 @@ exit (  Schulkonsole::Error::Sophomorix::WRAPPER_APP_ID_DOES_NOT_EXIST
 
 my $permissions = Schulkonsole::Config::permissions_apps();
 my $groups = Schulkonsole::DB::user_groups(
-	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
+$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
+# FIXME: workaround for non existing students group!
+if(! (defined $$groups{teachers} or defined $$groups{domadmins})) {
+	$$groups{'students'} = 1;
+}
 
 my $is_permission_found = 0;
 foreach my $group (('ALL', keys %$groups)) {
@@ -377,6 +381,299 @@ $app_id == Schulkonsole::Config::FILEMANAPP and do {
 			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	}
 	
+	exit 0;
+};
+
+=head3 studentsfileman
+
+numeric constant: C<Schulkonsole::Config::STUDENTSFILEMANAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item action (one of dl - 3/rm - 1/ul - 2)
+
+=item category (one of 0 - handedout, 1 - handedoutcopy, 2 - tocollect)
+
+=item type (one of 1/2 - current_room/exam, 4 - class, 8 - project, 16 - subclass)
+
+=item class (if type 4)/project (if type 8)/subclass (if type 16)
+
+=item filename
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::STUDENTSFILEMANAPP and do {
+	my $action = <>;
+	($action) = $action =~ /^(\d+)$/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_ACTION
+		  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $action;
+	
+	my $category = <>;
+	($category) = $category =~ /^(\d+)$/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_COPY
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $category;
+
+
+	my $share_dir = "$$userdata{homedirectory}/";
+
+	if ($category == 2) {
+		$share_dir .=
+			"$Language::collected_dir/$Language::collected_string";
+	} elsif ($category == 1) {
+		$share_dir .=
+			"$Language::to_handoutcopy_dir/$Language::to_handoutcopy_string";
+	} else {
+		$share_dir .= "$Language::handout_dir/$Language::handout_string";
+	}
+
+	my $type = <>;
+	($type) = $type =~ /^(\d+)/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_TYPE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $type;
+
+	LSHANDOUTTYPE: {
+	($type & 1 or $type & 2) and do {
+		if ($category) {
+				$share_dir .= $Language::current_room;
+		} else {
+				$share_dir .= $Language::exam;
+		}
+		last LSHANDOUTTYPE;
+	};
+	($type & 4) and do {
+		my $project = <>;
+		($project) = $project =~ /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $project;
+		$share_dir .= $project;
+		last LSHANDOUTTYPE;
+	};
+	($type & 8) and do {
+		my $class = <>;
+		($class) = $class =~ /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $class;
+		$share_dir .= $class;
+		last LSHANDOUTTYPE;
+	};
+	($type & 16) and do {
+		my $subclass = <>;
+		($subclass) = $subclass =~ /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_SUBCLASS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $subclass;
+		$share_dir .= $subclass;
+		last LSHANDOUTTYPE;
+	};
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FROM
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+	}
+
+	chdir Schulkonsole::Encode::to_fs($share_dir)
+		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY
+		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+	
+	my $filename = <>;
+	($filename) = $filename =~ /^([^\.\/]\S+)$/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
+		  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $filename;
+	
+	my $isdir = <>;
+	($isdir) = $isdir =~ /^(\d+)$/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILETYPE
+		  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		  unless (defined $isdir) and ($isdir =~ /0|1/);
+	
+	if($action == 1) { # remove
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_FILE
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless -e "$share_dir/$filename";
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILETYPE
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless (-d "$share_dir/$filename" and $isdir) or 
+			  		 (! -d "$share_dir/$filename" and ! $isdir);
+		if($isdir) {
+			system("rm -rf $share_dir/$filename");
+		} else {
+			system("rm -f $share_dir/$filename");
+		}
+	} elsif($action == 2) { # upload
+		my $fromfile = <>;
+		($fromfile) = $fromfile =~ /^(\S+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless defined $fromfile;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_FILE
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless -e "$Schulkonsole::Config::_runtimedir/$fromfile";
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILETYPE
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless (-d "$Schulkonsole::Config::_runtimedir/$fromfile" and $isdir) or 
+			  		 (! -d "$Schulkonsole::Config::_runtimedir/$fromfile" and ! $isdir);
+		if( -e "$share_dir/$filename") { # make room for new file
+			if( -d "$share_dir/$filename") {
+				system("rm -rf $share_dir/$filename");
+			} else {
+				system("rm -f $share_dir/$filename");
+			}
+		}
+		system("mv -f $Schulkonsole::Config::_runtimedir/$fromfile $share_dir/$filename");
+	} elsif($action == 3) { # download
+		my $tofile = <>;
+		($tofile) = $tofile =~ /^(\S+)$/;
+		
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless defined $tofile;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_FILE
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless -e "$share_dir/$filename";
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILETYPE
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			  unless (-d "$share_dir/$filename" and $isdir) or 
+			  		 (! -d "$share_dir/$filename" and ! $isdir);
+		if( -e "$Schulkonsole::Config::_runtimedir/$tofile") { # make room for the file
+			if( -e "$Schulkonsole::Config::_runtimedir/$tofile") {
+				system("rm -rf $Schulkonsole::Config::_runtimedir/$tofile");
+			} else {
+				system("rm -f $Schulkonsole::Config::_runtimedir/$tofile");
+			}
+		}
+		if($isdir){
+			system("mkdir -p $Schulkonsole::Config::_runtimedir/$tofile");
+			system("cp -R $share_dir/$filename/* $Schulkonsole::Config::_runtimedir/$tofile");
+			system("cd $Schulkonsole::Config::_runtimedir/$tofile;zip -r ../${tofile}.zip .");
+			system("chown www-data:www-data $Schulkonsole::Config::_runtimedir/${tofile}.zip");
+			system("rm -rf $Schulkonsole::Config::_runtimedir/$tofile");
+		} else {
+			system("cp $share_dir/$filename $Schulkonsole::Config::_runtimedir/$tofile");			
+			system("chown www-data:www-data $Schulkonsole::Config::_runtimedir/$tofile");
+		}
+	} else {
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_ACTION_NOT_SUPPORTED
+			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+	}
+	
+	exit 0;
+};
+
+=head3 ls_handedout
+
+numeric constant: C<Schulkonsole::Config::LSHANDEDOUTAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item category (0 - handedoutcopy, 1 - handedout)
+
+=item type (current_room, examn, class, project, subclass)
+
+=item class (if type 8)/project (if type 4)/subclass (if type 16)
+
+=back
+
+=cut
+
+$app_id == Schulkonsole::Config::LSHANDEDOUTAPP and do {
+	my $category = <>;
+	($category) = $category =~ /^(\d+)$/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_COPY
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $category;
+
+
+	my $share_dir = "$$userdata{homedirectory}/";
+
+	if ($category == 2) {
+		$share_dir .=
+			"$Language::collected_dir/$Language::collected_string";
+	} elsif ($category) {
+		$share_dir .=
+			"$Language::to_handoutcopy_dir/$Language::to_handoutcopy_string";
+	} else {
+		$share_dir .= "$Language::handout_dir/$Language::handout_string";
+	}
+
+	my $type = <>;
+	($type) = $type =~ /^(\d+)/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_TYPE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $type;
+
+	LSHANDOUTTYPE: {
+	($type & 1 or $type & 2) and do {
+		if ($category) {
+				$share_dir .= $Language::current_room;
+		} else {
+				$share_dir .= $Language::exam;
+		}
+		last LSHANDOUTTYPE;
+	};
+	($type & 4) and do {
+		my $project = <>;
+		($project) = $project =~ /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $project;
+		$share_dir .= $project;
+		last LSHANDOUTTYPE;
+	};
+	($type & 8) and do {
+		my $class = <>;
+		($class) = $class =~ /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $class;
+		$share_dir .= $class;
+		last LSHANDOUTTYPE;
+	};
+	($type & 16) and do {
+		my $subclass = <>;
+		($subclass) = $subclass =~ /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_SUBCLASS
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $subclass;
+		$share_dir .= $subclass;
+		last LSHANDOUTTYPE;
+	};
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FROM
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+	}
+
+	chdir Schulkonsole::Encode::to_fs($share_dir)
+		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY
+		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+	my @teachers = glob '*';
+	my %files;
+	foreach my $teacher (@teachers) {
+		my @files = glob '*';
+		chdir Schulkonsole::Encode::to_fs("$share_dir/$teacher")
+			or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY
+			         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+		foreach my $file (@files) {
+			if (-d $file) {
+				$files{get_decoded($teacher)}{get_decoded($file)} = 'd';
+			} else {
+				$files{get_decoded($teacher)}{get_decoded($file)} = 0;
+			}
+		}
+	}
+	my $data = Data::Dumper->new([ \%files ]);
+	$data->Terse(1);
+	$data->Indent(0);
+	print $data->Dump;
+
 	exit 0;
 };
 

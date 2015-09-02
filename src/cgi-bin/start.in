@@ -265,13 +265,13 @@ COMMANDS: {
 
 	if ($error_cnt) {
 		if ($error_cnt > 1) {
-			$sk_session->set_status($sk_session->{d}->get(
+			$sk_session->set_status($sk_session->d()->get(
 				'Daten zur Passwort&auml;nderung unvollst&auml;ndig'), 1);
 		}
 	} elsif ($newpassword ne $newpasswordagain) {
 		$sk_session->mark_input_error('newpassword');
 		$sk_session->mark_input_error('newpasswordagain');
-		$sk_session->set_status($sk_session->{d}->get(
+		$sk_session->set_status($sk_session->d()->get(
 			'Neues Passwort nicht richtig wiederholt'), 1);
 	} else {
 		eval {
@@ -281,7 +281,7 @@ COMMANDS: {
 			$sk_session->save_password($newpasswordagain);
 
 			$sk_session->set_status(
-				$sk_session->{d}->get('Passwort&auml;nderung erfolgreich'), 0);
+				$sk_session->d()->get('Passwort&auml;nderung erfolgreich'), 0);
 		};
 		if ($@) {
 			$sk_session->standard_error_handling($this_file, $@);
@@ -294,7 +294,6 @@ COMMANDS: {
 # change mailforwards
 defined $q->param('mailchange') and do {
         my $mailaddresses = $q->param('mailforwards');
-        CGI::Inspect::inspect();
         my @mailforwards = ();
         foreach my $mailaddress (split(',',$mailaddresses)) {
             $mailaddress =~ s/^\s+|\s+$//g;
@@ -314,7 +313,7 @@ defined $q->param('mailchange') and do {
                 Schulkonsole::Horde::remove_mailforwards($uid,$password);
             }
             $sk_session->set_status(
-                    $sk_session->{d}->get('Mailweiterleitung erfolgreich ge&auml;ndert'), 0);
+                    $sk_session->d()->get('Mailweiterleitung erfolgreich ge&auml;ndert'), 0);
         };
         if ($@) {
                 $sk_session->standard_error_handling($this_file, $@);

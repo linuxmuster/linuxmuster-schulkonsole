@@ -19,3 +19,12 @@
 [% IF link_room_test %]
 	<li><a class="separator" [% dohref("room_test") %]>[% loc('Klassenarbeit') %]</a></li>
 [% END %]
+[% IF link_myclass_handedoutcopy %]
+	<li><a [% dohref("myclass_handedoutcopy") %]>[% loc('Ausgeteilt') %]</a></li>
+[% END %]
+[% IF link_myclass_handedout %]
+	<li><a [% dohref("myclass_handedout") %]>[% loc('Bereitgestellt') %]</a></li>
+[% END %]
+[% IF link_myclass_tocollect %]
+	<li><a [% dohref("myclass_tocollect") %]>[% loc('Einzusammeln') %]</a></li>
+[% END %]

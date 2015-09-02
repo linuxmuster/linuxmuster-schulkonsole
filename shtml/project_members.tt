@@ -61,15 +61,19 @@
 
 <h3>[% loc('Mitglieder im Projekt') %]</h3>
 
-[% IF membersclasses %]
+[% IF membersclasses.size > 0 %]
     <table id="projectmemberclasses" class="liste">
+    <colgroup span=2></colgroup>
+    <colgroup width="20%"></colgroup>
     <tr>
+    <th>[% loc('Nr.') %]</th>
     <th>[% loc('Klassenname') %]</th>
     <th>[% loc('Mitgliedschaft beenden') %]</th>
     </tr>
+    [% lfdnr = 1 %]
     [% FOREACH mc IN membersclasses %]
-        [% IF odd %][% odd=0 %]<tr class="odd">
-        [% ELSE %][% odd=1 %]<tr class="even">[% END %]
+        <tr class="[% IF lfdnr % 2 == 1%]odd[% ELSE %]even[% END %]">
+        <td class="lfdnr">[% lfdnr %].</td>
         [% IF mc.ismember %]
         <td><input type="submit" name="[% mc.gid %]_gotoclass" value="[% mc.name %]"></td>
         [% ELSE %]
@@ -77,8 +81,10 @@
         [% END %]
         <td><input type="submit" name="[% mc.gid %]_removeclass" value="[% loc('Mitgliedschaft beenden') %]"></td>
         </tr>
+        [% lfdnr = lfdnr + 1 %]
     [% END %]
     <tr>
+    <th>[% loc('Nr.') %]</th>
     <th>[% loc('Klassenname') %]</th>
     <th>[% loc('Mitgliedschaft beenden') %]</th>
     </tr>
@@ -87,17 +93,20 @@
     <hr>
 [% END %]
 
-[% IF membersprojects %]
-    [% odd=0 %]
+[% IF membersprojects.size > 0 %]
     <table id="projectmemberprojects" class="liste">
+	<colgroup span="3"></colgroup>
+	<colgroup width="20%"></colgroup>
     <tr>
+    <th>[% loc('Nr.') %]</th>
     <th>[% loc('Projektname') %]</th>
     <th>[% loc('Offenes Projekt') %]</th>
     <th>[% loc('Mitgliedschaft beenden') %]</th>
     </tr>
+    [% lfdnr = 1 %]
     [% FOREACH mp IN membersprojects %]
-        [% IF odd %][% odd=0 %]<tr class="odd">
-        [% ELSE %][% odd=1 %]<tr class="even">[% END %]
+        <tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+        <td class="lfdnr">[% lfdnr %].</td>
         [% IF mp.ismember %]
         <td><input type="submit" name="[% mp.gid %]_gotoproject" value="[% mp.name %]"></td>
         [% ELSE %]
@@ -106,42 +115,48 @@
         <td><input type="checkbox" disabled checked></td>
         <td><input type="submit" name="[% mp.gid %]_removeproject" value="[% loc('Mitgliedschaft beenden') %]"></td>
         <td></td>
+    	</tr>
+    	[% lfdnr = lfdnr + 1 %]
     [% END %]
-    </tr>
+	<tr>
+	<th>[% loc('Nr.') %]</th>
+	<th>[% loc('Projektname') %]</th>
+	<th>[% loc('Offenes Projekt') %]</th>
+	<th>[% loc('Mitgliedschaft beenden') %]</th>
+	</tr>
+	</table>
+
+	<hr>
 [% END %]
-<tr>
-<th>[% loc('Projektname') %]</th>
-<th>[% loc('Offenes Projekt') %]</th>
-<th>[% loc('Mitgliedschaft beenden') %]</th>
-</tr>
-</table>
 
-<hr>
-
-[% IF membersteachers %]
-    [% odd=0 %]
-
+[% IF membersteachers.size > 0 %]
     <table id="projectmemberteachers" class="liste">
+ 	<colgroup span="4"></colgroup>
+	<colgroup width="20%"></colgroup>
     <tr>
+    <th>[% loc('Nr.') %]</th>
     <th>[% loc('Login') %]</th>
     <th>[% loc('Name') %]</th>
     <th>[% loc('Projektleitung') %]</th>
     <th>[% loc('Mitgliedschaft beenden') %]</th>
     </tr>
+    [% lfdnr = 1 %]
     [% FOREACH mt IN membersteachers %]
-    [% IF odd %][% odd=0 %]<tr class="odd">
-    [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-    <td>[% mt.login %]</td>
-    <td>[% mt.firstname %] [% mt.surname %]</td>
-    [% IF mt.isadmin %]
-    <td><input type="checkbox" disabled checked></td>
-    [% ELSE %]
-    <td><input type="checkbox" disabled></td>
-    [% END %]
-    <td><input type="submit" name="[% mt.login %]_removeuser" value="[% loc('Mitgliedschaft beenden') %]"></td>
-    </tr>
+	    <tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+	    <td class="lfdnr">[% lfdnr %].</td>
+	    <td>[% mt.login %]</td>
+	    <td>[% mt.firstname %] [% mt.surname %]</td>
+	    [% IF mt.isadmin %]
+	    <td><input type="checkbox" disabled checked></td>
+	    [% ELSE %]
+	    <td><input type="checkbox" disabled></td>
+	    [% END %]
+	    <td><input type="submit" name="[% mt.login %]_removeuser" value="[% loc('Mitgliedschaft beenden') %]"></td>
+	    </tr>
+	    [% lfdnr = lfdnr + 1 %]
     [% END %]
     <tr>
+    <th>[% loc('Nr.') %]</th>
     <th>[% loc('Login') %]</th>
     <th>[% loc('Name') %]</th>
     <th>[% loc('Projektleitung') %]</th>
@@ -154,87 +169,91 @@
 
 
 
-[% IF membersstudents %]
-[% odd=0 %]
-
-<table id="projectmemberstudents" class="liste">
-<tr>
-<th>[% loc('Login') %]</th>
-<th>[% loc('Name') %]</th>
-<th>[% loc('Festplattenquota') %]</th>
-<th>[% loc('E-Mailquota') %]</th>
-<th>[% loc('Klasse') %]</th>
-<th>[% loc('Mitgliedschaft beenden') %]</th>
-</tr>
-[% FOREACH ms IN membersstudents %]
-[% IF odd %][% odd=0 %]<tr class="odd">
-[% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% ms.login %]</td>
-<td>[% ms.firstname %] [% ms.surname %]</td>
-<td>
-
-[% IF ms.diskquotas %]
-    <p>
-    [% FOREACH msq IN ms.diskquotas %]
-        [% msq.path %]:<br>
-        [% loc('Speicherplatz/KB:') %]
-        [% msq.blocks_usage %]/[% msq.blocks_soft %]
-        - max: [% msq.blocks_hard %]
-        - [% msq.blocks_percent %]%<br>
-        [% IF msq.blocks_grace %]
-        [% loc('verbleibende Zeit:') %] [% msq.blocks_grace %]<br>[% END %]
-        [% loc('Dateien:') %]
-        [% msq.files_usage %]/[% msq.files_soft %]
-        - max: [% msq.files_hard %]
-        - [% msq.files_percent %]%<br>
-        [% IF msq.files_grace %]
-        [% loc('verbleibende Zeit:') %] [% msq.files_grace %]<br>[% END %]<br>
-    [% END %]
-    </p>
-    <ul>
-    [% FOREACH msq IN ms.diskquotas %]
-        [% IF msq.warn %]<li class="warn">[% ELSE %]<li>[% END %]
-        <span title="[% msq.path %]: [% msq.blocks_percent %]%" style="width: [% msq.blocks_percent_rounded %]%;">&nbsp;</span>
-        </li>
-    [% END %]
-    </ul>
-[% ELSE %]
-    -
-[% END %]</td>
-<td>[% IF ms.mailquotas.limit %]
-
-
-<p>
-	[% loc('E-Mail-Speicher/KB:') %]
-	[% ms.mailquotas.usage %]/[% ms.mailquotas.limit %]
-	- [% ms.mailquotas.percent %]%
-</p>
-
-
-<ul>
-[% IF ms.mailquotas.warn %]
-<li class="warn">
-[% ELSE %]
-<li>
-[% END %]
-<span title="E-Mail: [% ms.mailquotas.usage %]/[% ms.mailquotas.limit %] [% ms.mailquotas.percent %]%" style="width: [% ms.mailquotas.percent_rounded %]%;">&nbsp;</span>
-</li>
-</ul>
-[% ELSE %]-[% END %]</td>
-<td>[% ms.class %]</td>
-<td><input type="submit" name="[% ms.login %]_removeuser" value="[% loc('Mitgliedschaft beenden') %]"></td>
-</tr>
-[% END %]
-<tr>
-<th>[% loc('Login') %]</th>
-<th>[% loc('Name') %]</th>
-<th>[% loc('Festplattenquota') %]</th>
-<th>[% loc('E-Mailquota') %]</th>
-<th>[% loc('Klasse') %]</th>
-<th>[% loc('Mitgliedschaft beenden') %]</th>
-</tr>
-</table>
-
+[% IF membersstudents.size > 0 %]
+	<table id="projectmemberstudents" class="liste">
+	<colgroup span="6"></colgroup>
+	<colgroup width="20%"></colgroup>
+	<tr>
+	<th>[% loc('Nr.') %]</th>
+	<th>[% loc('Login') %]</th>
+	<th>[% loc('Name') %]</th>
+	<th>[% loc('Festplattenquota') %]</th>
+	<th>[% loc('E-Mailquota') %]</th>
+	<th>[% loc('Klasse') %]</th>
+	<th>[% loc('Mitgliedschaft beenden') %]</th>
+	</tr>
+	[% lfdnr = 1 %]
+	[% FOREACH ms IN membersstudents %]
+		<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+		<td class="lfdnr">[% lfdnr %].</td>
+		<td>[% ms.login %]</td>
+		<td>[% ms.firstname %] [% ms.surname %]</td>
+		<td>
+		
+		[% IF ms.diskquotas %]
+		    <p>
+		    [% FOREACH msq IN ms.diskquotas %]
+		        [% msq.path %]:<br>
+		        [% loc('Speicherplatz/KB:') %]
+		        [% msq.blocks_usage %]/[% msq.blocks_soft %]
+		        - max: [% msq.blocks_hard %]
+		        - [% msq.blocks_percent %]%<br>
+		        [% IF msq.blocks_grace %]
+		        [% loc('verbleibende Zeit:') %] [% msq.blocks_grace %]<br>[% END %]
+		        [% loc('Dateien:') %]
+		        [% msq.files_usage %]/[% msq.files_soft %]
+		        - max: [% msq.files_hard %]
+		        - [% msq.files_percent %]%<br>
+		        [% IF msq.files_grace %]
+		        [% loc('verbleibende Zeit:') %] [% msq.files_grace %]<br>[% END %]<br>
+		    [% END %]
+		    </p>
+		    <ul>
+		    [% FOREACH msq IN ms.diskquotas %]
+		        [% IF msq.warn %]<li class="warn">[% ELSE %]<li>[% END %]
+		        <span title="[% msq.path %]: [% msq.blocks_percent %]%" style="width: [% msq.blocks_percent_rounded %]%;">&nbsp;</span>
+		        </li>
+		    [% END %]
+		    </ul>
+		[% ELSE %]
+		    -
+		[% END %]</td>
+		<td>[% IF ms.mailquotas.limit %]
+		
+		
+		<p>
+			[% loc('E-Mail-Speicher/KB:') %]
+			[% ms.mailquotas.usage %]/[% ms.mailquotas.limit %]
+			- [% ms.mailquotas.percent %]%
+		</p>
+		
+		
+		<ul>
+		[% IF ms.mailquotas.warn %]
+		<li class="warn">
+		[% ELSE %]
+		<li>
+		[% END %]
+		<span title="E-Mail: [% ms.mailquotas.usage %]/[% ms.mailquotas.limit %] [% ms.mailquotas.percent %]%" style="width: [% ms.mailquotas.percent_rounded %]%;">&nbsp;</span>
+		</li>
+		</ul>
+		[% ELSE %]-[% END %]</td>
+		<td>[% ms.class %]</td>
+		<td><input type="submit" name="[% ms.login %]_removeuser" value="[% loc('Mitgliedschaft beenden') %]"></td>
+		</tr>
+		[% lfdnr = lfdnr + 1 %]
+	[% END %]
+	<tr>
+	<th>[% loc('Nr.') %]</th>
+	<th>[% loc('Login') %]</th>
+	<th>[% loc('Name') %]</th>
+	<th>[% loc('Festplattenquota') %]</th>
+	<th>[% loc('E-Mailquota') %]</th>
+	<th>[% loc('Klasse') %]</th>
+	<th>[% loc('Mitgliedschaft beenden') %]</th>
+	</tr>
+	</table>
+	
 [% END %]
 
 </form>
