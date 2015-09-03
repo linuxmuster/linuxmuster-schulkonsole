@@ -142,10 +142,15 @@ Parameters:
 EOF;
 exit;
 }
-
-$auth->authenticate($options['user'], array('password' => $options['password']));
+$auth_success = $auth->authenticate($options['user'], array('password' => $options['password']));
 if (is_a($auth, 'PEAR_Error')) {
-    Horde::fatal($auth, __FILE__, __LINE__);
+    $cli->message(_("Authentication error."), 'cli.error');
+    exit(1);
+}
+
+if(! $auth_success) {
+    $cli->message(_("Authentication error."), 'cli.error');
+    exit(1);
 }
 
 @define('INGO_BASE', '/usr/share/horde3/ingo');
@@ -195,7 +200,6 @@ function getForwards()
         $cli->message(_("Forward is not supported in the current filtering driver."), 'cli.error');
         exit;
     }
-
     /* Get the forward object and rule. */
     $forward = &$ingo_storage->retrieve(INGO_STORAGE_ACTION_FORWARD);
     $filters = &$ingo_storage->retrieve(INGO_STORAGE_ACTION_FILTERS);
