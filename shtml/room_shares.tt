@@ -31,19 +31,15 @@
 <form method="post" accept-charset="UTF-8">
 <table id="roomshares" class="liste">
 <tr>
+<th>[% loc('Nr.') %]</th>
 <th>[% loc('Hostname') %]</th>
 <th>[% loc('Login') %]</th>
 <th>[% loc('Tauschen<br>global') %]</th>
 </tr>
+[% lfdnr = 1 %]
 [% FOREACH w IN overview_workstations %]
-[% IF w.editing %]
-<tr class="editing">
-[% IF odd %][% odd=0 %]
-[% ELSE %][% odd=1 %][% END %]
-[% ELSE %]
-[% IF odd %][% odd=0 %]<tr class="odd">
-[% ELSE %][% odd=1 %]<tr class="even">[% END %]
-[% END %]
+	<tr class="[% IF w.editing %]editing[% ELSIF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+	<td class="lfdnr">[% lfdnr %].</td>
 	<td>[% IF w.first %]
 	    [% w.name %]
 	[% END %]</td>
@@ -52,25 +48,17 @@
 	    [% ELSE %]-[% END %]
 	</td>
 	<td>
-[% IF w.shares %]
-[% IF w.editing %]
-        <input type="checkbox" disabled checked>
-[% ELSE %]
-	<input type="checkbox" name="[% w.login %];shares" checked>
-[% END %]
-[% ELSE %]
-	<input type="checkbox" name="[% w.login %];shares">
-[% END %]
+	<input type="checkbox" name="[% w.login %];shares"[% IF w.editing %] disabled[% END %][% IF w.shares %] checked[% END %]>
 	</td>
-
 	</tr>
+	[% lfdnr = lfdnr + 1 %]
 [% END %]
 <tr>
-<td colspan="2"></td>
+<td colspan="3"></td>
 <td>|</td>
 </tr>
 <tr class="quickselection">
-<td colspan="2">[% loc('Schnellauswahl') %]</td>
+<td colspan="3">[% loc('Schnellauswahl') %]</td>
 <td><input class="button" type="button" value="[% loc('Aus') %]" name="shares" onClick="check_uncheck(this)"></td>
 </tr>
 </table>
