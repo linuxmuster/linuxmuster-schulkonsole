@@ -87,6 +87,173 @@ exit (  Schulkonsole::Error::Sophomorix::WRAPPER_UNAUTHORIZED_ID
 
 
 SWITCH: {
+$app_id == Schulkonsole::Config::SHARESTATESAPP and do {
+	sharestatesapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::SHARESONOFFAPP and do {
+	sharesonoffapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::FILEMANAPP and do {
+	filemanapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::STUDENTSFILEMANAPP and do {
+	studentsfilemanapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::LSHANDEDOUTAPP and do {
+	lshandedoutapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::LSHANDOUTAPP and do {
+	lshandoutapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::LSCOLLECTAPP and do {
+	lscollectapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::HANDOUTAPP and do {
+	handoutapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::COLLECTAPP and do {
+	collectapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::RESETROOMAPP and do {
+	resetroomapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::EDITOWNCLASSMEMBERSHIPAPP and do {
+	editownclassmembershipapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::PROJECTMEMBERSAPP and do {
+	projectmembersapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::PROJECTCREATEDROPAPP and do {
+	projectcreatedropapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::PRINTCLASSAPP and do {
+	printclassapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::PRINTTEACHERSAPP and do {
+	printteachersapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::PRINTPROJECTAPP and do {
+	printprojectapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::SETPASSWORDSAPP and do {
+	setpasswordsapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::READSOPHOMORIXFILEAPP and do {
+	readsophomorixfileapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
+	writesophomorixfileapp();
+	last SWTICH;
+};
+
+$app_id == Schulkonsole::Config::USERSCHECKAPP and do {
+	userscheckapp();
+	last SWITCH;
+};
+
+(   $app_id == Schulkonsole::Config::USERSADDAPP
+ or $app_id == Schulkonsole::Config::USERSMOVEAPP
+ or $app_id == Schulkonsole::Config::USERSKILLAPP) and do {
+	users_add_or_move_or_killapp();
+	last SWITCH;
+};
+ 
+$app_id == Schulkonsole::Config::USERSADDMOVEKILLAPP and do {
+	usersaddmovekillapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::TEACHINAPP and do {
+	teachinapp();
+	last SWITCH;
+}; 
+
+$app_id == Schulkonsole::Config::CHMODAPP and do {
+	chmodapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::SETQUOTAAPP and do {
+	setquotaapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::SETOWNPASSWORDAPP and do {
+	setownpasswordapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::HIDEUNHIDECLASSAPP and do {
+	hideunhideclassapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::CHANGEMAILALIASCLASSAPP and do {
+	changemailaliasclassapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::CHANGEMAILLISTCLASSAPP and do {
+	changemaillistclassapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::CHANGEMAILALIASPROJECTAPP and do {
+	changemailaliasprojectapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::CHANGEMAILLISTPROJECTAPP and do {
+	changemaillistprojectapp();
+	last SWITCH;
+};
+
+$app_id == Schulkonsole::Config::PROJECTJOINNOJOINAPP and do {
+	projectjoinnojoinapp();
+	last SWITCH;
+};
+
+}
+
+
+
+exit -2;	# program error
 
 =head3 share_states
 
@@ -103,8 +270,7 @@ IDs (not UIDs) of users. One per line, end with empty line
 =back
 
 =cut
-
-$app_id == Schulkonsole::Config::SHARESTATESAPP and do {
+sub sharestatesapp() {
 	my @login_ids;
 
 	while (my $login_id = <>) {
@@ -144,7 +310,7 @@ $app_id == Schulkonsole::Config::SHARESTATESAPP and do {
 	print $data->Dump;
 
 	exit 0;
-};
+}
 
 =head3 shares_on_off
 
@@ -165,8 +331,7 @@ UIDs one per line, end with empty line
 =back
 
 =cut
-
-$app_id == Schulkonsole::Config::SHARESONOFFAPP and do {
+sub sharesonoff() {
 	my $on = <>;
 	($on) = $on =~ /^(\d+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_ON_UNDEFINED
@@ -198,8 +363,8 @@ $app_id == Schulkonsole::Config::SHARESONOFFAPP and do {
 	$( = $);
 	exec Schulkonsole::Encode::to_cli(
 	     	"$Schulkonsole::Config::_cmd_sophomorix_teacher $opts")
-		or last SWITCH;
-};
+		or return;
+}
 
 =head3 fileman
 
@@ -223,7 +388,7 @@ numeric constant: C<Schulkonsole::Config::FILEMANAPP>
 
 =cut
 
-$app_id == Schulkonsole::Config::FILEMANAPP and do {
+sub filemanapp() {
 	my $action = <>;
 	($action) = $action =~ /^(\d+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_ACTION
@@ -382,7 +547,7 @@ $app_id == Schulkonsole::Config::FILEMANAPP and do {
 	}
 	
 	exit 0;
-};
+}
 
 =head3 studentsfileman
 
@@ -405,8 +570,7 @@ numeric constant: C<Schulkonsole::Config::STUDENTSFILEMANAPP>
 =back
 
 =cut
-
-$app_id == Schulkonsole::Config::STUDENTSFILEMANAPP and do {
+sub studentsfilemanapp() {
 	my $action = <>;
 	($action) = $action =~ /^(\d+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_ACTION
@@ -565,7 +729,7 @@ $app_id == Schulkonsole::Config::STUDENTSFILEMANAPP and do {
 	}
 	
 	exit 0;
-};
+}
 
 =head3 ls_handedout
 
@@ -585,7 +749,7 @@ numeric constant: C<Schulkonsole::Config::LSHANDEDOUTAPP>
 
 =cut
 
-$app_id == Schulkonsole::Config::LSHANDEDOUTAPP and do {
+sub lshandedoutapp() {
 	my $category = <>;
 	($category) = $category =~ /^(\d+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_COPY
@@ -675,7 +839,7 @@ $app_id == Schulkonsole::Config::LSHANDEDOUTAPP and do {
 	print $data->Dump;
 
 	exit 0;
-};
+}
 
 =head3 ls_handout
 
@@ -695,7 +859,7 @@ numeric constant: C<Schulkonsole::Config::LSHANDOUTAPP>
 
 =cut
 
-$app_id == Schulkonsole::Config::LSHANDOUTAPP and do {
+sub lshandoutapp() {
 	my $category = <>;
 	($category) = $category =~ /^(\d+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_COPY
@@ -780,7 +944,7 @@ $app_id == Schulkonsole::Config::LSHANDOUTAPP and do {
 	print $data->Dump;
 
 	exit 0;
-};
+}
 
 =head3 ls_collect
 
@@ -796,7 +960,7 @@ numeric constant: C<Schulkonsole::Config::LSCOLLECTAPP>
 
 =cut
 
-$app_id == Schulkonsole::Config::LSCOLLECTAPP and do {
+sub lscollectapp() {
 	my @login_ids;
 	while (my $login_id = <>) {
 		last if $login_id =~ /^$/;
@@ -842,7 +1006,7 @@ $app_id == Schulkonsole::Config::LSCOLLECTAPP and do {
 	print $data->Dump;
 
 	exit 0;
-};
+}
 
 =head3 handout
 
@@ -888,7 +1052,7 @@ else:
 
 =cut
 
-$app_id == Schulkonsole::Config::HANDOUTAPP and do {
+sub handoutapp() {
 	my $do_copy = <>;
 	($do_copy) = $do_copy =~ /^([01])$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_COPY
@@ -997,8 +1161,8 @@ $app_id == Schulkonsole::Config::HANDOUTAPP and do {
 	$( = $);
 	exec Schulkonsole::Encode::to_cli(
 	     	"$Schulkonsole::Config::_cmd_sophomorix_teacher $opts")
-		or last SWITCH;
-};
+		or return;
+}
 
 =head3 collect
 
@@ -1030,7 +1194,7 @@ numeric constant: C<Schulkonsole::Config::COLLECTAPP>
 
 =cut
 
-$app_id == Schulkonsole::Config::COLLECTAPP and do {
+sub collectapp() {
 	my $do_copy = <>;
 	($do_copy) = $do_copy =~ /^([01])$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_COPY
@@ -1146,8 +1310,8 @@ $app_id == Schulkonsole::Config::COLLECTAPP and do {
 	$( = $);
 	exec Schulkonsole::Encode::to_cli(
 	     	"$Schulkonsole::Config::_cmd_sophomorix_teacher $opts")
-		or last SWITCH;
-};
+		or return;
+}
 
 =head3 room_reset
 
@@ -1163,7 +1327,7 @@ numeric constant: C<Schulkonsole::Config::RESETROOMAPP>
 
 =cut
 
-$app_id == Schulkonsole::Config::RESETROOMAPP and do {
+sub resetroomapp() {
 	my $room = <>;
 	($room) = $room =~ /^(.+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_ROOM
@@ -1177,8 +1341,8 @@ $app_id == Schulkonsole::Config::RESETROOMAPP and do {
 	$( = $);
 	exec Schulkonsole::Encode::to_cli(
 	     	"$Schulkonsole::Config::_cmd_sophomorix_room $opts")
-		or last SWITCH;
-};
+		or return;
+}
 
 =head3 edit_own_class_membership
 
@@ -1196,7 +1360,7 @@ numeric constant: C<Schulkonsole::Config::EDITOWNCLASSMEMBERSHIPAPP>
 
 =cut
 
-$app_id == Schulkonsole::Config::EDITOWNCLASSMEMBERSHIPAPP and do {
+sub editownclassmembershipapp() {
 	my $class_gid = <>;
 	($class_gid) = $class_gid =~ /^(.+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
@@ -1219,8 +1383,8 @@ $app_id == Schulkonsole::Config::EDITOWNCLASSMEMBERSHIPAPP and do {
 	umask(022);
 	exec Schulkonsole::Encode::to_cli(
 	     	"$Schulkonsole::Config::_cmd_sophomorix_teacher $opts")
-		or last SWITCH;
-};
+		or return;
+}
 
 =head3 project_members
 
@@ -1240,7 +1404,7 @@ numeric constant: C<Schulkonsole::Config::PROJECTMEMBERSAPP>
 
 =cut
 
-$app_id == Schulkonsole::Config::PROJECTMEMBERSAPP and do {
+sub projectmembersapp() {
 	my $project_gid = <>;
 	($project_gid) = $project_gid =~ /^((?:p_)?[a-z0-9_-]{3,14})$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECTGID
@@ -1304,8 +1468,8 @@ $app_id == Schulkonsole::Config::PROJECTMEMBERSAPP and do {
 	umask(022);
 	exec Schulkonsole::Encode::to_cli(
 	     	"$Schulkonsole::Config::_cmd_sophomorix_project $opts")
-		or last SWITCH;
-};
+		or return;
+}
 
 =head3 project_create_drop
 
@@ -1327,7 +1491,7 @@ numeric constant: C<Schulkonsole::Config::PROJECTCREATEDROPAPP>
 
 =cut
 
-$app_id == Schulkonsole::Config::PROJECTCREATEDROPAPP and do {
+sub projectcreatedropapp() {
 	my $project_gid = <>;
 	($project_gid) = $project_gid =~ /^((?:p_)?[a-z0-9_-]{3,14})$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECTGID
@@ -1363,8 +1527,8 @@ $app_id == Schulkonsole::Config::PROJECTCREATEDROPAPP and do {
 	umask(022);
 	exec Schulkonsole::Encode::to_cli(
 	     	"$Schulkonsole::Config::_cmd_sophomorix_project $opts")
-		or last SWITCH;
-};
+		or return;
+}
 
 =head3 print_class
 
@@ -1386,7 +1550,7 @@ The filetype, 0 (PDF) or 1 (CSV)
 
 =cut
 
-$app_id == Schulkonsole::Config::PRINTCLASSAPP and do {
+sub printclassapp() {
 	my $class_gid = <>;
 	($class_gid) = $class_gid =~ /^(.+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
@@ -1449,7 +1613,7 @@ $app_id == Schulkonsole::Config::PRINTCLASSAPP and do {
 	close DATA;
 
 	exit 0;
-};
+}
 
 =head3 print_teachers
 
@@ -1467,7 +1631,7 @@ The filetype, 0 (PDF) or 1 (CSV)
 
 =cut
 
-$app_id == Schulkonsole::Config::PRINTTEACHERSAPP and do {
+sub printteachersapp(){
 	my $filetype = <>;
 	($filetype) = $filetype =~ /^([01])$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE
@@ -1524,7 +1688,7 @@ $app_id == Schulkonsole::Config::PRINTTEACHERSAPP and do {
 	close DATA;
 
 	exit 0;
-};
+}
 
 =head3 print_project
 
@@ -1546,7 +1710,7 @@ The filetype, 0 (PDF) or 1 (CSV)
 
 =cut
 
-$app_id == Schulkonsole::Config::PRINTPROJECTAPP and do {
+sub printprojectapp() {
         my $project_gid = <>;
         ($project_gid) = $project_gid =~ /^(.+)$/;
         exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
@@ -1609,7 +1773,7 @@ $app_id == Schulkonsole::Config::PRINTPROJECTAPP and do {
         close DATA;
 
         exit 0;
-};
+}
 
 =head3 set_passwords
 
@@ -1643,7 +1807,7 @@ the rooms for which to set the workstation passwords
 
 =cut
 
-$app_id == Schulkonsole::Config::SETPASSWORDSAPP and do {
+sub setpasswordsapp() {
 	my $type = <>;
 	($type) = $type =~ /^([012])$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_SET_PASSWORD_TYPE
@@ -1704,8 +1868,8 @@ $app_id == Schulkonsole::Config::SETPASSWORDSAPP and do {
 	$( = $);
 	exec Schulkonsole::Encode::to_cli(
 	     	"$Schulkonsole::Config::_cmd_sophomorix_passwd $opts")
-		or last SWITCH;
-};
+		or return;
+}
 
 =head3 read_sophomorix_file
 
@@ -1726,7 +1890,7 @@ number of the file to read (0 = lehrer.txt, 1 = schueler.txt,
 
 =cut
 
-$app_id == Schulkonsole::Config::READSOPHOMORIXFILEAPP and do {
+sub readsophomorixfileapp(){
 	my $number = <>;
 	($number) = $number =~ /^([0-9]|1[01])$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENUMBER
@@ -1841,7 +2005,7 @@ $app_id == Schulkonsole::Config::READSOPHOMORIXFILEAPP and do {
 	close FILE;
 
 	exit 0;
-};
+}
 
 =head3 write_sophomorix_file
 
@@ -1864,7 +2028,7 @@ the lines to be written in the file
 
 =cut
 
-$app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
+sub writesophomorixfileapp(){
 	my $number = <>;
 	($number) = $number =~ /^([0123456])$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENUMBER
@@ -2000,7 +2164,7 @@ $app_id == Schulkonsole::Config::WRITESOPHOMORIXFILEAPP and do {
 
 
 	exit 0;
-};
+}
 
 =head3 check_users
 
@@ -2008,12 +2172,12 @@ numeric constant: C<Schulkonsole::Config::USERSCHECKAPP>
 
 =cut
 
-$app_id == Schulkonsole::Config::USERSCHECKAPP and do {
+sub userscheckapp(){
 	$< = $>;
 	$) = 0;
 	$( = $);
-	exec $Schulkonsole::Config::_cmd_sophomorix_check or last SWITCH;
-};
+	exec $Schulkonsole::Config::_cmd_sophomorix_check or return;
+}
 
 =head3 add_users
 
@@ -2029,10 +2193,7 @@ numeric constant: C<Schulkonsole::Config::USERSKILLAPP>
 
 =cut
 
-(   $app_id == Schulkonsole::Config::USERSADDAPP
- or $app_id == Schulkonsole::Config::USERSMOVEAPP
- or $app_id == Schulkonsole::Config::USERSKILLAPP) and do {
-
+sub users_add_or_move_or_killapp(){
 	my $action;
 	my $cmd;
 	ACTIONNAME: {
@@ -2104,7 +2265,7 @@ numeric constant: C<Schulkonsole::Config::USERSKILLAPP>
 
 		$ENV{PATH} = '/bin:/sbin:/usr/sbin:/usr/bin';
 		$ENV{DEBIAN_FRONTEND} = 'teletype';
-		exec $cmd or last SWITCH;
+		exec $cmd or return;
 	} else {
 		seek LOCK, 0, 0;
 		truncate LOCK, 0;
@@ -2113,7 +2274,7 @@ numeric constant: C<Schulkonsole::Config::USERSKILLAPP>
 
 
 	exit 0;
-};
+}
 
 =head3 addmovekill_users
 
@@ -2121,7 +2282,7 @@ numeric constant: C<Schulkonsole::Config::USERSADDMOVEKILLAPP>
 
 =cut
 
-$app_id == Schulkonsole::Config::USERSADDMOVEKILLAPP and do {
+sub usersaddmovekillapp(){
 	my $action = 'addmovekill';
 
 	my $addmovekill_lockfile = Schulkonsole::Config::lockfile("user$action");
@@ -2207,7 +2368,7 @@ $app_id == Schulkonsole::Config::USERSADDMOVEKILLAPP and do {
 
 
 	exit 0;
-};
+}
 
 =head3 teachin
 
@@ -2225,7 +2386,7 @@ numeric constant: C<Schulkonsole::Config::TEACHINAPP>
 
 =cut
 
-$app_id == Schulkonsole::Config::TEACHINAPP and do {
+sub teachinapp() {
 	my $mode = <>;
 	($mode) = $mode =~ /^([012])$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_MODE
@@ -2306,8 +2467,8 @@ $app_id == Schulkonsole::Config::TEACHINAPP and do {
 
 	exec Schulkonsole::Encode::to_cli(
 	     	"$Schulkonsole::Config::_cmd_sophomorix_teachin $opts")
-		or last SWITCH;
-};
+		or return;
+}
 
 =head3 chmod
 
@@ -2329,7 +2490,7 @@ number of the directory
 
 =cut
 
-$app_id == Schulkonsole::Config::CHMODAPP and do {
+sub chmodapp(){
 	my $number = <>;
 	($number) = $number =~ /^([01])$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENUMBER
@@ -2357,7 +2518,7 @@ $app_id == Schulkonsole::Config::CHMODAPP and do {
 		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 
 	exit 0;
-};
+}
 
 =head3 quota
 
@@ -2381,7 +2542,7 @@ or
 
 =cut
 
-$app_id == Schulkonsole::Config::SETQUOTAAPP and do {
+sub setquotaapp() {
 	my $flags = <>;
 	($flags) = $flags =~ /^(\d+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FLAGS
@@ -2489,11 +2650,11 @@ $app_id == Schulkonsole::Config::SETQUOTAAPP and do {
 		seek LOCK, 0, 0;
 		print LOCK "$$\n";
 
-		exec Schulkonsole::Encode::to_cli($app_opts) or last SWITCH;
+		exec Schulkonsole::Encode::to_cli($app_opts) or return;
 	}
 
 	exit 0;
-};
+}
 
 =head3 set_own_password
 
@@ -2511,7 +2672,7 @@ The new password
 
 =cut
 
-$app_id == Schulkonsole::Config::SETOWNPASSWORDAPP and do {
+sub setownpasswordapp() {
 	my $password = <>;
 	($password) = $password =~ /^(.+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PASSWORD
@@ -2525,8 +2686,8 @@ $app_id == Schulkonsole::Config::SETOWNPASSWORDAPP and do {
 	$( = $);
 	exec Schulkonsole::Encode::to_cli(
 	     	"$Schulkonsole::Config::_cmd_sophomorix_passwd $opts")
-		or last SWITCH;
-};
+		or return;
+}
 
 =head3 hide_unhide_class
 
@@ -2548,7 +2709,7 @@ Classes to unhide
 
 =cut
 
-$app_id == Schulkonsole::Config::HIDEUNHIDECLASSAPP and do {
+sub hideunhideclassapp() {
 	my @hides;
 	my @nohides;
 	while (<>) {
@@ -2592,7 +2753,7 @@ $app_id == Schulkonsole::Config::HIDEUNHIDECLASSAPP and do {
 
 
 	exit 0;
-};
+}
 
 =head3 change_mailalias_classes
 
@@ -2614,7 +2775,7 @@ Classes to remove mailaliases
 
 =cut
 
-$app_id == Schulkonsole::Config::CHANGEMAILALIASCLASSAPP and do {
+sub changemailaliasclassapp() {
 	my @creates;
 	my @removes;
 	while (<>) {
@@ -2661,7 +2822,7 @@ $app_id == Schulkonsole::Config::CHANGEMAILALIASCLASSAPP and do {
 
 
 	exit 0;
-};
+}
 
 =head3 change_maillist_classes
 
@@ -2683,7 +2844,7 @@ Classes to remove maillistes
 
 =cut
 
-$app_id == Schulkonsole::Config::CHANGEMAILLISTCLASSAPP and do {
+sub changemaillistclassapp() {
 	my @creates;
 	my @removes;
 	while (<>) {
@@ -2730,7 +2891,7 @@ $app_id == Schulkonsole::Config::CHANGEMAILLISTCLASSAPP and do {
 
 
 	exit 0;
-};
+}
 
 =head3 change_mailalias_projects
 
@@ -2752,7 +2913,7 @@ Classes to remove mailaliases
 
 =cut
 
-$app_id == Schulkonsole::Config::CHANGEMAILALIASPROJECTAPP and do {
+sub changemailaliasprojectapp() {
 	my @creates;
 	my @removes;
 	while (<>) {
@@ -2798,7 +2959,7 @@ $app_id == Schulkonsole::Config::CHANGEMAILALIASPROJECTAPP and do {
 			or exit ($? >> 8);
 
 	exit 0;
-};
+}
 
 =head3 change_maillist_projects
 
@@ -2820,7 +2981,7 @@ Classes to remove maillistes
 
 =cut
 
-$app_id == Schulkonsole::Config::CHANGEMAILLISTPROJECTAPP and do {
+sub changemaillistprojectapp() {
 	my @creates;
 	my @removes;
 	while (<>) {
@@ -2867,7 +3028,7 @@ $app_id == Schulkonsole::Config::CHANGEMAILLISTPROJECTAPP and do {
 
 
 	exit 0;
-};
+}
 
 =head3 join_no_join_project
 
@@ -2889,7 +3050,7 @@ Classes to unhide
 
 =cut
 
-$app_id == Schulkonsole::Config::PROJECTJOINNOJOINAPP and do {
+sub projectjoinnojoinapp() {
 	my @joins;
 	my @nojoins;
 	while (<>) {
@@ -2931,29 +3092,13 @@ $app_id == Schulkonsole::Config::PROJECTJOINNOJOINAPP and do {
 
 
 	exit 0;
-};
-
 }
-
-
-
-exit -2;	# program error
-
-
-
 
 sub get_decoded {
 	my $data = shift;
 	my $utf8 = $data;
 
 	utf8::decode($utf8);
-
-	my $enc = Encode::find_encoding('iso-8859-15');
-
-	my $re = $enc->decode($data, Encode::FB_QUIET);
-
-	return $re if ($data eq '' and length($re) <= length($utf8));
-
 
 	return $utf8;
 }
