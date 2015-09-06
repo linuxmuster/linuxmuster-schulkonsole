@@ -52,11 +52,15 @@
     </table>
 [% END %]
 
-<h4>[% loc('Datei hochladen') %]</h4>
-<p>
-    <input id="fileupload" type="file" name="upload_handoutcopy">
-    <input type="submit" id="upload">
-</p>
+<div class="upload">
+	<h4>[% loc('Datei hochladen') %]</h4>
+	<p>
+	    <input id="fileupload" type="file" name="upload_handoutcopy_current_room">
+	    <input type="submit" id="upload">
+	</p>
+</div>
+
+<hr>
 
 <table id="roomhandoutcopy" class="liste">
 <tr>
