@@ -233,8 +233,6 @@ sub start_wrapper {
 	print $out "$id\n$password\n$app_id\n";
 
 
-
-
 	return $pid;
 }
 
@@ -1005,9 +1003,9 @@ sub ls_handout_class {
 
 
 
-=head3 C<dl_handedout_class($id, $password, $class, $uid, $filename, $isdir, $tmpfile)>
+=head3 C<dl_handedout_myclass($id, $password, $filename, $isdir, $tmpfile)>
 
-Download the filename from the handedout directory of the class student
+Download the filename from the handedout directory of the students' class
 
 =head4 Parameters
 
@@ -1020,14 +1018,6 @@ The ID (not UID) of the student invoking the command
 =item C<$password>
 
 The password of the student invoking the command
-
-=item C<$class>
-
-The class of the student to download the handout from
-
-=item C<$uid>
-
-The uid of the downloading student
 
 =item C<$filename>
 
@@ -1049,10 +1039,9 @@ Downloads a file from the students class' handout directory.
 
 =cut
 
-sub dl_handedout_class {
+sub dl_handedout_myclass {
 	my $id = shift;
 	my $password = shift;
-	my $class = shift;
 	my $filename = shift;
 	my $isdir = shift;
 	my $tmpfile = shift;
@@ -1061,7 +1050,7 @@ sub dl_handedout_class {
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	print SCRIPTOUT "3\n0\n8\n$class\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
+	print SCRIPTOUT "3\n0\n8\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -1072,7 +1061,171 @@ sub dl_handedout_class {
 
 
 
-=head3 C<ls_handedout_class($id, $password, $class, $uid)>
+=head3 C<dl_handedoutcopy_myclass($id, $password, $filename, $isdir, $tmpfile)>
+
+Download the filename from the handedoutcopy directory of the students' class
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the student invoking the command
+
+=item C<$password>
+
+The password of the student invoking the command
+
+=item C<$filename>
+
+The name of the students file to be downloaded
+
+=item C<$isdir>
+
+If the file to be downloaded is a directory (isdir == 1)
+
+=item C<$tmpfile>
+
+The temporary filename to put the file data to
+
+=back
+
+=head4 Description
+
+Downloads a file from the students class' handedoutcopy directory.
+
+=cut
+
+sub dl_handedoutcopy_myclass {
+	my $id = shift;
+	my $password = shift;
+	my $filename = shift;
+	my $isdir = shift;
+	my $tmpfile = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "3\n1\n8\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+}
+
+
+
+
+=head3 C<rm_handedout_myclass($id, $password, $filename)>
+
+Removes the filename from the handedout directory of the students class
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$filename>
+
+The name of the teachers file to be deleted
+
+=item C<$isdir>
+
+If the file to be deleted is a directory (isdir == 1)
+
+=back
+
+=head4 Description
+
+Removes a file from the students class' handedout directory.
+
+=cut
+
+sub rm_handedout_myclass {
+	my $id = shift;
+	my $password = shift;
+	my $filename = shift;
+	my $isdir = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "1\n0\n8\n$filename\n".($isdir?"1\n":"0\n");
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+}
+
+
+
+
+=head3 C<rm_handedoutcopy_myclass($id, $password, $filename)>
+
+Removes the filename from the handedoutcopy directory of the students class
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$filename>
+
+The name of the teachers file to be deleted
+
+=item C<$isdir>
+
+If the file to be deleted is a directory (isdir == 1)
+
+=back
+
+=head4 Description
+
+Removes a file from the students class' handedoutcopy directory.
+
+=cut
+
+sub rm_handedoutcopy_myclass {
+	my $id = shift;
+	my $password = shift;
+	my $filename = shift;
+	my $isdir = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "1\n1\n8\n$filename\n".($isdir?"1\n":"0\n");
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+}
+
+
+
+
+=head3 C<ls_handedout_myclass($id, $password, $uid)>
 
 Returns the contents of the handedout directory for the students class
 
@@ -1087,10 +1240,6 @@ The ID (not UID) of the student invoking the command
 =item C<$password>
 
 The password of the student invoking the command
-
-=item C<$class>
-
-The class
 
 =item C<$uid>
 
@@ -1109,17 +1258,73 @@ handed out with C<handout_class()>.
 
 =cut
 
-sub ls_handedout_class {
+sub ls_handedout_myclass {
 	my $id = shift;
 	my $password = shift;
-	my $class = shift;
 	my $uid = shift;
 	
 	my $pid = start_wrapper(Schulkonsole::Config::LSHANDEDOUTAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	print SCRIPTOUT "0\n8\n$class\n$uid\n";
+	print SCRIPTOUT "0\n8\n$uid\n";
+
+	my $in;
+	{
+		local $/ = undef;
+		$in = <SCRIPTIN>;
+	}
+
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	my $compartment = new Safe;
+
+	return $compartment->reval($in);
+}
+
+
+
+
+=head3 C<ls_handedoutcopy_myclass($id, $password)>
+
+Returns the contents of the handedoutcopy directory for the students class
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the student invoking the command
+
+=item C<$password>
+
+The password of the student invoking the command
+
+=back
+
+=head4 Return value
+
+A reference to an array of the files
+
+=head4 Description
+
+Returns a list of the files in the students class handedoutcopy directory, that were
+handed out with C<handoutcopy_class()>.
+
+=cut
+
+sub ls_handedoutcopy_myclass {
+	my $id = shift;
+	my $password = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::LSHANDEDOUTAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "1\n8\n";
 
 	my $in;
 	{

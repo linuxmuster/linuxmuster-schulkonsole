@@ -49,24 +49,24 @@ my $q = $sk_session->query();
 
 
 my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
-my $class = $sk_session->param('class');
+my $myclass = $sk_session->param('myclass');
 
-if((not $class) and $classs){
+if((not $myclass) and $classs){
 	my @keys = keys $classs;
-	$sk_session->param('class',$$classs{$keys[0]});
+	$sk_session->param('myclass',$$classs{$keys[0]});
 }
 
-$class = $sk_session->param('class');
+$myclass = $sk_session->param('myclass');
 
-if ($class) {
+if ($myclass) {
 
-=item C<class>
+=item C<myclass>
 
-The hash of the selected class (if a class is selected)
+The hash of the users class'
 
 =cut
 
-	$sk_session->set_var('class', $class);
+	$sk_session->set_var('myclass', $myclass);
 
 }
 

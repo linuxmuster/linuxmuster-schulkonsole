@@ -31,7 +31,7 @@ use Schulkonsole::Sophomorix;
 use File::Basename;
 
 my $this_file = 'class_handoutcopy';
-my $transfername = 'handoutcopy_class';
+my $transfername = 'upload_handoutcopy_class';
 
 my $sk_session = new Schulkonsole::Session($this_file);
 if (not $sk_session->get_password()) {
@@ -107,9 +107,9 @@ eval {
 			last SWITCHCOMMAND;
 		};
 		
-		$q->param("upload_$transfername") and do {
-			my $file = $q->param("upload_$transfername");
-			my $tmpfile = "$Schulkonsole::Config::_runtimedir/upload_${transfername}_"
+		$q->param($transfername) and do {
+			my $file = $q->param($transfername);
+			my $tmpfile = "$Schulkonsole::Config::_runtimedir/${transfername}_"
 							. $sk_session->session_id() . '_' . time;
 			if(! open(DAT,'>'.$tmpfile)) {
 				$sk_session->set_status($d->get('Es konnte keine temporäre Datei erzeugt werden.'),1);
