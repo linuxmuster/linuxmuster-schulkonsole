@@ -1,0 +1,454 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+project - overview of available projects
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/project
+
+=head1 DESCRIPTION
+
+C<project> lets you enter/leave/drop a project and select one of the
+projects to work with.
+The HTML templates are project.tt and project_drop_verify
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<project>
+provides the following variables:
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::Sophomorix;
+use Sophomorix::SophomorixAPI;
+use Sophomorix::SophomorixConfig;
+
+
+my $this_file = 'project';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+my $projects = Schulkonsole::Info::groups_projects($sk_session->groups());
+foreach my $project (keys %$projects) {
+	my $param = "${project}_members";
+	utf8::encode($param);
+    if ($q->param($param)) {
+		$sk_session->param('project', $project);
+
+		my $url = $q->url( -absolute => 1 );
+		$url =~ s/$this_file$/project_members/g;
+		$sk_session->redirect($url);
+	}
+}
+
+my $project = $q->param('projects');
+utf8::decode($project);
+if (    $project
+    and $$projects{$project}) {
+	$sk_session->param('project', $project);
+
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/project_members/g;
+	$sk_session->redirect($url);
+}
+
+$project = $sk_session->param('project');
+
+
+my $all_projects = Schulkonsole::DB::projects();
+
+eval {
+COMMANDS: {
+if ($q->param('createproject')) {
+	my $projectname = $q->param('projectname');
+	utf8::decode($projectname);
+	if (not $projectname) {
+		$sk_session->mark_input_error('projectname');
+		$sk_session->set_status($sk_session->d()->get(
+			'Sie m&uuml;ssen einen Projektnamen angeben.'),
+			1);
+		last COMMANDS;
+	}
+	if ($projectname !~ /^(p_)?[a-z0-9_-]{3,14}$/) {
+		$sk_session->mark_input_error('projectname');
+		$sk_session->set_status($sk_session->d()->get(
+			'Der Projektnamen darf nur aus Kleinbuchstaben (ohne Umlaute), Zahlen, dem Unterstrich und Bindestrich bestehen und muss zwischen 3 und 14 Zeichen lang sein.'),
+			1);
+		last COMMANDS;
+	}
+	$projectname = "p_$projectname" unless $projectname =~ /^p_/;
+
+	if ($$all_projects{$projectname}) {
+		$sk_session->mark_input_error('projectname');
+		$sk_session->set_status(
+			sprintf($sk_session->d()->get('Projekt %s gibt es schon'),
+				$projectname),
+			1);
+		last COMMANDS;
+	}
+
+
+	Schulkonsole::Sophomorix::create_project(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		$projectname,
+		$q->param('projectisopen'));
+
+	$all_projects = Schulkonsole::DB::projects();
+	if ($$all_projects{$projectname}) {
+		$sk_session->set_status(
+			sprintf($sk_session->d()->get('Projekt %s angelegt'), $projectname),
+			0);
+
+		$sk_session->read_groups_from_db();
+		$projects = Schulkonsole::Info::groups_projects($sk_session->groups());
+		if ($$projects{$projectname}) {
+			$project = $projectname;
+			$sk_session->param('project', $project);
+		}
+	} else {
+		$sk_session->set_status(
+			$sk_session->d()->get('Projekt konnte nicht angelegt werden'),
+			1);
+	}
+		
+
+} elsif (my ($new_project) = $q->param('project_add')) {
+	utf8::decode($new_project);
+	if ($$all_projects{$new_project}{joinable}) {
+		Schulkonsole::Sophomorix::add_to_project(
+			$sk_session->userdata('id'),
+			$sk_session->get_password(),
+			$new_project,
+			$sk_session->userdata('uid'));
+		$sk_session->set_status(
+			sprintf($sk_session->d()->get('In Projekt %s eingetragen'),
+			        $new_project),
+			0);
+	
+		$sk_session->read_groups_from_db();
+		$projects = Schulkonsole::Info::groups_projects($sk_session->groups());
+		$project = $new_project;
+		$sk_session->param('project', $project);
+	} else {
+		$sk_session->set_status(
+			sprintf($sk_session->d()->get('Eintragen in Projekt %s ist nicht erlaubt'),
+			        $new_project),
+			1);
+	}
+
+} else {
+	foreach my $old_project (keys %$projects) {
+		my $param_remove = "${old_project}_remove";
+		utf8::encode($param_remove);
+
+		$q->param($param_remove) and do {
+			if (not $$all_projects{$old_project}{joinable}) {
+				$sk_session->set_status(
+					sprintf($sk_session->d()->get(
+						'Sie d&uuml;rfen die Benutzerliste von %s nicht &auml;ndern'),
+						$$projects{$old_project}{displayname}),
+					1);
+				last COMMANDS;
+			}
+
+			my $is_admin = Schulkonsole::DB::is_project_admin(
+			              	$$projects{$old_project}{id},
+			              	$sk_session->userdata('uidnumber'));
+
+			if ($is_admin) {
+				if ($is_admin == -1) {
+					$sk_session->set_status(
+						sprintf($sk_session->d()->get(
+							'Sie sind der letzte Projektleiter von %s'),
+							$$projects{$old_project}{displayname}),
+						1);
+					last COMMANDS;
+				}
+				Schulkonsole::Sophomorix::remove_admin_from_project(
+					$sk_session->userdata('id'),
+					$sk_session->get_password(),
+					$old_project,
+					$sk_session->userdata('uid'));
+			}
+			Schulkonsole::Sophomorix::remove_from_project(
+				$sk_session->userdata('id'),
+				$sk_session->get_password(),
+				$old_project,
+				$sk_session->userdata('uid'));
+			$sk_session->set_status(
+				sprintf($sk_session->d()->get('Aus Projekt %s ausgetragen'),
+					$$projects{$old_project}{displayname}),
+				0);
+
+			$sk_session->read_groups_from_db();
+			$projects
+				= Schulkonsole::Info::groups_projects($sk_session->groups());
+			if ($old_project eq $project) {
+				undef $project;
+				$sk_session->{session}->clear('project');
+			}
+
+			last;	# template uses submit buttons
+		};
+
+
+		my $param_drop = "${old_project}_drop";
+		utf8::encode($param_drop);
+
+		$q->param($param_drop) and do {
+			my $is_admin = Schulkonsole::DB::is_project_admin(
+			              	$$projects{$old_project}{id},
+			              	$sk_session->userdata('uidnumber'));
+
+
+			if (not $is_admin) {
+				$sk_session->set_status(
+					sprintf($sk_session->d()->get(
+						'Sie sind kein Projektleiter von %s'),
+						$$projects{$old_project}{displayname}),
+					1);
+
+				last;
+			}
+
+			if (not $q->param('ok')) {
+				$sk_session->set_status(
+					$sk_session->d()->get('Bitte best&auml;tigen'),0);
+
+=pod
+
+(Only C<project_gid> and C<project> are available in
+project_drop_verify.tt)
+
+=over
+
+=cut
+
+				$sk_session->set_var('project_gid', $old_project);
+				$sk_session->set_var('project',
+				                     $$projects{$old_project}{displayname});
+				$sk_session->print_page('project_drop_verify.tt',
+				                        $this_file);
+				exit 0;
+			}
+
+
+			Schulkonsole::Sophomorix::drop_project(
+				$sk_session->userdata('id'),
+				$sk_session->get_password(),
+				$old_project);
+
+			$all_projects = Schulkonsole::DB::projects();
+			if (not $$all_projects{$old_project}) {
+				$sk_session->set_status(
+					sprintf($sk_session->d()->get('Projekt %s gel&ouml;scht'),
+						$old_project),
+					0);
+
+				$sk_session->read_groups_from_db();
+				$projects = Schulkonsole::Info::groups_projects(
+					$sk_session->groups());
+				$sk_session->{session}->clear('project');
+
+			} else {
+				$sk_session->set_status(
+					sprintf($sk_session->d()->get(
+							'Projekt %s konnte nicht gel&ouml;scht werden'),
+						$old_project),
+					1);
+			}
+
+			last;	# template uses submit buttons
+		};
+	}
+}
+} # end COMMANDS
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+
+
+my @projects;
+my @other_projects;
+foreach my $project (sort {
+	$$all_projects{$a}{displayname} cmp $$all_projects{$b}{displayname} }
+	                 keys %$all_projects) {
+	if ($$projects{$project}) {
+		my $is_admin = Schulkonsole::DB::is_project_admin(
+		              	$$all_projects{$project}{id},
+		              	$sk_session->userdata('uidnumber'));
+
+		my $add_quota = $$all_projects{$project}{addquota};
+		if (   $add_quota == -1
+		    or $add_quota eq 'quota') {
+			$add_quota = 0;
+		}
+
+		push @projects, { gid => $project,
+		                  name => $$all_projects{$project}{displayname},
+		                  addquota => $add_quota,
+						  joinable => $$all_projects{$project}{joinable},
+		                  isadmin => $is_admin,
+		                  islastadmin => ($is_admin == -1),
+		                };
+	} elsif ($$all_projects{$project}{joinable}) {
+		push @other_projects, { gid => $project,
+		                        name => $$all_projects{$project}{displayname},
+	                          };
+	}
+}
+
+=item C<projects>
+
+Projects of the current user as an array of hashes with the keys
+
+=over
+
+=item C<gid>
+
+GID of the project
+
+=item C<name>
+
+Name of the project
+
+=item C<addquota>
+
+Additional quota for members of this project
+
+=item C<isadmin>
+
+True if the current user is an administrator of the project
+
+=item C<islastadmin>
+
+True if there are no other administrators of the project but the current
+user
+
+=back
+
+=cut
+
+$sk_session->set_var('projects', \@projects);
+
+=item C<other_projects>
+
+An array of hashes of the projects of which the current user is not a member
+with the keys
+
+=over
+
+=item C<gid>
+
+GID of the project
+
+=item C<name>
+
+Name of the project
+
+=back
+
+=cut
+
+$sk_session->set_var('other_projects', \@other_projects);
+
+
+if ($project) {
+
+=item C<isadmin>
+
+Indicates that the current user is an administrator of the selected project
+
+=cut
+
+	$sk_session->set_var('isadmin',
+		Schulkonsole::DB::is_project_admin($$projects{$project}{id},
+			$sk_session->userdata('uidnumber')));
+
+=item C<project_gid>
+
+GID of the selected project
+
+=cut
+
+	$sk_session->set_var('project_gid', $project);
+
+=item C<project>
+
+Name of the selected project
+
+=cut
+
+	$sk_session->set_var('project', $$projects{$project}{displayname});
+}
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<projects>
+
+Select the project with this GID.
+Possible values read in loop over template variable C<projects>.
+
+=item C<${projects{gid}}_members>
+
+Select project with GID and show members.
+Created in loop over template variable C<projects>.
+
+=item C<${projects{gid}}_remove>
+
+Leave project with GID.
+Created in loop over template variable C<projects>.
+
+=item C<${projects{gid}}_drop>
+
+Drop project.
+Created in loop over template variable C<projects>.
+
+=item C<project_add>
+
+Enter project with this GID.
+Possible values read in loop over template variable C<other_projects>.
+
+=item C<createproject>
+
+Create a new project with name C<projectname>
+
+=item C<projectname>
+
+Name of new project
+
+=back
+

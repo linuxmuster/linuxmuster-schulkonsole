@@ -1,0 +1,176 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+druckquotas_printers - druckquota settings for printers
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/druckquotas_printers
+
+=head1 DESCRIPTION
+
+C<druckquotas_printers> lets you edit the price per page and per job to charge for each printer. You can also activate the passthrough mode for each printer.
+The HTML template is druckquotas_printers.shtml.
+
+=over
+
+=cut
+
+
+use strict;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Session;
+use Schulkonsole::Druckquota;
+
+my $this_file = 'druckquotas_printers';
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+eval {
+COMMANDS: {
+my $printers;
+my $is_changed = 0;
+my @errors;
+
+#############################################################
+$q->param('acceptprinters') and do {
+	my @processed_params;
+	foreach my $param ($q->param) {
+		if (my ($printer) = $param =~ /^(.+)_printernewpage$/) {
+			if ($printer ne '') {
+				my ($value) = $q->param($param) =~ /^\s*(.+?)\s*$/;
+				if ( $value =~ /\S/) {
+				    $value =~ tr/,/\./;
+				    if ($value !~ /^[\.\d]+$/) {
+					push @errors, sprintf($sk_session->d()->get(
+						'%s: Neue Kosten sind falsch angegeben'), $printer);
+				        } else {
+						push @processed_params, $param;
+						$param = "$printer"."_printernewjob";
+						my $job = $q->param($param);
+						$job =~ tr/,/\./;
+						if ( $job =~ m/^\s*[\.\d]+\s*$/) {
+							$value = $value.','.$job;
+							push @processed_params, $param;
+						}
+						Schulkonsole::Druckquota::charge_printer($id, $password, $value, $printer);
+						$is_changed++;
+					}
+				}
+			} else {
+				push @errors, sprintf($sk_session->d()->get(
+					'Drucker %s unbekannt'), $printer);
+			}
+		}
+		if (my ($printer) = $param =~ /^(.+)_printernewpassthrough$/) {
+			if ($printer ne '') {
+				my ($value) = $q->param($param) =~ /^\s*(\w+)\s*$/i;
+				if ( $value =~ /\S/) {
+					if ($value !~ /^(ON|OFF)$/i) {
+						push @errors, sprintf($sk_session->d()->get('%s: Bitte ON oder OFF angegeben'), $printer);
+				        } else {
+						push @processed_params, $param;
+						Schulkonsole::Druckquota::passthrough_printer($id, $password, $value, $printer);
+						$is_changed++;
+					}
+				} elsif ($q->param($param) !~ /^\s*$/) {
+					push @errors, sprintf($sk_session->d()->get('%s: Bitte ON oder OFF angegeben'), $printer);
+				}
+			} else {
+				push @errors, sprintf($sk_session->d()->get(
+					'Drucker %s unbekannt'), $printer);
+			}
+		}
+	}
+	if (@errors) {
+		$sk_session->set_status(join(', ', @errors), 1);
+	} elsif ($is_changed) {
+		$sk_session->set_status($sk_session->d()->get(
+			"&Auml;nderungen &uuml;bernommen."), 0);
+		$q->delete(@processed_params);
+	} else {
+		$sk_session->set_status($sk_session->d()->get(
+			'Keine &Auml;nderungen.'), 1);
+	}
+	last COMMANDS;
+};  # end acceptprinters
+
+$q->param('deleteprinters') and do {
+	foreach my $param ($q->param) {
+		if (my ($printer) = $param =~ /^(.+);select$/) {
+			if ($printer =~ m/^\s*([\-\w]+)\s*$/) {
+				$printer = $1;
+				Schulkonsole::Druckquota::delete_printer($id, $password, $printer);
+				$is_changed++;
+			} else {
+				push @errors, sprintf($sk_session->d()->get(
+					'Drucker %s unbekannt'), $printer);
+			}
+		}
+	}
+	if (@errors) {
+		$sk_session->set_status(join(', ', @errors), 1);
+	} elsif ($is_changed) {
+		$sk_session->set_status($sk_session->d()->get("Drucker gel&ouml;scht: $is_changed mal"), 0);
+	} else {
+		$sk_session->set_status($sk_session->d()->get('Keine &Auml;nderungen.'), 1);
+	}
+}; # end deleteprinters
+
+$q->param('addprinter') and do {
+	my @processed_params;
+	if ( $q->param('newprinter') =~ /^\s*([\-\w]+)\s*$/) {
+		my $printer = $1;
+		Schulkonsole::Druckquota::add_printer ($id, $password, $printer);;
+		$is_changed++;
+		push @processed_params, 'newprinter';
+	}
+	if (@errors) {
+		$sk_session->set_status(join(', ', @errors), 1);
+	} elsif ($is_changed) {
+		$sk_session->set_status($sk_session->d()->get("Drucker in die Datenbank aufgenommen."), 0);
+		$q->delete(@processed_params);
+	} else {
+		$sk_session->set_status($sk_session->d()->get('Keine &Auml;nderungen.'), 1);
+	}
+}; # end addprinter
+
+} # end COMMANDS
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+my @printers_array;
+my @printerlist = Schulkonsole::Druckquota::get_printers($id, $password);
+foreach my $printer ( sort @printerlist ) {
+	(my $printer_name, my $page, my $job, my $passthrough) = split (/:/, $printer );
+	push @printers_array, {
+			printername => $printer_name,
+			pagecost => $page,
+			jobcost => $job,
+			passthrough => $passthrough,
+			newpage => "",
+			newjob => "",
+		};
+}
+
+$sk_session->set_var('printers', \@printers_array);
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+

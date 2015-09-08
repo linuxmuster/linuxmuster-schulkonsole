@@ -1,0 +1,194 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+user_check - check the edited users
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/user_check
+
+=head1 DESCRIPTION
+
+C<user_check> lets you performs a consistency check of the user lists.
+The HTML template is user_check.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<user_check>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Sophomorix::SophomorixAPI;
+use Sophomorix::SophomorixConfig;
+use Proc::ProcessTable;
+use Schulkonsole::Session;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::TeachIn;
+
+
+my $this_file = 'user_check';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+
+
+my $process_table = new Proc::ProcessTable;
+my $app_add = $Schulkonsole::Config::_cmd_sophomorix_add;
+$app_add =~ s:.*/::;
+my $app_move = $Schulkonsole::Config::_cmd_sophomorix_move;
+$app_move =~ s:.*/::;
+my $app_kill = $Schulkonsole::Config::_cmd_sophomorix_kill;
+$app_kill =~ s:.*/::;
+
+my %running;
+foreach my $process (@{ $process_table->table }) {
+	if ($process->fname =~ /^soph/) {
+		CMND: {
+		$process->cmndline =~ /$app_add/ and do {
+			$running{add} = $process->pid;
+			last CMND;
+		};
+		$process->cmndline =~ /$app_move/ and do {
+			$running{move} = $process->pid;
+			last CMND;
+		};
+		$process->cmndline =~ /$app_kill/ and do {
+			$running{kill} = $process->pid;
+			last CMND;
+		};
+		}
+	}
+}
+
+
+
+my $teachin = new Schulkonsole::TeachIn;
+
+
+eval {
+COMMANDS: {
+$q->param('check') and do {
+	my $log = Schulkonsole::Sophomorix::users_check($id, $password);
+
+	if (Schulkonsole::Sophomorix::teachin_check($id, $password)) {
+		$sk_session->set_status($sk_session->d()->get(
+			'Teach-In ist notwendig'), 1);
+
+		$teachin->read($id, $password);
+	} else {
+		$sk_session->set_status($sk_session->d()->get(
+			'Sie k&ouml;nnen die Benutzerdaten jetzt &uuml;bernehmen'), 0);
+
+		$teachin->delete();
+	}
+
+=item C<checklog>
+
+Output of the consistency check
+
+=cut
+
+	$sk_session->set_var('checklog', $log);
+
+
+	last COMMANDS;
+};
+}
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+if ($teachin->is_read()) {
+
+=item C<teachin>
+
+true if teachin is necessary
+
+=cut
+
+	$sk_session->set_var('teachin', 1);
+
+	my $users = $teachin->users();
+	if ($users) {
+		my @users;
+		foreach my $user (sort keys %$users) {
+			if (   not $$users{$user}{alt}
+			    or not %{ $$users{$user}{alt} }) {
+				push @users, {
+						id => $$users{$user}{id},
+						login => $user,
+						class => $$users{$user}{class},
+					};
+			}
+		}
+
+=item C<usersdelete>
+
+Users that will be deleted as an array of hashes with the keys
+
+=over
+
+=item C<id>
+
+The user's id in the DB
+
+=item C<login>
+
+The user's login
+
+=item C<class>
+
+The user's class
+
+=back
+
+=cut
+
+		$sk_session->set_var('usersdelete', \@users);
+	}
+}
+
+
+
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<check>
+
+Perform the consistency check
+
+=back
+

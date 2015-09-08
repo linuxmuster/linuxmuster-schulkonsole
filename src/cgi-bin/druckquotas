@@ -1,0 +1,86 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+quotas - produces startpage for druckquota settings
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/druckquotas
+
+=head1 DESCRIPTION
+
+C<druckquotas> produces the startpage of schulkonsole druckquota settings.
+The HTML template is druckquotas.shtml.
+
+=over
+
+=cut
+
+use strict;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Session;
+use Schulkonsole::Druckquota;
+
+my $this_file = 'druckquotas';
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+
+my @standards_array;
+my %balance = Schulkonsole::Druckquota::get_linuxmuster_pykota_conf($id, $password);
+foreach my $groupkey (sort keys %balance) {
+	my $wert = sprintf('%.2f',$balance{$groupkey});
+	$wert =~ tr/\,/\./;
+	push @standards_array, {
+			gruppe => $groupkey,
+			balance => $wert,
+		};
+}
+
+
+my @askconfirmation_array;
+my @zeilen = Schulkonsole::Druckquota::read_pykota_conf_file($id, $password);
+my $typ;
+my $num =0;
+foreach my $zeile ( @zeilen ) {
+	if ( $zeile =~ m/\s*(#*)\s*askconfirmation\s\:\s(.*)/ ) {
+		$num++;
+		my $symbol =$1;
+		my $text = $2;
+		if ($symbol eq "#" ) {
+			$typ = "deaktiviert ";
+		} else {
+			$typ = "aktiviert ";
+		}
+		push @askconfirmation_array, {
+			typ => $typ,
+			text => $text,
+			nummer => $num,
+		};
+	}
+}
+
+
+
+
+$sk_session->set_var('standards', \@standards_array);
+$sk_session->set_var('askconfirmation', \@askconfirmation_array);
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+

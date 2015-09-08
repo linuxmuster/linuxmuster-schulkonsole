@@ -1,0 +1,107 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+druckquotas_others - druckquota settings for single user
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/druckquotas_others
+
+=head1 DESCRIPTION
+
+C<druckquotas_others> lets you show and edit the print-quotas of a single user.
+The HTML template is druckquotas_others.shtml.
+
+=over
+
+=cut
+
+use strict;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Session;
+use Schulkonsole::Druckquota;
+
+my $this_file = 'druckquotas_others';
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+eval {
+COMMANDS: {
+my $is_changed = 0;
+my @errors;
+
+#############################################################
+
+(($q->param('setbalance')) or ($q->param('resetbalance'))) and do {
+	my @processed_params;
+	my $balance;
+	my $benutzer;
+	my @benutzer_array;
+	if ( $q->param('benutzer') =~ /^\s*([\w]+)\s*$/) {
+		$benutzer = $1;
+		if ( $q->param('newbalance') =~ /^\s*([\+\-]?[\d]+)\s*$/) {
+			$balance = $1;
+			push @benutzer_array, $benutzer;
+			if ($q->param('setbalance')) {
+				Schulkonsole::Druckquota::set_balance($id, $password, $balance, @benutzer_array);
+			} else {
+				Schulkonsole::Druckquota::reset_balance($id, $password, $balance, @benutzer_array);
+			}
+			$is_changed++;
+			push @processed_params, 'newbalance';
+		} else {
+			push @errors, sprintf($sk_session->d()->get(
+					'Kontingent %s falsch angegeben.'), $balance);
+		}
+	}
+	if (@errors) {
+		$sk_session->set_status(join(', ', @errors), 1);
+	} elsif ($is_changed) {
+		$sk_session->set_status($sk_session->d()->get("Benutzerkontingent ge&auml;ndert."), 0);
+		$q->delete(@processed_params);
+	} else {
+		$sk_session->set_status($sk_session->d()->get('Keine &Auml;nderungen.'), 1);
+	}
+}; # end setbalance
+
+($q->param('showbalance') or ($is_changed != 0 )) and do {
+	my $benutzer;
+	my @benutzer_array;
+	if ( $q->param('benutzer') =~ /^\s*([\w]+)\s*$/) {
+		$benutzer = $1;
+		(my $maxmb, my $mb) = Schulkonsole::Druckquota::get_balance($id, $password, $benutzer);
+		push @benutzer_array, {
+			login => $benutzer,
+			maxbalance => $maxmb,
+			balance => $mb,
+		};
+	}
+	$sk_session->set_var('benutzer', \@benutzer_array);
+
+}; # end showbalance
+
+} # end COMMANDS
+};
+
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
