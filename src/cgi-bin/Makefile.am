@@ -1,6 +1,6 @@
 pkglibexecdir = $(libexecdir)/@PACKAGE@/cgi-bin
 
-EXTRA_DIST = example start logout \
+pkglibexec_SCRIPTS = example start logout \
 	room room_shares room_handout room_collect room_test \
 	room_test_handout room_test_password room_test_collect \
 	room_test_end \
@@ -21,5 +21,6 @@ EXTRA_DIST = example start logout \
 	quotas_teachers quotas_classes quotas_projects quotas_others \
 	linbo linbo_edit linbo_new linbo_regpatchedit \
 	linbo_pxeedit linbo_images linbo_menuedit \
-	myclass myclass_handedout \
+	myclass myclass_handedout myclass_handedoutcopy \
+	myroom \
 	config.php
