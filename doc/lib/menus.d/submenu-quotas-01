@@ -1,27 +1,27 @@
 [% IF quotaactivated %]
-[% IF link_quotas_teachers %]
-	<li><a [% dohref("quotas_teachers") %]>[% loc('Lehrer') %]</a></li>
-[% END %]
-[% IF link_quotas_classes %]
-	<li><a [% dohref("quotas_classes") %]>[% loc('Klassen') %]</a></li>
-[% END %]
-[% IF link_quotas_projects %]
-	<li><a [% dohref("quotas_projects") %]>[% loc('Projekte') %]</a></li>
-[% END %]
-[% IF link_quotas_others %]
-	<li><a class="end" [% dohref("quotas_others") %]>[% loc('Sonderquota') %]</a></li>
-[% END %]
+	[% IF link_quotas_teachers %]
+		<li><a [% dohref("quotas_teachers") %]>[% loc('Lehrer') %]</a></li>
+	[% END %]
+	[% IF link_quotas_classes %]
+		<li><a [% dohref("quotas_classes") %]>[% loc('Klassen') %]</a></li>
+	[% END %]
+	[% IF link_quotas_projects %]
+		<li><a [% dohref("quotas_projects") %]>[% loc('Projekte') %]</a></li>
+	[% END %]
+	[% IF link_quotas_others %]
+		<li><a class="end" [% dohref("quotas_others") %]>[% loc('Sonderquota') %]</a></li>
+	[% END %]
 [% ELSE %]
-[% IF link_quotas_teachers %]
-	<li><span class="disabled">[% loc('Lehrer') %]</span></li>
-[% END %]
-[% IF link_quotas_classes %]
-	<li><span class="disabled">[% loc('Klassen') %]</span></li>
-[% END %]
-[% IF link_quotas_projects %]
-	<li><span class="disabled">[% loc('Projekte') %]</span></li>
-[% END %]
-[% IF link_quotas_others %]
-	<li><span class="disabledend">[% loc('Sonderquota') %]</span></li>
-[% END %]
+	[% IF link_quotas_teachers %]
+		<li><span class="disabled">[% loc('Lehrer') %]</span></li>
+	[% END %]
+	[% IF link_quotas_classes %]
+		<li><span class="disabled">[% loc('Klassen') %]</span></li>
+	[% END %]
+	[% IF link_quotas_projects %]
+		<li><span class="disabled">[% loc('Projekte') %]</span></li>
+	[% END %]
+	[% IF link_quotas_others %]
+		<li><span class="disabledend">[% loc('Sonderquota') %]</span></li>
+	[% END %]
 [% END %]

@@ -13,6 +13,7 @@ use CGI::Session qw(-ip_match);
 use Crypt::CBC;
 use Digest::MD5;
 use Schulkonsole::Config;
+use Sophomorix::SophomorixConfig;
 use Schulkonsole::DB;
 use Template;
 use Template::Constants qw ( :debug );
@@ -1315,6 +1316,10 @@ sub init {
 	my $min = int($sec / 60);
 	$sec -= $min * 60;
 	$this->set_var('session_time', sprintf("%d:%02d:%02d", $hours, $min, $sec));
+	
+	# set menu access variables
+	$this->set_var('quotaactivated',$Conf::use_quota eq $Schulkonsole::Config::_sophomorix_conf_true);
+	
 }
 
 
