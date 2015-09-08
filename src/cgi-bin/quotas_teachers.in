@@ -57,16 +57,6 @@ if ($Conf::use_quota ne $Schulkonsole::Config::_sophomorix_conf_true) {
 	$sk_session->redirect($url);
 }
 
-=item C<quotaactivated>
-
-True if quotas are activated
-
-=cut
-
-$sk_session->set_var('quotaactivated', 1);
-
-
-
 my $q = $sk_session->query();
 
 my $id = $sk_session->userdata('id');

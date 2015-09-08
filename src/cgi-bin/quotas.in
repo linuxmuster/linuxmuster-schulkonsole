@@ -49,16 +49,6 @@ if (not $sk_session->get_password()) {
 }
 
 
-=item C<quotaactivated>
-
-True if quotas are activated
-
-=cut
-
-$sk_session->set_var('quotaactivated',
-	$Conf::use_quota eq $Schulkonsole::Config::_sophomorix_conf_true);
-
-
 $sk_session->print_page("$this_file.tt", $this_file);
 
 
