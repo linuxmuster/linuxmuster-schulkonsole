@@ -1,0 +1,302 @@
+#! /usr/bin/perl
+#
+# $Id$
+#
+
+=head1 NAME
+
+myroom - show current room infos
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/myroom
+
+=head1 DESCRIPTION
+
+C<myroom> shows current room infos.
+The HTML template is myroom.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session and
+Schulkonsole::Room::set_vars() C<myroom> provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '@datadir@/@PACKAGE@';
+use Time::Local;
+use POSIX;
+use Schulkonsole::Config;
+use Schulkonsole::Session;
+use Schulkonsole::Room;
+use Schulkonsole::Firewall;
+use Schulkonsole::Printer;
+use Schulkonsole::Sophomorix;
+
+my $this_file = 'myroom';
+my $lml_majorversion = "$Schulkonsole::Config::_lml_majorversion";
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $room_session = new Schulkonsole::Room($sk_session);
+
+if ($room_session) {
+
+	my $room = $room_session->info('name');
+	my $id = $sk_session->userdata('id');
+	my $password = $sk_session->get_password();
+
+	Schulkonsole::Firewall::update_logins($id, $password, $room);
+	
+	my $workstations = Schulkonsole::Config::workstations_room($room);
+	my $printers = Schulkonsole::Config::printers_room($room);
+	my $workstation_users = $room_session->workstation_users();
+	my $editing_userdata = $room_session->info('editing_userdata');
+	my $editing_user = $$editing_userdata{uid};
+	
+	my @login_ids;	# used with Schulkonsole::Sophomorix::share_states()
+	foreach my $host (keys %$workstation_users) {
+		foreach my $userdata (@{ $$workstation_users{$host} }) {
+			push @login_ids, $$userdata{id};
+		}
+	}
+	
+	my $is_urlfilter_active
+		= Schulkonsole::Firewall::urlfilter_check($id, $password);
+	
+	
+	# collect data for output
+	
+	eval {
+	my $blocked_hosts_internet =
+		Schulkonsole::Firewall::blocked_hosts_internet();
+	my $blocked_hosts_intranet =
+		Schulkonsole::Firewall::blocked_hosts_intranet();
+	my $unfiltered_hosts = ($is_urlfilter_active ?
+		Schulkonsole::Firewall::unfiltered_hosts() : ());
+	my $printer_info = Schulkonsole::Printer::printer_info($id, $password);
+	
+	my $share_states = Schulkonsole::Sophomorix::share_states($id, $password,
+		@login_ids);
+	
+	
+	my $mac;
+	my %workstationdata;
+	foreach my $workstation (sort keys %$workstations) {
+		if ($lml_majorversion >= 6.1) {
+			$mac = $$workstations{$workstation}{ip};
+		} else {
+			$mac = $$workstations{$workstation}{mac};
+		}
+		next unless
+			($workstation eq $sk_session->{template_vars}{remote_workstation});
+		if (    $$workstation_users{$workstation}
+		    and @{ $$workstation_users{$workstation} }) {
+			my $first_login = 1;
+			foreach my $userdata (sort { $$a{uid} cmp $$b{uid} }
+			                           @{ $$workstation_users{$workstation} }) {
+			    next unless $first_login;
+				%workstationdata = {
+					name => $workstation,
+					login => $$userdata{uid},
+					first => $first_login,
+					internet => ($$blocked_hosts_internet{$mac} ? 0 : 1),
+					intranet => ($$blocked_hosts_intranet{$mac} ? 0 : 1),
+					webfilter => ($$unfiltered_hosts{$mac} ? 0 : 1),
+					shares => $$share_states{$$userdata{id}},
+					printer => [],
+					info => '',
+				};
+	
+				foreach my $printer (@$printers) {
+					push @{ $workstationdata{printer} },
+						{ name => $printer,
+						  off => $$printer_info{$printer}{DenyUser}{$$userdata{uid}},
+						};
+				}
+				$first_login = 0;
+			}
+		} else {
+			%workstationdata = {
+				name => $workstation,
+				first => 1,
+				internet => ($$blocked_hosts_internet{$mac} ? 0 : 1),
+				intranet => ($$blocked_hosts_intranet{$mac} ? 0 : 1),
+				webfilter => ($$unfiltered_hosts{$mac} ? 0 : 1),
+				info => '',
+			};
+		}
+	}
+	
+=item C<workstation>
+	
+Users logged in on current workstation in room as a hash. If no user
+is logged in the workstation hash is provided anyway.
+	
+The hashes' keys are
+	
+=over
+	
+=item C<name>
+	
+Name of current workstation
+	
+=item C<login>
+	
+Login of the user (if user is logged in)
+
+=item C<first>
+	
+True if the user is the first of all users on the workstation or no user
+is logged in
+	
+=item C<internet>
+	
+True if the workstation can access the internet
+
+=item C<intranet>
+	
+True if the workstation can access the intranet
+
+=item C<webfilter>
+	
+True if the webfilter is activated for the workstation
+
+=item C<shares>
+	
+True if the user's share is activated
+	
+=item C<printers>
+	
+User's access to the room's printers as an array of hashes with the keys
+	
+=over
+	
+=item C<name>
+	
+Name of the printer
+	
+=item C<off>
+	
+True if the user cannot access the printer
+	
+=back
+	
+=back
+	
+=cut
+	
+	$sk_session->set_var('workstation', \%workstationdata);
+	
+	
+	my @overview_devices;
+	foreach my $printer (@$printers) {
+		push @overview_devices, {
+			type => $sk_session->d()->get('Drucker'),
+			name => $printer,
+			state => $$printer_info{$printer}{State},
+			statemessage => $$printer_info{$printer}{StateMessage},
+			accepting => ($$printer_info{$printer}{Accepting} eq 'Yes' ? 1 : 0),
+		};
+	}
+	
+=item C<overview_devices>
+	
+The devices in the room as an array of hashes with the keys
+
+=over
+
+=item C<type>
+
+Type of the device
+
+=item C<name>
+
+Name of the device
+
+=item C<state>
+
+State of the device
+
+=item C<statemessage>
+
+State message of the device
+
+=item C<accepting>
+
+True if the device is accessible from this room
+
+=back
+
+=cut
+	
+	$sk_session->set_var('overview_devices', \@overview_devices);
+	
+	
+=item C<printers>
+	
+An array with the printers assigned to this room
+	
+=cut
+	
+	$sk_session->set_var('printers', $printers);
+	};
+	if ($@) {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+	
+	
+	
+=item C<intranetactive>
+	
+True if intranet is configured to be started at boot time
+	
+=cut
+	
+	$sk_session->set_var('intranetactive', $Schulkonsole::Config::_lml_start);
+	
+	
+	
+=item C<urlfilteractive>
+	
+True if URL-filter is active
+	
+=cut
+	
+	$sk_session->set_var('urlfilteractive', $is_urlfilter_active);
+	
+	
+	
+	$room_session->set_vars($sk_session);
+	
+	
+	
+	# pre-set form fields with suggested values for lesson end time
+	my $start_time = $room_session->param('start_time');
+	if ($start_time) {
+		my @suggested_end_time = localtime($start_time + 90 * 60);
+		$q->param('lesson_end_hours', $suggested_end_time[2]);
+		$q->param('lesson_end_minutes', int($suggested_end_time[1] / 5) * 5);
+	}
+}
+
+
+
+$sk_session->print_page("$this_file.tt", $this_file);
