@@ -1,0 +1,330 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+quotas_teachers - quota settings for teachers
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/quotas_teachers
+
+=head1 DESCRIPTION
+
+C<quotas_teachers> lets you edit the quotas of teachers.
+The HTML template is quotas_teachers.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<quotas_teachers>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Session;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::SophomorixQuotas;
+use Sophomorix::SophomorixAPI;
+use Sophomorix::SophomorixConfig;
+
+
+my $this_file = 'quotas_teachers';
+
+
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+if ($Conf::use_quota ne $Schulkonsole::Config::_sophomorix_conf_true) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	$url =~ s/$this_file$/quotas/g;
+	$sk_session->redirect($url);
+}
+
+my $q = $sk_session->query();
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+
+
+my @mountpoints = Schulkonsole::SophomorixQuotas::mountpoints();
+
+
+
+eval {
+COMMANDS: {
+$q->param('acceptteachers') and do {
+	my $teachers = get_teachers();
+
+	my $is_changed = 0;
+	my @errors;
+	my @processed_params;
+	foreach my $param ($q->param) {
+		if (my ($login, $action) = $param =~ /^(.+)_teacher(.+-diskquota|mailquota)$/) {
+			if ($$teachers{$login}) {
+				my ($value) = $q->param($param) =~ /^\s*(.+?)\s*$/;
+				if ($value !~ /^\d*$/) {
+					push @errors, sprintf($sk_session->d()->get(
+						'%s: Quota muss eine Zahl sein'), $login);
+				} else {
+					push @processed_params, $param;
+
+					if ($action =~ /^m/) {	# mailquota
+						if (   not defined $$teachers{$login}{mailquota}
+						    # differ between "" and "0" => use ne
+					        or $$teachers{$login}{mailquota} ne $value) {
+
+							$$teachers{$login}{mailquota} = $value;
+							$is_changed++;
+						}
+					} else {	# diskquota
+						my ($mountpoint) = $action =~ /^(.+?)-diskquota$/;
+						if (   (    length($value)
+						        and not $$teachers{$login}{diskquotas}{$mountpoint})
+						    or $$teachers{$login}{diskquotas}{$mountpoint} ne $value) {
+							$$teachers{$login}{diskquotas}{$mountpoint} =
+								$value;
+							$is_changed++;
+						}
+					}
+				}
+			} else {
+				push @errors, sprintf($sk_session->d()->get(
+					'Lehrer %s unbekannt'), $login);
+			}
+		}
+	}
+
+	if (@errors) {
+		$sk_session->set_status(join(', ', @errors), 1);
+	} elsif ($is_changed) {
+		put_teachers($teachers);
+
+		Schulkonsole::Sophomorix::process_quota($id, $password, 2);
+
+		$sk_session->set_status($sk_session->d()->get(
+			'&Auml;nderungen &uuml;bernommen.'), 0);
+		$q->delete(@processed_params);
+	} else {
+		$sk_session->set_status($sk_session->d()->get(
+			'Keine &Auml;nderungen.'), 1);
+	}
+
+
+	last COMMANDS;
+};	# end acceptteachers
+
+} # end COMMANDS
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+
+
+
+
+my $teachers = get_teachers();
+my @teachers_array;
+foreach my $teacher (sort keys %$teachers) {
+	my $diskquotas = $$teachers{$teacher}{diskquotas};
+	my @diskquotas;
+	foreach my $mountpoint (@mountpoints) {
+		push @diskquotas, {
+				mountpoint => $mountpoint,
+				quota => $$diskquotas{$mountpoint},
+			};
+	}
+	push @teachers_array, {
+			login => $$teachers{$teacher}{login},
+			surname => $$teachers{$teacher}{surname},
+			firstname => $$teachers{$teacher}{firstname},
+			diskquotas => \@diskquotas,
+			mailquota => $$teachers{$teacher}{mailquota},
+		};
+}
+
+=item C<teachers>
+
+Quotas for teachers as an array of hashes with the keys
+
+=over
+
+=item C<login>
+
+Login name of the user
+
+=item C<diskquotas>
+
+Disk quotas of the user as an array of hashes with the keys
+
+=over
+
+=item C<mountpoint>
+
+A mountpoint
+
+=item C<quota>
+
+Quota for this mountpoint in MB
+
+=back
+
+=item C<mailquota>
+
+Mail quota in MB
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=back
+
+=cut
+
+$sk_session->set_var('teachers', \@teachers_array);
+
+
+=item C<mountpoints>
+
+An array with the mountpoints
+
+=cut
+
+$sk_session->set_var('mountpoints', \@mountpoints);
+
+=item C<mountpoints_cnt>
+
+The number of mountpoints
+
+=cut
+
+$sk_session->set_var('mountpoints_cnt', scalar(@mountpoints));
+
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+
+
+sub get_teachers {
+	my %teachers;
+
+	eval {
+	my $teachers_lines
+		= Schulkonsole::Sophomorix::read_teachers_file($id, $password);
+
+	foreach my $line (@$teachers_lines) {
+		next if $line =~ /^#/;
+
+		my ($group, $surname, $firstname, $birthdate, $login,
+		    $firstpassword, $short,
+		    $diskquota, $mailquota) = split /\s*;/, $line;
+
+		my ($key) = $login =~ /^\s*(.+?)\s*$/;
+
+		my $diskquotas =
+			Schulkonsole::SophomorixQuotas::split_diskquotas_to_hash(
+				$diskquota);
+		$mailquota = '' if $mailquota eq $Schulkonsole::SophomorixQuotas::mailquota_undefined;
+
+		if ($key) {
+			$teachers{$key} = {
+				group => $group,
+				surname => $surname,
+				firstname => $firstname,
+				birthdate => $birthdate,
+				login => $login,
+				firstpassword => $firstpassword,
+				short => $short,
+				diskquotas => $diskquotas,
+				mailquota => $mailquota,
+			};
+		}
+	}
+	};
+
+	return \%teachers;
+}
+
+
+
+sub put_teachers {
+	my $teachers = shift;
+
+	my $defaults = Schulkonsole::SophomorixQuotas::standard_quota('lehrer');
+
+	my @lines;
+	foreach my $teacher (sort {
+			   $$teachers{$a}{surname} cmp $$teachers{$b}{surname}
+			or $$teachers{$a}{firstname} cmp $$teachers{$b}{firstname}
+		} keys %$teachers) {
+		next if $$teachers{$teacher}{delete};
+
+		my $mailquota = $$teachers{$teacher}{mailquota};
+
+		my $line = $$teachers{$teacher}{group} . ';'
+			. $$teachers{$teacher}{surname} . ';'
+			. $$teachers{$teacher}{firstname} . ';'
+			. $$teachers{$teacher}{birthdate} . ';'
+			. $$teachers{$teacher}{login} . ';'
+			. $$teachers{$teacher}{firstpassword} . ';'
+			. $$teachers{$teacher}{short} . ';'
+			. Schulkonsole::SophomorixQuotas::hash_to_quotastring(
+			  	$$teachers{$teacher}{diskquotas}, $defaults) . ';'
+			. (length($mailquota) ? $mailquota : $Schulkonsole::SophomorixQuotas::mailquota_undefined) . ';'
+			. "\n";
+		push @lines, $line;
+
+	}
+
+	Schulkonsole::Sophomorix::write_teachers_file($id, $password, \@lines);
+}
+
+
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<acceptteachers>
+
+Accept changes to form
+
+=item C<${teachers{login}}_teacher${teachers{diskquotas}{mountpoint}}-diskquota>
+
+Disk quota for user C<$teachers{login}>
+created in a loop over the template variable C<teachers>
+
+=item C<${teachers{login}}_teachermailquota>
+
+Mail quota for user C<$teachers{login}> created in a loop
+over the template variable C<teachers>
+
+=back
+

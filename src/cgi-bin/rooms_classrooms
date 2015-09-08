@@ -1,0 +1,210 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+rooms_classrooms - add rooms to list of available rooms
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/rooms_classrooms
+
+=head1 DESCRIPTION
+
+C<rooms_classrooms> lets you add rooms to the list of available rooms in
+https://server/schulkonsole/room
+The HTML template is rooms_classrooms.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<rooms_classrooms>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use open ':utf8';
+use Schulkonsole::Encode;
+use Schulkonsole::Files;
+use Schulkonsole::Session;
+
+
+my $this_file = 'rooms_classrooms';
+
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+
+my $classrooms = eval { Schulkonsole::Config::classrooms(); };
+$classrooms = [] if $@;
+my $rooms = Schulkonsole::Config::rooms();
+
+my %classrooms;
+foreach my $classroom (@$classrooms) {
+	$classrooms{$classroom} = 1;
+}
+
+
+
+if ($q->param('accept')) {
+	eval {
+		my %classrooms_new;
+
+		foreach my $room (keys %$rooms) {
+			if ($q->param("${room}_classroom")) {
+				if (not $classrooms{$room}) {
+					$classrooms_new{$room} = 1;
+					$classrooms{$room} = 1;
+				}
+			} elsif ($classrooms{$room}) {
+				$classrooms_new{$room} = 0;
+				delete $classrooms{$room};
+			}
+		}
+		if (%classrooms_new) {
+			my $lines = new_classrooms_lines(\%classrooms_new);
+
+			Schulkonsole::Files::write_classrooms_file(
+				$sk_session->userdata('id'),
+				$sk_session->get_password(),
+				$lines);
+
+			$sk_session->set_status($sk_session->d()->get(
+				'&Auml;nderungen &uuml;bernommen'), 0);
+		}
+	};
+	if ($@) {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+}
+
+
+my @rooms_array;
+foreach my $room (sort keys %$rooms) {
+	push @rooms_array, {
+			name => $room,
+			selected => (exists $classrooms{$room}),
+		};
+}
+
+=item C<rooms>
+
+An array with all rooms as an array of hashes with the keys
+
+=over
+
+=item C<name>
+
+Name of the room
+
+=item C<selected>
+
+True if the room is available
+
+=back
+
+=cut
+
+$sk_session->set_var('rooms', \@rooms_array);
+
+
+
+my ($unimported, $unconfigured) =
+	Schulkonsole::Config::count_unimported_unconfigured_workstations();
+
+=item C<unimported>
+
+True if not all configured workstations were imported into the system
+
+=cut
+
+$sk_session->set_var('unimported', $unimported);
+
+=item C<unconfigured>
+
+True if not all imported workstations are configured, too
+
+=cut
+
+$sk_session->set_var('unconfigured', $unconfigured);
+
+
+
+
+
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+
+
+sub new_classrooms_lines {
+	my $new = shift;
+
+
+	my @lines;
+	my %new = %$new;
+	if (open CLASSROOMS, '<',
+	         Schulkonsole::Encode::to_fs(
+	         	$Schulkonsole::Config::_classrooms_file)) {
+		while (<CLASSROOMS>) {
+			my ($room) = /^([^#]+?)\s*$/;
+
+			if (    $room
+			    and defined $new{$room}
+				and not $new{$room}) {
+				delete $new{$room};
+			} else {
+				push @lines, $_;
+			}
+		}
+
+		close CLASSROOMS;
+	}
+
+
+	if (%new) {
+		foreach my $room (sort keys %new) {
+			push @lines, "$room\n" if $new{$room};
+		}
+	}
+
+
+	return \@lines;
+}
+
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<accept>
+
+Accept the changes
+
+=item C<${rooms{name}}_classroom>
+
+True if the room shall be available
+
+=back

@@ -1,0 +1,314 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+class_handout - hand out files to class
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/class_handout
+
+=head1 DESCRIPTION
+
+C<class_handout> lets you hand out files to a selected class.
+The HTML template is class_handout.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<class_handout>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::Sophomorix;
+use File::Basename;
+
+my $this_file = 'class_handout';
+my $transfername = 'upload_handout_class';
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+my $d = $sk_session->d();
+
+my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+my $class = $q->param('classes');
+if (    $class
+    and $$classs{$class}) {
+	$sk_session->param('class', $class);
+}
+$class = $sk_session->param('class');
+
+if (   not $class
+    or not $$classs{$class}) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/class/g;
+	$sk_session->redirect($url);
+}
+
+
+my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
+
+
+eval {
+	SWITCHCOMMAND: {
+		$q->param('handout') and do {
+			eval {
+			Schulkonsole::Sophomorix::handout_class($sk_session->userdata('id'),
+				$sk_session->get_password(),
+				$class);
+		
+			$sk_session->set_status(
+				$sk_session->d()->get('Vorlagen bereitgestellt'), 0);
+			};
+			if ($@) {
+				$sk_session->standard_error_handling($this_file, $@);
+			}
+			last SWITCHCOMMAND;
+		
+		};
+		
+		$q->param($transfername) and do {
+			my $file = $q->param($transfername);
+			my $tmpfile = "$Schulkonsole::Config::_runtimedir/${transfername}_"
+							. $sk_session->session_id() . '_' . time;
+			if(! open(DAT,'>'.$tmpfile)) {
+				$sk_session->set_status($d->get('Es konnte keine temporäre Datei erzeugt werden.'),1);
+				last SWITCHCOMMAND;
+			}
+			binmode($file);
+			binmode(DAT);
+			my $buffer = "";
+			while( read($file, $buffer, 1024)) {
+				print DAT $buffer;
+			}
+			close(DAT);
+			my $filename = basename($file);
+			
+			Schulkonsole::Sophomorix::add_handout_class(
+				$sk_session->userdata('id'), $sk_session->get_password(), $class, $filename, 0, basename($tmpfile));
+			$sk_session->set_status($d->get('Datei hochgeladen'),0);
+			
+			last SWITCHCOMMAND;	
+		}; 
+		
+		foreach my $param ($q->param) {
+			if (my ($file, $action)
+			    	= $param =~ /^(.+);(delete|download)$/) {
+				my $teacher_share_files = Schulkonsole::Sophomorix::ls_handout_class(
+						$sk_session->userdata('id'), $sk_session->get_password(), $class);
+				
+				SWITCHACTION: {
+				$action =~ /delete/ and do {
+					if(not defined $$teacher_share_files{$file}) {
+						$sk_session->set_status(
+							$d->get('Datei ') . $file . $d->get(' nicht als bereitzustellende Datei vorhanden.'), 1);
+						last SWITCHACTION;
+					}
+					Schulkonsole::Sophomorix::rm_handout_class(
+						$sk_session->userdata('id'), $sk_session->get_password(), $class,
+						$file, ($$teacher_share_files{$file}?1:0));
+					
+					$sk_session->set_status($d->get('Datei gelöscht.'),0);
+					
+					last SWITCHACTION;
+				};
+				
+				$action =~ /download/ and do {
+					if(not defined $$teacher_share_files{$file}) {
+						$sk_session->set_status(
+							$d->get('Datei ') . $file . $d->get(' nicht als bereitzustellende Datei vorhanden.'),	1);
+						last SWITCHACTION;
+					}
+					my $tmpfile = "download_test_handout_".$sk_session->session_id() . '_' . time;
+					
+					Schulkonsole::Sophomorix::dl_handout_class(
+						$sk_session->userdata('id'), $sk_session->get_password(), $class,
+						$file, ($$teacher_share_files{$file}?1:0), $tmpfile);
+					
+					if( -e "$Schulkonsole::Config::_runtimedir/$tmpfile") {
+						print $q->header( -type           => "application/x-download",
+								          -attachment     => $file,
+										   -Content_length => -s "$Schulkonsole::Config::_runtimedir/$tmpfile");
+									
+						if(! open(FILE, "<$Schulkonsole::Config::_runtimedir/$tmpfile")) {
+							$sk_session->set_status($d->get('Die temporäre Datei konnte nicht geöffnet werden.'), 1);
+							last SWITCHCOMMAND;
+						}
+						binmode(FILE);
+						print while <FILE>;
+						if(!close(FILE)) {
+							$sk_session->set_status($d->get('Die temporäre Datei konnte nicht geschlossen werden.'), 1);
+							last SWITCHCOMMAND;
+						}
+						
+						if($$teacher_share_files{$file}){
+							system("rm -rf $Schulkonsole::Config::_runtimedir/$tmpfile");
+						} else {
+							system("rm -f $Schulkonsole::Config::_runtimedir/$tmpfile");
+						}
+		
+						$sk_session->set_status($d->get('Die Datei wurde heruntergeladen.'), 0);
+						exit 0;
+						
+					} else {
+						$sk_session->set_status($d->get('Es konnte keine temporäre Datei erzeugt werden.'), 1);
+						last SWITCHCOMMAND;				
+					}
+					
+					last SWITCHACTION;
+				};
+				
+				} #SWITCHACTION
+			}
+		} # foreach param
+
+	} # SWITCHCOMMAND
+}; # eval
+
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+
+
+
+
+eval {
+my $teacher_share_files = Schulkonsole::Sophomorix::ls_handout_class(
+	$sk_session->userdata('id'),
+	$sk_session->get_password(),
+	$class);
+
+=item C<teacher_share_files>
+
+Available files as returned by C<Schulkonsole::Sophomorix::create_file_list()>
+
+=cut
+
+$sk_session->set_var('teacher_share_files',
+	Schulkonsole::Sophomorix::create_file_list($teacher_share_files));
+};
+if ($@) {
+	if (    ref $@
+	    and $@->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY) {
+		$sk_session->set_status(
+			$sk_session->d()->get(
+				'Verzeichnis zum Bereitstellen nicht gefunden'),
+				1);
+	} else {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+}
+
+
+
+my @students;
+foreach my $user (sort {
+	$$class_userdatas{$a}{surname} cmp $$class_userdatas{$b}{surname} }
+	keys %$class_userdatas) {
+
+	my $student = {
+		login => $user,
+		firstname => $$class_userdatas{$user}{firstname},
+		surname => $$class_userdatas{$user}{surname},
+	};
+	push @students, $student;
+}
+
+=item C<students>
+
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=back
+
+=cut
+
+$sk_session->set_var('students', \@students);
+
+
+my @classs;
+foreach my $class (sort {
+    $$classs{$a}{displayname} cmp $$classs{$b}{displayname} } keys %$classs) {
+	push @classs, { gid => $class,
+	                name => $$classs{$class}{displayname} };
+}
+
+=item C<classes>
+
+An array of hashes of the classes of which the current user is a member
+with the keys
+
+=over
+
+=item C<gid>
+
+The GID of the class
+
+=item C<name>
+
+The name of the class
+
+=back
+
+=cut
+
+$sk_session->set_var('classes', \@classs);
+
+
+=item C<class_name>
+
+The name of the class
+
+=cut
+
+$sk_session->set_var('class_name', $$classs{$class}{displayname});
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<handout>
+
+Handout files
+
+=back
+

@@ -1,0 +1,170 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+room_test - start an exam
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/room_test
+
+=head1 DESCRIPTION
+
+C<room_test> lets you start an exam or redirects if there already is an exam
+The HTML template is room_test.tt.
+
+=head2 Template variables
+
+There are no other template variables but the variables of
+Schulkonsole::Session and Schulkonsole::Room::set_vars().
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Config;
+use Schulkonsole::Room;
+use Schulkonsole::Session;
+use Schulkonsole::Sophomorix;
+
+my $this_file = 'room_test';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+my $q = $sk_session->query();
+
+my $room_session = new Schulkonsole::Room($sk_session);
+
+
+if (   not $room_session
+    or not $room_session->info('is_editing')) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room/g;
+	$sk_session->redirect($url);
+}
+
+
+
+if ($q->param('starttest')) {
+
+	my $workstation_password = $q->param('workstationpassword');
+	if (not $workstation_password) {
+		$sk_session->set_status(
+			 $sk_session->d()->get(
+				 'Kein Workstationpasswort angegeben.'),
+				 1);
+	} else {
+		eval {
+
+			my $id = $sk_session->userdata('id');
+			my $users = $room_session->workstation_users();
+			
+			my $lml_majorversion = "$Schulkonsole::Config::_lml_majorversion";
+
+			my $workstations = Schulkonsole::Config::workstations_room(
+				$room_session->info('name'));
+
+			my $blocked_hosts_internet
+				= Schulkonsole::Firewall::blocked_hosts_internet();
+			my $blocked_hosts_intranet
+				= Schulkonsole::Firewall::blocked_hosts_intranet();
+
+			my @macs_internet;
+			my @macs_intranet;
+			my $mac;
+			foreach my $host (keys %$workstations) {
+				if ($host ne
+				    	$sk_session->{template_vars}{remote_workstation}) {
+				    	if ($lml_majorversion >= 6.1) {
+						$mac = $$workstations{$host}{ip};
+					} else {
+						$mac = $$workstations{$host}{mac};
+					}
+					push @macs_internet, $mac
+						unless $$blocked_hosts_internet{$mac};
+					push @macs_intranet, $mac
+						unless $$blocked_hosts_intranet{$mac};
+				}
+			}
+
+			my $password = $sk_session->get_password();
+
+			Schulkonsole::Firewall::internet_off($id, $password,
+				@macs_internet) if @macs_internet;
+			Schulkonsole::Firewall::intranet_off($id, $password,
+				@macs_intranet) if @macs_intranet;
+
+			Schulkonsole::Sophomorix::reset_room($id, $password,
+				$room_session->info('name'));
+
+
+			$room_session->change_workstation_passwords(
+				$id, $password, $workstation_password);
+			$sk_session->set_status_redirect(
+				 $sk_session->d()->get('Workstationpasswort ge&auml;ndert.'),
+				 0);
+
+
+			$room_session->clear('end_time');
+
+			$room_session->param('test_step',
+			                     Schulkonsole::Config::TEST_HANDOUT)
+				if (  $room_session->param('test_step')
+				    < Schulkonsole::Config::TEST_HANDOUT);
+
+
+			my $url = $q->url( -absolute => 1 );
+			$url =~ s/$this_file$/room_test_handout/g;
+			$sk_session->redirect($url);
+		};
+		if ($@) {
+			$sk_session->standard_error_handling($this_file, $@);
+		}
+	}
+} elsif ($room_session->param('test_step')) {
+	my $test_step = $room_session->param('test_step');
+	my $target;
+	SWITCH: {
+	$test_step == 1 and do {
+		$target = 'room_test_handout';
+		last SWITCH;
+	};
+	$test_step == 2 and do {
+		$target = 'room_test_password';
+		last SWITCH;
+	};
+	$test_step == 3 and do {
+		$target = 'room_test_collect';
+		last SWITCH;
+	};
+	die "Invalid value for test_step $test_step\n";
+	}
+
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/$target/g;
+	$sk_session->redirect($url);
+}
+
+
+$q->param('workstationpassword', Schulkonsole::Room::random_password(5))
+	unless $q->param('workstationpassword');
+$room_session->set_vars($sk_session);
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+=head2 Form fields
+
+=over
+
+=item C<starttest>
+
+Start an exam
+
+=item C<workstationpassword>
+
+The password to be set for the workstation accounts
+
+=back
+

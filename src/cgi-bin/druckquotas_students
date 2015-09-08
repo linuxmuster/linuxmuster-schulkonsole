@@ -1,0 +1,182 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+druckquotas_students - druckquota settings for students
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/druckquotas_students
+
+=head1 DESCRIPTION
+
+C<druckquotas_students> lets you edit the print-quotas of students.
+The HTML template is druckquotas_students.shtml.
+
+25.6.2012
+
+=over
+
+=cut
+
+use strict;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Session;
+use Schulkonsole::Druckquota;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::DB;
+
+my $this_file = 'druckquotas_students';
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+
+my $all_classs = Schulkonsole::DB::classes();
+delete $$all_classs{'attic'};
+
+my @classs;
+foreach my $klasse (sort { $$all_classs{$a}{displayname} cmp $$all_classs{$b}{displayname} }
+                   keys %$all_classs) {
+	push @classs, { gid => $klasse,
+	                name => $$all_classs{$klasse}{displayname} };
+}
+
+$sk_session->set_var('classes', \@classs);
+
+
+my $class = $q->param('classes');
+if (    $class  ) {
+	$sk_session->param('class', $class);
+} else {
+	$class = $sk_session->param('class');
+}
+
+if ($class =~ m/\w+/ ) {$sk_session->set_var('class', $class); }
+
+eval {
+COMMANDS: {
+my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
+my $is_changed = 0;
+my @errors;
+($q->param('resetstudents')
+ or $q->param('deletestudents')) and do {
+	my @user_selects;
+	foreach my $param ($q->param) {
+		if (my ($user) = $param =~ /^(.+);select$/) {
+			if ($$class_userdatas{$user}) {
+				push @user_selects, $user;
+				$is_changed++;
+			} else {
+				push @errors, sprintf($sk_session->d()->get(
+					'Schüler %s unbekannt'), $user);
+			}
+		}
+	}
+	my ($default_balance) = $q->param('defaultbalance') =~ /^\s*(.+?)\s*$/;
+	if (($default_balance !~ /^\d*$/) and ($q->param('resetstudents'))) {
+					push @errors, sprintf($sk_session->d()->get(
+						'%s: Neue Quota muss eine Zahl sein'));
+				        } 
+	else {
+			if ($q->param('resetstudents')) {
+				Schulkonsole::Druckquota::reset_balance ($id, $password, $default_balance, @user_selects);
+			} else {
+				Schulkonsole::Druckquota::delete_balance ($id, $password, @user_selects);
+			}
+	}
+	if (@errors) {
+		$sk_session->set_status(join(', ', @errors), 1);
+	} elsif ($is_changed) {
+		$sk_session->set_status($sk_session->d()->get("Druckquotas gesetzt: $is_changed mal"), 0);
+	} else {
+		$sk_session->set_status($sk_session->d()->get('Keine &Auml;nderungen.'), 1);
+	}
+}; # end resetstudents
+#############################################################
+$q->param('acceptstudents') and do {
+	my @processed_params;
+	foreach my $param ($q->param) {
+		if (my ($login) = $param =~ /^(.+)_studentnewbalance$/) {
+			if ($$class_userdatas{$login}) {
+				my ($value) = $q->param($param) =~ /^\s*(.+?)\s*$/;
+				if ( $value =~ /\S/) {
+				    if ($value !~ /^[\+\-]?\d*$/) {
+					push @errors, sprintf($sk_session->d()->get(
+						'%s: Neue Quota muss eine Zahl ggf. mit Vorzeichen sein'), $login);
+				        } else {
+					push @processed_params, $param;
+						Schulkonsole::Druckquota::set_balance ($id, $password, $value, $login);
+						$is_changed++;
+					}
+				}
+			} else {
+				push @errors, sprintf($sk_session->d()->get(
+					'Schüler %s unbekannt'), $login);
+			}
+		}
+	}
+	if (@errors) {
+		$sk_session->set_status(join(', ', @errors), 1);
+	} elsif ($is_changed) {
+		$sk_session->set_status($sk_session->d()->get(
+			"&Auml;nderungen &uuml;bernommen."), 0);
+		$q->delete(@processed_params);
+	} else {
+		$sk_session->set_status($sk_session->d()->get(
+			"Keine &Auml;nderungen. $id $password"), 1);
+	}
+
+
+	last COMMANDS;
+};	# end acceptstudents
+
+} # end COMMANDS
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+if ( $class ) {
+	my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
+	my @students_array;
+	my @userlist = Schulkonsole::Druckquota::get_balancelist($id, $password, keys %$class_userdatas);
+	foreach my $zeile (@userlist) {
+		(my $key, my $maxmb, my $mb) = split(/:/,$zeile);
+		$$class_userdatas{$key}{maxmb} = $maxmb;
+		$$class_userdatas{$key}{mb} = $mb;
+	}
+	foreach my $student (sort {
+	$$class_userdatas{$a}{surname} cmp $$class_userdatas{$b}{surname} }
+	keys %$class_userdatas) {
+		(my $maxmb, my $mb) = Schulkonsole::Druckquota::get_balance($id, $password, $student);
+		push @students_array, {
+			login => $student,
+			surname => $$class_userdatas{$student}{surname},
+			firstname => $$class_userdatas{$student}{firstname},
+			maxbalance => $$class_userdatas{$student}{maxmb},
+			balance => $$class_userdatas{$student}{mb},
+			newbalance => "",
+		};
+	}
+	$sk_session->set_var('students', \@students_array);
+}
+
+$sk_session->print_page("$this_file.shtml", $this_file);
+
+

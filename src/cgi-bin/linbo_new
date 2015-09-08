@@ -1,0 +1,421 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+linbo_new - create a new LINBO start.conf.*
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/linbo_new
+
+=head1 DESCRIPTION
+
+C<linbo_new> lets the user create a new start.conf.* file for a workstation
+group.
+The HTML template is linbo_new.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<linbo_new>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Session;
+use Schulkonsole::Linbo;
+
+
+my $this_file = 'linbo_new';
+
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+my $groups = Schulkonsole::Linbo::groups();
+my $templates_os = Schulkonsole::Linbo::get_templates_os();
+
+eval {
+SWITCHCOMMAND: {
+
+$q->param('copy') and do {
+	my $src = $q->param('src');
+
+	if (not $src) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Keine Gruppe ausgew&auml;hlt'),
+			1);
+		last SWITCHCOMMAND;
+	}
+	if (not $$groups{$src}) {
+		$sk_session->set_status(sprintf(
+				$sk_session->d()->get('Gruppe %s existiert nicht'), $src),
+			1);
+		last SWITCHCOMMAND;
+	}
+
+	my $dest = $q->param('dest');
+	$dest =~ s/\s*(\S+)\s*/$1/;
+	if (not $dest) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Keine Zielgruppe angegeben'),
+			1);
+		last SWITCHCOMMAND;
+	}
+	if ($dest !~ /^[a-z\d_]+$/) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Ung&uuml;ltiger Zielgruppenname'),
+			1);
+		last SWITCHCOMMAND;
+	}
+
+	Schulkonsole::Linbo::copy_start_conf(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		$src, $dest);
+
+	$groups = Schulkonsole::Linbo::groups();
+	if ($$groups{$dest}) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Konfigurationsdatei kopiert'), 0);
+	} else {
+		$sk_session->set_status(
+			$sk_session->d()->get('Konfigurationsdatei konnte nicht kopiert werden'), 1);
+	}
+
+	last SWITCHCOMMAND;
+};
+
+$q->param('create') and do {
+
+	my ($group) = $q->param('group') =~ /^\s*(.+?)\s*$/;
+	$group = lc $group;
+	my ($disk_size) = $q->param('disksize') =~ /^\s*(.+?)\s*$/;
+	my ($device) = $q->param('device') =~ /^\s*(.+?)\s*$/;
+	my ($os_template_1) = $q->param('os1') =~ /^\s*(.+?)\s*$/;
+	my ($os_size_1) = $q->param('size1') =~ /^\s*(.+?)\s*$/;
+	my ($os_template_2) = $q->param('os2') =~ /^\s*(.+?)\s*$/;
+	my ($os_size_2) = $q->param('size2') =~ /^\s*(.+?)\s*$/;
+	my ($os_template_3) = $q->param('os3') =~ /^\s*(.+?)\s*$/;
+	my ($os_size_3) = $q->param('size3') =~ /^\s*(.+?)\s*$/;
+	my ($os_template_4) = $q->param('os4') =~ /^\s*(.+?)\s*$/;
+	my ($os_size_4) = $q->param('size4') =~ /^\s*(.+?)\s*$/;
+
+
+	my @errors;
+	if ($group !~ /^[a-z\d_]+$/) {
+		push @errors, $sk_session->d()->get('Ung&uuml;ltiger Gruppenname');
+		$sk_session->mark_input_error('group');
+	} elsif ($$groups{$group}) {
+		push @errors, $sk_session->d()->get(
+		              	'Rechnergruppenname schon vergeben');
+		$sk_session->mark_input_error('group');
+	}
+
+	if (not $disk_size) {
+		push @errors, $sk_session->d()->get(
+		              	'Keine Festplattengr&ouml;&szlig;e angegeben');
+		$sk_session->mark_input_error('disksize');
+	} elsif ($disk_size !~ /^\d+$/) {
+		push @errors, $sk_session->d()->get(
+		              	'Festplattengr&ouml;&szlig;e muss eine Zahl sein');
+		$sk_session->mark_input_error('disksize');
+	}
+
+	if ($device !~ /^(sda|hda)$/) {
+		push @errors, $sk_session->d()->get(
+		              	'Unbekannter Festplattencontroller');
+		$sk_session->mark_input_error('device');
+	}
+
+
+	my $os_size_total = 0;
+
+	if ($os_template_1) {
+		if (not $$templates_os{$os_template_1}) {
+			push @errors, sprintf($sk_session->d()->get(
+			                      	'Template %s nicht vorhanden'),
+			                      $os_template_1);
+			$sk_session->mark_input_error('os1');
+		} elsif ($os_template_1 !~ /windows/i) {
+			push @errors, $sk_session->d()->get(
+			              	'Betriebssystem 1 muss Windows sein');
+			$sk_session->mark_input_error('os1');
+		}
+
+		if (not $os_size_1) {
+			$os_size_1 = 10;
+		} elsif ($os_size_1 !~ /^\d+$/) {
+			push @errors, sprintf($sk_session->d()->get(
+			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 1 muss eine Zahl sein'),
+			                      $os_template_1);
+			$sk_session->mark_input_error('os1');
+			$os_size_1 = 10;
+		}
+	} elsif (not $os_size_1) {
+		$os_size_1 = 10;
+	}
+
+	$os_size_total += $os_size_1;
+
+	if ($os_template_2) {
+		if (not $$templates_os{$os_template_2}) {
+			push @errors, sprintf($sk_session->d()->get(
+			                      	'Template %s nicht vorhanden'),
+			                      $os_template_2);
+			$sk_session->mark_input_error('os2');
+		} elsif ($os_template_2 !~ /windows/i) {
+			push @errors, $sk_session->d()->get(
+			              	'Betriebssystem 2 muss Windows sein');
+			$sk_session->mark_input_error('os2');
+		}
+
+		if (not $os_size_2) {
+			$os_size_2 = 10;
+		} elsif ($os_size_2 !~ /^\d+$/) {
+			push @errors, sprintf($sk_session->d()->get(
+			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 2 muss eine Zahl sein'),
+			                      $os_template_2);
+			$sk_session->mark_input_error('os2');
+			$os_size_2 = 10;
+		}
+	} elsif (not $os_size_2) {
+		$os_size_2 = 10;
+	}
+
+	$os_size_total += $os_size_2;
+
+	if ($os_template_3) {
+		if (not $$templates_os{$os_template_3}) {
+			push @errors, sprintf($sk_session->d()->get(
+			                      	'Template %s nicht vorhanden'),
+			                      $os_template_3);
+			$sk_session->mark_input_error('os3');
+		} elsif ($os_template_3 =~ /windows/i) {
+			push @errors, $sk_session->d()->get(
+			              	'Betriebssystem 3 darf nicht Windows sein');
+			$sk_session->mark_input_error('os3');
+		}
+
+		if (not $os_size_3) {
+			$os_size_3 = 10;
+		} elsif ($os_size_3 !~ /^\d+$/) {
+			push @errors, sprintf($sk_session->d()->get(
+			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 3 muss eine Zahl sein'),
+			                      $os_template_3);
+			$sk_session->mark_input_error('os3');
+			$os_size_3 = 10;
+		}
+	} elsif (not $os_size_3) {
+		$os_size_3 = 10;
+	}
+
+	$os_size_total += $os_size_3;
+
+	if ($os_template_4) {
+		if (not $$templates_os{$os_template_4}) {
+			push @errors, sprintf($sk_session->d()->get(
+			                      	'Template %s nicht vorhanden'),
+			                      $os_template_4);
+			$sk_session->mark_input_error('os4');
+		} elsif ($os_template_4 =~ /windows/i) {
+			push @errors, $sk_session->d()->get(
+			              	'Betriebssystem 4 darf nicht Windows sein');
+			$sk_session->mark_input_error('os4');
+		}
+
+		if (not $os_size_4) {
+			$os_size_4 = 10;
+		} elsif ($os_size_4 !~ /^\d+$/) {
+			push @errors, sprintf($sk_session->d()->get(
+			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 4 muss eine Zahl sein'),
+			                      $os_template_4);
+			$sk_session->mark_input_error('os4');
+			$os_size_4 = 10;
+		}
+	} elsif (not $os_size_4) {
+		$os_size_4 = 10;
+	}
+
+	$os_size_total += $os_size_4;
+
+
+	if ($os_size_total * 1.7 >= $disk_size) {
+		push @errors, $sk_session->d()->get(
+		              	'Festplatte f&uuml;r die gew&auml;hlte Gruppenkonfiguration zu klein');
+		$sk_session->mark_input_error('disksize');
+	}
+
+
+	if (@errors) {
+		$sk_session->set_status(join(', ', @errors), 1);
+	} else {
+		Schulkonsole::Linbo::create_start_conf_from_template(
+			$sk_session->userdata('id'),
+			$sk_session->get_password(),
+			$group,
+			$ENV{SERVER_ADDR},
+			$device,
+			$os_template_1, $os_size_1 * 1024,
+			$os_template_2, $os_size_2 * 1024,
+			$os_template_3, $os_size_3 * 1024,
+			$os_template_4, $os_size_4 * 1024);
+		$sk_session->set_status(
+			$sk_session->d()->get('Konfigurationsdatei erstellt'), 0);
+	}
+
+	last SWITCHCOMMAND;
+};
+
+
+}
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+
+
+=item C<groups>
+
+List of all groups that have a start.conf.*
+
+=cut
+
+$sk_session->set_var('groups', [ sort keys %$groups ]);
+
+
+my @templates_os_win;
+my @templates_os_nonwin;
+foreach my $template_name (sort keys %$templates_os) {
+	if ($template_name =~ /windows/i) {
+		push @templates_os_win, $template_name;
+	} else {
+		push @templates_os_nonwin, $template_name;
+	}
+}
+
+
+=item C<hastemplates>
+
+True if there are any tempaltes
+
+=cut
+
+$sk_session->set_var('hastemplates', @templates_os_win || @templates_os_nonwin);
+
+
+
+=item C<templatesoswin>
+
+List of all windows templates
+
+=cut
+
+$sk_session->set_var('templatesoswin', \@templates_os_win);
+
+
+
+=item C<templatesosnonwin>
+
+List of all non-windows templates
+
+=cut
+
+$sk_session->set_var('templatesosnonwin', \@templates_os_nonwin);
+
+
+
+
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+
+=head3 Parameters to copy start.conf.*-files
+
+=over
+
+=item C<copy>, C<src>, and C<dest>
+
+If C<copy> is selected start.conf.C<src> is copied to start.conf.C<dest>.
+
+=back
+
+
+=head3 Parameters to create new start.conf.*
+
+=over
+
+=item C<group>
+
+=item C<disksize>
+
+=item C<device>
+
+One of C<sda> or C<hda>.
+
+=item C<os1>
+
+Windowstemplate from which to create section for first OS, created from array
+in session variable C<templatesoswin>.
+
+=item C<size1>
+
+Size of partition on which the first OS is to be installed.
+
+=item C<os2>
+
+Windows template from which to create section for second OS, created from array
+in session variable C<templatesoswin>.
+
+=item C<size2>
+
+Size of partition on which the second OS is to be installed.
+
+=item C<os3>
+
+GNU/Linux-Template from which to create section for third OS, created from array
+in session variable C<templatesosnowin>.
+
+=item C<size3>
+
+Size of partition on which the third OS is to be installed.
+
+=item C<os4>
+
+GNU/Linux template from which to create section for third OS, created from array
+in session variable C<templatesosnowin>.
+
+=item C<size4>
+
+Size of partition on which the third OS is to be installed.
+
+=item C<create>
+
+Submit button to create new start.conf.* file
+
+=back
