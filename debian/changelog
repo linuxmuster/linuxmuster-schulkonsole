@@ -1,5 +1,7 @@
 linuxmuster-schulkonsole (0.10.19-12) babo; urgency=low
 
+  * Merged branch feature/upload. Windows users don't need mounted dirs any more.
+    Dirs are only needed for tests from now on.
   * Changed menu to jMenu
   * Add upload/download test handout templates to get rid of template mount #483.
   * Conversion from Template.pm engine to Template Toolkit.
