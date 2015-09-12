@@ -44,17 +44,7 @@
 		<li><span class="disabledend">[% loc('Klassenarbeit') %]</span></li>
 	[% END %]
 [% END %]
-[% IF exammode %]
-	[% IF link_myroom_test_handedoutcopy %]
-		<li><a [% dohref("room_test_handedoutcopy") %]>[% loc('Ausgeteilt') %]</a></li>
-	[% END %]
-	[% IF link_myroom_test_handedout %]
-		<li><a [% dohref("room_test_handedout") %]>[% loc('Bereitgestellt') %]</a></li>
-	[% END %]
-	[% IF link_myroom_test_tocollect %]
-		<li><a [% dohref("room_test_tocollect") %]>[% loc('Einzusammeln') %]</a></li>
-	[% END %]
-[% ELSE %]
+[% IF not exammode %]
 	[% IF link_myroom_handedoutcopy %]
 		<li><a [% dohref("myroom_handedoutcopy") %]>[% loc('Ausgeteilt') %]</a></li>
 	[% END %]
