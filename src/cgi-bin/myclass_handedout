@@ -23,6 +23,7 @@ provides the following variables:
 =cut
 
 use strict;
+use CGI::Inspect;
 use utf8;
 use lib '/usr/share/schulkonsole';
 use Schulkonsole::Session;
@@ -31,6 +32,7 @@ use Schulkonsole::Sophomorix;
 use File::Basename;
 
 my $this_file = 'myclass_handedout';
+my $transfername = 'handedout_myclass';
 
 my $sk_session = new Schulkonsole::Session($this_file);
 if (not $sk_session->get_password()) {
@@ -49,14 +51,13 @@ my $q = $sk_session->query();
 my $d = $sk_session->d();
 
 my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
-my $class = $sk_session->param('class');
-if (   not $class) {
-	$sk_session->param('class',$$classs{$sk_session->userdata('gid')});
-	$class = $sk_session->param('class');
+my $myclass = $sk_session->param('myclass');
+if (   not $myclass  ) {
+	$sk_session->param('myclass',$$classs{$sk_session->userdata('gid')});
+	$myclass = $sk_session->param('myclass');
 }
 
-if (   not $class
-    or not $$classs{$$class{gid}}) {
+if (   not $myclass  ) {
 	my $url = $q->url( -absolute => 1 );
 	$url =~ s/$this_file$/myclass/g;
 	$sk_session->redirect($url);
@@ -66,23 +67,22 @@ eval {
 	foreach my $param ($q->param) {
 		if (my ($teacher, $file, $action)
 		    	= $param =~ /^(.+);(.+);(download)$/) {
-			my $student_files = Schulkonsole::Sophomorix::ls_handedout_class(
-					$sk_session->userdata('id'), $sk_session->get_password(), 
-					$$class{gid}, $sk_session->userdata('uid'));
+			my $student_files = Schulkonsole::Sophomorix::ls_handedout_myclass(
+					$sk_session->userdata('id'), $sk_session->get_password());
 			
 			SWITCHACTION: {
 			$action =~ /download/ and do {
-				if(not defined $$student_files{$file}) {
+				if(not defined $$student_files{$teacher}{$file}) {
 					$sk_session->set_status(
-						$d->get('Datei ') . $file . $d->get(' nicht als bereitgestellte Datei vorhanden.'),	1);
+						$d->get('Lehrer-Datei ') . $teacher . '-' . $file 
+								. $d->get(' nicht als bereitgestellte Datei vorhanden.'),	1);
 					last SWITCHACTION;
 				}
-				my $tmpfile = "dl_handedout_".$sk_session->session_id() . '_' . time;
+				my $tmpfile = "dl_handedout_myclass_".$sk_session->session_id() . '_' . time;
 				
-				Schulkonsole::Sophomorix::dl_handedout_class(
-					$sk_session->userdata('id'), $sk_session->get_password(), 
-					$$class{gid}, $sk_session->userdata('uid'),
-					$file, ($$student_files{$file}?1:0), $tmpfile);
+				Schulkonsole::Sophomorix::dl_handedout_myclass(
+					$sk_session->userdata('id'), $sk_session->get_password(),
+					$teacher, $file, ($$student_files{$file}?1:0), $tmpfile);
 				
 				if( -e "$Schulkonsole::Config::_runtimedir/$tmpfile") {
 					print $q->header( -type           => "application/x-download",
@@ -132,18 +132,17 @@ if ($@) {
 
 
 eval {
-my $student_files = Schulkonsole::Sophomorix::ls_handedout_class(
-	$sk_session->userdata('id'), $sk_session->get_password(),
-	$$class{gid}, $sk_session->userdata('uid'));
+my $student_files = Schulkonsole::Sophomorix::ls_handedout_myclass(
+	$sk_session->userdata('id'), $sk_session->get_password());
 
 =item C<student_files>
 
-Available files as returned by C<Schulkonsole::Sophomorix::create_file_list()>
+Available files as returned by C<Schulkonsole::Sophomorix::create_teacher_file_list()>
 
 =cut
 
 $sk_session->set_var('student_files',
-	Schulkonsole::Sophomorix::create_file_list($student_files));
+	Schulkonsole::Sophomorix::create_category_file_list($student_files));
 };
 if ($@) {
 	if (    ref $@
@@ -157,12 +156,12 @@ if ($@) {
 	}
 }
 
-=item C<class>
+=item C<myclass>
 
 Students class' hash
 
 =cut
 
-$sk_session->set_var('class', $class);
+$sk_session->set_var('myclass', $myclass);
 
 $sk_session->print_page("$this_file.tt", $this_file);

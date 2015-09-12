@@ -17,8 +17,8 @@
 [% END %]
 [% IF link_project %]
  <li><a [% dohref("project") %]>[% loc('Projekte') %]</a><ul>[% INCLUDE "submenu-project.inc.tt" %]</ul></li>
-[% ELSIF link_myproject %]
- <li><a [% dohref("myproject") %]>[% loc('Meine Projekte') %]</a><ul>[% INCLUDE "submenu-project.inc.tt" %]</ul></li>
+[% ELSIF link_myprojects %]
+ <li><a [% dohref("myprojects") %]>[% loc('Meine Projekte') %]</a><ul>[% INCLUDE "submenu-project.inc.tt" %]</ul></li>
 [% END %]
 [% IF link_user %]
  <li><a [% dohref("user") %]>[% loc('Benutzer') %]</a><ul>[% INCLUDE "submenu-user.inc.tt" %]</ul></li>

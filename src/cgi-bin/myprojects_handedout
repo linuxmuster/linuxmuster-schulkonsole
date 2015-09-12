@@ -2,20 +2,20 @@
 
 =head1 NAME
 
-myclass_handedoutcopy - list, download handed out copies
+myprojects_handedout - list, download handed out files
 
 =head1 SYNOPSIS
 
- https://server/schulkonsole/myclass_handedoutcopy
+ https://server/schulkonsole/myprojects_handedout
 
 =head1 DESCRIPTION
 
-C<myclass_handedoutcopy> lets you my class' handed out files. 
-The HTML template is myclass_handedoutcopy.tt.
+C<myprojects_handedout> lets you manipulate your projects handed out files. 
+The HTML template is myprojects_handedout.tt.
 
 =head2 Template variables
 
-Additionally to the variables of Schulkonsole::Session C<myclass_handedoutcopy>
+Additionally to the variables of Schulkonsole::Session C<myprojects_handedout>
 provides the following variables:
 
 =over
@@ -31,8 +31,8 @@ use Schulkonsole::Info;
 use Schulkonsole::Sophomorix;
 use File::Basename;
 
-my $this_file = 'myclass_handedoutcopy';
-my $transfername = 'handedoutcopy_myclass';
+my $this_file = 'myprojects_handedout';
+my $transfername = 'handedout_myprojects';
 
 my $sk_session = new Schulkonsole::Session($this_file);
 if (not $sk_session->get_password()) {
@@ -50,22 +50,18 @@ if (not $sk_session->get_password()) {
 my $q = $sk_session->query();
 my $d = $sk_session->d();
 
-my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
-my $myclass = $sk_session->param('myclass');
+my $myprojects = $sk_session->param('myprojects');
 
-if((not $myclass) and $classs){
-	my @keys = keys $classs;
-	$sk_session->param('myclass',$$classs{$keys[0]});
+if( not $myprojects ) {
+	$myprojects = Schulkonsole::Info::groups_projects($sk_session->groups());
+	$sk_session->param('myprojects',$myprojects);
 }
 
-$myclass = $sk_session->param('myclass');
-
-if (   not $myclass   ) {
+if (   not $myprojects   ) {
 	my $url = $q->url( -absolute => 1 );
-	$url =~ s/$this_file$/myclass/g;
+	$url =~ s/$this_file$/myprojects/g;
 	$sk_session->redirect($url);
 }
-
 
 my $id = $sk_session->userdata('id');
 my $password = $sk_session->get_password();
@@ -73,38 +69,24 @@ my $password = $sk_session->get_password();
 eval {
 	SWITCHCOMMAND: {
 		foreach my $param ($q->param) {
-			if (my ($file, $action)
-			    	= $param =~ /^(.+);(delete|download)$/) {
-				my $teacher_share_files = Schulkonsole::Sophomorix::ls_handedoutcopy_myclass(
-						$sk_session->userdata('id'), $sk_session->get_password());
+			if (my ($project, $teacher, $file, $action)
+			    	= $param =~ /^(.+);(.+);(.+);(download)$/) {
+				my $teacher_share_files = Schulkonsole::Sophomorix::ls_handedout_myprojects(
+						$sk_session->userdata('id'), $sk_session->get_password(), $project);
 				
 				SWITCHACTION: {
-				$action =~ /delete/ and do {
-					if(not defined $$teacher_share_files{$file}) {
-						$sk_session->set_status(
-							$d->get('Datei ') . $file . $d->get(' nicht als ausgeteilte Datei vorhanden.'), 1);
-						last SWITCHACTION;
-					}
-					Schulkonsole::Sophomorix::rm_handedoutcopy_myclass(
-						$sk_session->userdata('id'), $sk_session->get_password(),
-						$file, ($$teacher_share_files{$file}?1:0));
-					
-					$sk_session->set_status($d->get('Datei gelöscht.'),0);
-					
-					last SWITCHACTION;
-				};
-				
 				$action =~ /download/ and do {
-					if(not defined $$teacher_share_files{$file}) {
+					if(not defined $$teacher_share_files{$teacher}{$file}) {
 						$sk_session->set_status(
-							$d->get('Datei ') . $file . $d->get(' nicht als augeteilte Datei vorhanden.'),	1);
+							$d->get('Projekt-Lehrer-Datei ') . $project.'-'.$teacher.'-'.$file
+									 . $d->get(' nicht als bereitgestellte Datei vorhanden.'),	1);
 						last SWITCHACTION;
 					}
-					my $tmpfile = "download_${transfername}_".$sk_session->session_id() . '_' . time;
+					my $tmpfile = "dl_${transfername}_".$sk_session->session_id() . '_' . time;
 					
-					Schulkonsole::Sophomorix::dl_handedoutcopy_myclass(
+					Schulkonsole::Sophomorix::dl_handedout_myprojects(
 						$sk_session->userdata('id'), $sk_session->get_password(),
-						$file, ($$teacher_share_files{$file}?1:0), $tmpfile);
+						$project, $teacher, $file, ($$teacher_share_files{$teacher}{$file}?1:0), $tmpfile);
 					
 					if( -e "$Schulkonsole::Config::_runtimedir/$tmpfile") {
 						print $q->header( -type           => "application/x-download",
@@ -122,7 +104,7 @@ eval {
 							last SWITCHCOMMAND;
 						}
 
-						if($$teacher_share_files{$file}){
+						if($$teacher_share_files{$teacher}{$file}){
 							system("rm -rf $Schulkonsole::Config::_runtimedir/$tmpfile");
 						} else {
 							system("rm -f $Schulkonsole::Config::_runtimedir/$tmpfile");
@@ -152,22 +134,26 @@ if ($@) {
 
 
 eval {
-my $teacher_share_files = Schulkonsole::Sophomorix::ls_handedoutcopy_myclass($id, $password);
+my %students_files;
+foreach my $project (keys %$myprojects) {
+	my $pfiles = Schulkonsole::Sophomorix::ls_handedout_myprojects($id, $password, $project);
+	$students_files{$project} = $pfiles if $pfiles;
+}
 
-=item C<teacher_share_files>
+=item C<students_files>
 
-Available files as returned by C<Schulkonsole::Sophomorix::create_file_list()>
+Available files as returned by C<Schulkonsole::Sophomorix::create_subcat_file_list()>
 
 =cut
 
-$sk_session->set_var('teacher_share_files',
-	Schulkonsole::Sophomorix::create_file_list($teacher_share_files));
+$sk_session->set_var('students_files',
+	Schulkonsole::Sophomorix::create_subcat_file_list(\%students_files));
 };
 if ($@) {
 	if (    ref $@
 		and $@->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY) {
 		$sk_session->set_status(
-			$sk_session->d()->get('Verzeichnis für ausgeteilte Dateien nicht gefunden'),
+			$sk_session->d()->get('Verzeichnis für bereitgestellte Dateien nicht gefunden'),
 				1);
 
 		print STDERR "$@\n";
@@ -177,12 +163,12 @@ if ($@) {
 }
 
 
-=item C<myclass>
+=item C<myprojects>
 
-Students class' hash
+Students' projects hash
 
 =cut
 
-$sk_session->set_var('myclass', $myclass);
+$sk_session->set_var('myprojects', $myprojects);
 
 $sk_session->print_page("$this_file.tt", $this_file);

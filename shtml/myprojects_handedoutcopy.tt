@@ -1,0 +1,35 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Meine Projekte') _ " - " _ loc('Ausgeteilt'),
+      menu     => 1,
+      info     => loc('<p>Ausgeteilte Dateien können heruntergeladen oder gelöscht werden.</p>'),
+   }
+%]
+
+<h2>[% loc('Meine Projekte') %] :: [% loc('Ausgeteilt') %]</h2>
+
+[% IF students_files %]
+	<form method="post" accept-charset="UTF-8">
+	<h4>[% loc('Ausgeteilte Datei(en) für ') %][% firstname %] [% surname %]</h4>
+    <table class="liste">
+    [% lfdnr = 1 %]
+    <tr>
+        <th>[% loc('Nr.') %]</th>
+        <th>[% loc('Projekt') %]</th>
+        <th>[% loc('Dateiname') %]<th>
+        <th colspan=2 ></th>
+    </tr>
+    [% FOREACH sf IN students_files %]
+    	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+        <td class="lfdnr">[% lfdnr %].</td>
+        <td>[% sf.category %]</td>
+        <td>[% IF sf.isdir %]*[% END %][% sf.name %]</td>
+        <td><input title="[% loc('Herunterladen') %]" type="submit" class="btn-download" alt="[% loc('Herunterladen') %]" 
+            name="[% sf.category %];[% sf.name %];download" value="[% loc('H') %]"></td>
+        <td><input title="[% loc('Löschen') %]" type="submit" class="btn-delete" alt="[% loc('Löschen') %]" 
+            name="[% sf.category %];[% sf.name %];delete" value="[% loc('L') %]"></td>
+        [% lfdnr = lfdnr + 1 %]
+        </tr>
+    [% END %]
+    </table>
+	</form>
+[% END %]
