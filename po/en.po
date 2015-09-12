@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2015-09-08 21:29+0200\n"
+"POT-Creation-Date: 2015-09-12 11:58+0200\n"
 "PO-Revision-Date: 2015-08-30 11:52+0100\n"
 "Last-Translator: Frank Schütte <fschuett@gymnasium-himmelsthuer.de>\n"
 "Language-Team: German <>\n"
@@ -41,7 +41,7 @@ msgstr "not existing as file to be distributed."
 msgid " nicht als auszuteilende Datei vorhanden."
 msgstr "not existing as file to be distributed."
 
-#: ../src/cgi-bin/myclass_handedout:77
+#: ../src/cgi-bin/myclass_handedout:78
 #, fuzzy
 msgid " nicht als bereitgestellte Datei vorhanden."
 msgstr "not existing as template file."
@@ -1560,8 +1560,7 @@ msgstr "That is an example page."
 #: ../src/cgi-bin/project_handoutcopy:168
 #: ../src/cgi-bin/project_handoutcopy:183 ../src/cgi-bin/class_collect:131
 #: ../src/cgi-bin/class_collect:146 ../src/cgi-bin/room_collect:138
-#: ../src/cgi-bin/room_collect:153 ../src/cgi-bin/myclass_handedout:77
-#: ../src/cgi-bin/myclass_handedoutcopy:85
+#: ../src/cgi-bin/room_collect:153 ../src/cgi-bin/myclass_handedoutcopy:85
 #: ../src/cgi-bin/myclass_handedoutcopy:100
 msgid "Datei "
 msgstr "File"
@@ -1779,7 +1778,7 @@ msgstr "Delete print jobs"
 
 #: ../shtml/printers.tt:1 ../shtml/printers.tt:23 ../shtml/printers.tt:9
 #: ../shtml/printers_edit.tt:1 ../shtml/printers_edit.tt:8
-#: ../shtml/room.tt:101 ../src/cgi-bin/room:520 ../src/cgi-bin/myroom:212
+#: ../shtml/room.tt:101 ../src/cgi-bin/room:520 ../src/cgi-bin/myroom:220
 msgid "Drucker"
 msgstr "Printer"
 
@@ -2551,6 +2550,11 @@ msgstr "Add teacher"
 #: ../src/cgi-bin/user_teachers:294
 msgid "Lehrer hinzugefuegt"
 msgstr "Teacher added"
+
+#: ../src/cgi-bin/myclass_handedout:77
+#, fuzzy
+msgid "Lehrer-Datei "
+msgstr "File"
 
 #: ../shtml/user_teachers.tt:1 ../shtml/user_teachers.tt:9
 msgid "Lehrerliste pflegen"
@@ -3603,7 +3607,7 @@ msgid "Verzeichnis zum Austeilen nicht gefunden"
 msgstr "Directory for distribution not found"
 
 #: ../src/cgi-bin/project_handout:227 ../src/cgi-bin/class_handout:216
-#: ../src/cgi-bin/room_test_handout:206 ../src/cgi-bin/myclass_handedout:153
+#: ../src/cgi-bin/room_test_handout:206 ../src/cgi-bin/myclass_handedout:152
 msgid "Verzeichnis zum Bereitstellen nicht gefunden"
 msgstr "Directory for provision not found"
 
