@@ -1003,7 +1003,7 @@ sub ls_handout_class {
 
 
 
-=head3 C<dl_handedout_myclass($id, $password, $filename, $isdir, $tmpfile)>
+=head3 C<dl_handedout_myclass($id, $password, $teacher, $filename, $isdir, $tmpfile)>
 
 Download the filename from the handedout directory of the students' class
 
@@ -1018,6 +1018,10 @@ The ID (not UID) of the student invoking the command
 =item C<$password>
 
 The password of the student invoking the command
+
+=item C<$teacher>
+
+The file owning teacher
 
 =item C<$filename>
 
@@ -1042,6 +1046,7 @@ Downloads a file from the students class' handout directory.
 sub dl_handedout_myclass {
 	my $id = shift;
 	my $password = shift;
+	my $teacher = shift;
 	my $filename = shift;
 	my $isdir = shift;
 	my $tmpfile = shift;
@@ -1050,7 +1055,7 @@ sub dl_handedout_myclass {
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	print SCRIPTOUT "3\n0\n8\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
+	print SCRIPTOUT "3\n0\n8\n$teacher\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -1344,6 +1349,232 @@ sub ls_handedoutcopy_myclass {
 
 
 
+=head3 C<add_myclass_tocollect($id, $password, $filename, $isdir, $tmpfile)>
+
+Add the filename to the students' collect directory
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$filename>
+
+The name of the teachers file to be added
+
+=item C<$isdir>
+
+If the file to be added is a directory (isdir == 1)
+
+=item C<$tmpfile>
+
+The temporary filename to get the file data from
+
+=back
+
+=head4 Description
+
+Adds a file to the students collect directory.
+
+=cut
+
+sub add_myclass_tocollect {
+	my $id = shift;
+	my $password = shift;
+	my $filename = shift;
+	my $isdir = shift;
+	my $tmpfile = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "2\n2\n8\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+}
+
+
+
+
+=head3 C<dl_myclass_tocollect($id, $password, $filename, $isdir, $tmpfile)>
+
+Download the filename from the students' collect directory
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the student invoking the command
+
+=item C<$password>
+
+The password of the student invoking the command
+
+=item C<$filename>
+
+The name of the file to be downloaded
+
+=item C<$isdir>
+
+If the file to be downloaded is a directory (isdir == 1)
+
+=item C<$tmpfile>
+
+The temporary filename to get the file data from
+
+=back
+
+=head4 Description
+
+Downloads a file to the students collect directory.
+
+=cut
+
+sub dl_myclass_tocollect {
+	my $id = shift;
+	my $password = shift;
+	my $filename = shift;
+	my $isdir = shift;
+	my $tmpfile = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "3\n2\n8\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+}
+
+
+
+
+=head3 C<rm_myclass_tocollect($id, $password, $filename, $isdir)>
+
+Remove the filename from the students' collect directory
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the student invoking the command
+
+=item C<$password>
+
+The password of the student invoking the command
+
+=item C<$filename>
+
+The name of the students' file to be removed
+
+=item C<$isdir>
+
+If the file to be removed is a directory (isdir == 1)
+
+=back
+
+=head4 Description
+
+Remove a file from the students collect directory.
+
+=cut
+
+sub rm_myclass_tocollect {
+	my $id = shift;
+	my $password = shift;
+	my $filename = shift;
+	my $isdir = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "1\n2\n8\n$filename\n".($isdir?"1\n":"0\n");
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+}
+
+
+
+
+=head3 C<ls_myclass_tocollect($id, $password)>
+
+Returns the contents of the tocollect directory for the students' class
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the student invoking the command
+
+=item C<$password>
+
+The password of the student invoking the command
+
+=back
+
+=head4 Return value
+
+A reference to an array of files
+
+=head4 Description
+
+Returns a list of the files in the students class tocollect directory, that will
+be collected with C<collect_class()>.
+
+=cut
+
+sub ls_myclass_tocollect {
+	my $id = shift;
+	my $password = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::LSHANDEDOUTAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "2\n8\n";
+
+	my $in;
+	{
+		local $/ = undef;
+		$in = <SCRIPTIN>;
+	}
+
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	my $compartment = new Safe;
+
+	return $compartment->reval($in);
+}
+
+
+
+
 =head3 C<add_handout_project($id, $password, $project, $filename, $isdir, $tmpfile)>
 
 Add the filename to the handout directory of the project
@@ -1571,6 +1802,312 @@ sub ls_handout_project {
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
 	print SCRIPTOUT "0\n4\n$project\n";
+
+	my $in;
+	{
+		local $/ = undef;
+		$in = <SCRIPTIN>;
+	}
+
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	my $compartment = new Safe;
+
+	return $compartment->reval($in);
+}
+
+
+
+
+=head3 C<dl_handedout_myprojects($id, $password, $project, $teacher, $filename, $isdir, $tmpfile)>
+
+Download the filename from the handedout directory of the students' projects
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the student invoking the command
+
+=item C<$password>
+
+The password of the student invoking the command
+
+=item C<$project>
+
+The handedoutcopy directory of the students' projects
+
+=item C<$teacher>
+
+The teacher that handed out the file
+
+=item C<$filename>
+
+The name of the students file to be downloaded
+
+=item C<$isdir>
+
+If the file to be downloaded is a directory (isdir == 1)
+
+=item C<$tmpfile>
+
+The temporary filename to put the file data to
+
+=back
+
+=head4 Description
+
+Downloads a file from the students class' handedout from the teachers subdirectory.
+
+=cut
+
+sub dl_handedout_myprojects {
+	my $id = shift;
+	my $password = shift;
+	my $project = shift;
+	my $teacher = shift;
+	my $filename = shift;
+	my $isdir = shift;
+	my $tmpfile = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "3\n0\n4\n$project\n$teacher\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+}
+
+
+
+=head3 C<ls_handedout_myprojects($id, $password, $myproject)>
+
+Returns the contents of the handedout directory for the students' project
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the student invoking the command
+
+=item C<$password>
+
+The password of the student invoking the command
+
+=back
+
+=head4 Return value
+
+A reference to an array of the files
+
+=head4 Description
+
+Returns a list of the files in the students' project handedout directory of myproject, that were
+handed out with C<handoutcopy_project()>.
+
+=cut
+
+sub ls_handedout_myprojects {
+	my $id = shift;
+	my $password = shift;
+	my $project = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::LSHANDEDOUTAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "0\n4\n$project\n";
+
+	my $in;
+	{
+		local $/ = undef;
+		$in = <SCRIPTIN>;
+	}
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	my $compartment = new Safe;
+
+	return $compartment->reval($in);
+}
+
+
+
+
+=head3 C<dl_handedoutcopy_myprojects($id, $password, $project, $filename, $isdir, $tmpfile)>
+
+Download the filename from the handedoutcopy directory of the students' projects
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the student invoking the command
+
+=item C<$password>
+
+The password of the student invoking the command
+
+=item C<$project>
+
+The handedoutcopy directory of the students' projects
+
+=item C<$filename>
+
+The name of the students file to be downloaded
+
+=item C<$isdir>
+
+If the file to be downloaded is a directory (isdir == 1)
+
+=item C<$tmpfile>
+
+The temporary filename to put the file data to
+
+=back
+
+=head4 Description
+
+Downloads a file from the students class' handedoutcopy directory.
+
+=cut
+
+sub dl_handedoutcopy_myprojects {
+	my $id = shift;
+	my $password = shift;
+	my $project = shift;
+	my $filename = shift;
+	my $isdir = shift;
+	my $tmpfile = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "3\n1\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+}
+
+
+
+=head3 C<rm_handedoutcopy_myprojects($id, $password, $project, $filename, $isdir, $tmpfile)>
+
+Remove the filename from the handedoutcopy directory of the students' projects
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the student invoking the command
+
+=item C<$password>
+
+The password of the student invoking the command
+
+=item C<$project>
+
+The handedoutcopy directory of the students' projects
+
+=item C<$filename>
+
+The name of the students file to be downloaded
+
+=item C<$isdir>
+
+If the file to be downloaded is a directory (isdir == 1)
+
+=item C<$tmpfile>
+
+The temporary filename to put the file data to
+
+=back
+
+=head4 Description
+
+Downloads a file from the students class' handedoutcopy directory.
+
+=cut
+
+sub rm_handedoutcopy_myprojects {
+	my $id = shift;
+	my $password = shift;
+	my $project = shift;
+	my $filename = shift;
+	my $isdir = shift;
+	my $tmpfile = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "1\n1\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+}
+
+
+
+=head3 C<ls_handedoutcopy_myprojects($id, $password, $myproject)>
+
+Returns the contents of the handedoutcopy directory for the students' project
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the student invoking the command
+
+=item C<$password>
+
+The password of the student invoking the command
+
+=back
+
+=head4 Return value
+
+A reference to an array of the files
+
+=head4 Description
+
+Returns a list of the files in the students' project handedoutcopy directory of myproject, that were
+handed out with C<handoutcopy_project()>.
+
+=cut
+
+sub ls_handedoutcopy_myprojects {
+	my $id = shift;
+	my $password = shift;
+	my $project = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::LSHANDEDOUTAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "1\n4\n$project\n";
 
 	my $in;
 	{
@@ -2672,6 +3209,232 @@ sub ls_collected_project {
 
 
 
+=head3 C<add_myprojects_tocollect($id, $password, $filename, $isdir, $tmpfile)>
+
+Add the filename to the students' collect directory
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$filename>
+
+The name of the teachers file to be added
+
+=item C<$isdir>
+
+If the file to be added is a directory (isdir == 1)
+
+=item C<$tmpfile>
+
+The temporary filename to get the file data from
+
+=back
+
+=head4 Description
+
+Adds a file to the students collect directory.
+
+=cut
+
+sub add_myprojects_tocollect {
+	my $id = shift;
+	my $password = shift;
+	my $filename = shift;
+	my $isdir = shift;
+	my $tmpfile = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "2\n2\n4\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+}
+
+
+
+
+=head3 C<dl_myprojects_tocollect($id, $password, $filename, $isdir, $tmpfile)>
+
+Download the filename from the students' collect directory
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the student invoking the command
+
+=item C<$password>
+
+The password of the student invoking the command
+
+=item C<$filename>
+
+The name of the file to be downloaded
+
+=item C<$isdir>
+
+If the file to be downloaded is a directory (isdir == 1)
+
+=item C<$tmpfile>
+
+The temporary filename to get the file data from
+
+=back
+
+=head4 Description
+
+Downloads a file to the students collect directory.
+
+=cut
+
+sub dl_myprojects_tocollect {
+	my $id = shift;
+	my $password = shift;
+	my $filename = shift;
+	my $isdir = shift;
+	my $tmpfile = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "3\n2\n4\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+}
+
+
+
+
+=head3 C<rm_myprojects_tocollect($id, $password, $filename, $isdir)>
+
+Remove the filename from the students' collect directory
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the student invoking the command
+
+=item C<$password>
+
+The password of the student invoking the command
+
+=item C<$filename>
+
+The name of the students' file to be removed
+
+=item C<$isdir>
+
+If the file to be removed is a directory (isdir == 1)
+
+=back
+
+=head4 Description
+
+Remove a file from the students collect directory.
+
+=cut
+
+sub rm_myprojects_tocollect {
+	my $id = shift;
+	my $password = shift;
+	my $filename = shift;
+	my $isdir = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "1\n2\n4\n$filename\n".($isdir?"1\n":"0\n");
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+}
+
+
+
+
+=head3 C<ls_myprojects_tocollect($id, $password)>
+
+Returns the contents of the tocollect directory for the students' class
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the student invoking the command
+
+=item C<$password>
+
+The password of the student invoking the command
+
+=back
+
+=head4 Return value
+
+A reference to an array of files
+
+=head4 Description
+
+Returns a list of the files in the students class tocollect directory, that will
+be collected with C<collect_class()>.
+
+=cut
+
+sub ls_myprojects_tocollect {
+	my $id = shift;
+	my $password = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::LSHANDEDOUTAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "2\n4\n";
+
+	my $in;
+	{
+		local $/ = undef;
+		$in = <SCRIPTIN>;
+	}
+
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	my $compartment = new Safe;
+
+	return $compartment->reval($in);
+}
+
+
+
+
 =head3 C<dl_collected_exam($id, $password, $filename, $isdir, $tmpfile)>
 
 Download the filename from the collected directory of the exam
@@ -3118,6 +3881,108 @@ sub create_file_list {
 
 
 	return [ @dirs, @files ];
+}
+
+
+
+
+=head3 C<create_category_file_list($files)>
+
+Creates a list with file information ordered by categories
+
+=head4 Parameters
+
+=over
+
+=item C<$files>
+
+A hash of hashes with file information
+
+=back
+
+=head4 Return value
+
+A reference to a list of hashes with file information. The keys of the
+hashes are: category, name (the filename), 
+isdir (true if file is a directory, false otherwise).
+
+=head4 Description
+
+Returns a list with file information
+
+=cut
+
+sub create_category_file_list {
+	my $files = shift;
+
+	return [] unless $files;
+
+	my @files;
+
+	foreach my $category (sort {lc($a) cmp lc($b) } keys %$files) {
+		my $tfiles = $$files{$category};
+		foreach my $file (sort { lc($a) cmp lc($b) } keys %$tfiles) {
+			push @files, { category => $category, 
+						   name => $file,
+			               isdir => $$tfiles{$file} eq 'd' ? 1 : 0,
+			             };
+		}
+	}
+
+	return [ @files ];
+}
+
+
+
+
+=head3 C<create_subcat_file_list($files)>
+
+Creates a list with file information ordered by categories/subcategories
+
+=head4 Parameters
+
+=over
+
+=item C<$files>
+
+A hash of hashes with file information
+
+=back
+
+=head4 Return value
+
+A reference to a list of hashes with file information. The keys of the
+hashes are: category, subcategory, name (the filename), 
+isdir (true if file is a directory, false otherwise).
+
+=head4 Description
+
+Returns a list with file information
+
+=cut
+
+sub create_subcat_file_list {
+	my $files = shift;
+
+	return [] unless $files;
+
+	my @files;
+
+	foreach my $cat (sort {lc($a) cmp lc($b) } keys %$files) {
+		my $catfiles = $$files{$cat};
+		foreach my $subcat (sort { lc($a) cmp lc($b) } keys %$catfiles) {
+			my $subcatfiles = $$catfiles{$subcat};
+			foreach my $file (sort { lc($a) cmp lc($b) } keys %$subcatfiles) {
+				push @files, { category => $cat,
+					           subcategory => $subcat, 
+							   name => $file,
+				               isdir => $$subcatfiles{$file} eq 'd' ? 1 : 0,
+				             };
+			}
+		}
+	}
+
+	return [ @files ];
 }
 
 

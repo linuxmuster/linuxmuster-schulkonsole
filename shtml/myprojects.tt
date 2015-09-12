@@ -1,0 +1,27 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Meine Projekte'),
+      menu     => 1,
+      info     => loc('<p>Hier siehst Du alle Projekte, zu denen du gehörst.</p>'),
+   }
+%]
+
+<h2>[% loc('Meine Projekte') %]</h2>
+
+[% IF myprojects.size > 0 %]
+	<table id="myprojects" class="liste">
+	<tr>
+	<th>[% loc('Nr.') %]</th>
+	<th>[% loc('Projektname') %]</th>
+	</tr>
+	[% lfdnr = 1 %]
+	[% FOREACH p IN myprojects.keys.sort %]
+		<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+		<td class="lfdnr">[% lfdnr %].</td>
+		<td>[% myprojects.$p.displayname %]</td>
+		</tr>
+		[% lfdnr = lfdnr + 1 %]
+	[% END %]
+	</table>
+[% ELSE %]
+	<p>[% loc('Keine Projekte gefunden.') %]</p>
+[% END %]

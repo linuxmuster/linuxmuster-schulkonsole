@@ -561,9 +561,9 @@ numeric constant: C<Schulkonsole::Config::STUDENTSFILEMANAPP>
 
 =item category (one of 0 - handedout, 1 - handedoutcopy, 2 - tocollect)
 
-=item type (one of 1/2 - current_room/exam, 4 - class, 8 - project, 16 - subclass)
+=item type (one of 1/2 - current_room/exam, 4 - project, 8 - class, 16 - subclass)
 
-=item project (if type 8)/subclass (if type 16)
+=item project (if type 4)/teacher (if type 8)/subclass (if type 16)
 
 =item filename
 
@@ -593,7 +593,7 @@ sub studentsfilemanapp() {
 		$share_dir .=
 			"$Language::handoutcopy_dir/$Language::handoutcopy_string";
 	} else {
-		$share_dir .= "$Language::handout_dir/$Language::handout_string";
+		$share_dir = "$DevelConf::tasks_tasks";
 	}
 
 	my $type = <>;
@@ -603,7 +603,10 @@ sub studentsfilemanapp() {
 		unless defined $type;
 
 	LSHANDOUTTYPE: {
-	($type & 1 or $type & 2) and ($category != 2) and do {
+	($type =~ /^1|2|4|8|16$/) and ($category == 2) and do {
+		last LSHANDOUTTYPE;
+	};
+	($type & 1 or $type & 2) and do {
 		if ($category) {
 				$share_dir .= $Language::current_room;
 		} else {
@@ -611,31 +614,36 @@ sub studentsfilemanapp() {
 		}
 		last LSHANDOUTTYPE;
 	};
-	($type & 4) and ($category != 2) and do {
+	($type & 4) and do {
 		my $project = <>;
 		($project) = $project =~ /^(.+)$/;
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
 		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			unless $project;
-		$share_dir .= $project;
-		last LSHANDOUTTYPE;
-	};
-	($type & 8) and ($category != 2) and do {
-		my $myclass = $$userdata{gid};
-		($myclass) = $myclass =~ /^(.+)$/;
-		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
+		my $teacher = <>;
+		($teacher) = $teacher =~ /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT_TEACHER
 		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
-			unless $myclass;
-		$share_dir .= $myclass;
+			unless $teacher;
+		$share_dir .= ($category?"":"/projects/") . $project . '/' . $teacher;
 		last LSHANDOUTTYPE;
 	};
-	($type & 16) and ($category != 2) and do {
+	($type & 8) and do {
+		my $teacher = <>;
+		($teacher) = $teacher =~ /^(.+)$/;
+		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS_TEACHER
+		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+			unless $teacher;
+		$share_dir .= ($category?"":"/classes/") . $$userdata{gid} . '/' . $teacher;
+		last LSHANDOUTTYPE;
+	};
+	($type & 16) and do {
 		my $subclass = <>;
 		($subclass) = $subclass =~ /^(.+)$/;
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_SUBCLASS
 		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			unless $subclass;
-		$share_dir .= $subclass;
+		$share_dir .= ($category?"":"/subclasses/") . $subclass;
 		last LSHANDOUTTYPE;
 	};
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FROM
@@ -742,7 +750,7 @@ numeric constant: C<Schulkonsole::Config::LSHANDEDOUTAPP>
 
 =item type (current_room, examn, myclass, project, subclass)
 
-=item project (if type 4)/subclass (if type 16)
+=item subclass (if type 16)
 
 =back
 
@@ -759,23 +767,25 @@ sub lshandedoutapp() {
 	my $share_dir = "$$userdata{homedirectory}/";
 
 	if ($category == 2) {
-		$share_dir .=
-			"$Language::collect_dir";
+		$share_dir .= "$Language::collect_dir";
 	} elsif ($category) {
 		$share_dir .=
 			"$Language::handoutcopy_dir/$Language::handoutcopy_string";
 	} else {
-		$share_dir .= "$Language::handout_dir/$Language::handout_string";
+		$share_dir = "$DevelConf::tasks_tasks";
 	}
 
 	my $type = <>;
-	($type) = $type =~ /^(\d+)/;
+	($type) = $type =~ /^(\d+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_TYPE
 	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 		unless defined $type;
 
 	LSHANDOUTTYPE: {
-	($type & 1 or $type & 2) and ($category != 2) and do {
+	($type =~ /^1|2|4|8|16$/) and ($category == 2) and do {
+		last LSHANDOUTTYPE;
+	};
+	($type & 1 or $type & 2) and do {
 		if ($category) {
 				$share_dir .= $Language::current_room;
 		} else {
@@ -783,31 +793,31 @@ sub lshandedoutapp() {
 		}
 		last LSHANDOUTTYPE;
 	};
-	($type & 4) and ($category != 2) and do {
+	($type & 4) and do {
 		my $project = <>;
 		($project) = $project =~ /^(.+)$/;
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
 		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			unless $project;
-		$share_dir .= $project;
+		$share_dir .= ($category?"":"/projects/") . $project;
 		last LSHANDOUTTYPE;
 	};
-	($type & 8) and ($category != 2) and do {
+	($type & 8) and do {
 		my $myclass = $$userdata{gid};
 		($myclass) = $myclass =~ /^(.+)$/;
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
 		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			unless $myclass;
-		$share_dir .= $myclass;
+		$share_dir .= ($category?"":"/classes/") . $myclass;
 		last LSHANDOUTTYPE;
 	};
-	($type & 16) and ($category != 2) and do {
+	($type & 16) and do {
 		my $subclass = <>;
 		($subclass) = $subclass =~ /^(.+)$/;
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_SUBCLASS
 		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			unless $subclass;
-		$share_dir .= $subclass;
+		$share_dir .= ($category?"":"/subclasses/") . $subclass;
 		last LSHANDOUTTYPE;
 	};
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FROM
@@ -817,6 +827,7 @@ sub lshandedoutapp() {
 	chdir Schulkonsole::Encode::to_fs($share_dir)
 		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY
 		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+
 	my %files;
 	if($category) {
 		my @files = glob '*';
@@ -830,10 +841,12 @@ sub lshandedoutapp() {
 	} else {
 		my @teachers = glob '*';
 		foreach my $teacher (@teachers) {
-			my @files = glob '*';
+			($teacher) = $teacher =~ /^(.+)$/;
 			chdir Schulkonsole::Encode::to_fs("$share_dir/$teacher")
 				or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY
 				         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+
+			my @files = glob '*';
 			foreach my $file (@files) {
 				if (-d $file) {
 					$files{get_decoded($teacher)}{get_decoded($file)} = 'd';
@@ -843,6 +856,7 @@ sub lshandedoutapp() {
 			}
 		}
 	}
+
 	my $data = Data::Dumper->new([ \%files ]);
 	$data->Terse(1);
 	$data->Indent(0);

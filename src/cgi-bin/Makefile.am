@@ -21,6 +21,7 @@ pkglibexec_SCRIPTS = example start logout \
 	quotas_teachers quotas_classes quotas_projects quotas_others \
 	linbo linbo_edit linbo_new linbo_regpatchedit \
 	linbo_pxeedit linbo_images linbo_menuedit \
-	myclass myclass_handedout myclass_handedoutcopy \
+	myclass myclass_handedout myclass_handedoutcopy myclass_tocollect \
+	myprojects myprojects_handedout myprojects_handedoutcopy myprojects_tocollect \
 	myroom \
 	config.php

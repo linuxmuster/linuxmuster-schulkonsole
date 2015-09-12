@@ -2,20 +2,20 @@
 
 =head1 NAME
 
-myclass_handedoutcopy - list, download handed out copies
+myprojects_tocollect - students' projects collectable files
 
 =head1 SYNOPSIS
 
- https://server/schulkonsole/myclass_handedoutcopy
+ https://server/schulkonsole/myprojects_tocollect
 
 =head1 DESCRIPTION
 
-C<myclass_handedoutcopy> lets you my class' handed out files. 
-The HTML template is myclass_handedoutcopy.tt.
+C<myprojects_tocollect> lets you upload/download/remove files for your class
+from your directory to be collected. The HTML template is myprojects_tocollect.tt.
 
 =head2 Template variables
 
-Additionally to the variables of Schulkonsole::Session C<myclass_handedoutcopy>
+Additionally to the variables of Schulkonsole::Session C<myprojects_tocollect>
 provides the following variables:
 
 =over
@@ -23,7 +23,6 @@ provides the following variables:
 =cut
 
 use strict;
-use CGI::Inspect;
 use utf8;
 use lib '/usr/share/schulkonsole';
 use Schulkonsole::Session;
@@ -31,8 +30,8 @@ use Schulkonsole::Info;
 use Schulkonsole::Sophomorix;
 use File::Basename;
 
-my $this_file = 'myclass_handedoutcopy';
-my $transfername = 'handedoutcopy_myclass';
+my $this_file = 'myprojects_tocollect';
+my $transfername = 'upload_'.$this_file;
 
 my $sk_session = new Schulkonsole::Session($this_file);
 if (not $sk_session->get_password()) {
@@ -50,44 +49,59 @@ if (not $sk_session->get_password()) {
 my $q = $sk_session->query();
 my $d = $sk_session->d();
 
-my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
-my $myclass = $sk_session->param('myclass');
+my $myprojects = Schulkonsole::Info::groups_projects($sk_session->groups());
 
-if((not $myclass) and $classs){
-	my @keys = keys $classs;
-	$sk_session->param('myclass',$$classs{$keys[0]});
-}
-
-$myclass = $sk_session->param('myclass');
-
-if (   not $myclass   ) {
+if (   not $myprojects  ) {
 	my $url = $q->url( -absolute => 1 );
-	$url =~ s/$this_file$/myclass/g;
+	$url =~ s/$this_file$/myprojects/g;
 	$sk_session->redirect($url);
 }
-
 
 my $id = $sk_session->userdata('id');
 my $password = $sk_session->get_password();
 
 eval {
 	SWITCHCOMMAND: {
+		$q->param($transfername) and do {
+			my $file = $q->param($transfername);
+			my $tmpfile = "$Schulkonsole::Config::_runtimedir/${transfername}_"
+							. $sk_session->session_id() . '_' . time;
+			if(! open(DAT,'>'.$tmpfile)) {
+				$sk_session->set_status($d->get('Es konnte keine temporäre Datei erzeugt werden.'),1);
+				last SWITCHCOMMAND;
+			}
+			binmode($file);
+			binmode(DAT);
+			my $buffer = "";
+			while( read($file, $buffer, 1024)) {
+				print DAT $buffer;
+			}
+			close(DAT);
+			my $filename = basename($file);
+			
+			Schulkonsole::Sophomorix::add_myprojects_tocollect(
+				$sk_session->userdata('id'), $sk_session->get_password(), $filename, 0, basename($tmpfile));
+			$sk_session->set_status($d->get('Datei hochgeladen'),0);
+			
+			last SWITCHCOMMAND;	
+		}; 
+		
 		foreach my $param ($q->param) {
 			if (my ($file, $action)
 			    	= $param =~ /^(.+);(delete|download)$/) {
-				my $teacher_share_files = Schulkonsole::Sophomorix::ls_handedoutcopy_myclass(
+				my $collect_files = Schulkonsole::Sophomorix::ls_myprojects_tocollect(
 						$sk_session->userdata('id'), $sk_session->get_password());
 				
 				SWITCHACTION: {
 				$action =~ /delete/ and do {
-					if(not defined $$teacher_share_files{$file}) {
+					if(not defined $$collect_files{$file}) {
 						$sk_session->set_status(
-							$d->get('Datei ') . $file . $d->get(' nicht als ausgeteilte Datei vorhanden.'), 1);
+							$d->get('Datei ') . $file . $d->get(' nicht als einzusammelnde Datei vorhanden.'), 1);
 						last SWITCHACTION;
 					}
-					Schulkonsole::Sophomorix::rm_handedoutcopy_myclass(
+					Schulkonsole::Sophomorix::rm_myprojects_tocollect(
 						$sk_session->userdata('id'), $sk_session->get_password(),
-						$file, ($$teacher_share_files{$file}?1:0));
+						$file, ($$collect_files{$file}?1:0));
 					
 					$sk_session->set_status($d->get('Datei gelöscht.'),0);
 					
@@ -95,16 +109,16 @@ eval {
 				};
 				
 				$action =~ /download/ and do {
-					if(not defined $$teacher_share_files{$file}) {
+					if(not defined $$collect_files{$file}) {
 						$sk_session->set_status(
-							$d->get('Datei ') . $file . $d->get(' nicht als augeteilte Datei vorhanden.'),	1);
+							$d->get('Datei ') . $file . $d->get(' nicht als einzusammelnde Datei vorhanden.'),	1);
 						last SWITCHACTION;
 					}
 					my $tmpfile = "download_${transfername}_".$sk_session->session_id() . '_' . time;
 					
-					Schulkonsole::Sophomorix::dl_handedoutcopy_myclass(
+					Schulkonsole::Sophomorix::dl_myprojects_tocollect(
 						$sk_session->userdata('id'), $sk_session->get_password(),
-						$file, ($$teacher_share_files{$file}?1:0), $tmpfile);
+						$file, ($$collect_files{$file}?1:0), $tmpfile);
 					
 					if( -e "$Schulkonsole::Config::_runtimedir/$tmpfile") {
 						print $q->header( -type           => "application/x-download",
@@ -121,8 +135,8 @@ eval {
 							$sk_session->set_status($d->get('Die temporäre Datei konnte nicht geschlossen werden.'), 1);
 							last SWITCHCOMMAND;
 						}
-
-						if($$teacher_share_files{$file}){
+						
+						if($$collect_files{$file}){
 							system("rm -rf $Schulkonsole::Config::_runtimedir/$tmpfile");
 						} else {
 							system("rm -f $Schulkonsole::Config::_runtimedir/$tmpfile");
@@ -151,23 +165,25 @@ if ($@) {
 }
 
 
-eval {
-my $teacher_share_files = Schulkonsole::Sophomorix::ls_handedoutcopy_myclass($id, $password);
 
-=item C<teacher_share_files>
+
+eval {
+my $collect_files = Schulkonsole::Sophomorix::ls_myprojects_tocollect($id, $password);
+
+=item C<collect_files>
 
 Available files as returned by C<Schulkonsole::Sophomorix::create_file_list()>
 
 =cut
 
-$sk_session->set_var('teacher_share_files',
-	Schulkonsole::Sophomorix::create_file_list($teacher_share_files));
+$sk_session->set_var('collect_files',
+	Schulkonsole::Sophomorix::create_file_list($collect_files));
 };
 if ($@) {
 	if (    ref $@
 		and $@->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY) {
 		$sk_session->set_status(
-			$sk_session->d()->get('Verzeichnis für ausgeteilte Dateien nicht gefunden'),
+			$sk_session->d()->get('Verzeichnis zum Einsammeln nicht gefunden'),
 				1);
 
 		print STDERR "$@\n";
@@ -177,12 +193,13 @@ if ($@) {
 }
 
 
-=item C<myclass>
 
-Students class' hash
+=item C<myprojects>
+
+The hash of the users class'
 
 =cut
 
-$sk_session->set_var('myclass', $myclass);
+$sk_session->set_var('myprojects', $myprojects);
 
 $sk_session->print_page("$this_file.tt", $this_file);

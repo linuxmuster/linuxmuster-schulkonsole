@@ -33,13 +33,13 @@
 	[% IF link_project_lesson %]
 	        <li><span class="disabled">[% loc('Unterricht') %]</span></li>
 	[% END %]
-	[% IF link_project_handedoutcopy %]
-		<li><a [% dohref("project_handedoutcopy") %]>[% loc('Ausgeteilt') %]</a></li>
+	[% IF link_myprojects_handedoutcopy %]
+		<li><a [% dohref("myprojects_handedoutcopy") %]>[% loc('Ausgeteilt') %]</a></li>
 	[% END %]
-	[% IF link_myproject_handedout %]
-		<li><a [% dohref("myproject_handedout") %]>[% loc('Bereitgestellt') %]</a></li>
+	[% IF link_myprojects_handedout %]
+		<li><a [% dohref("myprojects_handedout") %]>[% loc('Bereitgestellt') %]</a></li>
 	[% END %]
-	[% IF link_myproject_tocollect %]
-		<li><a [% dohref("myproject_tocollect") %]>[% loc('Einzusammeln') %]</a></li>
+	[% IF link_myprojects_tocollect %]
+		<li><a [% dohref("myprojects_tocollect") %]>[% loc('Einzusammeln') %]</a></li>
 	[% END %]	
 [% END %]
