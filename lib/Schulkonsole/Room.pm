@@ -90,6 +90,7 @@ sub new {
 			$is_editing = 1;
 			$is_allowed_stopedit = 1;
 		} elsif ($this->param('name') eq $remote_room) {
+			# FIXME - Können hier Schüler den Unterricht beenden?
 			$is_allowed_stopedit = 2;
 		}
 	}
