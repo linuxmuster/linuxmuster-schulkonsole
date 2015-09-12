@@ -72,6 +72,10 @@ exit (  Schulkonsole::Error::Firewall::WRAPPER_APP_ID_DOES_NOT_EXIST
 my $permissions = Schulkonsole::Config::permissions_apps();
 my $groups = Schulkonsole::DB::user_groups(
 	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
+# FIXME: workaround for non existing students group!
+if(! (defined $$groups{teachers} or defined $$groups{domadmins})) {
+	$$groups{'students'} = 1;
+}
 
 my $is_permission_found = 0;
 foreach my $group (('ALL', keys %$groups)) {
@@ -86,6 +90,37 @@ exit (  Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_ID
 
 
 SWITCH: {
+	(   $app_id == Schulkonsole::Config::INTERNETONOFFAPP
+	 or $app_id == Schulkonsole::Config::INTRANETONOFFAPP) and do {
+		internet_on_off_app();
+		last SWITCH;
+	 };
+	$app_id == Schulkonsole::Config::URLFILTERONOFFAPP and do {
+		urlfilter_on_off_app();
+		last SWITCH;
+	};
+	$app_id == Schulkonsole::Config::UPDATELOGINSAPP and do {
+		update_logins_app();
+		last SWITCH;
+	};
+	$app_id == Schulkonsole::Config::URLFILTERCHECKAPP and do {
+		urlfilter_check_app();
+		last SWITCH;
+	};
+	$app_id == Schulkonsole::Config::ALLONAPP and do {
+		all_on_app();
+		last SWITCH;
+	};
+	$app_id == Schulkonsole::Config::ALLONATAPP and do {
+		all_on_at_app();
+		last SWITCH;
+	};
+	$app_id == Schulkonsole::Config::ROOMSRESETAPP and do {
+		rooms_reset_app();
+		last SWITCH;
+	};
+}
+
 
 =head3 internet_on_off
 
@@ -144,8 +179,7 @@ Format of address is xx:xx:xx:xx:xx:xx where xx is a hexadecimal value.
 
 =cut
 
-(   $app_id == Schulkonsole::Config::INTERNETONOFFAPP
- or $app_id == Schulkonsole::Config::INTRANETONOFFAPP) and do {
+sub internet_on_off_app() {
 	my $trigger = <>;
 	$trigger = int($trigger) ? 'on' : 'off';
 
@@ -184,8 +218,8 @@ Format of address is xx:xx:xx:xx:xx:xx where xx is a hexadecimal value.
 	local $) = 0;
 	local $( = $);
 	umask(022);
-	exec Schulkonsole::Encode::to_cli("$cmd $opts") or last SWITCH;
-};
+	exec Schulkonsole::Encode::to_cli("$cmd $opts") or return;
+}
 
 =head3 urlfilter_on_off
 
@@ -214,7 +248,7 @@ hostnames one per line, end with empty line
 
 =cut
 
-$app_id == Schulkonsole::Config::URLFILTERONOFFAPP and do {
+sub urlfilter_on_off_app() {
 	my $trigger = <>;
 	$trigger = int($trigger) ? 'on' : 'off';
 
@@ -241,9 +275,8 @@ $app_id == Schulkonsole::Config::URLFILTERONOFFAPP and do {
 	local $( = $);
 	umask(022);
 	exec Schulkonsole::Encode::to_cli(
-	     	"$Schulkonsole::Config::_cmd_urlfilter_on_off $opts")
-		or last SWITCH;
-};
+	     	"$Schulkonsole::Config::_cmd_urlfilter_on_off $opts");
+}
 
 =head3 update_logins
 
@@ -255,7 +288,7 @@ invokes C<update-logins.sh>
 
 =cut
 
-$app_id == Schulkonsole::Config::UPDATELOGINSAPP and do {
+sub update_logins_app() {
 	my $room = <>;
 	($room) = $room =~ /^([\w -]+)$/;
 	exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM
@@ -264,9 +297,8 @@ $app_id == Schulkonsole::Config::UPDATELOGINSAPP and do {
 	# set ruid
 	local $< = $>;
 	exec Schulkonsole::Encode::to_cli(
-	     	"$Schulkonsole::Config::_cmd_update_logins $room")
-		or last SWITCH;
-};
+	     	"$Schulkonsole::Config::_cmd_update_logins $room");
+}
 
 =head3 urlfilter_check
 
@@ -278,13 +310,12 @@ invokes C<check_urlfilter.sh>
 
 =cut
 
-$app_id == Schulkonsole::Config::URLFILTERCHECKAPP and do {
+sub urlfilter_check_app() {
 	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;
 	exec Schulkonsole::Encode::to_cli(
-	     	$Schulkonsole::Config::_cmd_urlfilter_check)
-		or last SWITCH;
-};
+	     	$Schulkonsole::Config::_cmd_urlfilter_check);
+}
 
 =head3 all_on
 
@@ -306,7 +337,7 @@ The name of the room
 
 =cut
 
-$app_id == Schulkonsole::Config::ALLONAPP and do {
+sub all_on_app() {
 	my $room = <>;
 	($room) = $room =~ /^([\w -]+)$/;
 	exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM
@@ -320,7 +351,7 @@ $app_id == Schulkonsole::Config::ALLONAPP and do {
 	$room_session->delete();
 
 	exit 0;
-};
+}
 
 =head3 all_on_at
 
@@ -346,7 +377,7 @@ Absolute time in seconds since the Epoch
 
 =cut
 
-$app_id == Schulkonsole::Config::ALLONATAPP and do {
+sub all_on_at_app(){
 	my $room = <>;
 	($room) = $room =~ /^([\w -]+)$/;
 	exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM
@@ -407,7 +438,7 @@ $app_id == Schulkonsole::Config::ALLONATAPP and do {
 	}
 
 	exit 0;
-};
+}
 
 =head3 rooms_reset
 
@@ -429,7 +460,7 @@ Resets the workstation settings in a room
 
 =cut
 
-$app_id == Schulkonsole::Config::ROOMSRESETAPP and do {
+sub rooms_reset_app(){
 	my $scope = <>;
 	($scope) = $scope =~ /^([01])$/;
 	exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM_SCOPE
@@ -441,7 +472,7 @@ $app_id == Schulkonsole::Config::ROOMSRESETAPP and do {
 		$< = $>;
 		exec Schulkonsole::Encode::to_cli(
 		     	"$Schulkonsole::Config::_cmd_linuxmuster_reset $opts")
-			or last SWITCH;
+			or return;
 	} else {
 		my @rooms_reset;
 		while (<>) {
@@ -488,11 +519,7 @@ $app_id == Schulkonsole::Config::ROOMSRESETAPP and do {
 		}
 
 		exit 0 unless $is_error;
-
-		last SWITCH;
 	}
-};
-
 }
 
 

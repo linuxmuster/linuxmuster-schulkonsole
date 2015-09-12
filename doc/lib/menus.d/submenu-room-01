@@ -56,12 +56,9 @@
 	[% END %]
 [% ELSE %]
 	[% IF link_myroom_handedoutcopy %]
-		<li><a [% dohref("room_handedoutcopy") %]>[% loc('Ausgeteilt') %]</a></li>
-	[% END %]
-	[% IF link_myroom_handedout %]
-		<li><a [% dohref("room_handedout") %]>[% loc('Bereitgestellt') %]</a></li>
+		<li><a [% dohref("myroom_handedoutcopy") %]>[% loc('Ausgeteilt') %]</a></li>
 	[% END %]
 	[% IF link_myroom_tocollect %]
-		<li><a [% dohref("room_tocollect") %]>[% loc('Einzusammeln') %]</a></li>
+		<li><a [% dohref("myroom_tocollect") %]>[% loc('Einzusammeln') %]</a></li>
 	[% END %]
 [% END %]

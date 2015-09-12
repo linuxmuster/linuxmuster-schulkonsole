@@ -26,6 +26,7 @@ Schulkonsole::Room::set_vars() C<myroom> provides the following variables:
 =cut
 
 use strict;
+use CGI::Inspect;
 use utf8;
 use lib '/usr/share/schulkonsole';
 use Time::Local;
@@ -59,14 +60,14 @@ my $room_session = new Schulkonsole::Room($sk_session);
 
 if ($room_session) {
 
-	my $room = $room_session->info('name');
+	my $myroom = $room_session->info('name');
 	my $id = $sk_session->userdata('id');
 	my $password = $sk_session->get_password();
 
-	Schulkonsole::Firewall::update_logins($id, $password, $room);
-	
-	my $workstations = Schulkonsole::Config::workstations_room($room);
-	my $printers = Schulkonsole::Config::printers_room($room);
+	Schulkonsole::Firewall::update_logins($id, $password, $myroom);
+
+	my $workstations = Schulkonsole::Config::workstations_room($myroom);
+	my $printers = Schulkonsole::Config::printers_room($myroom);
 	my $workstation_users = $room_session->workstation_users();
 	my $editing_userdata = $room_session->info('editing_userdata');
 	my $editing_user = $$editing_userdata{uid};
@@ -92,7 +93,6 @@ if ($room_session) {
 	my $unfiltered_hosts = ($is_urlfilter_active ?
 		Schulkonsole::Firewall::unfiltered_hosts() : ());
 	my $printer_info = Schulkonsole::Printer::printer_info($id, $password);
-	
 	my $share_states = Schulkonsole::Sophomorix::share_states($id, $password,
 		@login_ids);
 	
@@ -145,6 +145,14 @@ if ($room_session) {
 		}
 	}
 	
+=item C<myroom>
+
+The workstations' room
+
+=cut
+
+	$sk_session->set_var('myroom',$myroom);
+
 =item C<workstation>
 	
 Users logged in on current workstation in room as a hash. If no user
@@ -290,13 +298,7 @@ True if URL-filter is active
 	
 	# pre-set form fields with suggested values for lesson end time
 	my $start_time = $room_session->param('start_time');
-	if ($start_time) {
-		my @suggested_end_time = localtime($start_time + 90 * 60);
-		$q->param('lesson_end_hours', $suggested_end_time[2]);
-		$q->param('lesson_end_minutes', int($suggested_end_time[1] / 5) * 5);
-	}
 }
-
 
 
 $sk_session->print_page("$this_file.tt", $this_file);

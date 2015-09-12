@@ -59,6 +59,10 @@ exit (  Schulkonsole::Error::Printer::WRAPPER_APP_ID_DOES_NOT_EXIST
 my $permissions = Schulkonsole::Config::permissions_apps();
 my $groups = Schulkonsole::DB::user_groups(
 	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
+# FIXME: workaround for non existing students group!
+if(! (defined $$groups{teachers} or defined $$groups{domadmins})) {
+	$$groups{'students'} = 1;
+}
 
 my $is_permission_found = 0;
 foreach my $group (('ALL', keys %$groups)) {

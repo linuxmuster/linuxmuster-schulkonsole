@@ -23,5 +23,5 @@ pkglibexec_SCRIPTS = example start logout \
 	linbo_pxeedit linbo_images linbo_menuedit \
 	myclass myclass_handedout myclass_handedoutcopy myclass_tocollect \
 	myprojects myprojects_handedout myprojects_handedoutcopy myprojects_tocollect \
-	myroom \
+	myroom myroom_handedoutcopy myroom_tocollect \
 	config.php

@@ -1,14 +1,13 @@
 [% page = {
-      title    => loc('Schulkonsole') _ " - " _ loc('aktueller Raum') _ ":  $room",
+      title    => loc('Schulkonsole') _ " - " _ loc('aktueller Raum') _ ":  $myroom",
       menu     => 1,
       info     => loc('<p>Informationen über den aktuellen Raum.</p>'),
    }
 %]
 
-<h2>[% loc('Aktueller Raum') %]: [% IF room %][% room %][% ELSE %][% loc('unbekannt') %][% END %]</h2>
+<h2>[% loc('Mein Raum') %]: [% IF myroom %][% myroom %][% ELSE %][% loc('unbekannt') %][% END %]</h2>
 
-[% IF room %]
-	<form method="post" accept-charset="UTF-8">
+[% IF myroom %]
 	<p>
 	[% loc('Nutzung:') %]
 	[% IF editinguser %]
@@ -27,13 +26,12 @@
 		[% loc('kein Unterricht.') %]
 	[% END %]
 	</p>
-	</form>
 [% END %]
 
-[% IF room %]
+[% IF myroom %]
 	<h3>[% loc('Übersicht PC') %]</h3>
 	
-	<table id="roomoverview" class="liste">
+	<table id="hostoverview">
 	<tr>
 		<th>[% loc('Hostname') %]:</th>
 		<td>[% IF workstation.first %][% workstation.name %][% END %]</td>
@@ -52,13 +50,11 @@
 		<th>[% loc('Webfilter') %]:</th>
 		<td><input type="checkbox" disabled[% IF workstation.webfilter %] checked[% END %]></td>
 	</tr>
-	[% IF workstation.printers.size > 0 %]
-		[% FOREACH p IN workstation.printers %]
+	[% FOREACH p IN workstation.printers %]
 		<tr>
 			<th>[% loc('Drucker') %] [% p %]:</th>
 			<td><input type="checkbox" disabled [% IF ! p.off %] checked[% END %]></td>
 		</tr>
-		[% END %]
 	[% END %]
 	<tr>
 		<th>[% loc('Tauschen<br>global') %]:</th>
@@ -68,10 +64,10 @@
 
 [% END %]
 
-[% IF room %]
+[% IF myroom %]
 	<h3>[% loc('Übersicht Drucker') %]</h3>
 	
-	<table id="printersoverview" class="liste">
+	<table id="printersoverview">
 	<colgroup span="2" width="40%"></colgroup>
 	<tr>
 	<th>[% loc('Name') %]</th>
