@@ -563,7 +563,9 @@ numeric constant: C<Schulkonsole::Config::STUDENTSFILEMANAPP>
 
 =item type (one of 1/2 - current_room/exam, 4 - project, 8 - class, 16 - subclass)
 
-=item project (if type 4)/teacher (if type 8)/subclass (if type 16)
+=item project (if type 4)/teacher (if type 8 and category 0)/subclass (if type 16)
+
+=item teacher (if type 4 and category 0)
 
 =item filename
 
@@ -620,21 +622,27 @@ sub studentsfilemanapp() {
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
 		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			unless $project;
-		my $teacher = <>;
-		($teacher) = $teacher =~ /^(.+)$/;
-		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT_TEACHER
-		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
-			unless $teacher;
-		$share_dir .= ($category?"":"/projects/") . $project . '/' . $teacher;
+		$share_dir .= ($category?"":"/projects/") . $project;
+		if($category == 0) {
+			my $teacher = <>;
+			($teacher) = $teacher =~ /^(.+)$/;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT_TEACHER
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $teacher;
+			$share_dir .= '/' . $teacher;
+		}
 		last LSHANDOUTTYPE;
 	};
 	($type & 8) and do {
-		my $teacher = <>;
-		($teacher) = $teacher =~ /^(.+)$/;
-		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS_TEACHER
-		      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
-			unless $teacher;
-		$share_dir .= ($category?"":"/classes/") . $$userdata{gid} . '/' . $teacher;
+		$share_dir .= ($category?"":"/classes/") . $$userdata{gid};
+		if($category == 0){
+			my $teacher = <>;
+			($teacher) = $teacher =~ /^(.+)$/;
+			exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS_TEACHER
+			      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+				unless $teacher;
+			$share_dir .= '/' . $teacher;
+		}
 		last LSHANDOUTTYPE;
 	};
 	($type & 16) and do {
