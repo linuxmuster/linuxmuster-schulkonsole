@@ -374,6 +374,35 @@ sub param {
 
 
 
+=head3 C<clear($param_name)>
+
+Clear a session parameter
+
+=head4 Parameters
+
+=over
+
+=item C<$param_name>
+
+The name of the parameter
+
+=back
+
+=head4 Description
+
+Clears the session parameter C<$param_name>.
+
+=cut
+
+sub clear {
+	my $this = shift;
+	my $param_name = shift;
+	return if not defined $param_name;
+
+	$this->{session}->clear([$param_name]);
+}
+
+
 
 =head3 C<temp_param($param_name, $param_value)>
 

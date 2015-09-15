@@ -51,7 +51,7 @@
     </tr>
 [% END %]
 </table>
-
+[% IF requested_page %]<input type="hidden" name="requested_page" value="[% requested_page %]">[% END %]
 </form>
 [% END %]
 
@@ -69,5 +69,6 @@
 </select>
 <input type="submit" value="[% loc('Eintragen') %]">
 </p>
+[% IF requested_page %]<input type="hidden" name="requested_page" value="[% requested_page %]">[% END %]
 </form>
 [% END %]

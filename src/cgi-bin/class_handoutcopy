@@ -61,6 +61,7 @@ if (   not $class
     or not $$classs{$class}) {
 	my $url = $q->url( -absolute => 1 );
 	$url =~ s/$this_file$/class/g;
+	$sk_session->param('requested_page',$this_file);
 	$sk_session->redirect($url);
 }
 
@@ -175,6 +176,7 @@ eval {
 							last SWITCHCOMMAND;
 						}
 						binmode(FILE);
+						binmode(STDOUT);
 						print while <FILE>;
 						if(!close(FILE)) {
 							$sk_session->set_status($d->get('Die temporäre Datei konnte nicht geschlossen werden.'), 1);

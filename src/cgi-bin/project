@@ -49,6 +49,10 @@ if (not $sk_session->get_password()) {
 
 my $q = $sk_session->query();
 
+if($sk_session->param('requested_page')) {
+	$q->param('requested_page',$sk_session->param('requested_page'));
+	$sk_session->clear('requested_page');
+}
 
 my $projects = Schulkonsole::Info::groups_projects($sk_session->groups());
 foreach my $project (keys %$projects) {
@@ -406,6 +410,17 @@ Name of the selected project
 =cut
 
 	$sk_session->set_var('project', $$projects{$project}{displayname});
+}
+
+if ($q->param('requested_page')) {
+
+=item C<requested_page>
+
+The name of the requested page (if a page is requested after selection)
+
+=cut
+
+	$sk_session->set_var('requested_page',$q->param('requested_page'));	
 }
 
 $sk_session->print_page("$this_file.tt", $this_file);

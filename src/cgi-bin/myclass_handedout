@@ -93,6 +93,7 @@ eval {
 						last SWITCHACTION;
 					}
 					binmode(FILE);
+					binmode(STDOUT);
 					print while <FILE>;
 					if(!close(FILE)) {
 						$sk_session->set_status($d->get('Die temporäre Datei konnte nicht geschlossen werden.'), 1);
