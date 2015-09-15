@@ -653,11 +653,11 @@ sub print_page {
 
 	my $vars = $this->{template_vars};
 	foreach my $key ($this->{query}->param) {
-		$vars->{$key} = $this->{query}->param($key);
+		$vars->{$key} = $this->{query}->param($key) unless defined $vars->{$key};
 	}
 	my $params = $this->{session}->dataref();
 	foreach my $key (keys \%$params) {
-            $vars->{$key} = $$params{$key};
+            $vars->{$key} = $$params{$key} unless defined $vars->{$key};
     }
     $vars->{no_cookies} = $this->print_header();
     $vars->{parent_page} = $this->{parent_page};
