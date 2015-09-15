@@ -374,7 +374,7 @@ numeric constant: C<Schulkonsole::Config::FILEMANAPP>
 
 =over
 
-=item remove/add
+=item remove - 1/add - 2/download - 3
 
 =item category
 
@@ -510,6 +510,8 @@ sub filemanapp() {
 			}
 		}
 		system("mv -f $Schulkonsole::Config::_runtimedir/$fromfile $share_dir/$filename");
+		system("chown " . $$userdata{uid} . ":root $share_dir/$filename");
+		system("chmod 640 $share_dir/$filename");
 	} elsif($action == 3) { # download
 		my $tofile = <>;
 		($tofile) = $tofile =~ /^(\S+)$/;
@@ -708,6 +710,8 @@ sub studentsfilemanapp() {
 			}
 		}
 		system("mv -f $Schulkonsole::Config::_runtimedir/$fromfile $share_dir/$filename");
+		system("chown " . $$userdata{uid} . ":teachers $share_dir/$filename");
+		system("chmod 640 $share_dir/$filename");
 	} elsif($action == 3) { # download
 		my $tofile = <>;
 		($tofile) = $tofile =~ /^(\S+)$/;

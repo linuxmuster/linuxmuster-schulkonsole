@@ -47,14 +47,22 @@ if (not $sk_session->get_password()) {
 
 my $q = $sk_session->query();
 
+if($sk_session->param('requested_page')) {
+	$q->param('requested_page',$sk_session->param('requested_page'));
+	$sk_session->clear('requested_page');
+}
 
 my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
 foreach my $class (keys %$classs) {
 	if ($q->param("${class}_list")) {
 		$sk_session->param('class', $class);
-
 		my $url = $q->url( -absolute => 1 );
-		$url =~ s/$this_file$/class_list/g;
+		if($q->param('requested_page')) {
+			my $target = $q->param('requested_page');
+			$url =~ s/$this_file$/$target/g;
+		} else {
+			$url =~ s/$this_file$/class_list/g;
+		}
 		$sk_session->redirect($url);
 	}
 }
@@ -216,6 +224,17 @@ The name of the selected class (if a class is selected)
 =cut
 
 	$sk_session->set_var('class_name', $$classs{$class}{displayname});
+}
+
+if ($q->param('requested_page')) {
+
+=item C<requested_page>
+
+The name of the requested page (if a page is requested after selection)
+
+=cut
+
+	$sk_session->set_var('requested_page',$q->param('requested_page'));	
 }
 
 $sk_session->print_page("$this_file.tt", $this_file);

@@ -67,6 +67,7 @@
 		[% lfdnr = lfdnr + 1 %]
 	[% END %]
 	</table>
+	[% IF requested_page %]<input type="hidden" name="requested_page" value="[% requested_page %]">[% END %]
 	</form>
 [% END %]
 

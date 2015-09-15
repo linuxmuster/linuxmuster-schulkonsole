@@ -61,6 +61,7 @@ if (   not $class
     or not $$classs{$class}) {
         my $url = $q->url( -absolute => 1 );
         $url =~ s/$this_file$/class/g;
+		$sk_session->param('requested_page',$this_file);
         $sk_session->redirect($url);
 }
 
