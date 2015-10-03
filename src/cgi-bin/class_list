@@ -76,6 +76,9 @@ provides the following variables:
 my $id = $sk_session->userdata('id');
 my $password = $sk_session->get_password();
 
+my $all_classs = Schulkonsole::DB::classes();
+delete $$all_classs{'attic'};
+
 my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
 my $user_quotaroots = Schulkonsole::Cyrus::quota(keys %$class_userdatas);
 
@@ -370,10 +373,17 @@ $sk_session->set_var('students', \@students);
 
 
 my @classs;
+my @other_classs;
 foreach my $class (sort {
-    $$classs{$a}{displayname} cmp $$classs{$b}{displayname} } keys %$classs) {
-	push @classs, { gid => $class,
-	                name => $$classs{$class}{displayname} };
+	$$all_classs{$a}{displayname} cmp $$all_classs{$b}{displayname} }
+                   keys %$all_classs) {
+	if ($$classs{$class}) {
+		push @classs, { gid => $class,
+		                name => $$all_classs{$class}{displayname} };
+	} else {
+		push @other_classs, { gid => $class,
+		                      name => $$all_classs{$class}{displayname} };
+	}
 }
 
 =item C<classes>
@@ -397,14 +407,46 @@ The name of the class
 
 $sk_session->set_var('classes', \@classs);
 
+=item C<other_classes>
 
-=item C<class_name>
+An array of hashes of the classes of which the current user is not a member
+with the keys
+
+=over
+
+=item C<gid>
+
+The GID of the class
+
+=item C<name>
 
 The name of the class
 
+=back
+
 =cut
 
-$sk_session->set_var('class_name', $$classs{$class}{displayname});
+$sk_session->set_var('other_classes', \@other_classs);
+
+
+if ($class) {
+
+=item C<class_gid>
+
+The GID of the selected class (if a class is selected)
+
+=cut
+
+	$sk_session->set_var('class_gid', $class);
+
+=item C<class_name>
+
+The name of the selected class (if a class is selected)
+
+=cut
+
+	$sk_session->set_var('class_name', $$classs{$class}{displayname});
+}
 
 $sk_session->print_page("$this_file.tt", $this_file);
 

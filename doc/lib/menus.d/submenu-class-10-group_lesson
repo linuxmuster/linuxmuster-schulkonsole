@@ -1,7 +1,3 @@
 [% IF link_class_lesson %]
-[% IF class %]
 	<li><a class="end" [% dohref("class_lesson") %]>[% loc('Unterricht') %]</a></li>
-[% ELSE %]
-	<li><span class="disabledend">[% loc('Unterricht') %]</span></li>
-[% END %]
 [% END %]

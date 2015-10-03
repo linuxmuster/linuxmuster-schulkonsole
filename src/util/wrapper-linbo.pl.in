@@ -26,6 +26,7 @@ wrapper-linbo.pl - wrapper for configuration of linbo
 =cut
 
 use strict;
+use utf8;
 use lib '@datadir@/@PACKAGE@';
 use open ':utf8';
 use open ':std';
@@ -79,6 +80,21 @@ exit (  Schulkonsole::Error::Linbo::WRAPPER_UNAUTHORIZED_ID
 my $opts;
 SWITCH: {
 
+	$app_id == Schulkonsole::Config::LINBOREMOTESTATUSAPP and do {
+		linbo_remote_status();
+		last SWITCH;
+	};
+	
+	$app_id == Schulkonsole::Config::LINBOREMOTEWINDOWAPP and do {
+		linbo_remote_window();
+		last SWITCH;
+	};
+	
+	$app_id == Schulkonsole::Config::LINBOREMOTEAPP and do {
+		linbo_remote();
+		last SWITCH;
+	};
+	
 =head3 update_linbofs
 
 numeric constant: C<Schulkonsole::Config::UPDATELINBOFSAPP>
@@ -540,6 +556,204 @@ $app_id == Schulkonsole::Config::LINBOWRITEPXEAPP and do {
 
 }
 
+=head3 linbo_remote_status
+
+numeric constant: C<Schulkonsole::Config::LINBOREMOTESTATUSAPP>
+
+=head4 Description
+
+Reads the running linbo-remote screens status.
+
+=cut
+
+sub linbo_remote_status() {
+	my $cmd = Schulkonsole::Encode::to_cli($Schulkonsole::Config::_cmd_linbo_remote) . " -l |";
+
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+
+	open(CMDIN,$cmd) || 
+		exit (	Schulkonsole::Error::Linbo::WRAPPER_CANNOT_RUN_COMMAND
+				- Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
+	while(<CMDIN>) {
+		print $_;
+	}
+
+	exit 0;
+}
+
+=head3 linbo_remote_window
+
+numeric constant: C<Schulkonsole::Config::LINBOREMOTEWINDOWAPP>
+
+=head4 Description
+
+Reads the running linbo-remote screen lines.
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<session>
+
+Screen session name.
+
+=cut
+
+sub linbo_remote_window() {
+	my $session = <>;
+	($session) = $session =~ /^(.+)$/;
+	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_SESSION_NAME
+	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	      unless $session;
+	
+	my $tmpfile = "$Schulkonsole::Config::_runtimedir/screen_hardcopy_" . $$userdata{uidnumber} . '_' . time;
+ 	my $cmd = Schulkonsole::Encode::to_cli("screen -S $session -p 0 -X hardcopy $tmpfile");
+
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+
+	system $cmd || 
+		exit (	Schulkonsole::Error::Linbo::WRAPPER_CANNOT_RUN_COMMAND
+				- Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
+	sleep 1;
+	open(FILEIN, '<:encoding(UTF-8)', Schulkonsole::Encode::to_cli($tmpfile)) ||
+		exit (  Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE
+		      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
+	
+	while(<FILEIN>) {
+		print $_;
+	}
+	close(FILEIN);
+
+	system Schulkonsole::Encode::to_cli("rm -f $tmpfile");
+
+	exit 0;
+}
+
+
+
+=head3 linbo_remote
+
+numeric constant: C<Schulkonsole::Config::LINBOREMOTEAPP>
+
+=head4 Description
+
+Starts a new linbo-remote screen process.
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<type>
+
+Either i|g|r
+
+=item C<target>
+
+Hosts (hostname with i/group with g)/room with r
+
+=item C<run>
+
+Run immediately(c) or on next boot(p).
+
+=item C<commands>
+
+Comma separated list of commands to be run.
+
+=item C<nr1>
+
+delay time after each wakeup(run=c), -1 disable wakeup/disable buttons(run=p)
+
+=item C<nr2>
+
+delay time before commands(run=c)/bypass auto functions(run=p)
+
+=cut
+
+sub linbo_remote() {
+	my $target = <>;
+	my $type;
+	($type, $target) = $target =~ /^(group|host|room)_(.+)$/;
+	my %ttype = ('group' => 'g', 'host' => 'i', 'room' => 'r');
+	$type = $ttype{$type};
+	
+	($type) = $type =~ /^(i|g|r)$/;
+	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_TYPE
+	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+		unless defined $type;
+
+	($target) = $target =~ /^([a-zA-Z\d_-]+)$/;
+	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_TARGET
+	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+		unless defined $target;
+	
+	if($type eq 'i') {
+		my $hosts = Schulkonsole::Config::hosts();
+		exit (  Schulkonsole::Error::Linbo::WRAPPER_NO_SUCH_HOST
+			  - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+			  unless $$hosts{$target};
+	} elsif($type eq 'g') {
+		my $groups = Schulkonsole::Linbo::groups();
+		exit (  Schulkonsole::Error::Linbo::WRAPPER_NO_SUCH_GROUP
+		      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+		      unless $$groups{$target};
+	} else { # $type eq 'r'
+		my $rooms = Schulkonsole::Config::rooms();
+		exit (  Schulkonsole::Error::Linbo::WRAPPER_NO_SUCH_ROOM
+			  - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+			  unless $$rooms{$target};
+	}
+	
+	my $now = <>;
+	($now) = $now =~ /^(0|1)$/;
+	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_RUN
+		  - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+		  unless defined $now;
+	
+	my $commands = <>;
+	($commands) = $commands =~ /^(.+)$/;
+	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_COMMANDS
+		  - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+		  unless defined $commands;
+	
+	my $nr1 = <>;
+	($nr1) = $nr1 =~ /^(-?\d+)$/;
+	
+	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_ARG
+		  - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+		  unless defined $nr1;
+	
+	my $nr2 = <>;
+	($nr2) = $nr2 =~ /^(\d+)$/;
+	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_ARG
+		  - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+		  unless defined $nr2;
+		
+	my $cmd = $Schulkonsole::Config::_cmd_linbo_remote;
+	$cmd .= " -$type $target".($now?' -c':' -p')." $commands";
+	if($now) {
+		$cmd .= ($nr1>0?" -w $nr1":($nr1==0?" -w":"")) . ($nr2>0?" -b $nr2":""); 
+	} else { # run == 'p'
+		$cmd .= ($nr1? " -d": "") . ($nr2? " -n": "");
+	}
+	$cmd = Schulkonsole::Encode::to_cli($cmd);
+	
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+	
+	exec($cmd) || 
+		exit (	Schulkonsole::Error::Linbo::WRAPPER_CANNOT_RUN_COMMAND
+				- Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
+	
+	exit 0;
+}
 
 
 exit -2;	# program error

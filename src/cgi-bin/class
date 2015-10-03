@@ -73,7 +73,12 @@ if (    $class
 	$sk_session->param('class', $class);
 
 	my $url = $q->url( -absolute => 1 );
-	$url =~ s/$this_file$/class_list/g;
+	if($q->param('requested_page')) {
+		my $target = $q->param('requested_page');
+		$url =~ s/$this_file$/$target/g;
+	} else {
+		$url =~ s/$this_file$/class_list/g;
+	}
 	$sk_session->redirect($url);
 }
 

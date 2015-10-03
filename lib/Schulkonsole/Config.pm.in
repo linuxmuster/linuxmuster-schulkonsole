@@ -130,6 +130,7 @@ $VERSION = 0.06;
 	$_cmd_wlan_on_off
 	$_cmd_linuxmuster_wlan_reset
 	$_cmd_horde_mail
+	$_cmd_linbo_remote
 
 	$_shell
 
@@ -195,6 +196,9 @@ $VERSION = 0.06;
 	LINBOCOPYSTARTCONFAPP
 	LINBOCOPYREGPATCHAPP
 	LINBOIMAGEAPP
+	LINBOREMOTESTATUSAPP
+	LINBOREMOTEWINDOWAPP
+	LINBOREMOTEAPP
 
 	TEST_NONE
 	TEST_HANDOUT
@@ -622,6 +626,18 @@ C<linbo_manage_images>
 
 C<linbo_write_pxe>
 
+=item C<LINBOREMOTESTATUSAPP>
+
+C<linbo_remote_status>
+
+=item C<LINBOREMOTEWINDOWAPP>
+
+C<linbo_remote_window>
+
+=item C<LINBOREMOTEAPP>
+
+C<linbo_remote>
+
 =back
 
 =cut
@@ -634,6 +650,9 @@ use constant {
 	LINBOWRITEAPP => 13005,
 	LINBOIMAGEAPP => 13006,
 	LINBOWRITEPXEAPP => 13007,
+	LINBOREMOTESTATUSAPP => 13008,
+	LINBOREMOTEWINDOWAPP => 13009,
+	LINBOREMOTEAPP => 13010,
 };
 
 
@@ -1143,6 +1162,10 @@ Path to command to reset group settings C<group-reset>
 
 Path to command to read mail forwards C<schulkonsole.php>
 
+=item C<$_cmd_linbo_remote>
+
+Path to command to schedule linbo-remote tasks.
+
 =back
 
 =cut
@@ -1178,7 +1201,8 @@ use vars qw(%_id_root_app_names
             $_cmd_ovpn_client_cert
             $_cmd_wlan_on_off
             $_cmd_linuxmuster_wlan_reset
-            $_cmd_horde_mail);
+            $_cmd_horde_mail
+            $_cmd_linbo_remote);
 
 
 =head3 Other variables
@@ -1347,6 +1371,9 @@ $_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
 	LINBOWRITEAPP() => 'linbo_write',
 	LINBOWRITEPXEAPP() => 'linbo_write_pxe',
 	LINBOIMAGEAPP() => 'linbo_manage_images',
+	LINBOREMOTESTATUSAPP() => 'linbo_remote_status',
+	LINBOREMOTEWINDOWAPP() => 'linbo_remote_window',
+	LINBOREMOTEAPP() => 'linbo_remote',
 	DEBCONFREADAPP() => 'debconf_read',
 );
 
@@ -1383,7 +1410,7 @@ $_cmd_urlfilter_on_off = '/usr/share/linuxmuster/scripts/urlfilter_on_off.sh';
 $_cmd_wlan_on_off = '/usr/share/linuxmuster/scripts/wlan_on_off.sh';
 $_cmd_linuxmuster_wlan_reset = '/usr/sbin/linuxmuster-wlan-reset';
 $_cmd_horde_mail = '/usr/share/schulkonsole/Schulkonsole/horde-mail.php';
-
+$_cmd_linbo_remote = '/usr/sbin/linbo-remote';
 $_sophomorix_conf_true = 'yes';
 $_sophomorix_conf_false = 'no';
 

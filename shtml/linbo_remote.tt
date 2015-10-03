@@ -1,0 +1,336 @@
+[% page = {
+      title   => loc('Schulkonsole') _ " - " _ loc('Linbo') _ " - " _ loc('Fernsteuerung'),
+      menu     => 1,
+      info     => loc('<p>Beobachten Sie laufende Fernsteuerungsbefehle oder erstellen Sie neue Befehle.</p>'),
+   }
+%]
+
+
+<h2>[% loc('Linbo') %] :: [% loc('Fernsteuerung')%]</h2>
+
+[% IF ! linbo_remote_new %]
+<form method="post" accept-charset="UTF-8">
+<p>
+<input type="submit" name="task_new" value="[% loc('Aufgabe hinzufügen')%]">
+</p>
+
+<h3>[% loc('Linbo') %] - [% loc('Fernsteuerung') %] - [% loc('Status') %]</h3>
+
+<p><input type="submit" name="task_refresh" value="[% loc('Aktualisieren') %]"></p>
+[% IF linbo_remote_status.size > 0 %]
+	<table>
+	[% FOREACH line IN linbo_remote_status %]
+		<tr>
+		<th>[% line.host %]</th>
+		<td valign="top"><input type="button" id="[% line.host %]_toggle" name="[% line.host %]_toggle" value="[% IF line.show %]-[% ELSE %]+[% END %]"></td>
+		<td>
+			<input type="hidden" id="[% line.host %]_showlong" name="[% line.host %]_showlong" value="[% line.show %]">
+			<div id="[% line.host %]_long"[% IF ! line.show %] hidden[% END %]>
+			<fieldset>
+			[% FOREACH wline IN line.long %]
+				[% wline %]<br>
+			[% END %]
+			</fieldset>
+			</div>
+			<div id="[% line.host %]_short"[% IF line.show %] hidden[% END %]>
+			[% line.short %]
+			</div>
+		</td></tr>
+	[% END %]
+	</table>
+	<script>
+	$(document).ready(function () {
+	[% FOREACH line IN linbo_remote_status %]
+		$("#[% line.host %]_toggle").click( function () {
+			if(this.value == "+") {
+				this.value = '-';
+				$("#[% line.host %]_long").show();
+				$("#[% line.host %]_short").hide();
+				$("#[% line.host %]_showlong").val(1);
+			} else {
+				this.value = '+';
+				$("#[% line.host %]_long").hide();
+				$("#[% line.host %]_short").show();
+				$("#[% line.host %]_showlong").val(0);
+			}
+		});
+	[% END %]
+	});
+	</script>
+	<p><input type="submit" name="task_refresh" value="[% loc('Aktualisieren') %]"></p>
+[% ELSE %]
+	<p>[% loc('Keine laufenden Aufgaben.') %]</p>
+[% END %]
+</form>
+[% END %]
+
+[% IF linbo_remote_new %]
+
+<h3>[% loc('Linbo') %] - [% loc('Fernsteuerung') %] - [% loc('Neue Aufgabe') %]</h3>
+<form method="post" accept-charset="UTF-8">
+
+<h4>[% loc('Rechnerauswahl') %]</h4>
+<table class="liste">
+<tr>
+<td>
+<input type="radio" name="category" value="group" [% IF isgroup %] checked[% END %]>[% loc('Gruppe') %]</input><br>
+<select name="group" id="group" [% IF ! isgroup %] disabled[% END %]>
+[% FOREACH g IN groups %]<option value="[% g %]"[% IF group == g %] selected[% END %]>[% g %]</option>[% END %]
+</select>
+</td>
+<td>
+<input type="radio" name="category" value="room" [% IF isroom %] checked[% END %]>[% loc('Raum') %]</input><br>
+<select name="room" id="room" [% IF ! isroom %] disabled[% END %]>
+[% FOREACH r IN rooms %]<option value="[% r %]"[% IF room == r %] selected[% END %]>[% r %]</option>[% END %]
+</select>
+</td>
+<td>
+<input type="radio" name="category" value="host" [% IF ishost %] checked[% END %]>[% loc('Rechner') %]</input><br>
+<select name="host" id="host" [% IF ! ishost %] disabled[% END %]>
+[% FOREACH h IN hosts %]<option value="[% h %]"[% IF host == h %] selected[% END %]>[% h %]</option>[% END %]
+</select>
+</td>
+</tr>
+</table>
+<script>
+$(document).ready(function(){
+	$('input[type=radio][name=category]').change(function(){
+		$("#group").prop("disabled",this.value != 'group');
+		$("#room").prop("disabled",this.value != 'room');
+		$("#host").prop("disabled",this.value != 'host');
+	});
+});
+</script>
+<h4>[% loc('Ausführung') %]</h4>
+<table class="liste">
+<tr>
+<th colspan="2" align="left"><input type="radio" name="exectime" value="donow" checked>[% loc('direkt') %]</th>
+<th colspan="2" align="left"><input type="radio" name="exectime" value="donextboot">[% loc('beim nächsten Start') %]</th>
+</tr>
+<tr>
+<td colspan="2">
+</td>
+<td colspan="2">
+<input type="checkbox" name="disable_buttons" id="disable_buttons" value="disable_buttons" checked disabled>
+<label>[% loc('Knöpfe deaktivieren') %]</label>
+</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td colspan="2"><input type="checkbox" name="bypass_auto" id="bypass_auto" checked disabled>[% loc('Automatische Auswahl übergehen') %]</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td colspan="2"></td>
+</tr>
+</table>
+<script>
+$(document).ready(function(){
+	$('input[type=radio][name=exectime]').change(function(){
+		$("#disable_buttons").prop("disabled",this.value != 'donextboot');
+		$("#bypass_auto").prop("disabled",this.value != 'donextboot');
+	});
+});
+</script>
+<h4>[% loc('Anstoß') %]</h4>
+<p>
+<input type="checkbox" name="dowakeup" id="dowakeup" value="dowakeup" [% IF dowakeup %] selected[% END %]>
+<label labelfor="dowakeup">[% loc('Rechner aufwecken') %]</label>
+</p>
+<table>
+<tr>
+  <td><label labelfor="wait_host">[% loc('Wartezeit nach jedem Rechner') %] : </label></td>
+  <td><input name="wait_host" id="wait_host" value="0" size="3"[% IF ! dowakeup %] disabled[% END %]>s</td>
+</tr>
+<tr>
+  <td><label labelfor="wait_orders">[% loc('Wartezeit vor der Befehlsliste') %] : </label></td>
+  <td><input name="wait_orders" id="wait_orders" value="0" size="3"[% IF ! dowakeup %] disabled[% END %]>s</td>
+</tr>
+</table>
+<script>
+$(document).ready(function(){
+	$('input[type=checkbox][name=dowakeup]').change(function(){
+		$("#wait_host").prop("disabled", !$("#dowakeup").is(':checked'));
+		$("#wait_orders").prop("disabled", !$("#dowakeup").is(':checked'));
+	});
+});
+</script>
+<h4>[%loc('Befehle') %]</h4>
+<table class="liste">
+<tr>
+<td>
+<textarea name="orders" id="orders" rows="20" cols="20"></textarea>
+</td>
+<td vertical-align="middle">
+<input type="button" name="order_append" onclick="append_order()" value="&lt;-">
+</td>
+<td>
+<fieldset>
+<input type="radio" name="order" value="partition">
+<label labelfor="order_partition">[% loc('Partitionieren') %]</label><br>
+
+<input type="radio" name="order" value="format">
+<label labelfor="order_formatall">[% loc('Alle formatieren') %]</label><br>
+
+<input type="radio" name="order" value="formatpartition" [% IF ! isgroup %] disabled[% END %]>
+<label labelfor="order_format">[% loc('Parition formatieren') %]: </label>
+<select name="formatpartition_nr" [% IF ! isgroup %] disabled[% END %]>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+</select><br>
+
+<input type="radio" name="order" id="order_initcache" value="initcache">
+<label labelfor="order_initcache">[% loc('Cache aktualisieren') %]: </label>
+<select name="initcache_type">
+<option value="rsync">rsync</option>
+<option value="multicast">multicast</option>
+<option value="torrent" selected>torrent</option>
+</select>
+<br>
+
+<input type="radio" name="order" id="order_reboot" value="reboot">
+<label labelfor="order_reboot">[% loc('Neu starten') %]</label><br>
+
+<input type="radio" name="order" id="order_halt" value="halt">
+<label labelfor="order_halt">[% loc('Herunterfahren') %]</label><br>
+
+<input type="radio" name="order" id="order_sync" value="sync">
+<label labelfor="order_sync">[% loc('Synchronisieren') %]: </label>
+<select name="sync_nr">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+</select><br>
+
+<input type="radio" name="order" id="order_start" value="start">
+<label labelfor="order_start">[% loc('Starten') %]: </label>
+<select name="start_nr">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+</select><br>
+
+<input type="radio" name="order" id="order_createcloop" value="create_cloop"
+[% IF ! isgroup %] disabled[% END %]>
+<label labelfor="order_createcloop">[% loc('Image erstellen') %]: </label>
+<select name="create_cloop_nr"
+[% IF ! isgroup %] disabled[% END %]>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+</select><br>
+<label labelfor="cloop_msg">[% loc('Hinweis')%]: </label>
+<input name="create_cloop_msg" id="create_cloop_msg"><br>
+
+<input type="radio" name="order" id="order_creatersync" value="create_rsync"
+[% IF ! isgroup %] disabled[% END %]>
+<label labelfor="order_creatersync">[% loc('Diff. Image erstellen') %]: </label>
+<select name="create_rsync_nr"
+[% IF ! isgroup %] disabled[% END %]>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+</select><br>
+<label labelfor="rsync_msg">[% loc('Hinweis')%]: </label>
+<input name="create_rsync_msg" id="create_rsync_msg"><br>
+
+<input type="radio" name="order" id="order_uploadcloop" value="upload_cloop"
+[% IF ! isgroup %] disabled[% END %]>
+<label labelfor="order_uploadcloop">[% loc('Image hochladen') %]: </label>
+<select name="upload_cloop_nr"
+[% IF ! isgroup %] disabled[% END %]>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+</select><br>
+
+<input type="radio" name="order" id="order_uploadrsync" value="upload_rsync"
+[% IF ! isgroup %] disabled[% END %]>
+<label labelfor="order_uploadrsync">[% loc('Diff. Image hochladen') %]: </label>
+<select name="upload_rsync_nr"
+[% IF ! isgroup %] disabled[% END %]>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+</select><br>
+
+<input type="radio" name="order" id="order_update" value="update"
+[% IF ! isgroup %] disabled[% END %] checked>
+<label labelfor="order_update">[% loc('Aktualisieren') %]</label>
+</fieldset>
+</td>
+</tr>
+</table>
+<script>
+function append_order(){
+		var order = $("input[type=radio][name=order]:checked").val();
+		switch(order) {
+		case 'formatpartition':
+			$("#orders").text($("#orders").text()+"format:"+$("select[name=formatpartition_nr]").val()+"\n");
+			break;
+		case 'initcache':
+			$("#orders").text($("#orders").text()+order+":"+$("select[name=initcache_type]").val()+"\n");
+			break;
+		case 'sync':
+		case 'start':
+		case 'create_cloop':
+		case 'create_rsync':
+		case 'upload_cloop':
+		case 'upload_rsync':
+			$("#orders").text($("#orders").text()+order+":"+$("select[name="+order+"_nr]").val());
+			if(/^create/.test(order)){
+				$("#orders").text($("#orders").text()+":\""+$("input[name="+order+"_msg]").val()+"\"");
+			}
+			$("#orders").text($("#orders").text()+"\n");
+			break;
+		default:
+			$("#orders").text($("#orders").text()+order+"\n");
+			break;
+		}
+}
+</script>
+<p>
+<input type="submit" name="task_add" value="[% loc('Hinzufügen') %]">
+<input type="submit" name="task_abort" value="[% loc('Abbrechen') %]">
+</p>
+</form>
+[% END %]
+

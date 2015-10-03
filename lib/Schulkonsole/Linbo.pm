@@ -72,7 +72,11 @@ $VERSION = 0.0917;
 	is_boolean
 
 	get_templates_os
-
+	
+	remote_status
+	remote_window
+	remote
+	
 	%_allowed_keys
 );
 use vars qw(%_allowed_keys);
@@ -402,6 +406,186 @@ sub pxestarts {
 	return \%re;
 }
 
+
+
+
+=head2 remote_status($id, $password)
+
+Get current status of linbo_remote commands.
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=back
+
+=head4 Return value
+
+List of current linbo_remote lines (output of linbo_remote -l).
+
+=head3 Description
+
+This wraps the command C<linbo-remote -l>.
+
+=cut
+
+sub remote_status {
+	my $id = shift;
+	my $password = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::LINBOREMOTESTATUSAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	my @in;
+	while(<SCRIPTIN>){
+		#local $/ = undef;
+		chomp;
+		push @in, $_;
+	}
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	#my $compartment = new Safe;
+
+	return \@in; #$compartment->reval($in);
+}
+
+
+
+=head2 remote_window($id, $password, $session)
+
+Get current content of the linbo-remote session.
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=item C<$session>
+
+The linbo-remote session name
+
+=back
+
+=head4 Return value
+
+List of the linbo-remote session content.
+
+=head3 Description
+
+This wraps the command C<screen -S ...>.
+
+=cut
+
+sub remote_window {
+	my $id = shift;
+	my $password = shift;
+	my $session = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::LINBOREMOTEWINDOWAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "$session\n";
+	
+	my @in;
+	while(<SCRIPTIN>){
+		#local $/ = undef;
+		chomp;
+		push @in, $_;
+	}
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	#my $compartment = new Safe;
+
+	return \@in; #$compartment->reval($in);
+}
+
+
+
+=head2 remote($id, $password, $type, $target, $run, $commands, $nr1, $nr2)
+
+Create new linbo_remote task with commands.
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=item C<$target>
+
+The target name (preceded by target type: group_, host_, room_).
+
+=item C<$run>
+
+Run commands immediately in screen session - c/run commands on next boot - p.
+
+=item C<$commands>
+
+List of linbo-remote commands with parameters.
+
+=item C<$nr1>
+
+Delay in seconds after each wakeup - run=c/disable buttons(=1)
+
+=item C<$nr2>
+
+Delay before command execution - run=w/bypass auto functions(=1)
+
+=back
+
+=head3 Description
+
+This wraps the command C<linbo-remote>.
+
+=cut
+
+sub remote {
+	my $id = shift;
+	my $password = shift;
+	my $target = shift;
+	my $now = shift;
+	my $commands = shift;
+	my $nr1 = shift;
+	my $nr2 = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::LINBOREMOTEAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "$target\n$now\n$commands\n$nr1\n$nr2\n";
+	
+	buffer_input(\*SCRIPTIN);
+	
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	return;
+
+}
 
 
 

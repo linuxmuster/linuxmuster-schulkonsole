@@ -99,7 +99,7 @@
     </tr>
     [% FOREACH image_base IN images_base %]
         <tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
-        <td class="lfdnr">[% ldfnr %].</td>
+        <td class="lfdnr">[% lfdnr %].</td>
         <td><label [% labelfor("${image_base}_newimage") %]>[% image_base %]</label></td>
         <td><input title="Beschreibung anzeigen/editieren" type="submit" class="btn-linbo-edit" alt="Beschreibung" name="[% image_base %]_editdesc" value="[% loc('E') %]"></td>
         <td><input title="Information anzeigen" type="submit" class="btn-linbo-showinfo" alt="Info" name="[% image_base %]_info" value="[% loc('I') %]"></td>
