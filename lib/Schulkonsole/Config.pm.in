@@ -82,6 +82,8 @@ $VERSION = 0.06;
 	$_login_expire_time
 	$_tmp_valid_time
 
+	$_min_password_len
+	$_max_password_len
 	$_http_root
 	$_htaccess_filename
 
@@ -925,12 +927,20 @@ Time after which to delete the session if the user did not log in
 
 Time after which to invalidate temporarily stored data
 
+=item C<$_min_password_len>
+
+Minimal password length enforced.
+
+=item C<$_max_password_len>
+
+Maximal password length enforced.
+
 =back
 
 =cut
 
 use vars qw($_max_idle_time $_session_expire_time $_login_expire_time
-            $_tmp_valid_time);
+            $_tmp_valid_time $_min_password_len $_max_password_len);
 
 
 =head3 Web server settings
@@ -1287,6 +1297,9 @@ $_login_expire_time = '+1h';	# invalidate session unless logged in within an
                              	# hour
 
 $_tmp_valid_time = '+1m';	# invalidate temporarily stored data after 1 minute
+
+$_min_password_len = 8;       # enforce password length requirement
+$_max_password_len = 15;
 
 $_http_root = '/schulkonsole';
 $_htaccess_filename = '.htaccess';
@@ -2248,6 +2261,10 @@ $_max_idle_time = $preferences{max_idle_time}
 $_templatedir = $preferences{templatedir}
 	if (    exists $preferences{templatedir}
 	    and -d $preferences{templatedir});
+$_min_password_len = $preferences{min_password_len}
+	if (exists $preferences{min_password_len});
+$_max_password_len = $preferences{max_password_len}
+    if (exists $preferences{max_password_len});
 };
 
 

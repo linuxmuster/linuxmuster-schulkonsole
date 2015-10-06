@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2015-10-03 11:59+0200\n"
+"POT-Creation-Date: 2015-10-06 15:58+0200\n"
 "PO-Revision-Date: 2014-04-06 14:22+0200\n"
 "Last-Translator: root <root@linuxmuster.lokal>\n"
 "Language-Team: German\n"
@@ -64,21 +64,21 @@ msgstr ""
 msgid " nicht als einzusammelnde Datei vorhanden."
 msgstr ""
 
-#: ../src/cgi-bin/start:521 ../src/cgi-bin/start:540
+#: ../src/cgi-bin/start:532 ../src/cgi-bin/start:551
 #: ../src/cgi-bin/class_list:134 ../src/cgi-bin/class_list:153
 #: ../src/cgi-bin/project_members:368 ../src/cgi-bin/project_members:387
 #, perl-format
 msgid "%d Minuten"
 msgstr ""
 
-#: ../src/cgi-bin/start:518 ../src/cgi-bin/start:537
+#: ../src/cgi-bin/start:529 ../src/cgi-bin/start:548
 #: ../src/cgi-bin/class_list:131 ../src/cgi-bin/class_list:150
 #: ../src/cgi-bin/project_members:365 ../src/cgi-bin/project_members:384
 #, perl-format
 msgid "%d Stunden"
 msgstr ""
 
-#: ../src/cgi-bin/start:515 ../src/cgi-bin/start:534
+#: ../src/cgi-bin/start:526 ../src/cgi-bin/start:545
 #: ../src/cgi-bin/class_list:128 ../src/cgi-bin/class_list:147
 #: ../src/cgi-bin/project_members:362 ../src/cgi-bin/project_members:381
 #, perl-format
@@ -217,7 +217,7 @@ msgstr ""
 msgid "%s: Quota muss eine Zahl sein"
 msgstr ""
 
-#: ../src/cgi-bin/rooms:174 ../src/cgi-bin/settings_program:98
+#: ../src/cgi-bin/rooms:174 ../src/cgi-bin/settings_program:118
 #: ../src/cgi-bin/user_teachers:225 ../src/cgi-bin/settings:279
 #: ../src/cgi-bin/settings_users:280 ../src/cgi-bin/printers_edit:253
 #: ../src/cgi-bin/printers_edit:285 ../src/cgi-bin/rooms_classrooms:91
@@ -1472,6 +1472,14 @@ msgid ""
 "sein."
 msgstr ""
 
+#: ../src/cgi-bin/settings_program:97
+msgid "Der Wert für die maximale Passwortlänge ist ungültig"
+msgstr ""
+
+#: ../src/cgi-bin/settings_program:87
+msgid "Der Wert für die minimale Passwortlänge ist ungültig"
+msgstr ""
+
 #: ../shtml/linbo_edit.tt:164 ../shtml/linbo_edit.tt:197
 #: ../shtml/linbo_edit.tt:357
 msgid "Devicename der Partition"
@@ -1643,7 +1651,7 @@ msgstr ""
 msgid "Ein OpenVPN-Zertifikat wurde für Sie erstellt."
 msgstr ""
 
-#: ../src/cgi-bin/start:303
+#: ../src/cgi-bin/start:314
 msgid "Eine oder mehrere Mail-Adressen sind ungültig."
 msgstr ""
 
@@ -1770,11 +1778,11 @@ msgstr ""
 msgid "Es sind noch nicht alle Verkn&uuml;pfungen eindeutig festgelegt"
 msgstr ""
 
-#: ../src/cgi-bin/start:369
+#: ../src/cgi-bin/start:380
 msgid "Es wurde bereits ein OpenVPN-Zertifikat erstellt"
 msgstr ""
 
-#: ../src/cgi-bin/start:422
+#: ../src/cgi-bin/start:433
 msgid "Es wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> abgelegt"
 msgstr ""
 
@@ -1812,7 +1820,7 @@ msgstr ""
 msgid "Fehler bei der Erzeugung des Dokuments"
 msgstr ""
 
-#: ../src/cgi-bin/start:428
+#: ../src/cgi-bin/start:439
 msgid "Fehler bei der Zertifikatserstellung."
 msgstr ""
 
@@ -1982,7 +1990,7 @@ msgstr ""
 msgid "IP:"
 msgstr ""
 
-#: ../src/cgi-bin/start:446
+#: ../src/cgi-bin/start:457
 msgid ""
 "Ihr Zertifikat wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> "
 "abgelegt"
@@ -2474,8 +2482,12 @@ msgstr ""
 msgid "Mailquota von"
 msgstr ""
 
-#: ../src/cgi-bin/start:316
+#: ../src/cgi-bin/start:327
 msgid "Mailweiterleitung erfolgreich ge&auml;ndert"
+msgstr ""
+
+#: ../shtml/settings_program.tt:27
+msgid "Maximale Passwortlänge"
 msgstr ""
 
 #: ../shtml/myclass.tt:8
@@ -2498,6 +2510,10 @@ msgstr ""
 msgid ""
 "Melden Sie sich unter Windows erneut an, damit Sie auf die "
 "Gruppenverzeichnisse zugreifen k&ouml;nnen."
+msgstr ""
+
+#: ../shtml/settings_program.tt:23
+msgid "Minimale Passwortlänge"
 msgstr ""
 
 #: ../shtml/settings_program.tt:20
@@ -2616,6 +2632,10 @@ msgstr ""
 msgid "Neues Passwort eingeben"
 msgstr ""
 
+#: ../src/cgi-bin/start:284
+msgid "Neues Passwort ist zu schwach: "
+msgstr ""
+
 #: ../src/cgi-bin/start:275
 msgid "Neues Passwort nicht richtig wiederholt"
 msgstr ""
@@ -2678,19 +2698,19 @@ msgstr ""
 msgid "Offenes Projekt"
 msgstr ""
 
-#: ../src/cgi-bin/start:398
+#: ../src/cgi-bin/start:409
 msgid "OpenVPN-Passwort best&auml;tigen"
 msgstr ""
 
-#: ../src/cgi-bin/start:378
+#: ../src/cgi-bin/start:389
 msgid "OpenVPN-Passwort eingegeben"
 msgstr ""
 
-#: ../src/cgi-bin/start:389
+#: ../src/cgi-bin/start:400
 msgid "OpenVPN-Passwort muss mindestens sechs Zeichen haben"
 msgstr ""
 
-#: ../src/cgi-bin/start:409
+#: ../src/cgi-bin/start:420
 msgid "OpenVPN-Passwort nicht richtig wiederholt"
 msgstr ""
 
@@ -2804,7 +2824,7 @@ msgstr ""
 msgid "Passwort ändern"
 msgstr ""
 
-#: ../src/cgi-bin/start:284
+#: ../src/cgi-bin/start:294
 msgid "Passwort&auml;nderung erfolgreich"
 msgstr ""
 
@@ -3210,7 +3230,7 @@ msgstr ""
 msgid "Sonderquota"
 msgstr ""
 
-#: ../src/cgi-bin/start:588
+#: ../src/cgi-bin/start:599
 msgid "Speicherplatz"
 msgstr ""
 
@@ -3430,7 +3450,7 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: ../src/cgi-bin/start:431 ../src/cgi-bin/start:453
+#: ../src/cgi-bin/start:442 ../src/cgi-bin/start:464
 msgid "Verst&auml;ndigen Sie den Netzwerkadministrator"
 msgstr ""
 
@@ -3532,6 +3552,10 @@ msgstr ""
 msgid "X"
 msgstr ""
 
+#: ../shtml/settings_program.tt:24 ../shtml/settings_program.tt:28
+msgid "Zeichen"
+msgstr ""
+
 #: ../shtml/hosts.tt:120
 msgid "Zeilen hinzufügen"
 msgstr ""
@@ -3540,11 +3564,11 @@ msgstr ""
 msgid "Zertifikat erstellen und herunterladen"
 msgstr ""
 
-#: ../src/cgi-bin/start:450
+#: ../src/cgi-bin/start:461
 msgid "Zertifikat konnte nicht heruntergeladen werden."
 msgstr ""
 
-#: ../src/cgi-bin/start:419
+#: ../src/cgi-bin/start:430
 msgid "Zertifikat wurde erstellt."
 msgstr ""
 
@@ -3585,11 +3609,11 @@ msgstr ""
 msgid "[LINBO] - globale Konfiguration"
 msgstr ""
 
-#: ../src/cgi-bin/start:355
+#: ../src/cgi-bin/start:366
 msgid "abgebrochen"
 msgstr ""
 
-#: ../src/cgi-bin/start:524 ../src/cgi-bin/start:543
+#: ../src/cgi-bin/start:535 ../src/cgi-bin/start:554
 #: ../src/cgi-bin/class_list:137 ../src/cgi-bin/class_list:156
 #: ../src/cgi-bin/project_members:371 ../src/cgi-bin/project_members:390
 msgid "abgelaufen"
@@ -3927,7 +3951,7 @@ msgstr ""
 #: ../shtml/quotas_projects.tt:46 ../shtml/quotas_teachers.tt:47
 #: ../shtml/room.tt:187 ../shtml/room.tt:232 ../shtml/room_shares.tt:65
 #: ../shtml/rooms.tt:153 ../shtml/rooms_classrooms.tt:48
-#: ../shtml/settings_classs.tt:58 ../shtml/settings_program.tt:25
+#: ../shtml/settings_classs.tt:58 ../shtml/settings_program.tt:33
 #: ../shtml/settings_projects.tt:52 ../shtml/settings_users.tt:198
 #: ../shtml/user_teachin.tt:103
 msgid "Änderungen übernehmen"

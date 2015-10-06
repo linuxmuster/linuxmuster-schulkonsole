@@ -2,14 +2,14 @@
 # Copyright (C) 2014 Landesmedienzentrum Baden-Wuerttemberg
 # This file is distributed under the same license as the schulkonsole package.
 #
-#: ../lib/Schulkonsole/Session.pm.in:1506
 # root <root@linuxmuster.lokal>, 2014.
 # Frank Schütte <fschuett@gymnasium-himmelsthuer.de>, 2015.
+#: ../lib/Schulkonsole/Session.pm.in:1506
 msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2015-10-03 11:59+0200\n"
+"POT-Creation-Date: 2015-10-06 15:58+0200\n"
 "PO-Revision-Date: 2015-10-03 12:07+0100\n"
 "Last-Translator: Frank Schütte <fschuett@gymnasium-himmelsthuer.de>\n"
 "Language-Team: German <>\n"
@@ -66,21 +66,21 @@ msgstr "not existing as collected file."
 msgid " nicht als einzusammelnde Datei vorhanden."
 msgstr " not existing as collected file."
 
-#: ../src/cgi-bin/start:521 ../src/cgi-bin/start:540
+#: ../src/cgi-bin/start:532 ../src/cgi-bin/start:551
 #: ../src/cgi-bin/class_list:134 ../src/cgi-bin/class_list:153
 #: ../src/cgi-bin/project_members:368 ../src/cgi-bin/project_members:387
 #, perl-format
 msgid "%d Minuten"
 msgstr "%d minutes"
 
-#: ../src/cgi-bin/start:518 ../src/cgi-bin/start:537
+#: ../src/cgi-bin/start:529 ../src/cgi-bin/start:548
 #: ../src/cgi-bin/class_list:131 ../src/cgi-bin/class_list:150
 #: ../src/cgi-bin/project_members:365 ../src/cgi-bin/project_members:384
 #, perl-format
 msgid "%d Stunden"
 msgstr "%d hours"
 
-#: ../src/cgi-bin/start:515 ../src/cgi-bin/start:534
+#: ../src/cgi-bin/start:526 ../src/cgi-bin/start:545
 #: ../src/cgi-bin/class_list:128 ../src/cgi-bin/class_list:147
 #: ../src/cgi-bin/project_members:362 ../src/cgi-bin/project_members:381
 #, perl-format
@@ -219,7 +219,7 @@ msgstr "%s.reg could not be created"
 msgid "%s: Quota muss eine Zahl sein"
 msgstr "%s: Quota must be a number"
 
-#: ../src/cgi-bin/rooms:174 ../src/cgi-bin/settings_program:98
+#: ../src/cgi-bin/rooms:174 ../src/cgi-bin/settings_program:118
 #: ../src/cgi-bin/user_teachers:225 ../src/cgi-bin/settings:279
 #: ../src/cgi-bin/settings_users:280 ../src/cgi-bin/printers_edit:253
 #: ../src/cgi-bin/printers_edit:285 ../src/cgi-bin/rooms_classrooms:91
@@ -1714,6 +1714,14 @@ msgstr ""
 "The project name may only consist of lower case letters (without umlauts), "
 "numbers, dashes and underscores and must be between 3 and 14 characters long."
 
+#: ../src/cgi-bin/settings_program:97
+msgid "Der Wert für die maximale Passwortlänge ist ungültig"
+msgstr ""
+
+#: ../src/cgi-bin/settings_program:87
+msgid "Der Wert für die minimale Passwortlänge ist ungültig"
+msgstr ""
+
 #: ../shtml/linbo_edit.tt:164 ../shtml/linbo_edit.tt:197
 #: ../shtml/linbo_edit.tt:357
 msgid "Devicename der Partition"
@@ -1891,7 +1899,7 @@ msgstr "edit"
 msgid "Ein OpenVPN-Zertifikat wurde für Sie erstellt."
 msgstr "An open VPN certificate was created for you."
 
-#: ../src/cgi-bin/start:303
+#: ../src/cgi-bin/start:314
 msgid "Eine oder mehrere Mail-Adressen sind ungültig."
 msgstr "At least one of the supplied mail addresses contains errors."
 
@@ -2018,11 +2026,11 @@ msgstr "There are no menu.lst files available."
 msgid "Es sind noch nicht alle Verkn&uuml;pfungen eindeutig festgelegt"
 msgstr "Not all connections are clearly defined."
 
-#: ../src/cgi-bin/start:369
+#: ../src/cgi-bin/start:380
 msgid "Es wurde bereits ein OpenVPN-Zertifikat erstellt"
 msgstr "An open VPN certificate was already created"
 
-#: ../src/cgi-bin/start:422
+#: ../src/cgi-bin/start:433
 msgid "Es wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> abgelegt"
 msgstr "It was filed away in your home directory in the folder <q>OpenVPN</q>"
 
@@ -2062,7 +2070,7 @@ msgstr "There is already an entry for user %s"
 msgid "Fehler bei der Erzeugung des Dokuments"
 msgstr "Error in the production of the document"
 
-#: ../src/cgi-bin/start:428
+#: ../src/cgi-bin/start:439
 msgid "Fehler bei der Zertifikatserstellung."
 msgstr "Error during the creation of the certificate."
 
@@ -2232,7 +2240,7 @@ msgstr "IP of the TFTP Server, that provides images"
 msgid "IP:"
 msgstr "IP:"
 
-#: ../src/cgi-bin/start:446
+#: ../src/cgi-bin/start:457
 msgid ""
 "Ihr Zertifikat wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> "
 "abgelegt"
@@ -2726,9 +2734,14 @@ msgstr "Mail quota"
 msgid "Mailquota von"
 msgstr "Mail quota of"
 
-#: ../src/cgi-bin/start:316
+#: ../src/cgi-bin/start:327
 msgid "Mailweiterleitung erfolgreich ge&auml;ndert"
 msgstr "mail forward(s) change successful"
+
+#: ../shtml/settings_program.tt:27
+#, fuzzy
+msgid "Maximale Passwortlänge"
+msgstr "Change your password"
 
 #: ../shtml/myclass.tt:8
 msgid "Mein Klasse"
@@ -2751,6 +2764,11 @@ msgid ""
 "Melden Sie sich unter Windows erneut an, damit Sie auf die "
 "Gruppenverzeichnisse zugreifen k&ouml;nnen."
 msgstr "Log on to Windows again in order to access the group directory."
+
+#: ../shtml/settings_program.tt:23
+#, fuzzy
+msgid "Minimale Passwortlänge"
+msgstr "Change your password"
 
 #: ../shtml/settings_program.tt:20
 msgid "Minuten"
@@ -2870,6 +2888,11 @@ msgstr "New password"
 msgid "Neues Passwort eingeben"
 msgstr "Enter the new password"
 
+#: ../src/cgi-bin/start:284
+#, fuzzy
+msgid "Neues Passwort ist zu schwach: "
+msgstr "New password not properly repeated"
+
 #: ../src/cgi-bin/start:275
 msgid "Neues Passwort nicht richtig wiederholt"
 msgstr "New password not properly repeated"
@@ -2932,19 +2955,19 @@ msgstr "Application:"
 msgid "Offenes Projekt"
 msgstr "Open project"
 
-#: ../src/cgi-bin/start:398
+#: ../src/cgi-bin/start:409
 msgid "OpenVPN-Passwort best&auml;tigen"
 msgstr "Confirm open VPN password"
 
-#: ../src/cgi-bin/start:378
+#: ../src/cgi-bin/start:389
 msgid "OpenVPN-Passwort eingegeben"
 msgstr "Open VPN password entered"
 
-#: ../src/cgi-bin/start:389
+#: ../src/cgi-bin/start:400
 msgid "OpenVPN-Passwort muss mindestens sechs Zeichen haben"
 msgstr "Open VPN password must have at least six characters"
 
-#: ../src/cgi-bin/start:409
+#: ../src/cgi-bin/start:420
 msgid "OpenVPN-Passwort nicht richtig wiederholt"
 msgstr "Open VPN password not properly repeated"
 
@@ -3058,7 +3081,7 @@ msgstr "Set password and first password (input value)"
 msgid "Passwort ändern"
 msgstr "Change your password"
 
-#: ../src/cgi-bin/start:284
+#: ../src/cgi-bin/start:294
 msgid "Passwort&auml;nderung erfolgreich"
 msgstr "Password change successful"
 
@@ -3464,7 +3487,7 @@ msgstr "Should lessons really end?"
 msgid "Sonderquota"
 msgstr "Special quota"
 
-#: ../src/cgi-bin/start:588
+#: ../src/cgi-bin/start:599
 msgid "Speicherplatz"
 msgstr "Storage space"
 
@@ -3684,7 +3707,7 @@ msgstr "Transfer was already started"
 msgid "Version"
 msgstr "Version"
 
-#: ../src/cgi-bin/start:431 ../src/cgi-bin/start:453
+#: ../src/cgi-bin/start:442 ../src/cgi-bin/start:464
 msgid "Verst&auml;ndigen Sie den Netzwerkadministrator"
 msgstr "Inform the network administrator"
 
@@ -3786,6 +3809,11 @@ msgstr "Choose a submenu."
 msgid "X"
 msgstr "X"
 
+#: ../shtml/settings_program.tt:24 ../shtml/settings_program.tt:28
+#, fuzzy
+msgid "Zeichen"
+msgstr "Cancel"
+
 #: ../shtml/hosts.tt:120
 msgid "Zeilen hinzufügen"
 msgstr "Add Lines"
@@ -3794,11 +3822,11 @@ msgstr "Add Lines"
 msgid "Zertifikat erstellen und herunterladen"
 msgstr "Create and download certificate"
 
-#: ../src/cgi-bin/start:450
+#: ../src/cgi-bin/start:461
 msgid "Zertifikat konnte nicht heruntergeladen werden."
 msgstr "The certificate could not be downloaded."
 
-#: ../src/cgi-bin/start:419
+#: ../src/cgi-bin/start:430
 msgid "Zertifikat wurde erstellt."
 msgstr "Certificate was created."
 
@@ -3839,11 +3867,11 @@ msgstr "Additional quota"
 msgid "[LINBO] - globale Konfiguration"
 msgstr "[LINBO] - global configuration"
 
-#: ../src/cgi-bin/start:355
+#: ../src/cgi-bin/start:366
 msgid "abgebrochen"
 msgstr "cancelled"
 
-#: ../src/cgi-bin/start:524 ../src/cgi-bin/start:543
+#: ../src/cgi-bin/start:535 ../src/cgi-bin/start:554
 #: ../src/cgi-bin/class_list:137 ../src/cgi-bin/class_list:156
 #: ../src/cgi-bin/project_members:371 ../src/cgi-bin/project_members:390
 msgid "abgelaufen"
@@ -4181,7 +4209,7 @@ msgstr "Save changes"
 #: ../shtml/quotas_projects.tt:46 ../shtml/quotas_teachers.tt:47
 #: ../shtml/room.tt:187 ../shtml/room.tt:232 ../shtml/room_shares.tt:65
 #: ../shtml/rooms.tt:153 ../shtml/rooms_classrooms.tt:48
-#: ../shtml/settings_classs.tt:58 ../shtml/settings_program.tt:25
+#: ../shtml/settings_classs.tt:58 ../shtml/settings_program.tt:33
 #: ../shtml/settings_projects.tt:52 ../shtml/settings_users.tt:198
 #: ../shtml/user_teachin.tt:103
 msgid "Änderungen übernehmen"
