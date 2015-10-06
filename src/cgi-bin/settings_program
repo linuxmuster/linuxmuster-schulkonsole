@@ -80,6 +80,26 @@ if ($q->param('accept')) {
 
 					last CHECKVALUE;
 				};
+				$key eq 'conf_min_password_len' and do {
+					my $new_value = int($value);
+					if (not $new_value) {
+						push @errors, $sk_session->d()->get(
+							'Der Wert für die minimale Passwortlänge ist ungültig');
+					}  else {
+						$value = $new_value;
+					}
+					last CHECKVALUE;
+				};
+				$key eq 'conf_max_password_len' and do {
+					my $new_value = int($value);
+					if (not $new_value) {
+						push @errors, $sk_session->d()->get(
+							'Der Wert für die maximale Passwortlänge ist ungültig');
+					}  else {
+						$value = $new_value;
+					}
+					last CHECKVALUE;
+				};
 				}
 				$preferences_conf_new{$key} = $value;
 			}
@@ -141,11 +161,21 @@ sub read_preferences_conf {
 
 corresponds to max_idle_time in F<preferences.conf>
 
+=item C<conf_min_password_len>
+
+corresponds to min_password_len in F<preferences.conf>
+
+=item C<conf_max_password_len>
+
+corresponds to max_password_len in F<preferences.conf>
+
 =cut
 
 	return (
 		conf_max_idle_time => int(Schulkonsole::Config::expire_seconds(
 			$Schulkonsole::Config::_max_idle_time) / 60),
+		conf_min_password_len => int($Schulkonsole::Config::_min_password_len),
+		conf_max_password_len => int($Schulkonsole::Config::_max_password_len),
 	);
 }
 
@@ -161,6 +191,8 @@ sub new_preferences_lines {
 	
 	my %key_map = (
 		conf_max_idle_time => 'max_idle_time',
+		conf_min_password_len => 'min_password_len',
+		conf_max_password_len => 'max_password_len',
 	);
 	my %key_map_rev = reverse %key_map;
 

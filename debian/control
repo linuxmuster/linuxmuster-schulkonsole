@@ -8,7 +8,7 @@ Standards-Version: 3.7.2
 Package: linuxmuster-schulkonsole
 Architecture: all
 Pre-Depends: cyrus-common | cyrus21-common | cyrus22-common | cyrus-common-2.2
-Depends: linuxmuster-schulkonsole-wrapper (>= ${source:Version}), linuxmuster-schulkonsole-wrapper (<< ${source:Version}.1~), sophomorix-base (>=2.4.48), sophomorix-pgldap (>=2.4.48), linuxmuster-base (>=6.1.0), libcgi-pm-perl, libcgi-session-perl, liblocale-gettext-perl, libhtml-parser-perl, libdbi-perl, libdbd-odbc-perl | libdbd-pg-perl, libcrypt-passwdmd5-perl, libcrypt-smbhash-perl, libnet-cups-perl (>= 0.55), libcrypt-rijndael-perl, libnet-imap-simple-perl, libenv-bash-perl, libproc-processtable-perl | libproc-process-perl, ${perl:Depends}, ${misc:Depends}, libcrypt-cbc-perl, libtemplate-perl
+Depends: linuxmuster-schulkonsole-wrapper (>= ${source:Version}), linuxmuster-schulkonsole-wrapper (<< ${source:Version}.1~), sophomorix-base (>=2.4.48), sophomorix-pgldap (>=2.4.48), linuxmuster-base (>=6.1.0), libcgi-pm-perl, libcgi-session-perl, liblocale-gettext-perl, libhtml-parser-perl, libdbi-perl, libdbd-odbc-perl | libdbd-pg-perl, libcrypt-passwdmd5-perl, libcrypt-smbhash-perl, libnet-cups-perl (>= 0.55), libcrypt-rijndael-perl, libnet-imap-simple-perl, libenv-bash-perl, libproc-processtable-perl | libproc-process-perl, ${perl:Depends}, ${misc:Depends}, libcrypt-cbc-perl, libtemplate-perl, libdata-password-perl
 Recommends: libtemplate-perl-doc
 Provides: linuxmuster-schulkonsole-template
 Conflicts: linuxmuster-schulkonsole-template

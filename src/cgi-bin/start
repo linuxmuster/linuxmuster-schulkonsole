@@ -170,6 +170,7 @@ use Schulkonsole::Sophomorix;
 use Sophomorix::SophomorixConfig;
 use Template;
 use Template::Constants qw ( :debug );
+use Data::Password qw( :all );
 
 my $this_file = 'start';
 
@@ -202,7 +203,6 @@ sub password_cb {
 my $cups = new Net::CUPS;
 $cups->setUsername($uid);
 $cups->setPasswordCB(\&password_cb);
-
 
 
 
@@ -261,17 +261,28 @@ COMMANDS: {
 		$sk_session->set_status($sk_session->d()->get(
 			'Neues Passwort nicht richtig wiederholt'), 1);
 	} else {
-		eval {
-			Schulkonsole::Sophomorix::change_password($id,
-				$oldpassword, $newpassword);
-
-			$sk_session->save_password($newpasswordagain);
-
-			$sk_session->set_status(
-				$sk_session->d()->get('Passwort&auml;nderung erfolgreich'), 0);
-		};
-		if ($@) {
-			$sk_session->standard_error_handling($this_file, $@);
+		$MINLEN = $Schulkonsole::Config::_min_password_len;
+		$MAXLEN = $Schulkonsole::Config::_max_password_len;
+		my $badpassword_error = Data::Password::IsBadPassword($newpassword);
+		if ($badpassword_error) {
+			$sk_session->mark_input_error('newpassword');
+			$sk_session->mark_input_error('newpasswordagain');
+			$sk_session->set_status($sk_session->d()->get(
+				'Neues Passwort ist zu schwach: ')
+				. "\n$badpassword_error", 1);			
+		} else {
+			eval {
+				Schulkonsole::Sophomorix::change_password($id,
+					$oldpassword, $newpassword);
+	
+				$sk_session->save_password($newpasswordagain);
+	
+				$sk_session->set_status(
+					$sk_session->d()->get('Passwort&auml;nderung erfolgreich'), 0);
+			};
+			if ($@) {
+				$sk_session->standard_error_handling($this_file, $@);
+			}
 		}
 	}
 
