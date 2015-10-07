@@ -79,6 +79,50 @@ exit (  Schulkonsole::Error::Linbo::WRAPPER_UNAUTHORIZED_ID
 my $opts;
 SWITCH: {
 
+	$app_id == Schulkonsole::Config::UPDATELINBOFSAPP and do {
+		update_linbofs();
+		last SWITCH;
+	};
+
+	$app_id == Schulkonsole::Config::LINBOWRITESTARTCONFAPP and do {
+		write_start_conf();
+		last SWITCH;
+	};
+
+	$app_id == Schulkonsole::Config::LINBOCOPYSTARTCONFAPP and do {
+		copy_start_conf();
+		last SWITCH;
+	};
+
+	$app_id == Schulkonsole::Config::LINBOCOPYREGPATCHAPP and do {
+		copy_regpatch();
+		last SWITCH;
+	};
+	
+	$app_id == Schulkonsole::Config::LINBODELETEAPP and do {
+		linbo_delete();
+		last SWITCH;
+	};
+
+	$app_id == Schulkonsole::Config::LINBOIMAGEAPP and do {
+		linbo_manage_images();
+		last SWITCH;
+	};
+	
+	$app_id == Schulkonsole::Config::LINBOWRITEAPP and do {
+		linbo_write();
+		last SWITCH;
+	};
+	
+	$app_id == Schulkonsole::Config::LINBOWRITEPXEAPP and do {
+		linbo_write_pxe();
+		last SWITCH;
+	};
+
+}		
+
+exit -2;	# program error
+
 =head3 update_linbofs
 
 numeric constant: C<Schulkonsole::Config::UPDATELINBOFSAPP>
@@ -89,13 +133,12 @@ invokes C<update-linbofs.sh>
 
 =cut
 
-$app_id == Schulkonsole::Config::UPDATELINBOFSAPP and do {
+sub update_linbofs {
 	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;
 	exec Schulkonsole::Encode::to_cli(
-	     	$Schulkonsole::Config::_cmd_update_linbofs)
-		or last SWITCH;
-};
+	     	$Schulkonsole::Config::_cmd_update_linbofs);
+}
 
 =head3 write_start_conf
 
@@ -115,7 +158,7 @@ Writes lines into a start.conf.<group>
 
 =cut
 
-$app_id == Schulkonsole::Config::LINBOWRITESTARTCONFAPP and do {
+sub write_start_conf {
 	my $group = <>;
 	($group) = $group =~ /^([a-z\d_]+)$/;
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_GROUP
@@ -162,7 +205,8 @@ $app_id == Schulkonsole::Config::LINBOWRITESTARTCONFAPP and do {
 	close FILE;
 
 	exit 0;
-};
+}
+
 
 =head3 copy_start_conf
 
@@ -182,7 +226,7 @@ Writes lines into a start.conf.<group>
 
 =cut
 
-$app_id == Schulkonsole::Config::LINBOCOPYSTARTCONFAPP and do {
+sub copy_start_conf {
 	my $src = <>;
 	chomp $src;
 	($src) = $src =~ /^([a-z\d_]+[^\/]*)$/;
@@ -245,7 +289,9 @@ $app_id == Schulkonsole::Config::LINBOCOPYSTARTCONFAPP and do {
 
 
 	exit 0;
-};
+}
+
+
 
 =head3 copy_regpatch
 
@@ -267,7 +313,7 @@ Copies a template to <image>.reg
 
 =cut
 
-$app_id == Schulkonsole::Config::LINBOCOPYREGPATCHAPP and do {
+sub copy_regpatch {
 	my $regpatch = <>;
 	($regpatch) = $regpatch =~ /^([^\/]+\.reg)$/;
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
@@ -322,7 +368,7 @@ $app_id == Schulkonsole::Config::LINBOCOPYREGPATCHAPP and do {
 
 
 	exit 0;
-};
+}
 
 =head3 linbo_delete
 
@@ -340,7 +386,7 @@ Deletes a LINBO file
 
 =cut
 
-$app_id == Schulkonsole::Config::LINBODELETEAPP and do {
+sub linbo_delete {
 	my $filename = <>;
 	my $tmpfilename;
 	($tmpfilename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.reg|pxelinux\.lst\.(?:[a-z\d_]+))$/;
@@ -358,7 +404,7 @@ $app_id == Schulkonsole::Config::LINBODELETEAPP and do {
 	unlink $file;
 
 	exit 0;
-};
+}
 
 =head3 linbo_manage_images
 
@@ -386,7 +432,7 @@ New image name without C<.cloop> and C<.rsync> suffix
 
 =cut
 
-$app_id == Schulkonsole::Config::LINBOIMAGEAPP and do {
+sub linbo_manage_images {
 	my $action = <>;
 	($action) = $action =~ /^([012])$/;
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_ACTION
@@ -441,7 +487,7 @@ $app_id == Schulkonsole::Config::LINBOIMAGEAPP and do {
 	}
 
 	exit 0;
-};
+}
 
 =head3 linbo_write
 
@@ -461,7 +507,7 @@ Writes a LINBO file
 
 =cut
 
-$app_id == Schulkonsole::Config::LINBOWRITEAPP and do {
+linbo_write {
 	my $filename = <>;
 	my $tmpfilename;
 	($tmpfilename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.(?:reg|desc))$/;
@@ -490,7 +536,7 @@ $app_id == Schulkonsole::Config::LINBOWRITEAPP and do {
 	close FILE;
 
 	exit 0;
-};
+}
 
 =head3 linbo_write_pxe
 
@@ -510,7 +556,7 @@ Writes a LINBO PXE start file
 
 =cut
 
-$app_id == Schulkonsole::Config::LINBOWRITEPXEAPP and do {
+sub linbo_write_pxe {
 	my $filename = <>;
 	($filename) = $filename =~ /^([a-z\d_]+)$/;
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
@@ -536,8 +582,6 @@ $app_id == Schulkonsole::Config::LINBOWRITEPXEAPP and do {
 	close FILE;
 
 	exit 0;
-};
-
 }
 
 
