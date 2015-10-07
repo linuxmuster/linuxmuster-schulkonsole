@@ -93,7 +93,7 @@ $app_id == Schulkonsole::Config::SHARESTATESAPP and do {
 };
 
 $app_id == Schulkonsole::Config::SHARESONOFFAPP and do {
-	sharesonoffapp();
+	sharesonoff();
 	last SWITCH;
 };
 
