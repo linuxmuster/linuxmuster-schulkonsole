@@ -130,8 +130,8 @@ SWITCH: {
 		last SWITCH;
 	};
 	
-	$app_id == Schulkonsole::Config::LINBOWRITEPXEAPP and do {
-		linbo_write_pxe();
+	$app_id == Schulkonsole::Config::LINBOWRITEGRUBCFGAPP and do {
+		linbo_write_grub_cfg();
 		last SWITCH;
 	};
 
@@ -554,13 +554,13 @@ linbo_write {
 	exit 0;
 }
 
-=head3 linbo_write_pxe
+=head3 linbo_write_grub_cfg
 
-numeric constant: C<Schulkonsole::Config::LINBOWRITEPXEAPP>
+numeric constant: C<Schulkonsole::Config::LINBOWRITEGRUBCFGAPP>
 
 =head4 Description
 
-Writes a LINBO PXE start file
+Writes a LINBO grub cfg start file
 
 =head4 Parameters from standard input
 
@@ -572,7 +572,7 @@ Writes a LINBO PXE start file
 
 =cut
 
-sub linbo_write_pxe {
+sub linbo_write_grub_cfg {
 	my $filename = <>;
 	($filename) = $filename =~ /^([a-z\d_]+\.cfg)$/;
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
@@ -580,7 +580,7 @@ sub linbo_write_pxe {
 		unless defined $filename;
 
 	my $file = Schulkonsole::Encode::to_fs(
-	           	"$Schulkonsole::Config::_pxe_config_dir/$filename");
+	           	"$Schulkonsole::Config::_grub_config_dir/$filename");
 
 	$< = $>;
 	$) = 0;

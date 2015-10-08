@@ -46,7 +46,7 @@ $VERSION = 0.0917;
 	groups
 	regpatches
 	example_regpatches
-	pxestarts
+	grubstarts
 	images
 
 	update_linbofs
@@ -63,7 +63,7 @@ $VERSION = 0.0917;
 	check_and_prepare_start_conf
 	handle_start_conf_errors
 	write_file
-	write_pxe_file
+	write_grub_cfg_file
 	delete_file
 	delete_image
 	move_image
@@ -376,9 +376,9 @@ sub images {
 
 
 
-=head2 pxestarts()
+=head2 grubstarts()
 
-Get all PXE start files
+Get all grub cfg start files
 
 =head3 Return value
 
@@ -386,16 +386,16 @@ A reference to a hash with the filenames as keys
 
 =head3 Description
 
-Gets the PXE start files in LINBODIR/boot/grub
+Gets the grub cfg start files in LINBODIR/boot/grub
 and returns them in a hash.
 
 =cut
 
-sub pxestarts {
+sub grubstarts {
 	my %re;
 
 	foreach my $file ((
-			glob("$Schulkonsole::Config::_pxe_config_dir/*.cfg")
+			glob("$Schulkonsole::Config::_grub_config_dir/*.cfg")
 		)) {
 		next if -l$file or -d$file;
 		my ($filename) = File::Basename::fileparse($file);
@@ -2340,9 +2340,9 @@ sub write_file {
 
 
 
-=head2 write_pxe_file($id, $password, $filename, $lines)
+=head2 write_grub_cfg_file($id, $password, $filename, $lines)
 
-Writes the LINBO pxe start file
+Writes the LINBO grub cfg file
 
 =head3 Parameters
 
@@ -2364,17 +2364,17 @@ The lines to be written
 
 =head3 Description
 
-Writes C<$lines> into C<$filename> in C<Schulkonsole::Config::_pxe_config_dir>.
+Writes C<$lines> into C<$filename> in C<Schulkonsole::Config::_grub_config_dir>.
 
 =cut
 
-sub write_pxe_file {
+sub write_grub_cfg_file {
 	my $id = shift;
 	my $password = shift;
 	my $filename = shift;
 	my $lines = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LINBOWRITEPXEAPP,
+	my $pid = start_wrapper(Schulkonsole::Config::LINBOWRITEGRUBCFGAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 

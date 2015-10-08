@@ -624,9 +624,9 @@ C<linbo_write>
 
 C<linbo_manage_images>
 
-=item C<LINBOWRITEPXEAPP>
+=item C<LINBOWRITEGRUBCFGAPP>
 
-C<linbo_write_pxe>
+C<linbo_write_grub_cfg>
 
 =item C<LINBOREMOTESTATUSAPP>
 
@@ -651,7 +651,7 @@ use constant {
 	LINBODELETEAPP => 13004,
 	LINBOWRITEAPP => 13005,
 	LINBOIMAGEAPP => 13006,
-	LINBOWRITEPXEAPP => 13007,
+	LINBOWRITEGRUBCFGAPP => 13007,
 	LINBOREMOTESTATUSAPP => 13008,
 	LINBOREMOTEWINDOWAPP => 13009,
 	LINBOREMOTEAPP => 13010,
@@ -798,9 +798,13 @@ Default network settings
 
 LINBO directory
 
-=item C<$_pxe_config_dir>
+=item C<$_grub_config_dir>
 
-PXE Config directory
+Grub Config directory
+
+=item C<$_grub_templates_dir>
+
+Grub templates directory
 
 =item C$_linbo_log_dir>
 
@@ -835,7 +839,8 @@ use vars qw($_workstations_file $_workstations_log_file
             $_room_defaults_file $_classrooms_file
             $_printers_file
             $_network_settings_file
-            $_linbo_dir $_pxe_config_dir 
+            $_linbo_dir $_grub_config_dir
+            $_grub_templates_dir
             $_linbo_log_dir $_linbo_start_conf_prefix
             $_linbo_templates_dir $_linbo_templates_os_dir
             $_linbo_template_partition
@@ -1265,7 +1270,8 @@ $_printers_file = $lml_env{PRINTERS};
 $_classrooms_file = $lml_env{CLASSROOMS};
 $_network_settings_file = $lml_env{NETWORKSETTINGS};
 $_linbo_dir = $lml_env{LINBODIR};
-$_pxe_config_dir = $lml_env{LINBODIR} . '/boot/grub';
+$_grub_templates_dir = '/usr/share/linuxmuster-linbo/templates';
+$_grub_config_dir = $lml_env{LINBODIR} . '/boot/grub';
 $_linbo_templates_dir = '@datadir@/@PACKAGE@/linbo/templates';
 $_linbo_log_dir = $lml_env{LINBOLOGDIR};
 $_linbo_templates_os_dir = "$_linbo_templates_dir/os";
@@ -1382,7 +1388,7 @@ $_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
 	LINBOCOPYREGPATCHAPP() => 'copy_regpatch',
 	LINBODELETEAPP() => 'linbo_delete',
 	LINBOWRITEAPP() => 'linbo_write',
-	LINBOWRITEPXEAPP() => 'linbo_write_pxe',
+	LINBOWRITEGRUBCFGAPP() => 'linbo_write_grub_cfg',
 	LINBOIMAGEAPP() => 'linbo_manage_images',
 	LINBOREMOTESTATUSAPP() => 'linbo_remote_status',
 	LINBOREMOTEWINDOWAPP() => 'linbo_remote_window',

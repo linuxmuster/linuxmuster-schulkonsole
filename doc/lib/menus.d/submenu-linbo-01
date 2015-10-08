@@ -7,8 +7,8 @@
 [% IF link_linbo_regpatchedit %]
 	<li><a [% dohref("linbo_regpatchedit") %]>[% loc('Registrypatch editieren') %]</a>
 [% END %]
-[% IF link_linbo_pxeedit %]
-	<li><a [% dohref("linbo_pxeedit") %]>[% loc('PXE-Start') %]</a>
+[% IF link_linbo_grubedit %]
+	<li><a [% dohref("linbo_grubedit") %]>[% loc('GRUB-Startdatei') %]</a>
 [% END %]
 [% IF link_linbo_images %]
 	<li><a [% dohref("linbo_images") %]>[% loc('Imageverwaltung') %]</a>
