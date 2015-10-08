@@ -507,7 +507,7 @@ Writes a LINBO file
 
 =cut
 
-linbo_write {
+sub linbo_write {
 	my $filename = <>;
 	my $tmpfilename;
 	($tmpfilename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.(?:reg|desc))$/;
