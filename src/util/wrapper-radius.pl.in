@@ -83,7 +83,25 @@ exit (  Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_ID
 
 
 SWITCH: {
+	(   $app_id == Schulkonsole::Config::WLANONOFFAPP ) and do {
+		wlan_on_off();
+		last SWITCH;
+	};
 
+	$app_id == Schulkonsole::Config::WLANRESETAPP and do {
+		wlan_reset();
+		last SWITCH;
+	};
+
+	$app_id == Schulkonsole::Config::WLANRESETATAPP and do {
+		wlan_reset_at();
+		last SWITCH;
+	};
+
+}
+
+exit -2;	# program error
+		
 =head3 wlan_on_off
 
 numeric constant: C<Schulkonsole::Config::WLANONOFFAPP>
@@ -111,7 +129,7 @@ group names one per line, end with empty line
 
 =cut
 
-(   $app_id == Schulkonsole::Config::WLANONOFFAPP ) and do {
+sub wlan_on_off {
 	my $trigger = <>;
 	$trigger = int($trigger) ? 'on' : 'off';
 	my $lessongroup = <>;
@@ -135,8 +153,8 @@ group names one per line, end with empty line
 	local $) = 0;
 	local $( = $);
 	umask(022);
-	exec Schulkonsole::Encode::to_cli("$cmd $opts") or last SWITCH;
-};
+	exec Schulkonsole::Encode::to_cli("$cmd $opts");
+}
 
 
 =head3 wlan_reset
@@ -159,7 +177,7 @@ The name of the group
 
 =cut
 
-$app_id == Schulkonsole::Config::WLANRESETAPP and do {
+sub wlan_reset {
         my $group = <>;
         ($group) = $group =~ /^([a-z\d_]+)$/;
         exit (  Schulkonsole::Error::Radius::WRAPPER_INVALID_GROUP
@@ -168,12 +186,12 @@ $app_id == Schulkonsole::Config::WLANRESETAPP and do {
 
         my $group_session = group_session($group);
 
-        wlan_reset($group_session);
+        _wlan_reset($group_session);
 
         $group_session->delete();
 
         exit 0;
-};
+}
 
 
 =head3 wlan_reset_at
@@ -200,7 +218,7 @@ Absolute time in seconds since the Epoch
 
 =cut
 
-$app_id == Schulkonsole::Config::WLANRESETATAPP and do {
+sub wlan_reset_at {
 	my $lessongroup = <>;
 	($lessongroup) = $lessongroup =~ /^([a-z\d_]+)$/;
 	exit (  Schulkonsole::Error::Radius::WRAPPER_INVALID_GROUP
@@ -252,20 +270,14 @@ $app_id == Schulkonsole::Config::WLANRESETATAPP and do {
 		    and $stored_group eq $lessongroup) {
 
 			Schulkonsole::DB::reconnect();
-			wlan_reset($group_session);
+			_wlan_reset($group_session);
 
 			$group_session->delete();
 		}
 	}
 
 	exit 0;
-};
-
 }
-
-exit -2;	# program error
-
-
 
 sub group_session {
 	my $lessongroup = shift;
@@ -289,7 +301,7 @@ sub group_session {
 
 
 
-sub wlan_reset {
+sub _wlan_reset {
 	my $group_session = shift;
 
 	my $lessongroup = $group_session->param('name');

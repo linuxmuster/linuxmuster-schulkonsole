@@ -72,8 +72,8 @@ $VERSION = 0.06;
 	$_blocked_hosts_intranet_file
 	$_unfiltered_hosts_file
 	$_cups_printers_conf_file
-	$_group_defaults_file
-	$_allowed_groups_wlan_file
+	$_wlan_defaults_file
+	$_wlan_ldap_group
 
 	$_login_template
 
@@ -822,14 +822,14 @@ Directory holding LINBO templates for section [OS]
 
 The LINBO template for section [Partition]
 
-=item C<$_group_defaults_file>
+=item C<$_wlan_defaults_file>
 
 This file defines the default wlan settings
 
-=item C<$_allowed_groups_wlan_file>
+=item C<$_wlan_ldap_group>
 
-This file defines the actual allowed wlan classes/projects
-
+This variable holds the ldap group name, that wlan access is granted to.
+ 
 =back
 
 =cut
@@ -845,7 +845,7 @@ use vars qw($_workstations_file $_workstations_log_file
             $_linbo_templates_dir $_linbo_templates_os_dir
             $_linbo_template_partition
             $_dhcpd_conf_file
-            $_group_defaults_file $_allowed_groups_wlan_file);
+            $_wlan_defaults_file $_wlan_ldap_group);
 
 
 =head3 Files with status information
@@ -1240,10 +1240,10 @@ use vars qw($_sophomorix_conf_true $_sophomorix_conf_false);
 
 
 
-$_version = '@VERSION@';
-$_sysconfdir = '@sysconfdir@/@PACKAGE@';
-$_templatedir = '@datadir@/@PACKAGE@/shtml';
-$_runtimedir = '@pkgruntimedir@';
+$_version = '0.18.0-1';
+$_sysconfdir = '/etc/linuxmuster/schulkonsole';
+$_templatedir = '/usr/share/schulkonsole/shtml';
+$_runtimedir = '/var/lib/schulkonsole';
 $_lockdir = '/var/lock';
 
 $_preferences_conf_file = "$_sysconfdir/preferences.conf";
@@ -1276,8 +1276,8 @@ $_linbo_templates_dir = '@datadir@/@PACKAGE@/linbo/templates';
 $_linbo_log_dir = $lml_env{LINBOLOGDIR};
 $_linbo_templates_os_dir = "$_linbo_templates_dir/os";
 $_linbo_template_partition = "$_linbo_templates_dir/part/start.conf.partition";
-$_group_defaults_file = '/etc/linuxmuster/group_defaults';
-$_allowed_groups_wlan_file = '/etc/freeradius/users';
+$_wlan_defaults_file = '/etc/linuxmuster/wlan_defaults';
+$_wlan_ldap_group = 'p_wifi';
 
 $_linbo_start_conf_prefix = $_linbo_dir . '/start.conf.';
 
@@ -1426,7 +1426,7 @@ $_cmd_update_linbofs = '/usr/share/linuxmuster-linbo/update-linbofs.sh';
 $_cmd_update_logins = '/usr/share/linuxmuster/scripts/update-logins.sh';
 $_cmd_urlfilter_check = '/usr/share/linuxmuster/scripts/check_urlfilter.sh';
 $_cmd_urlfilter_on_off = '/usr/share/linuxmuster/scripts/urlfilter_on_off.sh';
-$_cmd_wlan_on_off = '/usr/share/linuxmuster/scripts/wlan_on_off.sh';
+$_cmd_wlan_on_off = '/usr/sbin/wlan_on_off';
 $_cmd_linuxmuster_wlan_reset = '/usr/sbin/linuxmuster-wlan-reset';
 $_cmd_horde_mail = '/usr/share/schulkonsole/Schulkonsole/horde-mail.php';
 $_cmd_linbo_remote = '/usr/sbin/linbo-remote';
@@ -2271,6 +2271,8 @@ $_min_password_len = $preferences{min_password_len}
 	if (exists $preferences{min_password_len});
 $_max_password_len = $preferences{max_password_len}
     if (exists $preferences{max_password_len});
+$_wlan_ldap_group = $preferences{wlan_ldap_group}
+	if (exists $preferences{wlan_ldap_group});
 };
 
 
