@@ -150,6 +150,7 @@ $VERSION = 0.06;
 	URLFILTERONOFFAPP
 	ALLONAPP
 	ALLONATAPP
+	WLANALLOWEDAPP
 	WLANONOFFAPP
 	WLANRESETATAPP
 	WLANRESETAPP
@@ -277,6 +278,10 @@ C<all_on_at>
 
 C<rooms_reset>
 
+=item C<WLANALLOWEDAPP>
+
+C<allowed_groups_users_wlan>
+
 =item C<WLANONOFFAPP>
 
 C<wlan_on_off>
@@ -303,9 +308,10 @@ use constant {
 	ALLONAPP => 6007,
 	ALLONATAPP => 6008,
 	ROOMSRESETAPP => 6009,
-	WLANONOFFAPP => 6010,
-	WLANRESETATAPP => 6011,
-	WLANRESETAPP => 6012,
+	WLANALLOWEDAPP => 6010,
+	WLANONOFFAPP => 6011,
+	WLANRESETATAPP => 6012,
+	WLANRESETAPP => 6013,
 };
 
 =head3 Constants for wrapper-printer
@@ -1328,6 +1334,7 @@ $_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
 %_id_root_app_names = (
 	INTERNETONOFFAPP() => 'internet_on_off',
 	INTRANETONOFFAPP() => 'intranet_on_off',
+	WLANALLOWEDAPP() => 'allowed_groups_users_wlan',
 	WLANONOFFAPP() => 'wlan_on_off',
 	WLANRESETATAPP() => 'wlan_reset_at',
 	WLANRESETAPP() => 'wlan_reset',

@@ -117,7 +117,7 @@ if ($group_session) {
 			last COMMANDS;
 		}
 	
-		my $wlan_allowed = Schulkonsole::Radius::allowed_groups_users_wlan();
+		my $wlan_allowed = Schulkonsole::Radius::allowed_groups_users_wlan($id, $password);
 
 		if ($q->param("group;wlan")) {
                     if (not $$wlan_allowed{'groups'}{$group}) {
@@ -220,7 +220,7 @@ if ($group_session) {
 	
 	# collect data for output
 	my $wlan_allowed =
-		Schulkonsole::Radius::allowed_groups_users_wlan();
+		Schulkonsole::Radius::allowed_groups_users_wlan($id, $password);
         my $group_name = $group;
         my $group_wlan = $$wlan_allowed{'groups'}{$group}? 1 : 0;
         if ($group_wlan) {

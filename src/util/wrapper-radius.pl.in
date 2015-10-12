@@ -35,12 +35,15 @@ use open ':utf8';
 use open ':std';
 use Sophomorix::SophomorixAPI;
 use Sophomorix::SophomorixConfig;
+use Sophomorix::SophomorixPgLdap;
+use DBI;
 use Schulkonsole::Config;
 use Schulkonsole::DB;
 use Schulkonsole::Encode;
 use Schulkonsole::Error::Radius;
 use Schulkonsole::Radius;
 use Schulkonsole::LessonSession;
+use Data::Dumper;
 
 my $id = <>;
 $id = int($id);
@@ -83,7 +86,12 @@ exit (  Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_ID
 
 
 SWITCH: {
-	(   $app_id == Schulkonsole::Config::WLANONOFFAPP ) and do {
+	$app_id == Schulkonsole::Config::WLANALLOWEDAPP and do {
+		allowed_groups_users_wlan();
+		last SWITCH;
+	};
+	
+	$app_id == Schulkonsole::Config::WLANONOFFAPP and do {
 		wlan_on_off();
 		last SWITCH;
 	};
@@ -102,6 +110,48 @@ SWITCH: {
 
 exit -2;	# program error
 		
+=head3 allowed_groups_users_wlan
+
+numeric constant: C<Schulkonsole::Config::WLANALLOWEDAPP>
+
+=head4 Description
+
+Uses Sophomorix commands to read groups users from wlan unix group.
+
+=head4 Parameters from standard input
+
+=over
+
+=head4 Return parameters
+
+The function returns a hash of hashes with keys users and group
+and the currently allowed users and groups as keys with value C<1>.
+
+=back
+
+=cut
+
+sub allowed_groups_users_wlan {
+	
+	my @members_by_option=Sophomorix::SophomorixPgLdap::fetchmembers_by_option_from_project($Schulkonsole::Config::_wlan_ldap_group);
+	my @pgroups=Sophomorix::SophomorixPgLdap::fetchgroups_from_project($Schulkonsole::Config::_wlan_ldap_group);
+	my @projects=Sophomorix::SophomorixPgLdap::fetchprojects_from_project($Schulkonsole::Config::_wlan_ldap_group);
+	my @groups = (@pgroups, @projects);
+	my %groups_hash = map { $_ => 1 } @groups;
+	my %users_hash = map { $_ => 1 } @members_by_option;
+	
+	my %wlan;
+	$wlan{'groups'} = \%groups_hash;
+	$wlan{'users'} = \%users_hash;
+	my $data = Data::Dumper->new([ \%wlan ]);
+	$data->Terse(1);
+	$data->Indent(0);
+	print $data->Dump;
+
+	exit 0;
+}
+
+
 =head3 wlan_on_off
 
 numeric constant: C<Schulkonsole::Config::WLANONOFFAPP>
@@ -109,7 +159,8 @@ numeric constant: C<Schulkonsole::Config::WLANONOFFAPP>
 =head4 Description
 
 invokes C<<
-wlan_on_off.sh --trigger=<on|off> --grouplist=<group1,group2,...,groupn>
+wlan_on_off.sh --trigger=<on|off> --grouplist=<group1,group2,...,groupn> 
+               --userlist=<user1,user2,...,usern>
 >>
 
 
@@ -121,9 +172,13 @@ wlan_on_off.sh --trigger=<on|off> --grouplist=<group1,group2,...,groupn>
 
 C<1> (on) or C<0> (off)
 
-=item group
+=item grouplist
 
-group names one per line, end with empty line
+comma separated list of group names
+
+=item userlist
+
+comma separated list of user names
 
 =back
 
@@ -132,28 +187,40 @@ group names one per line, end with empty line
 sub wlan_on_off {
 	my $trigger = <>;
 	$trigger = int($trigger) ? 'on' : 'off';
-	my $lessongroup = <>;
-	my @lessongroups = $lessongroup =~ /^([a-z\d_]+)(,([a-z\d_]+))*$/;
-	for (my $index=$#lessongroups; $index >= 0;--$index) {
-	    splice @lessongroups, $index, 1 if @lessongroups[$index] =~ /^,/;
-	}
-	$lessongroup = join(',',@lessongroups);
+	
+	my $grouplist = <>;
+	($grouplist) = $grouplist =~ /^([a-z0-9\_,]+)$/;
+	my @lessongroups = split(",",$grouplist);
+	@lessongroups = grep { $_ =~ /^[a-z0-9\_]+$/ } @lessongroups;
+	$grouplist = join(",", @lessongroups);
+	
+	my $userlist = <>;
+	($userlist) = $userlist =~ /^([a-z0-9,]+)$/;
+	my @lessonusers = split(",",$userlist);
+	@lessonusers = grep { $_ =~ /^[a-z0-9]+$/ } @lessonusers;
+	$userlist = join(",", @lessonusers);
+	
 	exit (  Schulkonsole::Error::Radius::WRAPPER_NO_GROUPS
 	      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
-		unless $lessongroup;
+		unless $userlist or $grouplist;
 
 
 	my $cmd =  $Schulkonsole::Config::_cmd_wlan_on_off;
 
 	my $opts;
-	$opts = "--trigger=$trigger --grouplist=$lessongroup";
+	$opts = "--trigger=$trigger";
+	$opts .= " --grouplist=$grouplist" if $grouplist;
+	$opts .= " --userlist=$userlist" if $userlist;
 
 	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;
 	local $) = 0;
 	local $( = $);
 	umask(022);
+
 	exec Schulkonsole::Encode::to_cli("$cmd $opts");
+	
+	exit 0;
 }
 
 
@@ -314,7 +381,7 @@ sub _wlan_reset {
 
 	# reset the group settings according to group_default instead of restoring 
 	# the old state from session file
-	my $opts = "--group=\Q$lessongroup\E";
+	my $opts = "--grouplist=\Q$lessongroup\E";
 	system Schulkonsole::Encode::to_cli(
 	       	"$Schulkonsole::Config::_cmd_linuxmuster_wlan_reset $opts");
 

@@ -215,7 +215,7 @@ sub wlan_on {
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
 	# set groups in list to on
-	print SCRIPTOUT "1\n", join(",", @groups), "\n", join("," ,@users), "\n\n";
+	print SCRIPTOUT "1\n", join(",", @groups), "\n", join("," ,@users), "\n";
         buffer_input(\*SCRIPTIN);
 
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
@@ -272,7 +272,7 @@ sub wlan_off {
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
 	# set groups in list to off
-	print SCRIPTOUT "0\n", join(",", @groups),"\n", join(",", @users), "\n\n";
+	print SCRIPTOUT "0\n", join(",", @groups),"\n", join(",", @users), "\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -345,9 +345,23 @@ sub wlan_reset_at {
 
 
 
-=head3 C<allowed_groups_users_wlan()>
+=head3 C<allowed_groups_users_wlan($id, $password)>
 
 Returns which groups/users access to the wlan is allowed
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=back
 
 =head4 Return value
 
@@ -356,8 +370,32 @@ A hash of hashes with keys 'users' and 'groups' with allowed groups/users names 
 =cut
 
 sub allowed_groups_users_wlan {
-	return { 'users' => (), 'groups' => () };
+	my $id = shift;
+	my $password = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::WLANALLOWEDAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "\n\n";
+
+	my $in;
+	{
+		local $/ = undef;
+		$in = <SCRIPTIN>;
+	}
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	my $compartment = new Safe;
+
+	return $compartment->reval($in);
 }
+
+
+
+
 
 
 
