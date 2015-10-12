@@ -1240,10 +1240,10 @@ use vars qw($_sophomorix_conf_true $_sophomorix_conf_false);
 
 
 
-$_version = '0.18.0-1';
-$_sysconfdir = '/etc/linuxmuster/schulkonsole';
-$_templatedir = '/usr/share/schulkonsole/shtml';
-$_runtimedir = '/var/lib/schulkonsole';
+$_version = '@VERSION@';
+$_sysconfdir = '@sysconfdir@/@PACKAGE@';
+$_templatedir = '@datadir@/@PACKAGE@/shtml';
+$_runtimedir = '@pkgruntimedir@';
 $_lockdir = '/var/lock';
 
 $_preferences_conf_file = "$_sysconfdir/preferences.conf";
