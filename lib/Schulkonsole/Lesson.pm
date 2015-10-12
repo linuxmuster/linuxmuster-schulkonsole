@@ -143,12 +143,12 @@ sub start_lesson {
 	$this->param('start_time',$^T);
 
 
-	my $allowed_groups_wlan
-		= Schulkonsole::Radius::allowed_groups_wlan();
+	my $wlan_allowed
+		= Schulkonsole::Radius::allowed_groups_users_wlan();
 
 	$this->param('oldsettings', {
 		name => $this->param('name'),
-		wlan_on => ($$allowed_groups_wlan{$this->param('name')}? 1 : 0),
+		wlan_on => ($$wlan_allowed{'groups'}{$this->param('name')}? 1 : 0),
 	});
 
 	$this->end_lesson_at($id, $password, int($^T / 300) * 300 + 2700);
@@ -167,7 +167,7 @@ sub end_lesson_now {
 	my $password = shift;
 
 	$this->unlock();
-	Schulkonsole::Radius::wlan_reset($id, $password, $this->{_LESSONDATA}{name});
+	Schulkonsole::Radius::wlan_reset($id, $password, [$this->{_LESSONDATA}{name}],[]);
 	$this->lock();
 
 	$this->delete();
@@ -188,7 +188,8 @@ sub end_lesson_at {
 
 	$this->unlock();
 	Schulkonsole::Radius::wlan_reset_at($id, $password,
-		$this->{_LESSONDATA}{name},
+		[$this->{_LESSONDATA}{name}],
+		[],
 		$end_time);
 	$this->lock();
 }

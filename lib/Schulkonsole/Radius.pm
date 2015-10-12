@@ -215,7 +215,7 @@ sub wlan_on {
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
 	# set groups in list to on
-	print SCRIPTOUT "1\n", join(",", @groups), "\n", join("," @users), "\n\n";
+	print SCRIPTOUT "1\n", join(",", @groups), "\n", join("," ,@users), "\n\n";
         buffer_input(\*SCRIPTIN);
 
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
@@ -345,58 +345,18 @@ sub wlan_reset_at {
 
 
 
-sub read_group_file {
-        my $filename = shift;
-
-        my %groups;
-
-        my $start = '# linuxmuster.net -- automatic entries below this line';
-        my $end = '# linuxmuster.net -- automatic entries above this line';
-        my $ldapgroup = 'DEFAULT\s*Ldap-Group\s*==\s*([a-z\d_]+)\s*';
-        
-        if (not open GROUPS, "<$filename") {
-                warn "$0: Cannot open $filename";
-                return {};
-        }
-        
-        my $groups_started = 0;
-        while (<GROUPS>) {
-                chomp;
-                if (/$start/) {
-                    $groups_started = 1;
-                    next;
-                } elsif (/$end/) {
-                    $groups_started = 0;
-                    last;
-                } elsif ( $groups_started ) {
-                    if (/^\s*#/) {
-                        next;
-                    } elsif (/$ldapgroup/) {
-                        $groups{$1} = 1;
-                    }
-                }
-        }
-
-        close GROUPS;
-
-        return \%groups;
-}
-
-
-
-
 =head3 C<allowed_groups_users_wlan()>
 
 Returns which groups/users access to the wlan is allowed
 
 =head4 Return value
 
-A hash with allowed groups/users names as key and C<1> as value.
+A hash of hashes with keys 'users' and 'groups' with allowed groups/users names as key and C<1> as value.
 
 =cut
 
 sub allowed_groups_users_wlan {
-	#TODO groups_users from ldap
+	return { 'users' => (), 'groups' => () };
 }
 
 
@@ -435,7 +395,7 @@ sub wlan_defaults {
                 if ($kind eq 'u' and $key) {
                 	$users{$key} = $status;
                 } elsif ($kind eq 'g' and $key) {
-                        $groups{$group} = $status;
+                        $groups{$key} = $status;
                 }
         }
 
