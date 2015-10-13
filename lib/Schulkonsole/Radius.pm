@@ -481,7 +481,7 @@ sub wlan_reset_all {
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	print SCRIPTOUT "0\n";
+	print SCRIPTOUT "1\n\n\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -531,7 +531,7 @@ sub wlan_reset {
                 $id, $password,
                 \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-        print SCRIPTOUT join(",", @groups),"\n", join(",", @users),"\n";
+        print SCRIPTOUT "0\n", join(",", @groups),"\n", join(",", @users),"\n";
 
         buffer_input(\*SCRIPTIN);
 

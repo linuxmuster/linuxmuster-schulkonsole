@@ -213,7 +213,9 @@ sub start_lesson {
 		printers_accept => \%printers_accept,
 		share_states => $share_states,
 	});
-	$this->end_lesson_at($id, $password, int($^T / 300) * 300 + 2700);
+	my $suggested_end_time = $^T;
+	$suggested_end_time = int($suggested_end_time / 300);
+	$this->end_lesson_at($id, $password, $suggested_end_time * 300 + 2700);
 }
 
 

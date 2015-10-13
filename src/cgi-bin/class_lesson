@@ -17,10 +17,14 @@ C<class_lesson> lets you select a class, start a lesson in a class
 and control WLAN access for the selected class.
 The HTML template is class_lesson.tt.
 
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session and
+Schulkonsole::Lesson::set_vars() C<class_lesson> provides the following variables:
+
 =cut
 
 use strict;
-use CGI::Inspect;
 use utf8;
 use lib '/usr/share/schulkonsole';
 use Time::Local;
@@ -217,6 +221,7 @@ if ($group_session) {
 	
 	
 	# collect data for output
+	eval {
 	my $wlan_allowed =
 		Schulkonsole::Radius::allowed_groups_users_wlan($id, $password);
 
@@ -238,9 +243,10 @@ True if the wlan access is on
 	
 =cut
 
-#	if ($@) {
-#		$sk_session->standard_error_handling($this_file, $@);
-#	}
+	};
+	if ($@) {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
 	
 	$group_session->set_vars($sk_session);
 	

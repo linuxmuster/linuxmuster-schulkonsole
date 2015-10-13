@@ -144,14 +144,16 @@ sub start_lesson {
 
 
 	my $wlan_allowed
-		= Schulkonsole::Radius::allowed_groups_users_wlan();
+		= Schulkonsole::Radius::allowed_groups_users_wlan($id, $password);
 
 	$this->param('oldsettings', {
 		name => $this->param('name'),
 		wlan_on => ($$wlan_allowed{'groups'}{$this->param('name')}? 1 : 0),
 	});
 
-	$this->end_lesson_at($id, $password, int($^T / 300) * 300 + 2700);
+	my $suggested_end_time = $^T;
+	$suggested_end_time = int($suggested_end_time / 300) * 300 + 2700;
+	$this->end_lesson_at($id, $password, $suggested_end_time);
 }
 
 
@@ -250,7 +252,6 @@ sub set_vars {
 		my $editing_userdata = $this->info('editing_userdata');
 		$session->set_var('editinguser',
 			"$$editing_userdata{firstname} $$editing_userdata{surname}");
-
 		$session->set_var('edit', $this->info('is_editing'));
 		$session->set_var('stopedit', $this->info('is_allowed_stopedit'));
 

@@ -17,6 +17,11 @@ C<project_lesson> lets you select a project, start a lesson in a project
 and control WLAN access for the selected project.
 The HTML template is project_lesson.tt.
 
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session and
+Schulkonsole::Lesson::set_vars() C<project_lesson> provides the following variables:
+
 =cut
 
 use strict;
@@ -219,13 +224,14 @@ if ($group_session) {
 	
 	
 	# collect data for output
+	eval {
 	my $wlan_allowed =
 		Schulkonsole::Radius::allowed_groups_users_wlan($id, $password);
         my $group_name = $group;
         my $group_wlan = $$wlan_allowed{'groups'}{$group}? 1 : 0;
         if ($group_wlan) {
             $sk_session->set_var('group_wlan', 'on');
-        }
+        };
 	
 =item C<group_name>
 	
@@ -239,9 +245,9 @@ True if the wlan access is on
 	
 =cut
 
-#	if ($@) {
-#		$sk_session->standard_error_handling($this_file, $@);
-#	}
+	if ($@) {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
 	
 	$group_session->set_vars($sk_session);
 	

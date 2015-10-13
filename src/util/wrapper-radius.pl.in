@@ -236,28 +236,47 @@ Resets the groups settings in a group
 
 =over
 
-=item C<group>
+=item C<all>
 
-The name of the group
+Reset all users,groups to default C<1> or only specified C<0>
+
+=item C<grouplist>
+
+The names of the groups C<group1,group2,...,groupn>
+
+=item C<userlist>
+
+The names of the users C<user1,user2,...,usern>
 
 =back
 
 =cut
 
 sub wlan_reset {
-        my $group = <>;
-        ($group) = $group =~ /^([a-z\d_]+)$/;
-        exit (  Schulkonsole::Error::Radius::WRAPPER_INVALID_GROUP
-              - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
-                unless $group;
+	my $all = <>;
+	($all) = $all =~ /^[0|1]$/;
+	exit (  Schulkonsole::Error::Radius::WRAPPER_INVALID_GROUP
+		  - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+		unless $all;
+	my $grouplist = <>;
+	($grouplist) = $grouplist =~ /^([a-z0-9\_,]+)$/;
+	my @lessongroups = split(",",$grouplist);
+	@lessongroups = grep { $_ =~ /^[a-z0-9\_]+$/ } @lessongroups;
+	$grouplist = join(",", @lessongroups);
+	
+	my $userlist = <>;
+	($userlist) = $userlist =~ /^([a-z0-9,]+)$/;
+	my @lessonusers = split(",",$userlist);
+	@lessonusers = grep { $_ =~ /^[a-z0-9]+$/ } @lessonusers;
+	$userlist = join(",", @lessonusers);
+	
+	exit (  Schulkonsole::Error::Radius::WRAPPER_NO_GROUPS
+	      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+		unless $userlist or $grouplist;
 
-        my $group_session = group_session($group);
+    _wlan_reset($all,$grouplist,$userlist);
 
-        _wlan_reset($group_session);
-
-        $group_session->delete();
-
-        exit 0;
+    exit 0;
 }
 
 
@@ -273,9 +292,13 @@ Resets the wlan settings for a group at a given time
 
 =over
 
-=item C<group>
+=item C<grouplist>
 
-The name of the group
+The names of the groups C<group1,group2,...,groupn>
+
+=item C<userlist>
+
+The names of the users <user1,user2,...,usern>
 
 =item C<time>
 
@@ -286,11 +309,21 @@ Absolute time in seconds since the Epoch
 =cut
 
 sub wlan_reset_at {
-	my $lessongroup = <>;
-	($lessongroup) = $lessongroup =~ /^([a-z\d_]+)$/;
-	exit (  Schulkonsole::Error::Radius::WRAPPER_INVALID_GROUP
+	my $grouplist = <>;
+	($grouplist) = $grouplist =~ /^([a-z0-9\_,]+)$/;
+	my @lessongroups = split(",",$grouplist);
+	@lessongroups = grep { $_ =~ /^[a-z0-9\_]+$/ } @lessongroups;
+	$grouplist = join(",", @lessongroups);
+	
+	my $userlist = <>;
+	($userlist) = $userlist =~ /^([a-z0-9,]+)$/;
+	my @lessonusers = split(",",$userlist);
+	@lessonusers = grep { $_ =~ /^[a-z0-9]+$/ } @lessonusers;
+	$userlist = join(",", @lessonusers);
+	
+	exit (  Schulkonsole::Error::Radius::WRAPPER_NO_GROUPS
 	      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
-		unless $lessongroup;
+		unless $userlist or $grouplist;
 
 	my $time = <>;
 	($time) = $time =~ /^(\d+)$/;
@@ -298,6 +331,12 @@ sub wlan_reset_at {
 	      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
 		unless $time;
 
+	my $lessongroup;
+	$lessongroup = $lessongroups[0] if $#lessongroups >= 0;
+	exit (  Schulkonsole::Error::Radius::WRAPPER_NO_GROUPS
+	      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+		unless $lessongroup;
+	
 	{ # write values and close session
 	my $group_session = group_session($lessongroup);
 	$group_session->param('end_time', $time);
@@ -337,7 +376,7 @@ sub wlan_reset_at {
 		    and $stored_group eq $lessongroup) {
 
 			Schulkonsole::DB::reconnect();
-			_wlan_reset($group_session);
+			_wlan_reset(0,$grouplist,$userlist);
 
 			$group_session->delete();
 		}
@@ -369,9 +408,9 @@ sub group_session {
 
 
 sub _wlan_reset {
-	my $group_session = shift;
-
-	my $lessongroup = $group_session->param('name');
+	my $all = shift;
+	my $grouplist = shift;
+	my $userlist = shift;
 
 	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;
@@ -379,9 +418,13 @@ sub _wlan_reset {
 	local $( = $);
 	umask(022);
 
-	# reset the group settings according to group_default instead of restoring 
+	# reset the settings according to wlan_default instead of restoring 
 	# the old state from session file
-	my $opts = "--grouplist=\Q$lessongroup\E";
+	my $opts = "";
+	$opts .= " --all" if $all;
+	$opts .= " --grouplist=\Q$grouplist\E" if $grouplist;
+	$opts .= " --userlist=\Q$userlist\E" if $userlist;
+	
 	system Schulkonsole::Encode::to_cli(
 	       	"$Schulkonsole::Config::_cmd_linuxmuster_wlan_reset $opts");
 
