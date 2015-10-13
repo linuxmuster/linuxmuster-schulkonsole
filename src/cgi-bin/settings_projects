@@ -23,6 +23,7 @@ provides the following variables:
 =cut
 
 use strict;
+use CGI::Inspect;
 use utf8;
 use lib '/usr/share/schulkonsole';
 use Schulkonsole::DB;
@@ -61,7 +62,9 @@ my $wlanprojects;
 COMMANDS: { eval {
 
 $projects = Schulkonsole::DB::projects();
-$wlanprojects = Schulkonsole::Radius::group_defaults();
+delete $$projects{$Schulkonsole::Config::_wlan_ldap_group};
+
+$wlanprojects = Schulkonsole::Radius::wlan_defaults();
 
 if ($q->param('accept')) {
 	my @create_maillist = ();
@@ -83,9 +86,9 @@ if ($q->param('accept')) {
 			push @remove_mailalias, $project if $$projects{$project}{mailalias};
 		}
 		if ($q->param("${project}_wlan")) {
-			push @enable_wlan, $project unless $$wlanprojects{$project};
+			push @enable_wlan, $project unless $$wlanprojects{'groups'}{$project};
 		} else {
-			push @disable_wlan, $project if $$wlanprojects{$project};
+			push @disable_wlan, $project if $$wlanprojects{'groups'}{$project};
 		}
 		
 	}
@@ -107,21 +110,19 @@ if ($q->param('accept')) {
 	}
 
 	if (@enable_wlan or @disable_wlan) {
-                Schulkonsole::Radius::wlan_on(
-                        $id, $password, @enable_wlan) if @enable_wlan;
-                Schulkonsole::Radius::wlan_off(
-                        $id, $password, @disable_wlan) if @disable_wlan;
-                        my $lines = new_group_default_lines(
-                        \%$wlanprojects, \@enable_wlan, \@disable_wlan);
-		Schulkonsole::Files::write_group_defaults_file(
-                        $id, $password, $lines);
-                $changes = 1;
+    	Schulkonsole::Radius::wlan_on($id, $password, \@enable_wlan,[]) if @enable_wlan;
+    	Schulkonsole::Radius::wlan_off($id, $password, \@disable_wlan,[]) if @disable_wlan;
+        my $lines = Schulkonsole::Radius::new_wlan_defaults_lines(
+                        \%$wlanprojects, \@enable_wlan, \@disable_wlan, [], []);
+		Schulkonsole::Files::write_wlan_defaults_file($id, $password, $lines);
+        $changes = 1;
 	}
 
 	if ($changes) {
 		$projects = Schulkonsole::DB::projects();
-		$wlanprojects = Schulkonsole::Radius::group_defaults();
-
+		$wlanprojects = Schulkonsole::Radius::wlan_defaults();
+		delete $$projects{$Schulkonsole::Config::_wlan_ldap_group};
+		
 		$sk_session->set_status($sk_session->d()->get(
 			'&Auml;nderungen &uuml;bernommen.'), 0);
 	} else {
@@ -152,10 +153,10 @@ foreach my $project (sort {
 	or $$projects{$a}{displayname} cmp $$projects{$b}{displayname} }
                    keys %$projects) {
         my $wlan;
-        if ($$wlanprojects{$project}) {
-                        $wlan = $on_off{$$wlanprojects{$project}};
+        if ($$wlanprojects{'groups'}{$project}) {
+                        $wlan = $on_off{$$wlanprojects{'groups'}{$project}};
         } else {
-                        $wlan = $on_off{$$wlanprojects{default}};
+                        $wlan = $on_off{$$wlanprojects{'groups'}{default}};
         }
 	push @projects, { gid => $project,
 	                name => $$projects{$project}{displayname},
@@ -221,76 +222,3 @@ Write the changes
 
 =cut
 
-sub new_group_default_lines {
-    my $defaults = shift;
-    my $enable = shift;
-    my $disable = shift;
-    my $wlan_default = $$defaults{default};
-    my @re;
-
-
-    my %on_off = (
-            1 => 'on',
-            0 => 'off',
-            undef => 'off',
-            -1 => '-',
-    );
-
-    foreach my $group (@$enable) {
-	$$defaults{$group} = 'on';
-    }
-    foreach my $group (@$disable) {
-	$$defaults{$group} = 'off';
-    }
-
-    if (open GROUPFILE, "<$Schulkonsole::Config::_group_defaults_file") {
-            flock GROUPFILE, 1;
-    
-        while (my $line = <GROUPFILE>) {
-	    my ($spaces_0, $group, $spaces_1, $wlan, $remainder)
-	    = $line =~ /^(\s*)([A-z\d\.\-]+)(\s+)(on|off|-)(.*)/;
-	    if ($group) {
-		if ($group eq 'default') {
-		    $line = 'default'
-			    . "$spaces_1$wlan_default"
-			    . "$remainder\n";
-		    push @re, $line;
-		    delete $$defaults{default};
-		} else {
-		    if ($$defaults{$group} ne $wlan_default) { 
-			$line = "$group"
-			    . "$spaces_1$$defaults{$group}"
-			    . "$remainder\n";
-			push @re, $line;
-		    }
-		    delete $$defaults{$group};
-		}
-	    } else {
-		push @re, $line;
-	    }
-        }
-
-        close GROUPFILE;
-    }
-
-
-    if ($$defaults{default}) {
-            push @re,
-                    sprintf("%-20s%s\n",'default', $$defaults{default});
-
-            delete $$defaults{default};
-    }
-
-    foreach my $group (sort keys %$defaults) {
-	    if ($$defaults{$group} ne $wlan_default) {
-		push @re,
-			sprintf("%-20s%s\n",$group, $$defaults{$group});
-	    }
-    }
-    
-    return \@re;
-}
-
-
-
-=back

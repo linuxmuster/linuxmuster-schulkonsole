@@ -197,7 +197,7 @@ The users to allow wlan access
 =head3 Description
 
 This wraps the command
-C<wlan_on_off.sh --trigger=on --grouplist=group1,group2,... --userlist=user1,user2,... , where
+C<wlan_on_off --trigger=on --grouplist=group1,group2,... --userlist=user1,user2,... , where
 C<group1,group2,...> are the groups in C<@groups> and
 C<user1,user2,...> are the users in C<@users>
 
@@ -254,7 +254,7 @@ The users names to block access to the wlan
 =head3 Description
 
 This wraps the command
-C<wlan_on_off.sh --trigger=off --grouplist=group1,group2,...> --userlist=user1,user2,... , where
+C<wlan_on_off --trigger=off --grouplist=group1,group2,...> --userlist=user1,user2,... , where
 C<group1,group2,...> are the groups in C<@groups> and
 C<user1,user2,...> are the users in C<@users>.
 
@@ -443,7 +443,7 @@ sub wlan_defaults {
         $users{default} = 'off' if not defined $users{default};
         $groups{default} = 'off' if not defined $groups{default};
 
-        return { 'groups' => %groups, 'users' => %users, };
+        return { 'groups' => \%groups, 'users' => \%users, };
 }
 
 
@@ -540,10 +540,130 @@ sub wlan_reset {
 
 
 
+=head3 C<new_wlan_defaults_lines($defaults, $enable_groups, $disable_groups, $enable_users, $disable_users)>
+
+Creates new wlan_defaults lines from old lines and changes.
+
+=head3 Parameters
+
+=over
+
+=item C<$defaults>
+
+Hash reference of hashes 'users' and 'groups' with wlan entries on|off|-.
+
+=item C<$enable_groups>
+
+Array reference with groups names to enable wlan.
+
+=item C<$disable_groups>
+
+Array reference with groups to disable wlan.
+
+=item C<$enable_users>
+
+Array reference with users names to enble wlan.
+
+=item C<$disable_users>
+
+Array reference with users names to disable wlan.
+
+=back
+
+=head3 Description
+
+Creates new lines for wlan_defaults file from old lines and new entries.
+
+=cut
+
+sub new_wlan_defaults_lines {
+    my $defaults = shift;
+    my $enable_groups = shift;
+    my $disable_groups = shift;
+    my $enable_users = shift;
+    my $disable_users = shift;
+    my %wlan_default;
+    $wlan_default{'groups'} = $$defaults{'groups'}{default};
+    $wlan_default{'users'} = $$defaults{'users'}{default};
+    my @re;
 
 
+    foreach my $group (@$enable_groups) {
+		$$defaults{'groups'}{$group} = 'on';
+    }
+    foreach my $group (@$disable_groups) {
+		$$defaults{'groups'}{$group} = 'off';
+    }
+
+	foreach my $user (@$enable_users) {
+		$$defaults{'users'}{$user} = 'on';
+	}
+	foreach my $user (@$disable_users) {
+		$$defaults{'users'}{$user} = 'off';
+	}
+	
+    if (open WLANFILE, "<$Schulkonsole::Config::_wlan_defaults_file") {
+            flock WLANFILE, 1;
+    
+        while (my $line = <WLANFILE>) {
+		    my ($spaces_0, $kind, $key, $spaces_1, $wlan, $remainder)
+		    = $line =~ /^(\s*)([u|g]):([A-z\d\.\-]+)(\s+)(on|off|-)(.*)/;
+		    if ($key) {
+		    	$kind = ($kind eq 'u'?'users':'groups');
+				if ($key eq 'default') {
+				    $line = substr($kind,0,1) .":default"
+					    . "$spaces_1$wlan_default{$kind}"
+					    . "$remainder\n";
+				    push @re, $line;
+				    delete $$defaults{$kind}{default};
+				} else {
+				    if ($$defaults{$kind}{$key} ne $wlan_default{$kind}) { 
+						$line = substr($kind,0,1) . ":$key"
+						    . "$spaces_1$$defaults{$kind}{$key}"
+						    . "$remainder\n";
+						push @re, $line;
+				    }
+				    delete $$defaults{$kind}{$key};
+				}
+		    } else {
+				push @re, $line;
+		    }
+        }
+
+        close WLANFILE;
+    }
 
 
+    if ($$defaults{'groups'}{default}) {
+            push @re,
+                    sprintf("%-20s%s\n",'g:default', $$defaults{'groups'}{default});
+
+            delete $$defaults{'groups'}{default};
+    }
+    if ($$defaults{'users'}{default}) {
+            push @re,
+                    sprintf("%-20s%s\n",'u:default', $$defaults{'users'}{default});
+
+            delete $$defaults{'users'}{default};
+    }
+
+	my $default_groups = $$defaults{'groups'};
+    foreach my $group (sort keys %$default_groups) {
+	    if ($$defaults{'groups'}{$group} ne $wlan_default{'groups'}) {
+		push @re,
+			sprintf("%-20s%s\n",'g:'.$group, $$defaults{'groups'}{$group});
+	    }
+    }
+    my $default_users = $$defaults{'users'};
+    foreach my $user (sort keys %$default_users) {
+	    if ($$defaults{'users'}{$user} ne $wlan_default{'users'}) {
+		push @re,
+			sprintf("%-20s%s\n",'u:'.$user, $$defaults{'users'}{$user});
+	    }
+    }
+    
+    return \@re;
+}
 
 
 

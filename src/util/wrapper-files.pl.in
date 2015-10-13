@@ -77,6 +77,24 @@ exit (  Schulkonsole::Error::Files::WRAPPER_UNAUTHORIZED_ID
 
 my $opts;
 SWITCH: {
+	$app_id == Schulkonsole::Config::WRITEFILEAPP and do {
+		write_file();
+		last SWITCH;
+	};
+
+	$app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
+		import_workstations();
+		last SWITCH;
+	};
+	
+	$app_id == Schulkonsole::Config::IMPORTPRINTERSAPP and do {
+		import_printers();
+		last SWITCH;
+	};
+}
+
+exit -2;	# program error
+
 
 =head3 write_file
 
@@ -89,13 +107,12 @@ numeric constant: C<Schulkonsole::Config::WRITEFILEAPP>
 =item file
 
 0 = classrooms, 1 = printers, 2 = workstations, 3 = room_defaults,
-5 = preferences.conf, 6 = group_defaults
+5 = preferences.conf, 6 = wlan_defaults
 
 =back
 
 =cut
-
-$app_id == Schulkonsole::Config::WRITEFILEAPP and do {
+sub write_file {
 	my $file = <>;
 	($file) = $file =~ /^(\d+)$/;
 	exit (  Schulkonsole::Error::Files::WRAPPER_INVALID_FILENUMBER
@@ -105,35 +122,35 @@ $app_id == Schulkonsole::Config::WRITEFILEAPP and do {
 	my $filename;
 	my $perm;
 	SWITCHWRITEFILE: {
-	$file == 0 and do {
-		$filename = Schulkonsole::Encode::to_fs(
-		            	$Schulkonsole::Config::_classrooms_file);
-		last SWITCHWRITEFILE;
-	};
-	$file == 1 and do {
-		$filename = Schulkonsole::Encode::to_fs(
-		            	$Schulkonsole::Config::_printers_file);
-		last SWITCHWRITEFILE;
-	};
-	$file == 2 and do {
-		$filename = Schulkonsole::Encode::to_fs(
-		            	$Schulkonsole::Config::_workstations_file);
-		last SWITCHWRITEFILE;
-	};
-	$file == 3 and do {
-		$filename = Schulkonsole::Encode::to_fs(
-		            	$Schulkonsole::Config::_room_defaults_file);
-		last SWITCHWRITEFILE;
-	};
-	$file == 5 and do {
-		$filename = Schulkonsole::Encode::to_fs(
-		            	$Schulkonsole::Config::_preferences_conf_file);
-		$perm = 0644 unless -e $filename;
-		last SWITCHWRITEFILE;
-	};
+		$file == 0 and do {
+			$filename = Schulkonsole::Encode::to_fs(
+			            	$Schulkonsole::Config::_classrooms_file);
+			last SWITCHWRITEFILE;
+		};
+		$file == 1 and do {
+			$filename = Schulkonsole::Encode::to_fs(
+			            	$Schulkonsole::Config::_printers_file);
+			last SWITCHWRITEFILE;
+		};
+		$file == 2 and do {
+			$filename = Schulkonsole::Encode::to_fs(
+			            	$Schulkonsole::Config::_workstations_file);
+			last SWITCHWRITEFILE;
+		};
+		$file == 3 and do {
+			$filename = Schulkonsole::Encode::to_fs(
+			            	$Schulkonsole::Config::_room_defaults_file);
+			last SWITCHWRITEFILE;
+		};
+		$file == 5 and do {
+			$filename = Schulkonsole::Encode::to_fs(
+			            	$Schulkonsole::Config::_preferences_conf_file);
+			$perm = 0644 unless -e $filename;
+			last SWITCHWRITEFILE;
+		};
         $file == 6 and do {
                 $filename = Schulkonsole::Encode::to_fs(
-                                $Schulkonsole::Config::_group_defaults_file);
+                                $Schulkonsole::Config::_wlan_defaults_file);
                 $perm = 0644 unless -e $filename;
                 last SWITCHWRITEFILE;
         };
@@ -161,7 +178,7 @@ $app_id == Schulkonsole::Config::WRITEFILEAPP and do {
 	close FILE;
 
 	exit 0;
-};
+}
 
 =head3 import_workstations
 
@@ -169,7 +186,7 @@ numeric constant: C<Schulkonsole::Config::IMPORTWORKSTATIONSAPP>
 
 =cut
 
-$app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
+sub import_workstations {
 	my $sid = <>;
 	($sid) = $sid =~ /^(.+)$/;
 	exit (  Schulkonsole::Error::Files::WRAPPER_INVALID_SESSION_ID
@@ -241,7 +258,7 @@ $app_id == Schulkonsole::Config::IMPORTWORKSTATIONSAPP and do {
 	} else {
 		exit 0;
 	}
-};
+}
 
 =head3 import_printers
 
@@ -249,19 +266,11 @@ numeric constant: C<Schulkonsole::Config::IMPORTPRINTERSAPP>
 
 =cut
 
-$app_id == Schulkonsole::Config::IMPORTPRINTERSAPP and do {
+sub import_printers {
 	$< = $>;
 	$) = 0;
 	$( = $);
 	umask(022);
 	exec Schulkonsole::Encode::to_cli(
-	     	$Schulkonsole::Config::_cmd_import_printers)
-		or last SWITCH;
-};
-
+	     	$Schulkonsole::Config::_cmd_import_printers);
 }
-
-
-
-exit -2;	# program error
-

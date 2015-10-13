@@ -218,7 +218,7 @@ sub wlan_on_off {
 	local $( = $);
 	umask(022);
 
-	exec Schulkonsole::Encode::to_cli("$cmd $opts");
+	system(Schulkonsole::Encode::to_cli("$cmd $opts"));
 	
 	exit 0;
 }
