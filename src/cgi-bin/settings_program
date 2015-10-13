@@ -100,11 +100,21 @@ if ($q->param('accept')) {
 					}
 					last CHECKVALUE;
 				};
-				}
+				$key eq 'conf_wlan_ldap_group' and do {
+					my ($new_value) = $value =~ /^([a-z0-9p\_]+)$/;
+					if (not $new_value) {
+						push @errors, $sk_session->d()->get(
+							'Der Name der WLAN-LDAP-Gruppe ist ungültig.');
+					} else {
+						$value = $new_value;
+					}
+					last CHECKVALUE;
+				};
+				} # CHECKVALUE
 				$preferences_conf_new{$key} = $value;
-			}
-		}
-	}
+			} # if($preferences_conf...)
+		} # if(my $value...)
+	} # foreach
 
 	# commit changes
 	if (@errors) {
@@ -121,7 +131,7 @@ if ($q->param('accept')) {
 	if ($@) {
 		$sk_session->standard_error_handling($this_file, $@);
 	}
-}
+} # if(accept...)
 
 
 
@@ -169,6 +179,10 @@ corresponds to min_password_len in F<preferences.conf>
 
 corresponds to max_password_len in F<preferences.conf>
 
+=item C<conf_wlan_ldap_group>
+
+corresponds to wlan_ldap_group in F<preferences.conf>
+
 =cut
 
 	return (
@@ -176,6 +190,7 @@ corresponds to max_password_len in F<preferences.conf>
 			$Schulkonsole::Config::_max_idle_time) / 60),
 		conf_min_password_len => int($Schulkonsole::Config::_min_password_len),
 		conf_max_password_len => int($Schulkonsole::Config::_max_password_len),
+		conf_wlan_ldap_group => $Schulkonsole::Config::_wlan_ldap_group,
 	);
 }
 

@@ -27,6 +27,10 @@
 <td><label [% labelfor("conf_max_password_len") %] accesskey="a">[% loc('Maximale Passwortlänge') %]</label></td>
 <td><input type="text" size="5" maxlength="4" name="conf_max_password_len" id="conf_max_password_len" value="[% conf_max_password_len %]"> [% loc('Zeichen') %]</td>
 </tr>
+<tr class="odd">
+<td><label [% labelfor("conf_wlan_ldap_group") %] accesskey="w">[% loc('WLAN-LDAP-Gruppe') %]</label></td>
+<td><input type="text" size="10" maxlength="10" name="conf_wlan_ldap_group" id="conf_wlan_ldap_group" value="[% conf_wlan_ldap_group %]"></td>
+</tr>
 </table>
 
 <p>
