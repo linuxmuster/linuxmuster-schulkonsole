@@ -27,6 +27,7 @@ use lib '/usr/share/schulkonsole';
 use Schulkonsole::Session;
 use Schulkonsole::Info;
 use Schulkonsole::Sophomorix;
+use Schulkonsole::Config;
 use Sophomorix::SophomorixAPI;
 use Sophomorix::SophomorixConfig;
 
@@ -60,9 +61,13 @@ foreach my $project (keys %$projects) {
 	utf8::encode($param);
     if ($q->param($param)) {
 		$sk_session->param('project', $project);
-
 		my $url = $q->url( -absolute => 1 );
-		$url =~ s/$this_file$/project_members/g;
+		if($q->param('requested_page')) {
+			my $target = $q->param('requested_page');
+			$url =~ s/$this_file$/$target/g;
+		} else {
+			$url =~ s/$this_file$/project_members/g;
+		}
 		$sk_session->redirect($url);
 	}
 }
@@ -74,7 +79,12 @@ if (    $project
 	$sk_session->param('project', $project);
 
 	my $url = $q->url( -absolute => 1 );
-	$url =~ s/$this_file$/project_members/g;
+	if($q->param('requested_page')) {
+		my $target = $q->param('requested_page');
+		$url =~ s/$this_file$/$target/g;
+	} else {
+		$url =~ s/$this_file$/project_members/g;
+	}
 	$sk_session->redirect($url);
 }
 
@@ -82,6 +92,7 @@ $project = $sk_session->param('project');
 
 
 my $all_projects = Schulkonsole::DB::projects();
+delete $$all_projects{$Schulkonsole::Config::_wlan_ldap_group};
 
 eval {
 COMMANDS: {
