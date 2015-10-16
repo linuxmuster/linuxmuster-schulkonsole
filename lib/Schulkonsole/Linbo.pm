@@ -86,7 +86,7 @@ use vars qw(%_allowed_keys);
 %_allowed_keys = (
 	1 => {	# [Partition]
 		dev => 1,
-		size => 2,
+		size => 5,
 		id => 3,
 		fstype => 1,
 		bootable => 4,
@@ -2636,6 +2636,10 @@ sub string_to_type {
 	};
 	$type == 4 and do {	# boolean
 		$value = ($value ? 'yes' : 'no');
+		last SWITCHTYPE;
+	};
+	$type == 5 and do { # size quantity
+		return undef if ($value !~ /^\d*(M|G|T)?$/);
 		last SWITCHTYPE;
 	};
 	}

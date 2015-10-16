@@ -119,7 +119,26 @@ Name of the selected group
         
         if (not $conf) {
                 $conf = Schulkonsole::Linbo::read_start_conf($group);
+                foreach my $n (keys $$conf{partitions}) {
+					my $size = $$conf{partitions}{$n}{size};
+					my ($sizevalue,$sizeunit) = $size =~ /^(\d+)?(M|G|T)?$/;
+					$sizeunit = 'k' unless $sizeunit;
+					$$conf{partitions}{$n}{sizevalue} = $sizevalue;
+					$$conf{partitions}{$n}{sizeunit} = $sizeunit;
+                }
         } else {
+        		foreach my $param ($q->param) {
+        			my ($dev_n,$key) = $param =~ /^(\d+)_(sizevalue|sizeunit)$/;
+        			next unless defined $dev_n and $key;
+        			$$conf{partitions}{$dev_n}{$key} = $q->param($param); 
+        		}
+        		foreach my $n (keys $$conf{partitions}) {
+        			if($$conf{partitions}{$n}{sizeunit} ne 'k' and $$conf{partitions}{$n}{sizevalue}) {
+        				$$conf{partitions}{$n}{size} = $$conf{partitions}{$n}{sizevalue} . $$conf{partitions}{$n}{sizeunit};
+        			} else {
+        				$$conf{partitions}{$n}{size} = $$conf{partitions}{$n}{sizevalue};
+        			}
+        		}
                 SWITCHCOMMAND: {
                 my $cmd = $$conf{action};
                 
@@ -406,20 +425,11 @@ Name of the selected group
 #
 
 # section [LINBO]
-        foreach my $key (keys %{ $Schulkonsole::Linbo::_allowed_keys{3} }) {
-                if (Schulkonsole::Linbo::is_boolean(3, $key)) {
-                        $sk_session->set_var("linbo_$key", 1) if $$conf{linbo}{$key};
-                } elsif (not $q->param("linbo_$key")) {
-                        $q->param("linbo_$key", $$conf{linbo}{$key});
-                }
-        }
+		$q->param('linbo',$$conf{linbo});
         $q->param('server', $ENV{SERVER_ADDR}) unless $q->param('server');
-
-
 
 # section [Partition] (and section [OS])
         my $partitions = $$conf{partitions};
-        my $dev_cnt = $$conf{partitions_cnt} + 0;
         my $cache = $$conf{linbo}{cache};
         my $is_cached = 0;
         foreach my $partition (sort {
@@ -432,61 +442,9 @@ Name of the selected group
                 keys %$partitions) {
 
                 $is_cached = 1 if(not $is_cached and ($cache eq $$partitions{$partition}{dev}));
-                
-                push @devs, {
-                        n => $partition,
-                        'is'.$$partitions{$partition}{type} => 1,
-                        isedited => $$partitions{$partition}{is_edited},
+                push @devs, $$partitions{$partition};
 
-                        label => $$partitions{$partition}{label},
-                        type => $$partitions{$partition}{type},
-                        dev => $$partitions{$partition}{dev},
-                        size => $$partitions{$partition}{size},
-                        fstype => $$partitions{$partition}{fstype},
-                };
-                foreach my $key (keys %{ $Schulkonsole::Linbo::_allowed_keys{1} }) {
-                        if (Schulkonsole::Linbo::is_boolean(1, $key)) {
-                                $devs[-1]{$key} = 1 if $$partitions{$partition}{$key};
-                        } else {
-                                $q->param("${partition}_$key", $$partitions{$partition}{$key})
-                        }
-                }
-
-# section [OS]
-                if ($$partitions{$partition}{oss}) {
-                        my $os_cnt = $$partitions{$partition}{oss_cnt} + 0;
-
-                        my @oss;
-                        my $is_first = 1;
-                        foreach my $os (@{ $$partitions{$partition}{oss} }) {
-                                next unless %$os;
-
-                                my $is_os_n = exists $$os{n};
-                                my $os_n = $partition . '.' . ($is_os_n ? $$os{n} : $os_cnt++);
-
-                                push @oss, {
-                                                n => $os_n,
-                                                isfirst => $is_first,
-                                                isnew => $$os{is_new},
-                                        };
-
-                                foreach my $key (keys
-                                                  %{ $Schulkonsole::Linbo::_allowed_keys{2} }) {
-                                        if (Schulkonsole::Linbo::is_boolean(2, $key)) {
-                                                $oss[-1]{$key} = 1 if $$os{$key};
-                                        } elsif (not $is_os_n) {
-                                                $q->param("${os_n}_$key", $$os{$key});
-                                        }
-                                }
-
-
-                                $is_first = 0 if $is_first;
-                        }
-
-                        $devs[-1]{os} = \@oss;
-                }
         } # end foreach my $partition
-
 
 
 
@@ -520,7 +478,6 @@ Array of hashes describing the devices with the keys
 if ($@) {
         $sk_session->standard_error_handling($this_file, $@);
 }
-
 
 
 $sk_session->print_page("$this_file.tt", $this_file);
@@ -637,7 +594,15 @@ Value of key C<Dev>
 
 =item C<${devs{n}}_size>
 
-Value for key C<Size> in MB.
+Value for key C<Size> including unit
+
+=item C<${devs{n}}_sizevalue>
+
+Value for key C<sizeunit> number without unit
+
+=item C<${devs{n}_sizeunit>
+
+Value for unit of key C<sizeunit> (default kB)
 
 =item C<${devs{n}}_fstype>
 

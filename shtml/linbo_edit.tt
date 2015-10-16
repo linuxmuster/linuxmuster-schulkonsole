@@ -7,477 +7,376 @@
 %]
 
 [% IF groups %]
-<form method="post" accept-charset="UTF-8">
-<p class="selectdomain">
-<select name="group">
-[% FOREACH g IN groups %] <option value="[% g %]">[% g %]</option>
-[% END %]
-</select>
-<input type="submit" value="[% loc('Datei wählen') %]">
-</p>
-</form>
+	<form method="post" accept-charset="UTF-8">
+	<p class="selectdomain">
+	<select name="group">
+	[% FOREACH g IN groups %] <option value="[% g %]">[% g %]</option>[% END %]
+	</select>
+	<input type="submit" value="[% loc('Datei wählen') %]">
+	</p>
+	</form>
 [% END %]
 
 <h2>[% loc('Konfigurationsdateien editieren') %]</h2>
 
 [% IF group %]
-<form method="post" accept-charset="UTF-8" action="#edit">
+	<form method="post" accept-charset="UTF-8" action="#edit">
 
-<h3>[% loc('[LINBO] - globale Konfiguration') %]</h3>
+	<h3>[% loc('[LINBO] - globale Konfiguration') %]</h3>
 
-<table class="settings">
-<colgroup>
-<col width="60%">
-<col width="40%">
-</colgroup>
-<tr class="odd">
-[% IF iscached %]
-<td>[% loc('Cache-Partition auf dem Arbeitsplatzrechner') %]:</td>
-<td>[% cache %]<input type="hidden" name="linbo_cache" value="[% linbo_cache %]"></td>
-[% ELSE %]
-<tr class="odd">
-<td><label [% labelfor("linbo_cache") %]>[% loc('Cache-Partition auf dem Arbeitsplatzrechner') %]:</label></td>
-<td><input id="linbo_cache" name="linbo_cache" value="[% linbo_cache %]"></td>
-[% END %]
-</tr>
-<tr class="even">
-<td><label [% labelfor("linbo_server") %]>[% loc('IP des TFTP-Servers, der Images vorhält') %]:</label></td>
-<td><input id="linbo_server" name="linbo_server" value="[% linbo_server %]" size="16" maxlength="15"></td>
-</tr>
-<tr class="odd">
-<td>[% loc('Rechnergruppenname') %]:</td>
-<td>[% group %]<input type="hidden" name="group" value="[% group %]"></td>
-</tr>
-<tr class="even">
-<td><label [% labelfor("linbo_systemtype") %]>[% loc('System-Typ') %]:</label></td>
-<td>
-<select name="linbo_systemtype">
-<option value="bios">[% loc('Bios') %]</option>
-<option value="bios64">[% loc('Bios64') %]</option>
-<option value="efi32">[% loc('EFI32') %]</option>
-<option value="efi64">[% loc('EFI64') %]</option>
-</td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("linbo_roottimeout") %]>[% loc('automatischer Rootlogout nach') %]:</label></td>
-<td><input id="linbo_roottimeout" name="linbo_roottimeout" value="[% linbo_roottimeout %]"> [% loc('Sekunden') %]</td>
-</tr>
-<tr class="even">
-<td><label [% labelfor("linbo_autopartition") %]>[% loc('Automatische Partitionsreparatur') %]:</label></td>
-<td><input type="checkbox" id="linbo_autopartition" name="linbo_autopartition"
-[% IF linbo_autopartition %] checked[% END %]></td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("linbo_autoformat") %]>[% loc('Automatisches Formatieren') %]:</label></td>
-<td>[% IF linbo_autoformat %]<input type="checkbox" id="linbo_autoformat" name="linbo_autoformat" checked>
-[% ELSE %]<input type="checkbox" id="linbo_autoformat" name="linbo_autoformat">[% END %]</td>
-</tr>
-<tr class="even">
-<td><label [% labelfor("linbo_autoinitcache") %]>[% loc('Automatisches Einrichten des Caches') %]:</label></td>
-<td>[% IF linbo_autoinitcache %]<input type="checkbox" id="linbo_autoinitcache" name="linbo_autoinitcache" checked>
-[% ELSE %]<input type="checkbox" id="linbo_autoinitcache" name="linbo_autoinitcache">[% END %]</td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("linbo_downloadtype") %]>[% loc('Downloadtype auswählen') %]:</label></td>
-<td>
-<select name="linbo_downloadtype">
-<option value="rsync">[% loc('rsync') %]</option>
-<option value="multicast">[% loc('multicast') %]</option>
-<option value="torrent">[% loc('torrent') %]</option>
-</select>
-</td>
-</tr>
-<tr class="even">
-<td><label [% labelfor("linbo_backgroundfontcolor") %]>[% loc('Bildschirmschriftfarbe') %]:</label></td>
-<td><input id="linbo_backgroundfontcolor" name="linbo_backgroundfontcolor" value="[% loc('white') %]"></td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("linbo_consolefontcolorstdout") %]>[% loc('Konsolenschriftfarbe') %]:</label></td>
-<td><input id="linbo_consolefontcolorstdout" name="linbo_consolefontcolorstdout" value="[% loc('white') %]"></td>
-</tr>
-<tr class="even">
-<td><label [% labelfor("linbo_consolefontcolorstderr") %]>[% loc('Konsolenschriftfarbe für Fehler- und Warnmeldungen') %]:</label></td>
-<td><input id="linbo_consolefontcolorstderr" name="linbo_consolefontcolorstderr" value="[% loc('red') %]"></td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("linbo_kerneloptions") %]>[% loc('LINBO-Kerneloptionen') %]:</label></td>
-<td><input id="linbo_kerneloptions" name="linbo_kerneloptions" value="[% linbo_kerneloptions %]"></td>
-</tr>
-</table>
+	[% INCLUDE linbo_edit_global.inc.tt %]
+	
+	<p><input type="submit" name="accept" value="[% loc('Änderungen speichern') %]"></p>
+	<p><input type="submit" name="adddevtop" value="[% loc('Neues System hinzufügen') %]">
+	<select name="adddevnewtop">
+	<option value="windows">[% loc('MS Windows') %]</option>
+	<option value="gnulinux">[% loc('GNU/Linux') %]</option>
+	<option value="data" selected>[% loc('Daten') %]</option>
+	<option value="swap">[% loc('Swap') %]</option>
+	[% IF ! iscached %]<option value="cache">[% loc('Cache') %]</option>[% END %]
+	<option value="ext">[% loc('erweitert') %]</option>
+	<option value="efi">[% loc('EFI') %]</option>
+	</select>
+	</p>
 
-<p><input type="submit" name="accept" value="[% loc('Änderungen speichern') %]"></p>
-<p><input type="submit" name="adddevtop" value="[% loc('Neues System hinzufügen') %]">
-<select name="adddevnewtop">
-<option value="windows">[% loc('MS Windows') %]</option>
-<option value="gnulinux">[% loc('GNU/Linux') %]</option>
-<option value="data" selected>[% loc('Daten') %]</option>
-<option value="swap">[% loc('Swap') %]</option>[% IF iscached %][% ELSE %]
-<option value="cache">[% loc('Cache') %]</option>[% END %]
-<option value="ext">[% loc('erweitert') %]</option>
-<option value="efi">[% loc('EFI') %]</option>
-</select>
-</p>
-
-
-
-<h3>[% loc('Systeme') %]</h3>
-
-
-<hr>
-
-[% FOREACH ds IN devs %]
-[% IF ds.os %]
-[% FOREACH dos IN ds.os %]
-[% IF dos.isnew %]
-	<table id="edit" class="settings">
-[% ELSE %]
-	[% IF dos.isfirst %]
-		[% IF ds.isedited %]
-			<table id="edit" class="settings">
+	<h3>[% loc('Systeme') %]</h3>
+	<hr>
+	[% ds_nr = 0 %]
+	[% FOREACH ds IN devs %]
+		[% IF ds.oss %]
+			[% dos_nr = 0 %]
+			[% FOREACH dos IN ds.oss %]
+				[% lfdnr = 0 %]
+				<table[% IF dos.is_new || ( ds.is_edited && dos_nr == 0 ) %] id="edit"[% END %] class="settings">
+				<colgroup>
+				<col width="60%">
+				<col width="40%">
+				</colgroup>
+				<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><b>[% loc('System') %]:</b></td>
+					<td><input type="hidden" name="[% ds_nr %]_type" value="[% ds.type %]"><b>
+					[% IF ds.type == 'windows' %]
+						[% loc('MS Windows') %]
+					[% ELSE %]
+						[% loc('GNU/Linux') %]
+					[% END %]
+					</b></td>
+				[% lfdnr = lfdnr + 1 %]</tr>
+				[% IF dos_nr == 0 %]
+					<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+						<td><label [% labelfor("${ds_nr}_label") %]>[% loc('Name der Partition') %]:</label></td>
+						<td><input id="[% ds_nr %]_label" name="[% ds_nr %]_label" value="[% ds.label %]"></td>
+					[% lfdnr = lfdnr + 1 %]</tr>
+					<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+						<td><label [% labelfor("${ds_nr}_dev") %]>[% loc('Devicename der Partition') %]:</label></td>
+						<td><input id="[% ds_nr %]_dev" name="[% ds_nr %]_dev" value="[% ds.dev %]"></td>
+					[% lfdnr = lfdnr + 1 %]</tr>
+					<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+						<td><label [% labelfor("${ds_nr}_size") %]>[% loc('Partitionsgröße') %]:</label></td>
+						<td><div class="quantity"><input class="quantityvalue" id="[% ds_nr %]_sizevalue" name="[% ds_nr %]_sizevalue" value="[% ds.sizevalue %]">
+						<select class="quantityunit" name="[% ds_nr %]_sizeunit">
+							<option value="k"[% IF "k" == ds.sizeunit %] selected[% END %]>k</option>
+							<option value="M"[% IF "M" == ds.sizeunit %] selected[% END %]>M</option>
+							<option value="G"[% IF "G" == ds.sizeunit %] selected[% END %]>G</option>
+							<option value="T"[% IF "T" == ds.sizeunit %] selected[% END %]>T</option>
+						</select></div>
+						</td>
+					[% lfdnr = lfdnr + 1 %]</tr>
+					<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+						<td><label [% labelfor("${ds_nr}_fstype") %]>[% loc('Dateisystem') %]:</label></td>
+						<td><select id="[% ds_nr %]_fstype" name="[% ds_nr %]_fstype">
+						[% IF ds.type == 'windows' %]
+							<option value="vfat"[% IF ds.fstype == 'vfat' %] selected[% END %]>[% loc('VFAT') %]</option>
+							<option value="ntfs"[% IF ds.fstype == 'ntfs' %] selected[% END %]>[% loc('NTFS') %]</option>
+						[% ELSE %]
+							<option value="ext3"[% IF ds.fstype == 'ext3' %] selected[% END %]>[% loc('EXT3') %]</option>
+							<option value="ext4"[% IF ds.fstype == 'ext4' %] selected[% END %]>[% loc('EXT4') %]</option>
+							<option value="reiserfs"[% IF ds.fstype == 'reiserfs' %] selected[% END %]>[% loc('ReiserFS') %]</option>
+						[% END %]
+						</select></td>
+					[% lfdnr = lfdnr + 1 %]</tr>
+					<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+						<td><label [% labelfor("${ds_nr}_bootable") %]>[% loc('Partition bootbar:') %]</label></td>
+						<td><input type="checkbox" id="[% ds_nr %]_bootable" name="[% ds_nr %]_bootable"[% IF ds.bootable %] checked[% END %]></td>
+					[% lfdnr = lfdnr + 1 %]</tr>
+				[% ELSE %]
+					<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+						<td>[% loc('Name der Partition') %]:</td>
+						<td>[% ds.label %]</td>
+					[% lfdnr = lfdnr + 1 %]</tr>
+					<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+						<td>[% loc('Devicename der Partition') %]:</td>
+						<td>[% ds.dev %]</td>
+					[% lfdnr = lfdnr + 1 %]</tr>
+					<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+						<td>[% loc('Partitionsgröße') %]:</td>
+						<td>[% ds.sizevalue %] [% ds.sizeunit %]</td>
+					[% lfdnr = lfdnr + 1 %]</tr>
+					<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+						<td>[% loc('Dateisystem') %]:</td>
+						<td>[% ds.fstype %]</td>
+					[% lfdnr = lfdnr + 1 %]</tr>
+					<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+						<td>[% loc('Partition bootbar') %]:</td>
+						<td><input type="checkbox" disabled[% IF ds.bootable %] checked[% END %]></td>
+					[% lfdnr = lfdnr + 1 %]</tr>
+				[% END %]
+				<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><label [% labelfor("${ds_nr}.${dos_nr}_name") %]>[% loc('Name des Betriebssystems') %]:</label></td>
+					<td><input id="[% ds_nr %].[% dos_nr %]_name" name="[% ds_nr %].[% dos_nr %]_name" value="[% dos.name %]"></td>
+				[% lfdnr = lfdnr + 1 %]</tr>
+				<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><label [% labelfor("${ds_nr}.${dos_nr}_version") %]>[% loc('Betriebssystemversion (optional)') %]:</label></td>
+					<td><input id="[% ds_nr %].[% dos_nr %]_version" name="[% ds_nr %].[% dos_nr %]_version" value="[% dos.version %]"></td>
+				[% lfdnr = lfdnr + 1 %]</tr>
+				<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><label [% labelfor("${ds_nr}.${dos_nr}_description") %]>[% loc('Beschreibung (optional)') %]:</label></td>
+					<td><input id="[% ds_nr %].[% dos_nr %]_description" name="[% ds_nr %].[% dos_nr %]_description" value="[% dos.description %]"></td>
+				[% lfdnr = lfdnr + 1 %]</tr>
+				<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><label [% labelfor("${ds_nr}.${dos_nr}_iconname") %]>[% loc('Dateiname des Icons für den Startbutton') %]:</label></td>
+					<td><input id="[% ds_nr %].[% dos_nr %]_iconname" name="[% ds_nr %].[% dos_nr %]_iconname" value="[% dos.iconname %]"></td>
+				[% lfdnr = lfdnr + 1 %]</tr>
+				<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><label [% labelfor("${ds_nr}.${dos_nr}_image") %]>[% loc('Dateiname des differenziellen Image') %]:</label></td>
+					<td><input id="[% ds_nr %].[% dos_nr %]_image" name="[% ds_nr %].[% dos_nr %]_image" value="[% dos.image %]">.rsync</td>
+				[% lfdnr = lfdnr + 1 %]</tr>
+				<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><label [% labelfor("${ds_nr}.${dos_nr}_baseimage") %]>[% loc('Dateiname des Basis-Image') %]:</label></td>
+					<td><input id="[% ds_nr %].[% dos_nr %]_baseimage" name="[% ds_nr %].[% dos_nr %]_baseimage" value="[% dos.baseimage %]">.cloop</td>
+				[% lfdnr = lfdnr + 1 %]</tr>
+				[% IF ds.type == 'gnulinux' %]
+					<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+						<td><label [% labelfor("${ds_nr}.${dos_nr}_boot") %]>[% loc('Partition, die Kernel und initrd enthält') %]:</label></td>
+						<td><input id="[% ds_nr %].[% dos_nr %]_boot" name="[% ds_nr %].[% dos_nr %]_boot" value="[% dos.boot %]"></td>
+					[% lfdnr = lfdnr + 1 %]</tr>
+					<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+						<td><label [% labelfor("${ds_nr}.${dos_nr}_kernel") %]>[% loc('Pfad zum kernel') %]:</label></td>
+						<td><input id="[% ds_nr %].[% dos_nr %]_kernel" name="[% ds_nr %].[% dos_nr %]_kernel" value="[% dos.kernel %]"></td>
+					[% lfdnr = lfdnr + 1 %]</tr>
+					<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+						<td><label [% labelfor("${ds_nr}.${dos_nr}_initrd") %]>[% loc('Relativer Pfad zur initrd') %]:</label></td>
+						<td><input id="[% ds_nr %].[% dos_nr %]_initrd" name="[% ds_nr %].[% dos_nr %]_initrd" value="[% dos.initrd %]"></td>
+					[% lfdnr = lfdnr + 1 %]</tr>
+					<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+						<td><label [% labelfor("${ds_nr}.${dos_nr}_append") %]>[% loc('Bootoptionen') %]:</label></td>
+						<td><input id="[% ds_nr %].[% dos_nr %]_append" name="[% ds_nr %].[% dos_nr %]_append" value="[% dos.append %]"></td>
+					[% lfdnr = lfdnr + 1 %]</tr>
+				[% END %]
+				<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><label [% labelfor("${ds_nr}.${dos_nr}_startenabled") %]>[% loc('Start-Button für dieses Betriebssystem anzeigen') %]:</label></td>
+					<td><input type="checkbox" id="[% ds_nr %].[% dos_nr %]_startenabled" name="[% ds_nr %].[% dos_nr %]_startenabled"[% IF dos.startenabled %] checked[% END %]></td>
+				[% lfdnr = lfdnr + 1 %]</tr>
+				<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><label [% labelfor("${ds_nr}.${dos_nr}_syncenabled") %]>[% loc('Sync+Start-Button für dieses Betriebssystem anzeigen') %]:</label></td>
+					<td><input type="checkbox" id="[% ds_nr %].[% dos_nr %]_syncenabled" name="[% ds_nr %].[% dos_nr %]_syncenabled"[% IF dos.syncenabled %] checked[% END %]></td>
+				[% lfdnr = lfdnr + 1 %]</tr>
+				<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><label [% labelfor("${ds_nr}.${dos_nr}_newenabled") %]>[% loc('Neu+Start-Button für dieses Betriebssystem anzeigen') %]:</label></td>
+					<td><input type="checkbox" id="[% ds_nr %].[% dos_nr %]_newenabled" name="[% ds_nr %].[% dos_nr %]_newenabled"[% IF dos.newenabled %] checked[% END %]></td>
+				[% lfdnr = lfdnr + 1 %]</tr>
+				<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><label [% labelfor("${ds_nr}.${dos_nr}_hidden") %]>[% loc('Betriebssystemreiter verstecken') %]:</label></td>
+					<td><input type="checkbox" id="[% ds_nr %].[% dos_nr %]_hidden" name="[% ds_nr %].[% dos_nr %]_hidden"[% IF dos.hidden %] checked[% END %]></td>
+				[% lfdnr = lfdnr + 1 %]</tr>
+				[% IF ds.type == 'windows' %]
+					<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><label [% labelfor("${ds_nr}.${dos_nr}_kernel") %]>[% loc('Systemstart durch') %]:</label></td>
+					<td><select id="[% ds_nr %].[% dos_nr %]_kernel" name="[% ds_nr %].[% dos_nr %]_kernel">
+					<option value="grub.exe"[% IF dos.kernel == 'grub.exe' %] selected[% END %]>[% loc('grub.exe') %]</option>
+					<option value="reboot"[% IF dos.kernel == 'reboot' %] selected[% END %]>[% loc('reboot') %]</option>
+					</select>
+					</td>
+					[% lfdnr = lfdnr + 1 %]</tr>
+				[% END %]
+				<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><label [% labelfor("${ds_nr}.${dos_nr}_autostart") %]>[% loc('Betriebssystem automatisch starten') %]:</label></td>
+					<td><input type="radio" id="[% ds_nr %].[% dos_nr %]_autostart" name="autostart" value="[% dos.n %]"
+					[% IF dos.autostart %][% isautostartselected=1 %] checked[% ELSE %][% isautostartpossible=1 %][% END %]>
+					</td>
+				[% lfdnr = lfdnr + 1 %]</tr>
+				<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><label [% labelfor("${ds_nr}.${dos_nr}_autostarttimeout") %]>[% loc('Autostart-Timeout in Sek.') %]:</label></td>
+					<td><input id="[% ds_nr %].[% dos_nr %]_autostarttimeout" name="[% ds_nr %].[% dos_nr %]_autostarttimeout" value="[% dos.autostarttimeout %]"></td>
+				[% lfdnr = lfdnr + 1 %]</tr>
+				<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><label [% labelfor("${ds_nr}.${dos_nr}_defaultaction") %]>[% loc('Standard-Autostart-Aktion auswählen') %]:</label></td>
+					<td>
+					<select name="[% ds_nr %].[% dos_nr %]_defaultaction">
+					<option value="start"[% IF dos.defaultaction == 'start' %] selected[% END %]>[% loc('start') %]</option>
+					<option value="sync"[% IF dos.defaultaction == 'sync' %] selected[% END %]>[% loc('sync') %]</option>
+					<option value="new"[% IF dos.defaultaction == 'new' %] selected[% END %]>[% loc('new') %]</option>
+					</select>
+					</td>
+				[% lfdnr = lfdnr + 1 %]</tr>
+				</table>
+				
+				<p><input type="submit" name="accept" value="[% loc('Änderungen speichern') %]"></p>
+				[% IF dos_nr == 0 %]
+					<p><select name="[% ds_nr %]_modifynew">
+					[% IF ds.type != 'windows' %]<option value="windows">[% loc('MS Windows') %]</option>[% END %]
+					[% IF ds.type != 'gnulinux' %]<option value="gnulinux">[% loc('GNU/Linux') %]</option>[% END %]
+					[% IF ds.type != 'data' %]<option value="data">[% loc('Daten') %]</option>[% END %]
+					[% IF ds.type != 'swap' %]<option value="swap">[% loc('Swap') %]</option>[% END %]
+					[% IF ds.type != 'cache' && ! iscached %]<option value="cache">[% loc('Cache') %]</option>[% END %]
+					[% IF ds.type != 'ext' %]<option value="ext">[% loc('erweitert') %]</option>[% END %]
+					[% IF ds.type != 'efi' %]<option value="efi">[% loc('EFI') %]</option>[% END %]
+					</select>&nbsp;<input type="submit" name="[% ds_nr %]_modify" value="[% loc('System ändern') %]"></p>
+				[% END %]
+				<p><input type="submit" name="[% ds_nr %].[% dos_nr %]_deleteos" value="[% loc('Betriebssystem löschen') %]"><br>
+				<input type="submit" name="[% ds_nr %]_addos" value="[% loc('Betriebssystem hinzufügen') %]">
+				
+				
+				
+				<hr>
+				[% dos_nr = dos_nr + 1 %]
+			[% END %]
 		[% ELSE %]
+			[% lfdnr = 0 %]
 			<table class="settings">
+			<colgroup>
+			<col width="60%">
+			<col width="40%">
+			</colgroup>
+			<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+				<td><b>[% loc('System') %]:</b></td>
+				<td>
+				<input type="hidden" name="[% ds_nr %]_type" value="[% ds.type %]"><b>
+				[% IF ds.type == 'data' %]
+					[% loc('Daten') %]
+				[% ELSIF ds.type == 'swap' %]
+					[% loc('Swap') %]
+				[% ELSIF ds.type == 'cache' %]
+					[% loc('Cache') %]
+				[% ELSIF ds.type == 'ext' %]
+					[% loc('erweiterte Partition') %]
+				[% ELSIF ds.type == 'efi' %]
+					[% loc('EFI') %]
+				[% END %]
+				</b>
+				</td>
+			[% lfdnr = lfdnr + 1 %]</tr>
+			<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+				<td><label [% labelfor("${ds_nr}_label") %]>[% loc('Name der Partition') %]:</label></td>
+				<td><input id="[% ds_nr %]_label" name="[% ds_nr %]_label" value="[% ds.label %]"></td>
+			[% lfdnr = lfdnr + 1 %]</tr>
+			<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+				<td><label [% labelfor("${ds_nr}_dev") %]>[% loc('Devicename der Partition') %]:</label></td>
+				<td><input id="[% ds_nr %]_dev" name="[% ds_nr %]_dev" value="[% ds.dev %]"></td>
+			[% lfdnr = lfdnr + 1 %]</tr>
+			<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+				<td><label [% labelfor("${ds_nr}_sizevalue") %]>[% loc('Partitionsgröße') %]:</label></td>
+				<td><div class="quantity"><input class="quantityvalue" id="[% ds_nr %]_sizevalue" name="[% ds_nr %]_sizevalue" value="[% ds.sizevalue %]">
+				<select class="quantityunit" name="[% ds_nr %]_sizeunit">
+					<option value="k"[% IF "k" == ds.sizeunit %] selected[% END %]>k</option>
+					<option value="M"[% IF "M" == ds.sizeunit %] selected[% END %]>M</option>
+					<option value="G"[% IF "G" == ds.sizeunit %] selected[% END %]>G</option>
+					<option value="T"[% IF "T" == ds.sizeunit %] selected[% END %]>T</option>
+				</select></div>
+				[% IF ds.bootable %]<input type="hidden" id="[% ds_nr %]_bootable" name="[% ds_nr %]_bootable" value="1">[% END %]
+				[% IF ds.type == 'swap' %]<input type="hidden" name="[% ds_nr %]_fstype" value="swap">
+				[% ELSIF ds.type == 'ext' %]<input type="hidden" name="[% ds_nr %]_fstype" value="">
+				[% END %]
+				</td>
+			[% lfdnr = lfdnr + 1 %]</tr>
+			[% IF ds.type != 'swap' && ds.type != 'ext' %]
+				<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+					<td><label [% labelfor("${ds_nr}_fstype") %]>[% loc('Dateisystem') %]:</label></td>
+					<td>
+					[% IF ds.type == 'cache' %]
+						<input type="hidden" name="[% ds_nr %]_iscache" value="1">
+						<select id="[% ds_nr %]_fstype" name="[% ds_nr %]_fstype">
+						<option value="ext3"[% IF ds.fstype == 'ext3' %] selected[% END %]>[% loc('EXT3') %]</option>
+						<option value="ext4"[% IF ds.fstype == 'ext4' %] selected[% END %]>[% loc('EXT4') %]</option>
+						<option value="reiserfs"[% IF ds.fstype == 'reiserfs' %] selected[% END %]>[% loc('ReiserFS') %]</option>
+						</select>
+					[% ELSIF ds.type == 'efi' %]
+						<input type="hidden" id="[% ds_nr %]_fstype" name="[% ds_nr %]_fstype" value="vfat"><label>[% loc('VFAT') %]</label>
+					[% ELSE %]
+						<select id="[% ds_nr %]_fstype" name="[% ds_nr %]_fstype">
+						<option value="vfat"[% IF ds.fstype == 'vfat' %] selected[% END %]>[% loc('VFAT') %]</option>
+						<option value="ntfs"[% IF ds.fstype == 'ntfs' %] selected[% END %]>[% loc('NTFS') %]</option>
+						<option value="ext3"[% IF ds.fstype == 'ext3' %] selected[% END %]>[% loc('EXT3') %]</option>
+						<option value="ext4"[% IF ds.fstype == 'ext4' %] selected[% END %]>[% loc('EXT4') %]</option>
+						<option value="reiserfs"[% IF ds.fstype == 'reiserfs' %] selected[% END %]>[% loc('ReiserFS') %]</option>
+						</select>
+					[% END %]
+					</td>
+				[% lfdnr = lfdnr + 1 %]</tr>
+			[% END %]
+			[% IF ds.type == 'efi' %]
+			<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+				<td><label [% labelfor("${ds_nr}_bootable") %]>[% loc('Partition bootbar:') %]</label></td>
+				<td><input type="checkbox" id="[% ds_nr %]_bootable" name="[% ds_nr %]_bootable"[% IF ds.bootable %] checked[% END %] disabled></td>
+			[% lfdnr = lfdnr + 1 %]</tr>
+			[% END %]
+			</table>
+			
+			<p><input type="submit" name="accept" value="[% loc('Änderungen speichern') %]"></p>
+			<p><input type="submit" name="[% ds_nr %]_delete" value="[% loc('System löschen') %]"><br>
+			<select name="[% ds_nr %]_modifynew">
+			[% IF ds.type != 'windows' %]<option value="windows">[% loc('MS Windows') %]</option>[% END %]
+			[% IF ds.type != 'gnulinux' %]<option value="gnulinux">[% loc('GNU/Linux') %]</option>[% END %]
+			[% IF ds.type != 'data' %]<option value="data">[% loc('Daten') %]</option>[% END %]
+			[% IF ds.type != 'swap' %]<option value="swap">[% loc('Swap') %]</option>[% END %]
+			[% IF ds.type != 'cache' && ! iscached %]<option value="cache">[% loc('Cache') %]</option>[% END %]
+			[% IF ds.type != 'ext' %]<option value="ext">[% loc('erweitert') %]</option>[% END %]
+			[% IF ds.type != 'efi' %]<option value="efi">[% loc('EFI') %]</option>[% END %]
+			</select>&nbsp;<input type="submit" name="[% ds_nr %]_modify" value="[% loc('System ändern') %]">
+			
+			<hr>
 		[% END %]
-	[% ELSE %]
+		[% ds_nr = ds_nr + 1 %]
+	[% END %]
+	[% IF isautostartpossible %]
+		[% lfdnr = 0 %]
 		<table class="settings">
+		<colgroup>
+		<col width="60%">
+		<col width="40%">
+		</colgroup>
+		<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+			<td><label [% labelfor("no_autostart") %]>[% loc('kein Betriebssystem automatisch starten') %]:</label></td>
+			<td><input type="radio" id="no_autostart" name="autostart" value="[% loc('none') %]"[% IF ! isautostartselected %] checked[% END %]></td>
+		[% lfdnr = lfdnr + 1 %]</tr>
+		</table>
 	[% END %]
-[% END %]
-<colgroup>
-<col width="60%">
-<col width="40%">
-</colgroup>
-<tr class="even">
-<td><b>[% loc('System') %]:</b></td>
-<td><input type="hidden" name="[% ds.n %]_type" [% dovalue("${ds.n}_type") %]><b>
-[% IF ds.iswindows %]
-	[% loc('MS Windows') %]
-[% ELSE %]
-	[% loc('GNU/Linux') %]
-[% END %]
-</b></td>
-</tr>
-[% IF dos.isfirst %]
-<tr class="odd">
-<td><label [% labelfor("${ds.n}_label") %]>[% loc('Name der Partition') %]:</label></td>
-<td><input id="[% ds.n %]_label" name="[% ds.n %]_label" [% dovalue("${ds.n}_label") %]></td>
-</tr>
-<tr class="even">
-<td><label [% labelfor("${ds.n}_dev") %]>[% loc('Devicename der Partition') %]:</label></td>
-<td><input id="[% ds.n %]_dev" name="[% ds.n %]_dev" [% dovalue("${ds.n}_dev") %]></td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("${ds.n}_size") %]>[% loc('Partitionsgröße in KB') %]:</label></td>
-<td><input id="[% ds.n %]_size" name="[% ds.n %]_size" [% dovalue("${ds.n}_size") %]></td>
-</tr>
-<tr class="even">
-<td><label [% labelfor("${ds.n}_fstype") %]>[% loc('Dateisystem') %]:</label></td>
-<td>
-<select id="[% ds.n %]_fstype" name="[% ds.n %]_fstype">
-[% IF ds.iswindows %]
-<option value="vfat">[% loc('VFAT') %]</option>
-<option value="ntfs">[% loc('NTFS') %]</option>
-[% ELSE %]
-<option value="ext3">[% loc('EXT3') %]</option>
-<option value="ext4">[% loc('EXT4') %]</option>
-<option value="reiserfs">[% loc('ReiserFS') %]</option>
-[% END %]
-</select>
-</td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("${ds.n}_bootable") %]>[% loc('Partition bootbar:') %]</label></td>
-<td>[% IF ds.bootable %]<input type="checkbox" id="[% ds.n %]_bootable" name="[% ds.n %]_bootable" checked>
-[% ELSE %]<input type="checkbox" id="[% ds.n %]_bootable" name="[% ds.n %]_bootable">[% END %]</td>
-</tr>
-[% ELSE %]
-<tr class="odd">
-<td>[% loc('Name der Partition') %]:</td>
-<td>[% ds.label %]</td>
-</tr>
-<tr class="even">
-<td>[% loc('Devicename der Partition') %]:</td>
-<td>[% ds.dev %]</td>
-</tr>
-<tr class="odd">
-<td>[% loc('Partitionsgröße in KB') %]:</td>
-<td>[% ds.size %]</td>
-</tr>
-<tr class="even">
-<td>[% loc('Dateisystem') %]:</td>
-<td>[% ds.fstype %]</td>
-</tr>
-<tr class="odd">
-<td>[% loc('Partition bootbar') %]:</td>
-<td>[% IF ds.bootable %]<input type="checkbox" disabled checked>
-[% ELSE %]<input type="checkbox" disabled>[% END %]</td>
-</tr>
-[% END %]
-<tr class="even">
-<td><label [% labelfor("${dos.n}_name") %]>[% loc('Name des Betriebssystems') %]:</label></td>
-<td><input id="[% dos.n %]_name" name="[% dos.n %]_name" [% dovalue("${dos.n}_name") %]></td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("${dos.n}_version") %]>[% loc('Betriebssystemversion (optional)') %]:</label></td>
-<td><input id="[% dos.n %]_version" name="[% dos.n %]_version" [% dovalue("${dos.n}_version") %]></td>
-</tr>
-<tr class="even">
-<td><label [% labelfor("${dos.n}_description") %]>[% loc('Beschreibung (optional)') %]:</label></td>
-<td><input id="[% dos.n %]_description" name="[% dos.n %]_description" [% dovalue("${dos.n}_description") %]></td>
-</tr>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("${dos.n}_iconname") %]>[% loc('Dateiname des Icons für den Startbutton') %]:</label></td>
-<td><input id="[% dos.n %]_iconname" name="[% dos.n %]_iconname" [% dovalue("${dos.n}_iconname") %]></td>
-</tr>
-<tr class="even">
-<td><label [% labelfor("${dos.n}_image") %]>[% loc('Dateiname des differenziellen Image') %]:</label></td>
-<td><input id="[% dos.n %]_image" name="[% dos.n %]_image" [% dovalue("${dos.n}_image") %]>.rsync</td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("${dos.n}_baseimage") %]>[% loc('Dateiname des Basis-Image') %]:</label></td>
-<td><input id="[% dos.n %]_baseimage" name="[% dos.n %]_baseimage" [% dovalue("${dos.n}_baseiimage") %]>.cloop</td>
-</tr>
-[% IF ds.isgnulinux %]
-<tr class="even">
-<td><label [% labelfor("${dos.n}_boot") %]>[% loc('Partition, die Kernel und initrd enthält') %]:</label></td>
-<td><input id="[% dos.n %]_boot" name="[% dos.n %]_boot" [% dovalue("${dos.n}_boot") %]></td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("${dos.n}_kernel") %]>[% loc('Pfad zum kernel') %]:</label></td>
-<td><input id="[% dos.n %]_kernel" name="[% dos.n %]_kernel" [% dovalue("${dos.n}_kernel") %]></td>
-</tr>
-<tr class="even">
-<td><label [% labelfor("${dos.n}_initrd") %]>[% loc('Relativer Pfad zur initrd') %]:</label></td>
-<td><input id="[% dos.n %]_initrd" name="[% dos.n %]_initrd" [% dovalue("${dos.n}_initrd") %]></td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("${dos.n}_append") %]>[% loc('Bootoptionen') %]:</label></td>
-<td><input id="[% dos.n %]_append" name="[% dos.n %]_append" [% dovalue("${dos.n}_append") %]></td>
-</tr>
-[% END %]
-<tr class="even">
-<td><label [% labelfor("${dos.n}_startenabled") %]>[% loc('Start-Button für dieses Betriebssystem anzeigen') %]:</label></td>
-<td>[% IF dos.startenabled %]<input type="checkbox" id="[% dos.n %]_startenabled" name="[% dos.n %]_startenabled" checked>
-[% ELSE %]<input type="checkbox" id="[% dos.n %]_startenabled" name="[% dos.n %]_startenabled">[% END %]</td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("${dos.n}_syncenabled") %]>[% loc('Sync+Start-Button für dieses Betriebssystem anzeigen') %]:</label></td>
-<td>[% IF dos.syncenabled %]<input type="checkbox" id="[% dos.n %]_syncenabled" name="[% dos.n %]_syncenabled" checked>
-[% ELSE %]<input type="checkbox" id="[% dos.n %]_syncenabled" name="[% dos.n %]_syncenabled">[% END %]</td>
-</tr>
-<tr class="even">
-<td><label [% labelfor("${dos.n}_newenabled") %]>[% loc('Neu+Start-Button für dieses Betriebssystem anzeigen') %]:</label></td>
-<td>[% IF dos.newenabled %]<input type="checkbox" id="[% dos.n %]_newenabled" name="[% dos.n %]_newenabled" checked>
-[% ELSE %]<input type="checkbox" id="[% dos.n %]_newenabled" name="[% dos.n %]_newenabled">[% END %]</td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("${dos.n}_hidden") %]>[% loc('Betriebssystemreiter verstecken') %]:</label></td>
-<td>[% IF dos.hidden %]<input type="checkbox" id="[% dos.n %]_hidden" name="[% dos.n %]_hidden" checked>
-[% ELSE %]<input type="checkbox" id="[% dos.n %]_hidden" name="[% dos.n %]_hidden">[% END %]</td>
-</tr>
-<tr class="even">
-[% IF ds.iswindows %]
-<td><label [% labelfor("${dos.n}_kernel") %]>[% loc('Systemstart durch') %]:</label></td>
-<td><select id="[% dos.n %]_kernel" name="[% dos.n %]_kernel">
-<option value="grub.exe">[% loc('grub.exe') %]</option>
-<option value="reboot">[% loc('reboot') %]</option>
-</select>
-</td>
-</tr>
-<tr class="odd">
-[% END %]
-<td><label [% labelfor("${dos.n}_autostart") %]>[% loc('Betriebssystem automatisch starten') %]:</label></td>
-<td>[% IF dos.autostart %]<input type="radio" id="[% dos.n %]_autostart" name="autostart" value="[% dos.n %]" checked>[% isautostartselected=1 %]
-[% ELSE %]<input type="radio" id="[% dos.n %]_autostart" name="autostart" value="[% dos.n %]">[% END %][% isautostartpossible=1 %]</td>
-</tr>
-</tr>
-<tr class="even">
-<td><label [% labelfor("${dos.n}_autostarttimeout") %]>[% loc('Autostart-Timeout in Sek.') %]:</label></td>
-<td><input id="[% dos.n %]_autostarttimeout" name="[% dos.n %]_autostarttimeout"
- [% dovalue("${dos.n}_autostarttimeout") %]></td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("${dos.n}_defaultaction") %]>[% loc('Standard-Autostart-Aktion auswählen') %]:</label></td>
-<td>
-<select name="[% dos.n %]_defaultaction">
-<option value="start">[% loc('start') %]</option>
-<option value="sync">[% loc('sync') %]</option>
-<option value="new">[% loc('new') %]</option>
-</select>
-</td>
-</tr>
-</table>
-<p><input type="submit" name="accept" value="[% loc('Änderungen speichern') %]"></p>
-[% IF dos.isfirst %]
-<p><select name="[% ds.n %]_modifynew">
-[% IF ds.iswindows %][% ELSE %]<option value="windows">[% loc('MS Windows') %]</option>[% END %]
-[% IF ds.isgnulinux %][% ELSE %]<option value="gnulinux">[% loc('GNU/Linux') %]</option>[% END %]
-[% IF ds.isdata %][% ELSE %]<option value="data">[% loc('Daten') %]</option>[% END %]
-[% IF ds.isswap %][% ELSE %]<option value="swap">[% loc('Swap') %]</option>[% END %]
-[% IF ds.iscache %][% ELSE %][% IF iscached %][% ELSE %]<option value="cache">[% loc('Cache') %]</option>[% END %][% END %]
-[% IF ds.isext %][% ELSE %]<option value="ext">[% loc('erweitert') %]</option>[% END %]
-[% IF ds.isefi %][% ELSE %]<option value="efi">[% loc('EFI') %]</option>[% END %]
-</select>&nbsp;<input type="submit" name="[% ds.n %]_modify" value="[% loc('System ändern') %]"></p>
-[% END %]
-<p><input type="submit" name="[% dos.n %]_deleteos" value="[% loc('Betriebssystem löschen') %]"><br>
-<input type="submit" name="[% ds.n %]_addos" value="[% loc('Betriebssystem hinzufügen') %]">
 
+	<p><input type="submit" name="adddevbottom" value="[% loc('Neues System hinzufügen') %]">
+	<select name="adddevnewbottom">
+	<option value="windows">[% loc('MS Windows') %]</option>
+	<option value="gnulinux">[% loc('GNU/Linux') %]</option>
+	<option value="data" selected>[% loc('Daten') %]</option>
+	<option value="swap">[% loc('Swap') %]</option>
+	[% IF ! iscached %]<option value="cache">[% loc('Cache') %]</option>[% END %]
+	<option value="ext">[% loc('erweitert') %]</option>
+	<option value="efi">[% loc('EFI') %]</option>
+	</select>
+	</p>
+	<p><input type="submit" name="accept" value="[% loc('Änderungen speichern') %]"></p>
 
+	</form>
 
-<hr>
-[% END %]
-[% ELSE %]
-<table class="settings">
-<colgroup>
-<col width="60%">
-<col width="40%">
-</colgroup>
-<tr class="even">
-<td><b>[% loc('System') %]:</b></td>
-<td>
-<input type="hidden" name="[% ds.n %]_type" [% dovalue("${ds.n}_type") %]><b>
-[% IF ds.isdata %]
-        [% loc('Daten') %]
-[% ELSIF ds.isswap %]
-        [% loc('Swap') %]
-[% ELSIF ds.iscache %]
-        [% loc('Cache') %]
-[% ELSIF ds.isext %]
-        [% loc('erweiterte Partition') %]
-[% ELSIF ds.isefi %]
-        [% loc('EFI') %]
-[% END %]
-</b>
-</td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("${ds.n}_label") %]>[% loc('Name der Partition') %]:</label></td>
-<td><input id="[% ds.n %]_label" name="[% ds.n %]_label" [% dovalue("${ds.n}_label") %]></td>
-</tr>
-<tr class="even">
-<td><label [% labelfor("${ds.n}_dev") %]>[% loc('Devicename der Partition') %]:</label></td>
-<td><input id="[% ds.n %]_dev" name="[% ds.n %]_dev" [% dovalue("${ds.n}_dev") %]></td>
-</tr>
-<tr class="odd">
-<td><label [% labelfor("${ds.n}_size") %]>[% loc('Partitionsgröße in KB') %]:</label></td>
-<td><input id="[% ds.n %]_size" name="[% ds.n %]_size" [% dovalue("${ds.n}_size") %]>
-[% IF ds.bootable %]<input type="hidden" id="[% ds.n %]_bootable" name="[% ds.n %]_bootable" value="1">[% END %]
-[% IF ds.isswap %]
-<input type="hidden" name="[% ds.n %]_fstype" value="swap"></td>
-</tr>
-[% ELSE %]
-	[% IF ds.isext %]
-<input type="hidden" name="[% ds.n %]_fstype" value=""></td>
-</tr>
-	[% ELSE %]</td>
-</tr>
-<tr class="even">
-<td><label [% labelfor("${ds.n}_fstype") %]>[% loc('Dateisystem') %]:</label></td>
-<td>[% IF ds.iscache %]
-<input type="hidden" name="[% ds.n %]_iscache" value="1">
-<select id="[% ds.n %]_fstype" name="[% ds.n %]_fstype">
-<option value="ext3">[% loc('EXT3') %]</option>
-<option value="ext4">[% loc('EXT4') %]</option>
-<option value="reiserfs">[% loc('ReiserFS') %]</option>
-</select>
-[% ELSE %]
-[% IF ds.isefi %]
-<input type="hidden" id="[% ds.n %]_fstype" name="[% ds.n %]_fstype" value="vfat"><label>[% loc('VFAT') %]</label>
-[% ELSE %]
-<select id="[% ds.n %]_fstype" name="[% ds.n %]_fstype">
-<option value="vfat">[% loc('VFAT') %]</option>
-<option value="ntfs">[% loc('NTFS') %]</option>
-<option value="ext3">[% loc('EXT3') %]</option>
-<option value="ext4">[% loc('EXT4') %]</option>
-<option value="reiserfs">[% loc('ReiserFS') %]</option>
-</select>
-[% END %]
-[% END %]
-</td>
-[% IF ds.isefi %]
-<tr class="odd">
-<td><label [% labelfor("${ds.n}_bootable") %]>[% loc('Partition bootbar:') %]</label></td>
-<td>[% IF ds.bootable %]<input type="checkbox" id="[% ds.n %]_bootable" name="[% ds.n %]_bootable" checked disabled>
-[% ELSE %]<input type="checkbox" id="[% ds.n %]_bootable" name="[% ds.n %]_bootable" disabled>[% END %]</td>
-</tr>
-[% END %]
-</tr>
+[% ELSIF groups %]
+	<h3>[% loc('Bitte Rechnergruppe auswählen') %]</h3>
+	
+	
+	<form method="post" accept-charset="UTF-8">
+	
+	<h4>[% loc('Übersicht der Rechnergruppen') %]</h4>
+	
+	[% lfdnr = 0 %]
+	<table id="linbooverview" class="liste">
+	<tr>
+	<th>[% loc('Gruppe') %]</th><th></th>
+	</tr>
+	[% FOREACH g IN groups %]
+		<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+			<td><input type="submit" name="[% g %]_edit_start_conf" value="[% g %]"></td>
+			<td><input type="submit" name="[% g %]_delete_start_conf" value="[% loc('löschen') %]"></td>
+		[% lfdnr = lfdnr + 1 %]</tr>
 	[% END %]
-[% END %]
-</table>
-<p><input type="submit" name="accept" value="[% loc('Änderungen speichern') %]"></p>
-<p><input type="submit" name="[% ds.n %]_delete" value="[% loc('System löschen') %]"><br>
-<select name="[% ds.n %]_modifynew">
-[% IF ds.iswindows %][% ELSE %]<option value="windows">[% loc('MS Windows') %]</option>[% END %]
-[% IF ds.isgnulinux %][% ELSE %]<option value="gnulinux">[% loc('GNU/Linux') %]</option>[% END %]
-[% IF ds.isdata %][% ELSE %]<option value="data">[% loc('Daten') %]</option>[% END %]
-[% IF ds.isswap %][% ELSE %]<option value="swap">[% loc('Swap') %]</option>[% END %]
-[% IF ds.iscache %][% ELSE %][% IF iscached %][% ELSE %]<option value="cache">[% loc('Cache') %]</option>[% END %][% END %]
-[% IF ds.isext %][% ELSE %]<option value="ext">[% loc('erweitert') %]</option>[% END %]
-[% IF ds.isefi %][% ELSE %]<option value="efi">[% loc('EFI') %]</option>[% END %]
-</select>&nbsp;<input type="submit" name="[% ds.n %]_modify" value="[% loc('System ändern') %]">
-
-
-
-<hr>
-[% END %]
-
-
-[% END %]
-[% IF isautostartpossible %]
-<table class="settings">
-<colgroup>
-<col width="60%">
-<col width="40%">
-</colgroup>
-<td><label [% labelfor("no_autostart") %]>[% loc('kein Betriebssystem automatisch starten') %]:</label></td>
-[% IF isautostartselected %]
-<td><input type="radio" id="no_autostart" name="autostart" value="[% loc('none') %]"></td>
-[% ELSE %]
-<td><input type="radio" id="no_autostart" name="autostart" value="[% loc('none') %]" checked></td>
-[% END %]
-</table>
-[% END %]
-
-<p><input type="submit" name="adddevbottom" value="[% loc('Neues System hinzufügen') %]">
-<select name="adddevnewbottom">
-<option value="windows">[% loc('MS Windows') %]</option>
-<option value="gnulinux">[% loc('GNU/Linux') %]</option>
-<option value="data" selected>[% loc('Daten') %]</option>
-<option value="swap">[% loc('Swap') %]</option>[% IF iscached %][% ELSE %]
-<option value="cache">[% loc('Cache') %]</option>[% END %]
-<option value="ext">[% loc('erweitert') %]</option>
-<option value="efi">[% loc('EFI') %]</option>
-</select>
-</p>
-<p><input type="submit" name="accept" value="[% loc('Änderungen speichern') %]"></p>
-
-</form>
-
-[% ELSE %]
-
-
-[% IF groups %]
-<h3>[% loc('Bitte Rechnergruppe auswählen') %]</h3>
-
-
-<form method="post" accept-charset="UTF-8">
-
-<h4>[% loc('Übersicht der Rechnergruppen') %]</h4>
-
-<table id="linbooverview" class="liste">
-<tr>
-<th>[% loc('Gruppe') %]</th>
-<!--th></th-->
-</tr>
-[% FOREACH g IN groups %]
-[% IF odd %][% odd=0 %]<tr class="odd">
-[% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><input type="submit" name="[% g %]_edit_start_conf" value="[% g %]"></td>
-<td><input type="submit" name="[% g %]_delete_start_conf" value="[% loc('löschen') %]"></td>
-</tr>
-[% END %]
-</table>
-
-</form>
-[% END %]
+	</table>
+	
+	</form>
 [% END %]
