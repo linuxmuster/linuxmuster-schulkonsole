@@ -5366,6 +5366,278 @@ sub print_class {
 
 
 
+=head3 C<ls_commits($id, $password)>
+
+Returns the commit history of sophomorix
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the student invoking the command
+
+=item C<$password>
+
+The password of the student invoking the command
+
+=back
+
+=head4 Return value
+
+A reference to an array of commit dates
+
+=head4 Description
+
+Returns a list of the sophomorix commit dates (times).
+
+=cut
+
+sub ls_commits {
+	my $id = shift;
+	my $password = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::LSCOMMITSAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	my @in;
+	while(<SCRIPTIN>){
+		s/\R//g;
+		push @in, $_;
+	}
+	
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	return \@in;
+}
+
+
+
+
+=head3 C<ls_commit($id, $password, $commit)>
+
+Returns the users that were added by this specific commit
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the student invoking the command
+
+=item C<$password>
+
+The password of the student invoking the command
+
+=item C<$commit>
+
+The specific commits' no.
+
+=back
+
+=head4 Return value
+
+A reference to an array of uids
+
+=head4 Description
+
+Returns a list of the uids added by this commit.
+
+=cut
+
+sub ls_commit {
+	my $id = shift;
+	my $password = shift;
+	my $commit = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::LSCOMMITAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "$commit\n";
+
+	my @in;
+	while(<SCRIPTIN>){
+		s/\R//g;
+		push @in,$_;
+	}
+
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	return \@in;
+}
+
+
+
+
+=head3 C<print_allusers($id, $password, $filetype, $one_per_page)>
+
+Return document with all user info
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=item C<$filetype>
+
+Type of the file, either 0 (PDF) or 1 (CSV)
+
+=item C<$one_per_page>
+
+For PDF print one user per page
+
+=back
+
+=head4 Return value
+
+PDF-data or CSV-data
+
+=head4 Description
+
+This wraps the command
+C<sophomorix-print --all --postfix uid>, where
+uid is the UID of the user with ID C<$id>
+and returns the data of the produced document.
+
+=cut
+
+sub print_allusers {
+	my $id = shift;
+	my $password = shift;
+	my $filetype = shift;
+	my $one_per_page = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::PRINTALLUSERSAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	binmode SCRIPTIN, ':raw' if $filetype == 0;
+
+	print SCRIPTOUT "$filetype\n$one_per_page\n";
+
+	my $data;
+	my $is_error = 0;
+	{
+		local $/ = undef;
+		while (<SCRIPTIN>) {
+			$data .= $_;
+		}
+	}
+	if (    $filetype == 0
+	    and $data !~ /^\%PDF/) {
+		$is_error = 1;
+		$input_buffer = $data;
+	}
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	if ($is_error) {
+		return undef;
+	} else {
+		return $data;
+	}
+}
+
+
+
+
+=head3 C<print_commit($id, $password, $commit, $filetype, $one_per_page)>
+
+Return document with user info for specific commit
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=item C<$commit>
+
+The no. of the specific commit
+
+=item C<$filetype>
+
+Type of the file, either 0 (PDF) or 1 (CSV)
+
+=item C<$one_per_page>
+
+For file type PDF print one user per page
+
+=back
+
+=head4 Return value
+
+PDF-data or CSV-data
+
+=head4 Description
+
+This wraps the command
+C<sophomorix-print --back-in-time commit --postfix uid>, where
+uid is the UID of the user with ID C<$id> and commit is C<$commit>
+and returns the data of the produced document.
+
+=cut
+
+sub print_commit {
+	my $id = shift;
+	my $password = shift;
+	my $commit = shift;
+	my $filetype = shift;
+	my $one_per_page = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::PRINTCOMMITAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	binmode SCRIPTIN, ':raw' if $filetype == 0;
+
+	print SCRIPTOUT "$commit\n$filetype\n$one_per_page\n";
+
+	my $data;
+	my $is_error = 0;
+	{
+		local $/ = undef;
+		while (<SCRIPTIN>) {
+			$data .= $_;
+		}
+	}
+	if (    $filetype == 0
+	    and $data !~ /^\%PDF/) {
+		$is_error = 1;
+		$input_buffer = $data;
+	}
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	if ($is_error) {
+		return undef;
+	} else {
+		return $data;
+	}
+}
+
+
+
+
 =head3 C<print_teachers($id, $password, $class_gid)>
 
 Return document with teachers info

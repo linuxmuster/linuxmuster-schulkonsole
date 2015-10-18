@@ -166,11 +166,15 @@ $VERSION = 0.06;
 	LSHANDEDOUTAPP
 	LSHANDOUTAPP
 	LSCOLLECTAPP
+	LSCOMMITSAPP
+	LSCOMMITAPP
 	HANDOUTAPP
 	COLLECTAPP
 	RESETROOMAPP
 	EDITOWNCLASSMEMBERSHIPAPP
 	PRINTCLASSAPP
+	PRINTALLUSERSAPP
+	PRINTCOMMITAPP
 	PRINTTEACHERSAPP
 	PRINTPROJECTAPP
 	SETPASSWORDSAPP
@@ -382,6 +386,14 @@ C<ls_handout>
 
 C<ls_collect>
 
+=item C<LSCOMMITSAPP>
+
+C<ls_commits>
+
+=item C<LSCOMMITAPP>
+
+C<ls_commit>
+
 =item C<HANDOUTAPP>
 
 C<handout>
@@ -401,6 +413,14 @@ C<edit_own_class_membership>
 =item C<PRINTCLASSAPP>
 
 C<print_class>
+
+=item C<PRINTALLUSERSAPP>
+
+C<print_allusers>
+
+=item C<PRINTCOMMITAPP>
+
+C<print_commit>
 
 =item C<PRINTTEACHERSAPP>
 
@@ -531,6 +551,10 @@ use constant {
 	FILEMANAPP => 8033,
 	STUDENTSFILEMANAPP => 8034,
 	LSHANDEDOUTAPP =>8035,
+	LSCOMMITSAPP => 8036,
+	LSCOMMITAPP => 8037,
+	PRINTALLUSERSAPP => 8038,
+	PRINTCOMMITAPP => 8039,
 };
 
 =head3 Constants for wrapper-cyrus
@@ -1357,11 +1381,15 @@ $_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
 	LSHANDEDOUTAPP() => 'ls_handedout',
 	LSHANDOUTAPP() => 'ls_handout',
 	LSCOLLECTAPP() => 'ls_collect',
+	LSCOMMITSAPP() => 'ls_commits',
+	LSCOMMITAPP() => 'ls_commit',
 	HANDOUTAPP() => 'handout',
 	COLLECTAPP() => 'collect',
 	RESETROOMAPP() => 'room_reset',
 	EDITOWNCLASSMEMBERSHIPAPP() => 'edit_own_class_membership',
 	PRINTCLASSAPP() => 'print_class',
+	PRINTALLUSERSAPP() => 'print_allusers',
+	PRINTCOMMITAPP() => 'print_commit',
 	PRINTTEACHERSAPP() => 'print_teachers',
 	PRINTPROJECTAPP() => 'print_project',
 	SETPASSWORDSAPP() => 'set_passwords',

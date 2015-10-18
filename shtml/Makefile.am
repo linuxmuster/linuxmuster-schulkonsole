@@ -17,7 +17,7 @@ dist_shtml_DATA = example.tt login.tt logout.tt start.tt \
 	settings.tt settings_program.tt settings_users.tt \
 	settings_classs.tt settings_projects.tt \
 	user.tt user_students.tt user_teachers.tt user_extra.tt \
-	user_teacherpasswords.tt \
+	user_teacherpasswords.tt user_print.tt \
 	user_check.tt user_teachin.tt user_commit.tt user_reports.tt\
 	rooms.tt rooms_classrooms.tt \
 	printers.tt printers_edit.tt hosts.tt \

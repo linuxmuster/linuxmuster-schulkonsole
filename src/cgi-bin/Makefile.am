@@ -13,7 +13,7 @@ pkglibexec_SCRIPTS = example start logout \
 	settings settings_program settings_users settings_classs \
 	settings_projects \
 	user user_students user_teachers user_extra \
-	user_teacherpasswords \
+	user_teacherpasswords user_print \
 	user_check user_teachin user_commit user_reports \
 	rooms rooms_classrooms \
 	printers printers_edit hosts \

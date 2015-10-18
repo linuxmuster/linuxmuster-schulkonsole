@@ -157,6 +157,22 @@ $app_id == Schulkonsole::Config::PRINTCLASSAPP and do {
 	last SWITCH;
 };
 
+$app_id == Schulkonsole::Config::PRINTALLUSERSAPP and do {
+	print_allusers();
+	last SWITCH;
+};
+$app_id == Schulkonsole::Config::PRINTCOMMITAPP and do {
+	print_commit();
+	last SWITCH;
+};
+$app_id == Schulkonsole::Config::LSCOMMITSAPP and do {
+	ls_commits();
+	last SWITCH;
+};
+$app_id == Schulkonsole::Config::LSCOMMITAPP and do {
+	ls_commit();
+	last SWITCH;
+};
 $app_id == Schulkonsole::Config::PRINTTEACHERSAPP and do {
 	printteachersapp();
 	last SWITCH;
@@ -1618,6 +1634,282 @@ sub printclassapp() {
 	$filetype == 1 and do {
 		$filename = Schulkonsole::Encode::to_fs(
 		            	"$DevelConf::druck_pfad/$class_gid-$$userdata{uid}.csv");
+		last SWITCHFILETYPE;
+	};
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+	}
+	
+	open DATA, '<:raw', $filename
+		or (    print STDERR "$filename: $!\n"
+	        and exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
+		              - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE));
+
+	SWITCHDATATYPE: {
+	$filetype == 0 and do {
+		binmode STDOUT, ':raw';
+		local $/ = undef;
+		while (<DATA>) {
+			print;
+		}
+		last SWITCHDATATYPE;
+	};
+	$filetype == 1 and do {
+		while (<DATA>) {
+			print get_decoded($_);
+		}
+		last SWITCHDATATYPE;
+	};
+	}
+
+	close DATA;
+
+	exit 0;
+}
+
+=head3 print_commit
+
+numeric constant: C<Schulkonsole::Config::PRINTCOMMITAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item back_in_time
+
+The commit run to print (0=last commit)
+
+=item filetype
+
+The filetype, 0 (PDF) or 1 (CSV)
+
+=item one_per_page
+
+For file type PDF print one user per page(1)
+
+=back
+
+=cut
+
+sub print_commit() {
+	my $commit = <>;
+	($commit) = $commit =~ /^(\d+)$/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_COMMIT
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $commit;
+
+	my $filetype = <>;
+	($filetype) = $filetype =~ /^([0|1])$/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $filetype;
+
+	my $one_per_page = <>;
+	($one_per_page) = $one_per_page =~ /^([0|1])$/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PAGING
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+	    unless defined $one_per_page;
+	$one_per_page = 0 if $filetype == 1;
+	
+	my $opts = "--back-in-time \Q$commit\E --postfix \Q$$userdata{uid}";
+	$opts .= " --one-per-page" if $one_per_page;
+	
+	# sophomorix-print cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+	$ENV{HOME}="/root" if not defined $ENV{HOME};
+	system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_print $opts >/dev/null 2>/dev/null")) == 0
+		or exit ($? >> 8);
+
+	my $filename;
+	SWITCHFILETYPE: {
+	$filetype == 0 and do {
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::druck_pfad/add-$$userdata{uid}.pdf");
+		last SWITCHFILETYPE;
+	};
+	$filetype == 1 and do {
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::druck_pfad/add-$$userdata{uid}.csv");
+		last SWITCHFILETYPE;
+	};
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+	}
+	
+	open DATA, '<:raw', $filename
+		or (    print STDERR "$filename: $!\n"
+	        and exit (  Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
+		              - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE));
+
+	SWITCHDATATYPE: {
+	$filetype == 0 and do {
+		binmode STDOUT, ':raw';
+		local $/ = undef;
+		while (<DATA>) {
+			print;
+		}
+		last SWITCHDATATYPE;
+	};
+	$filetype == 1 and do {
+		while (<DATA>) {
+			print get_decoded($_);
+		}
+		last SWITCHDATATYPE;
+	};
+	}
+
+	close DATA;
+
+	exit 0;
+}
+
+=head3 ls_commits
+
+numeric constant: C<Schulkonsole::Config::LSCOMMITSAPP>
+
+=head4 Return value to standard output
+
+=over
+
+Print lines to standard output with commit "date (time)".
+
+=back
+
+=cut
+
+sub ls_commits() {
+
+	my $opts = "--info --postfix \Q$$userdata{uid}";
+	
+	# sophomorix-print cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+	$ENV{HOME}="/root" if not defined $ENV{HOME};
+	open(PRINT, Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_print $opts |"))
+		or exit ($? >> 8);
+
+	while(<PRINT>){
+		my $line = $_;
+		my ($date,$time) = $_ =~ /^\s*--back-in-time\s*\d+\s*-->\s*(\S+)(?: (\S+))?.*$/;
+		next unless $date;
+		print "$date" . ($time?" $time\n":"\n");
+	}
+	exit 0;
+}
+
+=head3 ls_commit
+
+numeric constant: C<Schulkonsole::Config::LSCOMMITAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<$commit>
+
+No. of the commit to read added users from
+
+=back
+
+=head4 Return value to standard output
+
+=over
+
+Print user uids one per line to standard output
+
+=back
+
+=cut
+
+sub ls_commit() {
+	my $commit = <>;
+	($commit) = $commit =~ /^(\d+)$/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_COMMIT
+		  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		  unless defined $commit;
+	
+	my $opts = "--info --back-in-time \Q$commit\E --postfix \Q$$userdata{uid}";
+
+	# sophomorix-print cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+	$ENV{HOME}="/root" if not defined $ENV{HOME};
+	open(SCRIPTIN, Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_print $opts |"))
+		or exit ($? >> 8);
+
+	my $start = 0;
+	my @uids;
+	while(<SCRIPTIN>){
+		s/\R//g;
+		if(not $start){
+			$start = 1 if /^Printing users:.*$/;
+			next;
+		}
+		next if not $start;
+		my ($uid) = $_ =~ /^\s*\d+\)\s*([a-z0-9]+)\s*$/;
+		next unless $uid;
+		push @uids,$uid;
+	}
+	my @uuids = keys { map { $_ => 1 } @uids }; 
+	print join("\n", @uuids);
+	exit 0;
+}
+
+=head3 print_allusers
+
+numeric constant: C<Schulkonsole::Config::PRINTALLUSERSAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item filetype
+
+The filetype, 0 (PDF) or 1 (CSV)
+
+=item one_per_page
+
+For PDF print one user per page(1)
+
+=back
+
+=cut
+
+sub print_allusers() {
+	my $filetype = <>;
+	($filetype) = $filetype =~ /^([01])$/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+		unless defined $filetype;
+
+	my $one_per_page = <>;
+	($one_per_page) = $one_per_page =~ /^([0|1])$/;
+	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PAGING
+	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
+	    unless defined $one_per_page;
+	$one_per_page = 0 if $filetype == 1;
+	
+	my $opts = "--all --postfix \Q$$userdata{uid}";
+	$opts .= " --one-per-page" if $one_per_page;
+	
+	# sophomorix-print cannot be invoked with taint checks enabled
+	$< = $>;
+	$( = $);
+	$ENV{HOME}="/root" if not defined $ENV{HOME};
+	system(Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_print $opts >/dev/null 2>/dev/null")) == 0
+		or exit ($? >> 8);
+
+	my $filename;
+	SWITCHFILETYPE: {
+	$filetype == 0 and do {
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::druck_pfad/all-$$userdata{uid}.pdf");
+		last SWITCHFILETYPE;
+	};
+	$filetype == 1 and do {
+		$filename = Schulkonsole::Encode::to_fs(
+		            	"$DevelConf::druck_pfad/all-$$userdata{uid}.csv");
 		last SWITCHFILETYPE;
 	};
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2015-10-13 19:29+0200\n"
+"POT-Creation-Date: 2015-10-18 13:47+0200\n"
 "PO-Revision-Date: 2014-04-06 14:22+0200\n"
 "Last-Translator: root <root@linuxmuster.lokal>\n"
 "Language-Team: German\n"
@@ -1020,19 +1020,7 @@ msgstr ""
 msgid "Auszuteilende Dateien"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:66
-msgid "Automatische Partitionsreparatur"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:76
-msgid "Automatisches Einrichten des Caches"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:71
-msgid "Automatisches Formatieren"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:294
+#: ../shtml/linbo_edit.tt:199
 msgid "Autostart-Timeout in Sek."
 msgstr ""
 
@@ -1170,7 +1158,7 @@ msgstr ""
 msgid "Berichte"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:223
+#: ../shtml/linbo_edit.tt:133
 msgid "Beschreibung (optional)"
 msgstr ""
 
@@ -1220,41 +1208,29 @@ msgstr ""
 msgid "Betriebssystem 4 darf nicht Windows sein"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:288
+#: ../shtml/linbo_edit.tt:193
 msgid "Betriebssystem automatisch starten"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:322
+#: ../shtml/linbo_edit.tt:227
 msgid "Betriebssystem hinzufügen"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:321
+#: ../shtml/linbo_edit.tt:226
 msgid "Betriebssystem löschen"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:273
+#: ../shtml/linbo_edit.tt:179
 msgid "Betriebssystemreiter verstecken"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:219
+#: ../shtml/linbo_edit.tt:129
 msgid "Betriebssystemversion (optional)"
 msgstr ""
 
 #: ../shtml/user_check.tt:29 ../shtml/user_commit.tt:140
 #: ../shtml/user_commit.tt:53 ../shtml/user_teachin.tt:56
 msgid "Bezeichner"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:91
-msgid "Bildschirmschriftfarbe"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:55
-msgid "Bios"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:56
-msgid "Bios64"
 msgstr ""
 
 #: ../shtml/class_collect.tt:35 ../shtml/project_collect.tt:31
@@ -1266,7 +1242,7 @@ msgstr ""
 msgid "Bitte Klasse auswählen"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:460
+#: ../shtml/linbo_edit.tt:361
 msgid "Bitte Rechnergruppe auswählen"
 msgstr ""
 
@@ -1285,18 +1261,14 @@ msgstr ""
 msgid "Bitte ein Projekt auswählen"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:253
+#: ../shtml/linbo_edit.tt:162
 msgid "Bootoptionen"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:115 ../shtml/linbo_edit.tt:316
-#: ../shtml/linbo_edit.tt:343 ../shtml/linbo_edit.tt:414
-#: ../shtml/linbo_edit.tt:447
+#: ../shtml/linbo_edit.tt:221 ../shtml/linbo_edit.tt:250
+#: ../shtml/linbo_edit.tt:322 ../shtml/linbo_edit.tt:351
+#: ../shtml/linbo_edit.tt:36
 msgid "Cache"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:35 ../shtml/linbo_edit.tt:39
-msgid "Cache-Partition auf dem Arbeitsplatzrechner"
 msgstr ""
 
 #: ../shtml/rooms_classrooms.tt:31
@@ -1392,7 +1364,7 @@ msgstr ""
 msgid "Datei wurde geschrieben"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:16
+#: ../shtml/linbo_edit.tt:15
 msgid "Datei wählen"
 msgstr ""
 
@@ -1414,26 +1386,26 @@ msgstr ""
 msgid "Dateiname"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:236
+#: ../shtml/linbo_edit.tt:145
 msgid "Dateiname des Basis-Image"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:228
+#: ../shtml/linbo_edit.tt:137
 msgid "Dateiname des Icons für den Startbutton"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:232
+#: ../shtml/linbo_edit.tt:141
 msgid "Dateiname des differenziellen Image"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:172 ../shtml/linbo_edit.tt:205
-#: ../shtml/linbo_edit.tt:374
+#: ../shtml/linbo_edit.tt:116 ../shtml/linbo_edit.tt:284
+#: ../shtml/linbo_edit.tt:86
 msgid "Dateisystem"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:113 ../shtml/linbo_edit.tt:314
-#: ../shtml/linbo_edit.tt:339 ../shtml/linbo_edit.tt:412
-#: ../shtml/linbo_edit.tt:445
+#: ../shtml/linbo_edit.tt:219 ../shtml/linbo_edit.tt:246
+#: ../shtml/linbo_edit.tt:320 ../shtml/linbo_edit.tt:34
+#: ../shtml/linbo_edit.tt:349
 msgid "Daten"
 msgstr ""
 
@@ -1476,8 +1448,8 @@ msgstr ""
 msgid "Der Wert für die minimale Passwortlänge ist ungültig"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:164 ../shtml/linbo_edit.tt:197
-#: ../shtml/linbo_edit.tt:357
+#: ../shtml/linbo_edit.tt:108 ../shtml/linbo_edit.tt:264
+#: ../shtml/linbo_edit.tt:71
 msgid "Devicename der Partition"
 msgstr ""
 
@@ -1566,10 +1538,6 @@ msgstr ""
 msgid "Diskquota"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:81
-msgid "Downloadtype auswählen"
-msgstr ""
-
 #: ../shtml/start.tt:12
 msgid "Druckaufträge"
 msgstr ""
@@ -1615,27 +1583,19 @@ msgstr ""
 msgid "EDV-Räume"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:117 ../shtml/linbo_edit.tt:318
-#: ../shtml/linbo_edit.tt:347 ../shtml/linbo_edit.tt:416
-#: ../shtml/linbo_edit.tt:449
+#: ../shtml/linbo_edit.tt:223 ../shtml/linbo_edit.tt:254
+#: ../shtml/linbo_edit.tt:324 ../shtml/linbo_edit.tt:353
+#: ../shtml/linbo_edit.tt:38
 msgid "EFI"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:57
-msgid "EFI32"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:58
-msgid "EFI64"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:179 ../shtml/linbo_edit.tt:378
-#: ../shtml/linbo_edit.tt:389
+#: ../shtml/linbo_edit.tt:289 ../shtml/linbo_edit.tt:299
+#: ../shtml/linbo_edit.tt:92
 msgid "EXT3"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:180 ../shtml/linbo_edit.tt:379
-#: ../shtml/linbo_edit.tt:390
+#: ../shtml/linbo_edit.tt:290 ../shtml/linbo_edit.tt:300
+#: ../shtml/linbo_edit.tt:93
 msgid "EXT4"
 msgstr ""
 
@@ -1853,9 +1813,9 @@ msgstr ""
 msgid "Für"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:112 ../shtml/linbo_edit.tt:154
-#: ../shtml/linbo_edit.tt:313 ../shtml/linbo_edit.tt:411
-#: ../shtml/linbo_edit.tt:444
+#: ../shtml/linbo_edit.tt:218 ../shtml/linbo_edit.tt:319
+#: ../shtml/linbo_edit.tt:33 ../shtml/linbo_edit.tt:348
+#: ../shtml/linbo_edit.tt:61
 msgid "GNU/Linux"
 msgstr ""
 
@@ -1902,7 +1862,7 @@ msgstr ""
 msgid "Gr&ouml;&szlig;e f&uuml;r Betriebssystem 4 muss eine Zahl sein"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:469 ../shtml/user_commit.tt:54
+#: ../shtml/linbo_edit.tt:371 ../shtml/user_commit.tt:54
 msgid "Gruppe"
 msgstr ""
 
@@ -1972,10 +1932,6 @@ msgstr ""
 
 #: ../shtml/hosts.tt:59
 msgid "IP"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:44
-msgid "IP des TFTP-Servers, der Images vorhält"
 msgstr ""
 
 #: ../shtml/page.tt:78 ../shtml/status.inc.tt:21
@@ -2274,7 +2230,7 @@ msgstr ""
 msgid "Konfigurationsdatei erstellt"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_edit:386
+#: ../src/cgi-bin/linbo_edit:405
 msgid "Konfigurationsdatei geschrieben"
 msgstr ""
 
@@ -2286,16 +2242,8 @@ msgstr ""
 msgid "Konfigurationsdatei kopiert"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:21
+#: ../shtml/linbo_edit.tt:20
 msgid "Konfigurationsdateien editieren"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:95
-msgid "Konsolenschriftfarbe"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:99
-msgid "Konsolenschriftfarbe für Fehler- und Warnmeldungen"
 msgstr ""
 
 #: ../shtml/start.tt:9
@@ -2333,10 +2281,6 @@ msgstr ""
 
 #: ../src/cgi-bin/user_commit:182
 msgid "L&ouml;schen wurde gestartet"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:103
-msgid "LINBO-Kerneloptionen"
 msgstr ""
 
 #: ../shtml/project_addmembers.tt:140 ../shtml/project_members.tt:51
@@ -2447,9 +2391,9 @@ msgstr ""
 msgid "MAC"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:111 ../shtml/linbo_edit.tt:152
-#: ../shtml/linbo_edit.tt:312 ../shtml/linbo_edit.tt:410
-#: ../shtml/linbo_edit.tt:443
+#: ../shtml/linbo_edit.tt:217 ../shtml/linbo_edit.tt:318
+#: ../shtml/linbo_edit.tt:32 ../shtml/linbo_edit.tt:347
+#: ../shtml/linbo_edit.tt:59
 msgid "MS Windows"
 msgstr ""
 
@@ -2554,11 +2498,11 @@ msgstr ""
 msgid "Möchten Sie das Projekt wirklich löschen?"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_edit:140 ../src/cgi-bin/linbo_edit:142
+#: ../src/cgi-bin/linbo_edit:159 ../src/cgi-bin/linbo_edit:161
 msgid "NEU"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:177 ../shtml/linbo_edit.tt:388
+#: ../shtml/linbo_edit.tt:298 ../shtml/linbo_edit.tt:90
 msgid "NTFS"
 msgstr ""
 
@@ -2590,12 +2534,12 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:160 ../shtml/linbo_edit.tt:193
-#: ../shtml/linbo_edit.tt:353
+#: ../shtml/linbo_edit.tt:104 ../shtml/linbo_edit.tt:260
+#: ../shtml/linbo_edit.tt:67
 msgid "Name der Partition"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:215
+#: ../shtml/linbo_edit.tt:125
 msgid "Name des Betriebssystems"
 msgstr ""
 
@@ -2607,7 +2551,7 @@ msgstr ""
 msgid "Neu anlegen"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:268
+#: ../shtml/linbo_edit.tt:175
 msgid "Neu+Start-Button für dieses Betriebssystem anzeigen"
 msgstr ""
 
@@ -2639,7 +2583,7 @@ msgstr ""
 msgid "Neues Projekt anlegen"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:109 ../shtml/linbo_edit.tt:441
+#: ../shtml/linbo_edit.tt:30 ../shtml/linbo_edit.tt:345
 msgid "Neues System hinzufügen"
 msgstr ""
 
@@ -2753,21 +2697,21 @@ msgstr ""
 msgid "Partition"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:209
+#: ../shtml/linbo_edit.tt:120
 msgid "Partition bootbar"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:187 ../shtml/linbo_edit.tt:398
+#: ../shtml/linbo_edit.tt:309 ../shtml/linbo_edit.tt:99
 msgid "Partition bootbar:"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:241
+#: ../shtml/linbo_edit.tt:150
 msgid "Partition, die Kernel und initrd enthält"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:168 ../shtml/linbo_edit.tt:201
-#: ../shtml/linbo_edit.tt:361
-msgid "Partitionsgröße in KB"
+#: ../shtml/linbo_edit.tt:112 ../shtml/linbo_edit.tt:268
+#: ../shtml/linbo_edit.tt:75
+msgid "Partitionsgröße"
 msgstr ""
 
 #: ../shtml/linbo_new.tt:53
@@ -2833,7 +2777,7 @@ msgstr ""
 msgid "Passwörter"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:245
+#: ../shtml/linbo_edit.tt:154
 msgid "Pfad zum kernel"
 msgstr ""
 
@@ -2969,10 +2913,6 @@ msgstr ""
 msgid "Rechnergruppe"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:48
-msgid "Rechnergruppenname"
-msgstr ""
-
 #: ../src/cgi-bin/linbo_new:129
 msgid "Rechnergruppenname schon vergeben"
 msgstr ""
@@ -2999,12 +2939,12 @@ msgstr ""
 msgid "Registrypatch-Dateien der Rechnergruppen editieren"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:181 ../shtml/linbo_edit.tt:380
-#: ../shtml/linbo_edit.tt:391
+#: ../shtml/linbo_edit.tt:291 ../shtml/linbo_edit.tt:301
+#: ../shtml/linbo_edit.tt:94
 msgid "ReiserFS"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:249
+#: ../shtml/linbo_edit.tt:158
 msgid "Relativer Pfad zur initrd"
 msgstr ""
 
@@ -3116,10 +3056,6 @@ msgstr ""
 msgid "Seiten:"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:63
-msgid "Sekunden"
-msgstr ""
-
 #: ../shtml/settings_users.tt:109 ../shtml/settings_users.tt:146
 msgid "Shell aktivieren"
 msgstr ""
@@ -3225,7 +3161,7 @@ msgstr ""
 msgid "Speicherplatz/KB:"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:299
+#: ../shtml/linbo_edit.tt:203
 msgid "Standard-Autostart-Aktion auswählen"
 msgstr ""
 
@@ -3245,7 +3181,7 @@ msgstr ""
 msgid "Standardquota Schüler"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:258
+#: ../shtml/linbo_edit.tt:167
 msgid "Start-Button für dieses Betriebssystem anzeigen"
 msgstr ""
 
@@ -3277,41 +3213,37 @@ msgstr ""
 msgid "Suche:"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:114 ../shtml/linbo_edit.tt:315
-#: ../shtml/linbo_edit.tt:341 ../shtml/linbo_edit.tt:413
-#: ../shtml/linbo_edit.tt:446
+#: ../shtml/linbo_edit.tt:220 ../shtml/linbo_edit.tt:248
+#: ../shtml/linbo_edit.tt:321 ../shtml/linbo_edit.tt:35
+#: ../shtml/linbo_edit.tt:350
 msgid "Swap"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:263
+#: ../shtml/linbo_edit.tt:171
 msgid "Sync+Start-Button für dieses Betriebssystem anzeigen"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:149 ../shtml/linbo_edit.tt:335
+#: ../shtml/linbo_edit.tt:242 ../shtml/linbo_edit.tt:56
 msgid "System"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:408
+#: ../shtml/linbo_edit.tt:316
 msgid "System löschen"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:319 ../shtml/linbo_edit.tt:417
+#: ../shtml/linbo_edit.tt:224 ../shtml/linbo_edit.tt:325
 msgid "System ändern"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:52
-msgid "System-Typ"
 msgstr ""
 
 #: ../shtml/quotas_others.tt:248
 msgid "Systembenutzer"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:123
+#: ../shtml/linbo_edit.tt:42
 msgid "Systeme"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:279
+#: ../shtml/linbo_edit.tt:184
 msgid "Systemstart durch"
 msgstr ""
 
@@ -3415,8 +3347,8 @@ msgstr ""
 msgid "Unterrichtsende um %H:%M"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:176 ../shtml/linbo_edit.tt:384
-#: ../shtml/linbo_edit.tt:387
+#: ../shtml/linbo_edit.tt:294 ../shtml/linbo_edit.tt:297
+#: ../shtml/linbo_edit.tt:89
 msgid "VFAT"
 msgstr ""
 
@@ -3595,7 +3527,7 @@ msgstr ""
 msgid "Zusatzquota"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:26
+#: ../shtml/linbo_edit.tt:25
 msgid "[LINBO] - globale Konfiguration"
 msgstr ""
 
@@ -3638,10 +3570,6 @@ msgstr ""
 msgid "ausgewählt"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:62
-msgid "automatischer Rootlogout nach"
-msgstr ""
-
 #: ../shtml/class_lesson.tt:70 ../shtml/project_lesson.tt:70
 #: ../shtml/room.tt:71
 msgid "beenden lassen"
@@ -3659,12 +3587,12 @@ msgstr ""
 msgid "default"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:116 ../shtml/linbo_edit.tt:317
-#: ../shtml/linbo_edit.tt:415 ../shtml/linbo_edit.tt:448
+#: ../shtml/linbo_edit.tt:222 ../shtml/linbo_edit.tt:323
+#: ../shtml/linbo_edit.tt:352 ../shtml/linbo_edit.tt:37
 msgid "erweitert"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:345
+#: ../shtml/linbo_edit.tt:252
 msgid "erweiterte Partition"
 msgstr ""
 
@@ -3677,7 +3605,7 @@ msgstr ""
 msgid "grub cfg-Dateien der Rechnergruppen editieren"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:281
+#: ../shtml/linbo_edit.tt:186
 msgid "grub.exe"
 msgstr ""
 
@@ -3697,7 +3625,7 @@ msgstr ""
 msgid "ist in der Klasse"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:432
+#: ../shtml/linbo_edit.tt:339
 msgid "kein Betriebssystem automatisch starten"
 msgstr ""
 
@@ -3726,7 +3654,7 @@ msgstr ""
 msgid "linbo"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:476 ../shtml/linbo_grubedit.tt:62
+#: ../shtml/linbo_edit.tt:376 ../shtml/linbo_grubedit.tt:62
 #: ../shtml/linbo_regpatchedit.tt:47
 msgid "löschen"
 msgstr ""
@@ -3735,15 +3663,11 @@ msgstr ""
 msgid "menu.lst editieren"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:85
-msgid "multicast"
-msgstr ""
-
 #: ../shtml/user_commit.tt:96
 msgid "nach"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:304
+#: ../shtml/linbo_edit.tt:208
 msgid "new"
 msgstr ""
 
@@ -3751,7 +3675,7 @@ msgstr ""
 msgid "nochmal"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:434 ../shtml/linbo_edit.tt:436
+#: ../shtml/linbo_edit.tt:340
 msgid "none"
 msgstr ""
 
@@ -3759,16 +3683,8 @@ msgstr ""
 msgid "project"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:282
+#: ../shtml/linbo_edit.tt:187
 msgid "reboot"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:100
-msgid "red"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:84
-msgid "rsync"
 msgstr ""
 
 #: ../shtml/settings_classs.tt:18
@@ -3780,7 +3696,7 @@ msgstr ""
 msgid "sofort beenden"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:302
+#: ../shtml/linbo_edit.tt:206
 msgid "start"
 msgstr ""
 
@@ -3803,16 +3719,12 @@ msgstr ""
 msgid "student"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:303
+#: ../shtml/linbo_edit.tt:207
 msgid "sync"
 msgstr ""
 
 #: ../shtml/project_addmembers.tt:139 ../shtml/project_members.tt:50
 msgid "teacher"
-msgstr ""
-
-#: ../shtml/linbo_edit.tt:86
-msgid "torrent"
 msgstr ""
 
 #: ../shtml/class_lesson.tt:47 ../shtml/project_lesson.tt:47
@@ -3898,10 +3810,6 @@ msgstr ""
 msgid "weiter"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:92 ../shtml/linbo_edit.tt:96
-msgid "white"
-msgstr ""
-
 #: ../shtml/linbo_grubedit.tt:17 ../shtml/linbo_images.tt:16
 #: ../shtml/linbo_regpatchedit.tt:17
 msgid "wirklich löschen?"
@@ -3922,8 +3830,8 @@ msgstr ""
 msgid "Änderungen in Lehrerliste speichern"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:108 ../shtml/linbo_edit.tt:309
-#: ../shtml/linbo_edit.tt:407 ../shtml/linbo_edit.tt:452
+#: ../shtml/linbo_edit.tt:214 ../shtml/linbo_edit.tt:29
+#: ../shtml/linbo_edit.tt:315 ../shtml/linbo_edit.tt:356
 #: ../shtml/linbo_grubedit.tt:31 ../shtml/linbo_images.tt:55
 #: ../shtml/linbo_regpatchedit.tt:31 ../shtml/project_members.tt:37
 #: ../shtml/user_extra.tt:19 ../shtml/user_extra.tt:32
@@ -3980,7 +3888,7 @@ msgstr ""
 msgid "Übersicht der Projekte"
 msgstr ""
 
-#: ../shtml/linbo_edit.tt:465
+#: ../shtml/linbo_edit.tt:366
 msgid "Übersicht der Rechnergruppen"
 msgstr ""
 

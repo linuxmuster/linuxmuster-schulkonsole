@@ -16,6 +16,9 @@
 [% IF link_user_teacherpasswords %]
 	<li><a [% dohref("user_teacherpasswords") %]>[% loc('Lehrerpasswörter') %]</a></li>
 [% END %]
+[% IF link_user_print %]
+	<li><a [% dohref("user_print") %]>[% loc('Passwortlisten') %]</a></li>
+[% END %]
 [% IF link_user_reports %]
 	<li><a class="end" [% dohref("user_reports") %]>[% loc('Berichte') %]</a></li>
 [% END %]
