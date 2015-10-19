@@ -2348,8 +2348,9 @@ The lines to be written
 
 =head3 Description
 
-Writes C<$lines> into C<$filename> in C</var/linbo/>. Filename has to
-match C<*.cloop.reg>, C<*.rsync.reg>>.
+Writes C<$lines> into C<$filename> in C<Config::_linbo_dir>. Filename has to
+match C<*.cloop.reg>, C<*.rsync.reg>, C<*.cloop.postsync>, C<*.rsync.postsync>,
+C<*.cloop.desc>, C<*.rsync.desc>.
 
 =cut
 

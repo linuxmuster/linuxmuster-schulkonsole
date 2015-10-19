@@ -26,7 +26,8 @@
 	
 	<form method="post" accept-charset="UTF-8">
 	<p><textarea wrap="off" name="postsync" class="texteditor">[% postsync %]</textarea></p>
-	<p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% loc('Änderungen speichern') %]">
+	<p><input type="hidden" name="filename" value="[% editfilename %]">
+	<input type="submit" name="edit" value="[% loc('Änderungen speichern') %]">
 	<input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
 	
 	</form>
@@ -52,7 +53,7 @@
 	
 	[% IF postsyncs %]
 		<form method="post" accept-charset="UTF-8">
-		<table id="linbogrubcfgsoverview" class="liste">
+		<table id="linbopostsyncsoverview" class="liste">
 		[% FOREACH cfg IN postsyncs %]
 			[% IF odd %][% odd=0 %]<tr class="odd">
 			[% ELSE %][% odd=1 %]<tr class="even">[% END %]
