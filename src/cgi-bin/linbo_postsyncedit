@@ -2,20 +2,20 @@
 
 =head1 NAME
 
-linbo_grubedit - edit LINBO's grub.cfg files
+linbo_postsyncedit - edit LINBO's *.cloop.postsync/*.rsync.postsync files
 
 =head1 SYNOPSIS
 
- https://server/schulkonsole/linbo_grubedit
+ https://server/schulkonsole/linbo_postsyncedit
 
 =head1 DESCRIPTION
 
-C<linbo_grubedit> lets the user choose a grub group.cfg file and edit it.
-The HTML template is linbo_grubedit.tt.
+C<linbo_postsyncedit> lets the user choose a grub postsync file and edit it.
+The HTML template is linbo_postsyncedit.tt.
 
 =head2 Template variables
 
-Additionally to the variables of Schulkonsole::Session C<linbo_grubedit>
+Additionally to the variables of Schulkonsole::Session C<linbo_postsyncedit>
 provides the following variables:
 
 =over
@@ -31,7 +31,7 @@ use Schulkonsole::Linbo;
 use Schulkonsole::Session;
 
 
-my $this_file = 'linbo_grubedit';
+my $this_file = 'linbo_postsyncedit';
 
 
 
@@ -50,8 +50,8 @@ if (not $sk_session->get_password()) {
 
 my $q = $sk_session->query();
 
-my $groups = Schulkonsole::Linbo::groups();
-my $grubcfgs = Schulkonsole::Linbo::grubstarts();
+my $images = Schulkonsole::Linbo::images();
+my $postsyncs = Schulkonsole::Linbo::postsyncs();
 
 my $is_action;
 
@@ -61,39 +61,29 @@ SWITCHCOMMAND: {
 $q->param('add') and do {
         my $filename = $q->param('filename');
 
-        if ($filename !~ /^(?:[a-z\d_]+)\.cfg$/) {
+        if ($filename !~ /^([^\/]+)\.(?:cloop|rsync)\.postsync$/) {
                 $sk_session->set_status(sprintf($sk_session->d()->get(
-                        '%s ist keine grub cfg-Datei'), $filename), 1);
+                        '%s ist keine postsync-Datei'), $filename), 1);
                 last SWITCHCOMMAND;
         }
 
-        if ($$grubcfgs{$filename}) {
+        if ($$postsyncs{$filename}) {
                 $sk_session->set_status(sprintf($sk_session->d()->get(
                         '%s existiert bereits'), $filename), 1);
                 last SWITCHCOMMAND;
         }
 
-        my $lines;
-        if (open GRUBCFG, '<',
-                    Schulkonsole::Encode::to_fs(
-                        "$Schulkonsole::Config::_grub_templates_dir/grub.cfg.global")) {
-                flock GRUBCFG, 1;
-                seek GRUBCFG, 0, 0;
-
-                {
-                local $/ = undef;
-                $lines = <GRUBCFG>;
-                }
-        }
+        my $lines = "echo \"##### POSTSYNC BEGIN #####\"\n"
+        			."echo \"##### POSTSYNC END #####\"\n\nexit 0\n";
         
-        Schulkonsole::Linbo::write_grub_cfg_file(
+        Schulkonsole::Linbo::write_file(
                 $sk_session->userdata('id'),
                 $sk_session->get_password(),
                 $filename,
                 $lines);
 
-        $grubcfgs = Schulkonsole::Linbo::grubstarts();
-        if ($$grubcfgs{$filename}) {
+        $postsyncs = Schulkonsole::Linbo::postsyncs();
+        if ($$postsyncs{$filename}) {
                 $sk_session->set_status(sprintf($sk_session->d()->get(
                         '%s hinzugefügt'), $filename), 0);
         } else {
@@ -107,13 +97,13 @@ $q->param('add') and do {
 $q->param('delete') and do {
 	my $filename = $q->param('filename');
 
-	if ($filename !~ /^(?:[a-z\d_]+)\.cfg$/) {
+	if ($filename !~ /^([^\/]+)\.(?:cloop|rsync)\.postsync$/) {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
-			'%s ist keine grub cfg-Datei'), $filename), 1);
+			'%s ist keine postsync-Datei'), $filename), 1);
 		last SWITCHCOMMAND;
 	}
 
-	if (not $$grubcfgs{$filename}) {
+	if (not $$postsyncs{$filename}) {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
 			'%s existiert nicht'), $filename), 1);
 		last SWITCHCOMMAND;
@@ -125,13 +115,13 @@ $q->param('delete') and do {
 		$sk_session->get_password(),
 		$filename);
 
-	$grubcfgs = Schulkonsole::Linbo::grubcfgs();
-	if (not $$grubcfgs{$filename}) {
+	$postsyncs = Schulkonsole::Linbo::postsyncs();
+	if (not $$postsyncs{$filename}) {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
-			'%s gel&ouml;scht'), $filename), 0);
+			'%s gelöscht'), $filename), 0);
 	} else {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
-			'%s konnte nicht gel&ouml;scht werden'), $filename), 0);
+			'%s konnte nicht gelöscht werden'), $filename), 0);
 	}
 
 	last SWITCHCOMMAND;
@@ -139,16 +129,16 @@ $q->param('delete') and do {
 
 $q->param('edit') and do {
 	my $filename = $q->param('filename');
-	if (not $$grubcfgs{$filename}) {
+	if (not $$postsyncs{$filename}) {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
 			'%s existiert nicht'), $filename), 1);
 		last SWITCHCOMMAND;
 	}
 
 
-	my $lines = $q->param('grubcfg');
+	my $lines = $q->param('postsync');
 
-	Schulkonsole::Linbo::write_grub_cfg_file(
+	Schulkonsole::Linbo::write_file(
 		$sk_session->userdata('id'),
 		$sk_session->get_password(),
 		$filename,
@@ -166,44 +156,44 @@ $q->param('edit') and do {
 
 The following variables are set if a submit button of the form
 <filename>_<command> has been selected. <filename> is the name of a
-grub cfg file, and command is either C<edit> or C<delete>.
+postsync file, and command is either C<edit> or C<delete>.
 
 =cut
 
 foreach my $param ($q->param) {
-	if (my ($grubcfg, $command) = $param =~ /^(.+)_(edit|delete)$/) {
-		if (not $$grubcfgs{$grubcfg}) {
+	if (my ($postsync, $command) = $param =~ /^(.+)_(edit|delete)$/) {
+		if (not $$postsyncs{$postsync}) {
 			$sk_session->set_status(sprintf($sk_session->d()->get(
-				'%s existiert nicht'), $grubcfg), 1);
+				'%s existiert nicht'), $postsync), 1);
 
 			last SWITCHCOMMAND;
 		}
 
 		if ($command eq 'edit') {
-			if (open GRUBCFG, '<',
+			if (open POSTSYNC, '<',
 			         Schulkonsole::Encode::to_fs(
- 			         	"$Schulkonsole::Config::_grub_config_dir/$grubcfg")) {
-				flock GRUBCFG, 1;
-				seek GRUBCFG, 0, 0;
+ 			         	"$Schulkonsole::Config::_linbo_dir/$postsync")) {
+				flock POSTSYNC, 1;
+				seek POSTSYNC, 0, 0;
 
 				{
 				local $/ = undef;
-				my $lines = <GRUBCFG>;
-				$q->param('grubcfg', $lines);
+				my $lines = <POSTSYNC>;
+				$q->param('postsync', $lines);
 				}
 
 =item C<editfilename>
 
 Name of a file to edit, if <command> is C<edit>.
-The contents of the file are in the query parameter C<grubcfg>.
+The contents of the file are in the query parameter C<postsync>.
 
 =cut
 
-				$sk_session->set_var('editfilename', $grubcfg);
+				$sk_session->set_var('editfilename', $postsync);
 				$is_action = 1;
 			} else {
 				$sk_session->set_status(sprintf($sk_session->d()->get(
-					'Kann Datei %s nicht &ouml;ffnen'), $grubcfg),
+					'Kann Datei %s nicht öffnen'), $postsync),
 					1);
 
 			}
@@ -218,10 +208,10 @@ Name of a file to delete, if <command> is C<delete>.
 
 =cut
 
-			$sk_session->set_var('deletefilename', $grubcfg);
+			$sk_session->set_var('deletefilename', $postsync);
 			$is_action = 1;
 
-			$sk_session->set_status('Bitte best&auml;tigen', 0);
+			$sk_session->set_status('Bitte bestätigen', 0);
 			last SWITCHCOMMAND;
 		}
 	}
@@ -236,34 +226,34 @@ if ($@) {
 
 
 if (not $is_action) {
-	my @array_grubcfgs = sort keys %$grubcfgs;
+	my @array_postsyncs = sort keys %$postsyncs;
 
-=item C<grubcfgs>
+=item C<postsyncs>
 
-A list of all grubcfgs
+A list of all postsyncs
 
 =cut
 
-	$sk_session->set_var('grubcfgs', \@array_grubcfgs);
+	$sk_session->set_var('postsyncs', \@array_postsyncs);
 }
 
 
 if (not $is_action) {
-        my @array_nogrubcfgs = ();
-        foreach my $group (keys $groups) {
-            my $grubfile = $group.'.cfg';
-            if (not $$grubcfgs{$grubfile}) {
-                push(@array_nogrubcfgs, $grubfile);
+        my @array_nopostsyncs = ();
+        foreach my $image (keys $images) {
+            my $postsyncfile = $image.'.postsync';
+            if (not $$postsyncs{$postsyncfile}) {
+                push(@array_nopostsyncs, $postsyncfile);
             }
         }
 
-=item C<nogrubcfgs>
+=item C<nopostsyncs>
 
-A list of all groups without grub group.cfg files
+A list of all images without postsync files
 
 =cut
-        if (@array_nogrubcfgs) {
-            $sk_session->set_var('nogrubcfgs', \@array_nogrubcfgs);
+        if (@array_nopostsyncs) {
+            $sk_session->set_var('nopostsyncs', \@array_nopostsyncs);
         }
 }
 
@@ -289,19 +279,19 @@ Filename to process
 
 Delete C<filename> if selected
 
-=item C<edit> and C<grubcfg>
+=item C<edit> and C<postsync>
 
-Write C<grubcfg> to C<filename> if selected
+Write C<postsync> to C<filename> if selected
 
-=item C<grubcfgs_edit>
+=item C<postsync_edit>
 
-Edit file C<grubcfgs> if selected
+Edit file C<postsync> if selected
 
-=item C<grubcfgs_delete>
+=item C<postsync_delete>
 
-Ask to confirm deletion of file C<grubcfg> if selected
+Ask to confirm deletion of file C<postsync> if selected
 
-=item C<grubcfg_new>
+=item C<postsync_new>
 
 Create C<filename> if selected
 

@@ -27,7 +27,7 @@
 <h2>[% loc('grub cfg-Dateien der Rechnergruppen editieren') %]: [% editfilename %]</h2>
 
 <form method="post" accept-charset="UTF-8">
-<p><textarea wrap="off" name="grubcfg" rows="20" cols="70">[% grubcfg %]</textarea></p>
+<p><textarea wrap="off" name="grubcfg" class="texteditor">[% grubcfg %]</textarea></p>
 <p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% loc('Änderungen speichern') %]">
 <input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
 

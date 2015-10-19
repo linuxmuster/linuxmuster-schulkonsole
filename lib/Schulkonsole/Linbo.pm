@@ -352,7 +352,7 @@ A reference to a hash with the images as keys
 
 =head3 Description
 
-Gets the images in /var/linbo/
+Gets the images in Config::_linbo_dir
 and returns them in a hash.
 
 =cut
@@ -363,6 +363,41 @@ sub images {
 	foreach my $file ((
 			glob("$Schulkonsole::Config::_linbo_dir/*.cloop"),
 			glob("$Schulkonsole::Config::_linbo_dir/*.rsync")
+		)) {
+		my ($filename) = File::Basename::fileparse($file);
+		$re{ Schulkonsole::Encode::from_fs($filename) } = $file;
+	}
+
+	return \%re;
+}
+
+
+
+
+
+
+=head2 postsyncs()
+
+Get all postsync files
+
+=head3 Return value
+
+A reference to a hash with the postsyncs as keys
+and path names as values
+
+=head3 Description
+
+Gets the postsync files in Config::_linbo_dir
+and returns them in a hash.
+
+=cut
+
+sub postsyncs {
+	my %re;
+
+	foreach my $file ((
+			glob("$Schulkonsole::Config::_linbo_dir/*.cloop.postsync"),
+			glob("$Schulkonsole::Config::_linbo_dir/*.rsync.postsync")
 		)) {
 		my ($filename) = File::Basename::fileparse($file);
 		$re{ Schulkonsole::Encode::from_fs($filename) } = $file;
@@ -2262,9 +2297,9 @@ The basename of the file
 
 =head3 Description
 
-Deletes C<$filename> in C</var/linbo/>. Filename has to match C<*.cloop.reg>,
-C<*.rsync.reg>, C<boot/grub/(?:[a-z\d_]+)\.cfg>,
-C<start.conf.(?:[a-z\d_]+)>.
+Deletes C<$filename> in C<Config::_linbo_dir> rsp. C<Config::_grub_config_dir>. Filename has to match C<*.cloop.reg>,
+C<*.rsync.reg>, C<*.cloop.postsync>, C<*.rsync.postsync>, 
+C<boot/grub/(?:[a-z\d_]+)\.cfg>, C<start.conf.(?:[a-z\d_]+)>.
 
 =cut
 

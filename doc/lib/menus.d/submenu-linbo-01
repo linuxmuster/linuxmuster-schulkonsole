@@ -4,14 +4,17 @@
 [% IF link_linbo_new %]
 	<li><a [% dohref("linbo_new") %]>[% loc('Gruppenkonfiguration erstellen') %]</a>
 [% END %]
-[% IF link_linbo_regpatchedit %]
-	<li><a [% dohref("linbo_regpatchedit") %]>[% loc('Registrypatch editieren') %]</a>
-[% END %]
 [% IF link_linbo_grubedit %]
 	<li><a [% dohref("linbo_grubedit") %]>[% loc('GRUB-Startdatei') %]</a>
 [% END %]
 [% IF link_linbo_images %]
 	<li><a [% dohref("linbo_images") %]>[% loc('Imageverwaltung') %]</a>
+[% END %]
+[% IF link_linbo_regpatchedit %]
+	<li><a [% dohref("linbo_regpatchedit") %]>[% loc('Registrypatch editieren') %]</a>
+[% END %]
+[% IF link_linbo_postsyncedit %]
+	<li><a [% dohref("linbo_postsyncedit") %]>[% loc('Postsync-Datei editieren') %]</a>
 [% END %]
 [% IF link_linbo_remote %]
 	<li><a [% dohref("linbo_remote") %]>[% loc('Fernsteuerung') %]</a>
