@@ -95,7 +95,7 @@ open(LOGFILE,'>>',$LOGFILE);
 # Get information from the System
 # ===========================================================================
 my @projects = &fetchprojects_from_school();
-my @classes = &fetchadminclasses_from_school("shohidden");
+my @classes = &fetchadminclasses_from_school("showhidden");
 my @subclasses = &fetchsubclasses_from_school();
 my @teachers=&fetchstudents_from_adminclass(${DevelConf::teacher});
 my @students=&Sophomorix::SophomorixAPI::fetchstudents_from_school();
@@ -155,31 +155,28 @@ if ($group_default eq 'on') {
 	}
 }
 
-foreach my $user (@users_to_add) {
-	dolog("  * user $user: on\n");
-	&adduser_to_project($user,$Schulkonsole::Config::_wlan_ldap_group);
-}
-foreach my $user (@users_to_remove) {
-	dolog("  * user $user: off\n");
-	&deleteuser_from_project($user,$Schulkonsole::Config::_wlan_ldap_group);
+# process users
+if(@users_to_add > 0) {
+	dolog("  * users to add: " . join(",", @users_to_add) . "\n");
+	system('/usr/sbin/wlan_on_off --trigger=on --userlist=' . join(",", @users_to_add));
 }
 
-foreach my $group (@groups_to_add) {
-	dolog("  * group $group: on\n");
-	if($group =~ m/^p\_/){
-		&addproject_to_project($group,$Schulkonsole::Config::_wlan_ldap_group);		
-	} else {
-		&addgroup_to_project($group,$Schulkonsole::Config::_wlan_ldap_group);
-	}
+if(@users_to_remove > 0) {
+	dolog("  * users to remove: " . join(",",@users_to_remove) . "\n");
+	system('/usr/sbin/wlan_on_off --trigger=off --userlist=' . join(",", @users_to_remove));
 }
-foreach my $group (@groups_to_remove) {
-	dolog("  * group $group: off\n");
-	if($group =~ m/^p\_/){
-		&deleteproject_from_project($group,$Schulkonsole::Config::_wlan_ldap_group);
-	} else {
-		&deletegroup_from_project($group,$Schulkonsole::Config::_wlan_ldap_group);
+
+if(@groups_to_add > 0) {
+	dolog("  * groups to add: " . join(",",@groups_to_add) . "\n");
+	system('/usr/sbin/wlan_on_off --trigger=on --grouplist=' . join(",", @groups_to_add));
+}
+
+if(@groups_to_remove > 0) {
+	dolog("  * groups to remove: " . join(",",@groups_to_remove) . "\n");
+	system('/usr/sbin/wlan_on_off --trigger=off --grouplist=' . join(",", @groups_to_remove));
+	foreach my $group (@groups_to_remove) {
+		kill_lesson($group) if $kill;
 	}
-	kill_lesson($group) if $kill;
 }
 
 exit_script(0);
