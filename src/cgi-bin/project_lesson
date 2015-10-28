@@ -30,6 +30,7 @@ use lib '/usr/share/schulkonsole';
 use Time::Local;
 use POSIX;
 use Schulkonsole::Config;
+use Schulkonsole::DB;
 use Schulkonsole::Session;
 use Schulkonsole::Radius;
 use Schulkonsole::Sophomorix;
@@ -76,6 +77,8 @@ my $is_admin = $$admins{$sk_session->userdata('uidnumber')};
 my $is_joinable = $$projects{$project}{joinable};
 
 $sk_session->param('group',$project);
+my $member_userdatas
+	= Schulkonsole::DB::project_user_members($$projects{$project}{gidnumber});
 
 =head2 Form fields
 
@@ -124,17 +127,26 @@ if ($group_session) {
 		}
 	
 		my $wlan_allowed = Schulkonsole::Radius::allowed_groups_users_wlan($id, $password);
-
-		if ($q->param("group;wlan")) {
-                    if (not $$wlan_allowed{'groups'}{$group}) {
-                        Schulkonsole::Radius::wlan_on($id, $password,[$group],[]);
-                    }
-		} else {
-                    if ($$wlan_allowed{'groups'}{$group}) {
-                        Schulkonsole::Radius::wlan_off($id, $password, [$group],[]);
-                    }
+		
+		my @allow_wlan;
+		my @deny_wlan;
+		
+		foreach my $user (keys %$member_userdatas){
+			if ($q->param("$user;wlan") and not $$wlan_allowed{'users'}{$user}) {
+				push @allow_wlan, $user;
+			} elsif ($$wlan_allowed{'users'}{$user} and not defined $q->param("$user;wlan")) {
+				push @deny_wlan, $user;
+			}
 		}
-	
+		
+		eval {
+	       	Schulkonsole::Radius::wlan_on($id, $password,[],\@allow_wlan) if @allow_wlan;
+    	   	Schulkonsole::Radius::wlan_off($id, $password,[],\@deny_wlan) if @deny_wlan;
+		};
+		if ($@) {
+			$sk_session->standard_error_handling($this_file, $@);
+		}
+		
 		$sk_session->set_status(
 			$sk_session->d()->get("&Auml;nderungen &uuml;bernommen."), 0);
 	
@@ -226,27 +238,52 @@ if ($group_session) {
 	
 	# collect data for output
 	eval {
-	my $wlan_allowed =
-		Schulkonsole::Radius::allowed_groups_users_wlan($id, $password);
-        my $group_name = $group;
-        my $group_wlan = $$wlan_allowed{'groups'}{$group}? 1 : 0;
-        if ($group_wlan) {
-            $sk_session->set_var('group_wlan', 'on');
-        }
-    };
-	
-=item C<group_name>
-	
-Group name.
+		my $wlan_allowed =
+			Schulkonsole::Radius::allowed_groups_users_wlan($id, $password);
 
-=item C<group_wlan>
+		my @members;
+		foreach my $user (sort {
+			$$member_userdatas{$a}{surname} cmp $$member_userdatas{$b}{surname} }
+			keys %$member_userdatas) {
+		
+			my $member = {
+				login => $user,
+				firstname => $$member_userdatas{$user}{firstname},
+				surname => $$member_userdatas{$user}{surname},
+				wlan => $$wlan_allowed{'users'}{$user}? 1 : 0,
+			};
+			push @members, $member;
+		}
 	
-True if the wlan access is on
-	
+=item C<members>
+
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=item C<wlan>
+
+The user's wlan status (allowed-1/forbidden-0)
+
 =back
-	
+
 =cut
 
+	$sk_session->set_var('members', \@members);
+	
+	};
 	if ($@) {
 		$sk_session->standard_error_handling($this_file, $@);
 	}
@@ -364,13 +401,6 @@ Start a lesson in the room (and allow changes to network and share settings)
 =item C<acceptlesson>
 
 Accept new wlan settings
-
-=over
-
-=item C<group;wlan>
-
-Checkbox created for template variable C<group_wlan>.
-True if the group shall access the wlan
 
 =back
 

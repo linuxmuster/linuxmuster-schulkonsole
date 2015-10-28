@@ -30,6 +30,7 @@ use lib '/usr/share/schulkonsole';
 use Time::Local;
 use POSIX;
 use Schulkonsole::Config;
+use Schulkonsole::DB;
 use Schulkonsole::Session;
 use Schulkonsole::Radius;
 use Schulkonsole::Sophomorix;
@@ -72,6 +73,8 @@ if (   not $class
 
 $sk_session->param('group',$class);
 $sk_session->param('groupkind','Klasse');
+
+my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
 
 =head2 Form fields
 
@@ -120,20 +123,29 @@ if ($group_session) {
 		}
 	
 		my $wlan_allowed = Schulkonsole::Radius::allowed_groups_users_wlan($id, $password);
-
-		if ($q->param("group;wlan")) {
-                    if (not $$wlan_allowed{'groups'}{$group}) {
-                    	Schulkonsole::Radius::wlan_on($id, $password,[$group],[]);
-                    }
-		} else {
-                    if ($$wlan_allowed{'groups'}{$group}) {
-                    	Schulkonsole::Radius::wlan_off($id, $password,[$group],[]);
-                    }
+		
+		my @allow_wlan;
+		my @deny_wlan;
+		
+		foreach my $user (keys %$class_userdatas){
+			if ($q->param("$user;wlan") and not $$wlan_allowed{'users'}{$user}) {
+				push @allow_wlan, $user;
+			} elsif ($$wlan_allowed{'users'}{$user} and not defined $q->param("$user;wlan")) {
+				push @deny_wlan, $user;
+			}
+		}
+		
+		eval {
+	       	Schulkonsole::Radius::wlan_on($id, $password,[],\@allow_wlan) if @allow_wlan;
+    	   	Schulkonsole::Radius::wlan_off($id, $password,[],\@deny_wlan) if @deny_wlan;
+		};
+		if ($@) {
+			$sk_session->standard_error_handling($this_file, $@);
 		}
 	
 		$sk_session->set_status(
 			$sk_session->d()->get("&Auml;nderungen &uuml;bernommen."), 0);
-	
+			
 	} elsif ($q->param('start_lesson')) {
 		if ($group_session->param('edit')) {
 			$sk_session->set_status(
@@ -222,26 +234,50 @@ if ($group_session) {
 	
 	# collect data for output
 	eval {
-	my $wlan_allowed =
-		Schulkonsole::Radius::allowed_groups_users_wlan($id, $password);
+		my $wlan_allowed =
+			Schulkonsole::Radius::allowed_groups_users_wlan($id, $password);
 
-        my $group_name = $group;
-        my $group_wlan = $$wlan_allowed{'groups'}{$group}? 1 : 0;
-        if ($group_wlan) {
-            $sk_session->set_var('group_wlan', 'on');
-        }
+		my @students;
+		foreach my $user (sort {
+			$$class_userdatas{$a}{surname} cmp $$class_userdatas{$b}{surname} }
+			keys %$class_userdatas) {
+		
+			my $student = {
+				login => $user,
+				firstname => $$class_userdatas{$user}{firstname},
+				surname => $$class_userdatas{$user}{surname},
+				wlan => $$wlan_allowed{'users'}{$user}? 1 : 0,
+			};
+			push @students, $student;
+		}
 	
-=item C<group_name>
-	
-Group name.
+=item C<students>
 
-=item C<group_wlan>
-	
-True if the wlan access is on
-	
+An array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The login of a user
+
+=item C<firstname>
+
+The user's first name
+
+=item C<surname>
+
+The user's surname
+
+=item C<wlan>
+
+The user's wlan status (allowed-1/forbidden-0)
+
 =back
-	
+
 =cut
+
+	$sk_session->set_var('students', \@students);
 
 	};
 	if ($@) {

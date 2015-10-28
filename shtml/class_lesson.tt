@@ -85,47 +85,41 @@
 </form>
 
 
-[% IF edit %]
+<h3>[% loc('Übersicht') %]</h3>
 
-	<h3>[% loc('Übersicht') %]</h3>
-	
-	<form method="post" accept-charset="UTF-8">
-	<table id="lessonoverview" class="liste">
-	<tr>
-	<th>[% loc('WLAN') %]</th>
+<form method="post" accept-charset="UTF-8">
+<table id="lessonoverview" class="liste">
+<tr>
+<th>[% loc('Nr.') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Name') %]</th>
+<th>[% loc('WLAN') %]</th>
+</tr>
+[% lfdnr = 1 %]
+[% FOREACH s IN students %]
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+	<td class="lfdnr">[% lfdnr %].</td>
+	<td>[% s.login %]</td>
+	<td>[% s.firstname %] [% s.surname %]</td>
+	<td><input type="checkbox" name="[% s.login %];wlan"
+	[% IF ! edit %] disabled[% END %]
+	[% IF s.wlan %] checked[% wlanstatus = 1 %][% END %]></td>
 	</tr>
-	<tr class="odd">
-	<td>
-	[% IF group_wlan %]
-		<input type="checkbox" name="group;wlan" checked>
-	[% ELSE %]
-		<input type="checkbox" name="group;wlan">
-	[% END %]
-	</td>
-	</tr>
-	</table>
-	<p><input type="submit" name="acceptlesson" value="[% loc('Änderungen übernehmen') %]"></p>
-	</form>
-	
-[% ELSE %]
-
-	<h3>[% loc('Übersicht') %]</h3>
-	
-	<form method="post" accept-charset="UTF-8">
-	<table id="lessonoverview" class="liste">
-	<tr>
-	<th>[% loc('WLAN') %]</th>
-	</tr>
-	<tr class="odd">
-	<td>
-	[% IF group_wlan %]
-		<input type="checkbox" disabled checked>
-	[% ELSE %]
-		<input type="checkbox" disabled>
-	[% END %]
-	</td>
-	</tr>
-	</table>
-	</form>
-
+	[% lfdnr = lfdnr + 1 %]
 [% END %]
+<tr>
+<td colspan="3"></td>
+<td>|</td>
+</tr>
+<tr class="quickselection">
+<td colspan="3">[% loc('Schnellauswahl') %]</td>
+<td><input class="button" type="button" 
+	value="[% IF wlanstatus %][% loc('Aus') %][% ELSE %][% loc('An') %][% END %]" 
+	name="wlan" onClick="check_uncheck(this)" checked
+[% IF ! edit %] disabled[% END %]></td>
+</tr>
+</table>
+<p><input type="submit" name="acceptlesson" value="[% loc('Änderungen übernehmen') %]"></p>
+
+</form>
+	
