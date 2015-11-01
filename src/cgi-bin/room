@@ -203,32 +203,42 @@ if ($room_session) {
 			}
 		}
 	
-		Schulkonsole::Firewall::internet_on(
-			$id, $password, @unblock_hosts_internet) if @unblock_hosts_internet;
-		Schulkonsole::Firewall::internet_off(
-			$id, $password, @block_hosts_internet) if @block_hosts_internet;
-	
-		Schulkonsole::Firewall::intranet_on(
-			$id, $password, @unblock_hosts_intranet) if @unblock_hosts_intranet;
-		Schulkonsole::Firewall::intranet_off(
-			$id, $password, @block_hosts_intranet) if @block_hosts_intranet;
-	
-		Schulkonsole::Firewall::urlfilter_on($id, $password, @filter_hosts)
-			if @filter_hosts;
-		Schulkonsole::Firewall::urlfilter_off($id, $password, @unfilter_hosts)
-			if @unfilter_hosts;
-	
-		if ($do_block_printer) {
-			Schulkonsole::Printer::printer_deny($id,
-				$password,
-				\%block_printer_users);
+		eval {
+		
+			Schulkonsole::Firewall::internet_on(
+				$id, $password, @unblock_hosts_internet) if @unblock_hosts_internet;
+			Schulkonsole::Firewall::internet_off(
+				$id, $password, @block_hosts_internet) if @block_hosts_internet;
+		
+			Schulkonsole::Firewall::intranet_on(
+				$id, $password, @unblock_hosts_intranet) if @unblock_hosts_intranet;
+			Schulkonsole::Firewall::intranet_off(
+				$id, $password, @block_hosts_intranet) if @block_hosts_intranet;
+		
+			Schulkonsole::Firewall::urlfilter_on($id, $password, @filter_hosts)
+				if @filter_hosts;
+			Schulkonsole::Firewall::urlfilter_off($id, $password, @unfilter_hosts)
+				if @unfilter_hosts;
+		
+			if ($do_block_printer) {
+				Schulkonsole::Printer::printer_deny($id,
+					$password,
+					\%block_printer_users);
+			}
+		
+			Schulkonsole::Sophomorix::shares_on($id, $password, @activate_shares)
+				if @activate_shares;
+			Schulkonsole::Sophomorix::shares_off($id, $password, @deactivate_shares)
+				if @deactivate_shares;
+
+		};
+		if($@){
+			$sk_session->set_status(
+				$sk_session->d()->get(
+					"Diese Funktion ist momentan durch einen anderen Benutzer gesperrt. Versuchen Sie es bitte in Kürze noch einmal."),
+					1);
+			last COMMANDS;
 		}
-	
-		Schulkonsole::Sophomorix::shares_on($id, $password, @activate_shares)
-			if @activate_shares;
-		Schulkonsole::Sophomorix::shares_off($id, $password, @deactivate_shares)
-			if @deactivate_shares;
-	
 	
 		$sk_session->set_status(
 			$sk_session->d()->get("&Auml;nderungen &uuml;bernommen."), 0);

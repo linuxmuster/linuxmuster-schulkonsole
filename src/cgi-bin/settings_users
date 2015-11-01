@@ -33,7 +33,8 @@ use Schulkonsole::Session;
 use Schulkonsole::Sophomorix;
 use Sophomorix::SophomorixAPI;
 use Sophomorix::SophomorixConfig;
-
+use LaTeX::Encode;
+use LaTeX::Decode;
 
 my $this_file = 'settings_users';
 
@@ -87,53 +88,24 @@ if (    @Conf::quota_filesystems
 
 # boolean values in sophomorix.conf are only defined if true in query
 # and are represented with $true and $false in sophomorix.conf
-
-=item C<filterstarclass>
-
-True if splan_sternchenklassen_filtern in F<sophomorix.conf> is true
-
-=item C<activaterandompasswordstudent>
-
-True if schueler_zufall_passwort in F<sophomorix.conf> is true
-
-=item C<activaterandompasswordteacher>
-
-True if lehrer_zufall_passwort in F<sophomorix.conf> is true
-
-=item C<changesmbpasswordstudent>
-
-True if student_samba_pw_must_change in F<sophomorix.conf> is true
-
-=item C<changesmbpasswordteacher>
-
-True if teacher_samba_pw_must_change in F<sophomorix.conf> is true
-
-=item C<activatequota>
-
-True if use_quota in F<sophomorix.conf> is true
-
-=item C<activatesshstudent>
-
-True if schueler_per_ssh in F<sophomorix.conf> is true
-
-=item C<activatesshteacher>
-
-True if lehrer_per_ssh in F<sophomorix.conf> is true
-
-=cut
-
 my %sophomorix_conf_bool_in_form = (
-	filterstarclass => 1,
-	activaterandompasswordstudent => 1,
-	activaterandompasswordteacher => 1,
-	changesmbpasswordstudent => 1,
-	changesmbpasswordteacher => 1,
-	activatequota => 1,
-	activatesshstudent => 1,
-	activatesshteacher => 1,
+	splan_sternchenklassen_filtern => 1,
+	schueler_zufall_passwort => 1,
+	lehrer_zufall_passwort => 1,
+	student_samba_pw_must_change => 1,
+	teacher_samba_pw_must_change => 1,
+	use_quota => 1,
+	schueler_per_ssh => 1,
+	lehrer_per_ssh => 1,
+	mailquota_warnings => 1,
+	mailquota_warnings_root => 1,
 );
 
-
+# strings for latex need to be converted
+my %latex_string = (
+	admins_print => 1,
+	schul_name => 1,
+);
 
 
 my %sophomorix_conf = read_sophomorix_conf();
@@ -148,7 +120,7 @@ if ($q->param('accept')) {
 	eval {
 	my @errors;
 	foreach my $param ($q->param) {
-		if (defined $sophomorix_conf{$param}) {
+		if (exists $sophomorix_conf{$param}) {
 			if ($sophomorix_conf_bool_in_form{$param}) {
 				if (not $sophomorix_conf{$param}) {
 					$sophomorix_conf_new{$param} = 1;
@@ -157,24 +129,24 @@ if ($q->param('accept')) {
 				my $value = $q->param($param);
 				if ($sophomorix_conf{$param} ne $value) {
 					CHECKVALUE: {
-					$param =~ /^birthlimit/ and do {
+					$param =~ /^geburts_jahreszahl/ and do {
 						if (   $value < 1900
 						    or $value > 3000) {
-							$sk_session->mark_input_error('birthlimitlow');
+							$sk_session->mark_input_error($param);
 							push @errors, $sk_session->d()->get(
-								'Geben Sie eine g&uuml;ltige 4-stellige Jahreszahl ein');
+								'Geben Sie eine gültige 4-stellige Jahreszahl ein');
 						}
 						last CHECKVALUE;
 					};
-					$param =~ /^randompasswordlength/ and do {
+					$param =~ /^zufall_passwort_anzahl/ and do {
 						if ($value < 1) {
 							$sk_session->mark_input_error($param);
 							push @errors, $sk_session->d()->get(
-								'Die Passwortl&auml;nge muss eine Zahl > 0 sein');
+								'Die Passwortlänge muss eine Zahl > 0 sein');
 						}
 						last CHECKVALUE;
 					};
-					$param =~ /^tolerate/ and do {
+					$param =~ /^(schueler|lehrer)_duldung_tage/ and do {
 						if ($value !~ /^\d+$/) {
 							$sk_session->mark_input_error($param);
 							push @errors, $sk_session->d()->get(
@@ -182,7 +154,7 @@ if ($q->param('accept')) {
 						}
 						last CHECKVALUE;
 					};
-					$param =~ /^deactivate/ and do {
+					$param =~ /^(schueler|lehrer)_deaktivierung_tage/ and do {
 						if ($value !~ /^\d+$/) {
 							$sk_session->mark_input_error($param);
 							push @errors, $sk_session->d()->get(
@@ -194,7 +166,7 @@ if ($q->param('accept')) {
 					$sophomorix_conf_new{$param} = $q->param($param);
 				}
 			}
-		} elsif (defined $quota_conf{$param}) {
+		} elsif (exists $quota_conf{$param}) {
 			my $value = $q->param($param);
 			$value =~ s/\s+//g;
 			if ($quota_conf{$param} ne $value) {
@@ -204,7 +176,7 @@ if ($q->param('accept')) {
 				}
 				$quota_conf_new{$param} = $value;
 			}
-		} elsif (defined $filesystem_conf{$param}) {
+		} elsif (exists $filesystem_conf{$param}) {
 			if (not $filesystem_conf{$param}) {
 				$filesystem_conf_new{$param} = 1;
 			}
@@ -234,13 +206,12 @@ if ($q->param('accept')) {
 		my $do_quota_set = 0;
 		my $do_quota_student = 0;
 		my $do_quota_teacher = 0;
-
 		if (%sophomorix_conf_new) {
 			my $lines = new_sophomorix_lines(\%sophomorix_conf_new);
 			Schulkonsole::Sophomorix::write_sophomorix_conf(
 				$id, $password, $lines);
 
-			$do_quota_set = 1 if exists $sophomorix_conf_new{activatequota};
+			$do_quota_set = 1 if exists $sophomorix_conf_new{use_quota};
 
 			$is_changed = 1;
 		}
@@ -277,7 +248,7 @@ if ($q->param('accept')) {
 				| ($do_quota_student << 2));
 
 			$sk_session->set_status(
-				$sk_session->d()->get('&Auml;nderungen &uuml;bernommen'), 0);
+				$sk_session->d()->get('Änderungen übernommen'), 0);
 		}
 	}
 	};
@@ -329,6 +300,13 @@ foreach my $key (keys %filesystem_conf) {
 	}
 }
 
+=item C<encodings>
+
+An array with the supported encodings
+
+=cut
+
+$sk_session->set_var('encodings', ['ascii','8859-1','8859-15','win1252','utf8']);
 
 
 $sk_session->print_page("$this_file.tt", $this_file);
@@ -352,103 +330,54 @@ Write the changes
 
 sub read_sophomorix_conf {
 
-=item C<birthlimitlow>
-
-corresponds to geburts_jahreszahl_start in F<sophomorix.conf>
-
-=item C<birthlimitup>
-
-corresponds to geburts_jahreszahl_stop in F<sophomorix.conf>
-
-=item C<birthlimitup>
-
-corresponds to geburts_jahreszahl_stop in F<sophomorix.conf>
-
-=item C<filterstarclass>
-
-corresponds to splan_sternchenklassen_filtern in F<sophomorix.conf>
-
-=item C<activaterandompasswordstudent>
-
-corresponds to schueler_zufall_passwort in F<sophomorix.conf>
-
-=item C<randompasswordlengthstudent>
-
-corresponds to zufall_passwort_anzahl_schueler in F<sophomorix.conf>
-
-=item C<activatesshstudent>
-
-corresponds to schueler_per_ssh in F<sophomorix.conf>
-
-=item C<changesmbpasswordstudent>
-
-corresponds to student_samba_pw_must_change in F<sophomorix.conf>
-
-=item C<activaterandompasswordteacher>
-
-corresponds to lehrer_zufall_passwort in F<sophomorix.conf>
-
-=item C<randompasswordlengthteacher>
-
-corresponds to zufall_passwort_anzahl_lehrer in F<sophomorix.conf>
-
-=item C<activatesshteacher>
-
-corresponds to lehrer_per_ssh in F<sophomorix.conf>
-
-=item C<changesmbpasswordteacher>
-
-corresponds to teacher_samba_pw_must_change in F<sophomorix.conf>
-
-=item C<toleratestudent>
-
-corresponds to schueler_duldung_tage in F<sophomorix.conf>
-
-=item C<tolerateteacher>
-
-corresponds to lehrer_duldung_tage in F<sophomorix.conf>
-
-=item C<deactivatestudent>
-
-corresponds to schueler_deaktivierung_tage in F<sophomorix.conf>
-
-=item C<deactivateteacher>
-
-corresponds to lehrer_deaktivierung_tage in F<sophomorix.conf>
-
-=item C<activatequota>
-
-corresponds to use_quota in F<sophomorix.conf>
-
-=cut
-
-	return (
-#		schoolname => $Conf::schul_name,
-		birthlimitlow => $Conf::geburts_jahreszahl_start,
-		birthlimitup => $Conf::geburts_jahreszahl_stop,
-#		swap_name => $Conf::vorname_nachname_tausch,
-#		student_per_class_min => $Conf::mindest_schueler_anzahl_pro_klasse,
-#		student_per_class_max => $Conf::maximale_schueler_anzahl_pro_klasse,
-		filterstarclass => ($Conf::splan_sternchenklassen_filtern eq $true),
-#		correctsemicolon => ($Conf::drei_strichpunkt eq $true),
-#		loginlengthfamilystudent => $Conf::schueler_login_nachname_zeichen,
-#		loginlengthfirststudent => $Conf::schueler_login_vorname_zeichen,
-		activaterandompasswordstudent => ($Conf::schueler_zufall_passwort eq $true),
-		randompasswordlengthstudent => $Conf::zufall_passwort_anzahl_schueler,
-		activatesshstudent => ($Conf::schueler_per_ssh eq $true),
-		changesmbpasswordstudent => ($Conf::student_samba_pw_must_change eq $true),
-		activaterandompasswordteacher => ($Conf::lehrer_zufall_passwort eq $true),
-		randompasswordlengthteacher => $Conf::zufall_passwort_anzahl_lehrer,
-		activatesshteacher => ($Conf::lehrer_per_ssh eq $true),
-		changesmbpasswordteacher => ($Conf::teacher_samba_pw_must_change eq $true),
-		toleratestudent => $Conf::schueler_duldung_tage,
-		tolerateteacher => $Conf::lehrer_duldung_tage,
-		deactivatestudent => $Conf::schueler_deaktivierung_tage,
-		deactivateteacher => $Conf::lehrer_deaktivierung_tage,
-#		mailaliaspattern => $Conf::mail_aliases,
-#		loglevel => $Conf::log_level,
-		activatequota => ($Conf::use_quota eq $true),
+	my %ret = (
+		schul_name => $Conf::schul_name,
+		server_fqdn_internal_print => $Conf::server_fqdn_internal_print,
+		server_fqdn_external_print => $Conf::server_fqdn_external_print,
+		smb_domain_print => $Conf::smb_domain_print,
+		moodle_url => $Conf::moodle_url,
+		admins_print => $Conf::admins_print,
+		geburts_jahreszahl_start => $Conf::geburts_jahreszahl_start,
+		geburts_jahreszahl_stop => $Conf::geburts_jahreszahl_stop,
+		vorname_nachname_tausch => $Conf::vorname_nachname_tausch,
+		mindest_schueler_anzahl_pro_klasse => $Conf::mindest_schueler_anzahl_pro_klasse,
+		maximale_schueler_anzahl_pro_klasse => $Conf::maximale_schueler_anzahl_pro_klasse,
+		splan_sternchenklassen_filtern => ($Conf::splan_sternchenklassen_filtern eq $true),
+		schueler_login_nachname_zeichen => $Conf::schueler_login_nachname_zeichen,
+		schueler_login_vorname_zeichen => $Conf::schueler_login_vorname_zeichen,
+		schueler_zufall_passwort => ($Conf::schueler_zufall_passwort eq $true),
+		zufall_passwort_anzahl_schueler => $Conf::zufall_passwort_anzahl_schueler,
+		schueler_per_ssh => ($Conf::schueler_per_ssh eq $true),
+		student_samba_pw_must_change => ($Conf::student_samba_pw_must_change eq $true),
+		lehrer_zufall_passwort => ($Conf::lehrer_zufall_passwort eq $true),
+		zufall_passwort_anzahl_lehrer => $Conf::zufall_passwort_anzahl_lehrer,
+		lehrer_per_ssh => ($Conf::lehrer_per_ssh eq $true),
+		teacher_samba_pw_must_change => ($Conf::teacher_samba_pw_must_change eq $true),
+		schueler_duldung_tage => $Conf::schueler_duldung_tage,
+		lehrer_duldung_tage => $Conf::lehrer_duldung_tage,
+		schueler_deaktivierung_tage => $Conf::schueler_deaktivierung_tage,
+		lehrer_deaktivierung_tage => $Conf::lehrer_deaktivierung_tage,
+		mail_aliases => $Conf::mail_aliases,
+		mailquota_warnings => ($Conf::mailquota_warnings eq $true),
+		mailquota_warn_percentage => $Conf::mailquota_warn_percentage,
+		mailquota_warn_kb => $Conf::mailquota_warn_kb,
+		mailquota_warnings_root => ($Conf::mailquota_warnings_root eq $true),
+		log_level => $Conf::log_level,
+		use_quota => ($Conf::use_quota eq $true),
+		encoding_students => $Conf::encoding_students,
+		encoding_students_extra => $Conf::encoding_students_extra,
+		encoding_courses_extra => $Conf::encoding_courses_extra,
+		encoding_teachers => $Conf::encoding_teachers,
+		lang => $Conf::lang,
+		teacher_group_name => $Conf::teacher_group_name,
+		teachers_alias_name => $Conf::teacher_alias_name,
+		teachers_alias_additions => $Conf::teachers_alias_additions,
+		alumni_alias_additions => $Conf::alumni_alias_additions,
 	);
+	foreach my $key (keys %latex_string) {
+		$ret{$key} = from_latex($ret{$key}) if defined $ret{$key};
+	}
+	return %ret;
 }
 
 
@@ -553,34 +482,6 @@ True if shares are accessible
 sub new_sophomorix_lines {
 	my $new = shift;
 
-	my %key_map = (
-#		schoolname => 'schul_name',
-		birthlimitlow => 'geburts_jahreszahl_start',
-		birthlimitup => 'geburts_jahreszahl_stop',
-#		swap_name => 'vorname_nachname_tausch',
-#		student_per_class_min => 'mindest_schueler_anzahl_pro_klasse',
-#		student_per_class_max => 'maximale_schueler_anzahl_pro_klasse',
-		filterstarclass => 'splan_sternchenklassen_filtern',
-#		correctsemicolon => 'drei_strichpunkt',
-#		loginlengthfamilystudent => 'schueler_login_nachname_zeichen',
-#		loginlengthfirststudent => 'schueler_login_vorname_zeichen',
-		activaterandompasswordstudent => 'schueler_zufall_passwort',
-		randompasswordlengthstudent => 'zufall_passwort_anzahl_schueler',
-		activatesshstudent => 'schueler_per_ssh',
-		changesmbpasswordstudent => 'student_samba_pw_must_change',
-		activaterandompasswordteacher => 'lehrer_zufall_passwort',
-		randompasswordlengthteacher => 'zufall_passwort_anzahl_lehrer',
-		activatesshteacher => 'lehrer_per_ssh',
-		changesmbpasswordteacher => 'teacher_samba_pw_must_change',
-		toleratestudent => 'schueler_duldung_tage',
-		tolerateteacher => 'lehrer_duldung_tage',
-		deactivatestudent => 'schueler_deaktivierung_tage',
-		deactivateteacher => 'lehrer_deaktivierung_tage',
-#		mailaliaspattern => 'mail_aliases',
-#		loglevel => 'log_level',
-		activatequota => 'use_quota',
-	);
-
 	if (open SOPHOMORIXCONF, '<',
 	         Schulkonsole::Encode::to_fs(
 	         	"$DevelConf::config_pfad/sophomorix.conf")) {
@@ -588,13 +489,12 @@ sub new_sophomorix_lines {
 		my %new = %$new;
 
 		while (my $line = <SOPHOMORIXCONF>) {
-			foreach my $new_key (keys %new) {
-				my $key = $key_map{$new_key};
-				next unless $key;
-
+			foreach my $key (keys %new) {
+				
 				if ($line =~ /^\s*\$$key\s*=/) {
-					my $value = $new{$new_key};
-					if ($sophomorix_conf_bool_in_form{$new_key}) {
+					my $value = $new{$key};
+					$value = to_latex($value) if defined $latex_string{$key};
+					if ($sophomorix_conf_bool_in_form{$key}) {
 						$line =
 							"\$$key = '" . ($value ? $true : $false) . "';\n";
 					} else {
@@ -604,7 +504,7 @@ sub new_sophomorix_lines {
 							$line = "\$$key = '$value';\n";
 						}
 					}
-					delete $new{$new_key};
+					delete $new{$key};
 
 					last;
 				}
@@ -616,11 +516,9 @@ sub new_sophomorix_lines {
 			push @lines, "# schulkonsole\n";
 
 			my $line;
-			foreach my $new_key (keys %new) {
-				my $key = $key_map{$new_key};
-				next unless $key;
-
-				my $value = $new{$new_key};
+			foreach my $key (keys %new) {
+				my $value = $new{$key};
+				$value = to_latex($value) if defined $latex_string{$key};
 				if ($value =~ /^\d+$/) {
 					$line = "\$$key = $value;\n";
 				} else {
@@ -638,8 +536,24 @@ sub new_sophomorix_lines {
 	}
 }
 
+sub to_latex {
+	my $string = shift;
+	# FIXME: conversion inserts spaces
+	$string = latex_encode($string);
+	$string =~ s/@/\\@/g;
+	return $string;
+}
 
-
+sub from_latex {
+	my $string = shift;
+	# FIXME: conversion with spaces
+	$string = latex_decode($string);
+	$string =~ s/\\\@/@/g;
+	# überflüssige Leerzeichen und geschweifte Klammern entfernen
+	$string =~ s/([ÄÖÜäöüß])\s/$1/g;
+	$string =~ s/\{\}//g;
+	return $string;
+}
 
 sub new_quota_lines {
 	my $new = shift;
