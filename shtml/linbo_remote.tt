@@ -158,13 +158,13 @@ $(document).ready(function(){
 });
 </script>
 <h4>[%loc('Befehle') %]</h4>
-<table class="liste">
+<table class="orderlist">
 <tr>
 <td>
-<textarea name="orders" id="orders" rows="20" cols="20"></textarea>
+<textarea name="orders" id="orders" rows="40" cols="50"></textarea>
 </td>
-<td vertical-align="middle">
-<input type="button" name="order_append" onclick="append_order()" value="&lt;-">
+<td style="vertical-align:middle;">
+<input type="button" name="order_append" onclick="append_order()" value="&larr;">
 </td>
 <td>
 <fieldset>
