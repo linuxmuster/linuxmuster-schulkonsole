@@ -101,7 +101,7 @@ $q->param('check') and do {
 		$teachin->read($id, $password);
 	} else {
 		$sk_session->set_status($sk_session->d()->get(
-			'Sie k&ouml;nnen die Benutzerdaten jetzt &uuml;bernehmen'), 0);
+			'Sie können die Benutzerdaten jetzt übernehmen'), 0);
 
 		$teachin->delete();
 	}

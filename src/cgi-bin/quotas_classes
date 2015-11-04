@@ -149,10 +149,10 @@ $q->param('acceptclasses') and do {
 
 
 		$sk_session->set_status($sk_session->d()->get(
-			'&Auml;nderungen &uuml;bernommen.'), 0);
+			'Änderungen übernommen.'), 0);
 	} else {
 		$sk_session->set_status($sk_session->d()->get(
-			'Keine &Auml;nderungen.'), 1);
+			'Keine Änderungen.'), 1);
 	}
 
 

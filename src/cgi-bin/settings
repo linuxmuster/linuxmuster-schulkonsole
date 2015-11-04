@@ -162,7 +162,7 @@ if ($q->param('accept')) {
 						    or $value > 3000) {
 							$sk_session->mark_input_error('birthlimitlow');
 							push @errors, $sk_session->d()->get(
-								'Geben Sie eine g&uuml;ltige 4-stellige Jahreszahl ein');
+								'Geben Sie eine gültige 4-stellige Jahreszahl ein');
 						}
 						last CHECKVALUE;
 					};
@@ -170,7 +170,7 @@ if ($q->param('accept')) {
 						if ($value < 1) {
 							$sk_session->mark_input_error($param);
 							push @errors, $sk_session->d()->get(
-								'Die Passwortl&auml;nge muss eine Zahl > 0 sein');
+								'Die Passwortlänge muss eine Zahl > 0 sein');
 						}
 						last CHECKVALUE;
 					};
@@ -276,7 +276,7 @@ if ($q->param('accept')) {
 				| ($do_quota_student << 2));
 
 			$sk_session->set_status(
-				$sk_session->d()->get('&Auml;nderungen &uuml;bernommen'), 0);
+				$sk_session->d()->get('Änderungen übernommen'), 0);
 		}
 	}
 	};

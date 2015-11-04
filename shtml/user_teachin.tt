@@ -58,11 +58,7 @@
 [% FOREACH u IN users %]
 <tr class="sameuser">
 <td>[% u.login %]</td>
-<td>[% IF u.delete %]
-<input type="radio" name="[% u.login %]_user" id="[% u.login %];[% u.id %]" value="[% loc('::') %]" checked>
-[% ELSE %]
-<input type="radio" name="[% u.login %]_user" id="[% u.login %];[% u.id %]" value="[% loc('') %]">
-[% END %]</td>
+<td><input type="radio" name="[% u.login %]_user" id="[% u.login %];[% u.id %]" value=""[% IF u.delete %] checked[% END %]></td>
 <td>[% u.class %]</td>
 <td><label [% labelfor("${u.login};${u.id}") %]>[% u.id %]</label></td>
 </tr>

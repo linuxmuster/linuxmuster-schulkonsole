@@ -61,7 +61,7 @@ $q->param('copy') and do {
 
 	if (not $src) {
 		$sk_session->set_status(
-			$sk_session->d()->get('Keine Gruppe ausgew&auml;hlt'),
+			$sk_session->d()->get('Keine Gruppe ausgewählt'),
 			1);
 		last SWITCHCOMMAND;
 	}
@@ -82,7 +82,7 @@ $q->param('copy') and do {
 	}
 	if ($dest !~ /^[a-z\d_]+$/) {
 		$sk_session->set_status(
-			$sk_session->d()->get('Ung&uuml;ltiger Zielgruppenname'),
+			$sk_session->d()->get('Ungültiger Zielgruppenname'),
 			1);
 		last SWITCHCOMMAND;
 	}
@@ -122,7 +122,7 @@ $q->param('create') and do {
 
 	my @errors;
 	if ($group !~ /^[a-z\d_]+$/) {
-		push @errors, $sk_session->d()->get('Ung&uuml;ltiger Gruppenname');
+		push @errors, $sk_session->d()->get('Ungültiger Gruppenname');
 		$sk_session->mark_input_error('group');
 	} elsif ($$groups{$group}) {
 		push @errors, $sk_session->d()->get(
@@ -132,11 +132,11 @@ $q->param('create') and do {
 
 	if (not $disk_size) {
 		push @errors, $sk_session->d()->get(
-		              	'Keine Festplattengr&ouml;&szlig;e angegeben');
+		              	'Keine Festplattengröße angegeben');
 		$sk_session->mark_input_error('disksize');
 	} elsif ($disk_size !~ /^\d+$/) {
 		push @errors, $sk_session->d()->get(
-		              	'Festplattengr&ouml;&szlig;e muss eine Zahl sein');
+		              	'Festplattengröße muss eine Zahl sein');
 		$sk_session->mark_input_error('disksize');
 	}
 
@@ -165,7 +165,7 @@ $q->param('create') and do {
 			$os_size_1 = 10;
 		} elsif ($os_size_1 !~ /^\d+$/) {
 			push @errors, sprintf($sk_session->d()->get(
-			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 1 muss eine Zahl sein'),
+			                      	'Größe für Betriebssystem 1 muss eine Zahl sein'),
 			                      $os_template_1);
 			$sk_session->mark_input_error('os1');
 			$os_size_1 = 10;
@@ -192,7 +192,7 @@ $q->param('create') and do {
 			$os_size_2 = 10;
 		} elsif ($os_size_2 !~ /^\d+$/) {
 			push @errors, sprintf($sk_session->d()->get(
-			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 2 muss eine Zahl sein'),
+			                      	'Größe für Betriebssystem 2 muss eine Zahl sein'),
 			                      $os_template_2);
 			$sk_session->mark_input_error('os2');
 			$os_size_2 = 10;
@@ -219,7 +219,7 @@ $q->param('create') and do {
 			$os_size_3 = 10;
 		} elsif ($os_size_3 !~ /^\d+$/) {
 			push @errors, sprintf($sk_session->d()->get(
-			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 3 muss eine Zahl sein'),
+			                      	'Größe für Betriebssystem 3 muss eine Zahl sein'),
 			                      $os_template_3);
 			$sk_session->mark_input_error('os3');
 			$os_size_3 = 10;
@@ -246,7 +246,7 @@ $q->param('create') and do {
 			$os_size_4 = 10;
 		} elsif ($os_size_4 !~ /^\d+$/) {
 			push @errors, sprintf($sk_session->d()->get(
-			                      	'Gr&ouml;&szlig;e f&uuml;r Betriebssystem 4 muss eine Zahl sein'),
+			                      	'Größe für Betriebssystem 4 muss eine Zahl sein'),
 			                      $os_template_4);
 			$sk_session->mark_input_error('os4');
 			$os_size_4 = 10;
@@ -260,7 +260,7 @@ $q->param('create') and do {
 
 	if ($os_size_total * 1.7 >= $disk_size) {
 		push @errors, $sk_session->d()->get(
-		              	'Festplatte f&uuml;r die gew&auml;hlte Gruppenkonfiguration zu klein');
+		              	'Festplatte für die gewählte Gruppenkonfiguration zu klein');
 		$sk_session->mark_input_error('disksize');
 	}
 

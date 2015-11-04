@@ -119,7 +119,7 @@ $q->param('write') and do {
 
 	if (Schulkonsole::Sophomorix::teachin_check($id, $password)) {
 		$sk_session->set_status($sk_session->d()->get(
-			'Es sind noch nicht alle Verkn&uuml;pfungen eindeutig festgelegt'),
+			'Es sind noch nicht alle Verknüpfungen eindeutig festgelegt'),
 			 1);
 
 		$teachin->read($id, $password);
@@ -132,7 +132,7 @@ $q->param('write') and do {
 		$teachin->delete();
 
 		$sk_session->set_status_redirect($sk_session->d()->get(
-			'Sie k&ouml;nnen die Benutzerdaten jetzt &uuml;bernehmen'),
+			'Sie können die Benutzerdaten jetzt übernehmen'),
 			 0);
 
 		my $url = $q->url( -absolute => 1 );

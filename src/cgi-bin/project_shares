@@ -123,10 +123,10 @@ if ($q->param('acceptshares')) {
 			if @deactivate_shares;
 
 		$sk_session->set_status(
-			$sk_session->d()->get("&Auml;nderungen &uuml;bernommen."), 0);
+			$sk_session->d()->get("Änderungen übernommen."), 0);
 	} else {
 		$sk_session->set_status(
-			$sk_session->d()->get("Keine &Auml;nderungen."), 1);
+			$sk_session->d()->get("Keine Änderungen."), 1);
 	}
 	};
 	if ($@) {

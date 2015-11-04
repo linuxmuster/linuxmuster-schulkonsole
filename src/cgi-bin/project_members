@@ -92,12 +92,12 @@ $q->param('projectisopenaccept') and do {
 				$project,
 				1);
 			$sk_session->set_status($sk_session->d()->get(
-					'Das Projekt wurde ge&ouml;ffnet'),
+					'Das Projekt wurde geöffnet'),
 				0);
 			$is_joinable = 1;
 		} else {
 			$sk_session->set_status($sk_session->d()->get(
-					'Das Projekt ist bereits ge&ouml;ffnet'),
+					'Das Projekt ist bereits geöffnet'),
 				1);
 		}
 	} else {

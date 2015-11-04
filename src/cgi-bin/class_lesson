@@ -144,7 +144,7 @@ if ($group_session) {
 		}
 	
 		$sk_session->set_status(
-			$sk_session->d()->get("&Auml;nderungen &uuml;bernommen."), 0);
+			$sk_session->d()->get("Änderungen übernommen."), 0);
 			
 	} elsif ($q->param('start_lesson')) {
 		if ($group_session->param('edit')) {
@@ -175,7 +175,7 @@ if ($group_session) {
 			} else {
 				$sk_session->set_status(
 					$sk_session->d()->get(
-						"Sie d&uuml;rfen den Unterricht in dieser Klasse nicht beenden."),
+						"Sie dürfen den Unterricht in dieser Klasse nicht beenden."),
 					1);
 			}
 			last COMMANDS;
@@ -197,7 +197,7 @@ if ($group_session) {
 			} else {
 				$sk_session->set_status(
 					$sk_session->d()->get(
-						'Sie d&uuml;rfen den Unterricht in dieser Klasse nicht beenden.'),
+						'Sie dürfen den Unterricht in dieser Klasse nicht beenden.'),
 					1);
 			}
 			last COMMANDS;

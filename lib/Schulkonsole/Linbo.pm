@@ -1201,16 +1201,16 @@ sub handle_start_conf_errors {
 					my $code = $$errors{oss}{$n}{errors}{$key};
 					my $key_descr = ($key_descr{$key} || "\u$key");
 					if ($code == 1) {
-						push @errors, sprintf($session->d()->get('Leerer Wert f&uuml;r &#8222;%s&#8220; bei %s auf %s'),
+						push @errors, sprintf($session->d()->get('Leerer Wert für "%s" bei %s auf %s'),
 									$key_descr, $os_name, $dev);
 					} elsif ($code == 2) {
-						push @errors, sprintf($session->d()->get('Ung&uuml;ltige Zeichen f&uuml;r &#8222;%s&#8220; bei %s auf %s'),
+						push @errors, sprintf($session->d()->get('Ungültige Zeichen für "%s" bei %s auf %s'),
 									$key_descr, $os_name, $dev);
 					} elsif ($code == 10) {
-						push @errors, sprintf($session->d()->get('Name mit Version (&#8222;%s&#8220;) muss bei Betriebssystemen eindeutig sein.'), $os_name);
+						push @errors, sprintf($session->d()->get('Name mit Version ("%s") muss bei Betriebssystemen eindeutig sein.'), $os_name);
 					} else {
 						push @errors, sprintf($session->d()->get(
-						                      'Unbekannter Fehler f&uuml;r %s bei %s auf %s'),
+						                      'Unbekannter Fehler für %s bei %s auf %s'),
 											  $key,
 						                      $os_name, $dev);
 					}
@@ -1235,32 +1235,32 @@ sub handle_start_conf_errors {
 					} elsif ($code == 2) {
 						if ($key eq 'dev') {
 							push @errors, sprintf($session->d()->get(
-							                      '%s ist kein g&uuml;ltiger Devicename'), $dev);
+							                      '%s ist kein gültiger Devicename'), $dev);
 						} else {
-							push @errors, $session->d()->get('ung&uuml;ltige Zeichen');
+							push @errors, $session->d()->get('ungültige Zeichen');
 						}
 					} elsif ($code == 3) {
 						push @errors, sprintf($session->d()->get(
 						                      '%s wird mehrmals verwendet'), $dev);
 					} elsif ($code == 4) {
 						push @errors, sprintf($session->d()->get(
-						                      'F&uuml;r die Partition %s existiert keine erweiterte Partition'), $dev);
+						                      'Für die Partition %s existiert keine erweiterte Partition'), $dev);
 					} elsif ($code == 5) {
 						my ($disk) = $dev =~ /^(.+?)\d*$/;
 						push @errors, sprintf($session->d()->get(
-						                      'F&uuml;r %s existieren mehrere erweiterte Partitionen'), $disk);
+						                      'Für %s existieren mehrere erweiterte Partitionen'), $disk);
 					} elsif ($code == 6) {
 						push @errors, sprintf($session->d()->get(
 						                      'Die erweiterte Partition %s ist nicht erlaubt'), $dev);
 					} elsif ($code == 7) {
 						push @errors, sprintf($session->d()->get(
-						                      'Bei %s muss eine Gr&ouml;&szlig;e angegeben werden'), $dev);
+						                      'Bei %s muss eine Größe angegeben werden'), $dev);
 					} elsif ($code == 8) {
 						push @errors, sprintf($session->d()->get(
 						                      'Auf der Cachepartition %s darf kein Betriebssystem installiert sein'), $dev);
 					} elsif ($code == 10) {
 						push @errors, sprintf($session->d()->get(
-						                      'Die Cachepartition %s ben&ouml;tigt ein GNU/Linux-Dateisystem'), $dev);
+						                      'Die Cachepartition %s benötigt ein GNU/Linux-Dateisystem'), $dev);
 					} else {
 						push @errors, sprintf($session->d()->get(
 						                      'Unbekannter Fehler bei %s/%s'),
@@ -1274,7 +1274,7 @@ sub handle_start_conf_errors {
 				if ($$errors{$section}{$key} == 1) {
 					push @errors, $session->d()->get('leerer Wert');
 				} elsif ($$errors{$section}{$key} == 2) {
-					push @errors, $session->d()->get('ung&uuml;ltige Zeichen');
+					push @errors, $session->d()->get('ungültige Zeichen');
 				} else {	# short cut (error code is 3 => cache)
 					push @errors, $session->d()->get('keine Cachepartition');
 				}

@@ -250,7 +250,7 @@ An array with the hosts not selected for the printer
 		Schulkonsole::Files::import_printers($id, $password);
 
 		$sk_session->set_status_redirect($sk_session->d()->get(
-			'&Auml;nderungen &uuml;bernommen'), 0);
+			'Änderungen übernommen'), 0);
 	} elsif ($q->param("${printer}_accepthosts")) {
 		my %hosts_selected;
 		foreach my $host ($q->param('hostsselected')) {
@@ -265,7 +265,7 @@ An array with the hosts not selected for the printer
 
 			if ($$printers{$printer}{rooms}{$$hosts{$host}}) {
 				push @warnings, sprintf($sk_session->d()->get(
-					'%s ist schon &uuml;ber Raum %s zug&auml;nglich'),
+					'%s ist schon über Raum %s zugänglich'),
 					$host, $$hosts{$host});
 			} else {
 				push @printer_hosts, $host;
@@ -282,7 +282,7 @@ An array with the hosts not selected for the printer
 		Schulkonsole::Files::import_printers($id, $password);
 
 		$sk_session->set_status_redirect(join(', ', @warnings,
-			$sk_session->d()->get('&Auml;nderungen &uuml;bernommen')), 0);
+			$sk_session->d()->get('Änderungen übernommen')), 0);
 	}
 }
 };

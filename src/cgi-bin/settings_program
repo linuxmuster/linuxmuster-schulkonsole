@@ -125,7 +125,7 @@ if ($q->param('accept')) {
 			$id, $password, $lines);
 
 		$sk_session->set_status(
-			$sk_session->d()->get('&Auml;nderungen &uuml;bernommen'), 0);
+			$sk_session->d()->get('Änderungen übernommen'), 0);
 	}
 	};
 	if ($@) {

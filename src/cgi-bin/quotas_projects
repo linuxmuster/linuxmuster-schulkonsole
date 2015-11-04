@@ -150,10 +150,10 @@ $q->param('acceptprojects') and do {
 
 
 		$sk_session->set_status($sk_session->d()->get(
-			'&Auml;nderungen &uuml;bernommen.'), 0);
+			'Änderungen übernommen.'), 0);
 	} else {
 		$sk_session->set_status($sk_session->d()->get(
-			'Keine &Auml;nderungen.'), 1);
+			'Keine Änderungen.'), 1);
 	}
 
 
@@ -183,7 +183,7 @@ $q->param('acceptusers') and do {
 			last COMMANDS;
 		} elsif ($$users{$login}) {
 			$sk_session->set_status(sprintf($sk_session->d()->get(
-					'F&uuml;r Benutzer %s gibt es bereits einen Eintrag'),
+					'Für Benutzer %s gibt es bereits einen Eintrag'),
 					$login),
 				1);
 			last COMMANDS;
@@ -276,11 +276,11 @@ $q->param('acceptusers') and do {
 		Schulkonsole::Sophomorix::process_quota($id, $password, 8);
 
 		$sk_session->set_status($sk_session->d()->get(
-			'&Auml;nderungen &uuml;bernommen.'), 0);
+			'Änderungen übernommen.'), 0);
 		$q->delete(@processed_params);
 	} else {
 		$sk_session->set_status($sk_session->d()->get(
-			'Keine &Auml;nderungen.'), 1);
+			'Keine Änderungen.'), 1);
 	}
 
 

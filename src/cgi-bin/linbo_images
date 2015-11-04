@@ -83,10 +83,10 @@ $q->param('delete') and do {
 	$images = Schulkonsole::Linbo::images();
 	if (not $$images{$image}) {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
-			'%s gel&ouml;scht'), $image), 0);
+			'%s gelöscht'), $image), 0);
 	} else {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
-			'%s konnte nicht gel&ouml;scht werden'), $image), 0);
+			'%s konnte nicht gelöscht werden'), $image), 0);
 	}
 
 	last SWITCHCOMMAND;
@@ -115,7 +115,7 @@ $q->param('delete') and do {
 
 	if (not $new_image) {
 		$sk_session->set_status($sk_session->d()->get(
-			'Geben Sie einen Namen f&uuml;r das neue Image an'),
+			'Geben Sie einen Namen für das neue Image an'),
 			1);
 		$sk_session->mark_input_error("${image}_newimage");
 		last SWITCHCOMMAND;
@@ -230,7 +230,7 @@ foreach my $param ($q->param) {
 					}
 				} else {
 					$sk_session->set_status(sprintf($sk_session->d()->get(
-					 	'Kann Datei %s nicht &ouml;ffnen'), $image_desc),
+					 	'Kann Datei %s nicht öffnen'), $image_desc),
 						1);
 
 					last SWITCHCOMMAND;
@@ -281,7 +281,7 @@ Contents of the <image>.info file, if the action C<info> has been selected.
 				}
 			} else {
 				$sk_session->set_status(sprintf($sk_session->d()->get(
-				 	'Kann Datei %s nicht &ouml;ffnen'), $image_info),
+				 	'Kann Datei %s nicht öffnen'), $image_info),
 					1);
 
 				last SWITCHCOMMAND;
@@ -324,7 +324,7 @@ Contents of the <image>.list file, if the action C<list> has been selected.
 					}
 				} else {
 					$sk_session->set_status(sprintf($sk_session->d()->get(
-					 	'Kann Datei %s nicht &ouml;ffnen'), $image_list),
+					 	'Kann Datei %s nicht öffnen'), $image_list),
 						1);
 	
 					last SWITCHCOMMAND;
@@ -344,7 +344,7 @@ Contents of the <image>.list file, if the action C<list> has been selected.
 
 			if (not $new_image) {
 				$sk_session->set_status($sk_session->d()->get(
-					'Geben Sie einen Namen f&uuml;r das neue Image an'),
+					'Geben Sie einen Namen für das neue Image an'),
 					1);
 				$sk_session->mark_input_error("${image}_newimage");
 				last SWITCHCOMMAND;
@@ -420,7 +420,7 @@ Name of image to delete, if the submit button C<delete> has been selected.
 			$sk_session->set_var('deleteimage', $image);
 			$is_action = 1;
 
-			$sk_session->set_status('Bitte best&auml;tigen', 0);
+			$sk_session->set_status('Bitte bestätigen', 0);
 			last SWITCHCOMMAND;
 		};
 

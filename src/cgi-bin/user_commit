@@ -92,7 +92,7 @@ $q->param('all') and do {
 	Schulkonsole::Sophomorix::users_addmovekill($id, $password);
 
 	$sk_session->set_status($sk_session->d()->get(
-		'Anlegen, L&ouml;schen und Versetzen wurden gestartet'), 0);
+		'Anlegen, Löschen und Versetzen wurden gestartet'), 0);
 
 	$running{add} = 1;
 
@@ -101,7 +101,7 @@ $q->param('all') and do {
 $q->param('add') and do {
 	if ($running{add}) {
 		$sk_session->set_status(
-			$sk_session->d()->get('Anlegen l&auml;uft schon'), 1);
+			$sk_session->d()->get('Anlegen läuft schon'), 1);
 	} else {
 		my $log_file = Schulkonsole::Sophomorix::users_add($id, $password);
 		$sk_session->param('logfileadd', $log_file);
@@ -129,7 +129,7 @@ Output of C<sophomorix-add>
 	};
 	if ($@) {
 		$sk_session->set_status(
-			$sk_session->d()->get('Kann Logdatei nicht &ouml;ffnen'), 1);
+			$sk_session->d()->get('Kann Logdatei nicht öffnen'), 1);
 	}
 
 	last COMMANDS;
@@ -137,7 +137,7 @@ Output of C<sophomorix-add>
 $q->param('move') and do {
 	if ($running{move}) {
 		$sk_session->set_status(
-			$sk_session->d()->get('Versetzen l&auml;uft schon'), 1);
+			$sk_session->d()->get('Versetzen läuft schon'), 1);
 	} else {
 		my $log_file = Schulkonsole::Sophomorix::users_move($id, $password);
 		$sk_session->param('logfilemove', $log_file);
@@ -165,7 +165,7 @@ Output of C<sophomorix-move>
 	};
 	if ($@) {
 		$sk_session->set_status(
-			$sk_session->d()->get('Kann Logdatei nicht &ouml;ffnen'), 1);
+			$sk_session->d()->get('Kann Logdatei nicht öffnen'), 1);
 	}
 
 	last COMMANDS;
@@ -173,13 +173,13 @@ Output of C<sophomorix-move>
 $q->param('kill') and do {
 	if ($running{kill}) {
 		$sk_session->set_status(
-			$sk_session->d()->get('L&ouml;schen l&auml;uft schon'), 1);
+			$sk_session->d()->get('Löschen läuft schon'), 1);
 	} else {
 		my $lock_file = Schulkonsole::Sophomorix::users_kill($id, $password);
 		$sk_session->param('logfilekill', $lock_file);
 
 		$sk_session->set_status(
-			$sk_session->d()->get('L&ouml;schen wurde gestartet'), 0);
+			$sk_session->d()->get('Löschen wurde gestartet'), 0);
 
 		$running{kill} = 1;
 	}
@@ -201,7 +201,7 @@ Output of C<sophomorix-kill>
 	};
 	if ($@) {
 		$sk_session->set_status(
-			$sk_session->d()->get('Kann Logdatei nicht &ouml;ffnen'), 1);
+			$sk_session->d()->get('Kann Logdatei nicht öffnen'), 1);
 	}
 
 	last COMMANDS;

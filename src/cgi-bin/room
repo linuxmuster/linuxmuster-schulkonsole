@@ -241,7 +241,7 @@ if ($room_session) {
 		}
 	
 		$sk_session->set_status(
-			$sk_session->d()->get("&Auml;nderungen &uuml;bernommen."), 0);
+			$sk_session->d()->get("Änderungen übernommen."), 0);
 	
 	} elsif ($q->param('acceptprinter')) {
 		if (not $room_session->info('is_editing')) {
@@ -280,7 +280,7 @@ if ($room_session) {
 	
 	
 		$sk_session->set_status(
-			$sk_session->d()->get("&Auml;nderungen &uuml;bernommen."), 0);
+			$sk_session->d()->get("Änderungen übernommen."), 0);
 	
 	} elsif ($q->param('start_lesson')) {
 		if ($room_session->param('edit')) {
@@ -311,7 +311,7 @@ if ($room_session) {
 			} else {
 				$sk_session->set_status(
 					$sk_session->d()->get(
-						"Sie d&uuml;rfen den Unterricht in diesem Raum nicht beenden."),
+						"Sie dürfen den Unterricht in diesem Raum nicht beenden."),
 					1);
 			}
 			last COMMANDS;
@@ -343,7 +343,7 @@ if ($room_session) {
 			} else {
 				$sk_session->set_status(
 					$sk_session->d()->get(
-						'Sie d&uuml;rfen den Unterricht in diesem Raum nicht beenden.'),
+						'Sie dürfen den Unterricht in diesem Raum nicht beenden.'),
 					1);
 			}
 			last COMMANDS;

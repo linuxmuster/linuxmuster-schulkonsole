@@ -127,7 +127,7 @@ $q->param('create') and do {
 			$is_action = 1;
 		} else {
 			$sk_session->set_status(sprintf($sk_session->d()->get(
-				'Kann Datei %s nicht &ouml;ffnen'), "$image.reg"),
+				'Kann Datei %s nicht öffnen'), "$image.reg"),
 			1);
 
 		}
@@ -160,10 +160,10 @@ $q->param('delete') and do {
 	$regpatches = Schulkonsole::Linbo::regpatches();
 	if (not $$regpatches{$filename}) {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
-			'%s gel&ouml;scht'), $filename), 0);
+			'%s gelöscht'), $filename), 0);
 	} else {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
-			'%s konnte nicht gel&ouml;scht werden'), $filename), 0);
+			'%s konnte nicht gelöscht werden'), $filename), 0);
 	}
 
 	last SWITCHCOMMAND;
@@ -242,7 +242,7 @@ The contents of the file are in the query parameter C<regpatch>.
 				$is_action = 1;
 			} else {
 				$sk_session->set_status(sprintf($sk_session->d()->get(
-					'Kann Datei %s nicht &ouml;ffnen'), $regpatch),
+					'Kann Datei %s nicht öffnen'), $regpatch),
 					1);
 
 			}
@@ -260,7 +260,7 @@ Name of a file to delete, if <command> is C<delete>.
 			$sk_session->set_var('deletefilename', $regpatch);
 			$is_action = 1;
 
-			$sk_session->set_status('Bitte best&auml;tigen', 0);
+			$sk_session->set_status('Bitte bestätigen', 0);
 			last SWITCHCOMMAND;
 		}
 	}

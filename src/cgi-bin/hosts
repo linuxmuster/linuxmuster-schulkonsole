@@ -67,7 +67,7 @@ COMMANDS: {
 $q->param('accept') and do {
     if ($running{wsimport}) {
             $sk_session->set_status(
-                    $sk_session->d()->get('Import l&auml;uft bereits'), 1);
+                    $sk_session->d()->get('Import läuft bereits'), 1);
     } else {
         my ($oldcomments,$old) = Schulkonsole::Config::workstations();
         my %new;
@@ -230,12 +230,12 @@ $q->param('accept') and do {
                     }
                 }
                 $status .=
-                    $sk_session->d()->get('&Auml;nderungen &uuml;bernommen.');
+                    $sk_session->d()->get('Änderungen übernommen.');
                 $is_error = 0;
 
                 $q->delete_all();
             } else {
-                $status .= $sk_session->d()->get('Keine &Auml;nderungen.');
+                $status .= $sk_session->d()->get('Keine Änderungen.');
                 $is_error = 1;
             }
 
@@ -263,7 +263,7 @@ $q->param('addrows') and do {
 $q->param('import') and do {
     if ($running{wsimport}) {
             $sk_session->set_status(
-                    $sk_session->d()->get('Import l&auml;uft bereits'), 1);
+                    $sk_session->d()->get('Import läuft bereits'), 1);
     } else {
         if (Schulkonsole::Config::count_unimported_unconfigured_workstations()) {
             my $id = $sk_session->userdata('id');
@@ -304,7 +304,7 @@ Output of C<import_workstations>
         };
         if ($@) {
             $sk_session->set_status(
-                    $sk_session->d()->get('Kann Logdatei nicht &ouml;ffnen'), 1);
+                    $sk_session->d()->get('Kann Logdatei nicht öffnen'), 1);
         }
 
         last COMMANDS;
@@ -464,14 +464,14 @@ sub syntax_check {
     return 1 unless $id;
 
     my @errors;
-    push @errors, $sk_session->d()->get('ung&uuml;ltiger Raumname')
+    push @errors, $sk_session->d()->get('ungültiger Raumname')
         if (   $room !~ /^[a-z\d\.\-]+$/i
             or $room eq 'default');
-    push @errors, $sk_session->d()->get('ung&uuml;ltiger Name')
+    push @errors, $sk_session->d()->get('ungültiger Name')
         unless $name =~ /^[a-z\d\-]+$/;
-    push @errors, $sk_session->d()->get('ung&uuml;ltige Gruppen')
+    push @errors, $sk_session->d()->get('ungültige Gruppen')
         unless ($groups =~ /^[a-z\d_]+(,[a-z\d_]+)*$/);
-    push @errors, $sk_session->d()->get('ung&uuml;ltige MAC')
+    push @errors, $sk_session->d()->get('ungültige MAC')
         unless $mac =~ /^[A-Fa-f\d]{2}(:[A-Fa-f\d]{2}){5}$/;
     my (@ip) = $ip =~ /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
     if (   not @ip
@@ -479,9 +479,9 @@ sub syntax_check {
         or $ip[1] > 255
         or $ip[2] > 255
         or $ip[3] > 255) {
-        push @errors, $sk_session->d()->get('ung&uuml;ltige IP');
+        push @errors, $sk_session->d()->get('ungültige IP');
     }
-    push @errors, $sk_session->d()->get('ung&uuml;ltige Optionen')
+    push @errors, $sk_session->d()->get('ungültige Optionen')
         unless $opts =~ /^(|noudma|unicast|noudma,unicast)$/;
 
     if (@errors) {

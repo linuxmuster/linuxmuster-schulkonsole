@@ -120,11 +120,11 @@ $q->param('acceptteachers') and do {
 		Schulkonsole::Sophomorix::process_quota($id, $password, 2);
 
 		$sk_session->set_status($sk_session->d()->get(
-			'&Auml;nderungen &uuml;bernommen.'), 0);
+			'Änderungen übernommen.'), 0);
 		$q->delete(@processed_params);
 	} else {
 		$sk_session->set_status($sk_session->d()->get(
-			'Keine &Auml;nderungen.'), 1);
+			'Keine Änderungen.'), 1);
 	}
 
 

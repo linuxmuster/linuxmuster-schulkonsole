@@ -102,7 +102,7 @@ if ($q->param('starttest')) {
 			$room_session->change_workstation_passwords(
 				$id, $password, $workstation_password);
 			$sk_session->set_status_redirect(
-				 $sk_session->d()->get('Workstationpasswort ge&auml;ndert.'),
+				 $sk_session->d()->get('Workstationpasswort geändert.'),
 				 0);
 
 

@@ -300,7 +300,7 @@ COMMANDS: {
 			$sk_session->set_status(
 					($error ? "$error<br>" : '')
 					. $sk_session->d()->get(
-					  	'Keine neuen Mitglieder ausgew&auml;hlt'),
+					  	'Keine neuen Mitglieder ausgewählt'),
 				1);
 		}
 

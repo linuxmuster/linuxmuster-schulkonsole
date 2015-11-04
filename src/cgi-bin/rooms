@@ -171,7 +171,7 @@ $q->param('accept') and do {
 	$q->delete_all();
 
 	$sk_session->set_status($sk_session->d()->get(
-		'&Auml;nderungen &uuml;bernommen'), 0);
+		'Änderungen übernommen'), 0);
 
 
 	last COMMANDS;
@@ -193,7 +193,7 @@ $q->param('reset') and do {
 	if ($is_reset_all = $q->param('reset_all')) {
 		if (%$defaults == 1) {
 			$sk_session->set_status($sk_session->d()->get(
-				'Es gibt keine Eintr&auml;ge f&uuml;r R&auml;ume oder Rechner'),
+				'Es gibt keine Einträge für Räume oder Rechner'),
 				1);
 			last COMMANDS;
 		}
@@ -221,7 +221,7 @@ $q->param('reset') and do {
 	         or @rooms_reset
 	         or @hosts_reset)) {
 		$sk_session->set_status($sk_session->d()->get(
-			'Nichts ausgew&auml;hlt'), 1);
+			'Nichts ausgewählt'), 1);
 		last COMMANDS;
 	}
 
@@ -233,7 +233,7 @@ $q->param('reset') and do {
 
 
 	$sk_session->set_status($sk_session->d()->get(
-		'Auswahl zur&uuml;ckgesetzt'), 0);
+		'Auswahl zurückgesetzt'), 0);
 
 	last COMMANDS;
 };

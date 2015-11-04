@@ -152,7 +152,7 @@ $q->param('teachersupload') and do {
 			$sk_session->set_status(
 				  $sk_session->d()->get('Datei hochgeladen.')
 				. ' '
-				.  $sk_session->d()->get('Die Benutzerdaten m&uuml;ssen noch in das System &uuml;bernommen werden.'),
+				.  $sk_session->d()->get('Die Benutzerdaten müssen noch in das System übernommen werden.'),
 				0);
 
 		} else {
@@ -178,7 +178,7 @@ $q->param('acceptteachers') and do {
 					$action =~ /^b/ and do {
 						if ($value !~ /^\s*\d{1,2}\.\d{1,2}\.\d{4}\s*$/) {
 							push @errors, sprintf($sk_session->d()->get(
-								'ung&uuml;tiges Geburtsdatum f&uuml;r %s'),
+								'ungültiges Geburtsdatum für %s'),
 								$key);
 
 							$sk_session->mark_input_error("${key}_birthdate");
@@ -222,9 +222,9 @@ $q->param('acceptteachers') and do {
 		put_teachers($teachers);
 
 		$sk_session->set_status(
-			  $sk_session->d()->get('&Auml;nderungen &uuml;bernommen')
+			  $sk_session->d()->get('Änderungen übernommen')
 			. ' '
-			. $sk_session->d()->get('Die Benutzerdaten m&uuml;ssen noch in das System &uuml;bernommen werden.'),
+			. $sk_session->d()->get('Die Benutzerdaten müssen noch in das System übernommen werden.'),
 			0);
 	}
 
@@ -266,7 +266,7 @@ $q->param('newteacher') and do {
 
 	if ($birthdate !~ /^\s*\d{1,2}\.\d{1,2}\.\d{4}\s*$/) {
 		push @errors, $sk_session->d()->get(
-			'verwenden Sie f&uuml;r das Geburtsdatum das Format TT.MM.JJJJ');
+			'verwenden Sie für das Geburtsdatum das Format TT.MM.JJJJ');
 
 		$sk_session->mark_input_error('newbirthdate');
 	}

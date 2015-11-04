@@ -80,7 +80,7 @@ if ($q->param('collectmove')) {
 
 
 
-$sk_session->set_status($sk_session->d()->get('Bitte best&auml;tigen'), 0);
+$sk_session->set_status($sk_session->d()->get('Bitte bestätigen'), 0);
 
 
 $room_session->set_vars($sk_session);

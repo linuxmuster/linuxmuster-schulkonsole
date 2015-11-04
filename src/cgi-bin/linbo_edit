@@ -85,10 +85,10 @@ if ($filecmd eq 'delete') {
         
         if (not $$groups{$group}) {
                 $sk_session->set_status(sprintf($sk_session->d()->get(
-                        'start.conf.%s gel&ouml;scht'), $group), 0);
+                        'start.conf.%s gelöscht'), $group), 0);
         } else {
                 $sk_session->set_status(sprintf($sk_session->d()->get(
-                        'start.conf.%s konnte nicht gel&ouml;scht werden'), $group), 0);
+                        'start.conf.%s konnte nicht gelöscht werden'), $group), 0);
         }
     }
 }

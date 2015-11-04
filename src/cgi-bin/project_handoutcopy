@@ -127,7 +127,7 @@ eval {
 				}
 			} else {
 				$sk_session->set_status($sk_session->d()->get(
-					'Keine Benutzer ausgew&auml;hlt'), 1);
+					'Keine Benutzer ausgewählt'), 1);
 			}
 			last SWITCHCOMMAND;
 		};

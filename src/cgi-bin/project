@@ -102,7 +102,7 @@ if ($q->param('createproject')) {
 	if (not $projectname) {
 		$sk_session->mark_input_error('projectname');
 		$sk_session->set_status($sk_session->d()->get(
-			'Sie m&uuml;ssen einen Projektnamen angeben.'),
+			'Sie müssen einen Projektnamen angeben.'),
 			1);
 		last COMMANDS;
 	}
@@ -183,7 +183,7 @@ if ($q->param('createproject')) {
 			if (not $$all_projects{$old_project}{joinable}) {
 				$sk_session->set_status(
 					sprintf($sk_session->d()->get(
-						'Sie d&uuml;rfen die Benutzerliste von %s nicht &auml;ndern'),
+						'Sie dürfen die Benutzerliste von %s nicht ändern'),
 						$$projects{$old_project}{displayname}),
 					1);
 				last COMMANDS;
@@ -251,7 +251,7 @@ if ($q->param('createproject')) {
 
 			if (not $q->param('ok')) {
 				$sk_session->set_status(
-					$sk_session->d()->get('Bitte best&auml;tigen'),0);
+					$sk_session->d()->get('Bitte bestätigen'),0);
 
 =pod
 
@@ -279,7 +279,7 @@ project_drop_verify.tt)
 			$all_projects = Schulkonsole::DB::projects();
 			if (not $$all_projects{$old_project}) {
 				$sk_session->set_status(
-					sprintf($sk_session->d()->get('Projekt %s gel&ouml;scht'),
+					sprintf($sk_session->d()->get('Projekt %s gelöscht'),
 						$old_project),
 					0);
 
@@ -291,7 +291,7 @@ project_drop_verify.tt)
 			} else {
 				$sk_session->set_status(
 					sprintf($sk_session->d()->get(
-							'Projekt %s konnte nicht gel&ouml;scht werden'),
+							'Projekt %s konnte nicht gelöscht werden'),
 						$old_project),
 					1);
 			}

@@ -266,7 +266,7 @@ COMMANDS: {
 	if ($error_cnt) {
 		if ($error_cnt > 1) {
 			$sk_session->set_status($sk_session->d()->get(
-				'Daten zur Passwort&auml;nderung unvollst&auml;ndig'), 1);
+				'Daten zur Passwortänderung unvollständig'), 1);
 		}
 	} elsif ($newpassword ne $newpasswordagain) {
 		$sk_session->mark_input_error('newpassword');
@@ -291,7 +291,7 @@ COMMANDS: {
 				$sk_session->save_password($newpasswordagain);
 	
 				$sk_session->set_status(
-					$sk_session->d()->get('Passwort&auml;nderung erfolgreich'), 0);
+					$sk_session->d()->get('Passwortänderung erfolgreich'), 0);
 			};
 			if ($@) {
 				$sk_session->standard_error_handling($this_file, $@);
@@ -324,7 +324,7 @@ defined $q->param('mailchange') and do {
                 Schulkonsole::Horde::remove_mailforwards($uid,$password);
             }
             $sk_session->set_status(
-                    $sk_session->d()->get('Mailweiterleitung erfolgreich ge&auml;ndert'), 0);
+                    $sk_session->d()->get('Mailweiterleitung erfolgreich geändert'), 0);
         };
         if ($@) {
                 $sk_session->standard_error_handling($this_file, $@);
@@ -354,7 +354,7 @@ defined $q->param('printjobs') and do {
 #			my $error = Net::CUPS::Printer::cupsLastError();
 #			SWITCH: {
 #			$error == Net::CUPS::IPP_NOT_POSSIBLE and do {
-#				$status .= $sk_session->d()->get('nicht m&ouml;glich');
+#				$status .= $sk_session->d()->get('nicht möglich');
 #				last SWITCH;
 #			};
 #			$status .= Net::CUPS::Printer::cupsErrorString($error);
@@ -406,7 +406,7 @@ defined $q->param('printjobs') and do {
 	my $ovpn_password_again = $q->param('ovpnpasswordagain');
 	if (not $ovpn_password_again) {
 		$sk_session->set_status(
-			$sk_session->d()->get('OpenVPN-Passwort best&auml;tigen'), 1);
+			$sk_session->d()->get('OpenVPN-Passwort bestätigen'), 1);
 		$sk_session->mark_input_error('ovpnpasswordagain');
 
 		last COMMANDS;
@@ -439,7 +439,7 @@ defined $q->param('printjobs') and do {
 			  	'Fehler bei der Zertifikatserstellung.')
 			. ' '
 			. $sk_session->d()->get(
-			  	'Verst&auml;ndigen Sie den Netzwerkadministrator'), 1);
+			  	'Verständigen Sie den Netzwerkadministrator'), 1);
 	}
 	};
 	if ($@) {
@@ -461,7 +461,7 @@ $q->param('ovpndownload') and do {
 			  	'Zertifikat konnte nicht heruntergeladen werden.')
 			. ' '
 			. $sk_session->d()->get(
-			  	'Verst&auml;ndigen Sie den Netzwerkadministrator'), 1);
+			  	'Verständigen Sie den Netzwerkadministrator'), 1);
 	}
 	};
 	if ($@) {

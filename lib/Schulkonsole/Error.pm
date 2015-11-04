@@ -117,7 +117,7 @@ sub what {
 	$this->{code} == UNKNOWN_GROUP
 		and return 'Klasse/Projekt ist unbekannt';
 	$this->{code} == QUOTA_NOT_ALL_MOUNTPOINTS
-		and return 'F&uuml;r Diskquota m&uuml;ssen alle oder keine Felder ausgef&uuml;llt sein';
+		and return 'Für Diskquota müssen alle oder keine Felder ausgefüllt sein';
 	$this->{code} == PUBLIC_BG_ERROR
 		and return 'Fehler im Hintergrundprozess: ' . ${ $this->{info} }[0];
 	$this->{code} == Schulkonsole::Error::Linbo::START_CONF_ERROR
