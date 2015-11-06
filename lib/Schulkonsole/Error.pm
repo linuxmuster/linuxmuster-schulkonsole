@@ -1,4 +1,12 @@
 use strict;
+use POSIX;
+eval {
+	require Locale::gettext;
+	Locale::gettext->require_version(1.04);
+};
+if ($@) {
+	require Schulkonsole::Gettext;
+}
 use Schulkonsole::Error::Cyrus;
 use Schulkonsole::Error::Files;
 use Schulkonsole::Error::Firewall;
@@ -86,20 +94,23 @@ use overload
 
 sub new {
 	my $class = shift;
-	my $code = shift;
-	my $info = @_ ? \@_ : undef;
-
-	my $this = {
-		code => $code,
-		internal => $code >= INTERNAL,
-		info => $info,
-	};
-
+	my $this = {};
 	bless $this, $class;
-
+	$this->_init(@_);
 	return $this;
 }
 
+sub _init {
+	my $this = shift;
+	my $code = shift;
+	my $info = @_ ? \@_ : undef;
+
+	$$this{code} = $code;
+	$$this{internal} = $code >= INTERNAL;
+	$$this{info} = $info;
+	$$this{d} = Locale::gettext->domain('schulkonsole');
+	$this->{d}->dir('/usr/share/locale');
+}
 
 
 
@@ -107,48 +118,48 @@ sub what {
 	my $this = shift;
 
 	SWITCH: {
-	$this->{code} == OK and return 'kein Fehler';
+	$this->{code} == OK and return $this->{d}->get('kein Fehler');
 	$this->{code} == USER_AUTHENTICATION_FAILED
-		and return 'Authentifizierung fehlgeschlagen';
+		and return $this->{d}->get('Authentifizierung fehlgeschlagen');
 	$this->{code} == USER_PASSWORD_MISMATCH
-		and return 'Neues Passwort nicht richtig wiederholt';
+		and return $this->{d}->get('Neues Passwort nicht richtig wiederholt');
 	$this->{code} == UNKNOWN_ROOM
-		and return 'Raum ist unbekannt';
+		and return $this->{d}->get('Raum ist unbekannt');
 	$this->{code} == UNKNOWN_GROUP
-		and return 'Klasse/Projekt ist unbekannt';
+		and return $this->{d}->get('Klasse/Projekt ist unbekannt');
 	$this->{code} == QUOTA_NOT_ALL_MOUNTPOINTS
-		and return 'Für Diskquota müssen alle oder keine Felder ausgefüllt sein';
+		and return $this->{d}->get('Für Diskquota müssen alle oder keine Felder ausgefüllt sein');
 	$this->{code} == PUBLIC_BG_ERROR
-		and return 'Fehler im Hintergrundprozess: ' . ${ $this->{info} }[0];
+		and return $this->{d}->get('Fehler im Hintergrundprozess: ') . ${ $this->{info} }[0];
 	$this->{code} == Schulkonsole::Error::Linbo::START_CONF_ERROR
-		and return "Fehler in der Konfiguration";
+		and return $this->{d}->get('Fehler in der Konfiguration');
 	$this->{code} == INTERNAL_BG_ERROR
-		and return 'Fehler im Hintergrundprozess';
+		and return $this->{d}->get('Fehler im Hintergrundprozess');
 	$this->{code} == DB_PREPARE_FAILED
-		and return 'Prepare fehlgeschlagen';
+		and return $this->{d}->get('Prepare fehlgeschlagen');
 	$this->{code} == DB_EXECUTE_FAILED
-		and return 'Execute fehlgeschlagen';
+		and return $this->{d}->get('Execute fehlgeschlagen');
 	$this->{code} == DB_FETCH_FAILED
-		and return 'Fetch fehlgeschlagen';
+		and return $this->{d}->get('Fetch fehlgeschlagen');
 	$this->{code} == UNKNOWN_PASSWORD_ENCRYPTION
-		and return 'Unbekannte Passwortverschluesselung';
+		and return $this->{d}->get('Unbekannte Passwortverschluesselung');
 	$this->{code} == DB_USER_DOES_NOT_EXIST
-		and return 'Benutzer existiert nicht';
+		and return $this->{d}->get('Benutzer existiert nicht');
 	$this->{code} == DB_NO_WORKSTATION_USERS
-		and return 'Keine Workstationbenutzer';
+		and return $this->{d}->get('Keine Workstationbenutzer');
 	(   $this->{code} == CANNOT_OPEN_FILE
 	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_OPEN_FILE
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_CANNOT_OPEN_FILE
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE)
-		and return 'Kann Datei nicht oeffnen';
+		and return $this->{d}->get('Kann Datei nicht oeffnen');
 	$this->{code} == FILE_FORMAT_ERROR
-		and return 'Datei hat falsches Format';
+		and return $this->{d}->get('Datei hat falsches Format');
 	$this->{code} == WRAPPER_EXEC_FAILED
-		and return 'Wrapperaufruf fehlgeschlagen';
+		and return $this->{d}->get('Wrapperaufruf fehlgeschlagen');
 	$this->{code} == WRAPPER_BROKEN_PIPE_OUT
-		and return 'Datenuebertragung (schreiben) unterbrochen';
+		and return $this->{d}->get('Datenuebertragung (schreiben) unterbrochen');
 	$this->{code} == WRAPPER_BROKEN_PIPE_IN
-		and return 'Datenuebertragung (lesen) unterbrochen';
+		and return $this->{d}->get('Datenuebertragung (lesen) unterbrochen');
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_PROGRAM_ERROR
@@ -159,7 +170,7 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_PROGRAM_ERROR)
-		and return 'Programmaufruf fehlgeschlagen';
+		and return $this->{d}->get('Programmaufruf fehlgeschlagen');
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_UNAUTHORIZED_UID
@@ -171,18 +182,18 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHORIZED_UID)
-		and return 'Nicht autorisierter Aufrufer';
+		and return $this->{d}->get('Nicht autorisierter Aufrufer');
 	(    $this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_UID
 	or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_INVALID_UID
 	or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_UID)
-		and return 'Wechsel zu diesem Benutzer nicht erlaubt';
+		and return $this->{d}->get('Wechsel zu diesem Benutzer nicht erlaubt');
 	(    $this->{code} == Schulkonsole::Error::User::WRAPPER_SETUID_FAILED
 	or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_SETUID_FAILED)
-		and return 'Wechsel zu diesem Benutzer nicht moeglich';
+		and return $this->{d}->get('Wechsel zu diesem Benutzer nicht moeglich');
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_SCRIPT
 	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_INVALID_SCRIPT
 	 or $this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_INVALID_SCRIPT)
-		and return 'Skript nicht vorhanden';
+		and return $this->{d}->get('Skript nicht vorhanden');
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_SCRIPT_EXEC_FAILED
@@ -194,7 +205,7 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_SCRIPT_EXEC_FAILED)
-		and return 'Skriptaufruf fehlgeschlagen';
+		and return $this->{d}->get('Skriptaufruf fehlgeschlagen');
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_UNAUTHENTICATED_ID
@@ -203,7 +214,7 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHENTICATED_ID)
-		and return 'Authentifizierung fehlgeschlagen nach ID';
+		and return $this->{d}->get('Authentifizierung fehlgeschlagen nach ID');
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_APP_ID_DOES_NOT_EXIST
@@ -212,7 +223,7 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_APP_ID_DOES_NOT_EXIST)
-		and return 'Programm-ID unbekannt';
+		and return $this->{d}->get('Programm-ID unbekannt');
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_ID
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_ID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_ID
@@ -220,152 +231,152 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_UNAUTHORIZED_ID
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHORIZED_ID
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHORIZED_ID)
-		and return 'Nicht autorisierter Aufrufer nach ID';
+		and return $this->{d}->get('Nicht autorisierter Aufrufer nach ID');
 	$this->{code} == Schulkonsole::Error::Files::WRAPPER_INVALID_SESSION_ID
-		and return 'Ungueltige Session-ID';
+		and return $this->{d}->get('Ungueltige Session-ID');
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_MAC
-		and return 'Ungueltige MAC-Adresse';
+		and return $this->{d}->get('Ungueltige MAC-Adresse');
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_NO_MACS
-		and return 'Keine MAC-Adressen';
+		and return $this->{d}->get('Keine MAC-Adressen');
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_HOST
-		and return 'Ungueltiger Host';
+		and return $this->{d}->get('Ungueltiger Host');
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_NO_HOSTS
-		and return 'Keine Hosts';
+		and return $this->{d}->get('Keine Hosts');
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM
-		and return 'Ungueltige Raumbezeichnung';
+		and return $this->{d}->get('Ungueltige Raumbezeichnung');
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_LESSONMODE
-		and return 'Ungueltiger Modus fuer Unterricht';
+		and return $this->{d}->get('Ungueltiger Modus fuer Unterricht');
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_LESSONTIME
-		and return 'Ungueltige Zeitangabe fuer Unterrichtsende';
+		and return $this->{d}->get('Ungueltige Zeitangabe fuer Unterrichtsende');
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_WRITE_ROOMFILE
-		and return 'Raumdatei kann nicht geschrieben werden';
+		and return $this->{d}->get('Raumdatei kann nicht geschrieben werden');
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_READ_ROOMFILE
-		and return 'Raumdatei kann nicht gelesen werden';
+		and return $this->{d}->get('Raumdatei kann nicht gelesen werden');
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM_SCOPE
-		and return 'Erwarte 0 oder 1 fuer scope';
+		and return $this->{d}->get('Erwarte 0 oder 1 fuer scope');
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_FORK
 	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_CANNOT_FORK
 	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_CANNOT_FORK
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_CANNOT_FORK)
-		and return 'Fork nicht moeglich';
+		and return $this->{d}->get('Fork nicht moeglich');
 	(   $this->{code} == Schulkonsole::Error::Printer::WRAPPER_CANNOT_OPEN_PRINTERSCONF
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_OPEN_PRINTERSCONF)
-		and return 'Kann printers.conf nicht oeffnen';
+		and return $this->{d}->get('Kann printers.conf nicht oeffnen');
 	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_INVALID_PRINTER_NAME
-		and return 'Ungueltiger Druckername';
+		and return $this->{d}->get('Ungueltiger Druckername');
 	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_NO_PRINTERS
-		and return 'Keine Drucker';
+		and return $this->{d}->get('Keine Drucker');
 	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_INVALID_USER
-		and return 'Ungueltiger Druckernutzer';
+		and return $this->{d}->get('Ungueltiger Druckernutzer');
 	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_INVALID_PAGES
-		and return 'Ungueltige Daten fuer genutzte Druckquota';
+		and return $this->{d}->get('Ungueltige Daten fuer genutzte Druckquota');
 	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_INVALID_MAX_PAGES
-		and return 'Ungueltige Daten fuer Druckquota';
+		and return $this->{d}->get('Ungueltige Daten fuer Druckquota');
 	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNEXPECTED_DATA
-		and return 'Unerwartete Programmausgabe';
+		and return $this->{d}->get('Unerwartete Programmausgabe');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_ON_UNDEFINED
-		and return 'on muss 1 oder 0 sein';
+		and return $this->{d}->get('on muss 1 oder 0 sein');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_USER
-		and return 'Ungueltiger Benutzer';
+		and return $this->{d}->get('Ungueltiger Benutzer');
 	(   $this->{code} == Schulkonsole::Error::Printer::WRAPPER_NO_USERS
 	 or $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_USERS)
-		and return 'Keine Benutzer';
+		and return $this->{d}->get('Keine Benutzer');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_USERID
-		and return 'Ungueltige Benutzer-ID';
+		and return $this->{d}->get('Ungueltige Benutzer-ID');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_USERIDS
-		and return 'Keine Benutzer-IDs';
+		and return $this->{d}->get('Keine Benutzer-IDs');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY
-		and return 'Verzeichnis nicht gefunden';
+		and return $this->{d}->get('Verzeichnis nicht gefunden');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_ROOM
-		and return 'Ungueltiger Raumbezeichner';
+		and return $this->{d}->get('Ungueltiger Raumbezeichner');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_COPY
-		and return 'Erwarte 1 oder 0 fuer do_copy';
+		and return $this->{d}->get('Erwarte 1 oder 0 fuer do_copy');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FROM
-		and return 'Erwarte numerische Angabe fuer "from"';
+		and return $this->{d}->get('Erwarte numerische Angabe fuer "from"');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_TYPE
-		and return 'Erwarte numerische Angabe fuer "type"';
+		and return $this->{d}->get('Erwarte numerische Angabe fuer "type"');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_ROOM
-		and return 'Ungueltiger Raum';
+		and return $this->{d}->get('Ungueltiger Raum');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECT
-		and return 'Ungueltiges Projekt';
+		and return $this->{d}->get('Ungueltiges Projekt');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_CLASS
-		and return 'Ungueltige Klassen-GID';
+		and return $this->{d}->get('Ungueltige Klassen-GID');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_SUBCLASS
-		and return 'Ungueltige Subklasse';
+		and return $this->{d}->get('Ungueltige Subklasse');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_ADD
-		and return 'Erwarte 1 oder 0 fuer do_add';
+		and return $this->{d}->get('Erwarte 1 oder 0 fuer do_add');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILE_TYPE
-		and return 'Erwarte 0 (PDF) oder 1 (CSV) fuer filetype';
+		and return $this->{d}->get('Erwarte 0 (PDF) oder 1 (CSV) fuer filetype');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_SET_PASSWORD_TYPE
-		and return 'Erwarte 0 (reset), 1 (passwd) oder 3 (random) fuer type';
+		and return $this->{d}->get('Erwarte 0 (reset), 1 (passwd) oder 3 (random) fuer type');
 	(   $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PASSWORD
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_INVALID_PASSWORD)
-		and return 'Ungueltiger Wert fuer password';
+		and return $this->{d}->get('Ungueltiger Wert fuer password');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_IS_GROUPS
-		and return 'Erwarte 1 oder 0 fuer is_groups';
+		and return $this->{d}->get('Erwarte 1 oder 0 fuer is_groups');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_IS_PUBLIC
-		and return 'Erwarte 1 oder 0 fuer is_public';
+		and return $this->{d}->get('Erwarte 1 oder 0 fuer is_public');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_IS_UPLOAD
-		and return 'Erwarte 1 oder 0 fuer is_upload';
+		and return $this->{d}->get('Erwarte 1 oder 0 fuer is_upload');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_PROJECTGID
-		and return 'Ungueltiger Wert fuer projectgid';
+		and return $this->{d}->get('Ungueltiger Wert fuer projectgid');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_MEMBERSCOPE
-		and return 'Erwarte 0, 1, 2 oder 3 fuer scope';
+		and return $this->{d}->get('Erwarte 0, 1, 2 oder 3 fuer scope');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DO_CREATE
-		and return 'Erwarte 1 oder 0 fuer do_create';
+		and return $this->{d}->get('Erwarte 1 oder 0 fuer do_create');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_LONGNAME
-		and return 'Ungueltiger Wert fuer longname';
+		and return $this->{d}->get('Ungueltiger Wert fuer longname');
 	$this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_NO_CYRUS_USER
-		and return 'Benutzer "cyrus" gibt es nicht';
+		and return $this->{d}->get('Benutzer "cyrus" gibt es nicht');
 	$this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_INVALID_EUID
-		and return 'wrapper-cyrus gehoert nicht Benutzer "cyrus" oder SUID nicht gesetzt';
+		and return $this->{d}->get('wrapper-cyrus gehoert nicht Benutzer "cyrus" oder SUID nicht gesetzt');
 	$this->{code} == Schulkonsole::Error::Linbo::WRAPPER_INVALID_GROUP
-		and return 'Ungueltiger Gruppenname';
+		and return $this->{d}->get('Ungueltiger Gruppenname');
 	$this->{code} == Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
-		and return 'Ungueltiger Dateiname';
+		and return $this->{d}->get('Ungueltiger Dateiname');
 	$this->{code} == Schulkonsole::Error::Linbo::WRAPPER_INVALID_IS_EXAMPLE
-		and return 'Erwarte 1 oder 0 fuer is_example';
+		and return $this->{d}->get('Erwarte 1 oder 0 fuer is_example');
 	$this->{code} == Schulkonsole::Error::Linbo::WRAPPER_INVALID_IMAGE
-		and return 'Ungueltiger Image-Dateiname';
+		and return $this->{d}->get('Ungueltiger Image-Dateiname');
 	$this->{code} == Schulkonsole::Error::Linbo::WRAPPER_INVALID_ACTION
-		and return 'action muss 0, 1 oder 2 sein';
+		and return $this->{d}->get('action muss 0, 1 oder 2 sein');
 	(   $this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENUMBER
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_INVALID_FILENUMBER)
-		and return 'Ungueltiger Wert fuer number';
+		and return $this->{d}->get('Ungueltiger Wert fuer number');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_PROCESS_RUNNING
-		and return 'Prozess laeuft schon';
+		and return $this->{d}->get('Prozess laeuft schon');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_MODE
-		and return 'Erwarte 0, 1 oder 2 fuer mode';
+		and return $this->{d}->get('Erwarte 0, 1 oder 2 fuer mode');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_CHMOD_FAILED
-		and return 'Konnte Berechtigung nicht aendern';
+		and return $this->{d}->get('Konnte Berechtigung nicht aendern');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FLAGS
-		and return 'Erwarte 1 bis 7 fuer flags';
+		and return $this->{d}->get('Erwarte 1 bis 7 fuer flags');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_DISKQUOTA
-		and return 'Ungueltiger Wert fuer diskquota';
+		and return $this->{d}->get('Ungueltiger Wert fuer diskquota');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_MAILQUOTA
-		and return 'Ungueltiger Wert fuer mailquota';
+		and return $this->{d}->get('Ungueltiger Wert fuer mailquota');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_IS_JOIN
-		and return 'Erwarte 1 oder 0 fuer is_open';
+		and return $this->{d}->get('Erwarte 1 oder 0 fuer is_open');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_ACTION
-		and return 'Ungueltiger Wert, action sollte eine Zahl sein';
+		and return $this->{d}->get('Ungueltiger Wert, action sollte eine Zahl sein');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
-		and return 'Ungueltiger Wert fuer Dateiname';
+		and return $this->{d}->get('Ungueltiger Wert fuer Dateiname');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_FILE
-		and return 'Konnte Datei nicht finden';
+		and return $this->{d}->get('Konnte Datei nicht finden');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_ACTION_NOT_SUPPORTED
-		and return 'Erwarte 1,2 oder 3 fuer action';
+		and return $this->{d}->get('Erwarte 1,2 oder 3 fuer action');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILETYPE
-		and return 'Erwarte Verzeichnis, fand Datei (oder umgekehrt)';
+		and return $this->{d}->get('Erwarte Verzeichnis, fand Datei (oder umgekehrt)');
 	$this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_SECTION
-		and return 'Ungueltiger Debconf-Bereich';
+		and return $this->{d}->get('Ungueltiger Debconf-Bereich');
 	$this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_NAME
-		and return 'Ungueltiger Debconf-Name';
+		and return $this->{d}->get('Ungueltiger Debconf-Name');
 	$this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_REQUEST
-		and return 'Dieser Bereich/Name darf nicht abgefragt werden';
+		and return $this->{d}->get('Dieser Bereich/Name darf nicht abgefragt werden');
 	$this->{what}
 		and return $this->{what};
 
-	return 'Unbekannter Fehler ' . $this->{code}
+	return $this->{d}->get('Unbekannter Fehler ') . $this->{code}
 		. ' [' . join(', ', (caller(2))[1..3]) . ']'; 
 	}
 }
