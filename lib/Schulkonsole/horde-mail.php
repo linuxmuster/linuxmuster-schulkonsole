@@ -21,10 +21,12 @@ function kill( $data ) { die( var_dump ( $data ) ); }
  * HORDE_BASE   - must be defined for all horde applications
  * AUTH_HANDLER - this application handles authorization
  * no_compress  - output is not compressed
+ * session_control - none : no session is started
  */
 @define('HORDE_BASE', '/usr/share/horde3');
 @define('AUTH_HANDLER', true);
 $no_compress = true;
+$GLOBALS['session_control'] = 'none';
 
 // Do CLI checks and environment setup first.
 require_once HORDE_BASE . '/lib/core.php';
@@ -115,7 +117,7 @@ if(isset($options['keep']) && !isset($options['set-forwards'])) {
 
 if(isset($options['help'])) {
 echo<<<EOF
-Schulkonsole.php prints or sets forwards by means of there
+horde-mail.php prints or sets forwards by means of there
 horde3 api named ingo. In linuxmuster.net settings the horde
 prefs db and the sieve filter script is updated.
 
