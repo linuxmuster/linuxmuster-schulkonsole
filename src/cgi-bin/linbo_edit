@@ -144,8 +144,7 @@ Name of the selected group
                 
                 $cmd eq 'addos' and do {
                         my %new_os;
-
-                        my $oss = $$conf{action_partition}{oss};
+						my $oss = $$conf{partitions}{$$conf{action_partition}}{oss};
                         if (    $oss
                                 and $$oss[-1]) {
                                 my $last_os = $$oss[-1];
@@ -177,8 +176,7 @@ Name of the selected group
                         if (@$oss == 1) {
                                 delete $$conf{partitions}{$np}{oss}
                         } else {
-                                my $delete_os = $$conf{partitions}{$np}{oss}{$nos};
-                                %$delete_os = ();
+                                splice(@$oss,$nos,1);
                         }
 
                         $$conf{partitions}{$np}{is_edited} = 1;
