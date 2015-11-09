@@ -27,7 +27,7 @@ wrapper-linbo.pl - wrapper for configuration of linbo
 
 use strict;
 use utf8;
-use lib 'usr/lib/schulkonsole';
+use lib '/usr/share/schulkonsole';
 use open ':utf8';
 use open ':std';
 use Schulkonsole::Config;

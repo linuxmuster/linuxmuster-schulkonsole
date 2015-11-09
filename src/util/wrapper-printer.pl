@@ -23,7 +23,7 @@ wrapper-printer.pl - wrapper for printer access
 =cut
 
 use strict;
-use lib 'usr/lib/schulkonsole';
+use lib '/usr/share/schulkonsole';
 use open ':utf8';
 use open ':std';
 use Data::Dumper;
