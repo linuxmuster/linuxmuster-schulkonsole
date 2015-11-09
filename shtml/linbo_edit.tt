@@ -47,7 +47,7 @@
 			[% dos_nr = 0 %]
 			[% FOREACH dos IN ds.oss %]
 				
-				[% INCLUDE linbo_edit_oss.tt %]
+				[% INCLUDE linbo_edit_oss.inc.tt %]
 				
 				<p><input type="submit" name="[% ds_nr %].[% dos_nr %]_deleteos" value="[% loc('Betriebssystem löschen') %]"><br>
 				<input type="submit" name="[% ds_nr %]_addos" value="[% loc('Betriebssystem hinzufügen') %]">
@@ -57,7 +57,7 @@
 			[% END %]
 		[% ELSE %]
 			
-			[% INCLUDE linbo_edit_data.tt %]
+			[% INCLUDE linbo_edit_data.inc.tt %]
 			
 			<p><input type="submit" name="accept" value="[% loc('Änderungen speichern') %]"></p>
 			<p><input type="submit" name="[% ds_nr %]_delete" value="[% loc('System löschen') %]"><br>
