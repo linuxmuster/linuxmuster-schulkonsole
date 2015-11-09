@@ -939,7 +939,7 @@ sub lshandoutapp() {
 
 	LSHANDOUTTYPE: {
 	($type & 1 or $type & 2) and do {
-		if ($category) {
+		if ($category == 1) {
 				$share_dir .= $Language::current_room;
 		} else {
 				$share_dir .= $Language::exam;
