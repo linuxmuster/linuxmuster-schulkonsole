@@ -85,7 +85,7 @@
 	</form>
 [% END %]
 
-[% IF room %]
+[% IF room && ! exammode %]
 	<h3>[% loc('Übersicht PCs') %]</h3>
 	
 	<form method="post" accept-charset="UTF-8">
@@ -190,7 +190,7 @@
 
 [% END %]
 
-[% IF room %]
+[% IF room && ! exammode %]
 	<h3>[% loc('Übersicht Drucker') %]</h3>
 	
 	<table id="printersoverview" class="liste">
