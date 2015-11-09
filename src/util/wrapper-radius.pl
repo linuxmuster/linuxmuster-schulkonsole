@@ -30,7 +30,7 @@ wrapper-radius.pl - wrapper for configuration of radius
 =cut
 
 use strict;
-use lib '@datadir@/@PACKAGE@';
+use lib 'usr/lib/schulkonsole';
 use open ':utf8';
 use open ':std';
 use Sophomorix::SophomorixAPI;

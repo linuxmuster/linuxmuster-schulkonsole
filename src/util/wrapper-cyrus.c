@@ -15,8 +15,8 @@
 # define PERL "/usr/bin/perl"
 #endif
 
-#ifndef CYRQUOTAAPP
-# define CYRQUOTAAPP "/usr/libexec/schulkonsole/bin/cyrquota.pl"
+#ifndef WRAPPERCYRUSAPP
+# define WRAPPERCYRUSAPP "/usr/libexec/schulkonsole/bin/wrapper-cyrus.pl"
 #endif
 
 
@@ -28,7 +28,7 @@ const char* c_perl = PERL;
 
 
 const char *script[] = {
-	CYRQUOTAAPP
+	WRAPPERCYRUSAPP
 };
 const int c_max_script_id = 0;
 

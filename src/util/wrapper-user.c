@@ -14,8 +14,8 @@
 # define PERL "/usr/bin/perl"
 #endif
 
-#ifndef QUOTAAPP
-# define QUOTAAPP "/usr/libexec/schulkonsole/bin/quota.pl"
+#ifndef WRAPPERUSERAPP
+# define WRAPPERUSERAPP "/usr/libexec/schulkonsole/bin/wrapper-user.pl"
 #endif
 
 
@@ -27,7 +27,7 @@ const char* c_perl = PERL;
 
 
 const char *script[] = {
-	QUOTAAPP
+	WRAPPERUSERAPP
 };
 const int c_max_script_id = 0;
 

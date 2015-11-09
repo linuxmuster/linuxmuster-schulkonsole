@@ -26,7 +26,7 @@ wrapper-debconf.pl - wrapper for reading debconf db
 =cut
 
 use strict;
-use lib '@datadir@/@PACKAGE@';
+use lib 'usr/lib/schulkonsole';
 use open ':utf8';
 use open ':std';
 use Schulkonsole::Config;

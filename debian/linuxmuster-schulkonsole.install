@@ -4,8 +4,8 @@ debian/tmp/etc/linuxmuster/schulkonsole/permissions.conf
 debian/tmp/etc/linuxmuster/schulkonsole/apache2.conf
 debian/tmp/var/lib/schulkonsole
 debian/tmp/usr/lib/schulkonsole/cgi-bin
-debian/tmp/usr/lib/schulkonsole/bin/cyrquota.pl
-debian/tmp/usr/lib/schulkonsole/bin/quota.pl
+debian/tmp/usr/lib/schulkonsole/bin/wrapper-cyrus.pl
+debian/tmp/usr/lib/schulkonsole/bin/wrapper-user.pl
 debian/tmp/usr/lib/schulkonsole/bin/wrapper-debconf.pl
 debian/tmp/usr/lib/schulkonsole/bin/wrapper-files.pl
 debian/tmp/usr/lib/schulkonsole/bin/wrapper-firewall.pl
