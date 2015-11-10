@@ -29,6 +29,7 @@ install-am: all-am
 	chmod -f 4755 $(DESTDIR)$(pkglibexecdir)/wrapper-radius
 	chmod -f 4755 $(DESTDIR)$(pkglibexecdir)/wrapper-debconf
 	chmod -f 4755 $(DESTDIR)$(pkglibexecdir)/wrapper-cyrus
+	chown cyrus $(DESTDIR)$(pkglibexecdir)/wrapper-cyrus
 
 
 AM_CFLAGS = -DWRAPPERUSERAPP=\"$(pkglibexecdir)/wrapper-user.pl\" -DWRAPPERCYRUSAPP=\"$(pkglibexecdir)/wrapper-cyrus.pl\" -DWRAPPERFIREWALLPERLAPP=\"$(pkglibexecdir)/wrapper-firewall.pl\" -DWRAPPERPRINTERPERLAPP=\"$(pkglibexecdir)/wrapper-printer.pl\" -DWRAPPERSOPHOMORIXPERLAPP=\"$(pkglibexecdir)/wrapper-sophomorix.pl\" -DWRAPPERFILESPERLAPP=\"$(pkglibexecdir)/wrapper-files.pl\" -DWRAPPEROVPNPERLAPP=\"$(pkglibexecdir)/wrapper-ovpn.pl\" -DWRAPPERLINBOPERLAPP=\"$(pkglibexecdir)/wrapper-linbo.pl\" -DWRAPPERRADIUSPERLAPP=\"$(pkglibexecdir)/wrapper-radius.pl\" -DWRAPPERDEBCONFPERLAPP=\"$(pkglibexecdir)/wrapper-debconf.pl\"
