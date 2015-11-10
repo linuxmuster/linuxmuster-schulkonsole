@@ -21,6 +21,9 @@
 		<li><a class="separator" [% dohref("project_lesson") %]>[% loc('Unterricht') %]</a></li>
 	[% END %]
 [% ELSE %]
+	[% IF link_project_passwords %]
+		<li><span class="disabled">[% loc('Passwörter') %]</span></li>
+	[% END %]
 	[% IF link_project_handoutcopy %]
 		<li><span class="disabled">[% loc('Austeilen') %]</span></li>
 	[% END %]
