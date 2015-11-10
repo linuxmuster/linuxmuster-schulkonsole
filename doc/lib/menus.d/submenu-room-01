@@ -1,3 +1,8 @@
+[% IF link_room_lesson && ! exammode %]
+	<li><a [% dohref("room_lesson") %]>[% loc('Unterricht') %]</a></li>
+[% ELSE %]
+	<li><span class="disabled">[% loc('Unterricht') %]</span></li>
+[% END %]
 [% IF edit %]
 	[% IF link_room_shares %]
 		<li><a [% dohref("room_shares") %]>[% loc('Tauschen') %]</a></li>
