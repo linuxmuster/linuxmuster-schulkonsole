@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2015-11-06 11:12+0100\n"
-"PO-Revision-Date: 2015-11-04 08:42+0100\n"
+"POT-Creation-Date: 2015-11-10 12:51+0100\n"
+"PO-Revision-Date: 2015-11-10 12:50+0100\n"
 "Last-Translator: Frank Schütte <fschuett@gymhim.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: en\n"
@@ -247,7 +247,7 @@ msgid "(Schüler)"
 msgstr "(Student)"
 
 #: ../shtml/class_lesson.tt:47 ../shtml/project_lesson.tt:47
-#: ../shtml/room.tt:49
+#: ../shtml/room_lesson.tt:49
 msgid "- oder -"
 msgstr "- or -"
 
@@ -878,7 +878,7 @@ msgstr ""
 "<p>Set which rooms should be administrated from the school console "
 "ascomputer rooms under &ldquo;Current room&rdquo;.</p>"
 
-#: ../shtml/room.tt:0
+#: ../shtml/room_lesson.tt:0
 msgid ""
 "<p>Sie müssen den &bdquo;Unterricht beginnen&ldquo;, damit Sie die "
 "Funktionen zur Steuerung des Unterrichts im aktuellen Raum nutzen können."
@@ -933,6 +933,14 @@ msgstr ""
 "through the drop down menus and confirm with &ldquo;End&rdquo;.</p> <p>In "
 "the area &ldquo;Overview&rdquo; you can manage students access to the wlan "
 "by means of a check box.</p>"
+
+#: ../shtml/room.tt:0
+msgid ""
+"<p>Sie müssen einen aktuellen Raum angeben, damit Sie darin unterrichten "
+"können. Soweit möglich wird der aktuelle Raum automatisch ermittelt.</p>"
+msgstr ""
+"<p>You need to choose the current room to start a lesson in that room. The "
+"current room is mostly chosen automatically.</p>"
 
 #: ../shtml/room_shares.tt:0
 msgid ""
@@ -1110,9 +1118,10 @@ msgstr "Update"
 
 #: ../shtml/room.tt:27 ../shtml/room_collect.tt:9
 #: ../shtml/room_end_lesson_verify.tt:9 ../shtml/room_handout.tt:10
-#: ../shtml/room_shares.tt:9 ../shtml/room_test.tt:11
-#: ../shtml/room_test_collect.tt:11 ../shtml/room_test_end.tt:11
-#: ../shtml/room_test_handout.tt:11 ../shtml/room_test_password.tt:11
+#: ../shtml/room_lesson.tt:27 ../shtml/room_shares.tt:9
+#: ../shtml/room_test.tt:11 ../shtml/room_test_collect.tt:11
+#: ../shtml/room_test_end.tt:11 ../shtml/room_test_handout.tt:11
+#: ../shtml/room_test_password.tt:11
 msgid "Aktueller Raum"
 msgstr "Current Room"
 
@@ -1142,11 +1151,12 @@ msgstr "Old password is not correct"
 
 #: ../shtml/class_lesson.tt:117 ../shtml/class_passwords.tt:78
 #: ../shtml/project_lesson.tt:117 ../shtml/project_passwords.tt:77
-#: ../shtml/room.tt:168 ../shtml/room.tt:171 ../shtml/room.tt:174
-#: ../shtml/room.tt:181 ../shtml/room.tt:225 ../shtml/rooms.tt:120
-#: ../shtml/rooms.tt:127 ../shtml/rooms.tt:134 ../shtml/rooms.tt:33
-#: ../shtml/rooms.tt:40 ../shtml/rooms.tt:47 ../shtml/rooms.tt:83
-#: ../shtml/rooms.tt:90 ../shtml/rooms.tt:97 ../shtml/settings_classs.tt:49
+#: ../shtml/room_lesson.tt:168 ../shtml/room_lesson.tt:171
+#: ../shtml/room_lesson.tt:174 ../shtml/room_lesson.tt:181
+#: ../shtml/room_lesson.tt:225 ../shtml/rooms.tt:120 ../shtml/rooms.tt:127
+#: ../shtml/rooms.tt:134 ../shtml/rooms.tt:33 ../shtml/rooms.tt:40
+#: ../shtml/rooms.tt:47 ../shtml/rooms.tt:83 ../shtml/rooms.tt:90
+#: ../shtml/rooms.tt:97 ../shtml/settings_classs.tt:49
 #: ../shtml/settings_projects.tt:43 ../shtml/user_teacherpasswords.tt:52
 msgid "An"
 msgstr "On"
@@ -1248,10 +1258,11 @@ msgstr "Incorporate"
 #: ../shtml/class_lesson.tt:117 ../shtml/class_shares.tt:60
 #: ../shtml/hosts.tt:100 ../shtml/hosts.tt:76 ../shtml/project_collect.tt:102
 #: ../shtml/project_handoutcopy.tt:87 ../shtml/project_lesson.tt:117
-#: ../shtml/project_shares.tt:59 ../shtml/room.tt:168 ../shtml/room.tt:171
-#: ../shtml/room.tt:174 ../shtml/room.tt:177 ../shtml/room.tt:181
-#: ../shtml/room.tt:225 ../shtml/room_collect.tt:126
-#: ../shtml/room_handout.tt:103 ../shtml/room_shares.tt:62
+#: ../shtml/project_shares.tt:59 ../shtml/room_collect.tt:126
+#: ../shtml/room_handout.tt:103 ../shtml/room_lesson.tt:168
+#: ../shtml/room_lesson.tt:171 ../shtml/room_lesson.tt:174
+#: ../shtml/room_lesson.tt:177 ../shtml/room_lesson.tt:181
+#: ../shtml/room_lesson.tt:225 ../shtml/room_shares.tt:62
 #: ../shtml/rooms.tt:121 ../shtml/rooms.tt:128 ../shtml/rooms.tt:135
 #: ../shtml/rooms.tt:34 ../shtml/rooms.tt:41 ../shtml/rooms.tt:48
 #: ../shtml/rooms.tt:84 ../shtml/rooms.tt:91 ../shtml/rooms.tt:98
@@ -1380,7 +1391,7 @@ msgstr "Automatic set up of the cache"
 msgid "Automatisches Formatieren"
 msgstr "Automatic formatting"
 
-#: ../shtml/linbo_edit.tt:199
+#: ../shtml/linbo_edit_oss.inc.tt:132
 msgid "Autostart-Timeout in Sek."
 msgstr "Autostart timeout in sec."
 
@@ -1547,7 +1558,7 @@ msgstr "Files to be supplied"
 msgid "Berichte"
 msgstr "Reports"
 
-#: ../shtml/linbo_edit.tt:133
+#: ../shtml/linbo_edit_oss.inc.tt:66
 msgid "Beschreibung (optional)"
 msgstr "Description (optional)"
 
@@ -1597,23 +1608,23 @@ msgstr "Operating system 4 (Partition 6)"
 msgid "Betriebssystem 4 darf nicht Windows sein"
 msgstr "Operating system 4 must not be Windows"
 
-#: ../shtml/linbo_edit.tt:193
+#: ../shtml/linbo_edit_oss.inc.tt:126
 msgid "Betriebssystem automatisch starten"
 msgstr "Start operating system automatically"
 
-#: ../shtml/linbo_edit.tt:227
+#: ../shtml/linbo_edit.tt:53
 msgid "Betriebssystem hinzufügen"
 msgstr "Add operating system"
 
-#: ../shtml/linbo_edit.tt:226
+#: ../shtml/linbo_edit.tt:52
 msgid "Betriebssystem löschen"
 msgstr "Delete operating system"
 
-#: ../shtml/linbo_edit.tt:179
+#: ../shtml/linbo_edit_oss.inc.tt:112
 msgid "Betriebssystemreiter verstecken"
 msgstr "Hide operating system tab"
 
-#: ../shtml/linbo_edit.tt:129
+#: ../shtml/linbo_edit_oss.inc.tt:62
 msgid "Betriebssystemversion (optional)"
 msgstr "Version of operating system (optional)"
 
@@ -1643,7 +1654,7 @@ msgstr "Collected Files"
 msgid "Bitte Klasse auswählen"
 msgstr "Please select class"
 
-#: ../shtml/linbo_edit.tt:361
+#: ../shtml/linbo_edit.tt:108
 msgid "Bitte Rechnergruppe auswählen"
 msgstr "Please select computer group"
 
@@ -1660,13 +1671,13 @@ msgstr "Please confirm"
 msgid "Bitte ein Projekt auswählen"
 msgstr "Please select a project"
 
-#: ../shtml/linbo_edit.tt:162
+#: ../shtml/linbo_edit_oss.inc.tt:95
 msgid "Bootoptionen"
 msgstr "Boot options"
 
-#: ../shtml/linbo_edit.tt:221 ../shtml/linbo_edit.tt:250
-#: ../shtml/linbo_edit.tt:322 ../shtml/linbo_edit.tt:351
-#: ../shtml/linbo_edit.tt:36
+#: ../shtml/linbo_edit.tt:36 ../shtml/linbo_edit.tt:69
+#: ../shtml/linbo_edit.tt:98 ../shtml/linbo_edit_data.inc.tt:18
+#: ../shtml/linbo_edit_oss.inc.tt:154
 msgid "Cache"
 msgstr "Cache"
 
@@ -1804,26 +1815,25 @@ msgstr "Files:"
 msgid "Dateiname"
 msgstr "Filename"
 
-#: ../shtml/linbo_edit.tt:145 ../lib/Schulkonsole/Linbo.pm:1185
+#: ../shtml/linbo_edit_oss.inc.tt:78 ../lib/Schulkonsole/Linbo.pm:1185
 msgid "Dateiname des Basis-Image"
 msgstr "File name of basis image"
 
-#: ../shtml/linbo_edit.tt:137
+#: ../shtml/linbo_edit_oss.inc.tt:70
 msgid "Dateiname des Icons für den Startbutton"
 msgstr "File name of icons for start button"
 
-#: ../shtml/linbo_edit.tt:141
+#: ../shtml/linbo_edit_oss.inc.tt:74
 msgid "Dateiname des differenziellen Image"
 msgstr "File name of differential image"
 
-#: ../shtml/linbo_edit.tt:116 ../shtml/linbo_edit.tt:284
-#: ../shtml/linbo_edit.tt:86
+#: ../shtml/linbo_edit_data.inc.tt:52 ../shtml/linbo_edit_oss.inc.tt:39
 msgid "Dateisystem"
 msgstr "File system"
 
-#: ../shtml/linbo_edit.tt:219 ../shtml/linbo_edit.tt:246
-#: ../shtml/linbo_edit.tt:320 ../shtml/linbo_edit.tt:34
-#: ../shtml/linbo_edit.tt:349
+#: ../shtml/linbo_edit.tt:34 ../shtml/linbo_edit.tt:67
+#: ../shtml/linbo_edit.tt:96 ../shtml/linbo_edit_data.inc.tt:14
+#: ../shtml/linbo_edit_oss.inc.tt:152
 msgid "Daten"
 msgstr "Data"
 
@@ -1877,8 +1887,7 @@ msgstr "The maximal password length value is invalid"
 msgid "Der Wert für die minimale Passwortlänge ist ungültig"
 msgstr "The minimal password length value is invalid"
 
-#: ../shtml/linbo_edit.tt:108 ../shtml/linbo_edit.tt:264
-#: ../shtml/linbo_edit.tt:71
+#: ../shtml/linbo_edit_data.inc.tt:32 ../shtml/linbo_edit_oss.inc.tt:23
 msgid "Devicename der Partition"
 msgstr "Device name of partition"
 
@@ -1986,7 +1995,7 @@ msgstr "Temporary file could not be closed."
 msgid "Die temporäre Datei konnte nicht geöffnet werden."
 msgstr "Failed to open temporary file."
 
-#: ../src/cgi-bin/room:238
+#: ../src/cgi-bin/room_lesson:242
 msgid ""
 "Diese Funktion ist momentan durch einen anderen Benutzer gesperrt. Versuchen "
 "Sie es bitte in Kürze noch einmal."
@@ -1995,7 +2004,7 @@ msgstr ""
 
 #: ../lib/Schulkonsole/Error.pm:375
 msgid "Dieser Bereich/Name darf nicht abgefragt werden"
-msgstr ""
+msgstr "This section / name could not be queried."
 
 #: ../shtml/linbo_remote.tt:250
 msgid "Diff. Image erstellen"
@@ -2031,8 +2040,8 @@ msgstr "printer data"
 
 #: ../shtml/myroom.tt:55 ../shtml/printers.tt:1 ../shtml/printers.tt:23
 #: ../shtml/printers.tt:9 ../shtml/printers_edit.tt:1
-#: ../shtml/printers_edit.tt:8 ../shtml/room.tt:101 ../src/cgi-bin/myroom:219
-#: ../src/cgi-bin/room:530
+#: ../shtml/printers_edit.tt:8 ../shtml/room_lesson.tt:101
+#: ../src/cgi-bin/myroom:219 ../src/cgi-bin/room_lesson:534
 msgid "Drucker"
 msgstr "Printer"
 
@@ -2066,9 +2075,9 @@ msgstr "Email quota"
 msgid "EDV-Räume"
 msgstr "computer labs"
 
-#: ../shtml/linbo_edit.tt:223 ../shtml/linbo_edit.tt:254
-#: ../shtml/linbo_edit.tt:324 ../shtml/linbo_edit.tt:353
-#: ../shtml/linbo_edit.tt:38
+#: ../shtml/linbo_edit.tt:100 ../shtml/linbo_edit.tt:38
+#: ../shtml/linbo_edit.tt:71 ../shtml/linbo_edit_data.inc.tt:22
+#: ../shtml/linbo_edit_oss.inc.tt:156
 msgid "EFI"
 msgstr "efi"
 
@@ -2080,13 +2089,13 @@ msgstr "efi32"
 msgid "EFI64"
 msgstr "efi64"
 
-#: ../shtml/linbo_edit.tt:289 ../shtml/linbo_edit.tt:299
-#: ../shtml/linbo_edit.tt:92
+#: ../shtml/linbo_edit_data.inc.tt:57 ../shtml/linbo_edit_data.inc.tt:67
+#: ../shtml/linbo_edit_oss.inc.tt:45
 msgid "EXT3"
 msgstr "EXT3"
 
-#: ../shtml/linbo_edit.tt:290 ../shtml/linbo_edit.tt:300
-#: ../shtml/linbo_edit.tt:93
+#: ../shtml/linbo_edit_data.inc.tt:58 ../shtml/linbo_edit_data.inc.tt:68
+#: ../shtml/linbo_edit_oss.inc.tt:46
 msgid "EXT4"
 msgstr "EXT4"
 
@@ -2235,13 +2244,12 @@ msgid "Erwarte 1 oder 0 fuer is_upload"
 msgstr "Expect 1 or 0 for is_upload"
 
 #: ../lib/Schulkonsole/Error.pm:367
-#, fuzzy
 msgid "Erwarte 1,2 oder 3 fuer action"
-msgstr "Expect 0, 1, 2 or 3 for scope"
+msgstr "Expect  1, 2 or 3 for scope"
 
 #: ../lib/Schulkonsole/Error.pm:369
 msgid "Erwarte Verzeichnis, fand Datei (oder umgekehrt)"
-msgstr ""
+msgstr "Expected directory, found file (or the other way round)"
 
 #: ../lib/Schulkonsole/Error.pm:295
 msgid "Erwarte numerische Angabe fuer \"from\""
@@ -2467,7 +2475,6 @@ msgid "Für Benutzer %s gibt es bereits einen Eintrag"
 msgstr "There is already an entry for user %s"
 
 #: ../lib/Schulkonsole/Error.pm:131
-#, fuzzy
 msgid "Für Diskquota müssen alle oder keine Felder ausgefüllt sein"
 msgstr "For disk quota, you must fill out all or none of the fields"
 
@@ -2476,9 +2483,9 @@ msgstr "For disk quota, you must fill out all or none of the fields"
 msgid "Für die Partition %s existiert keine erweiterte Partition"
 msgstr "for partition %s there is no extended partition"
 
-#: ../shtml/linbo_edit.tt:218 ../shtml/linbo_edit.tt:319
-#: ../shtml/linbo_edit.tt:33 ../shtml/linbo_edit.tt:348
-#: ../shtml/linbo_edit.tt:61
+#: ../shtml/linbo_edit.tt:33 ../shtml/linbo_edit.tt:66
+#: ../shtml/linbo_edit.tt:95 ../shtml/linbo_edit_oss.inc.tt:14
+#: ../shtml/linbo_edit_oss.inc.tt:151
 msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
@@ -2513,7 +2520,7 @@ msgstr "complete user list"
 msgid "Global"
 msgstr "Global"
 
-#: ../shtml/linbo_edit.tt:371 ../shtml/linbo_remote.tt:76
+#: ../shtml/linbo_edit.tt:118 ../shtml/linbo_remote.tt:76
 #: ../shtml/user_commit.tt:54
 msgid "Gruppe"
 msgstr "Group"
@@ -2596,8 +2603,8 @@ msgstr "Add"
 msgid "Hochladen"
 msgstr "upload"
 
-#: ../shtml/hosts.tt:56 ../shtml/myroom.tt:36 ../shtml/room.tt:95
-#: ../shtml/room_collect.tt:78 ../shtml/room_handout.tt:68
+#: ../shtml/hosts.tt:56 ../shtml/myroom.tt:36 ../shtml/room_collect.tt:78
+#: ../shtml/room_handout.tt:68 ../shtml/room_lesson.tt:95
 #: ../shtml/room_shares.tt:35 ../shtml/room_test_collect.tt:64
 #: ../shtml/room_test_handout.tt:38
 msgid "Hostname"
@@ -2703,16 +2710,16 @@ msgstr "No lesson is active in this project."
 msgid "In diesem Projekt wird bereits unterrichtet."
 msgstr "In this project a lesson is already active."
 
-#: ../shtml/room_end_lesson_verify.tt:30 ../src/cgi-bin/room:355
+#: ../shtml/room_end_lesson_verify.tt:30 ../src/cgi-bin/room_lesson:359
 msgid "In diesem Raum findet eine Klassenarbeit statt."
 msgstr "An exam is taking place in this room."
 
-#: ../src/cgi-bin/room:99 ../src/cgi-bin/room:251 ../src/cgi-bin/room:309
-#: ../src/cgi-bin/room:341
+#: ../src/cgi-bin/room_lesson:103 ../src/cgi-bin/room_lesson:255
+#: ../src/cgi-bin/room_lesson:313 ../src/cgi-bin/room_lesson:345
 msgid "In diesem Raum findet kein Unterricht statt."
 msgstr "Lessons are not taking place in this room."
 
-#: ../src/cgi-bin/room:288
+#: ../src/cgi-bin/room_lesson:292
 msgid "In diesem Raum wird bereits unterrichtet."
 msgstr "Lessons are already being given in this room."
 
@@ -2740,11 +2747,11 @@ msgstr "Internal error"
 msgid "Interner Servername"
 msgstr "intern server name"
 
-#: ../shtml/myroom.tt:44 ../shtml/room.tt:97 ../shtml/rooms.tt:21
+#: ../shtml/myroom.tt:44 ../shtml/room_lesson.tt:97 ../shtml/rooms.tt:21
 msgid "Internet"
 msgstr "Internet"
 
-#: ../shtml/myroom.tt:47 ../shtml/room.tt:98 ../shtml/rooms.tt:22
+#: ../shtml/myroom.tt:47 ../shtml/room_lesson.tt:98 ../shtml/rooms.tt:22
 msgid "Intranet"
 msgstr "Intranet"
 
@@ -2765,9 +2772,8 @@ msgid "Kann Datei %s nicht öffnen"
 msgstr "can not open file %s"
 
 #: ../lib/Schulkonsole/Error.pm:154
-#, fuzzy
 msgid "Kann Datei nicht oeffnen"
-msgstr "can not open file %s"
+msgstr "can not open file"
 
 #: ../src/cgi-bin/hosts:307 ../src/cgi-bin/user_commit:132
 #: ../src/cgi-bin/user_commit:168 ../src/cgi-bin/user_commit:204
@@ -2908,9 +2914,8 @@ msgid "Klasse unbekannt"
 msgstr "Class unknown"
 
 #: ../lib/Schulkonsole/Error.pm:129
-#, fuzzy
 msgid "Klasse/Projekt ist unbekannt"
-msgstr "Project %s unknown"
+msgstr "Class / Project %s unknown"
 
 #: ../shtml/class.tt:1 ../shtml/class.tt:27 ../shtml/class_collect.tt:1
 #: ../shtml/class_collect.tt:27 ../shtml/class_handout.tt:1
@@ -2938,26 +2943,26 @@ msgstr "Start exam"
 msgid "Klassenarbeitsmodus"
 msgstr "Exam mode"
 
-#: ../src/cgi-bin/room:321
+#: ../src/cgi-bin/room_lesson:325
 msgid "Klassenarbeitsmodus aktiv"
 msgstr "Exam mode active"
 
-#: ../shtml/room.tt:42
+#: ../shtml/room_lesson.tt:42
 msgid "Klassenarbeitsmodus beenden"
 msgstr "End exam mode"
 
 #: ../shtml/myroom.tt:21 ../shtml/myroom_handedoutcopy.tt:21
-#: ../shtml/myroom_tocollect.tt:21 ../shtml/room.tt:41
-#: ../shtml/room_collect.tt:23 ../shtml/room_end_lesson_verify.tt:24
-#: ../shtml/room_handout.tt:24 ../shtml/room_shares.tt:23
+#: ../shtml/myroom_tocollect.tt:21 ../shtml/room_collect.tt:23
+#: ../shtml/room_end_lesson_verify.tt:24 ../shtml/room_handout.tt:24
+#: ../shtml/room_lesson.tt:41 ../shtml/room_shares.tt:23
 #: ../shtml/room_test_collect.tt:27 ../shtml/room_test_end.tt:27
 #: ../shtml/room_test_handout.tt:27 ../shtml/room_test_password.tt:27
 msgid "Klassenarbeitsmodus ist <strong>aktiv</strong>."
 msgstr "Exam mode is <strong>active</strong>."
 
 #: ../shtml/myroom.tt:23 ../shtml/myroom_handedoutcopy.tt:23
-#: ../shtml/myroom_tocollect.tt:23 ../shtml/room.tt:44
-#: ../shtml/room_collect.tt:25 ../shtml/room_handout.tt:26
+#: ../shtml/myroom_tocollect.tt:23 ../shtml/room_collect.tt:25
+#: ../shtml/room_handout.tt:26 ../shtml/room_lesson.tt:44
 #: ../shtml/room_shares.tt:25 ../shtml/room_test.tt:27
 msgid "Klassenarbeitsmodus ist <strong>nicht aktiv</strong>."
 msgstr "Exam mode is <strong>not active</strong>."
@@ -3003,7 +3008,7 @@ msgstr "Edit coment lines"
 msgid "Konfigurationsdatei erstellt"
 msgstr "Configuration file created"
 
-#: ../src/cgi-bin/linbo_edit:405
+#: ../src/cgi-bin/linbo_edit:403
 msgid "Konfigurationsdatei geschrieben"
 msgstr "Configuration file written"
 
@@ -3024,9 +3029,8 @@ msgid "Konnte Berechtigung nicht aendern"
 msgstr "Could not change authorization"
 
 #: ../lib/Schulkonsole/Error.pm:365
-#, fuzzy
 msgid "Konnte Datei nicht finden"
-msgstr "can not open file %s"
+msgstr "can not open file"
 
 #: ../shtml/linbo_edit_global.inc.tt:67
 msgid "Konsolenschriftfarbe"
@@ -3153,12 +3157,13 @@ msgstr "log messages"
 #: ../shtml/quotas_others.tt:160 ../shtml/quotas_others.tt:18
 #: ../shtml/quotas_others.tt:212 ../shtml/quotas_others.tt:260
 #: ../shtml/quotas_others.tt:62 ../shtml/quotas_teachers.tt:18
-#: ../shtml/room.tt:96 ../shtml/room_collect.tt:79 ../shtml/room_handout.tt:69
-#: ../shtml/room_shares.tt:36 ../shtml/room_test_collect.tt:65
-#: ../shtml/room_test_handout.tt:39 ../shtml/settings_users.tt:169
-#: ../shtml/settings_users.tt:195 ../shtml/user_teacherpasswords.tt:35
-#: ../shtml/user_teacherpasswords.tt:56 ../shtml/user_teachers.tt:20
-#: ../shtml/user_teachers.tt:61 ../shtml/user_teachers.tt:94
+#: ../shtml/room_collect.tt:79 ../shtml/room_handout.tt:69
+#: ../shtml/room_lesson.tt:96 ../shtml/room_shares.tt:36
+#: ../shtml/room_test_collect.tt:65 ../shtml/room_test_handout.tt:39
+#: ../shtml/settings_users.tt:169 ../shtml/settings_users.tt:195
+#: ../shtml/user_teacherpasswords.tt:35 ../shtml/user_teacherpasswords.tt:56
+#: ../shtml/user_teachers.tt:20 ../shtml/user_teachers.tt:61
+#: ../shtml/user_teachers.tt:94
 msgid "Login"
 msgstr "Login"
 
@@ -3208,9 +3213,9 @@ msgstr "deletion started"
 msgid "MAC"
 msgstr "MAC"
 
-#: ../shtml/linbo_edit.tt:217 ../shtml/linbo_edit.tt:318
-#: ../shtml/linbo_edit.tt:32 ../shtml/linbo_edit.tt:347
-#: ../shtml/linbo_edit.tt:59
+#: ../shtml/linbo_edit.tt:32 ../shtml/linbo_edit.tt:65
+#: ../shtml/linbo_edit.tt:94 ../shtml/linbo_edit_oss.inc.tt:12
+#: ../shtml/linbo_edit_oss.inc.tt:150
 msgid "MS Windows"
 msgstr "MS Windows"
 
@@ -3357,11 +3362,11 @@ msgstr "moodle url"
 msgid "Möchten Sie das Projekt wirklich löschen?"
 msgstr "Are you sure that you want to delete the project?"
 
-#: ../src/cgi-bin/linbo_edit:159 ../src/cgi-bin/linbo_edit:161
+#: ../src/cgi-bin/linbo_edit:158 ../src/cgi-bin/linbo_edit:160
 msgid "NEU"
 msgstr "NEW"
 
-#: ../shtml/linbo_edit.tt:298 ../shtml/linbo_edit.tt:90
+#: ../shtml/linbo_edit_data.inc.tt:66 ../shtml/linbo_edit_oss.inc.tt:43
 msgid "NTFS"
 msgstr "NTFS"
 
@@ -3389,17 +3394,16 @@ msgstr "Last name is empty"
 #: ../shtml/project_passwords.tt:55 ../shtml/project_passwords.tt:83
 #: ../shtml/project_shares.tt:35 ../shtml/quotas_others.tt:110
 #: ../shtml/quotas_others.tt:161 ../shtml/quotas_teachers.tt:19
-#: ../shtml/room.tt:199 ../shtml/room_collect.tt:80
+#: ../shtml/room_collect.tt:80 ../shtml/room_lesson.tt:199
 #: ../shtml/user_teacherpasswords.tt:36 ../shtml/user_teacherpasswords.tt:57
 msgid "Name"
 msgstr "Name"
 
-#: ../shtml/linbo_edit.tt:104 ../shtml/linbo_edit.tt:260
-#: ../shtml/linbo_edit.tt:67
+#: ../shtml/linbo_edit_data.inc.tt:28 ../shtml/linbo_edit_oss.inc.tt:19
 msgid "Name der Partition"
 msgstr "name of the partition"
 
-#: ../shtml/linbo_edit.tt:125
+#: ../shtml/linbo_edit_oss.inc.tt:58
 msgid "Name des Betriebssystems"
 msgstr "Name of operating system"
 
@@ -3420,7 +3424,7 @@ msgstr "Create new"
 msgid "Neu starten"
 msgstr "restart"
 
-#: ../shtml/linbo_edit.tt:175
+#: ../shtml/linbo_edit_oss.inc.tt:108
 msgid "Neu+Start-Button für dieses Betriebssystem anzeigen"
 msgstr "Show new+start button for this operating system"
 
@@ -3456,7 +3460,7 @@ msgstr "Enter the new password twice to verify"
 msgid "Neues Projekt anlegen"
 msgstr "Create new project"
 
-#: ../shtml/linbo_edit.tt:30 ../shtml/linbo_edit.tt:345
+#: ../shtml/linbo_edit.tt:30 ../shtml/linbo_edit.tt:92
 msgid "Neues System hinzufügen"
 msgstr "Add new system"
 
@@ -3501,19 +3505,20 @@ msgstr "no."
 #: ../shtml/project_members.tt:137 ../shtml/project_members.tt:159
 #: ../shtml/project_members.tt:177 ../shtml/project_members.tt:247
 #: ../shtml/project_members.tt:69 ../shtml/project_members.tt:87
-#: ../shtml/room.tt:94 ../shtml/room_collect.tt:39 ../shtml/room_handout.tt:37
-#: ../shtml/room_handout.tt:67 ../shtml/room_shares.tt:34
-#: ../shtml/room_test_collect.tt:39 ../shtml/room_test_handout.tt:37
-#: ../shtml/room_test_handout.tt:60 ../shtml/rooms_classrooms.tt:29
-#: ../shtml/user_print.tt:35 ../shtml/user_print.tt:81
+#: ../shtml/room_collect.tt:39 ../shtml/room_handout.tt:37
+#: ../shtml/room_handout.tt:67 ../shtml/room_lesson.tt:94
+#: ../shtml/room_shares.tt:34 ../shtml/room_test_collect.tt:39
+#: ../shtml/room_test_handout.tt:37 ../shtml/room_test_handout.tt:60
+#: ../shtml/rooms_classrooms.tt:29 ../shtml/user_print.tt:35
+#: ../shtml/user_print.tt:81
 msgid "Nr."
 msgstr "no."
 
 #: ../shtml/class_lesson.tt:31 ../shtml/myroom.tt:12
 #: ../shtml/myroom_handedoutcopy.tt:12 ../shtml/myroom_tocollect.tt:12
-#: ../shtml/project_lesson.tt:31 ../shtml/room.tt:32
-#: ../shtml/room_collect.tt:13 ../shtml/room_end_lesson_verify.tt:12
-#: ../shtml/room_handout.tt:14 ../shtml/room_shares.tt:13
+#: ../shtml/project_lesson.tt:31 ../shtml/room_collect.tt:13
+#: ../shtml/room_end_lesson_verify.tt:12 ../shtml/room_handout.tt:14
+#: ../shtml/room_lesson.tt:32 ../shtml/room_shares.tt:13
 #: ../shtml/room_test.tt:15 ../shtml/room_test_collect.tt:15
 #: ../shtml/room_test_end.tt:15 ../shtml/room_test_handout.tt:15
 #: ../shtml/room_test_password.tt:15
@@ -3593,15 +3598,11 @@ msgstr "format partition"
 msgid "Partition"
 msgstr "Partition"
 
-#: ../shtml/linbo_edit.tt:120
-msgid "Partition bootbar"
-msgstr "Partition bootable"
-
-#: ../shtml/linbo_edit.tt:309 ../shtml/linbo_edit.tt:99
+#: ../shtml/linbo_edit_data.inc.tt:77 ../shtml/linbo_edit_oss.inc.tt:52
 msgid "Partition bootbar:"
 msgstr "Partition bootable:"
 
-#: ../shtml/linbo_edit.tt:150 ../lib/Schulkonsole/Linbo.pm:1186
+#: ../shtml/linbo_edit_oss.inc.tt:83 ../lib/Schulkonsole/Linbo.pm:1186
 msgid "Partition, die Kernel und initrd enthält"
 msgstr "Partition that contains kernel and initrd"
 
@@ -3609,8 +3610,7 @@ msgstr "Partition that contains kernel and initrd"
 msgid "Partitionieren"
 msgstr "partition"
 
-#: ../shtml/linbo_edit.tt:112 ../shtml/linbo_edit.tt:268
-#: ../shtml/linbo_edit.tt:75
+#: ../shtml/linbo_edit_data.inc.tt:36 ../shtml/linbo_edit_oss.inc.tt:27
 msgid "Partitionsgröße"
 msgstr "partition size"
 
@@ -3687,7 +3687,7 @@ msgstr "passwords reset"
 msgid "Pfad zum Kernel"
 msgstr "kernel path"
 
-#: ../shtml/linbo_edit.tt:154
+#: ../shtml/linbo_edit_oss.inc.tt:87
 msgid "Pfad zum kernel"
 msgstr "Path to kernel"
 
@@ -3894,12 +3894,12 @@ msgstr "Create registry patch file from"
 msgid "Registrypatch-Dateien der Rechnergruppen editieren"
 msgstr "Edit registry patch files of the computer group"
 
-#: ../shtml/linbo_edit.tt:291 ../shtml/linbo_edit.tt:301
-#: ../shtml/linbo_edit.tt:94
+#: ../shtml/linbo_edit_data.inc.tt:59 ../shtml/linbo_edit_data.inc.tt:69
+#: ../shtml/linbo_edit_oss.inc.tt:47
 msgid "ReiserFS"
 msgstr "ReiserFS"
 
-#: ../shtml/linbo_edit.tt:158
+#: ../shtml/linbo_edit_oss.inc.tt:91
 msgid "Relativer Pfad zur initrd"
 msgstr "Relative path to initrd"
 
@@ -3936,9 +3936,9 @@ msgstr "Close"
 #: ../shtml/class_shares.tt:59 ../shtml/project_collect.tt:101
 #: ../shtml/project_handoutcopy.tt:86 ../shtml/project_lesson.tt:115
 #: ../shtml/project_passwords.tt:76 ../shtml/project_shares.tt:58
-#: ../shtml/room.tt:166 ../shtml/room.tt:222 ../shtml/room_collect.tt:125
-#: ../shtml/room_handout.tt:102 ../shtml/room_shares.tt:61
-#: ../shtml/user_teacherpasswords.tt:51
+#: ../shtml/room_collect.tt:125 ../shtml/room_handout.tt:102
+#: ../shtml/room_lesson.tt:166 ../shtml/room_lesson.tt:222
+#: ../shtml/room_shares.tt:61 ../shtml/user_teacherpasswords.tt:51
 msgid "Schnellauswahl"
 msgstr "Quick selection"
 
@@ -3970,7 +3970,7 @@ msgstr "Student"
 #: ../shtml/quotas_others.tt:1 ../shtml/quotas_projects.tt:1
 #: ../shtml/quotas_teachers.tt:1 ../shtml/room.tt:1 ../shtml/room_collect.tt:1
 #: ../shtml/room_end_lesson_verify.tt:1 ../shtml/room_handout.tt:1
-#: ../shtml/room_shares.tt:1 ../shtml/room_test.tt:1
+#: ../shtml/room_lesson.tt:1 ../shtml/room_shares.tt:1 ../shtml/room_test.tt:1
 #: ../shtml/room_test_collect.tt:1 ../shtml/room_test_end.tt:1
 #: ../shtml/room_test_handout.tt:1 ../shtml/room_test_password.tt:1
 #: ../shtml/rooms.tt:1 ../shtml/rooms_classrooms.tt:1 ../shtml/settings.tt:1
@@ -4038,7 +4038,7 @@ msgstr "Activate shell"
 msgid "Sie dürfen den Unterricht in diesem Projekt nicht beenden."
 msgstr "You are not allowed to end the lesson in this project."
 
-#: ../src/cgi-bin/room:314 ../src/cgi-bin/room:346
+#: ../src/cgi-bin/room_lesson:318 ../src/cgi-bin/room_lesson:350
 msgid "Sie dürfen den Unterricht in diesem Raum nicht beenden."
 msgstr "You are not allowed to end the lesson in this room."
 
@@ -4055,7 +4055,7 @@ msgstr "You are not allowed to change the user list of %s"
 msgid "Sie halten keinen Unterricht in diesem Projekt."
 msgstr "You are not giving lessons in this project."
 
-#: ../src/cgi-bin/room:104 ../src/cgi-bin/room:256
+#: ../src/cgi-bin/room_lesson:108 ../src/cgi-bin/room_lesson:260
 msgid "Sie halten keinen Unterricht in diesem Raum."
 msgstr "You are not giving lessons in this room."
 
@@ -4143,7 +4143,7 @@ msgstr "Storage space"
 msgid "Speicherplatz/KB:"
 msgstr "Storage space/KB:"
 
-#: ../shtml/linbo_edit.tt:203
+#: ../shtml/linbo_edit_oss.inc.tt:136
 msgid "Standard-Autostart-Aktion auswählen"
 msgstr "Select standard autostart action"
 
@@ -4163,7 +4163,7 @@ msgstr "Standard quota teacher"
 msgid "Standardquota Schüler"
 msgstr "Default quota for students"
 
-#: ../shtml/linbo_edit.tt:167
+#: ../shtml/linbo_edit_oss.inc.tt:100
 msgid "Start-Button für dieses Betriebssystem anzeigen"
 msgstr "Show start button for this operating system"
 
@@ -4175,8 +4175,8 @@ msgstr "Start"
 msgid "Startseite"
 msgstr "Start page"
 
-#: ../shtml/linbo_remote.tt:17 ../shtml/myroom.tt:74 ../shtml/room.tt:200
-#: ../shtml/user_commit.tt:97
+#: ../shtml/linbo_remote.tt:17 ../shtml/myroom.tt:74
+#: ../shtml/room_lesson.tt:200 ../shtml/user_commit.tt:97
 msgid "Status"
 msgstr "Status"
 
@@ -4200,13 +4200,13 @@ msgstr "Search"
 msgid "Suche:"
 msgstr "Search:"
 
-#: ../shtml/linbo_edit.tt:220 ../shtml/linbo_edit.tt:248
-#: ../shtml/linbo_edit.tt:321 ../shtml/linbo_edit.tt:35
-#: ../shtml/linbo_edit.tt:350
+#: ../shtml/linbo_edit.tt:35 ../shtml/linbo_edit.tt:68
+#: ../shtml/linbo_edit.tt:97 ../shtml/linbo_edit_data.inc.tt:16
+#: ../shtml/linbo_edit_oss.inc.tt:153
 msgid "Swap"
 msgstr "Swap"
 
-#: ../shtml/linbo_edit.tt:171
+#: ../shtml/linbo_edit_oss.inc.tt:104
 msgid "Sync+Start-Button für dieses Betriebssystem anzeigen"
 msgstr "Show sync+start button for this operating system"
 
@@ -4214,15 +4214,15 @@ msgstr "Show sync+start button for this operating system"
 msgid "Synchronisieren"
 msgstr "synchronize"
 
-#: ../shtml/linbo_edit.tt:242 ../shtml/linbo_edit.tt:56
+#: ../shtml/linbo_edit_data.inc.tt:10 ../shtml/linbo_edit_oss.inc.tt:9
 msgid "System"
 msgstr "System"
 
-#: ../shtml/linbo_edit.tt:316
+#: ../shtml/linbo_edit.tt:63
 msgid "System löschen"
 msgstr "Delete system"
 
-#: ../shtml/linbo_edit.tt:224 ../shtml/linbo_edit.tt:325
+#: ../shtml/linbo_edit.tt:72 ../shtml/linbo_edit_oss.inc.tt:157
 msgid "System ändern"
 msgstr "Change system"
 
@@ -4238,7 +4238,7 @@ msgstr "System user"
 msgid "Systeme"
 msgstr "Systems"
 
-#: ../shtml/linbo_edit.tt:184
+#: ../shtml/linbo_edit_oss.inc.tt:117
 msgid "Systemstart durch"
 msgstr "System start executed"
 
@@ -4248,7 +4248,7 @@ msgid "Tauschen"
 msgstr "Exchange"
 
 #: ../shtml/class_shares.tt:37 ../shtml/myroom.tt:60
-#: ../shtml/project_shares.tt:36 ../shtml/room.tt:103
+#: ../shtml/project_shares.tt:36 ../shtml/room_lesson.tt:103
 #: ../shtml/room_shares.tt:37
 msgid "Tauschen<br>global"
 msgstr "Exchange<br>global"
@@ -4280,7 +4280,7 @@ msgid "U"
 msgstr "U"
 
 #: ../shtml/class_lesson.tt:69 ../shtml/project_lesson.tt:69
-#: ../shtml/room.tt:70
+#: ../shtml/room_lesson.tt:70
 msgid "Uhr"
 msgstr "Clock"
 
@@ -4289,9 +4289,8 @@ msgid "Unbekannte Passwortverschluesselung"
 msgstr "Unknown password encryption"
 
 #: ../lib/Schulkonsole/Error.pm:379
-#, fuzzy
 msgid "Unbekannter Fehler "
-msgstr "Unknown Error at %s/%s"
+msgstr "Unknown Error"
 
 #: ../lib/Schulkonsole/Linbo.pm:1266
 #, perl-format
@@ -4348,23 +4347,20 @@ msgid "Ungueltige Zeitangabe fuer Unterrichtsende"
 msgstr "Invalid time designation for end of lesson"
 
 #: ../lib/Schulkonsole/Error.pm:280
-#, fuzzy
 msgid "Ungueltiger Benutzer"
-msgstr "Invalid user ID"
+msgstr "Invalid user"
 
 #: ../lib/Schulkonsole/Error.pm:336
 msgid "Ungueltiger Dateiname"
 msgstr "Invalid file name"
 
 #: ../lib/Schulkonsole/Error.pm:371
-#, fuzzy
 msgid "Ungueltiger Debconf-Bereich"
-msgstr "Invalid printer name"
+msgstr "Invalid debconf section"
 
 #: ../lib/Schulkonsole/Error.pm:373
-#, fuzzy
 msgid "Ungueltiger Debconf-Name"
-msgstr "Invalid file name"
+msgstr "Invalid debconf name"
 
 #: ../lib/Schulkonsole/Error.pm:266
 msgid "Ungueltiger Druckername"
@@ -4375,7 +4371,6 @@ msgid "Ungueltiger Druckernutzer"
 msgstr "Invalid printer user"
 
 #: ../lib/Schulkonsole/Error.pm:334
-#, fuzzy
 msgid "Ungueltiger Gruppenname"
 msgstr "Invalid group name"
 
@@ -4400,9 +4395,8 @@ msgid "Ungueltiger Raumbezeichner"
 msgstr "Invalid room designation"
 
 #: ../lib/Schulkonsole/Error.pm:363
-#, fuzzy
 msgid "Ungueltiger Wert fuer Dateiname"
-msgstr "Invalid value for longname"
+msgstr "Invalid file name"
 
 #: ../lib/Schulkonsole/Error.pm:355
 msgid "Ungueltiger Wert fuer diskquota"
@@ -4430,7 +4424,7 @@ msgstr "Invalid value for projectgid"
 
 #: ../lib/Schulkonsole/Error.pm:361
 msgid "Ungueltiger Wert, action sollte eine Zahl sein"
-msgstr ""
+msgstr "invalid value, action needs to be a number"
 
 #: ../lib/Schulkonsole/Error.pm:301
 msgid "Ungueltiges Projekt"
@@ -4451,39 +4445,40 @@ msgstr "Invalid target group name"
 
 #: ../shtml/class_lesson.tt:0 ../shtml/class_lesson.tt:25
 #: ../shtml/project_lesson.tt:0 ../shtml/project_lesson.tt:25
+#: ../shtml/room_lesson.tt:0
 msgid "Unterricht"
 msgstr "Lesson"
 
 #: ../shtml/class_lesson.tt:43 ../shtml/project_lesson.tt:43
-#: ../shtml/room.tt:46
+#: ../shtml/room_lesson.tt:46
 msgid "Unterricht beenden:"
 msgstr "End lesson:"
 
 #: ../src/cgi-bin/class_lesson:187 ../src/cgi-bin/project_lesson:191
-#: ../src/cgi-bin/room:333
+#: ../src/cgi-bin/room_lesson:337
 msgid "Unterricht beendet."
 msgstr "Lesson completed."
 
 #: ../shtml/class_lesson.tt:81 ../shtml/project_lesson.tt:81
-#: ../shtml/room.tt:82
+#: ../shtml/room_lesson.tt:82
 msgid "Unterricht beginnen"
 msgstr "Start lessons"
 
 #: ../src/cgi-bin/class_lesson:163 ../src/cgi-bin/project_lesson:167
-#: ../src/cgi-bin/room:299
+#: ../src/cgi-bin/room_lesson:303
 msgid "Unterricht begonnen."
 msgstr "Lesson started."
 
 #: ../src/cgi-bin/class_lesson:215 ../src/cgi-bin/project_lesson:219
-#: ../src/cgi-bin/room:369
+#: ../src/cgi-bin/room_lesson:373
 msgid "Unterrichtsende liegt in der Vergangenheit"
 msgstr "Lessons end is in the past"
 
 #: ../shtml/class_lesson.tt:38 ../shtml/myroom.tt:16
 #: ../shtml/myroom_handedoutcopy.tt:16 ../shtml/myroom_tocollect.tt:16
-#: ../shtml/project_lesson.tt:38 ../shtml/room.tt:36
-#: ../shtml/room_collect.tt:18 ../shtml/room_end_lesson_verify.tt:20
-#: ../shtml/room_handout.tt:19 ../shtml/room_shares.tt:18
+#: ../shtml/project_lesson.tt:38 ../shtml/room_collect.tt:18
+#: ../shtml/room_end_lesson_verify.tt:20 ../shtml/room_handout.tt:19
+#: ../shtml/room_lesson.tt:36 ../shtml/room_shares.tt:18
 #: ../shtml/room_test.tt:23 ../shtml/room_test_collect.tt:23
 #: ../shtml/room_test_end.tt:23 ../shtml/room_test_handout.tt:23
 #: ../shtml/room_test_password.tt:23
@@ -4492,12 +4487,12 @@ msgstr "Lessons end at"
 
 #: ../src/cgi-bin/class_lesson:165 ../src/cgi-bin/class_lesson:223
 #: ../src/cgi-bin/project_lesson:169 ../src/cgi-bin/project_lesson:227
-#: ../src/cgi-bin/room:301 ../src/cgi-bin/room:377
+#: ../src/cgi-bin/room_lesson:305 ../src/cgi-bin/room_lesson:381
 msgid "Unterrichtsende um %H:%M"
 msgstr "Lesson ends at %H:%M"
 
-#: ../shtml/linbo_edit.tt:294 ../shtml/linbo_edit.tt:297
-#: ../shtml/linbo_edit.tt:89
+#: ../shtml/linbo_edit_data.inc.tt:62 ../shtml/linbo_edit_data.inc.tt:65
+#: ../shtml/linbo_edit_oss.inc.tt:42
 msgid "VFAT"
 msgstr "VFAT"
 
@@ -4591,7 +4586,7 @@ msgstr "waiting time after each host"
 msgid "Wartezeit vor der Befehlsliste"
 msgstr "waiting time before processing commands"
 
-#: ../shtml/myroom.tt:50 ../shtml/room.tt:99 ../shtml/rooms.tt:23
+#: ../shtml/myroom.tt:50 ../shtml/room_lesson.tt:99 ../shtml/rooms.tt:23
 msgid "Webfilter"
 msgstr "Web filter"
 
@@ -4615,7 +4610,7 @@ msgstr "Changes to this user not possible"
 #: ../shtml/project_handout.tt:20 ../shtml/project_handoutcopy.tt:20
 #: ../shtml/project_lesson.tt:20 ../shtml/project_members.tt:19
 #: ../shtml/project_passwords.tt:21 ../shtml/project_shares.tt:20
-#: ../shtml/room.tt:22
+#: ../shtml/room.tt:22 ../shtml/room_lesson.tt:22
 msgid "Wechseln"
 msgstr "Switch"
 
@@ -4740,14 +4735,14 @@ msgstr "current project:"
 
 #: ../shtml/myroom.tt:1 ../shtml/room.tt:1 ../shtml/room_collect.tt:1
 #: ../shtml/room_end_lesson_verify.tt:1 ../shtml/room_handout.tt:1
-#: ../shtml/room_shares.tt:1 ../shtml/room_test.tt:1
+#: ../shtml/room_lesson.tt:1 ../shtml/room_shares.tt:1 ../shtml/room_test.tt:1
 #: ../shtml/room_test_collect.tt:1 ../shtml/room_test_end.tt:1
 #: ../shtml/room_test_handout.tt:1 ../shtml/room_test_password.tt:1
 msgid "aktueller Raum"
 msgstr "Current Room"
 
 #: ../shtml/class_lesson.tt:78 ../shtml/project_lesson.tt:78
-#: ../shtml/room.tt:79
+#: ../shtml/room_lesson.tt:79
 msgid "angemeldet,"
 msgstr "Signed in,"
 
@@ -4760,7 +4755,7 @@ msgid "automatischer Rootlogout nach"
 msgstr "Automatic root logout after"
 
 #: ../shtml/class_lesson.tt:70 ../shtml/project_lesson.tt:70
-#: ../shtml/room.tt:71
+#: ../shtml/room_lesson.tt:71
 msgid "beenden lassen"
 msgstr "End"
 
@@ -4784,16 +4779,16 @@ msgstr "default"
 msgid "direkt"
 msgstr "immediately"
 
-#: ../shtml/linbo_edit.tt:222 ../shtml/linbo_edit.tt:323
-#: ../shtml/linbo_edit.tt:352 ../shtml/linbo_edit.tt:37
+#: ../shtml/linbo_edit.tt:37 ../shtml/linbo_edit.tt:70
+#: ../shtml/linbo_edit.tt:99 ../shtml/linbo_edit_oss.inc.tt:155
 msgid "erweitert"
 msgstr "enhanced"
 
-#: ../shtml/linbo_edit.tt:252
+#: ../shtml/linbo_edit_data.inc.tt:20
 msgid "erweiterte Partition"
 msgstr "enhanced partition"
 
-#: ../shtml/myroom.tt:75 ../shtml/room.tt:201
+#: ../shtml/myroom.tt:75 ../shtml/room_lesson.tt:201
 msgid "freigeschaltet"
 msgstr "unlocked"
 
@@ -4802,7 +4797,7 @@ msgstr "unlocked"
 msgid "grub cfg-Dateien der Rechnergruppen editieren"
 msgstr "edit grub cfg files for host groups"
 
-#: ../shtml/linbo_edit.tt:186
+#: ../shtml/linbo_edit_oss.inc.tt:119
 msgid "grub.exe"
 msgstr "grub.exe"
 
@@ -4814,7 +4809,7 @@ msgstr "ignored: "
 msgid "ist im Projekt"
 msgstr "is project member"
 
-#: ../shtml/room.tt:77
+#: ../shtml/room_lesson.tt:77
 msgid "ist in Raum"
 msgstr "is in room"
 
@@ -4822,7 +4817,7 @@ msgstr "is in room"
 msgid "ist in der Klasse"
 msgstr "is in the class"
 
-#: ../shtml/linbo_edit.tt:339
+#: ../shtml/linbo_edit.tt:86
 msgid "kein Betriebssystem automatisch starten"
 msgstr "Do not start any operating system automatically"
 
@@ -4832,7 +4827,7 @@ msgstr "No Error"
 
 #: ../shtml/class_lesson.tt:80 ../shtml/myroom.tt:26
 #: ../shtml/myroom_handedoutcopy.tt:26 ../shtml/myroom_tocollect.tt:26
-#: ../shtml/project_lesson.tt:80 ../shtml/room.tt:81
+#: ../shtml/project_lesson.tt:80 ../shtml/room_lesson.tt:81
 msgid "kein Unterricht."
 msgstr "No Lessons."
 
@@ -4868,7 +4863,7 @@ msgstr "lehrer.txt already exists"
 msgid "linbo"
 msgstr "linbo"
 
-#: ../shtml/linbo_edit.tt:376 ../shtml/linbo_grubedit.tt:62
+#: ../shtml/linbo_edit.tt:123 ../shtml/linbo_grubedit.tt:62
 #: ../shtml/linbo_postsyncedit.tt:61 ../shtml/linbo_regpatchedit.tt:47
 msgid "löschen"
 msgstr "delete"
@@ -4885,7 +4880,7 @@ msgstr "multicast"
 msgid "nach"
 msgstr "to"
 
-#: ../shtml/linbo_edit.tt:208
+#: ../shtml/linbo_edit_oss.inc.tt:141
 msgid "new"
 msgstr "new"
 
@@ -4893,7 +4888,7 @@ msgstr "new"
 msgid "nochmal"
 msgstr "again"
 
-#: ../shtml/linbo_edit.tt:340
+#: ../shtml/linbo_edit.tt:87
 msgid "none"
 msgstr "none"
 
@@ -4910,7 +4905,7 @@ msgstr "Edit postsync files of the images"
 msgid "project"
 msgstr "project"
 
-#: ../shtml/linbo_edit.tt:187
+#: ../shtml/linbo_edit_oss.inc.tt:120
 msgid "reboot"
 msgstr "reboot"
 
@@ -4927,11 +4922,11 @@ msgid "sichtbar"
 msgstr "visible"
 
 #: ../shtml/class_lesson.tt:44 ../shtml/project_lesson.tt:44
-#: ../shtml/room.tt:47
+#: ../shtml/room_lesson.tt:47
 msgid "sofort beenden"
 msgstr "end immediately"
 
-#: ../shtml/linbo_edit.tt:206
+#: ../shtml/linbo_edit_oss.inc.tt:139
 msgid "start"
 msgstr "start"
 
@@ -4954,7 +4949,7 @@ msgstr "start.conf.%s could not be deleted"
 msgid "student"
 msgstr "student"
 
-#: ../shtml/linbo_edit.tt:207
+#: ../shtml/linbo_edit_oss.inc.tt:140
 msgid "sync"
 msgstr "sync"
 
@@ -4967,13 +4962,13 @@ msgid "torrent"
 msgstr "torrent"
 
 #: ../shtml/class_lesson.tt:47 ../shtml/project_lesson.tt:47
-#: ../shtml/room.tt:49
+#: ../shtml/room_lesson.tt:49
 msgid "um"
 msgstr "at"
 
 #: ../shtml/myroom.tt:8 ../shtml/myroom_handedoutcopy.tt:8
 #: ../shtml/myroom_tocollect.tt:8 ../shtml/page.tt:74 ../shtml/room.tt:27
-#: ../shtml/status.inc.tt:17
+#: ../shtml/room_lesson.tt:27 ../shtml/status.inc.tt:17
 msgid "unbekannt"
 msgstr "unknown"
 
@@ -5015,9 +5010,9 @@ msgid "ungültiges Geburtsdatum für %s"
 msgstr "invalid date of birth for %s"
 
 #: ../shtml/myroom.tt:14 ../shtml/myroom_handedoutcopy.tt:14
-#: ../shtml/myroom_tocollect.tt:14 ../shtml/room.tt:34
-#: ../shtml/room_collect.tt:15 ../shtml/room_end_lesson_verify.tt:16
-#: ../shtml/room_handout.tt:16 ../shtml/room_shares.tt:15
+#: ../shtml/myroom_tocollect.tt:14 ../shtml/room_collect.tt:15
+#: ../shtml/room_end_lesson_verify.tt:16 ../shtml/room_handout.tt:16
+#: ../shtml/room_lesson.tt:34 ../shtml/room_shares.tt:15
 #: ../shtml/room_test.tt:19 ../shtml/room_test_collect.tt:19
 #: ../shtml/room_test_end.tt:19 ../shtml/room_test_handout.tt:19
 #: ../shtml/room_test_password.tt:19
@@ -5088,8 +5083,8 @@ msgstr "Implement changes"
 msgid "Änderungen in Lehrerliste speichern"
 msgstr "Save changes to teacher list"
 
-#: ../shtml/linbo_edit.tt:214 ../shtml/linbo_edit.tt:29
-#: ../shtml/linbo_edit.tt:315 ../shtml/linbo_edit.tt:356
+#: ../shtml/linbo_edit.tt:103 ../shtml/linbo_edit.tt:29
+#: ../shtml/linbo_edit.tt:62 ../shtml/linbo_edit_oss.inc.tt:147
 #: ../shtml/linbo_grubedit.tt:31 ../shtml/linbo_images.tt:55
 #: ../shtml/linbo_postsyncedit.tt:30 ../shtml/linbo_regpatchedit.tt:31
 #: ../shtml/project_members.tt:37 ../shtml/user_extra.tt:19
@@ -5105,11 +5100,11 @@ msgstr "Save changes"
 #: ../shtml/quotas_others.tt:238 ../shtml/quotas_others.tt:287
 #: ../shtml/quotas_others.tt:42 ../shtml/quotas_others.tt:86
 #: ../shtml/quotas_projects.tt:46 ../shtml/quotas_teachers.tt:47
-#: ../shtml/room.tt:187 ../shtml/room.tt:232 ../shtml/room_shares.tt:65
-#: ../shtml/rooms.tt:153 ../shtml/rooms_classrooms.tt:48
-#: ../shtml/settings_classs.tt:58 ../shtml/settings_program.tt:37
-#: ../shtml/settings_projects.tt:52 ../shtml/settings_users.tt:285
-#: ../shtml/user_teachin.tt:99
+#: ../shtml/room_lesson.tt:187 ../shtml/room_lesson.tt:232
+#: ../shtml/room_shares.tt:65 ../shtml/rooms.tt:153
+#: ../shtml/rooms_classrooms.tt:48 ../shtml/settings_classs.tt:58
+#: ../shtml/settings_program.tt:37 ../shtml/settings_projects.tt:52
+#: ../shtml/settings_users.tt:285 ../shtml/user_teachin.tt:99
 msgid "Änderungen übernehmen"
 msgstr "uImplement changes"
 
@@ -5125,7 +5120,7 @@ msgstr "changes implemented"
 #: ../src/cgi-bin/project_shares:126 ../src/cgi-bin/quotas_classes:152
 #: ../src/cgi-bin/quotas_others:192 ../src/cgi-bin/quotas_projects:153
 #: ../src/cgi-bin/quotas_projects:279 ../src/cgi-bin/quotas_teachers:123
-#: ../src/cgi-bin/room:244 ../src/cgi-bin/room:283
+#: ../src/cgi-bin/room_lesson:248 ../src/cgi-bin/room_lesson:287
 #: ../src/cgi-bin/room_shares:104 ../src/cgi-bin/settings_classs:147
 #: ../src/cgi-bin/settings_projects:126
 msgid "Änderungen übernommen."
@@ -5139,7 +5134,7 @@ msgstr "Overwrite?"
 msgid "Übersicht"
 msgstr "Overview"
 
-#: ../shtml/myroom.tt:68 ../shtml/room.tt:194
+#: ../shtml/myroom.tt:68 ../shtml/room_lesson.tt:194
 msgid "Übersicht Drucker"
 msgstr "Overview printer"
 
@@ -5147,7 +5142,7 @@ msgstr "Overview printer"
 msgid "Übersicht PC"
 msgstr "Overview PC"
 
-#: ../shtml/room.tt:89
+#: ../shtml/room_lesson.tt:89
 msgid "Übersicht PCs"
 msgstr "Overview PCs"
 
@@ -5163,7 +5158,7 @@ msgstr "Overview of classes"
 msgid "Übersicht der Projekte"
 msgstr "Overview of projects"
 
-#: ../shtml/linbo_edit.tt:366
+#: ../shtml/linbo_edit.tt:113
 msgid "Übersicht der Rechnergruppen"
 msgstr "host groups overview"
 
@@ -5781,6 +5776,9 @@ msgstr "overwrite?"
 
 #~ msgid "PXE-Start-Dateien der Rechnergruppen editieren"
 #~ msgstr "Edit PXE start files of computer groups"
+
+#~ msgid "Partition bootbar"
+#~ msgstr "Partition bootable"
 
 #~ msgid "Passw&ouml;rter"
 #~ msgstr "Passwords"
