@@ -9,86 +9,90 @@
 
 [% IF deletefilename %]
 
-<h2>[% loc('Registrypatch-Dateien der Rechnergruppen editieren') %]</h2>
+	<h2>[% loc('Registrypatch-Dateien der Rechnergruppen editieren') %]</h2>
 
-<h3>[% loc('Bitte bestätigen') %]</h3>
+	<h3>[% loc('Bitte bestätigen') %]</h3>
 
-<form method="post" accept-charset="UTF-8">
-<p>[% deletefilename %] [% loc('wirklich löschen?') %]</p>
+	<form method="post" accept-charset="UTF-8">
+	<p>[% deletefilename %] [% loc('wirklich löschen?') %]</p>
 
-<p><input type="hidden" name="filename" value="[% deletefilename %]"><input type="submit" name="delete" value="[% loc('Bestätigen') %]">
-<input type="submit" name="abort" value="[% loc('Abbrechen') %]"></p>
+	<p><input type="hidden" name="filename" value="[% deletefilename %]"><input type="submit" name="delete" value="[% loc('Bestätigen') %]">
+	<input type="submit" name="abort" value="[% loc('Abbrechen') %]"></p>
 
-</form>
+	</form>
+
+[% ELSIF editfilename %]
+
+	<h2>[% loc('Registrypatch-Dateien der Rechnergruppen editieren') %]: [% editfilename %]</h2>
+
+	<form method="post" accept-charset="UTF-8">
+	<p><textarea wrap="off" name="regpatch" class="texteditor">[% regpatch %]</textarea></p>
+	<p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% loc('Änderungen speichern') %]">
+	<input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
+
+	</form>
 
 [% ELSE %]
-[% IF editfilename %]
 
-<h2>[% loc('Registrypatch-Dateien der Rechnergruppen editieren') %]: [% editfilename %]</h2>
+	<h2>[% loc('Registrypatch-Dateien der Rechnergruppen editieren') %]</h2>
 
-<form method="post" accept-charset="UTF-8">
-<p><textarea wrap="off" name="regpatch" rows="20" cols="70"></textarea></p>
-<p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% loc('Änderungen speichern') %]">
-<input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
-
-</form>
-
-[% ELSE %]
-
-<h2>[% loc('Registrypatch-Dateien der Rechnergruppen editieren') %]</h2>
-
-[% IF regpatches %]
-<form method="post" accept-charset="UTF-8">
-<table id="linboregpatchoverview" class="liste">
-[% FOREACH rp IN regpatches %]
-[% IF odd %][% odd=0 %]<tr class="odd">
-[% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><input type="submit" name="[% rp %]_edit" value="[% rp %]"></td>
-<td><input type="submit" name="[% rp %]_delete" value="[% loc('löschen') %]"></td>
-</tr>
-[% END %]
-</table>
-</form>
-[% ELSE %]
-<p>[% loc('Es sind keine Registrypatch-Dateien vorhanden.') %]</p>
-[% END %]
+	[% IF regpatches %]
+		<form method="post" accept-charset="UTF-8">
+		<table id="linboregpatchoverview" class="liste">
+		[% FOREACH rp IN regpatches %]
+			[% IF odd %][% odd=0 %]<tr class="odd">
+			[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+			<td><input type="submit" name="[% rp %]_edit" value="[% rp %]"></td>
+			<td><input type="submit" name="[% rp %]_delete" value="[% loc('löschen') %]"></td>
+			</tr>
+		[% END %]
+		</table>
+		</form>
+	[% ELSE %]
+		<p>[% loc('Es sind keine Registrypatch-Dateien vorhanden.') %]</p>
+	[% END %]
 
 
-<h2>[% loc('Registrypatch-Datei erstellen') %]</h2>
+	<h2>[% loc('Registrypatch-Datei erstellen') %]</h2>
 
-[% IF images %]
-[% IF hastemplates %]
-<form method="post" accept-charset="UTF-8">
+	[% IF images %]
+		[% IF hastemplates %]
+			<form method="post" accept-charset="UTF-8">
 
-<p>[% loc('Für') %]
-<select name="image">[% FOREACH i IN images %]
-<option value="[% i %]">[% i %]</option>
-[% END %]</select>
-<input type="submit" name="create" value="[% loc('Registrypatch-Datei erstellen aus') %]">
-<select name="template">
-[% IF regpatches %]
-<optgroup label="Verwendete Dateien">[% FOREACH rp IN regpatches %]
-<option value="[% rp %]">[% rp %]</option>
-[% END %]</optgroup>[% END %]
-[% IF example_regpatches %]
-<optgroup label="Beispieldateien">[% FOREACH erp IN example_regpatches %]
-<option value="[% erp %]_example">[% erp %]</option>
-[% END %]</optgroup>[% END %]
-</select>
-</p>
+			<p>[% loc('Für') %]
+			<select name="image">
+			[% FOREACH i IN images %]
+				<option value="[% i %]">[% i %]</option>
+			[% END %]</select>
+			<input type="submit" name="create" value="[% loc('Registrypatch-Datei erstellen aus') %]">
+			<select name="template">
+			[% IF regpatches %]
+				<optgroup label="Verwendete Dateien">
+				[% FOREACH rp IN regpatches %]
+					<option value="[% rp %]">[% rp %]</option>
+				[% END %]</optgroup>
+			[% END %]
+			[% IF example_regpatches %]
+				<optgroup label="Beispieldateien">
+				[% FOREACH erp IN example_regpatches %]
+					<option value="[% erp %]_example">[% erp %]</option>
+				[% END %]
+				</optgroup>
+			[% END %]
+			</select>
+			</p>
 
-</form>
-[% ELSE %]
-<p>[% loc('Es sind keine Templateedateien vorhanden.') %]</p>
-[% END %]
-[% ELSE %]
-[% IF regpatches %]
-<p>[% loc('Es gibt keine Imagedateien ohne Registrypatch.') %]</p>
-[% ELSE %]
-<p>[% loc('Es gibt keine Imagedateien.') %]</p>
-[% END %]
-[% END %]
+			</form>
+		[% ELSE %]
+			<p>[% loc('Es sind keine Templateedateien vorhanden.') %]</p>
+		[% END %]
+	[% ELSE %]
+		[% IF regpatches %]
+			<p>[% loc('Es gibt keine Imagedateien ohne Registrypatch.') %]</p>
+		[% ELSE %]
+			<p>[% loc('Es gibt keine Imagedateien.') %]</p>
+		[% END %]
+	[% END %]
 
 
-[% END %]
 [% END %]
