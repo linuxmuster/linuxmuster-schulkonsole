@@ -716,7 +716,7 @@ sub studentsfilemanapp() {
 				system("rm -f \"$share_dir/$filename\"");
 			}
 		}
-		system("mv -f \"$Schulkonsole::Config::_runtimedir/$fromfile $share_dir/$filename\"");
+		system("mv -f \"$Schulkonsole::Config::_runtimedir/$fromfile\" \"$share_dir/$filename\"");
 		system("chown " . $$userdata{uid} . ":teachers \"$share_dir/$filename\"");
 		system("chmod 640 \"$share_dir/$filename\"");
 	} elsif($action == 3) { # download
@@ -747,7 +747,7 @@ sub studentsfilemanapp() {
 			system("chown www-data:www-data \"$Schulkonsole::Config::_runtimedir/${tofile}.zip\"");
 			system("rm -rf \"$Schulkonsole::Config::_runtimedir/$tofile\"");
 		} else {
-			system("cp \"$share_dir/$filename $Schulkonsole::Config::_runtimedir/$tofile\"");			
+			system("cp \"$share_dir/$filename\" \"$Schulkonsole::Config::_runtimedir/$tofile\"");			
 			system("chown www-data:www-data \"$Schulkonsole::Config::_runtimedir/$tofile\"");
 		}
 	} else {
