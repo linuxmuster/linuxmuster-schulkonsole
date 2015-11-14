@@ -10,7 +10,7 @@ myroom_tocollect - students' class collectable files
 
 =head1 DESCRIPTION
 
-C<myroom_tocollect> lets you upload/download/remove files for your class
+C<myroom_tocollect> lets you upload/download/remove files for the current room
 from your directory to be collected. The HTML template is myroom_tocollect.tt.
 
 =head2 Template variables
@@ -27,7 +27,6 @@ use utf8;
 use lib '/usr/share/schulkonsole';
 use Schulkonsole::Session;
 use Schulkonsole::Room;
-use Schulkonsole::Info;
 use Schulkonsole::Sophomorix;
 use File::Basename;
 
@@ -57,15 +56,6 @@ if (   not $room_session  ) {
 }
 
 my $myroom = $room_session->info('name');
-my $editing_userdata = $room_session->info('editing_userdata');
-my $editing_user = $$editing_userdata{uid};
-if (   not $myroom  or
-		not $editing_user or
-		not $editing_userdata) {
-	my $url = $q->url( -absolute => 1 );
-	$url =~ s/$this_file$/myroom/g;
-	$sk_session->redirect($url);
-}
 
 my $id = $sk_session->userdata('id');
 my $password = $sk_session->get_password();
@@ -174,15 +164,6 @@ eval {
 if ($@) {
 	$sk_session->standard_error_handling($this_file, $@);
 }
-
-
-
-
-
-
-
-
-
 
 eval {
 my $collect_files = Schulkonsole::Sophomorix::ls_myroom_tocollect($id, $password);

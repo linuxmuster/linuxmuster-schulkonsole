@@ -5,30 +5,9 @@
    }
 %]
 
-<h2>[% loc('Mein Raum') %]: [% IF myroom %][% myroom %][% ELSE %][% loc('unbekannt') %][% END %] :: [% loc('Einsammeln') %]</h2>
+<h2>[% loc('Mein Raum') %]: [% IF myroom %][% myroom %][% ELSE %][% loc('unbekannt') %][% END %] :: [% loc('Einzusammeln') %]</h2>
 
 [% IF myroom %]
-	<p>
-	[% loc('Nutzung:') %]
-	[% IF editinguser %]
-		[% editinguser %] [% loc('unterrichtet in Raum') %] [% room %].
-		[% IF endedittime %]
-			[% loc('Unterrichtsende um') %] [% endedittime %].
-		[% END %]
-		</p>
-		
-		[% IF exammode %]
-			<p class="important">[% loc('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
-		[% ELSE %]
-			<p>[% loc('Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.') %]</p>
-		[% END %]
-	[% ELSE %]
-		[% loc('kein Unterricht.') %]
-	[% END %]
-	</p>
-[% END %]
-
-[% IF myroom and editinguser %]
 	<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
 	
 	<h3>[% loc('Einzusammelnde Dateien') %]</h3>

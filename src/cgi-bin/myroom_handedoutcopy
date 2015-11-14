@@ -58,15 +58,6 @@ if (   not $room_session  ) {
 }
 
 my $myroom = $room_session->info('name');
-my $editing_userdata = $room_session->info('editing_userdata');
-my $editing_user = $$editing_userdata{uid};
-if (   not $myroom  or
-		not $editing_user or
-		not $editing_userdata) {
-	my $url = $q->url( -absolute => 1 );
-	$url =~ s/$this_file$/myroom/g;
-	$sk_session->redirect($url);
-}
 
 my $id = $sk_session->userdata('id');
 my $password = $sk_session->get_password();
