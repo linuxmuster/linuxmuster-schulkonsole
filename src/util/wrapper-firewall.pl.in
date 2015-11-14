@@ -20,8 +20,8 @@ wrapper-firewall.pl - wrapper for configuration of firewall
  $password
  $app_id
  1
- 00:00:39:F2:C9:A1
- 00:00:39:F2:C9:A2
+ 10.16.2.1
+ 10.16.2.3
 
  INPUT
 
@@ -94,7 +94,7 @@ numeric constant: C<Schulkonsole::Config::INTERNETONOFFAPP>
 =head4 Description
 
 invokes C<<
-internet_on_off.sh --trigger=<on|off> --maclist=<mac1,mac2,...,macn>
+internet_on_off.sh --trigger=<on|off> --hostlist=<host1,host2,...,hostn>
 >>
 
 
@@ -108,9 +108,9 @@ C<1> (on) or C<0> (off)
 
 =item mac
 
-MAC-addresses one per line, end with empty line
+IP addresses one per line, end with empty line
 
-Format of address is xx:xx:xx:xx:xx:xx where xx is a hexadecimal value.
+Format of address is x.x.x.x where x is a decimal value.
 
 =back
 
@@ -122,7 +122,7 @@ numeric constant: C<Schulkonsole::Config::INTRANETONOFFAPP>
 =head4 Description
 
 invokes C<<
-intranet_on_off.sh --trigger=<on|off> --maclist=<mac1,mac2,...,macn>
+intranet_on_off.sh --trigger=<on|off> --hostlist=<host1,host2,...,hostn>
 >>
 
 
@@ -136,9 +136,9 @@ C<1> (on) or C<0> (off)
 
 =item mac
 
-MAC-addresses one per line, end with empty line
+IP addresses one per line, end with empty line
 
-Format of address is xx:xx:xx:xx:xx:xx where xx is a hexadecimal value.
+Format of address is x.x.x.x where x is a decimal value.
 
 =back
 
@@ -149,35 +149,27 @@ Format of address is xx:xx:xx:xx:xx:xx where xx is a hexadecimal value.
 	my $trigger = <>;
 	$trigger = int($trigger) ? 'on' : 'off';
 
-	my @macs;
-	while (my $mac = <>) {
-		last if $mac =~ /^$/;
+	my @hosts;
+	while (my $host = <>) {
+		last if $host =~ /^$/;
 
-		if ($lml_majorversion >= 6.1) {
-			($mac) = $mac =~ /^([\w.-]+)$/i;
-		} else {
-			($mac) = $mac =~ /^(\w{2}(?::\w{2}){5})$/;
-		}
-		exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_MAC
+		($host) = $host =~ /^([\w.-]+)$/i;
+		exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_HOST
 		      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
-			unless $mac;
+			unless $host;
 
-		push @macs, $mac;
+		push @hostss, $host;
 	}
-	exit (  Schulkonsole::Error::Firewall::WRAPPER_NO_MACS
+	exit (  Schulkonsole::Error::Firewall::WRAPPER_NO_HOSTS
 	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
-		unless @macs;
+		unless @hosts;
 
 	my $cmd = ($app_id == Schulkonsole::Config::INTERNETONOFFAPP ?
 	             $Schulkonsole::Config::_cmd_internet_on_off
 	           : $Schulkonsole::Config::_cmd_intranet_on_off);
 
 	my $opts;
-	if ($lml_majorversion >= 6.1) {
-		$opts = "--trigger=$trigger --hostlist=" . join(',', @macs);
-	} else {
-		$opts = "--trigger=$trigger --maclist=" . join(',', @macs);
-	}
+	$opts = "--trigger=$trigger --hostlist=" . join(',', @hosts);
 
 	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;

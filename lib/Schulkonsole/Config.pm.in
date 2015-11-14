@@ -65,7 +65,7 @@ $VERSION = 0.06;
 	$_dhcpd_conf_file
 	$_printers_file
 	$_classrooms_file
-	$_blocked_hosts_internet_file
+	$_allowed_hosts_internet_file
 	$_blocked_hosts_intranet_file
 	$_unfiltered_hosts_file
 	$_cups_printers_conf_file
@@ -719,9 +719,9 @@ Major version of linuxmuster.net distribution
 
 Directory where Linuxmusterloesung caches information
 
-=item C<$_blocked_hosts_internet_file>
+=item C<$_allowed_hosts_internet_file>
 
-This file contains a cached list of hosts that are blocked from the internet
+This file contains a cached list of hosts that are allowed to access the internet
 
 =item C<$_blocked_hosts_intranet_file>
 
@@ -750,7 +750,7 @@ True if linuxmuster is started at boot time
 
 use vars qw($_lml_majorversion
             $_lml_cache_dir
-            $_blocked_hosts_internet_file $_blocked_hosts_intranet_file
+            $_allowed_hosts_internet_file $_blocked_hosts_intranet_file
             $_unfiltered_hosts_file $_cups_printers_conf_file
             $_workstation_file
             $_lml_start);
@@ -1080,7 +1080,8 @@ my %lml_env;
 tie %lml_env, 'Env::Bash', Source => $lml_config_file;
 $_lml_majorversion = $lml_env{DISTMAJORVERSION};
 $_lml_cache_dir = $lml_env{CACHEDIR};
-$_blocked_hosts_internet_file = $lml_env{BLOCKEDHOSTSINTERNET};
+# FIXME: neue dist-Variable
+$_allowed_hosts_internet_file = '/var/cache/linuxmuster/allowedips';
 $_blocked_hosts_intranet_file = $lml_env{BLOCKEDHOSTSINTRANET};
 $_unfiltered_hosts_file = $lml_env{UNFILTEREDHOSTS};
 $_workstations_file = $lml_env{WIMPORTDATA};
