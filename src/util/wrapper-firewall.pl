@@ -192,7 +192,7 @@ sub internet_on_off_app() {
 		      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
 			unless $host;
 
-		push @hostss, $host;
+		push @hosts, $host;
 	}
 	exit (  Schulkonsole::Error::Firewall::WRAPPER_NO_HOSTS
 	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)

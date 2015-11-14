@@ -390,9 +390,13 @@ numeric constant: C<Schulkonsole::Config::FILEMANAPP>
 
 =over
 
-=item remove - 1/add - 2/download - 3
+=item action
+
+action to do: remove - 1/add - 2/download - 3
 
 =item category
+
+dir to work on: 0-handout, 1-handoutcopy, 2-collect
 
 =item type
 
@@ -438,7 +442,7 @@ sub filemanapp() {
 
 	LSHANDOUTTYPE: {
 	($type & 1 or $type & 2) and do {
-		if ($category) {
+		if ($category == 1) {
 				$share_dir .= $Language::current_room;
 		} else {
 				$share_dir .= $Language::exam;
@@ -475,13 +479,13 @@ sub filemanapp() {
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FROM
 	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	}
-
 	chdir Schulkonsole::Encode::to_fs($share_dir)
 		or exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY
 		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	
 	my $filename = <>;
-	($filename) = $filename =~ /^([^\.\/]\S+)$/;
+	$filename =~ s/\R//g;
+	($filename) = $filename =~ /^([^\.\/][^\0]*)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
 		  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 		unless defined $filename;
@@ -501,13 +505,14 @@ sub filemanapp() {
 			  unless (-d "$share_dir/$filename" and $isdir) or 
 			  		 (! -d "$share_dir/$filename" and ! $isdir);
 		if($isdir) {
-			system("rm -rf $share_dir/$filename");
+			system("rm -rf \"$share_dir/$filename\"");
 		} else {
-			system("rm -f $share_dir/$filename");
+			system("rm -f \"$share_dir/$filename\"");
 		}
 	} elsif($action == 2) { # add
 		my $fromfile = <>;
-		($fromfile) = $fromfile =~ /^(\S+)$/;
+		$fromfile =~ s/\R//g;
+		($fromfile) = $fromfile =~ /^([^\0]+)$/;
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
 			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			  unless defined $fromfile;
@@ -520,18 +525,18 @@ sub filemanapp() {
 			  		 (! -d "$Schulkonsole::Config::_runtimedir/$fromfile" and ! $isdir);
 		if( -e "$share_dir/$filename") { # make room for new file
 			if( -d "$share_dir/$filename") {
-				system("rm -rf $share_dir/$filename");
+				system("rm -rf \"$share_dir/$filename\"");
 			} else {
-				system("rm -f $share_dir/$filename");
+				system("rm -f \"$share_dir/$filename\"");
 			}
 		}
-		system("mv -f $Schulkonsole::Config::_runtimedir/$fromfile $share_dir/$filename");
-		system("chown " . $$userdata{uid} . ":root $share_dir/$filename");
-		system("chmod 640 $share_dir/$filename");
+		system("mv -f \"$Schulkonsole::Config::_runtimedir/$fromfile\" \"$share_dir/$filename\"");
+		system("chown " . $$userdata{uid} . ":root \"$share_dir/$filename\"");
+		system("chmod 640 \"$share_dir/$filename\"");
 	} elsif($action == 3) { # download
 		my $tofile = <>;
-		($tofile) = $tofile =~ /^(\S+)$/;
-		
+		$tofile =~ s/\R//g;
+		($tofile) = $tofile =~ /^([^\0]+)$/;
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
 			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			  unless defined $tofile;
@@ -544,20 +549,20 @@ sub filemanapp() {
 			  		 (! -d "$share_dir/$filename" and ! $isdir);
 		if( -e "$Schulkonsole::Config::_runtimedir/$tofile") { # make room for the file
 			if( -e "$Schulkonsole::Config::_runtimedir/$tofile") {
-				system("rm -rf $Schulkonsole::Config::_runtimedir/$tofile");
+				system("rm -rf \"$Schulkonsole::Config::_runtimedir/$tofile\"");
 			} else {
-				system("rm -f $Schulkonsole::Config::_runtimedir/$tofile");
+				system("rm -f \"$Schulkonsole::Config::_runtimedir/$tofile\"");
 			}
 		}
 		if($isdir){
-			system("mkdir -p $Schulkonsole::Config::_runtimedir/$tofile");
-			system("cp -R $share_dir/$filename/* $Schulkonsole::Config::_runtimedir/$tofile");
-			system("cd $Schulkonsole::Config::_runtimedir/$tofile;zip -r ../${tofile}.zip .");
-			system("chown www-data:www-data $Schulkonsole::Config::_runtimedir/${tofile}.zip");
+			system("mkdir -p \"$Schulkonsole::Config::_runtimedir/$tofile\"");
+			system("cd \"$share_dir/$filename\";cp -R * \"$Schulkonsole::Config::_runtimedir/$tofile\"");
+			system("cd \"$Schulkonsole::Config::_runtimedir/$tofile\";zip -r \"../${tofile}.zip\" .");
+			system("chown www-data:www-data \"$Schulkonsole::Config::_runtimedir/${tofile}.zip\"");
 			system("rm -rf $Schulkonsole::Config::_runtimedir/$tofile");
 		} else {
-			system("cp $share_dir/$filename $Schulkonsole::Config::_runtimedir/$tofile");			
-			system("chown www-data:www-data $Schulkonsole::Config::_runtimedir/$tofile");
+			system("cp \"$share_dir/$filename\" \"$Schulkonsole::Config::_runtimedir/$tofile\"");			
+			system("chown www-data:www-data \"$Schulkonsole::Config::_runtimedir/$tofile\"");
 		}
 	} else {
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_ACTION_NOT_SUPPORTED
@@ -617,7 +622,7 @@ sub studentsfilemanapp() {
 	}
 
 	my $type = <>;
-	($type) = $type =~ /^(\d+)/;
+	($type) = $type =~ /^(\d+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_TYPE
 	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 		unless defined $type;
@@ -681,7 +686,8 @@ sub studentsfilemanapp() {
 		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 	
 	my $filename = <>;
-	($filename) = $filename =~ /^([^\.\/]\S+)$/;
+	$filename =~ s/\R//g;
+	($filename) = $filename =~ /^([^\.\/][^\0]*)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
 		  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 		unless defined $filename;
@@ -701,13 +707,14 @@ sub studentsfilemanapp() {
 			  unless (-d "$share_dir/$filename" and $isdir) or 
 			  		 (! -d "$share_dir/$filename" and ! $isdir);
 		if($isdir) {
-			system("rm -rf $share_dir/$filename");
+			system("rm -rf \"$share_dir/$filename\"");
 		} else {
-			system("rm -f $share_dir/$filename");
+			system("rm -f \"$share_dir/$filename\"");
 		}
 	} elsif($action == 2) { # upload
 		my $fromfile = <>;
-		($fromfile) = $fromfile =~ /^(\S+)$/;
+		$fromfile =~ s/\R//g;
+		($fromfile) = $fromfile =~ /^([^\0]+)$/;
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
 			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			  unless defined $fromfile;
@@ -720,17 +727,18 @@ sub studentsfilemanapp() {
 			  		 (! -d "$Schulkonsole::Config::_runtimedir/$fromfile" and ! $isdir);
 		if( -e "$share_dir/$filename") { # make room for new file
 			if( -d "$share_dir/$filename") {
-				system("rm -rf $share_dir/$filename");
+				system("rm -rf \"$share_dir/$filename\"");
 			} else {
-				system("rm -f $share_dir/$filename");
+				system("rm -f \"$share_dir/$filename\"");
 			}
 		}
-		system("mv -f $Schulkonsole::Config::_runtimedir/$fromfile $share_dir/$filename");
-		system("chown " . $$userdata{uid} . ":teachers $share_dir/$filename");
-		system("chmod 640 $share_dir/$filename");
+		system("mv -f \"$Schulkonsole::Config::_runtimedir/$fromfile $share_dir/$filename\"");
+		system("chown " . $$userdata{uid} . ":teachers \"$share_dir/$filename\"");
+		system("chmod 640 \"$share_dir/$filename\"");
 	} elsif($action == 3) { # download
 		my $tofile = <>;
-		($tofile) = $tofile =~ /^(\S+)$/;
+		$tofile =~ s/\R//g;
+		($tofile) = $tofile =~ /^([^\0]+)$/;
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
 			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			  unless defined $tofile;
@@ -743,20 +751,20 @@ sub studentsfilemanapp() {
 			  		 (! -d "$share_dir/$filename" and ! $isdir);
 		if( -e "$Schulkonsole::Config::_runtimedir/$tofile") { # make room for the file
 			if( -e "$Schulkonsole::Config::_runtimedir/$tofile") {
-				system("rm -rf $Schulkonsole::Config::_runtimedir/$tofile");
+				system("rm -rf \"$Schulkonsole::Config::_runtimedir/$tofile\"");
 			} else {
-				system("rm -f $Schulkonsole::Config::_runtimedir/$tofile");
+				system("rm -f \"$Schulkonsole::Config::_runtimedir/$tofile\"");
 			}
 		}
 		if($isdir){
-			system("mkdir -p $Schulkonsole::Config::_runtimedir/$tofile");
-			system("cp -R $share_dir/$filename/* $Schulkonsole::Config::_runtimedir/$tofile");
-			system("cd $Schulkonsole::Config::_runtimedir/$tofile;zip -r ../${tofile}.zip .");
-			system("chown www-data:www-data $Schulkonsole::Config::_runtimedir/${tofile}.zip");
-			system("rm -rf $Schulkonsole::Config::_runtimedir/$tofile");
+			system("mkdir -p \"$Schulkonsole::Config::_runtimedir/$tofile\"");
+			system("cd \"$share_dir/$filename\";cp -R * \"$Schulkonsole::Config::_runtimedir/$tofile\"");
+			system("cd \"$Schulkonsole::Config::_runtimedir/$tofile\";zip -r \"../${tofile}.zip\" .");
+			system("chown www-data:www-data \"$Schulkonsole::Config::_runtimedir/${tofile}.zip\"");
+			system("rm -rf \"$Schulkonsole::Config::_runtimedir/$tofile\"");
 		} else {
-			system("cp $share_dir/$filename $Schulkonsole::Config::_runtimedir/$tofile");			
-			system("chown www-data:www-data $Schulkonsole::Config::_runtimedir/$tofile");
+			system("cp \"$share_dir/$filename $Schulkonsole::Config::_runtimedir/$tofile\"");			
+			system("chown www-data:www-data \"$Schulkonsole::Config::_runtimedir/$tofile\"");
 		}
 	} else {
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_ACTION_NOT_SUPPORTED
@@ -1206,7 +1214,6 @@ sub handoutapp() {
 
 		$opts .= ' --handout';
 	}
-
 
 	# sophomorix-teacher cannot be invoked with taint checks enabled
 	$< = $>;
