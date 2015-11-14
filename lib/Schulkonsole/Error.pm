@@ -234,10 +234,6 @@ sub what {
 		and return $this->{d}->get('Nicht autorisierter Aufrufer nach ID');
 	$this->{code} == Schulkonsole::Error::Files::WRAPPER_INVALID_SESSION_ID
 		and return $this->{d}->get('Ungueltige Session-ID');
-	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_MAC
-		and return $this->{d}->get('Ungueltige MAC-Adresse');
-	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_NO_MACS
-		and return $this->{d}->get('Keine MAC-Adressen');
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_HOST
 		and return $this->{d}->get('Ungueltiger Host');
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_NO_HOSTS

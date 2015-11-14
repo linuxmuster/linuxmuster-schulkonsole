@@ -85,8 +85,8 @@ if ($room_session) {
 	# collect data for output
 	
 	eval {
-	my $blocked_hosts_internet =
-		Schulkonsole::Firewall::blocked_hosts_internet();
+	my $allowed_hosts_internet =
+		Schulkonsole::Firewall::allowed_hosts_internet();
 	my $blocked_hosts_intranet =
 		Schulkonsole::Firewall::blocked_hosts_intranet();
 	my $unfiltered_hosts = ($is_urlfilter_active ?
@@ -96,14 +96,10 @@ if ($room_session) {
 		@login_ids);
 	
 	
-	my $mac;
+	my $hostip;
 	my %workstationdata;
 	foreach my $workstation (sort keys %$workstations) {
-		if ($lml_majorversion >= 6.1) {
-			$mac = $$workstations{$workstation}{ip};
-		} else {
-			$mac = $$workstations{$workstation}{mac};
-		}
+		$hostip = $$workstations{$workstation}{ip};
 		next unless
 			($workstation eq $sk_session->{template_vars}{remote_workstation});
 		if (    $$workstation_users{$workstation}
@@ -116,9 +112,9 @@ if ($room_session) {
 					name => $workstation,
 					login => $$userdata{uid},
 					first => $first_login,
-					internet => ($$blocked_hosts_internet{$mac} ? 0 : 1),
-					intranet => ($$blocked_hosts_intranet{$mac} ? 0 : 1),
-					webfilter => ($$unfiltered_hosts{$mac} ? 0 : 1),
+					internet => ($$allowed_hosts_internet{$hostip} ? 1 : 0),
+					intranet => ($$blocked_hosts_intranet{$hostip} ? 0 : 1),
+					webfilter => ($$unfiltered_hosts{$hostip} ? 0 : 1),
 					shares => $$share_states{$$userdata{id}},
 					printer => [],
 					info => '',
@@ -136,9 +132,9 @@ if ($room_session) {
 			%workstationdata = {
 				name => $workstation,
 				first => 1,
-				internet => ($$blocked_hosts_internet{$mac} ? 0 : 1),
-				intranet => ($$blocked_hosts_intranet{$mac} ? 0 : 1),
-				webfilter => ($$unfiltered_hosts{$mac} ? 0 : 1),
+				internet => ($$allowed_hosts_internet{$hostip} ? 1 : 0),
+				intranet => ($$blocked_hosts_intranet{$hostip} ? 0 : 1),
+				webfilter => ($$unfiltered_hosts{$hostip} ? 0 : 1),
 				info => '',
 			};
 		}

@@ -65,35 +65,31 @@ if ($q->param('starttest')) {
 			my $workstations = Schulkonsole::Config::workstations_room(
 				$room_session->info('name'));
 
-			my $blocked_hosts_internet
-				= Schulkonsole::Firewall::blocked_hosts_internet();
+			my $allowed_hosts_internet
+				= Schulkonsole::Firewall::allowed_hosts_internet();
 			my $blocked_hosts_intranet
 				= Schulkonsole::Firewall::blocked_hosts_intranet();
 
-			my @macs_internet;
-			my @macs_intranet;
-			my $mac;
+			my @hosts_internet;
+			my @hosts_intranet;
+			my $hostip;
 			foreach my $host (keys %$workstations) {
 				if ($host ne
 				    	$sk_session->{template_vars}{remote_workstation}) {
-				    	if ($lml_majorversion >= 6.1) {
-						$mac = $$workstations{$host}{ip};
-					} else {
-						$mac = $$workstations{$host}{mac};
-					}
-					push @macs_internet, $mac
-						unless $$blocked_hosts_internet{$mac};
-					push @macs_intranet, $mac
-						unless $$blocked_hosts_intranet{$mac};
+					$hostip = $$workstations{$host}{ip};
+					push @hosts_internet, $hostip
+						if $$allowed_hosts_internet{$hostip};
+					push @hosts_intranet, $hostip
+						unless $$blocked_hosts_intranet{$hostip};
 				}
 			}
 
 			my $password = $sk_session->get_password();
 
 			Schulkonsole::Firewall::internet_off($id, $password,
-				@macs_internet) if @macs_internet;
+				@hosts_internet) if @hosts_internet;
 			Schulkonsole::Firewall::intranet_off($id, $password,
-				@macs_intranet) if @macs_intranet;
+				@hosts_intranet) if @hosts_intranet;
 
 			Schulkonsole::Sophomorix::reset_room($id, $password,
 				$room_session->info('name'));

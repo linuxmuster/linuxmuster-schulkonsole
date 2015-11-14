@@ -111,8 +111,8 @@ if ($q->param('acceptfirewall')) {
 		last COMMANDS;
 	}
 
-	my $blocked_hosts_internet
-		= Schulkonsole::Firewall::blocked_hosts_internet();
+	my $allowed_hosts_internet
+		= Schulkonsole::Firewall::allowed_hosts_internet();
 	my @block_hosts_internet = ();
 	my @unblock_hosts_internet = ();
 	my $blocked_hosts_intranet
@@ -130,37 +130,31 @@ if ($q->param('acceptfirewall')) {
 	my @activate_shares;
 	my @deactivate_shares;
 
-my $mac;
+my $hostip;
 foreach my $host (keys %$workstations) {
 		my $is_editing_host
 			= ($host eq $sk_session->{template_vars}{remote_workstation});
-
-
-		if ($lml_majorversion >= 6.1) {
-			$mac = $$workstations{$host}{ip};
-		} else {
-			$mac = $$workstations{$host}{mac};
-		}
+		$hostip = $$workstations{$host}{ip};
 
 		if ($q->param("$host;internet")) {
-			push @unblock_hosts_internet, $mac
-				if $$blocked_hosts_internet{$mac};
+			push @unblock_hosts_internet, $hostip
+				unless $$allowed_hosts_internet{$hostip};
 		} else {
-			push @block_hosts_internet, $mac
-				unless $$blocked_hosts_internet{$mac};
+			push @block_hosts_internet, $hostip
+				if $$allowed_hosts_internet{$hostip};
 		}
 		if ($q->param("$host;intranet")) {
-			push @unblock_hosts_intranet, $mac
-				if $$blocked_hosts_intranet{$mac};
+			push @unblock_hosts_intranet, $hostip
+				if $$blocked_hosts_intranet{$hostip};
 		} elsif (not $is_editing_host) {
-			push @block_hosts_intranet, $mac
-				unless $$blocked_hosts_intranet{$mac};
+			push @block_hosts_intranet, $hostip
+				unless $$blocked_hosts_intranet{$hostip};
 		}
 		if ($is_urlfilter_active) {
 			if ($q->param("$host;webfilter")) {
-				push @filter_hosts, $host if $$unfiltered_hosts{$mac};
+				push @filter_hosts, $host if $$unfiltered_hosts{$hostip};
 			} else {
-				push @unfilter_hosts, $host unless $$unfiltered_hosts{$mac};
+				push @unfilter_hosts, $host unless $$unfiltered_hosts{$hostip};
 			}
 		}
 
@@ -393,8 +387,8 @@ if ($@) {
 # collect data for output
 
 eval {
-my $blocked_hosts_internet =
-	Schulkonsole::Firewall::blocked_hosts_internet();
+my $allowed_hosts_internet =
+	Schulkonsole::Firewall::allowed_hosts_internet();
 my $blocked_hosts_intranet =
 	Schulkonsole::Firewall::blocked_hosts_intranet();
 my $unfiltered_hosts = ($is_urlfilter_active ?
@@ -405,14 +399,10 @@ my $share_states = Schulkonsole::Sophomorix::share_states($id, $password,
 	@login_ids);
 
 
-my $mac;
+my $hostip;
 my @array_overview_workstations;
 foreach my $workstation (sort keys %$workstations) {
-	if ($lml_majorversion >= 6.1) {
-		$mac = $$workstations{$workstation}{ip};
-	} else {
-		$mac = $$workstations{$workstation}{mac};
-	}
+	$hostip = $$workstations{$workstation}{ip};
 	my $first_login = 1;
 	if (    $$workstation_users{$workstation}
 		and @{ $$workstation_users{$workstation} }) {
@@ -427,9 +417,9 @@ foreach my $workstation (sort keys %$workstations) {
 				editing => ($$userdata{uid} eq $editing_user),
 				login => $$userdata{uid},
 				first => $first_login,
-				internet => ($$blocked_hosts_internet{$mac} ? 0 : 1),
-				intranet => ($$blocked_hosts_intranet{$mac} ? 0 : 1),
-				webfilter => ($$unfiltered_hosts{$mac} ? 0 : 1),
+				internet => ($$allowed_hosts_internet{$hostip} ? 1 : 0),
+				intranet => ($$blocked_hosts_intranet{$hostip} ? 0 : 1),
+				webfilter => ($$unfiltered_hosts{$hostip} ? 0 : 1),
 				shares => $$share_states{$$userdata{id}},
 				printer => [],
 				info => '',
@@ -449,9 +439,9 @@ foreach my $workstation (sort keys %$workstations) {
 		my $overview_workstation = {
 			name => $workstation,
 			first => 1,
-			internet => ($$blocked_hosts_internet{$mac} ? 0 : 1),
-			intranet => ($$blocked_hosts_intranet{$mac} ? 0 : 1),
-			webfilter => ($$unfiltered_hosts{$mac} ? 0 : 1),
+			internet => ($$allowed_hosts_internet{$hostip} ? 1 : 0),
+			intranet => ($$blocked_hosts_intranet{$hostip} ? 0 : 1),
+			webfilter => ($$unfiltered_hosts{$hostip} ? 0 : 1),
 			info => '',
 		};
 
