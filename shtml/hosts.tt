@@ -67,8 +67,8 @@
         <td><input name="[% w %]_room" [% dovalue("${w}_room") %] size="10"></td>
         <td><input name="[% w %]_name" [% dovalue("${w}_name") %] size="12"></td>
         <td><input name="[% w %]_groups" [% dovalue("${w}_groups") %] size="8"></td>
-        <td><input name="[% w %]_mac" [% dovalue("${w}_mac") %]" size="18" maxlength="17"></td>
-        <td><input name="[% w %]_ip" [% dovalue("${w}_ip") %]" size="17" maxlength="15"></td>
+        <td><input name="[% w %]_mac" [% dovalue("${w}_mac") %] size="18" maxlength="17"></td>
+        <td><input name="[% w %]_ip" [% dovalue("${w}_ip") %] size="17" maxlength="15"></td>
         <td><select class="wspxe" name="[% w %]_pxe">
         <option value="1" [% IF valueof("${w}_pxe") == "1" %]selected[% END %]>[% loc('PXE') %]</option>
         <option value="2" [% IF valueof("${w}_pxe") == "2" %]selected[% END %]>[% loc('PXE mit Opsi') %]</option>
@@ -81,7 +81,7 @@
         <option value="unicast" [% IF valueof("${w}_opts") == "unicast" %]selected[% END %]>unicast</option>
         <option value="noudma,unicast" [% IF valueof("${w}_opts") == "noudma,unicast" %]selected[% END %]>noudma+unicast</option>
         </select></td>
-        <td><input class="wsdel" title="löschen" type="checkbox" name="[% w %]_delete"></td>
+        <td><input class="wsdel" title="[% loc('entfernen') %]" type="checkbox" name="[% w %]_delete"></td>
         [% lfdnr=lfdnr+1 %]
         </tr>
     [% END %]
