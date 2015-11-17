@@ -75,7 +75,7 @@
 		[% END %]
 		[% ds_nr = ds_nr + 1 %]
 	[% END %]
-	[% IF isautostartpossible %]
+	[% IF page.isautostartpossible %]
 		[% lfdnr = 0 %]
 		<table class="settings">
 		<colgroup>
@@ -84,7 +84,7 @@
 		</colgroup>
 		<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
 			<td><label [% labelfor("no_autostart") %]>[% loc('kein Betriebssystem automatisch starten') %]:</label></td>
-			<td><input type="radio" id="no_autostart" name="autostart" value="[% loc('none') %]"[% IF ! isautostartselected %] checked[% END %]></td>
+			<td><input type="radio" id="no_autostart" name="autostart" value="[% loc('none') %]"[% IF ! page.isautostartselected %] checked[% END %]></td>
 		[% lfdnr = lfdnr + 1 %]</tr>
 		</table>
 	[% END %]
