@@ -30,7 +30,7 @@
 
 <form method="post" accept-charset="UTF-8">
 <p><label [% labelfor("workstationpassword") %]>Workstationpasswort:</label>
-   <input id="workstationpassword" name="workstationpassword"></p>
+   <input id="workstationpassword" name="workstationpassword" value="[% workstationpassword %]"></p>
 <p><input type="submit" name="starttest" value="[% loc('Klassenarbeit starten') %]">
 </p>
 </form>
