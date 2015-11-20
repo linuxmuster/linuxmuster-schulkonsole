@@ -676,6 +676,9 @@ sub linbo_remote_window() {
 		exit (	Schulkonsole::Error::Linbo::WRAPPER_CANNOT_RUN_COMMAND
 				- Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
 	sleep 1;
+	if(! -e $tmpfile) {
+	  exit 0;
+	}
 	open(FILEIN, '<:encoding(UTF-8)', Schulkonsole::Encode::to_cli($tmpfile)) ||
 		exit (  Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE
 		      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
@@ -778,7 +781,6 @@ sub linbo_remote() {
 	
 	my $nr1 = <>;
 	($nr1) = $nr1 =~ /^(-?\d+)$/;
-	
 	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_ARG
 		  - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		  unless defined $nr1;
@@ -797,7 +799,7 @@ sub linbo_remote() {
 		$cmd .= ($nr1? " -d": "") . ($nr2? " -n": "");
 	}
 	$cmd = Schulkonsole::Encode::to_cli($cmd);
-	
+  	
 	$< = $>;
 	$) = 0;
 	$( = $);

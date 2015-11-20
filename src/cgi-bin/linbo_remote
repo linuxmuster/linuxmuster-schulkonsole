@@ -130,7 +130,7 @@ sub task_add() {
 		$sk_session->set_status($d->get('Es wurde ein ungültiger Ausführungszeitpunkt angegeben.'),1);
 		return 0;
 	}
-	$now = $q->param('exectime') eq 'donow';
+	$now = ($q->param('exectime') eq 'donow' ? 1 : 0);
 	
 	my $commands = $q->param('orders');
 	if(not defined $commands) {

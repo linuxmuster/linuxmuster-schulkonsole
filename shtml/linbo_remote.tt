@@ -164,18 +164,27 @@ $(document).ready(function(){
 <textarea name="orders" id="orders" rows="40" cols="50"></textarea>
 </td>
 <td style="vertical-align:middle;">
-<input type="button" name="order_append" onclick="append_order()" value="&larr;">
+
 </td>
 <td>
 <fieldset>
-<input type="radio" name="order" value="partition">
-<label labelfor="order_partition">[% loc('Partitionieren') %]</label><br>
+<input type="button" name="append_partition" onclick="do_append_partition()" value="&larr; [% loc('Partitionieren') %]">
+<script>
+function do_append_partition(){
+	$("#orders").text($("#orders").text()+"partition\n");
+}
+</script>
+<br>
 
-<input type="radio" name="order" value="format">
-<label labelfor="order_formatall">[% loc('Alle formatieren') %]</label><br>
+<input type="button" name="append_formatall" onclick="do_append_formatall()" value="&larr; [% loc('Alle formatieren') %]">
+<script>
+function do_append_formatall(){
+	$("#orders").text($("#orders").text()+"format\n");
+}
+</script>
+<br>
 
-<input type="radio" name="order" value="formatpartition" [% IF ! isgroup %] disabled[% END %]>
-<label labelfor="order_format">[% loc('Parition formatieren') %]: </label>
+<input type="button" name="append_formatpartition" onclick="do_append_formatpartition()" value="&larr; [% loc('Parition formatieren') %]: "[% IF ! isgroup %] disabled[% END %]>
 <select name="formatpartition_nr" [% IF ! isgroup %] disabled[% END %]>
 <option value="1">1</option>
 <option value="2">2</option>
@@ -185,25 +194,44 @@ $(document).ready(function(){
 <option value="6">6</option>
 <option value="7">7</option>
 <option value="8">8</option>
-</select><br>
+</select>
+<script>
+function do_append_formatpartition(){
+	$("#orders").text($("#orders").text()+"format:"+$("select[name=formatpartition_nr]").val()+"\n");
+}
+</script>
+<br>
 
-<input type="radio" name="order" id="order_initcache" value="initcache">
-<label labelfor="order_initcache">[% loc('Cache aktualisieren') %]: </label>
+<input type="button" name="append_initcache" onclick="do_append_initcache()" value="&larr; [% loc('Cache aktualisieren') %]: ">
 <select name="initcache_type">
 <option value="rsync">rsync</option>
 <option value="multicast">multicast</option>
 <option value="torrent" selected>torrent</option>
 </select>
+<script>
+function do_append_initcache(){
+	$("#orders").text($("#orders").text()+"initcache:"+$("select[name=initcache_type]").val()+"\n");
+}
+</script>
 <br>
 
-<input type="radio" name="order" id="order_reboot" value="reboot">
-<label labelfor="order_reboot">[% loc('Neu starten') %]</label><br>
+<input type="button" name="append_reboot" onclick="do_append_reboot()" value="&larr; [% loc('Neu starten') %]">
+<script>
+function do_append_reboot(){
+	$("#orders").text($("#orders").text()+"reboot\n");
+}
+</script>
+<br>
 
-<input type="radio" name="order" id="order_halt" value="halt">
-<label labelfor="order_halt">[% loc('Herunterfahren') %]</label><br>
+<input type="button" name="append_halt" onclick="do_append_halt()" value="&larr; [% loc('Herunterfahren') %]">
+<script>
+function do_append_halt(){
+	$("#orders").text($("#orders").text()+"halt\n");
+}
+</script>
+<br>
 
-<input type="radio" name="order" id="order_sync" value="sync">
-<label labelfor="order_sync">[% loc('Synchronisieren') %]: </label>
+<input type="button" name="append_sync" onclick="do_append_sync()" value="&larr; [% loc('Synchronisieren') %]">
 <select name="sync_nr">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -213,10 +241,15 @@ $(document).ready(function(){
 <option value="6">6</option>
 <option value="7">7</option>
 <option value="8">8</option>
-</select><br>
+</select>
+<script>
+function do_append_sync(){
+	$("#orders").text($("#orders").text()+"sync:"+$("select[name=sync_nr]").val()+"\n");
+}
+</script>
+<br>
 
-<input type="radio" name="order" id="order_start" value="start">
-<label labelfor="order_start">[% loc('Starten') %]: </label>
+<input type="button" name="append_start" onclick="do_append_start()" value="&larr; [% loc('Starten') %]">
 <select name="start_nr">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -226,12 +259,17 @@ $(document).ready(function(){
 <option value="6">6</option>
 <option value="7">7</option>
 <option value="8">8</option>
-</select><br>
+</select>
+<script>
+function do_append_start(){
+	$("#orders").text($("#orders").text()+"start:"+$("select[name=start_nr]").val()+"\n");
+}
+</script>
+<br>
 
-<input type="radio" name="order" id="order_createcloop" value="create_cloop"
+<input type="button" name="append_createcloop" onclick="do_append_createcloop()" value="&larr; [% loc('Image erstellen') %]: "
 [% IF ! isgroup %] disabled[% END %]>
-<label labelfor="order_createcloop">[% loc('Image erstellen') %]: </label>
-<select name="create_cloop_nr"
+<select name="createcloop_nr"
 [% IF ! isgroup %] disabled[% END %]>
 <option value="1">1</option>
 <option value="2">2</option>
@@ -242,13 +280,19 @@ $(document).ready(function(){
 <option value="7">7</option>
 <option value="8">8</option>
 </select><br>
-<label labelfor="cloop_msg">[% loc('Hinweis')%]: </label>
-<input name="create_cloop_msg" id="create_cloop_msg"><br>
+<label labelfor="createcloop_msg">[% loc('Hinweis')%]: </label>
+<input name="createcloop_msg" id="createcloop_msg">
+<script>
+function do_append_createcloop(){
+	$("#orders").text($("#orders").text()+"create_cloop:"+$("select[name=createcloop_nr]").val()+
+		    ":\""+$("input[name=createcloop_msg]").val()+"\"\n");
+}
+</script>
+<br>
 
-<input type="radio" name="order" id="order_creatersync" value="create_rsync"
+<input type="button" name="append_creatersync" onclick="do_append_creatersync()" value="&larr; [% loc('Diff. Image erstellen') %]: "
 [% IF ! isgroup %] disabled[% END %]>
-<label labelfor="order_creatersync">[% loc('Diff. Image erstellen') %]: </label>
-<select name="create_rsync_nr"
+<select name="creatersync_nr"
 [% IF ! isgroup %] disabled[% END %]>
 <option value="1">1</option>
 <option value="2">2</option>
@@ -259,13 +303,19 @@ $(document).ready(function(){
 <option value="7">7</option>
 <option value="8">8</option>
 </select><br>
-<label labelfor="rsync_msg">[% loc('Hinweis')%]: </label>
-<input name="create_rsync_msg" id="create_rsync_msg"><br>
+<label labelfor="creatersync_msg">[% loc('Hinweis')%]: </label>
+<input name="creatersync_msg" id="creatersync_msg">
+<script>
+function do_append_creatersync(){
+	$("#orders").text($("#orders").text()+"create_rsync:"+$("select[name=creatersync_nr]").val()+
+		    ":\""+$("input[name=creatersync_msg]").val()+"\"\n");
+}
+</script>
+<br>
 
-<input type="radio" name="order" id="order_uploadcloop" value="upload_cloop"
+<input type="button" name="append_uploadcloop" onclick="do_append_uploadcloop()" value="&larr; [% loc('Image hochladen') %]: "
 [% IF ! isgroup %] disabled[% END %]>
-<label labelfor="order_uploadcloop">[% loc('Image hochladen') %]: </label>
-<select name="upload_cloop_nr"
+<select name="uploadcloop_nr"
 [% IF ! isgroup %] disabled[% END %]>
 <option value="1">1</option>
 <option value="2">2</option>
@@ -275,12 +325,17 @@ $(document).ready(function(){
 <option value="6">6</option>
 <option value="7">7</option>
 <option value="8">8</option>
-</select><br>
+</select>
+<script>
+function do_append_uploadcloop(){
+	$("#orders").text($("#orders").text()+"upload_cloop:"+$("select[name=uploadcloop_nr]").val()+"\n");
+}
+</script>
+<br>
 
-<input type="radio" name="order" id="order_uploadrsync" value="upload_rsync"
+<input type="button" name="append_uploadrsync" onclick="do_append_uploadrsync()" value="&larr; [% loc('Diff. Image hochladen') %]: "
 [% IF ! isgroup %] disabled[% END %]>
-<label labelfor="order_uploadrsync">[% loc('Diff. Image hochladen') %]: </label>
-<select name="upload_rsync_nr"
+<select name="uploadrsync_nr"
 [% IF ! isgroup %] disabled[% END %]>
 <option value="1">1</option>
 <option value="2">2</option>
@@ -290,43 +345,26 @@ $(document).ready(function(){
 <option value="6">6</option>
 <option value="7">7</option>
 <option value="8">8</option>
-</select><br>
+</select>
+<script>
+function do_append_uploadrsync(){
+	$("#orders").text($("#orders").text()+"upload_rsync:"+$("select[name=uploadrsync_nr]").val()+"\n");
+}
+</script>
+<br>
 
-<input type="radio" name="order" id="order_update" value="update"
-[% IF ! isgroup %] disabled[% END %] checked>
-<label labelfor="order_update">[% loc('Aktualisieren') %]</label>
+<input type="button" name="append_update" onclick="do_append_update()" value="&larr; [% loc('Aktualisieren') %]">
+<script>
+function do_append_update(){
+	$("#orders").text($("#orders").text()+"update\n");
+}
+</script>
+<br>
+
 </fieldset>
 </td>
 </tr>
 </table>
-<script>
-function append_order(){
-		var order = $("input[type=radio][name=order]:checked").val();
-		switch(order) {
-		case 'formatpartition':
-			$("#orders").text($("#orders").text()+"format:"+$("select[name=formatpartition_nr]").val()+"\n");
-			break;
-		case 'initcache':
-			$("#orders").text($("#orders").text()+order+":"+$("select[name=initcache_type]").val()+"\n");
-			break;
-		case 'sync':
-		case 'start':
-		case 'create_cloop':
-		case 'create_rsync':
-		case 'upload_cloop':
-		case 'upload_rsync':
-			$("#orders").text($("#orders").text()+order+":"+$("select[name="+order+"_nr]").val());
-			if(/^create/.test(order)){
-				$("#orders").text($("#orders").text()+":\""+$("input[name="+order+"_msg]").val()+"\"");
-			}
-			$("#orders").text($("#orders").text()+"\n");
-			break;
-		default:
-			$("#orders").text($("#orders").text()+order+"\n");
-			break;
-		}
-}
-</script>
 <p>
 <input type="submit" name="task_add" value="[% loc('Hinzufügen') %]">
 <input type="submit" name="task_abort" value="[% loc('Abbrechen') %]">
