@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2015-11-19 08:55+0100\n"
+"POT-Creation-Date: 2015-11-20 10:41+0100\n"
 "PO-Revision-Date: 2014-04-06 14:22+0200\n"
 "Last-Translator: root <root@linuxmuster.lokal>\n"
 "Language-Team: German\n"
@@ -91,14 +91,14 @@ msgstr ""
 msgid "%s aus Projekt %s ausgetragen"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_grubedit:72 ../src/cgi-bin/linbo_images:358
+#: ../src/cgi-bin/linbo_grubedit:73 ../src/cgi-bin/linbo_images:358
 #: ../src/cgi-bin/linbo_postsyncedit:72
 #, perl-format
 msgid "%s existiert bereits"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_grubedit:118 ../src/cgi-bin/linbo_grubedit:144
-#: ../src/cgi-bin/linbo_grubedit:177 ../src/cgi-bin/linbo_images:73
+#: ../src/cgi-bin/linbo_grubedit:119 ../src/cgi-bin/linbo_grubedit:145
+#: ../src/cgi-bin/linbo_grubedit:178 ../src/cgi-bin/linbo_images:73
 #: ../src/cgi-bin/linbo_images:111 ../src/cgi-bin/linbo_images:172
 #: ../src/cgi-bin/linbo_images:206 ../src/cgi-bin/linbo_postsyncedit:108
 #: ../src/cgi-bin/linbo_postsyncedit:134 ../src/cgi-bin/linbo_postsyncedit:167
@@ -108,19 +108,19 @@ msgstr ""
 msgid "%s existiert nicht"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_grubedit:131 ../src/cgi-bin/linbo_images:86
+#: ../src/cgi-bin/linbo_grubedit:132 ../src/cgi-bin/linbo_images:86
 #: ../src/cgi-bin/linbo_postsyncedit:121 ../src/cgi-bin/linbo_regpatchedit:163
 #, perl-format
 msgid "%s gelöscht"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_grubedit:159 ../src/cgi-bin/linbo_images:187
+#: ../src/cgi-bin/linbo_grubedit:160 ../src/cgi-bin/linbo_images:187
 #: ../src/cgi-bin/linbo_postsyncedit:149 ../src/cgi-bin/linbo_regpatchedit:198
 #, perl-format
 msgid "%s geschrieben"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_grubedit:98 ../src/cgi-bin/linbo_postsyncedit:88
+#: ../src/cgi-bin/linbo_grubedit:99 ../src/cgi-bin/linbo_postsyncedit:88
 #, perl-format
 msgid "%s hinzugefügt"
 msgstr ""
@@ -145,7 +145,7 @@ msgstr ""
 msgid "%s ist kein Registrypatch"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1238
+#: ../lib/Schulkonsole/Linbo.pm:1201
 #, perl-format
 msgid "%s ist kein gültiger Devicename"
 msgstr ""
@@ -155,7 +155,7 @@ msgstr ""
 msgid "%s ist keine Beschreibungsdatei"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_grubedit:66 ../src/cgi-bin/linbo_grubedit:112
+#: ../src/cgi-bin/linbo_grubedit:67 ../src/cgi-bin/linbo_grubedit:113
 #, perl-format
 msgid "%s ist keine grub cfg-Datei"
 msgstr ""
@@ -170,13 +170,13 @@ msgstr ""
 msgid "%s ist schon über Raum %s zugänglich"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_grubedit:134 ../src/cgi-bin/linbo_images:89
+#: ../src/cgi-bin/linbo_grubedit:135 ../src/cgi-bin/linbo_images:89
 #: ../src/cgi-bin/linbo_postsyncedit:124 ../src/cgi-bin/linbo_regpatchedit:166
 #, perl-format
 msgid "%s konnte nicht gelöscht werden"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_grubedit:101 ../src/cgi-bin/linbo_postsyncedit:91
+#: ../src/cgi-bin/linbo_grubedit:102 ../src/cgi-bin/linbo_postsyncedit:91
 #, perl-format
 msgid "%s konnte nicht hinzugefügt werden"
 msgstr ""
@@ -201,7 +201,7 @@ msgstr ""
 msgid "%s nach %s umbenannt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1244
+#: ../lib/Schulkonsole/Linbo.pm:1207
 #, perl-format
 msgid "%s wird mehrmals verwendet"
 msgstr ""
@@ -856,7 +856,7 @@ msgstr ""
 #: ../shtml/linbo_grubedit.tt:20 ../shtml/linbo_images.tt:19
 #: ../shtml/linbo_images.tt:32 ../shtml/linbo_images.tt:45
 #: ../shtml/linbo_postsyncedit.tt:19 ../shtml/linbo_regpatchedit.tt:20
-#: ../shtml/linbo_remote.tt:332
+#: ../shtml/linbo_remote.tt:370
 msgid "Abbrechen"
 msgstr ""
 
@@ -873,7 +873,7 @@ msgid "Administratoren"
 msgstr ""
 
 #: ../shtml/hosts.tt:17 ../shtml/hosts.tt:36 ../shtml/linbo_remote.tt:19
-#: ../shtml/linbo_remote.tt:297 ../shtml/linbo_remote.tt:60
+#: ../shtml/linbo_remote.tt:356 ../shtml/linbo_remote.tt:60
 #: ../shtml/room_test_collect.tt:91 ../shtml/room_test_handout.tt:51
 #: ../shtml/user_commit.tt:128 ../shtml/user_commit.tt:42
 #: ../shtml/user_commit.tt:83
@@ -893,7 +893,7 @@ msgstr ""
 msgid "Aliase"
 msgstr ""
 
-#: ../shtml/linbo_remote.tt:175
+#: ../shtml/linbo_remote.tt:179
 msgid "Alle formatieren"
 msgstr ""
 
@@ -990,7 +990,7 @@ msgstr ""
 msgid "Assistent zur Erstellung einer neuen Rechnergruppe"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1260
+#: ../lib/Schulkonsole/Linbo.pm:1223
 #, perl-format
 msgid "Auf der Cachepartition %s darf kein Betriebssystem installiert sein"
 msgstr ""
@@ -1183,7 +1183,7 @@ msgstr ""
 msgid "Befehle"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1257
+#: ../lib/Schulkonsole/Linbo.pm:1220
 #, perl-format
 msgid "Bei %s muss eine Größe angegeben werden"
 msgstr ""
@@ -1339,7 +1339,7 @@ msgstr ""
 msgid "Betriebssystem 1 (Partition 1)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:160
+#: ../src/cgi-bin/linbo_new:161
 msgid "Betriebssystem 1 muss Windows sein"
 msgstr ""
 
@@ -1347,7 +1347,7 @@ msgstr ""
 msgid "Betriebssystem 2 (Partition 2)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:187
+#: ../src/cgi-bin/linbo_new:188
 msgid "Betriebssystem 2 muss Windows sein"
 msgstr ""
 
@@ -1355,7 +1355,7 @@ msgstr ""
 msgid "Betriebssystem 3 (Partition 5)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:214
+#: ../src/cgi-bin/linbo_new:215
 msgid "Betriebssystem 3 darf nicht Windows sein"
 msgstr ""
 
@@ -1363,7 +1363,7 @@ msgstr ""
 msgid "Betriebssystem 4 (Partition 6)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:241
+#: ../src/cgi-bin/linbo_new:242
 msgid "Betriebssystem 4 darf nicht Windows sein"
 msgstr ""
 
@@ -1440,7 +1440,7 @@ msgstr ""
 msgid "Cache"
 msgstr ""
 
-#: ../shtml/linbo_remote.tt:191
+#: ../shtml/linbo_remote.tt:205
 msgid "Cache aktualisieren"
 msgstr ""
 
@@ -1574,7 +1574,7 @@ msgstr ""
 msgid "Dateiname"
 msgstr ""
 
-#: ../shtml/linbo_edit_oss.inc.tt:78 ../lib/Schulkonsole/Linbo.pm:1185
+#: ../shtml/linbo_edit_oss.inc.tt:78 ../lib/Schulkonsole/Linbo.pm:1148
 msgid "Dateiname des Basis-Image"
 msgstr ""
 
@@ -1651,7 +1651,7 @@ msgstr ""
 msgid "Die Benutzerdaten müssen noch in das System übernommen werden."
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1263
+#: ../lib/Schulkonsole/Linbo.pm:1226
 #, perl-format
 msgid "Die Cachepartition %s benötigt ein GNU/Linux-Dateisystem"
 msgstr ""
@@ -1699,20 +1699,20 @@ msgstr ""
 msgid "Die Sitzungsdauer muss in Minuten angegeben werden"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_remote:160
+#: ../src/cgi-bin/linbo_remote:161
 msgid "Die Wartezeit nach dem Aufwecken ist ungültig."
 msgstr ""
 
-#: ../src/cgi-bin/linbo_remote:165
+#: ../src/cgi-bin/linbo_remote:166
 msgid "Die Wartezeit nach jedem Rechner ist ungültig."
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1254
+#: ../lib/Schulkonsole/Linbo.pm:1217
 #, perl-format
 msgid "Die erweiterte Partition %s ist nicht erlaubt"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_remote:179
+#: ../src/cgi-bin/linbo_remote:180
 msgid "Die neue Aufgabe wurde hinzugefügt."
 msgstr ""
 
@@ -1755,11 +1755,11 @@ msgstr ""
 msgid "Dieser Bereich/Name darf nicht abgefragt werden"
 msgstr ""
 
-#: ../shtml/linbo_remote.tt:250
+#: ../shtml/linbo_remote.tt:293
 msgid "Diff. Image erstellen"
 msgstr ""
 
-#: ../shtml/linbo_remote.tt:282
+#: ../shtml/linbo_remote.tt:336
 msgid "Diff. Image hochladen"
 msgstr ""
 
@@ -2074,7 +2074,7 @@ msgstr ""
 msgid "Es wurde bereits ein OpenVPN-Zertifikat erstellt"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_remote:130
+#: ../src/cgi-bin/linbo_remote:131
 msgid "Es wurde ein ungültiger Ausführungszeitpunkt angegeben."
 msgstr ""
 
@@ -2082,7 +2082,7 @@ msgstr ""
 msgid "Es wurde ein ungültiges Anlegedatum ausgewählt."
 msgstr ""
 
-#: ../src/cgi-bin/linbo_remote:114
+#: ../src/cgi-bin/linbo_remote:115
 msgid "Es wurde eine ungültige Kategorie für die Rechnerauswahl angegeben."
 msgstr ""
 
@@ -2090,19 +2090,19 @@ msgstr ""
 msgid "Es wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> abgelegt"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_remote:126
+#: ../src/cgi-bin/linbo_remote:127
 msgid "Es wurde kein Ausführungszeitpunkt angegeben."
 msgstr ""
 
-#: ../src/cgi-bin/linbo_remote:110
+#: ../src/cgi-bin/linbo_remote:111
 msgid "Es wurde keine Kategorie für die Rechnerauswahl angegeben."
 msgstr ""
 
-#: ../src/cgi-bin/linbo_remote:120
+#: ../src/cgi-bin/linbo_remote:121
 msgid "Es wurde(n) kein(e) Rechner spezifiziert."
 msgstr ""
 
-#: ../src/cgi-bin/linbo_remote:137
+#: ../src/cgi-bin/linbo_remote:138
 msgid "Es wurden keine Befehle angegeben."
 msgstr ""
 
@@ -2168,7 +2168,7 @@ msgstr ""
 msgid "Fernsteuerung"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:263
+#: ../src/cgi-bin/linbo_new:264
 msgid "Festplatte für die gewählte Gruppenkonfiguration zu klein"
 msgstr ""
 
@@ -2180,7 +2180,7 @@ msgstr ""
 msgid "Festplattengröße in MB"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:139
+#: ../src/cgi-bin/linbo_new:140
 msgid "Festplattengröße muss eine Zahl sein"
 msgstr ""
 
@@ -2209,7 +2209,7 @@ msgstr ""
 msgid "Für"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1251
+#: ../lib/Schulkonsole/Linbo.pm:1214
 #, perl-format
 msgid "Für %s existieren mehrere erweiterte Partitionen"
 msgstr ""
@@ -2223,7 +2223,7 @@ msgstr ""
 msgid "Für Diskquota müssen alle oder keine Felder ausgefüllt sein"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1247
+#: ../lib/Schulkonsole/Linbo.pm:1210
 #, perl-format
 msgid "Für die Partition %s existiert keine erweiterte Partition"
 msgstr ""
@@ -2270,7 +2270,7 @@ msgstr ""
 msgid "Gruppe"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:70
+#: ../src/cgi-bin/linbo_new:71
 #, perl-format
 msgid "Gruppe %s existiert nicht"
 msgstr ""
@@ -2287,19 +2287,19 @@ msgstr ""
 msgid "Gruppenkonfiguration erstellen"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:168
+#: ../src/cgi-bin/linbo_new:169
 msgid "Größe für Betriebssystem 1 muss eine Zahl sein"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:195
+#: ../src/cgi-bin/linbo_new:196
 msgid "Größe für Betriebssystem 2 muss eine Zahl sein"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:222
+#: ../src/cgi-bin/linbo_new:223
 msgid "Größe für Betriebssystem 3 muss eine Zahl sein"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:249
+#: ../src/cgi-bin/linbo_new:250
 msgid "Größe für Betriebssystem 4 muss eine Zahl sein"
 msgstr ""
 
@@ -2319,7 +2319,7 @@ msgstr ""
 msgid "Hallo "
 msgstr ""
 
-#: ../shtml/linbo_remote.tt:203
+#: ../shtml/linbo_remote.tt:226
 msgid "Herunterfahren"
 msgstr ""
 
@@ -2335,12 +2335,12 @@ msgstr ""
 msgid "Herunterladen"
 msgstr ""
 
-#: ../shtml/linbo_remote.tt:245 ../shtml/linbo_remote.tt:262
+#: ../shtml/linbo_remote.tt:283 ../shtml/linbo_remote.tt:306
 msgid "Hinweis"
 msgstr ""
 
 #: ../shtml/linbo_grubedit.tt:50 ../shtml/linbo_postsyncedit.tt:49
-#: ../shtml/linbo_remote.tt:331
+#: ../shtml/linbo_remote.tt:369
 msgid "Hinzufügen"
 msgstr ""
 
@@ -2390,11 +2390,11 @@ msgstr ""
 msgid "Image %s nicht vorhanden"
 msgstr ""
 
-#: ../shtml/linbo_remote.tt:233
+#: ../shtml/linbo_remote.tt:270
 msgid "Image erstellen"
 msgstr ""
 
-#: ../shtml/linbo_remote.tt:267
+#: ../shtml/linbo_remote.tt:316
 msgid "Image hochladen"
 msgstr ""
 
@@ -2506,7 +2506,7 @@ msgstr ""
 msgid "K"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_grubedit:206 ../src/cgi-bin/linbo_images:233
+#: ../src/cgi-bin/linbo_grubedit:207 ../src/cgi-bin/linbo_images:233
 #: ../src/cgi-bin/linbo_images:284 ../src/cgi-bin/linbo_images:327
 #: ../src/cgi-bin/linbo_postsyncedit:196 ../src/cgi-bin/linbo_regpatchedit:130
 #: ../src/cgi-bin/linbo_regpatchedit:245
@@ -2566,11 +2566,11 @@ msgstr ""
 msgid "Keine Drucker"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:135
+#: ../src/cgi-bin/linbo_new:136
 msgid "Keine Festplattengröße angegeben"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:64
+#: ../src/cgi-bin/linbo_new:65
 msgid "Keine Gruppe ausgewählt"
 msgstr ""
 
@@ -2598,7 +2598,7 @@ msgstr ""
 msgid "Keine Workstations zu importieren"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:79
+#: ../src/cgi-bin/linbo_new:80
 msgid "Keine Zielgruppe angegeben"
 msgstr ""
 
@@ -2741,19 +2741,19 @@ msgstr ""
 msgid "Kommentare bearbeiten"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:282
+#: ../src/cgi-bin/linbo_new:283
 msgid "Konfigurationsdatei erstellt"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_edit:403
+#: ../src/cgi-bin/linbo_edit:404
 msgid "Konfigurationsdatei geschrieben"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:101
+#: ../src/cgi-bin/linbo_new:102
 msgid "Konfigurationsdatei konnte nicht kopiert werden"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:98
+#: ../src/cgi-bin/linbo_new:99
 msgid "Konfigurationsdatei kopiert"
 msgstr ""
 
@@ -2813,7 +2813,7 @@ msgstr ""
 msgid "LINBO-Kerneloptionen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1204
+#: ../lib/Schulkonsole/Linbo.pm:1167
 #, perl-format
 msgid "Leerer Wert für \"%s\" bei %s auf %s"
 msgstr ""
@@ -3100,7 +3100,7 @@ msgstr ""
 msgid "Möchten Sie das Projekt wirklich löschen?"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_edit:158 ../src/cgi-bin/linbo_edit:160
+#: ../src/cgi-bin/linbo_edit:159 ../src/cgi-bin/linbo_edit:161
 msgid "NEU"
 msgstr ""
 
@@ -3145,7 +3145,7 @@ msgstr ""
 msgid "Name des Betriebssystems"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1210
+#: ../lib/Schulkonsole/Linbo.pm:1173
 #, perl-format
 msgid "Name mit Version (\"%s\") muss bei Betriebssystemen eindeutig sein."
 msgstr ""
@@ -3158,7 +3158,7 @@ msgstr ""
 msgid "Neu anlegen"
 msgstr ""
 
-#: ../shtml/linbo_remote.tt:200
+#: ../shtml/linbo_remote.tt:218
 msgid "Neu starten"
 msgstr ""
 
@@ -3202,7 +3202,7 @@ msgstr ""
 msgid "Neues System hinzufügen"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_remote:150
+#: ../src/cgi-bin/linbo_remote:151
 msgid "Nicht alle angegebenen Befehle sind gültig."
 msgstr ""
 
@@ -3326,7 +3326,7 @@ msgstr ""
 msgid "PXE-Start"
 msgstr ""
 
-#: ../shtml/linbo_remote.tt:178
+#: ../shtml/linbo_remote.tt:187
 msgid "Parition formatieren"
 msgstr ""
 
@@ -3338,11 +3338,11 @@ msgstr ""
 msgid "Partition bootbar:"
 msgstr ""
 
-#: ../shtml/linbo_edit_oss.inc.tt:83 ../lib/Schulkonsole/Linbo.pm:1186
+#: ../shtml/linbo_edit_oss.inc.tt:83 ../lib/Schulkonsole/Linbo.pm:1149
 msgid "Partition, die Kernel und initrd enthält"
 msgstr ""
 
-#: ../shtml/linbo_remote.tt:172
+#: ../shtml/linbo_remote.tt:171
 msgid "Partitionieren"
 msgstr ""
 
@@ -3419,7 +3419,7 @@ msgstr ""
 msgid "Passwörter zurückgesetzt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1187
+#: ../lib/Schulkonsole/Linbo.pm:1150
 msgid "Pfad zum Kernel"
 msgstr ""
 
@@ -3604,7 +3604,7 @@ msgstr ""
 msgid "Rechnergruppenname"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:129
+#: ../src/cgi-bin/linbo_new:130
 msgid "Rechnergruppenname schon vergeben"
 msgstr ""
 
@@ -3903,7 +3903,7 @@ msgstr ""
 msgid "Start-Button für dieses Betriebssystem anzeigen"
 msgstr ""
 
-#: ../shtml/linbo_remote.tt:219
+#: ../shtml/linbo_remote.tt:252
 msgid "Starten"
 msgstr ""
 
@@ -3946,7 +3946,7 @@ msgstr ""
 msgid "Sync+Start-Button für dieses Betriebssystem anzeigen"
 msgstr ""
 
-#: ../shtml/linbo_remote.tt:206
+#: ../shtml/linbo_remote.tt:234
 msgid "Synchronisieren"
 msgstr ""
 
@@ -4000,8 +4000,8 @@ msgstr ""
 msgid "Teach-In ist notwendig"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:155 ../src/cgi-bin/linbo_new:182
-#: ../src/cgi-bin/linbo_new:209 ../src/cgi-bin/linbo_new:236
+#: ../src/cgi-bin/linbo_new:156 ../src/cgi-bin/linbo_new:183
+#: ../src/cgi-bin/linbo_new:210 ../src/cgi-bin/linbo_new:237
 #, perl-format
 msgid "Template %s nicht vorhanden"
 msgstr ""
@@ -4027,17 +4027,17 @@ msgstr ""
 msgid "Unbekannter Fehler "
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1266
+#: ../lib/Schulkonsole/Linbo.pm:1229
 #, perl-format
 msgid "Unbekannter Fehler bei %s/%s"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1213
+#: ../lib/Schulkonsole/Linbo.pm:1176
 #, perl-format
 msgid "Unbekannter Fehler für %s bei %s auf %s"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:145
+#: ../src/cgi-bin/linbo_new:146
 msgid "Unbekannter Festplattencontroller"
 msgstr ""
 
@@ -4161,16 +4161,16 @@ msgstr ""
 msgid "Ungueltiges Projekt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1207
+#: ../lib/Schulkonsole/Linbo.pm:1170
 #, perl-format
 msgid "Ungültige Zeichen für \"%s\" bei %s auf %s"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:125
+#: ../src/cgi-bin/linbo_new:126
 msgid "Ungültiger Gruppenname"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:85
+#: ../src/cgi-bin/linbo_new:86
 msgid "Ungültiger Zielgruppenname"
 msgstr ""
 
@@ -4563,7 +4563,7 @@ msgstr ""
 msgid "kein Unterricht."
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1279
+#: ../lib/Schulkonsole/Linbo.pm:1242
 msgid "keine Cachepartition"
 msgstr ""
 
@@ -4579,11 +4579,11 @@ msgstr ""
 msgid "kopieren nach"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1231
+#: ../lib/Schulkonsole/Linbo.pm:1194
 msgid "leerer Devicename"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1233 ../lib/Schulkonsole/Linbo.pm:1275
+#: ../lib/Schulkonsole/Linbo.pm:1196 ../lib/Schulkonsole/Linbo.pm:1238
 msgid "leerer Wert"
 msgstr ""
 
@@ -4662,17 +4662,17 @@ msgstr ""
 msgid "start"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_edit:75
+#: ../src/cgi-bin/linbo_edit:76
 #, perl-format
 msgid "start.conf.%s existiert nicht"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_edit:88
+#: ../src/cgi-bin/linbo_edit:89
 #, perl-format
 msgid "start.conf.%s gelöscht"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_edit:91
+#: ../src/cgi-bin/linbo_edit:92
 #, perl-format
 msgid "start.conf.%s konnte nicht gelöscht werden"
 msgstr ""
@@ -4705,7 +4705,7 @@ msgstr ""
 msgid "unbekannt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1223
+#: ../lib/Schulkonsole/Linbo.pm:1186
 msgid "unbenannt"
 msgstr ""
 
@@ -4725,7 +4725,7 @@ msgstr ""
 msgid "ungültige Optionen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1240 ../lib/Schulkonsole/Linbo.pm:1277
+#: ../lib/Schulkonsole/Linbo.pm:1203 ../lib/Schulkonsole/Linbo.pm:1240
 msgid "ungültige Zeichen"
 msgstr ""
 
