@@ -43,6 +43,7 @@ $VERSION = 0.06;
 	rooms
 	hosts
 	workstations
+	linbogroups
 
 	printers_room
 	printers
@@ -2077,6 +2078,42 @@ sub workstations {
 	return (wantarray ? ($comments,\%workstations) : \%workstations);
 }
 
+
+
+
+
+=head3 linbogroups()
+
+Get all groups that have a start.conf.*
+
+=head4 Return value
+
+A reference to a hash with the group names as keys
+
+=head4 Description
+
+Extracts the groupname from the filenames /var/linbo/start.conf.<GROUP>
+and returns them in a hash.
+
+=cut
+
+sub linbogroups {
+	my @files = glob($Schulkonsole::Config::_linbo_start_conf_prefix . '*');
+
+	my %re;
+	# this will take all files, that start with _linbo_start_conf_prefix
+	# plus a valid group name and optionally an arbitrary suffix (except it
+	# ends with '~')
+	foreach my $file (@files) {
+		next if $file =~ /~$/;	# skip editor backup files
+		my ($group) = $file =~ /^\Q${Schulkonsole::Config::_linbo_start_conf_prefix}\E([a-z\d_]+.*)/;
+		next unless $group;
+
+		$re{ Schulkonsole::Encode::from_fs($group) } = 1;
+	}
+
+	return \%re;
+}
 
 
 

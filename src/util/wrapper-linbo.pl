@@ -756,7 +756,7 @@ sub linbo_remote() {
 			  - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 			  unless $$hosts{$target};
 	} elsif($type eq 'g') {
-		my $groups = Schulkonsole::Linbo::groups();
+		my $groups = Schulkonsole::Config::linbogroups();
 		exit (  Schulkonsole::Error::Linbo::WRAPPER_NO_SUCH_GROUP
 		      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
 		      unless $$groups{$target};

@@ -27,6 +27,7 @@ use utf8;
 use lib '/usr/share/schulkonsole';
 use open ':utf8';
 use Schulkonsole::Encode;
+use Schulkonsole::Config;
 use Schulkonsole::Linbo;
 use Schulkonsole::Session;
 
@@ -50,7 +51,7 @@ if (not $sk_session->get_password()) {
 
 my $q = $sk_session->query();
 
-my $groups = Schulkonsole::Linbo::groups();
+my $groups = Schulkonsole::Config::linbogroups();
 my $grubcfgs = Schulkonsole::Linbo::grubstarts();
 
 my $is_action;

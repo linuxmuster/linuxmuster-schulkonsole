@@ -25,6 +25,7 @@ provides the following variables:
 use strict;
 use utf8;
 use lib '/usr/share/schulkonsole';
+use Schulkonsole::Config;
 use Schulkonsole::Session;
 use Schulkonsole::Linbo;
 
@@ -50,7 +51,7 @@ my $q = $sk_session->query();
 
 
 eval {
-my $groups = Schulkonsole::Linbo::groups();
+my $groups = Schulkonsole::Config::linbogroups();
 
 my $group = $q->param('group');
 my $filecmd;
@@ -79,7 +80,7 @@ if ($filecmd eq 'delete') {
                 $sk_session->get_password(),
                 'start.conf.' . $group);
 
-        $groups = Schulkonsole::Linbo::groups();
+        $groups = Schulkonsole::Config::linbogroups();
         
         $sk_session->set_var('groups', [ sort keys %$groups ]);
         

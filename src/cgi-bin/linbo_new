@@ -27,6 +27,7 @@ use strict;
 use utf8;
 use lib '/usr/share/schulkonsole';
 use Schulkonsole::Session;
+use Schulkonsole::Config;
 use Schulkonsole::Linbo;
 
 
@@ -50,7 +51,7 @@ if (not $sk_session->get_password()) {
 my $q = $sk_session->query();
 
 
-my $groups = Schulkonsole::Linbo::groups();
+my $groups = Schulkonsole::Config::linbogroups();
 my $templates_os = Schulkonsole::Linbo::get_templates_os();
 
 eval {
@@ -92,7 +93,7 @@ $q->param('copy') and do {
 		$sk_session->get_password(),
 		$src, $dest);
 
-	$groups = Schulkonsole::Linbo::groups();
+	$groups = Schulkonsole::Config::linbogroups();
 	if ($$groups{$dest}) {
 		$sk_session->set_status(
 			$sk_session->d()->get('Konfigurationsdatei kopiert'), 0);

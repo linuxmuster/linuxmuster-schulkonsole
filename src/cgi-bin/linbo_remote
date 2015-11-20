@@ -26,6 +26,7 @@ use strict;
 use utf8;
 use lib '/usr/share/schulkonsole';
 use Schulkonsole::Session;
+use Schulkonsole::Config;
 use Schulkonsole::Linbo;
 
 
@@ -209,7 +210,7 @@ The current category is a group.
 A list of all linbo groups.
 
 =cut
-	my $groups = Schulkonsole::Linbo::groups();
+	my $groups = Schulkonsole::Config::linbogroups();
 	
 	$sk_session->set_var('groups', [sort(keys(%$groups))]);
 

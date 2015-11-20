@@ -43,7 +43,6 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 $VERSION = 0.0917;
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(
-	groups
 	regpatches
 	example_regpatches
 	grubstarts
@@ -239,42 +238,6 @@ sub stop_wrapper {
 
 =cut
 
-
-
-
-
-=head2 groups()
-
-Get all groups that have a start.conf.*
-
-=head3 Return value
-
-A reference to a hash with the group names as keys
-
-=head3 Description
-
-Extracts the groupname from the filenames /var/linbo/start.conf.<GROUP>
-and returns them in a hash.
-
-=cut
-
-sub groups {
-	my @files = glob($Schulkonsole::Config::_linbo_start_conf_prefix . '*');
-
-	my %re;
-	# this will take all files, that start with _linbo_start_conf_prefix
-	# plus a valid group name and optionally an arbitrary suffix (except it
-	# ends with '~')
-	foreach my $file (@files) {
-		next if $file =~ /~$/;	# skip editor backup files
-		my ($group) = $file =~ /^\Q${Schulkonsole::Config::_linbo_start_conf_prefix}\E([a-z\d_]+.*)/;
-		next unless $group;
-
-		$re{ Schulkonsole::Encode::from_fs($group) } = 1;
-	}
-
-	return \%re;
-}
 
 
 
