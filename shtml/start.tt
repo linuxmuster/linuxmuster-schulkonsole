@@ -55,20 +55,20 @@
 <col width="70%">
 <tr>
 <td><label [% labelfor("mailforwards") %]>[% loc('Weiterleitung(en)') %]</label>: </td>
-<td><input id="mailforwards" name="mailforwards" value="[% mailforwards %]"></td>
+<td><input id="mailforwards" name="mailforwards" value="[% mailforwards %]"
+[% IF ! has_smtp_relay %] disabled[% END %]></td>
 </tr>
 <tr>
 <td><label [% labelfor("mailkeep") %]>[% loc('Kopie behalten') %]</label>: </td>
 <td>
-[% IF mailkeep %]
-<input id="mailkeep" name="mailkeep" type="checkbox" checked>
-[% ELSE %]
-<input id="mailkeep" name="mailkeep" type="checkbox">
-[% END %]
+<input id="mailkeep" name="mailkeep" type="checkbox"
+[% IF mailkeep %] checked[% END %]
+[% IF ! has_smtp_relay %] disabled[% END %]>
 </td>
 </tr>
 </table>
-<p><input type="submit" name="mailchange" value="[% loc('Mailadresse(n) ändern') %]">
+<p><input type="submit" name="mailchange" value="[% loc('Mailadresse(n) ändern') %]"
+[% IF ! has_smtp_relay %] disabled[% END %]>
 
 <hr>
 
