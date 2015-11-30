@@ -22,7 +22,7 @@ the following variables:
 
 =over
 
-=item C<has_smtp_relay>
+=item C<has_smtprelay>
 
 A boolean variable (0|1): set, if a smtp relay has been defined during
 linuxmuster-setup.
@@ -693,14 +693,14 @@ foreach my $class (values %$classs) {
 my $var_classes_str = join ', ', @classs;
 $sk_session->set_var('classes_str', $var_classes_str);
 
-=item C<has_smtp_relay>
+=item C<has_smtprelay>
 
 Boolean value (0|1).
 
 =cut
 
-my $smtprelay = Schulkonsole::Debconf::read('linuxmuster-base','smtp_relay');
-$sk_session->set_var('has_smtp_relay', $smtprelay eq ""? 0 : 1);
+my $smtprelay = Schulkonsole::Debconf::read('linuxmuster-base','smtprelay');
+$sk_session->set_var('has_smtprelay', $smtprelay eq ""? 0 : 1);
 
 my @mailaliass = Schulkonsole::Info::mailaliases($uid);
 my $var_mailaliases = join ', ', @mailaliass;
