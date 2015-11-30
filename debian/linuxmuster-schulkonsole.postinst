@@ -76,18 +76,20 @@ case "$1" in
 	   sed -e "s|Alias ${replace[$i]} .*|${searchstr[$i]}|g" -i "$conf"
 	  fi
 	 done
-	 # fixes missing jquery alias FIXME: match only once
-	 if ! grep -q 'Alias /jquery/'; then
-	 	if [ -z "$backed_up" ]; then
-	 		echo "Backing up $conf to $conf.dpkg-bak."
-	 		backed_up=yes
-	 		cp $conf $conf.dpkg-bak
-	 	fi
-	 	sed '/Alias/{ i \
-	Alias /jquery/ /usr/share/schulkonsole/jquery/ \
+	# fixes missing jquery alias FIXME: match only once
+	if ! grep -q 'Alias[[:space:]]*/jquery[[:space:]].*' $conf; then
+    	if [ -z "$backed_up" ]; then
+        	echo "Backing up $conf to $conf.dpkg-bak."
+        	backed_up=yes
+        	cp $conf $conf.dpkg-bak
+    	fi
+    	echo "Adding jquery alias to schulkonsole's apache2.conf."
+    	sed '/\tAlias \/schulkonsole\/css\//{ i\
+\tAlias /jquery /usr/share/schulkonsole/jquery/
+
 }' -i $conf
-	 fi
-	 [ -n "$backed_up" ] && apache2ctl graceful 2> /dev/null || true
+ 	fi
+	[ -n "$backed_up" ] && apache2ctl graceful 2> /dev/null || true
 	;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)
