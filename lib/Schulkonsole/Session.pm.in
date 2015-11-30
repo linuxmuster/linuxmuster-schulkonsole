@@ -567,6 +567,49 @@ sub set_status_redirect {
 
 
 
+=head3 C<set_status_reload($status, $action, $intervall)>
+
+Set status description
+
+=head4 Parameters
+
+=over
+
+=item C<$status>
+
+Description of the status
+
+=item C<$action>
+
+Action to reload
+
+=item C<$intervall>
+
+set the reload intervall to the specified amount of seconds
+
+=back
+
+=head4 Description
+
+Sets the status description of the last action. The page has
+a short lifetime and a busy symbol will be displayed.
+
+=cut
+
+sub set_status_reload {
+	my $this = shift;
+	my $status = shift;
+	my $action = shift;
+	my $intervall = shift;
+
+	$this->{session}->set_var('statusreload', $status);
+	$this->{session}->set_var('pagereload', $action);
+	$this->{session}->set_var('statusreloadintervall', $i);
+}
+
+
+
+
 =head3 C<mark_input_error($input_name)>
 
 Marks a user error at an <input> field
