@@ -77,7 +77,7 @@ case "$1" in
 	  fi
 	 done
 	# fixes missing jquery alias FIXME: match only once
-	if ! grep -q 'Alias[[:space:]]*/jquery[[:space:]].*' $conf; then
+	if ! grep -q 'Alias[[:space:]]*/jquery/[[:space:]].*' $conf; then
     	if [ -z "$backed_up" ]; then
         	echo "Backing up $conf to $conf.dpkg-bak."
         	backed_up=yes
