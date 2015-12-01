@@ -16,9 +16,6 @@
 [% IF link_class_shares %]
 	<li><a class="separator" [% dohref("class_shares") %]>[% loc('Tauschen') %]</a></li>
 [% END %]
-[% IF link_room_test %]
-	<li><a class="separator" [% dohref("room_test") %]>[% loc('Klassenarbeit') %]</a></li>
-[% END %]
 [% IF link_myclass_handedoutcopy %]
 	<li><a [% dohref("myclass_handedoutcopy") %]>[% loc('Ausgeteilt') %]</a></li>
 [% END %]
