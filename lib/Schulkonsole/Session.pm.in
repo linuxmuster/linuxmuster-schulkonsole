@@ -604,7 +604,7 @@ sub set_status_reload {
 
 	$this->{session}->set_var('statusreload', $status);
 	$this->{session}->set_var('pagereload', $action);
-	$this->{session}->set_var('statusreloadintervall', $i);
+	$this->{session}->set_var('statusreloadintervall', $intervall);
 }
 
 
