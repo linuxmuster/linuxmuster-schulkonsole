@@ -1,0 +1,78 @@
+	<table class="settings">
+	<colgroup>
+	<col width="60%">
+	<col width="40%">
+	</colgroup>
+	[% lfdnr = 0 %]
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+	[% IF iscached %]
+		<td>[% loc('Cache-Partition auf dem Arbeitsplatzrechner') %]:</td>
+		<td>[% cache %]<input type="hidden" name="linbo_cache" value="[% linbo.cache %]"></td>
+	[% ELSE %]
+		<td><label [% labelfor("linbo_cache") %]>[% loc('Cache-Partition auf dem Arbeitsplatzrechner') %]:</label></td>
+		<td><input id="linbo_cache" name="linbo_cache" value="[% linbo.cache %]"></td>
+	[% END %]
+	[% lfdnr = lfdnr + 1 %]</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+		<td><label [% labelfor("linbo_server") %]>[% loc('IP des TFTP-Servers, der Images vorhält') %]:</label></td>
+		<td><input id="linbo_server" name="linbo_server" value="[% linbo.server %]" size="16" maxlength="15"></td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+		<td>[% loc('Rechnergruppenname') %]:</td>
+		<td>[% group %]<input type="hidden" name="group" value="[% group %]"></td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+		<td><label [% labelfor("linbo_systemtype") %]>[% loc('System-Typ') %]:</label></td>
+		<td>
+		<select name="linbo_systemtype">
+		<option value="bios"[% IF linbo.systemtype == 'bios' %] selected[% END %]>[% loc('Bios') %]</option>
+		<option value="bios64"[% IF linbo.systemtype == 'bios64' %] selected[% END %]>[% loc('Bios64') %]</option>
+		<option value="efi32"[% IF linbo.systemtype == 'efi32' %] selected[% END %]>[% loc('EFI32') %]</option>
+		<option value="efi64"[% IF linbo.systemtype == 'efi64' %] selected[% END %]>[% loc('EFI64') %]</option>
+		</select>
+		</td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+		<td><label [% labelfor("linbo_roottimeout") %]>[% loc('automatischer Rootlogout nach') %]:</label></td>
+		<td><input id="linbo_roottimeout" name="linbo_roottimeout" value="[% linbo.roottimeout %]"> [% loc('Sekunden') %]</td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+		<td><label [% labelfor("linbo_autopartition") %]>[% loc('Automatische Partitionsreparatur') %]:</label></td>
+		<td><input type="checkbox" id="linbo_autopartition" name="linbo_autopartition"
+		[% IF linbo.autopartition %] checked[% END %]></td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+		<td><label [% labelfor("linbo_autoformat") %]>[% loc('Automatisches Formatieren') %]:</label></td>
+		<td><input type="checkbox" id="linbo_autoformat" name="linbo_autoformat"[% IF linbo.autoformat %] checked[% END %]></td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+		<td><label [% labelfor("linbo_autoinitcache") %]>[% loc('Automatisches Einrichten des Caches') %]:</label></td>
+		<td><input type="checkbox" id="linbo_autoinitcache" name="linbo_autoinitcache"[% IF linbo.autoinitcache %] checked[% END %]></td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+		<td><label [% labelfor("linbo_downloadtype") %]>[% loc('Downloadtype auswählen') %]:</label></td>
+		<td>
+		<select name="linbo_downloadtype">
+		<option value="rsync"[% IF linbo.downloadtype == 'rsync' %] selected[% END %]>[% loc('rsync') %]</option>
+		<option value="multicast"[% IF linbo.downloadtype == 'multicast' %] selected[% END %]>[% loc('multicast') %]</option>
+		<option value="torrent"[% IF linbo.downloadtype == 'torrent' %] selected[% END %]>[% loc('torrent') %]</option>
+		</select>
+		</td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+		<td><label [% labelfor("linbo_backgroundfontcolor") %]>[% loc('Bildschirmschriftfarbe') %]:</label></td>
+		<td><input id="linbo_backgroundfontcolor" name="linbo_backgroundfontcolor" value="[% loc('white') %]"></td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+		<td><label [% labelfor("linbo_consolefontcolorstdout") %]>[% loc('Konsolenschriftfarbe') %]:</label></td>
+		<td><input id="linbo_consolefontcolorstdout" name="linbo_consolefontcolorstdout" value="[% loc('white') %]"></td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+		<td><label [% labelfor("linbo_consolefontcolorstderr") %]>[% loc('Konsolenschriftfarbe für Fehler- und Warnmeldungen') %]:</label></td>
+		<td><input id="linbo_consolefontcolorstderr" name="linbo_consolefontcolorstderr" value="[% loc('red') %]"></td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+		<td><label [% labelfor("linbo_kerneloptions") %]>[% loc('LINBO-Kerneloptionen') %]:</label></td>
+		<td><input id="linbo_kerneloptions" name="linbo_kerneloptions" value="[% linbo.kerneloptions %]"></td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	</table>

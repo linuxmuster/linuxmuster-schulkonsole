@@ -1,0 +1,42 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Mein Raum') _ ":  $myroom" _ " - " _ loc('Einzusammeln'),
+      menu     => 1,
+      info     => loc('<p>Hier können Sie einzusammelnde Dateien hochladen.</p>'),
+   }
+%]
+
+<h2>[% loc('Mein Raum') %]: [% IF myroom %][% myroom %][% ELSE %][% loc('unbekannt') %][% END %] :: [% loc('Einzusammeln') %]</h2>
+
+[% IF myroom %]
+	<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+	
+	<h3>[% loc('Einzusammelnde Dateien') %]</h3>
+	
+	<table id="classfilestocollect" class="liste">
+	[% lfdnr = 1 %]
+	<tr>
+	    <th>[% loc('Nr.') %]</th>
+	    <th>[% loc('Dateiname') %]<th>
+	    <th colspan=2 ></th>
+	</tr>
+	[% FOREACH cf IN collect_files %]
+		<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+	    <td class="lfdnr">[% lfdnr %]</td>
+	    <td>[% IF cf.isdir %]*[% END %][% cf.name %]</td>
+	    <td><input title="[% loc('Herunterladen') %]" type="submit" class="btn-download" alt="[% loc('Herunterladen') %]" 
+	        name="[% cf.name %];download" value="[% loc('H') %]"></td>
+	    <td><input title="[% loc('Löschen') %]" type="submit" class="btn-delete" alt="[% loc('Löschen') %]" 
+	        name="[% cf.name %];delete" value="[% loc('L') %]"></td>
+	    [% lfdnr = lfdnr + 1 %]
+	    </tr>
+	[% END %]
+	</table>
+	
+	<h4>[% loc('Datei hochladen') %]</h4>
+	<p>
+	    <input id="fileupload" type="file" name="ul_myroom_tocollect">
+	    <input type="submit" id="upload">
+	</p>
+	
+	</form>
+[% END %]

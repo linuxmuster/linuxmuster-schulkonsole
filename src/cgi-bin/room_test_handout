@@ -1,0 +1,287 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+room_test_handout - hand out files in room during exam
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/room_test_handout
+
+=head1 DESCRIPTION
+
+C<room_test_handout> lets you hand out files in a selected room during an
+exam.
+The HTML template is room_test_handout.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session
+and Schulkonsole::Room::set_vars() C<room_handout>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Room;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::Session;
+use File::Basename;
+
+my $this_file = 'room_test_handout';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+my $q = $sk_session->query();
+my $d = $sk_session->d();
+
+my $room_session = new Schulkonsole::Room($sk_session);
+
+
+if (   not $room_session
+    or not $room_session->info('is_editing')) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room/g;
+	$sk_session->redirect($url);
+}
+
+eval {
+	
+SWITCHCOMMAND: {
+$q->param('handouttest') and do {
+	Schulkonsole::Sophomorix::handout_from_room(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		$room_session->info('name'));
+
+	$sk_session->set_status_redirect($sk_session->d()->get('Ausgeteilt'), 0);
+
+	$room_session->param('test_step', Schulkonsole::Config::TEST_PASSWORD)
+		if (  $room_session->param('test_step')
+		    < Schulkonsole::Config::TEST_PASSWORD);
+
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room_test_password/g;
+	$sk_session->redirect($url);
+	
+	last SWITCHCOMMAND;
+};
+
+$q->param('continue') and do {
+	$room_session->param('test_step', Schulkonsole::Config::TEST_PASSWORD)
+		if (  $room_session->param('test_step')
+		    < Schulkonsole::Config::TEST_PASSWORD);
+
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room_test_password/g;
+	$sk_session->redirect($url);
+	last SWITCHCOMMAND;
+};
+
+$q->param('upload_test_handout') and do {
+	my $file = $q->param('upload_test_handout');
+	my $tmpfile = "$Schulkonsole::Config::_runtimedir/upload_test_handout_".$sk_session->session_id() . '_' . time;
+	if(! open(DAT,'>'.$tmpfile)) {
+		$sk_session->set_status($d->get('Es konnte keine temporäre Datei erzeugt werden.'),1);
+		last SWITCHCOMMAND;
+	}
+	binmode($file);
+	binmode(DAT);
+	my $buffer = "";
+	while( read($file, $buffer, 1024)) {
+		print DAT $buffer;
+	}
+	close(DAT);
+	my $filename = basename($file);
+	
+	Schulkonsole::Sophomorix::add_handout_exam(
+		$sk_session->userdata('id'), $sk_session->get_password(), $filename, 0, basename($tmpfile));
+	
+	last SWITCHCOMMAND;	
+}; 
+
+foreach my $param ($q->param) {
+	if (my ($file, $action)
+	    	= $param =~ /^(.+);(delete|download)$/) {
+		my $teacher_share_files = Schulkonsole::Sophomorix::ls_handout_exam(
+				$sk_session->userdata('id'), $sk_session->get_password());
+		
+		SWITCHACTION: {
+		$action =~ /delete/ and do {
+			if(not defined $$teacher_share_files{$file}) {
+				$sk_session->set_status(
+					$d->get('Datei ') . $file . $d->get(' nicht als Vorlagendatei vorhanden.'),
+					1);
+				last SWITCHACTION;
+			}
+			Schulkonsole::Sophomorix::rm_handout_exam(
+				$sk_session->userdata('id'), $sk_session->get_password(),
+				$file, ($$teacher_share_files{$file}?1:0));
+			
+			last SWITCHACTION;
+		};
+		
+		$action =~ /download/ and do {
+			if(not defined $$teacher_share_files{$file}) {
+				$sk_session->set_status(
+					$d->get('Datei ') . $file . $d->get(' nicht als Vorlagendatei vorhanden.'),
+					1);
+				last SWITCHACTION;
+			}
+			my $tmpfile = "download_test_handout_".$sk_session->session_id() . '_' . time;
+			
+			Schulkonsole::Sophomorix::dl_handout_exam(
+				$sk_session->userdata('id'), $sk_session->get_password(),
+				$file, ($$teacher_share_files{$file}?1:0), $tmpfile);
+			
+			if( -e "$Schulkonsole::Config::_runtimedir/$tmpfile") {
+				print $q->header( -type           => "application/x-download",
+						          -attachment     => $file,
+								   -Content_length => -s "$Schulkonsole::Config::_runtimedir/$tmpfile");
+							
+				if(! open(FILE, "<$Schulkonsole::Config::_runtimedir/$tmpfile")) {
+					$sk_session->set_status($d->get('Die temporäre Datei konnte nicht geöffnet werden.'),1);
+					last SWITCHCOMMAND;
+				}
+				binmode(FILE);
+				binmode(STDOUT);
+				print while <FILE>;
+				if(!close(FILE)) {
+					$sk_session->set_status($d->get('Die temporäre Datei konnte nicht geschlossen werden.'),1);
+					last SWITCHCOMMAND;
+				}
+				
+				if($$teacher_share_files{$file}){
+					system("rm -rf $Schulkonsole::Config::_runtimedir/$tmpfile");
+				} else {
+					system("rm -f $Schulkonsole::Config::_runtimedir/$tmpfile");
+				}
+
+				$sk_session->set_status($d->get('Die Datei wurde heruntergeladen.'),0);
+				exit 0;
+				
+			} else {
+				$sk_session->set_status($d->get('Es konnte keine temporäre Datei erzeugt werden.'),1);
+				last SWITCHCOMMAND;				
+			}
+			
+			last SWITCHACTION;
+		};
+		
+		} #SWITCHACTION
+	}
+} # foreach param
+
+}
+
+}; #eval SWITCHCOMMAND
+
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+eval {
+my $teacher_share_files
+	= Schulkonsole::Sophomorix::ls_handout_exam(
+		$sk_session->userdata('id'),
+		$sk_session->get_password());
+
+=item C<teacher_share_files>
+
+Available files as returned by C<Schulkonsole::Sophomorix::create_file_list()>
+
+=cut
+
+$sk_session->set_var('teacher_share_files',
+	Schulkonsole::Sophomorix::create_file_list($teacher_share_files));
+};
+if ($@) {
+	if (    ref $@
+	    and $@->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY) {
+		$sk_session->set_status(
+			$sk_session->d()->get(
+				'Verzeichnis zum Bereitstellen nicht gefunden'),
+				1);
+	} else {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+}
+
+
+
+
+my $workstations
+	= Schulkonsole::Config::workstations_room($room_session->info('name'));
+my $workstation_users = $room_session->workstation_users();
+
+
+my @array_overview_workstations;
+foreach my $workstation (sort keys %$workstations) {
+	my $first_login = 1;
+	if (    $$workstation_users{$workstation}
+	    and @{ $$workstation_users{$workstation} }) {
+		foreach my $userdata (sort { $$a{uid} cmp $$b{uid} }
+		                           @{ $$workstation_users{$workstation} }) {
+			my $overview_workstation = {
+				name => $workstation,
+				login => $$userdata{uid},
+				first => $first_login,
+			};
+			push @array_overview_workstations, $overview_workstation;
+
+			$first_login = 0;
+		}
+	}
+}
+
+=item C<overview_workstations>
+
+Users logged in on workstations in room as an array of hashes with
+the keys
+
+=over
+
+=item C<name>
+
+Name of a workstation
+
+=item C<login>
+
+Login of the user
+
+=item C<first>
+
+True if the user is the first of all users on the workstation
+
+=back
+
+=cut
+
+$sk_session->set_var('overview_workstations', \@array_overview_workstations);
+
+
+$room_session->set_vars($sk_session);
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<handouttest>
+
+Hand out files
+
+=item C<continue>
+
+Continue without handing out files
+
+=back
+

@@ -1,0 +1,24 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Einstellungen'),
+      menu     => 1,
+      submenu  => "settings",
+      info     => loc('<p>Bearbeiten Sie hier die globalen Einstellungen für die Schulkonsole, die Benutzerverwaltung und die Klassensichtbarkeit.</p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</p>'),
+   }
+%]
+
+<h2>[% loc('Einstellungen') %]</h2>
+
+<p>
+[% IF link_settings_program %]
+<a [% dohref("settings_program") %]>[% loc('Schulkonsole') %]</a></br>
+[% END %]
+[% IF link_settings_users %]
+<a [% dohref("$settings_users") %]>[% loc('Benutzerverwaltung') %]</a></br>
+[% END %]
+[% IF link_settings_classs %]
+<a [% dohref("$settings_classs") %]>[% loc('Klassen') %]</a></br>
+[% END %]
+[% IF link_settings_projects %]
+<a [% dohref("$settings_projects") %]>[% loc('Projekte') %]</a></br>
+[% END %]
+</p>

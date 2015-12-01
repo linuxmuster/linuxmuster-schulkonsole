@@ -1,0 +1,93 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('aktueller Raum') _ ":  $room - " _ loc('Klassenarbeitsmodus'),
+      menu     => 1,
+      submenu  => "room",
+      info     => loc('<p>Die Schüler/innen müssen ihre Ergebnisse im Heimatverzeichnis der Arbeitsstation im Ordner &bdquo;__einsammeln&ldquo; ablegen, damit sie hier aufgelistet werden und eingesammelt werden können. Laden Sie die Seite eventuell neu, um den aktuellen Status zu sehen.</p><p>&bdquo;Kopien einsammeln&ldquo; sammelt den aktuellen Stand der Ergebnisse ein.</p><p>&bdquo;Einsammeln und beenden&ldquo; sammelt alle Ergebnisse ein, löscht den Inhalt des Ordners &bdquo;__einsammeln&ldquo; der Arbeitsstation und beendet die Klassenarbeit.</p>'),
+   }
+%]
+
+[% INCLUDE "subsubmenu-room_test.inc.tt" %]
+
+<h2>[% loc('Aktueller Raum') %]: [% room %]
+::  [% loc('Klassenarbeitsmodus') %]</h2>
+
+<p>
+[% loc('Nutzung:') %]
+
+[% IF editinguser %]
+[% editinguser %]
+[% loc('unterrichtet in Raum') %]
+[% room %].
+[% END %]
+[% IF endedittime %]
+[% loc('Unterrichtsende um') %] [% endedittime %].
+[% END %]
+</p>
+
+<p>[% loc('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
+
+<hr>
+
+<form method="post" accept-charset="UTF-8">
+
+<h3>[% loc('Bisher eingesammelte Dateien') %]</h3>
+
+[% IF room_collected_files %]
+    <table id="roomcollectedfiles" class="liste">
+    [% lfdnr = 1 %]
+    <tr>
+        <th>[% loc('Nr.') %]</th>
+        <th>[% loc('Dateiname') %]<th>
+        <th colspan=2 ></th>
+    </tr>
+    [% FOREACH rcf IN room_collected_files %]
+    	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+        <td class="lfdnr">[% lfdnr %]</td>
+        <td>[% IF rcf.isdir %]*[% END %][% rcf.name %]</td>
+        <td><input title="[% loc('Herunterladen') %]" type="submit" class="btn-download" alt="[% loc('Herunterladen') %]" 
+            name="[% rcf.name %];download" value="[% loc('H') %]"></td>
+        <td><input title="[% loc('Löschen') %]" type="submit" class="btn-delete" alt="[% loc('Löschen') %]" 
+            name="[% rcf.name %];delete" value="[% loc('L') %]"></td>
+        [% lfdnr=lfdnr+1 %]
+        </tr>
+    [% END %]
+    </table>
+[% END %]
+
+<h3>[% loc('Einsammeln') %]</h3>
+
+<p><input type="submit" name="collectcopy" value="[% loc('Kopien einsammeln') %]">
+   <input type="submit" name="collectmove" value="[% loc('Einsammeln und beenden') %]"></p>
+
+<table id="roomcollect" class="liste">
+<tr>
+<th>[% loc('Hostname') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Dateien') %]</th>
+</tr>
+[% FOREACH w IN overview_workstations %]
+    [% IF odd %][% odd=0 %]<tr class="odd">
+    [% ELSE %][% odd=1 %]<tr class="even">[% END %]
+    <td>[% IF w.first %][% w.name %][% END %]</td>
+    [% IF w.login %]
+        <td>[% w.login %]</td>
+        <td>
+        [% FOREACH wf IN w.files %]
+            [% IF wf.isdir %]*[% END %][% wf.name %]<br>
+        [% END %]
+        </td>
+    [% ELSE %]
+        <td>-</td>
+        <td>-</td>
+    [% END %]
+    </tr>
+[% END %]
+</table>
+
+<p><input type="submit" name="collectcopy" value="[% loc('Kopien einsammeln') %]">
+   <input type="submit" name="collectmove" value="[% loc('Einsammeln und beenden') %]"></p>
+
+
+<p><input type="submit" value="[% loc('Aktualisieren') %]"></p>
+
+</form>

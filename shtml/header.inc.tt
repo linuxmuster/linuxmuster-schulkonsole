@@ -1,0 +1,18 @@
+<div id="container">
+<div id="header">
+[% IF link_settings %]
+<h1>[% loc('Schulkonsole für Netzwerkberater/innen') %]</h1>
+[% ELSIF link_class %]
+<h1>[% loc('Schulkonsole für Lehrer/innen') %]</h1>
+[% ELSIF link_start %]
+<h1>[% loc('Schulkonsole für Schüler/innen') %]</h1>
+[% ELSE %]
+<h1>[% loc('Schulkonsole') %]</h1>
+[% END %]
+[% loc('Version') %] [% version %]
+[% action %]
+</div>
+</div>
+
+[% INCLUDE menu.inc.tt %]
+

@@ -1,0 +1,24 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Projekte'),
+      menu     => 1,
+      submenu  => "project",
+      info     => loc('<p>Wählen Sie &bdquo;Ja&ldquo;, um das Projekt wirklich zu löschen.</p>'),
+   }
+%]
+
+<h2>[% loc('Projekte') %] :: [% loc('Löschen') %]</h2>
+
+<h3>[% loc('Ausgewähltes Projekt:') %] [% project %]</h3>
+
+<form method="post" accept-charset="UTF-8">
+
+<h3>[% loc('Bitte bestätigen') %]</h3>
+
+<p>[% loc('Möchten Sie das Projekt wirklich löschen?') %]</p>
+
+<p><input type="hidden" name="ok" value="1">
+<input type="submit" name="[% project_gid %]_drop" value="[% loc('Ja') %]">
+<input type="submit" value="[% loc('Nein') %]">
+</p>
+
+</form>

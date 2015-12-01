@@ -1,4 +1,5 @@
 use strict;
+use utf8;
 use DBI;
 use Crypt::PasswdMD5;
 use Crypt::SmbHash;

@@ -1,15 +1,12 @@
-<!--#if expr="$link_settings" -->
-	<a class="separator" href="settings"><gettext>Start</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_settings_program" -->
-	<a href="settings_program"><gettext>Schulkonsole</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_settings_users" -->
-	<a href="settings_users"><gettext>Benutzerverwaltung</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_settings_classs" -->
-	<a href="settings_classs"><gettext>Klassen</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_settings_projects" -->
-        <a href="settings_projects"><gettext>Projekte</gettext></a>
-<!--#endif -->
+[% IF link_settings_program %]
+	<li><a [% dohref("settings_program") %]>[% loc('Schulkonsole') %]</a></li>
+[% END %]
+[% IF link_settings_users %]
+	<li><a [% dohref("settings_users") %]>[% loc('Benutzerverwaltung') %]</a></li>
+[% END %]
+[% IF link_settings_classs %]
+	<li><a [% dohref("settings_classs") %]>[% loc('Klassen') %]</a></li>
+[% END %]
+[% IF link_settings_projects %]
+        <li><a [% dohref("settings_projects") %]>[% loc('Projekte') %]</a></li>
+[% END %]

@@ -1,0 +1,243 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+linbo_remote - shows status and provides input for linbo_remote actions
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/linbo_remote
+
+=head1 DESCRIPTION
+
+C<linbo_remote> shows status and allows input of linbo_remote actions.
+The HTML template is linbo_remote.tt.
+
+=head2 Template variables
+
+There are no other template variables but the variables of
+Schulkonsole::Session.
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Session;
+use Schulkonsole::Config;
+use Schulkonsole::Linbo;
+
+
+my $this_file = 'linbo_remote';
+
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+my $d = $sk_session->d();
+
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+my $linbo_remote_new;
+my $linbo_remote_status;
+
+eval {
+	SWITCHCOMMAND: {
+		$q->param('task_new') and do {
+			$linbo_remote_new = 1;
+			last SWITCHCOMMAND;
+		};
+		
+		$q->param('task_add') and do {
+			if(!task_add()) {
+				last SWITCHCOMMAND;
+			}
+		};
+		
+		$q->param('task_abort') and do {
+			$linbo_remote_new = 0;
+			last SWITCHCOMMAND;
+		};
+
+		$linbo_remote_status = task_refresh();
+		$linbo_remote_new = 0;
+	} #SWITCHCOMMAND
+}; #eval
+
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+do_output();
+
+sub task_refresh() {
+ my $lines = Schulkonsole::Linbo::remote_status($id, $password);
+ my @status;
+ foreach my $line (@$lines) {
+	my @part = split(' ',$line);
+	$part[2] =~ s/\.linbo-remote//;
+	my $windowlines = Schulkonsole::Linbo::remote_window($id, $password, $part[2]);
+	defined $q->param(@part[2].'_showlong') or $q->param(@part[2].'_showlong',0); 
+	push @status, {
+		'host' => @part[2],
+		'short' => $line, 
+		'show' => $q->param(@part[2].'_showlong'), 
+		'long' => $windowlines, 
+	};
+ }
+ 
+ return \@status;
+}
+
+sub task_add() {
+	# add new linbo-remote task
+	if(!$q->param('category')) {
+		$sk_session->set_status($d->get('Es wurde keine Kategorie für die Rechnerauswahl angegeben.'),1);
+		return 0;
+	}
+	if($q->param('category') !~ /^(group|host|room)$/) {
+		$sk_session->set_status($d->get('Es wurde eine ungültige Kategorie für die Rechnerauswahl angegeben.'),1);
+		return 0;
+	}
+	
+	my $target = $q->param('category') . "_" . $q->param($q->param('category'));
+	if(not defined $target) {
+		$sk_session->set_status($d->get('Es wurde(n) kein(e) Rechner spezifiziert.'),1);
+		return 0;
+	}
+
+	my $now = $q->param('exectime');
+	if(not defined $now) {
+		$sk_session->set_status($d->get('Es wurde kein Ausführungszeitpunkt angegeben.'),1);
+		return 0;
+	}
+	if($q->param('exectime') !~ /^(donow|donextboot)$/) {
+		$sk_session->set_status($d->get('Es wurde ein ungültiger Ausführungszeitpunkt angegeben.'),1);
+		return 0;
+	}
+	$now = ($q->param('exectime') eq 'donow' ? 1 : 0);
+	
+	my $commands = $q->param('orders');
+	if(not defined $commands) {
+		$sk_session->set_status($d->get('Es wurden keine Befehle angegeben.'),1);
+		return 0;
+	}
+	my @cmds = ();
+	{
+		#local $/ = '';
+		foreach my $cmd (split("\n", $commands)) {
+			$cmd =~ s/\R//g;
+			next unless defined $cmd;
+			push @cmds, $cmd;
+		}
+	}
+	if(@cmds <= 0) {
+		$sk_session->set_status($d->get('Nicht alle angegebenen Befehle sind gültig.'),1);
+		return 0;
+	}
+	
+	my $nr1;
+	my $nr2;
+	if($now) {
+		if($q->param('dowakeup')) {
+			($nr1) = $q->param('wait_orders') =~ /^(\d+)$/;
+			if(not defined $nr1) {
+				$sk_session->set_status($d->get('Die Wartezeit nach dem Aufwecken ist ungültig.'),1);
+				return 0;
+			}
+			($nr2) = $q->param('wait_host') =~ /^(\d+)$/;
+			if(not defined $nr2) {
+				$sk_session->set_status($d->get('Die Wartezeit nach jedem Rechner ist ungültig.'),1);
+				return 0;
+			}
+		} else {
+			$nr1 = -1;
+			$nr2 = 0;
+		}
+	} else {
+		$nr1 = ($q->param('disable_buttons')?1:0);
+		$nr2 = ($q->param('bypass_auto')?1:0);
+	}
+	
+	Schulkonsole::Linbo::remote($id,$password,$target,$now,join(",", @cmds),$nr1,$nr2);
+
+	$sk_session->set_status($d->get('Die neue Aufgabe wurde hinzugefügt.'),0);
+	
+	return 1;	
+}
+
+sub do_output() {
+=item C<linbo_remote_status>
+
+A list of current status output.
+
+=cut
+	$sk_session->set_var('linbo_remote_status',$linbo_remote_status);
+
+=item C<linbo_remote_new>
+
+A new linbo_remote command is to be build.
+
+=cut
+	$sk_session->set_var('linbo_remote_new',$linbo_remote_new?1:0);
+
+=item C<isgroup>
+
+The current category is a group.
+
+=cut
+
+	$sk_session->set_var('isgroup',1);
+
+=item C<groups>
+
+A list of all linbo groups.
+
+=cut
+	my $groups = Schulkonsole::Config::linbogroups();
+	
+	$sk_session->set_var('groups', [sort(keys(%$groups))]);
+
+=item C<rooms>
+
+A list of all rooms.
+
+=cut
+	my $rooms = Schulkonsole::Config::rooms();
+	
+	$sk_session->set_var('rooms', [sort(keys(%$rooms))]);
+
+=item C<hosts>
+
+A list of all hosts.
+
+=cut
+	my $hosts = Schulkonsole::Config::hosts();
+	
+	$sk_session->set_var('hosts', [sort(keys(%$hosts))]);
+	
+	$sk_session->print_page("$this_file.tt", $this_file);
+	
+}
+
+=back
+
+=head2 Form fields
+
+none

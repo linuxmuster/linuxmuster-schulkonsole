@@ -1,0 +1,258 @@
+#! /usr/bin/perl -w
+# $Id$
+# This script (linuxmuster-wlan-reset) is maintained by Frank Schütte
+# It is Free Software (License GPLv3)
+# If you find errors, contact the author
+# fschuett@gymhim.de
+
+
+
+# ===========================================================================
+# Bibliotheken
+# ===========================================================================
+use strict;
+use lib '/usr/share/schulkonsole';
+use Getopt::Long;
+Getopt::Long::Configure ("bundling");
+use Sophomorix::SophomorixConfig;
+use Sophomorix::SophomorixPgLdap qw (fetchprojects_from_school fetchadminclasses_from_school fetchsubclasses_from_school
+                                     fetchstudents_from_adminclass fetchadministrators_from_school
+                                     adduser_to_project addgroup_to_project deleteuser_from_project deletegroup_from_project
+                                     addproject_to_project deleteproject_from_project
+                                     fetchmembers_by_option_from_project fetchgroups_from_project fetchprojects_from_project);
+use Sophomorix::SophomorixAPI;
+use Schulkonsole::Config;
+
+use DBI;
+
+
+my $grouplist = "";
+my $userlist = "";
+my $help = 0;
+my $all = 0;
+my $kill = 0;
+
+# Parsen der Optionen
+my $testopt=GetOptions(
+           "help|h" => \$help,
+           "userlist=s" => \$userlist,
+           "grouplist=s" => \$grouplist,
+           "all" => \$all,
+           "kill" => \$kill,
+         );
+
+if ($grouplist eq "" and $userlist eq "" and not $all) {
+	$help = 1;
+}
+
+if($kill and not($grouplist ne "" or $all)) {
+	$help = 1;
+}
+
+# --help
+if ($help==1) {
+   # Befehlbeschreibung
+   print('
+linuxmuster-wlan-reset resets wlan access to defaults
+
+Options
+  -h  / --help
+  --kill  terminate group sessions
+
+users/groups to work on:
+  --userlist=<user1,user2,user3,...> [--kill] list of users to be processed
+  --grouplist=<group1,group2,group3,...> list of groups to be processed
+  --all [--kill] process all users and groups from wlan_defaults
+');
+   print "\n";
+   exit;
+}
+
+# ===========================================================================
+# Check for locking
+# ===========================================================================
+my $locker='/tmp/.linuxmuster-wlan-reset';
+if(-e $locker) {
+        print('
+Caution! Lockfile $locker detected!
+Probably there is another linuxmuster-wlan-reset process running!
+If this is not the case you can safely remove the lockfile $locker
+and give linuxmuster-wlan-reset another try.
+');
+	print "\n";
+	exit 1;
+}
+
+system("touch $locker");
+system("chmod 400 $locker");
+
+# logfile
+my $LOGDIR="/var/log/linuxmuster";
+my $LOGFILE="$LOGDIR/linuxmuster-wlan-reset.log";
+open(LOGFILE,'>>',$LOGFILE);
+
+# ===========================================================================
+# Get information from the System
+# ===========================================================================
+my @projects = &fetchprojects_from_school();
+my @classes = &fetchadminclasses_from_school("showhidden");
+my @subclasses = &fetchsubclasses_from_school();
+my @teachers=&fetchstudents_from_adminclass(${DevelConf::teacher});
+my @students=&Sophomorix::SophomorixAPI::fetchstudents_from_school();
+my @administrators=&fetchadministrators_from_school();
+my @users=(@teachers,@students,@administrators);
+my @groups = (@projects,@classes,@subclasses);
+
+my $defaults = wlan_defaults();
+my $user_default = $$defaults{'users'}{'default'};
+my $group_default = $$defaults{'groups'}{'default'};
+
+# start
+dolog("\n");
+dolog("#####################################################################\n");
+dolog("Starting linuxmuster-wlan-reset session at " . localtime() . "\n");
+dolog("\n");
+dolog("  * user default: $user_default\n");
+dolog("  * group default: $group_default\n");
+dolog("\n");
+
+my $status = wlan_status();
+
+my @users_to_add;
+my @users_to_remove;
+my @groups_to_add;
+my @groups_to_remove;
+
+if ($user_default eq 'on') {
+	# add all users not in defaults
+	foreach my $user (@users) {
+		if(not exists $$status{'users'}{$user} and exists $$defaults{'users'}{$user} and $$defaults{'users'}{$user} ne 'off') {
+			push(@users_to_add, $user);
+		}
+	}
+} elsif($user_default eq 'off') {
+	# remove all users not in defaults
+	foreach my $user (keys $$status{'users'}) {
+		if(not $$defaults{'users'}{$user} or $$defaults{'users'}{$user} ne 'on') {
+			push @users_to_remove, $user;
+		}
+	}
+}
+
+if ($group_default eq 'on') {
+	# add all groups not in defaults
+	foreach my $group (@groups) {
+		if(not $$status{'groups'}{$group} and $$defaults{'groups'}{$group} and $$defaults{'groups'}{$group} ne 'off') {
+			push @groups_to_add, $group;
+		}
+	}
+} elsif($group_default eq 'off') {
+	# remove all groups not in defaults
+	foreach my $group (keys $$status{'groups'}) {
+		if(not $$defaults{'groups'}{$group} or $$defaults{'groups'}{$group} ne 'on') {
+			push @groups_to_remove, $group;
+		}
+	}
+}
+
+# process users
+if(@users_to_add > 0) {
+	dolog("  * users to add: " . join(",", @users_to_add) . "\n");
+	system('/usr/sbin/wlan_on_off --trigger=on --userlist=' . join(",", @users_to_add));
+}
+
+if(@users_to_remove > 0) {
+	dolog("  * users to remove: " . join(",",@users_to_remove) . "\n");
+	system('/usr/sbin/wlan_on_off --trigger=off --userlist=' . join(",", @users_to_remove));
+}
+
+if(@groups_to_add > 0) {
+	dolog("  * groups to add: " . join(",",@groups_to_add) . "\n");
+	system('/usr/sbin/wlan_on_off --trigger=on --grouplist=' . join(",", @groups_to_add));
+}
+
+if(@groups_to_remove > 0) {
+	dolog("  * groups to remove: " . join(",",@groups_to_remove) . "\n");
+	system('/usr/sbin/wlan_on_off --trigger=off --grouplist=' . join(",", @groups_to_remove));
+	foreach my $group (@groups_to_remove) {
+		kill_lesson($group) if $kill;
+	}
+}
+
+exit_script(0);
+
+# ===========================================================================
+# Subroutinen
+# ===========================================================================
+sub wlan_defaults {
+        my $filename = $Schulkonsole::Config::_wlan_defaults_file;
+
+        my %groups;
+        my %users;
+
+        if (not open WLAN, "<$filename") {
+                warn "$0: Cannot open $filename";
+                return {};
+        }
+        
+        while (<WLAN>) {
+                chomp;
+                next if /^\s*#/;
+                s/\s*#.*$//;
+
+                my ($kind,$key, $status)
+                        = /^\s*([u|g]):([a-z\d_]+)\s+(on|off|-)/;
+                if ($kind eq 'u' and $key) {
+                	$users{$key} = $status;
+                } elsif ($kind eq 'g' and $key) {
+                        $groups{$key} = $status;
+                }
+        }
+
+        close WLAN;
+
+        # set fallback values if default is undefined
+        $users{'default'} = 'off' if not defined $users{'default'};
+        $groups{'default'} = 'off' if not defined $groups{'default'};
+
+        return { 'groups' => \%groups, 'users' => \%users, };
+}
+
+sub wlan_status {
+	my @wlanusers = &fetchmembers_by_option_from_project($Schulkonsole::Config::_wlan_ldap_group);
+	my @wlangroups = &fetchgroups_from_project($Schulkonsole::Config::_wlan_ldap_group);
+	my @wlanprojects = &fetchprojects_from_project($Schulkonsole::Config::_wlan_ldap_group);
+	my @wlan = (@wlangroups,@wlanprojects);
+	return { 'groups' => {map { $_ => 1 } @wlan}, 'users' => {map { $_ => 1 } @wlanusers}, };
+}
+
+sub exit_script {
+ my $code = shift;
+ dolog("\n");
+ dolog("Terminating linuxmuster-wlan-reset session at ". localtime() ."\n");
+ dolog("#####################################################################\n");
+ system("rm -f $locker");
+ close(LOGFILE);
+ 
+ exit $code;
+}
+
+sub dolog {
+	my $msg = shift;
+	print $msg;
+	print LOGFILE $msg;
+}
+
+sub kill_lesson {
+	my $lesson = shift;
+	
+	# set session file prefix
+	my $groupfile_prefix="/var/lib/schulkonsole/group_lesson_";
+
+	my $groupfile="$groupfile_prefix". md5sum($lesson);
+  	if(-e "$groupfile"){
+   		dolog(" * WARNING: I'm killing an active lession in group $lesson!");
+   		system("rm -f $groupfile");
+  	}
+ }
+ 

@@ -1,0 +1,119 @@
+#! /usr/bin/perl
+#
+# $Id$
+#
+
+=head1 NAME
+
+room - overview of a room's workstations and devices
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/room
+
+=head1 DESCRIPTION
+
+C<room> lets you select a room, start a lesson in this room, and then
+edit network access and availability of shares of the users and access to
+devices (printers).
+The HTML template is room.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session and
+Schulkonsole::Room::set_vars() C<room> provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Time::Local;
+use POSIX;
+use Schulkonsole::Config;
+use Schulkonsole::Session;
+use Schulkonsole::Room;
+use Schulkonsole::Firewall;
+use Schulkonsole::Printer;
+use Schulkonsole::Sophomorix;
+
+my $this_file = 'room';
+my $lml_majorversion = "$Schulkonsole::Config::_lml_majorversion";
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+if($sk_session->param('requested_page')) {
+	$q->param('requested_page',$sk_session->param('requested_page'));
+	$sk_session->clear('requested_page');
+}
+
+my $classrooms = Schulkonsole::Config::classrooms();
+my $room_session = new Schulkonsole::Room($sk_session);
+
+if ($room_session) {
+	my $url = $q->url( -absolute => 1 );
+	if($q->param('requested_page')) {
+		my $target = $q->param('requested_page');
+		$url =~ s/$this_file$/$target/g;
+	} else {
+		$url =~ s/$this_file$/room_lesson/g;
+	}
+	$sk_session->redirect($url);
+}
+
+
+=item C<rooms>
+
+An array with the available rooms
+
+=cut
+
+$sk_session->set_var('rooms', $classrooms);
+
+
+if ($q->param('requested_page')) {
+
+=item C<requested_page>
+
+The name of the requested page (if a page is requested after selection)
+
+=cut
+
+	$sk_session->set_var('requested_page',$q->param('requested_page'));	
+}
+
+
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<rooms>
+
+Select this room.
+Possible values read in loop over template variable C<rooms>.
+
+=back
+
+=back
+

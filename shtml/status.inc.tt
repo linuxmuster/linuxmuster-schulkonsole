@@ -1,0 +1,27 @@
+
+<div id="status"[% IF is_error == 0 %] class="ok"[% END %]>
+<div></div>
+[% IF status %]
+<p>[% status %]</p>
+[% END %]
+[% IF REMOTE_ADDR %]
+<p class="info">
+[% loc('Sitzungsdauer:') %] [% session_time %]<br>
+[% loc('verbleibend:') %] <span id="timer">[% max_idle_hh_mm_ss %]</span></p>
+<p class="info">[% loc('Benutzer:') %]
+<strong>[% firstname %] [% surname %]</strong><br>
+[% loc('Raum:') %]
+[% IF remote_room %]
+<strong>[% remote_room %]</strong><br>
+[% ELSE %]
+<strong>[% loc('unbekannt') %]</strong><br>
+[% END %]
+[% loc('Workstation:') %]
+<strong>[% remote_workstation %]</strong><br>
+[% loc('IP:') %] <strong>[% REMOTE_ADDR %]</strong><br>
+[% IF class %]
+<p class="info">[% loc('aktive Klasse:') %]
+<strong>[% class %]</strong></p>
+[% END %]
+[% END %]
+</div>

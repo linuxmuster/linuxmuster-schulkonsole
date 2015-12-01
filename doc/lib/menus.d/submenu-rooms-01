@@ -1,6 +1,6 @@
-<!--#if expr="$link_rooms" -->
-	<a class="separator" href="rooms"><gettext>Standardeinstellungen</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_rooms_classrooms" -->
-	<a class="end" href="rooms_classrooms"><gettext>EDV-R&auml;ume</gettext></a>
-<!--#endif -->
+[% IF link_rooms %]
+	<li><a class="separator" [% dohref("rooms") %]>[% loc('Standardeinstellungen') %]</a></li>
+[% END %]
+[% IF link_rooms_classrooms %]
+	<li><a class="end" [% dohref("rooms_classrooms") %]>[% loc('EDV-Räume') %]</a></li>
+[% END %]

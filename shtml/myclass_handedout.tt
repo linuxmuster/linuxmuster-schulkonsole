@@ -1,0 +1,40 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Meine Klasse') _ loc('Bereitgestellt'),
+      menu     => 1,
+      info     => loc('<p>Lade bereitgestellte Vorlagen herunter.</p>'),
+   }
+%]
+
+<h2>[% loc('Meine Klasse') %] :: [% loc('Bereitgestellt') %]</h2>
+
+<h3>[% loc('Meine Klasse:') %] [% myclass.displayname %]</h3>
+
+
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+
+
+<h3>[% loc('Vorlagen') %]</h3>
+
+[% IF student_files %]
+    <table id="classhandedoutfiles" class="liste">
+    [% lfdnr = 1 %]
+    <tr>
+        <th>[% loc('Nr.') %]</th>
+        <th>[% loc('Lehrer') %]</th>
+        <th>[% loc('Dateiname') %]<th>
+        <th></th>
+    </tr>
+    [% FOREACH sf IN student_files %]
+    	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+        <td class="lfdnr">[% lfdnr %]</td>
+        <td>[% sf.category %]</td>
+        <td>[% IF sf.isdir %]*[% END %][% sf.name %]</td>
+        <td><input title="[% loc('Herunterladen') %]" type="submit" class="btn-download" alt="[% loc('Herunterladen') %]" 
+            name="[% sf.category %];[% sf.name %];download" value="[% loc('H') %]"></td>
+        [% lfdnr=lfdnr+1 %]
+        </tr>
+    [% END %]
+    </table>
+[% END %]
+
+</form>

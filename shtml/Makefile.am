@@ -1,33 +1,35 @@
 shtmldir = $(datarootdir)/schulkonsole/shtml
-dist_shtml_DATA = example.shtml login.shtml logout.shtml start.shtml \
-	status.shtml.inc \
-	room.shtml room_handout.shtml room_collect.shtml room_shares.shtml \
-	room_test.shtml room_test_end.shtml \
-	room_test_handout.shtml room_test_password.shtml room_test_collect.shtml \
-	room_end_lesson_verify.shtml \
-	class.shtml class_list.shtml class_passwords.shtml showpassword.shtml \
-	class_handoutcopy.shtml class_handout.shtml class_collect.shtml \
-	class_shares.shtml class_lesson.shtml \
-	project.shtml project_members.shtml project_addmembers.shtml \
-	project_handoutcopy.shtml project_handout.shtml project_collect.shtml \
-	project_shares.shtml project_drop_verify.shtml project_lesson.shtml \
-	project_passwords.shtml \
-	settings.shtml settings_program.shtml settings_users.shtml \
-	settings_classs.shtml settings_projects.shtml \
-	user.shtml user_students.shtml user_teachers.shtml user_extra.shtml \
-	user_teacherpasswords.shtml \
-	user_check.shtml user_teachin.shtml user_commit.shtml user_reports.shtml\
-	rooms.shtml rooms_classrooms.shtml \
-	printers.shtml printers_edit.shtml hosts.shtml \
-	quotas.shtml \
-	quotas_teachers.shtml quotas_classes.shtml quotas_projects.shtml \
-	quotas_others.shtml \
-	linbo.shtml \
-	linbo_edit.shtml linbo_images.shtml linbo_new.shtml linbo_pxeedit.shtml \
-	linbo_regpatchedit.shtml linbo_menuedit.shtml \
+dist_shtml_DATA = example.tt login.tt logout.tt start.tt \
+	css.inc.tt dialog.inc.tt status.inc.tt \
+	header.inc.tt footer.inc.tt footer_info.inc.tt \
+	footer_submenu.inc.tt page.tt \
+	room.tt room_lesson.tt room_handout.tt room_collect.tt room_shares.tt \
+	room_test.tt room_test_end.tt \
+	room_test_handout.tt room_test_password.tt room_test_collect.tt \
+	room_end_lesson_verify.tt \
+	class.tt class_list.tt class_passwords.tt showpassword.tt \
+	class_handoutcopy.tt class_handout.tt class_collect.tt \
+	class_shares.tt class_lesson.tt \
+	project.tt project_members.tt project_addmembers.tt \
+	project_handoutcopy.tt project_handout.tt project_collect.tt \
+	project_shares.tt project_drop_verify.tt project_lesson.tt \
+	project_passwords.tt \
+	settings.tt settings_program.tt settings_users.tt \
+	settings_classs.tt settings_projects.tt \
+	user.tt user_students.tt user_teachers.tt user_extra.tt \
+	user_teacherpasswords.tt user_print.tt \
+	user_check.tt user_teachin.tt user_commit.tt user_reports.tt\
+	rooms.tt rooms_classrooms.tt \
+	printers.tt printers_edit.tt hosts.tt \
+	quotas.tt \
+	quotas_teachers.tt quotas_classes.tt quotas_projects.tt \
+	quotas_others.tt \
+	linbo.tt \
+	linbo_edit.tt linbo_edit_global.inc.tt linbo_edit_oss.inc.tt linbo_edit_data.inc.tt \
+	linbo_images.tt linbo_new.tt \
+	linbo_regpatchedit.tt linbo_grubedit.tt linbo_postsyncedit.tt \
+	linbo_remote.tt \
+	myclass.tt myclass_handedout.tt myclass_handedoutcopy.tt myclass_tocollect.tt \
+	myprojects.tt myprojects_handedout.tt myprojects_handedoutcopy.tt myprojects_tocollect.tt \
+	myroom.tt \
 	schulkonsole.js
-
-CLEANFILES = messages.pl
-
-messages.pl: $(dist_shtml_DATA)
-	../bin/template-gettext.perl $(dist_shtml_DATA) > $@

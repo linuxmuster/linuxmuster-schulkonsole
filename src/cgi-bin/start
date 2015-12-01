@@ -1,0 +1,821 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+start - startpage of schulkonsole
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/start
+
+=head1 DESCRIPTION
+
+C<start> produces the startpage of schulkonsole. The HTML template
+is start.tt.
+Functionality of the startpage includes password change and deletion
+of printjobs.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<start> provides
+the following variables:
+
+=over
+
+=item C<has_smtprelay>
+
+A boolean variable (0|1): set, if a smtp relay has been defined during
+linuxmuster-setup.
+
+=item C<printjobs>
+
+A reference to an array of hashes representing the user's printjobs.
+The values of the hashes are:
+
+=over
+
+=item C<id>
+
+the id of the printjob
+
+=item C<title>
+
+the title of the printed document
+
+=over
+
+=item C<mailforwards>
+
+A string with a comma separated list of mail addresses to forward mail for
+this user to.
+
+=item C<mailkeep>
+
+A boolean value to keep a copy of the forwarded mail in the users mailbox.
+
+=back
+
+=item C<diskquotas>
+
+A reference to an array of hashes representing the user's diskquotas.
+The values of the hashes are:
+
+=over
+
+=item C<path>
+
+The path on the filesystem to which the quota is applied
+
+=item C<blocks_usage>
+
+The number of used blocks
+
+=item C<blocks_soft>
+
+The soft limit for blocks
+
+=item C<blocks_hard>
+
+The hard limit for blocks
+
+=item C<blocks_percent>
+
+Usage in percent from soft limit for blocks
+
+=item C<blocks_percent_rounded>
+
+Usage in percent from soft limit for blocks rounded to an integer
+
+=item C<blocks_grace>
+
+A string with the remaining time until which the blocks usage must be back
+under soft limit.
+
+=item C<files_usage>
+
+The number of used files
+
+=item C<files_soft>
+
+The soft limit for files
+
+=item C<files_hard>
+
+The hard limit for files
+
+=item C<files_percent>
+
+Usage in percent from soft limit for files
+
+=item C<files_percent_rounded>
+
+Usage in percent from soft limit for files rounded to an integer
+
+=item C<files_grace>
+
+A string with the remaining time until which the files usage must be back
+under soft limit.
+
+=item C<warn>
+
+True if the user is over quota
+
+=back
+
+=item C<mailquotas>
+
+A reference to an array of hashes representing the user's diskquotas.
+The values of the hashes are:
+
+=over
+
+=item C<mbox>
+
+The names of the Mailfolders to which the quota is applied
+
+=item C<type>
+
+The type of the quota
+
+=item C<usage>
+
+Usage of the mailbox - meaning depends on quota type
+
+=item C<limit>
+
+The quota limit
+
+=item C<percent>
+
+Usage in percent from limit
+
+=item C<percent_rounded>
+
+Usage in percent from limit rounded to an integer
+
+=item C<warn>
+
+True if the user is over quota
+
+=back
+
+=item C<projects>
+
+A comma separated list of the user's projects
+
+=item C<classes_str>
+
+A comma separated list of the user's classes
+
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Sys::Hostname;
+use Net::CUPS;
+use Net::CUPS::Destination;
+use Schulkonsole::Session;
+use Schulkonsole::Config;
+use Schulkonsole::Debconf;
+use Schulkonsole::DB;
+use Schulkonsole::Horde;
+use Schulkonsole::Info;
+use Schulkonsole::OVPN;
+use Schulkonsole::Printer;
+use Schulkonsole::Sophomorix;
+use Sophomorix::SophomorixConfig;
+use Template;
+use Template::Constants qw ( :debug );
+use Data::Password qw( :all );
+
+my $this_file = 'start';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+my $q = $sk_session->query();
+
+
+my $password = $sk_session->get_password();
+if (not $password) {
+	$sk_session->exit_with_login_page($this_file);
+}
+my $id = $sk_session->userdata('id');
+my $uid = $sk_session->userdata('uid');
+
+my $has_ovpn = 0;
+eval {
+$has_ovpn = Schulkonsole::OVPN::check($id, $password);
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+
+
+sub password_cb {
+	return $password;
+}
+
+my $cups = new Net::CUPS;
+$cups->setUsername($uid);
+$cups->setPasswordCB(\&password_cb);
+
+
+
+COMMANDS: {
+
+# password change
+(   defined $q->param('oldpassword')
+ or defined $q->param('newpassword')
+ or defined $q->param('newpasswordagain')) and do {
+
+	my $oldpassword = $q->param('oldpassword');
+	my $newpassword = $q->param('newpassword');
+	my $newpasswordagain = $q->param('newpasswordagain');
+
+
+	utf8::decode($oldpassword);
+	utf8::decode($newpassword);
+	utf8::decode($newpasswordagain);
+
+
+	my $error_cnt = 0;
+	if (not $oldpassword) {
+		$error_cnt++;
+		$sk_session->mark_input_error('oldpassword');
+		$sk_session->set_status(
+			$sk_session->d()->get('Altes Passwort eingeben'), 1);
+	} elsif ($oldpassword ne $password) {
+		$error_cnt++;
+		$sk_session->mark_input_error('oldpassword');
+		$sk_session->set_status(
+			$sk_session->d()->get('Altes Passwort stimmt nicht'), 1);
+	}
+
+	if (not $newpassword) {
+		$error_cnt++;
+		$sk_session->mark_input_error('newpassword');
+		$sk_session->set_status(
+			$sk_session->d()->get('Neues Passwort eingeben'), 1);
+	}
+
+	if (not $newpasswordagain) {
+		$error_cnt++;
+		$sk_session->mark_input_error('newpasswordagain');
+		$sk_session->set_status($sk_session->d()->get(
+			'Neues Passwort zur Kontrolle zweimal eingeben'), 1);
+	}
+
+	if ($error_cnt) {
+		if ($error_cnt > 1) {
+			$sk_session->set_status($sk_session->d()->get(
+				'Daten zur Passwortänderung unvollständig'), 1);
+		}
+	} elsif ($newpassword ne $newpasswordagain) {
+		$sk_session->mark_input_error('newpassword');
+		$sk_session->mark_input_error('newpasswordagain');
+		$sk_session->set_status($sk_session->d()->get(
+			'Neues Passwort nicht richtig wiederholt'), 1);
+	} else {
+		$MINLEN = $Schulkonsole::Config::_min_password_len;
+		$MAXLEN = $Schulkonsole::Config::_max_password_len;
+		my $badpassword_error = Data::Password::IsBadPassword($newpassword);
+		if ($badpassword_error) {
+			$sk_session->mark_input_error('newpassword');
+			$sk_session->mark_input_error('newpasswordagain');
+			$sk_session->set_status($sk_session->d()->get(
+				'Neues Passwort ist zu schwach: ')
+				. "\n$badpassword_error", 1);			
+		} else {
+			eval {
+				Schulkonsole::Sophomorix::change_password($id,
+					$oldpassword, $newpassword);
+	
+				$sk_session->save_password($newpasswordagain);
+	
+				$sk_session->set_status(
+					$sk_session->d()->get('Passwortänderung erfolgreich'), 0);
+			};
+			if ($@) {
+				$sk_session->standard_error_handling($this_file, $@);
+			}
+		}
+	}
+
+	last COMMANDS;
+};
+
+# change mailforwards
+defined $q->param('mailchange') and do {
+        my $mailaddresses = $q->param('mailforwards');
+        my @mailforwards = ();
+        foreach my $mailaddress (split(',',$mailaddresses)) {
+            $mailaddress =~ s/^\s+|\s+$//g;
+            if($mailaddress !~ /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b/) {
+                $sk_session->mark_input_error('mailforwards');
+                $sk_session->set_status($sk_session->d()->get(
+				'Eine oder mehrere Mail-Adressen sind ungültig.'), 1);
+                last COMMANDS;
+            }
+            push @mailforwards, $mailaddress;
+        }
+        eval {
+            if(@mailforwards) {
+                Schulkonsole::Horde::set_mailforwards($uid,$password,join(',', @mailforwards),
+                        ($q->param('mailkeep') ? 1 : 0));
+            } else {
+                Schulkonsole::Horde::remove_mailforwards($uid,$password);
+            }
+            $sk_session->set_status(
+                    $sk_session->d()->get('Mailweiterleitung erfolgreich geändert'), 0);
+        };
+        if ($@) {
+                $sk_session->standard_error_handling($this_file, $@);
+        }
+        
+        last COMMANDS;
+};
+
+# cancel print jobs
+defined $q->param('printjobs') and do {
+	my $status;
+	my $is_error = 0;
+
+
+	foreach my $job ($q->param('printjobs')) {
+		my ($job_dest, $job_id) = $job =~ /^(.+)-(\d+)$/;
+
+		if ($status) {
+			$status .= ', ';
+		}
+		$status .= "$job: ";
+
+		my $destination = $cups->getDestination($job_dest);
+		if (not $destination->cancelJob($job_id)) {
+            # Net::CUPS >= 0.55 only supports getLastErrorString() via
+			# CUPS::Destination::getError()
+#			my $error = Net::CUPS::Printer::cupsLastError();
+#			SWITCH: {
+#			$error == Net::CUPS::IPP_NOT_POSSIBLE and do {
+#				$status .= $sk_session->d()->get('nicht möglich');
+#				last SWITCH;
+#			};
+#			$status .= Net::CUPS::Printer::cupsErrorString($error);
+#			}
+			$status .= $destination->getError();
+
+			$is_error = 1;
+		} else {
+			$status .= $sk_session->d()->get('abgebrochen');
+		}
+	}
+
+	$sk_session->set_status($status, $is_error);
+
+	last COMMANDS;
+};
+
+# create OpenVPN certificate
+(   defined $q->param('ovpnpassword')
+ or defined $q->param('ovpnpasswordagain')) and do {
+	if ($has_ovpn) {
+		$sk_session->set_status($sk_session->d()->get(
+				'Es wurde bereits ein OpenVPN-Zertifikat erstellt'), 1);
+
+		last COMMANDS;
+	}
+
+
+	my $ovpn_password = $q->param('ovpnpassword');
+	if (not $ovpn_password) {
+		$sk_session->set_status(
+			$sk_session->d()->get('OpenVPN-Passwort eingegeben'), 1);
+		$sk_session->mark_input_error('ovpnpassword');
+
+		last COMMANDS;
+	}
+
+
+	utf8::decode($ovpn_password);
+
+	if (length $ovpn_password < 6) {
+		$sk_session->set_status($sk_session->d()->get(
+				'OpenVPN-Passwort muss mindestens sechs Zeichen haben'), 1);
+		$sk_session->mark_input_error('ovpnpassword');
+
+		last COMMANDS;
+	}
+
+	my $ovpn_password_again = $q->param('ovpnpasswordagain');
+	if (not $ovpn_password_again) {
+		$sk_session->set_status(
+			$sk_session->d()->get('OpenVPN-Passwort bestätigen'), 1);
+		$sk_session->mark_input_error('ovpnpasswordagain');
+
+		last COMMANDS;
+	}
+
+
+	utf8::decode($ovpn_password_again);
+
+	if ($ovpn_password ne $ovpn_password_again) {
+		$sk_session->set_status($sk_session->d()->get(
+				'OpenVPN-Passwort nicht richtig wiederholt'), 1);
+		$sk_session->mark_input_error('ovpnpassword');
+		$sk_session->mark_input_error('ovpnpasswordagain');
+
+		last COMMANDS;
+	}
+
+	eval {
+	if (Schulkonsole::OVPN::create($id, $password, $ovpn_password)) {
+		$sk_session->set_status(
+			  $sk_session->d()->get('Zertifikat wurde erstellt.')
+			. ' '
+			. $sk_session->d()->get(
+			  	'Es wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> abgelegt'), 0);
+
+		$has_ovpn = 1;
+	} else {
+		$sk_session->set_status(
+			  $sk_session->d()->get(
+			  	'Fehler bei der Zertifikatserstellung.')
+			. ' '
+			. $sk_session->d()->get(
+			  	'Verständigen Sie den Netzwerkadministrator'), 1);
+	}
+	};
+	if ($@) {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+
+
+	last COMMANDS;
+};
+
+$q->param('ovpndownload') and do {
+	eval {
+	if (Schulkonsole::OVPN::download($id, $password)) {
+		$sk_session->set_status($sk_session->d()->get(
+			'Ihr Zertifikat wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> abgelegt'), 0);
+	} else {
+		$sk_session->set_status(
+			  $sk_session->d()->get(
+			  	'Zertifikat konnte nicht heruntergeladen werden.')
+			. ' '
+			. $sk_session->d()->get(
+			  	'Verständigen Sie den Netzwerkadministrator'), 1);
+	}
+	};
+	if ($@) {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+
+	last COMMANDS;
+};
+
+} # end COMMANDS
+
+
+
+my @array_printjobs;
+foreach my $destination ($cups->getDestinations) {
+	my @jobs = $destination->getJobs(1, 0);
+	foreach my $job_id (@jobs) {
+		my $job = $destination->getJob($job_id);
+		next unless $job;
+
+		my $printjob = {
+			id => "$$job{dest}-$$job{id}",
+			title => $$job{title},
+		};
+		push @array_printjobs, $printjob;
+	}
+}
+$sk_session->set_var('printjobs', \@array_printjobs) if @array_printjobs;
+
+eval {
+my ($mailforwards,$mailkeep) = Schulkonsole::Horde::get_mailforwards($uid,$password);
+$sk_session->set_var('mailforwards', $mailforwards) if $mailforwards;
+$sk_session->set_var('mailkeep', $mailkeep) if $mailkeep;
+};
+if ($@) {
+	warn "$@\n";
+}
+
+my $disk_quotas =
+	Schulkonsole::Info::disk_quotas($sk_session->userdata('uidnumber'));
+
+my @array_diskquotas;
+foreach my $disk_quota (@$disk_quotas) {
+	my ($filesystem, $path,
+	    $blocks_usage, $blocks_soft, $blocks_hard,
+	    $blocks_grace,
+	    $files_usage, $files_soft, $files_hard,
+	    $files_grace) = @$disk_quota;
+	next unless defined $files_hard;
+
+	my $blocks_percent = $blocks_soft ?
+		  sprintf('%.1f', 100 * $blocks_usage / $blocks_soft)
+		: 0;
+	my $files_percent = $files_soft ?
+		  sprintf('%.1f', 100 * $files_usage / $files_soft)
+		: 0;
+
+	my $blocks_grace_str;
+	if ($blocks_grace) {
+		$blocks_grace -= $^T;
+		if ($blocks_grace > 86400) {
+			$blocks_grace_str = sprintf($sk_session->d()->get('%d Tage'),
+				$blocks_grace / 86400 + 0.5);
+		} elsif ($blocks_grace > 7200) {
+			$blocks_grace_str = sprintf($sk_session->d()->get('%d Stunden'),
+				$blocks_grace / 3600 + 0.5);
+		} elsif ($blocks_grace > 0) {
+			$blocks_grace_str = sprintf($sk_session->d()->get('%d Minuten'),
+				$blocks_grace / 60 + 0.5);
+		} else {
+			$blocks_grace_str = $sk_session->d()->get('abgelaufen');
+		}
+	} else {
+		$blocks_grace_str = '-';
+	}
+
+	my $files_grace_str;
+	if ($files_grace) {
+		$files_grace -= $^T;
+		if ($files_grace > 86400) {
+			$files_grace_str = sprintf($sk_session->d()->get('%d Tage'),
+				$files_grace / 86400 + 0.5);
+		} elsif ($files_grace > 7200) {
+			$files_grace_str = sprintf($sk_session->d()->get('%d Stunden'),
+				$files_grace / 3600 + 0.5);
+		} elsif ($files_grace > 0) {
+			$files_grace_str = sprintf($sk_session->d()->get('%d Minuten'),
+				$files_grace / 60 + 0.5);
+		} else {
+			$files_grace_str = $sk_session->d()->get('abgelaufen');
+		}
+	} else {
+		$files_grace_str = '-';
+	}
+
+	my $diskquota = {
+		'warn' => $blocks_grace || $files_grace,
+		path => $path,
+		blocks_usage => $blocks_usage,
+		blocks_soft => $blocks_soft,
+		blocks_hard => $blocks_hard,
+		blocks_percent => $blocks_percent,
+		blocks_percent_rounded => ($blocks_percent < 100.0 ?
+		                             int($blocks_percent + 0.5)
+		                           : 100),
+		blocks_grace => $blocks_grace_str,
+		files_usage => $files_usage,
+		files_soft => $files_soft,
+		files_hard => $files_hard,
+		files_percent => $files_percent,
+		files_percent_rounded => ($files_percent < 100.0 ?
+		                            int($files_percent + 0.5)
+		                          : 100),
+		files_grace => $files_grace_str,
+	};
+
+	push @array_diskquotas, $diskquota;
+}
+
+$sk_session->set_var('diskquotas', \@array_diskquotas);
+
+
+if (my $var_mailquotas = $sk_session->temp_param('var_mailquotas')) {
+	$sk_session->set_var('mailquotas', $var_mailquotas);
+} elsif (not $sk_session->param('nomailquota')) {
+	eval {
+	my $quotaroots = Schulkonsole::Info::mail_quotas($uid, $password);
+
+	my @array_mailquotas;
+	foreach my $quotaroot (sort keys %{ $quotaroots }) {
+		foreach my $type (keys %{ $$quotaroots{$quotaroot}{quota} }) {
+			my $type_str;
+			SWITCH: {
+			$type eq 'STORAGE' and do {
+				$type_str = $sk_session->d()->get('Speicherplatz');
+				last SWITCH;
+			};
+			$type_str = $type;
+			}
+
+			my $usage = $$quotaroots{$quotaroot}{quota}{$type}{usage};
+			my $limit = $$quotaroots{$quotaroot}{quota}{$type}{limit};
+			my $usage_percent = $usage ?
+				  sprintf('%.1f', 100 * $usage / $limit)
+				: 0;
+			my $mboxs;
+			foreach my $mbox (@{ $$quotaroots{$quotaroot}{mbox} }) {
+				if ($mbox eq 'INBOX') {
+					$mboxs = '';
+					last;
+				} else {
+					$mboxs .= "$mbox<br>";
+				}
+			}
+
+			my $mailquota = {
+				mbox => $mboxs,
+				type => $type_str,
+				usage => $usage,
+				limit => $limit,
+				percent => $usage_percent,
+				percent_rounded => ($usage_percent < 100.0 ?
+				                      int($usage_percent + 0.5)
+				                    : 100),
+				'warn' => $usage > $limit,
+			};
+
+			push @array_mailquotas, $mailquota;
+		}
+	}
+
+	$sk_session->temp_param('var_mailquotas', \@array_mailquotas);
+	$sk_session->set_var('mailquotas', \@array_mailquotas);
+	};
+	if ($@) {
+		$sk_session->param('nomailquota', $@);
+	}
+}
+
+
+
+eval {
+my ($usage, $limit) = Schulkonsole::Printer::own_quota($id, $password);
+
+my $usage_percent = $usage ?
+	  sprintf('%.1f', 100 * $usage / $limit)
+	: 0;
+
+my $printquota = {
+	usage => $usage,
+	limit => $limit,
+	percent => $usage_percent,
+	percent_rounded => ($usage_percent < 100.0 ?
+	                      int($usage_percent + 0.5)
+	                    : 100),
+        'warn' => $usage > $limit,
+};
+
+
+$sk_session->set_var('printquota', $printquota);
+};
+if ($@) {
+	warn "$@\n";
+}
+
+
+
+my @projects;
+my $projects = Schulkonsole::Info::groups_projects($sk_session->groups());
+foreach my $project (values %$projects) {
+	push @projects, $$project{displayname};
+}
+
+my $var_projects = join ', ', @projects;
+$sk_session->set_var('projects', $var_projects);
+
+my @classs;
+my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
+foreach my $class (values %$classs) {
+	push @classs, $$class{displayname};
+}
+
+my $var_classes_str = join ', ', @classs;
+$sk_session->set_var('classes_str', $var_classes_str);
+
+=item C<has_smtprelay>
+
+Boolean value (0|1).
+
+=cut
+
+my $smtprelay = Schulkonsole::Debconf::read_smtprelay($id, $password);
+$sk_session->set_var('has_smtprelay', $smtprelay eq ""? 0 : 1);
+
+my @mailaliass = Schulkonsole::Info::mailaliases($uid);
+my $var_mailaliases = join ', ', @mailaliass;
+my $usermail = Schulkonsole::DB::get_usermail($uid);
+
+=item C<mailaliases>
+
+A comma separated list of the user's mailaliases
+
+=cut
+
+$sk_session->set_var('mailaliases', $var_mailaliases);
+
+my ($maildomain) = `cat /etc/mailname`;
+my @array_mailaddresss;
+if ($usermail) {
+        push @array_mailaddresss, $usermail;
+} elsif ($Conf::alt_mail_domainname) {
+        push @array_mailaddresss, "$uid\@".$Conf::alt_mail_domainname;
+} else {
+        push @array_mailaddresss, "$uid\@$maildomain";
+}
+
+foreach my $mailalias (sort @mailaliass) {
+	push @array_mailaddresss, "$mailalias\@$maildomain";
+}
+my $var_mailaddresses = join ', ', @array_mailaddresss;
+
+=item C<mailaddresses_str>
+
+A comma separated list of the user's mailaddresses
+
+=cut
+
+$sk_session->set_var('mailaddresses_str', $var_mailaddresses);
+
+
+
+
+my $server_name = $sk_session->{template_vars}{SERVER_NAME};
+my $var_phpmyadmin_link = "https://$server_name/phpmyadmin/";
+
+=item C<phpmyadmin_link>
+
+URI to phpMyAdmin
+
+=cut
+
+$sk_session->set_var('phpmyadmin_link', $var_phpmyadmin_link);
+
+
+
+=item C<has_ovpn>
+
+True if the user has an OpenVPN certificate
+
+=cut
+
+$sk_session->set_var('has_ovpn', $has_ovpn);
+
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+
+=back
+
+
+=head2 Form fields
+
+=head3 Password change
+
+The following form fields are used to change a user's password:
+
+=over
+
+=item oldpassword
+
+The current password
+
+=item newpassword
+
+The new password
+
+=item newpasswordagain
+
+Used to rule typos out
+
+=back
+
+=head3 Mailforwards change
+
+The following form fields are used to change mailforward addresses:
+
+=over
+
+=item mailforwards
+
+A comma separated string list of valid mail addresses to forward to.
+
+=item mailkeep
+
+A boolean value to keep a copy of forwarded mail.
+
+=back
+
+=head3 Deleting print jobs
+
+The following form fields are used to delete print jobs:
+
+=over
+
+=item printjobs
+
+The id of a user's print job to delete. May be used more than once, i.e.Z<>
+you can use C<< <select name="printjobs" multiple> >>.
+
+=back

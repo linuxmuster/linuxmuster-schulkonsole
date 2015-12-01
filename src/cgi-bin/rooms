@@ -1,0 +1,705 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+rooms - edit default configuration for hosts in rooms
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/rooms
+
+=head1 DESCRIPTION
+
+C<rooms> lets you edit the default configuration for
+workstations in rooms.
+The HTML template is rooms.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<rooms>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use open ':utf8';
+use Schulkonsole::Encode;
+use Schulkonsole::Files;
+use Schulkonsole::Firewall;
+use Schulkonsole::Session;
+
+
+my $this_file = 'rooms';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+
+my $host_rooms = Schulkonsole::Config::hosts();
+my %room_hosts;
+foreach my $host (keys %$host_rooms) {
+	push @{ $room_hosts{$$host_rooms{$host}} }, $host;
+}
+
+
+my $defaults = read_room_defaults(\%room_hosts, $host_rooms);
+
+
+COMMANDS: {
+eval {
+$q->param('accept') and do {
+	my $default_internet = $q->param('default_internet');
+	my $default_intranet = $q->param('default_intranet');
+	my $default_webfilter = $q->param('default_webfilter');
+
+
+	if (defined $default_internet) {
+		$$defaults{default}{internet} = $default_internet;
+	} else {
+		$default_internet = $$defaults{default}{internet};
+	}
+
+	if (defined $default_intranet) {
+		$$defaults{default}{intranet} = $default_intranet;
+	} else {
+		$default_intranet = $$defaults{default}{intranet};
+	}
+
+	if (defined $default_webfilter) {
+		$$defaults{default}{webfilter} = $default_webfilter;
+	} else {
+		$default_webfilter = $$defaults{default}{webfilter};
+	}
+
+
+	foreach my $room (keys %room_hosts) {
+
+		if (    defined $q->param("${room}_room_internet")
+		    and not defined $q->param("${room}_room_delete")) {
+			my $internet = $q->param("${room}_room_internet");
+			my $intranet = $q->param("${room}_room_intranet");
+			my $webfilter = $q->param("${room}_room_webfilter");
+
+			if (    exists $$defaults{$room}
+			    and $$defaults{$room}{isset}) {
+				$$defaults{$room}{internet} = $internet;
+				$$defaults{$room}{intranet} = $intranet;
+				$$defaults{$room}{webfilter} = $webfilter;
+			} elsif (   $internet != $default_internet
+			         or $intranet != $default_intranet
+			         or $webfilter != $default_webfilter) {
+				$$defaults{$room}{isset} = 1;
+				$$defaults{$room}{internet} = $internet;
+				$$defaults{$room}{intranet} = $intranet;
+				$$defaults{$room}{webfilter} = $webfilter;
+			}
+
+		} elsif (exists $$defaults{$room}) {
+			$$defaults{$room}{isset} = 0;
+		}
+
+
+		my $room_internet;
+		my $room_intranet;
+		my $room_webfilter;
+		if (    exists $$defaults{$room}
+		    and $$defaults{$room}{isset}) {
+			$room_internet = $$defaults{$room}{internet};
+			$room_intranet = $$defaults{$room}{intranet};
+			$room_webfilter = $$defaults{$room}{webfilter};
+		} else {
+			$room_internet = $default_internet;
+			$room_intranet = $default_intranet;
+			$room_webfilter = $default_webfilter;
+		}
+
+
+
+		foreach my $host (@{ $room_hosts{$room} }) {
+			if (    defined $q->param("${host}_internet")
+			    and not defined $q->param("${host}_delete")) {
+				my $internet = $q->param("${host}_internet");
+				my $intranet = $q->param("${host}_intranet");
+				my $webfilter = $q->param("${host}_webfilter");
+
+				if (   exists $$defaults{$room}{hosts}{$host}
+				    or $internet != $room_internet
+				    or $intranet != $room_intranet
+				    or $webfilter != $room_webfilter) {
+					$$defaults{$room}{hosts}{$host}{isset} = 1;
+					$$defaults{$room}{hosts}{$host}{internet} = $internet;
+					$$defaults{$room}{hosts}{$host}{intranet} = $intranet;
+					$$defaults{$room}{hosts}{$host}{webfilter} = $webfilter;
+				}
+	
+			} elsif (    exists $$defaults{$room}
+			         and exists $$defaults{$room}{hosts}{$host}) {
+				$$defaults{$room}{hosts}{$host}{isset} = 0;
+			}
+		}
+	}
+
+
+	my $lines = new_room_default_lines($defaults, \%room_hosts, $host_rooms);
+
+
+	my $id = $sk_session->userdata('id');
+	my $password = $sk_session->get_password();
+	Schulkonsole::Files::write_room_defaults_file(
+		$id, $password,
+		$lines);
+
+	$defaults = read_room_defaults(\%room_hosts, $host_rooms);
+	$q->delete_all();
+
+	$sk_session->set_status($sk_session->d()->get(
+		'Änderungen übernommen'), 0);
+
+
+	last COMMANDS;
+};
+
+$q->param('add_room') and do {
+	my $new_room = $q->param('default_add');
+	if (    exists $room_hosts{$new_room}
+	    and not exists $$defaults{$new_room}) {
+		$$defaults{$new_room}{isset} = 0;
+	}
+
+	last COMMANDS;
+};
+
+$q->param('reset') and do {
+
+	my $is_reset_all = 0;
+	if ($is_reset_all = $q->param('reset_all')) {
+		if (%$defaults == 1) {
+			$sk_session->set_status($sk_session->d()->get(
+				'Es gibt keine Einträge für Räume oder Rechner'),
+				1);
+			last COMMANDS;
+		}
+
+		Schulkonsole::Firewall::rooms_reset_all(
+			$sk_session->userdata('id'),
+			$sk_session->get_password());
+	}
+
+	my @rooms_reset;
+	my @hosts_reset;
+	foreach my $room (keys %room_hosts) {
+		if ($q->param("${room}_room_reset")) {
+			push @rooms_reset, $room;
+		} else {
+			foreach my $host (sort @{ $room_hosts{$room} }) {
+				if ($q->param("${host}_reset")) {
+					push @hosts_reset, $host;
+				}
+			}
+		}
+	}
+
+	if (not (   $is_reset_all
+	         or @rooms_reset
+	         or @hosts_reset)) {
+		$sk_session->set_status($sk_session->d()->get(
+			'Nichts ausgewählt'), 1);
+		last COMMANDS;
+	}
+
+
+	Schulkonsole::Firewall::rooms_reset(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		\@rooms_reset, \@hosts_reset);
+
+
+	$sk_session->set_status($sk_session->d()->get(
+		'Auswahl zurückgesetzt'), 0);
+
+	last COMMANDS;
+};
+
+
+foreach my $room (keys %room_hosts) {
+	if ($q->param("${room}_add_host")) {
+		my $new_host = $q->param("${room}_add");
+		if ($$host_rooms{$new_host}) {
+
+			if ($$defaults{$room}{isset}) {
+				$$defaults{$room}{hosts}{$new_host}{internet}
+					= $$defaults{$room}{internet};
+				$$defaults{$room}{hosts}{$new_host}{intranet}
+					= $$defaults{$room}{intranet};
+				$$defaults{$room}{hosts}{$new_host}{webfilter}
+					= $$defaults{$room}{webfilter};
+			} else {
+				$$defaults{$room}{hosts}{$new_host}{internet}
+					= $$defaults{default}{internet};
+				$$defaults{$room}{hosts}{$new_host}{intranet}
+					= $$defaults{default}{intranet};
+				$$defaults{$room}{hosts}{$new_host}{webfilter}
+					= $$defaults{default}{webfilter};
+			}
+			$$defaults{$room}{hosts}{$new_host}{isset} = 1;
+
+		}
+
+		last COMMANDS;
+	}
+}
+
+
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+} # end COMMANDS
+
+
+
+
+
+if (not defined $q->param("default_internet")) {
+	$q->param("default_internet", $$defaults{default}{internet});
+	$q->param("default_intranet", $$defaults{default}{intranet});
+	$q->param("default_webfilter", $$defaults{default}{webfilter});
+}
+
+
+
+my @default_rooms_array;
+my @non_default_array;
+foreach my $room (sort keys %room_hosts) {
+	if (   defined $q->param("${room}_room_internet")
+	    or exists $$defaults{$room}) {
+
+		my @default_hosts;
+		my @non_default_hosts;
+		foreach my $host (sort @{ $room_hosts{$room} }) {
+			if (   defined $q->param("${host}_internet")
+			    or $$defaults{$room}{hosts}{$host}{isset}) {
+				push @non_default_hosts, $host;
+			} else {
+				push @default_hosts, $host;
+			}
+		}
+
+		push @non_default_array, {
+				name => $room,
+				isroom => 1,
+				isset => $$defaults{$room}{isset},
+				hosts => \@default_hosts,
+			};
+
+		foreach my $host (@non_default_hosts) {
+			push @non_default_array, {
+					name => $host,
+					isset => 1,
+				};
+		}
+
+
+
+
+
+		if (not defined $q->param("${room}_room_internet")) {
+			if (not $$defaults{$room}{isset}) {
+				$q->param("${room}_room_internet",
+				          $$defaults{default}{internet});
+				$q->param("${room}_room_intranet",
+				          $$defaults{default}{intranet});
+				$q->param("${room}_room_webfilter",
+				          $$defaults{default}{webfilter});
+			} else {
+				$q->param("${room}_room_internet", $$defaults{$room}{internet});
+				$q->param("${room}_room_intranet", $$defaults{$room}{intranet});
+				$q->param("${room}_room_webfilter",
+				          $$defaults{$room}{webfilter});
+			}
+		}
+
+		foreach my $host (keys %{ $$defaults{$room}{hosts} }) {
+			if (    $$defaults{$room}{hosts}{$host}{isset}
+			    and not defined $q->param("${host}_internet")) {
+				$q->param("${host}_internet",
+				          $$defaults{$room}{hosts}{$host}{internet});
+				$q->param("${host}_intranet",
+				          $$defaults{$room}{hosts}{$host}{intranet});
+				$q->param("${host}_webfilter",
+				          $$defaults{$room}{hosts}{$host}{webfilter});
+			}
+		}
+	} else {
+		push @default_rooms_array, $room
+	}
+}
+
+=item C<default_rooms>
+
+An array with all rooms with no own default setting
+
+=cut
+
+$sk_session->set_var('defaultrooms', \@default_rooms_array);
+
+
+=item C<nondefaults>
+
+An array of hash references with the entries for rooms and hosts in
+F<room_defaults> with the keys:
+
+=over
+
+=item C<name>
+
+The room or host name.
+
+=item C<isroom>
+
+True if it is a room entry
+
+=item C<isset>
+
+True if there is an entry in F<room_defaults>, false if it is a room entry
+and there are entries for hosts in this room.
+
+=back
+
+=cut
+
+$sk_session->set_var('nondefaults', \@non_default_array);
+
+
+
+
+
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+
+
+sub read_room_defaults {
+	my $rooms = shift;
+	my $host_rooms = shift;
+	my %re;
+
+
+	open DEFAULTS, '<',
+	     Schulkonsole::Encode::to_fs($Schulkonsole::Config::_room_defaults_file)
+		or return {};
+	flock DEFAULTS, 1;
+
+
+	my %on_off = (
+		on => 1,
+		off => 0,
+		'-' => -1,
+	);
+
+	while (<DEFAULTS>) {
+		next if /^#/;
+		s/\s*#.*$//;
+
+		my ($device, $internet, $intranet, $webfilter)
+			= /^\s*([A-z\d\.\-]+)\s+(on|off|-)\s+(on|off|-)\s+(on|off|-)/;
+		if ($device) {
+			if (   $device eq 'default'
+			    or $$rooms{$device}) {
+				$re{$device}{isset} = 1;
+				$re{$device}{internet} = $on_off{$internet};
+				$re{$device}{intranet} = $on_off{$intranet};
+				$re{$device}{webfilter} = $on_off{$webfilter};
+			} elsif (my $room = $$host_rooms{$device}) {
+				$re{$room}{hosts}{$device}{isset} = 1;
+				$re{$room}{hosts}{$device}{internet} = $on_off{$internet};
+				$re{$room}{hosts}{$device}{intranet} = $on_off{$intranet};
+				$re{$room}{hosts}{$device}{webfilter} = $on_off{$webfilter};
+			}
+		}
+	}
+
+	close DEFAULTS;
+
+	# set fallback values if default is undefined
+	$re{default}{internet} = $on_off{on} if not defined $re{default}{internet};
+	$re{default}{intranet} = $on_off{on} if not defined $re{default}{intranet};
+	$re{default}{webfilter} = $on_off{on} if not defined $re{default}{webfilter};
+
+
+	return \%re;
+}
+
+
+
+sub new_room_default_lines {
+	my $defaults = shift;
+	my $rooms = shift;
+	my $host_rooms = shift;
+	my @re;
+
+
+	my %on_off = (
+		1 => 'on',
+		0 => 'off',
+		undef => 'off',
+		-1 => '-',
+	);
+
+
+	if (open DEFAULTS, "<$Schulkonsole::Config::_room_defaults_file") {
+		flock DEFAULTS, 1;
+	
+	
+		my $is_past_default_line = 0;
+		while (my $line = <DEFAULTS>) {
+			if ($is_past_default_line) {
+				my ($device, $spaces_1, $internet, $spaces_2, $intranet, $spaces_3, $webfilter, $remainder)
+			    	= $line =~ /^#([A-z\d\.\-]+)(\s+)(on|off|-)(\s+)(on|off|-)(\s+)(on|off|-)(.*)/;
+				if ($device) {
+				    if ($$rooms{$device}) {
+						if (    exists $$defaults{$device}
+						    and $$defaults{$device}{isset}) {
+							$line = "$device"
+								. "$spaces_1$on_off{$$defaults{$device}{internet}}"
+								. "$spaces_2$on_off{$$defaults{$device}{intranet}}"
+								. "$spaces_3$on_off{$$defaults{$device}{webfilter}}"
+								. "$remainder\n";
+	
+							$$defaults{$device}{isset} = 0;
+						}
+					} elsif (my $room = $$host_rooms{$device}) {
+						if (    exists $$defaults{$room}{hosts}{$device}
+						    and $$defaults{$room}{hosts}{$device}{isset}) {
+							$line = "$device"
+								. "$spaces_1$on_off{$$defaults{$room}{hosts}{$device}{internet}}"
+								. "$spaces_2$on_off{$$defaults{$room}{hosts}{$device}{intranet}}"
+								. "$spaces_3$on_off{$$defaults{$room}{hosts}{$device}{webfilter}}"
+								. "$remainder\n";
+	
+							delete $$defaults{$room}{hosts}{$device};
+						}
+					}
+				} else {
+					my $spaces_0;
+					($spaces_0, $device, $spaces_1, $internet, $spaces_2, $intranet, $spaces_3, $webfilter, $remainder)
+			    		= $line =~ /^(\s*)([A-z\d\.\-]+)(\s+)(on|off|-)(\s+)(on|off|-)(\s+)(on|off|-)(.*)/;
+	
+					if ($device) {
+					    if ($$rooms{$device}) {
+							if (    exists $$defaults{$device}
+							    and $$defaults{$device}{isset}) {
+								$line = "$spaces_0$device"
+									. "$spaces_1$on_off{$$defaults{$device}{internet}}"
+									. "$spaces_2$on_off{$$defaults{$device}{intranet}}"
+									. "$spaces_3$on_off{$$defaults{$device}{webfilter}}"
+									. "$remainder\n";
+		
+								$$defaults{$device}{isset} = 0;
+							} else {
+								$line = "#$line";
+							}
+						} elsif (my $room = $$host_rooms{$device}) {
+							if (    exists $$defaults{$room}{hosts}{$device}
+							    and $$defaults{$room}{hosts}{$device}{isset}) {
+								$line = "$spaces_0$device"
+									. "$spaces_1$on_off{$$defaults{$room}{hosts}{$device}{internet}}"
+									. "$spaces_2$on_off{$$defaults{$room}{hosts}{$device}{intranet}}"
+									. "$spaces_3$on_off{$$defaults{$room}{hosts}{$device}{webfilter}}"
+									. "$remainder\n";
+		
+								delete $$defaults{$room}{hosts}{$device};
+							} else {
+								$line = "#$line";
+							}
+						}
+					}
+				}
+			} else {
+				my ($spaces_0, $device, $spaces_1, $internet, $spaces_2, $intranet, $spaces_3, $webfilter, $remainder)
+					= $line =~ /^(\s*)([A-z\d\.\-]+)(\s+)(on|off|-)(\s+)(on|off|-)(\s+)(on|off|-)(.*)/;
+				if (defined $device) {
+					if ($device eq 'default') {
+						$is_past_default_line = 1;
+	
+						$line = 'default'
+							. "$spaces_1$on_off{$$defaults{default}{internet}}"
+							. "$spaces_2$on_off{$$defaults{default}{intranet}}"
+							. "$spaces_3$on_off{$$defaults{default}{webfilter}}"
+							. "$remainder\n";
+	
+						delete $$defaults{default};
+					} elsif ($$rooms{$device}) {
+							if (    exists $$defaults{$device}
+							    and $$defaults{$device}{isset}) {
+								$line = "$spaces_0$device"
+									. "$spaces_1$on_off{$$defaults{$device}{internet}}"
+									. "$spaces_2$on_off{$$defaults{$device}{intranet}}"
+									. "$spaces_3$on_off{$$defaults{$device}{webfilter}}"
+									. "$remainder\n";
+		
+								$$defaults{$device}{isset} = 0;
+							} else {
+								$line = "#$line";
+							}
+					} elsif (my $room = $$host_rooms{$device}) {
+						if (    exists $$defaults{$room}{hosts}{$device}
+						    and $$defaults{$room}{hosts}{$device}{isset}) {
+							$line = "$spaces_0$device"
+								. "$spaces_1$on_off{$$defaults{$room}{hosts}{$device}{internet}}"
+								. "$spaces_2$on_off{$$defaults{$room}{hosts}{$device}{intranet}}"
+								. "$spaces_3$on_off{$$defaults{$room}{hosts}{$device}{webfilter}}"
+								. "$remainder\n";
+	
+							delete $$defaults{$room}{hosts}{$device};
+						} else {
+							$line = "#$line";
+						}
+					}
+				}
+			}
+	
+	
+			push @re, $line;
+		}
+
+		close DEFAULTS;
+	}
+
+
+	if ($$defaults{default}) {
+		push @re,
+		       'default'
+			 . "\t$on_off{$$defaults{default}{internet}}"
+			 . "\t$on_off{$$defaults{default}{intranet}}"
+			 . "\t$on_off{$$defaults{default}{webfilter}}\n";
+
+		delete $$defaults{default};
+	}
+
+	foreach my $room (sort keys %$defaults) {
+		if ($$defaults{$room}{isset}) {
+			push @re,
+			       $room
+				 . "\t$on_off{$$defaults{$room}{internet}}"
+				 . "\t$on_off{$$defaults{$room}{intranet}}"
+				 . "\t$on_off{$$defaults{$room}{webfilter}}\n";
+		}
+
+		foreach my $host (sort keys %{ $$defaults{$room}{hosts} }) {
+			if ($$defaults{$room}{hosts}{$host}{isset}) {
+				push @re,
+				       $host
+					 . "\t$on_off{$$defaults{$room}{hosts}{$host}{internet}}"
+					 . "\t$on_off{$$defaults{$room}{hosts}{$host}{intranet}}"
+					 . "\t$on_off{$$defaults{$room}{hosts}{$host}{webfilter}}\n";
+			}
+		}
+	}
+
+
+	return \@re;
+}
+
+
+
+
+=back
+
+=head2 Form fields
+
+Possible values for the C<..._internet>, C<..._intranet> and C<..._webfilter>
+are -1 (= '-'), 0 (= 'off') and 1 (= 'on').
+
+=over
+
+=item C<accept>
+
+Accept the changes
+
+=item C<default_internet>
+
+Default internet settings.
+
+=item C<default_intranet>
+
+Default intranet settings.
+
+=item C<default_webfilter>
+
+Default webfilter settings.
+
+=item C<add_room>
+
+Submit button to evaluate C<default_add>.
+
+=item C<default_add>
+
+If C<${add_room> is true, a default entry for the room in
+C<${default_add> will be added.
+
+=item C<${nondefaults{name}}_room_internet>
+
+Default internet settings for the workstations in the
+room C<${nondefaults{name}}>.
+
+=item C<${nondefaults{name}}_room_intranet>
+
+Default intranet settings for the workstations in the
+room C<${nondefaults{name}}>.
+
+=item C<${nondefaults{name}}_room_webfilter>
+
+Default webfilter settings for the workstations in the
+room C<${nondefaults{name}}>.
+
+=item C<${nondefaults{name}}_add_host>
+
+Submit button to evaluate C<${nondefaults{name}}_add>.
+
+=item C<${nondefaults{name}}_add>
+
+If C<${nondefaults{name}}_add_host> is true, a default entry for the host in
+C<${nondefaults{name}}_add> will be added.
+
+=item C<${nondefaults{name}}_room_delete>
+
+If true, the default entry for the room ${nondefaults{name}} will be deleted.
+
+=item C<${nondefaults{name}}_internet>
+
+Default internet settings for the workstation C<${nondefaults{name}}>.
+
+=item C<${nondefaults{name}}_intranet>
+
+Default intranet settings for the workstation C<${nondefaults{name}}>.
+
+=item C<${nondefaults{name}}_webfilter>
+
+Default webfilter settings for the workstation C<${nondefaults{name}}>.
+
+=item C<${nondefaults{name}}_delete>
+
+If true, the default entry for the host ${nondefaults{name}} will be deleted.
+
+=back

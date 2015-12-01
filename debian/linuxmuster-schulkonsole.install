@@ -4,8 +4,8 @@ debian/tmp/etc/linuxmuster/schulkonsole/permissions.conf
 debian/tmp/etc/linuxmuster/schulkonsole/apache2.conf
 debian/tmp/var/lib/schulkonsole
 debian/tmp/usr/lib/schulkonsole/cgi-bin
-debian/tmp/usr/lib/schulkonsole/bin/cyrquota.pl
-debian/tmp/usr/lib/schulkonsole/bin/quota.pl
+debian/tmp/usr/lib/schulkonsole/bin/wrapper-cyrus.pl
+debian/tmp/usr/lib/schulkonsole/bin/wrapper-user.pl
 debian/tmp/usr/lib/schulkonsole/bin/wrapper-debconf.pl
 debian/tmp/usr/lib/schulkonsole/bin/wrapper-files.pl
 debian/tmp/usr/lib/schulkonsole/bin/wrapper-firewall.pl
@@ -17,9 +17,8 @@ debian/tmp/usr/lib/schulkonsole/bin/wrapper-radius.pl
 debian/tmp/usr/share/schulkonsole/Schulkonsole
 debian/tmp/usr/share/schulkonsole/linbo
 debian/tmp/usr/share/lintian/overrides/linuxmuster-schulkonsole
-debian/tmp/usr/share/schulkonsole/shtml/*.shtml
+debian/tmp/usr/share/schulkonsole/shtml/*.tt
 debian/tmp/usr/share/schulkonsole/shtml/*.js
-debian/tmp/usr/share/schulkonsole/shtml/status*.inc
 debian/tmp/usr/share/locale/*
 
 doc/etc/schulkonsole/*	usr/share/doc/linuxmuster-schulkonsole/examples
@@ -27,3 +26,6 @@ doc/lib/menus.d/*	usr/lib/schulkonsole/menus.d
 doc/lib/permissions.d/*	usr/lib/schulkonsole/permissions.d
 doc/scripts/*	usr/share/schulkonsole/scripts
 jquery/*	usr/share/schulkonsole/jquery/
+css/*	usr/share/schulkonsole/css/
+sbin/*	usr/sbin/
+etc/linuxmuster/*	etc/linuxmuster/

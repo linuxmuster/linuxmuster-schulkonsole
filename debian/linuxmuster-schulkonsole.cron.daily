@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Schulkonsole daily housekeeping cron job
+#
+# Frank Schütte
+# <fschuett@gymhim.de>
+# 13.10.2015
+#
+
+# reset groups to their in /etc/linuxmuster/wlan_defaults defined status
+/usr/sbin/linuxmuster-wlan-reset --all
+

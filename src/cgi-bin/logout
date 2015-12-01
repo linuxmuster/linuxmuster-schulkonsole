@@ -1,0 +1,69 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+logout - logoutpage of schulkonsole
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/logout
+
+=head1 DESCRIPTION
+
+C<logout> ends a session and redirects to the start page.
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Encode;
+use Schulkonsole::Session;
+
+my $this_file = 'logout';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+
+
+$sk_session->end_session();
+
+
+my $q = new CGI;
+my $url = $q->url( -full => 1 );
+$url =~ s/$this_file$/start/g;
+
+my $pid = fork;
+if (not $pid) {
+	$sk_session->redirect($url);
+} else {
+	my $session_lockfiles_prefix = Schulkonsole::Config::lockfile('cgisession');
+	my @lockfiles = glob($session_lockfiles_prefix . '*');
+
+	foreach my $lockfile (@lockfiles) {
+		if (open LOCK, '<', $lockfile) {
+			if (flock LOCK, (2 | 4)) {
+				my ($sid) = $lockfile =~ /^${session_lockfiles_prefix}_(.+)$/;
+				my $session_file = Schulkonsole::Encode::to_fs(
+					"$Schulkonsole::Config::_runtimedir/cgisess_$sid");
+
+				if (open SESSION, '<', $session_file) {
+					my @stats = stat SESSION;
+					if ($stats[9] < $^T - Schulkonsole::Config::expire_seconds(
+					    		$Schulkonsole::Config::_session_expire_time)) {
+						unlink $session_file;
+						unlink $lockfile;
+					}
+				} elsif (not -e $session_file) {
+					unlink $lockfile;
+				}
+			}
+		}
+	}
+}
+
+
+=head2 Form fields
+
+none
+

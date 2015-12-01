@@ -1,0 +1,27 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('aktueller Raum') _ ":  $room",
+      menu     => 1,
+      submenu  => "room",
+      info     => loc('<p>Sie müssen einen aktuellen Raum angeben, damit Sie darin unterrichten können. Soweit möglich wird der aktuelle Raum automatisch ermittelt.</p>'),
+   }
+%]
+
+<form method="post" accept-charset="UTF-8">
+
+<p>
+<select name="rooms">
+<optgroup label="Räume">
+[% FOREACH r IN rooms %]
+	<option value="[% r %]">[% r %]</option>
+[% END %]
+</optgroup>
+<optgroup label="aktueller Raum">
+<option value="[% room %]" selected>[% room %]</option>
+</optgroup>
+</select>
+<input type="submit" value="[% loc('Wechseln') %]">
+</p>
+[% IF requested_page %]<input type="hidden" name="requested_page" value="[% requested_page %]">[% END %]
+</form>
+
+<h2>[% loc('Aktueller Raum') %]: [% IF room %][% room %][% ELSE %][% loc('unbekannt') %][% END %]</h2>

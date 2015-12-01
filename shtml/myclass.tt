@@ -1,0 +1,10 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Meine Klasse'),
+      menu     => 1,
+      info     => loc('<p>Wähle einen Menüeintrag aus, um eine Klassenfunktion zu aktivieren.</p>'),
+   }
+%]
+
+<h2>[% loc('Mein Klasse') %]:
+[% IF myclass %] [% myclass.displayname %][% ELSE %][% loc('Klasse unbekannt') %][% END %]
+</h2>

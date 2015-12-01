@@ -1,10 +1,17 @@
-AC_INIT([schulkonsole], [0.11.6-1])
+AC_INIT([schulkonsole], [0.20.0-1])
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE
 
 AM_GNU_GETTEXT([external])
+AC_DEFINE(HAVE_CATGETS)
+AC_DEFINE(ENABLE_NLS)
+AC_DEFINE(HAVE_LC_MESSAGES)
+AC_DEFINE(HAVE_STPCPY)
 
-AC_CONFIG_FILES([Makefile
+localedir=${datadir}/locale
+AC_SUBST(localedir)
+
+AC_OUTPUT([Makefile
 	src/Makefile
 	src/cgi-bin/Makefile
 	src/util/Makefile
@@ -16,6 +23,5 @@ AC_CONFIG_FILES([Makefile
 	linbo/templates/Makefile
 	linbo/templates/os/Makefile
 	linbo/templates/part/Makefile
-	po/Makefile.in])
-AC_OUTPUT
+	po/Makefile])
 

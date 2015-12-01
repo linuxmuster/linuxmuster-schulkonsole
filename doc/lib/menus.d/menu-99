@@ -1,4 +1,4 @@
-<!--#if expr="$link_logout" -->
-   <a href="logout"><gettext>Abmelden</gettext></a>
-<!--#endif -->
-</div>
+[% IF link_logout %]
+   <li><a [% dohref("logout") %]>[% loc('Abmelden') %]</a></li>
+[% END %]
+</ul>

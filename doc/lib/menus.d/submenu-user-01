@@ -1,24 +1,24 @@
-<!--#if expr="$link_user" -->
-	<a class="separator" href="user"><gettext>Start</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_user_students" -->
-	<a href="user_students"><gettext>Sch&uuml;lerliste pflegen</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_user_teachers" -->
-	<a href="user_teachers"><gettext>Lehrerliste pflegen</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_user_extra" -->
-	<a class="separator" href="user_extra"><gettext>Extralisten pflegen</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_user_check" -->
-	<a href="user_check"><gettext>Benutzerlisten pr&uuml;fen</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_user_commit" -->
-	<a class="tworowseparator" href="user_commit"><gettext>Benutzerdaten &uuml;bernehmen</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_user_teacherpasswords" -->
-	<a href="user_teacherpasswords"><gettext>Lehrerpassw&ouml;rter</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_user_reports" -->
-	<a class="end" href="user_reports"><gettext>Berichte</gettext></a>
-<!--#endif -->
+[% IF link_user_students %]
+	<li><a [% dohref("user_students") %]>[% loc('Schülerliste pflegen') %]</a></li>
+[% END %]
+[% IF link_user_teachers %]
+	<li><a [% dohref("user_teachers") %]>[% loc('Lehrerliste pflegen') %]</a></li>
+[% END %]
+[% IF link_user_extra %]
+	<li><a class="separator" [% dohref("user_extra") %]>[% loc('Extralisten pflegen') %]</a></li>
+[% END %]
+[% IF link_user_check %]
+	<li><a [% dohref("user_check") %]>[% loc('Benutzerlisten prüfen') %]</a></li>
+[% END %]
+[% IF link_user_commit %]
+	<li><a class="tworowseparator" [% dohref("user_commit") %]>[% loc('Benutzerdaten übernehmen') %]</a></li>
+[% END %]
+[% IF link_user_teacherpasswords %]
+	<li><a [% dohref("user_teacherpasswords") %]>[% loc('Lehrerpasswörter') %]</a></li>
+[% END %]
+[% IF link_user_print %]
+	<li><a [% dohref("user_print") %]>[% loc('Passwortlisten') %]</a></li>
+[% END %]
+[% IF link_user_reports %]
+	<li><a class="end" [% dohref("user_reports") %]>[% loc('Berichte') %]</a></li>
+[% END %]

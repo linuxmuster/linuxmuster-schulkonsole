@@ -1,0 +1,114 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Klassen') _ ":  $class_name - " _ loc('Klassenliste'),
+      menu     => 1,
+      submenu  => "class",
+      info     => loc('<p>Hier sehen Sie Informationen zu den Schüler/innen der aktuell ausgewählten Klasse {class}</p>',class => $class_name),
+   }
+%]
+
+[% IF classes %]
+<form method="post" accept-charset="UTF-8">
+<p class="selectdomain">
+<select name="classes">
+<optgroup label="Klassen">
+[% FOREACH c IN classes %] <option value="[% c.gid %]">[% c.name %]</option>
+[% END %]
+</optgroup>
+<optgroup label="aktuelle Klasse">
+<option value="[% class_gid %]" selected>[% class_name %]</option>
+</optgroup>
+</select>
+<input type="submit" value="[% loc('Wechseln') %]">
+</p>
+</form>
+[% END %]
+
+
+<h2>[% loc('Klassen') %] :: [% loc('Klassenliste') %]</h2>
+
+<h3>[% loc('Ausgewählte Klasse:') %] [% class_name %]</h3>
+
+<table id="classoverview" class="liste">
+<tr>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Festplattenquota') %]</th>
+<th>[% loc('E-Mailquota') %]</th>
+<th>[% loc('Subklasse') %]</th>
+<th>[% loc('Projekte') %]</th>
+</tr>
+[% FOREACH s IN students %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td>[% s.login %]</td>
+<td>[% s.firstname %] [% s.surname %]</td>
+<td>
+[% IF s.diskquotas %]
+
+<p>
+
+[% FOREACH sd IN s.diskquotas %]
+
+[% sd.path %]:<br>
+	[% loc('Speicherplatz/KB:') %]
+	[% sd.blocks_usage %]/[% sd.blocks_soft %]
+	- max: [% sd.blocks_hard %]
+	- [% sd.blocks_percent %]%<br>
+	[% IF sd.blocks_grace %]
+	[% loc('verbleibende Zeit:') %] [% sd.blocks_grace %]<br>[% END %]
+	[% loc('Dateien:') %]
+	[% sd.files_usage %]/[% sd.files_soft %]
+	- max: [% sd.files_hard %]
+	- [% sd.files_percent %]%<br>
+	[% IF sd.files_grace %]
+	[% loc('verbleibende Zeit:') %] [% sd.files_grace %]<br>[% END %]<br>
+
+[% END %]
+</p>
+
+
+<ul>
+[% FOREACH sd IN s.diskquotas %]
+[% IF sd.warn %]
+<li class="warn">
+[% ELSE %]
+<li>
+[% END %]
+<span title="[% sd.path %]: [% sd.blocks_percent %]%" style="width: [% sd.blocks_percent_rounded %]%;">&nbsp;</span>
+</li>
+[% END %]
+</ul>
+[% ELSE %]-[% END %]</td>
+<td>[% IF students.mailquotas.limit %]
+
+
+<p>
+	[% loc('E-Mail-Speicher/KB:') %]
+	[% students.mailquotas.usage %]/[% students.mailquotas.limit %]
+	- [% students.mailquotas.percent %]%
+</p>
+
+
+<ul>
+[% IF students.mailquotas.warn %]
+<li class="warn">
+[% ELSE %]
+<li>
+[% END %]
+<span title="E-Mail: [% students.mailquotas.usage %]/[% students.mailquotas.limit %] [% students.mailquotas.percent %]%" style="width: [% students.mailquotas.percent_rounded %]%;">&nbsp;</span>
+</li>
+</ul>
+[% ELSE %]-[% END %]</td>
+<td>[% students.subclass %]</td>
+<td>[% students.projects_str %]</td>
+</tr>
+[% END %]
+<tr>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Festplattenquota') %]</th>
+<th>[% loc('E-Mailquota') %]</th>
+<th>[% loc('Subklasse') %]</th>
+<th>[% loc('Projekte') %]</th>
+</tr>
+</table>

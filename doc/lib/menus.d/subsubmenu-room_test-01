@@ -1,29 +1,29 @@
 <div id="subsubmenu">
-<p><gettext>Klassenarbeit:</gettext>
-<!--#if expr="$done_test_start" -->
-<!--#if expr="$todo_test_handout" -->
-<a href="room_test_handout" class="todo"><gettext>Bereitstellen</gettext></a>
-<!--#else -->
-<a href="room_test_handout"><gettext>Bereitstellen</gettext></a>
-<!--#endif -->
+<p>[% loc('Klassenarbeit:') %]
+[% IF done_test_start %]
+[% IF todo_test_handout %]
+<a [% dohref("room_test_handout") %] class="todo">[% loc('Bereitstellen') %]</a>
+[% ELSE %]
+<a [% dohref("room_test_handout") %]>[% loc('Bereitstellen') %]</a>
+[% END %]
 -
-<!--#if expr="$todo_test_password" -->
-<a href="room_test_password" class="todo"><gettext>Passwort &auml;ndern</gettext></a>
-<!--#else -->
-<a href="room_test_password"><gettext>Passwort &auml;ndern</gettext></a>
-<!--#endif -->
+[% IF todo_test_password %]
+<a [% dohref("room_test_password") %] class="todo">[% loc('Passwort ändern') %]</a>
+[% ELSE %]
+<a [% dohref("room_test_password") %]>[% loc('Passwort ändern') %]</a>
+[% END %]
 -
-<!--#if expr="$todo_test_collect" -->
-<a href="room_test_collect" class="todo"><gettext>Einsammeln</gettext></a>
-<!--#else -->
-<a href="room_test_collect"><gettext>Einsammeln</gettext></a>
-<!--#endif -->
-<!--#else -->
-<gettext>Bereitstellen</gettext>
+[% IF todo_test_collect %]
+<a [% dohref("room_test_collect") %] class="todo">[% loc('Einsammeln') %]</a>
+[% ELSE %]
+<a [% dohref("room_test_collect") %]>[% loc('Einsammeln') %]</a>
+[% END %]
+[% ELSE %]
+[% loc('Bereitstellen') %]
 -
-<gettext>Passwort &auml;ndern</gettext>
+[% loc('Passwort ändern') %]
 -
-<gettext>Einsammeln</gettext>
-<!--#endif --></p>
+[% loc('Einsammeln') %]
+[% END %]</p>
 </div>
 

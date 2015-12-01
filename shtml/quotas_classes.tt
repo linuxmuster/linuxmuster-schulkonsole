@@ -1,0 +1,52 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Quota') _ " - " _ loc('Klassen'),
+      menu     => 1,
+      submenu  => "quotas",
+      info     => loc('<p>Hier ändern Sie die Quotawerte aller Schüler/innen einer Klasse.</p><p>Leere Felder bedeuten, dass in dem Fall die Standardeinstellungen gelten.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),
+   }
+%]
+
+<h2>[% loc('Quota') %] :: [% loc('Klassen') %]</h2>
+
+
+[% IF classes %]
+
+<form method="post" accept-charset="UTF-8">
+
+[% odd=0 %]
+<table id="quotasclasses" class="liste">
+<tr>
+<th>[% loc('Klasse') %]</th>
+[% IF mountpoints %]
+<th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
+[% END %]
+<th>[% loc('Mailquota') %]</th>
+</tr>
+[% IF mountpoints %]
+<tr>
+<th></th>
+[% FOREACH m IN mountpoints %]
+<th>[% m %]</th>
+[% END %]
+<th></th>
+</tr>
+[% END %]
+[% FOREACH c IN classes %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td>[% c.name %]</td>
+[% FOREACH cq IN c.diskquotas %]
+<td><input size="6" maxlength="5" name="[% c.gid %]_class[% cq.mountpoint %]-diskquota" value="[% cq.quota %]"></td>
+[% END %]
+<td><input size="6" maxlength="5" name="[% c.gid %]_classmailquota" value="[% c.mailquota %]"></td>
+</tr>
+[% END %]
+</table>
+
+<p><input type="submit" name="acceptclasses" value="[% loc('Änderungen übernehmen') %]"></p>
+
+</form>
+
+[% ELSE %]
+<p>[% loc('Es gibt keine Klassen.') %]</p>
+[% END %]

@@ -2,14 +2,17 @@ Source: linuxmuster-schulkonsole
 Section: admin
 Priority: optional
 Maintainer: Thomas Schmitt <thomas@linuxmuster.net>
-Build-Depends: debhelper (>= 4.0.0), autotools-dev, libhtml-parser-perl, fakeroot
+Build-Depends: debhelper (>= 4.0.0), autotools-dev, libhtml-parser-perl, liblocale-maketext-lexicon-perl, fakeroot
 Standards-Version: 3.7.2
 
 Package: linuxmuster-schulkonsole
 Architecture: all
 Pre-Depends: cyrus-common | cyrus21-common | cyrus22-common | cyrus-common-2.2
-Depends: linuxmuster-schulkonsole-wrapper (>= ${source:Version}), linuxmuster-schulkonsole-wrapper (<< ${source:Version}.1~), linuxmuster-schulkonsole-template, libcgi-pm-perl, libcgi-session-perl, liblocale-gettext-perl, libhtml-parser-perl, libdbi-perl, libdbd-odbc-perl | libdbd-pg-perl, libcrypt-passwdmd5-perl, libcrypt-smbhash-perl, libnet-cups-perl (>= 0.55), libcrypt-rijndael-perl, libnet-imap-simple-perl, libenv-bash-perl, libproc-processtable-perl | libproc-process-perl, ${perl:Depends}, ${misc:Depends}, libcrypt-cbc-perl
-Recommends: sophomorix-base, linuxmuster-base
+Depends: linuxmuster-schulkonsole-wrapper (>= ${source:Version}), linuxmuster-schulkonsole-wrapper (<< ${source:Version}.1~), sophomorix-base (>=2.4.55), sophomorix-pgldap (>=2.4.55), linuxmuster-base (>=6.2.0), libcgi-pm-perl, libcgi-session-perl, liblocale-gettext-perl, libhtml-parser-perl, libdbi-perl, libdbd-odbc-perl | libdbd-pg-perl, libcrypt-passwdmd5-perl, libcrypt-smbhash-perl, libnet-cups-perl (>= 0.55), libcrypt-rijndael-perl, libnet-imap-simple-perl, libenv-bash-perl, libproc-processtable-perl | libproc-process-perl, ${perl:Depends}, ${misc:Depends}, libcrypt-cbc-perl, libtemplate-perl, libdata-password-perl, liblatex-encode-perl, liblatex-decode-perl, libjs-jquery, libjs-jquery-ui
+Recommends: libtemplate-perl-doc
+Provides: linuxmuster-schulkonsole-template
+Conflicts: linuxmuster-schulkonsole-template
+Replaces: linuxmuster-schulkonsole-template
 Description: web-based administration tool for linuxmuster.net
  Schulkonsole is a web-interface for linuxmuster.net systems.
 

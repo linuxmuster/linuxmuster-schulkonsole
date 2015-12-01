@@ -11,23 +11,27 @@ package Schulkonsole::Radius;
 
 =head1 NAME
 
-Schulkonsole::Radius - interface to Linuxmusterloesung Radius commands
+Schulkonsole::Radius - interface to Linuxmusterloesung Radius related commands
 
 =head1 SYNOPSIS
 
  use Schulkonsole::Radius;
 
- my $groups = Schulkonsole::Radius::allowed_groups_wlan();
- if ($$groups{'07a'}) {
+ my $wlan = Schulkonsole::Radius::allowed_groups_users_wlan();
+ if ($$wlan{'groups'}{'07a'}) {
  	print "07a is allowed\n";
  }
-
+ if ($$lwan{'users'}{'test'}) {
+ 	print "test is allowed\n"
+ }
+ 
  my @groups = ('07a', 'p_7in1');
- Schulkonsole::Radius::wlan_on($id, $password, @groups);
- Schulkonsole::Radius::wlan_off($id, $password, @groups);
+ my @users = ('test1', 'test2');
+ Schulkonsole::Radius::wlan_on($id, $password, @groups, @users);
+ Schulkonsole::Radius::wlan_off($id, $password, @groups, @users);
 
- Schulkonsole::Radius::wlan_on_at($id, $password, @groups, @time);
- Schulkonsole::Radius::groups_reset_all($id, $password);
+ Schulkonsole::Radius::wlan_reset_at($id, $password, @groups, @users, $time);
+ Schulkonsole::Radius::wlan_reset_all($id, $password);
 
 =head1 DESCRIPTION
 
@@ -46,8 +50,8 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 $VERSION = 0.03;
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(
-	allowed_groups_wlan
-	group_defaults
+	allowed_groups_users_wlan
+	wlan_defaults
 	wlan_on
 	wlan_off
 	wlan_reset_at
@@ -164,9 +168,9 @@ sub stop_wrapper {
 
 =head2 Functions
 
-=head3 C<wlan_on($id, $password, @groups)>
+=head3 C<wlan_on($id, $password, @groups, @users)>
 
-Allow groups' access to the wlan
+Allow groups and users access to the wlan
 
 =head3 Parameters
 
@@ -184,20 +188,26 @@ The password of the user invoking the command
 
 The groups to allow wlan access
 
+=item C<@users>
+
+The users to allow wlan access
+
 =back
 
 =head3 Description
 
 This wraps the command
-C<wlan_on_off.sh --trigger=on --grouplist=group1,group2,... , where
-C<group1,group2,...> are the groups in C<@groups>.
+C<wlan_on_off --trigger=on --grouplist=group1,group2,... --userlist=user1,user2,... , where
+C<group1,group2,...> are the groups in C<@groups> and
+C<user1,user2,...> are the users in C<@users>
 
 =cut
 
 sub wlan_on {
-	my $id = shift;
-	my $password = shift;
-	my @groups = @_;
+	my $id = $_[0];
+	my $password = $_[1];
+	my @groups = @{$_[2]};
+	my @users = @{$_[3]};
 
 	my $umask = umask(022);
 	my $pid = start_wrapper(Schulkonsole::Config::WLANONOFFAPP,
@@ -205,7 +215,7 @@ sub wlan_on {
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
 	# set groups in list to on
-	print SCRIPTOUT "1\n", join(",", @groups), "\n\n";
+	print SCRIPTOUT "1\n", join(",", @groups), "\n", join("," ,@users), "\n";
         buffer_input(\*SCRIPTIN);
 
 	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
@@ -215,9 +225,9 @@ sub wlan_on {
 
 
 
-=head3 C<wlan_off($id, $password, @group)>
+=head3 C<wlan_off($id, $password, @groups, @users)>
 
-Block groups' access to the wlan
+Block listed groups and users access to the wlan
 
 =head3 Parameters
 
@@ -235,20 +245,26 @@ The password of the user invoking the command
 
 The groups names to block access to the wlan
 
+=item C<@users>
+
+The users names to block access to the wlan
+
 =back
 
 =head3 Description
 
 This wraps the command
-C<wlan_on_off.sh --trigger=off --grouplist=group1,group2,...>, where
-C<group1,group2,...> are the groups in C<@groups>.
+C<wlan_on_off --trigger=off --grouplist=group1,group2,...> --userlist=user1,user2,... , where
+C<group1,group2,...> are the groups in C<@groups> and
+C<user1,user2,...> are the users in C<@users>.
 
 =cut
 
 sub wlan_off {
-	my $id = shift;
-	my $password = shift;
-	my @groups = @_;
+	my $id = $_[0];
+	my $password = $_[1];
+	my @groups = @{$_[2]};
+	my @users = @{$_[3]};
 
 	my $umask = umask(022);
 	my $pid = start_wrapper(Schulkonsole::Config::WLANONOFFAPP,
@@ -256,7 +272,7 @@ sub wlan_off {
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
 	# set groups in list to off
-	print SCRIPTOUT "0\n", join(",", @groups), "\n\n";
+	print SCRIPTOUT "0\n", join(",", @groups),"\n", join(",", @users), "\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -267,7 +283,7 @@ sub wlan_off {
 
 
 
-=head3 C<wlan_reset_at($id, $password, $group, $time)>
+=head3 C<wlan_reset_at($id, $password, @groups, @users, $time)>
 
 Will reset system configuration at a given time
 
@@ -283,9 +299,13 @@ The ID (not UID) of the user invoking the command
 
 The password of the user invoking the command
 
-=item C<$group>
+=item C<@groups>
 
-The group corresponding to the command
+The groups corresponding to the command
+
+=item C<@users>
+
+The users corresponding to the command
 
 =item C<$time>
 
@@ -296,23 +316,24 @@ The time given in seconds since beginning of the epoch (1970-01-01 00:00:00)
 =head3 Description
 
 Resets all configuration changes to values stored in the
-Schulkonsole::LessonSession of C<$group> at time C<$time>.
+Schulkonsole::LessonSession of C<@groups> and C<@users> at time C<$time>.
 This includes changes done with the functions in Schulkonsole::Radius.
 
 =cut
 
 sub wlan_reset_at {
-	my $id = shift;
-	my $password = shift;
-	my $group = shift;
-	my $time = shift;
+	my $id = $_[0];
+	my $password = $_[1];
+	my @groups = @{$_[2]};
+	my @users = @{$_[3]};
+	my $time = $_[4];
 
 	my $umask = umask(022);
 	my $pid = start_wrapper(Schulkonsole::Config::WLANRESETATAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	print SCRIPTOUT "$group\n$time\n";
+	print SCRIPTOUT join(",", @groups),"\n", join(",",@users), "\n$time\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -324,103 +345,105 @@ sub wlan_reset_at {
 
 
 
-sub read_group_file {
-        my $filename = shift;
+=head3 C<allowed_groups_users_wlan($id, $password)>
 
-        my %groups;
+Returns which groups/users access to the wlan is allowed
 
-        my $start = '# linuxmuster.net -- automatic entries below this line';
-        my $end = '# linuxmuster.net -- automatic entries above this line';
-        my $ldapgroup = 'DEFAULT\s*Ldap-Group\s*==\s*([a-z\d_]+)\s*';
-        
-        if (not open GROUPS, "<$filename") {
-                warn "$0: Cannot open $filename";
-                return {};
-        }
-        
-        my $groups_started = 0;
-        while (<GROUPS>) {
-                chomp;
-                if (/$start/) {
-                    $groups_started = 1;
-                    next;
-                } elsif (/$end/) {
-                    $groups_started = 0;
-                    last;
-                } elsif ( $groups_started ) {
-                    if (/^\s*#/) {
-                        next;
-                    } elsif (/$ldapgroup/) {
-                        $groups{$1} = 1;
-                    }
-                }
-        }
+=head4 Parameters
 
-        close GROUPS;
+=over
 
-        return \%groups;
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=back
+
+=head4 Return value
+
+A hash of hashes with keys 'users' and 'groups' with allowed groups/users names as key and C<1> as value.
+
+=cut
+
+sub allowed_groups_users_wlan {
+	my $id = shift;
+	my $password = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::WLANALLOWEDAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "\n\n";
+
+	my $in;
+	{
+		local $/ = undef;
+		$in = <SCRIPTIN>;
+	}
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+
+	my $compartment = new Safe;
+
+	return $compartment->reval($in);
 }
 
 
 
 
-=head3 C<allowed_groups_wlan()>
-
-Returns which groups' access to the wlan is allowed
-
-=head4 Return value
-
-A hash with allowed group's names as key and C<1> as value.
-
-=cut
-
-sub allowed_groups_wlan {
-	return read_group_file($Schulkonsole::Config::_allowed_groups_wlan_file);
-}
 
 
 
 
-=head3 C<group_defaults()>
+=head3 C<wlan_defaults()>
 
-Returns groups default values.
+Returns wlan default values.
 
 =head4 Return value
 
-A hash with group's names as key and C<1> as value indicating wlan access
-with one group C<default> indicating default for new groups.
+A hash of 'users' and 'groups' hashes with names as key and C<1> as value indicating wlan access
+with one group C<default> indicating default for new groups and one user C<default> indicating
+default for new users.
 
 =cut
 
-sub group_defaults {
-        my $filename = $Schulkonsole::Config::_group_defaults_file;
+sub wlan_defaults {
+        my $filename = $Schulkonsole::Config::_wlan_defaults_file;
 
         my %groups;
+        my %users;
 
-        if (not open GROUPS, "<$filename") {
+        if (not open WLAN, "<$filename") {
                 warn "$0: Cannot open $filename";
                 return {};
         }
         
-        while (<GROUPS>) {
+        while (<WLAN>) {
                 chomp;
                 next if /^\s*#/;
                 s/\s*#.*$//;
 
-                my ($group, $wlan)
-                        = /^\s*([a-z\d_]+)\s+(on|off|-)/;
-                
-                if ($group) {
-                        $groups{$group} = $wlan;
+                my ($kind,$key, $status)
+                        = /^\s*([u|g]):([a-z\d_]+)\s+(on|off|-)/;
+                if ($kind eq 'u' and $key) {
+                	$users{$key} = $status;
+                } elsif ($kind eq 'g' and $key) {
+                        $groups{$key} = $status;
                 }
         }
 
-        close GROUPS;
+        close WLAN;
 
         # set fallback values if default is undefined
+        $users{default} = 'off' if not defined $users{default};
         $groups{default} = 'off' if not defined $groups{default};
 
-        return \%groups;
+        return { 'groups' => \%groups, 'users' => \%users, };
 }
 
 
@@ -428,7 +451,7 @@ sub group_defaults {
 
 =head3 C<wlan_reset_all($id, $password)>
 
-Resets radius settings of all groups
+Resets radius settings of all groups and users
 
 =head3 Parameters
 
@@ -458,7 +481,7 @@ sub wlan_reset_all {
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	print SCRIPTOUT "0\n";
+	print SCRIPTOUT "1\n\n\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -466,9 +489,9 @@ sub wlan_reset_all {
 }
 
 
-=head3 C<wlan_reset($id, $password, $group)>
+=head3 C<wlan_reset($id, $password, @groups, @users)>
 
-Resets groups settings of the selected group
+Resets settings of the selected groups and users
 
 =head3 Parameters
 
@@ -482,28 +505,33 @@ The ID (not UID) of the user invoking the command
 
 The password of the user invoking the command
 
-=item C<$group>
+=item C<@groups>
 
-Reference to group
+Groups to reset wlan.
+
+=item C<@users>
+
+Users to reset wlan.
 
 =back
 
 =head3 Description
 
-Invokes C<linuxmuster-wlan-reset --group=$group.
+Invokes C<linuxmuster-wlan-reset --grouplist=group1,group2,group3,... --userlist=user1,user2,user3,... .
 
 =cut
 
 sub wlan_reset {
-        my $id = shift;
-        my $password = shift;
-        my $group = shift;
+        my $id = $_[0];
+        my $password = $_[1];
+        my @groups = @{$_[2]};
+        my @users = @{$_[3]};
         
         my $pid = start_wrapper(Schulkonsole::Config::WLANRESETAPP,
                 $id, $password,
                 \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-        print SCRIPTOUT "$group\n";
+        print SCRIPTOUT "0\n", join(",", @groups),"\n", join(",", @users),"\n";
 
         buffer_input(\*SCRIPTIN);
 
@@ -512,10 +540,130 @@ sub wlan_reset {
 
 
 
+=head3 C<new_wlan_defaults_lines($defaults, $enable_groups, $disable_groups, $enable_users, $disable_users)>
+
+Creates new wlan_defaults lines from old lines and changes.
+
+=head3 Parameters
+
+=over
+
+=item C<$defaults>
+
+Hash reference of hashes 'users' and 'groups' with wlan entries on|off|-.
+
+=item C<$enable_groups>
+
+Array reference with groups names to enable wlan.
+
+=item C<$disable_groups>
+
+Array reference with groups to disable wlan.
+
+=item C<$enable_users>
+
+Array reference with users names to enble wlan.
+
+=item C<$disable_users>
+
+Array reference with users names to disable wlan.
+
+=back
+
+=head3 Description
+
+Creates new lines for wlan_defaults file from old lines and new entries.
+
+=cut
+
+sub new_wlan_defaults_lines {
+    my $defaults = shift;
+    my $enable_groups = shift;
+    my $disable_groups = shift;
+    my $enable_users = shift;
+    my $disable_users = shift;
+    my %wlan_default;
+    $wlan_default{'groups'} = $$defaults{'groups'}{default};
+    $wlan_default{'users'} = $$defaults{'users'}{default};
+    my @re;
 
 
+    foreach my $group (@$enable_groups) {
+		$$defaults{'groups'}{$group} = 'on';
+    }
+    foreach my $group (@$disable_groups) {
+		$$defaults{'groups'}{$group} = 'off';
+    }
+
+	foreach my $user (@$enable_users) {
+		$$defaults{'users'}{$user} = 'on';
+	}
+	foreach my $user (@$disable_users) {
+		$$defaults{'users'}{$user} = 'off';
+	}
+	
+    if (open WLANFILE, "<$Schulkonsole::Config::_wlan_defaults_file") {
+            flock WLANFILE, 1;
+    
+        while (my $line = <WLANFILE>) {
+		    my ($spaces_0, $kind, $key, $spaces_1, $wlan, $remainder)
+		    = $line =~ /^(\s*)([u|g]):([A-z\d\.\-]+)(\s+)(on|off|-)(.*)/;
+		    if ($key) {
+		    	$kind = ($kind eq 'u'?'users':'groups');
+				if ($key eq 'default') {
+				    $line = substr($kind,0,1) .":default"
+					    . "$spaces_1$wlan_default{$kind}"
+					    . "$remainder\n";
+				    push @re, $line;
+				    delete $$defaults{$kind}{default};
+				} else {
+				    if ($$defaults{$kind}{$key} ne $wlan_default{$kind}) { 
+						$line = substr($kind,0,1) . ":$key"
+						    . "$spaces_1$$defaults{$kind}{$key}"
+						    . "$remainder\n";
+						push @re, $line;
+				    }
+				    delete $$defaults{$kind}{$key};
+				}
+		    } else {
+				push @re, $line;
+		    }
+        }
+
+        close WLANFILE;
+    }
 
 
+    if ($$defaults{'groups'}{default}) {
+            push @re,
+                    sprintf("%-20s%s\n",'g:default', $$defaults{'groups'}{default});
+
+            delete $$defaults{'groups'}{default};
+    }
+    if ($$defaults{'users'}{default}) {
+            push @re,
+                    sprintf("%-20s%s\n",'u:default', $$defaults{'users'}{default});
+
+            delete $$defaults{'users'}{default};
+    }
+
+	my $default_groups = $$defaults{'groups'};
+    foreach my $group (sort keys %$default_groups) {
+	    if ($$defaults{'groups'}{$group} ne $wlan_default{'groups'}) {
+		push @re,
+			sprintf("%-20s%s\n",'g:'.$group, $$defaults{'groups'}{$group});
+	    }
+    }
+    my $default_users = $$defaults{'users'};
+    foreach my $user (sort keys %$default_users) {
+	    if ($$defaults{'users'}{$user} ne $wlan_default{'users'}) {
+		push @re,
+			sprintf("%-20s%s\n",'u:'.$user, $$defaults{'users'}{$user});
+	    }
+    }
+    
+    return \@re;
+}
 
 
 

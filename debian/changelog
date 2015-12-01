@@ -1,3 +1,164 @@
+linuxmuster-schulkonsole (0.20.0-2) babo-testing; urgency=low
+
+  [ root ]
+  * remove wrong menu class -> test
+
+ -- Frank Schütte <fschuett@gymhim.de>  Tue, 01 Dec 2015 17:50:32 +0100
+
+linuxmuster-schulkonsole (0.20.0-1) babo-testing; urgency=low
+
+  [ Frank Schütte ]
+  * linbo-remote: show scheduled tasks
+  * fix template encoding to be utf8 always
+  * ensure jquery entry in apache2.conf and restart apache2 in postinstall
+
+ -- Frank Schütte <fschuett@gymhim.de>  Tue, 01 Dec 2015 16:03:15 +0100
+
+linuxmuster-schulkonsole (0.19.0-9) babo-testing; urgency=low
+
+  [ Frank Schütte ]
+  * readded old code for all_on and fixed it (less time consuming at lesson end)
+  * Fix 2 syntax errors in hosts.tt.
+  * Fix random password not showing in test.
+  * Fix linbo_edit autostart button not showing.
+  * Add missing dep for building liblocale-maketext-lexicon-perl.
+  * Fix parameter $now for linbo_remote.
+
+ -- Frank Schütte <root@linuxmuster.lokal>  Fri, 20 Nov 2015 10:23:46 +0100
+
+linuxmuster-schulkonsole (0.19.0-8) babo-testing; urgency=low
+
+  * Fix myroom..., wrapper-sophomorix.pl
+
+ -- Frank Schütte <fschuett@gymhim.de>  Sat, 14 Nov 2015 13:49:07 +0100
+
+linuxmuster-schulkonsole (0.19.0-7) babo-testing; urgency=low
+
+  [ Frank Schütte ]
+  * Split large file linbo_edit.tt
+  * Fix collected files not showing in exam mode
+  * Simplify *.pl.in -> *.pl
+  * Streamline quota.pl -> wrapper-user.pl, cyrquota.pl -> wrapper-cyrus.pl
+  * Fix room.tt for exammode.
+  * Fix user wrapper-cyrus to be cyrus
+  * Add room_lesson, room_lesson.tt.
+  * Updated english translation
+  * Fix regpatchedit.tt texteditor.
+  * remove macs from Room,Firewall, use allowedips directly.
+  * changed dependency linuxmuster-base 6.2.0
+  * handle file names with spaces in wrapper-sophomorix.pl
+
+ -- Frank Schütte <fschuett@gymhim.de>  Sat, 14 Nov 2015 13:01:49 +0100
+
+linuxmuster-schulkonsole (0.19.0-6) babo-testing; urgency=low
+
+  * Fix insertion / deletion of oss.
+
+ -- Frank Schütte <fschuett@gymhim.de>  Sun, 08 Nov 2015 19:56:23 +0100
+
+linuxmuster-schulkonsole (0.19.0-5) babo-testing; urgency=low
+
+  [ Frank Schütte ]
+  * Clean up linbo-remote.tt a little.
+  * Fix some html entities, remove class_list.shtml.printquota.
+  * add nls to Error class.
+  * Fix horde mail forward overlapping.
+  * Don't create session with horde but authenticate correctly.
+
+ -- Frank Schütte <fschuett@gymhim.de>  Sat, 07 Nov 2015 20:50:39 +0100
+
+linuxmuster-schulkonsole (0.19.0-4) babo-testing; urgency=low
+
+  * Fix linuxmuster-wlan-reset to use wlan_on_off
+  * Switch wlan in classes/projects per user
+  * Add sophomorix.conf options to settings_users
+  * convert strings from/to latex in settings_users
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Wed, 21 Oct 2015 18:14:57 +0200
+
+linuxmuster-schulkonsole (0.19.0-3) babo-testing; urgency=low
+
+  * Add postsync editor (#444)
+  * Copy/rename postsync with image (#443)
+
+ -- Frank Schütte <fschuett@gymhim.de>  Mon, 19 Oct 2015 20:25:45 +0200
+
+linuxmuster-schulkonsole (0.19.0-2) babo-testing; urgency=low
+
+  * Add units to size quantity and clean up linbo_edit.
+  * Add user list printing for all users, added users with history (#453).
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Fri, 16 Oct 2015 23:52:27 +0200
+
+linuxmuster-schulkonsole (0.19.0-1) babo-testing; urgency=low
+
+  * Add linuxmuster-wlan-reset, cron-Job, wlan_on_off.
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Tue, 13 Oct 2015 20:29:22 +0200
+
+linuxmuster-schulkonsole (0.18.1-1) babo-testing; urgency=low
+
+  * Change to ldap based wlan switching in lib,wrapper.
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Mon, 12 Oct 2015 08:14:12 +0200
+
+linuxmuster-schulkonsole (0.18.0-1) babo-testing; urgency=low
+
+  * Use ubuntu libjs-jquery, libjs-jquery-ui instead of own copy
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Sat, 10 Oct 2015 12:24:33 +0200
+
+linuxmuster-schulkonsole (0.17.0-3) babo-testing; urgency=low
+
+  * Remove pxeedit,menuedit; add grubedit
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Thu, 08 Oct 2015 07:57:42 +0200
+
+linuxmuster-schulkonsole (0.17.0-2) babo-testing; urgency=low
+
+  * Enforce minimal/maximal password length (configurable: settings-program) #134
+  * Fix sharesonoff.
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Tue, 06 Oct 2015 15:55:21 +0200
+
+linuxmuster-schulkonsole (0.17.0-1) babo-testing; urgency=low
+
+  * Added menu Linbo->Fernsteuerung for linbo-remote
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Sat, 03 Oct 2015 11:57:53 +0200
+
+linuxmuster-schulkonsole (0.16.0-2) babo-testing; urgency=low
+
+  * Fix some errors (downloading binary files,...).
+  * Redirect to chosen class page (requested_page).
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Tue, 15 Sep 2015 17:02:14 +0200
+
+linuxmuster-schulkonsole (0.16.0-1) babo-testing; urgency=low
+
+  * Merged branch feature/upload. Windows users don't need mounted dirs any more.
+    Dirs are only needed for tests from now on.
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Sat, 12 Sep 2015 12:04:22 +0200
+
+linuxmuster-schulkonsole (0.15.0-1) babo-testing; urgency=low
+
+  * Changed menu to jMenu
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Sat, 29 Aug 2015 16:03:24 +0200
+
+linuxmuster-schulkonsole (0.14.0-1) precise; urgency=low
+
+  * Add upload/download test handout templates to get rid of template mount #483.
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Tue, 25 Aug 2015 21:33:13 +0200
+
+linuxmuster-schulkonsole (0.13.0-1) babo-testing; urgency=low
+
+  * Conversion from Template.pm engine to Template Toolkit.
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Wed, 12 Aug 2015 11:12:35 +0200
+
 linuxmuster-schulkonsole (0.12.0-7) babo-testing; urgency=low
 
   * Add ovpn to rooms for request #465

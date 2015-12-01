@@ -378,7 +378,7 @@ sub write_preferences_conf_file {
 
 
 
-=head3 C<write_group_defaults_file($id, $password, $lines)>
+=head3 C<write_wlan_defaults_file($id, $password, $lines)>
 
 Write new group_defaults file
 
@@ -406,7 +406,7 @@ Writes the file /etc/linuxmuster/group_defaults
 
 =cut
 
-sub write_group_defaults_file {
+sub write_wlan_defaults_file {
         write_file(@_, 6);
 }
 

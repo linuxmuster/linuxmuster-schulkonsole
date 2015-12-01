@@ -1,52 +1,30 @@
-<!--#if expr="$link_class" -->
-	<a class="separator" href="class"><gettext>Start</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_class_list" -->
-<!--#if expr="$class" -->
-	<a href="class_list"><gettext>Klassenliste</gettext></a>
-<!--#else -->
-	<span class="disabled"><gettext>Klassenliste</gettext></span>
-<!--#endif -->
-<!--#endif -->
-<!--#if expr="$link_class_passwords" -->
-<!--#if expr="$class" -->
-	<a class="separator" href="class_passwords"><gettext>Passw&ouml;rter</gettext></a>
-<!--#else -->
-	<span class="disabledseparator"><gettext>Passw&ouml;rter</gettext></span>
-<!--#endif -->
-<!--#endif -->
-<!--#if expr="$link_class_handoutcopy" -->
-<!--#if expr="$class" -->
-	<a href="class_handoutcopy"><gettext>Austeilen</gettext></a>
-<!--#else -->
-	<span class="disabled"><gettext>Austeilen</gettext></span>
-<!--#endif -->
-<!--#endif -->
-<!--#if expr="$link_class_handout" -->
-<!--#if expr="$class" -->
-	<a href="class_handout"><gettext>Bereitstellen</gettext></a>
-<!--#else -->
-	<span class="disabled"><gettext>Bereitstellen</gettext></span>
-<!--#endif -->
-<!--#endif -->
-<!--#if expr="$link_class_collect" -->
-<!--#if expr="$class" -->
-	<a class="separator" href="class_collect"><gettext>Einsammeln</gettext></a>
-<!--#else -->
-	<span class="disabledseparator"><gettext>Einsammeln</gettext></span>
-<!--#endif -->
-<!--#endif -->
-<!--#if expr="$link_class_shares" -->
-<!--#if expr="$class" -->
-	<a class="separator" href="class_shares"><gettext>Tauschen</gettext></a>
-<!--#else -->
-	<span class="disabledseparator"><gettext>Tauschen</gettext></span>
-<!--#endif -->
-<!--#endif -->
-<!--#if expr="$link_room_test" -->
-<!--#if expr="$class" -->
-	<a class="separator" href="room_test"><gettext>Klassenarbeit</gettext></a>
-<!--#else -->
-	<span class="disabledseparator"><gettext>Klassenarbeit</gettext></span>
-<!--#endif -->
-<!--#endif -->
+[% IF link_class_list %]
+	<li><a [% dohref("class_list") %]>[% loc('Klassenliste') %]</a></li>
+[% END %]
+[% IF link_class_passwords %]
+	<li><a class="separator" [% dohref("class_passwords") %]>[% loc('Passwörter') %]</a></li>
+[% END %]
+[% IF link_class_handoutcopy %]
+	<li><a [% dohref("class_handoutcopy") %]>[% loc('Austeilen') %]</a></li>
+[% END %]
+[% IF link_class_handout %]
+	<li><a [% dohref("class_handout") %]>[% loc('Bereitstellen') %]</a></li>
+[% END %]
+[% IF link_class_collect %]
+	<li><a class="separator" [% dohref("class_collect") %]>[% loc('Einsammeln') %]</a></li>
+[% END %]
+[% IF link_class_shares %]
+	<li><a class="separator" [% dohref("class_shares") %]>[% loc('Tauschen') %]</a></li>
+[% END %]
+[% IF link_myclass_handedoutcopy %]
+	<li><a [% dohref("myclass_handedoutcopy") %]>[% loc('Ausgeteilt') %]</a></li>
+[% END %]
+[% IF link_myclass_handedout %]
+	<li><a [% dohref("myclass_handedout") %]>[% loc('Bereitgestellt') %]</a></li>
+[% END %]
+[% IF link_myclass_tocollect %]
+	<li><a [% dohref("myclass_tocollect") %]>[% loc('Einzusammeln') %]</a></li>
+[% END %]
+[% IF link_class_lesson %]
+	<li><a class="end" [% dohref("class_lesson") %]>[% loc('Unterricht') %]</a></li>
+[% END %]

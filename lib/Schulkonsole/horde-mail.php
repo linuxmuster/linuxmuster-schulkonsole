@@ -21,10 +21,12 @@ function kill( $data ) { die( var_dump ( $data ) ); }
  * HORDE_BASE   - must be defined for all horde applications
  * AUTH_HANDLER - this application handles authorization
  * no_compress  - output is not compressed
+ * session_control - none : no session is started
  */
 @define('HORDE_BASE', '/usr/share/horde3');
 @define('AUTH_HANDLER', true);
 $no_compress = true;
+$GLOBALS['session_control'] = 'none';
 
 // Do CLI checks and environment setup first.
 require_once HORDE_BASE . '/lib/core.php';
@@ -46,7 +48,7 @@ require_once 'Horde/Secret.php';
 /* Get an Auth object. */
 $auth = &Auth::singleton($conf['auth']['driver']);
 if (is_a($auth, 'PEAR_Error')) {
-    Horde::fatal($auth, __FILE__, __LINE__);
+   Horde::fatal($auth, __FILE__, __LINE__);
 }
 
 // *** command line args handling ***
@@ -115,7 +117,7 @@ if(isset($options['keep']) && !isset($options['set-forwards'])) {
 
 if(isset($options['help'])) {
 echo<<<EOF
-Schulkonsole.php prints or sets forwards by means of there
+horde-mail.php prints or sets forwards by means of there
 horde3 api named ingo. In linuxmuster.net settings the horde
 prefs db and the sieve filter script is updated.
 
@@ -142,10 +144,14 @@ Parameters:
 EOF;
 exit;
 }
-
-$auth->authenticate($options['user'], array('password' => $options['password']));
+$auth_success = $auth->authenticate($options['user'], array('password' => $options['password']), true);
 if (is_a($auth, 'PEAR_Error')) {
-    Horde::fatal($auth, __FILE__, __LINE__);
+	$cli->message(_("Authentication error."), 'cli.error');
+	exit(1);
+}
+if(! $auth_success) {
+	$cli->message(_("Authentication error."), 'cli.error');
+	exit(1);
 }
 
 @define('INGO_BASE', '/usr/share/horde3/ingo');
@@ -155,8 +161,12 @@ if (is_a(($pushed = $registry->pushApp('ingo', !defined('AUTH_HANDLER'))), 'PEAR
     $cli->message('Cannot switch to ingo registry.','cli.error');
     exit(1);
 }
+$_SESSION['ingo']['backend']['params']['username'] = $options['user'];
+$_SESSION['ingo']['backend']['params']['password'] = $options['password'];
+unset($_SESSION['ingo']['backend']['hordeauth']);
 
 /// *** main ***
+
 if(isset($options['get-forwards'])) {
     $forwards = getForwards();
     echo $options['user'],";";
@@ -195,7 +205,6 @@ function getForwards()
         $cli->message(_("Forward is not supported in the current filtering driver."), 'cli.error');
         exit;
     }
-
     /* Get the forward object and rule. */
     $forward = &$ingo_storage->retrieve(INGO_STORAGE_ACTION_FORWARD);
     $filters = &$ingo_storage->retrieve(INGO_STORAGE_ACTION_FILTERS);
@@ -222,7 +231,7 @@ function setForwards($addresses = array(),$keep = false)
         exit;
     }
 
-    global $ingo_storage,$prefs,$cli;
+    global $ingo_storage,$cli;
     /* Get the forward object and rule. */
     $forward = &$ingo_storage->retrieve(INGO_STORAGE_ACTION_FORWARD);
     $filters = &$ingo_storage->retrieve(INGO_STORAGE_ACTION_FILTERS);
@@ -258,7 +267,7 @@ function setForwards($addresses = array(),$keep = false)
             }
         }
     }
-    if ($success && $prefs->getValue('auto_update')) {
+    if ($success) {
         Ingo::updateScript();
     }
 }

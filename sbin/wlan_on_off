@@ -1,0 +1,435 @@
+#! /usr/bin/perl -w
+# $Id$
+# This script (wlan_on_off) is maintained by Frank Schütte
+# It is Free Software (License GPLv3)
+# If you find errors, contact the author
+# fschuett@gymhim.de
+
+
+
+# ===========================================================================
+# Bibliotheken
+# ===========================================================================
+use strict;
+use lib '/usr/share/schulkonsole';
+use Getopt::Long;
+Getopt::Long::Configure ("bundling");
+use Sophomorix::SophomorixConfig;
+use Sophomorix::SophomorixPgLdap qw (fetchprojects_from_school fetchadminclasses_from_school fetchsubclasses_from_school
+                                     fetchstudents_from_adminclass fetchadministrators_from_school
+                                     adduser_to_project deleteuser_from_project deletegroup_from_project
+                                     addproject_to_project deleteproject_from_project
+                                     fetchmembers_by_option_from_project fetchgroups_from_project fetchprojects_from_project
+                                     fetchusers_from_project fetchmembers_from_project
+                                     db_connect db_disconnect);
+use Sophomorix::SophomorixAPI;
+use Schulkonsole::Config;
+
+use DBI;
+
+
+my $grouplist = "";
+my $userlist = "";
+my $trigger = "";
+my $help = 0;
+
+# Parsen der Optionen
+my $testopt=GetOptions(
+           "help|h" => \$help,
+           "userlist=s" => \$userlist,
+           "grouplist=s" => \$grouplist,
+           "trigger=s" => \$trigger,
+         );
+
+if ($grouplist eq "" and $userlist eq "") {
+	$help = 1;
+}
+
+if (not $trigger or $trigger !~ m/on|off/) {
+	$help = 1;
+}
+
+# --help
+if ($help==1) {
+   # Befehlbeschreibung
+   print('
+wlan_on_off controls users/groups access to wlan
+
+Options
+  -h  / --help
+  --trigger=<on|off>                   switch wlan on or off
+
+users/groups to work on:
+  --userlist=<user1,user2,user3,...> list of users to be processed
+  --grouplist=<group1,group2,group3,...> list of groups to be processed
+');
+   print "\n";
+   exit;
+}
+
+# ===========================================================================
+# Check for locking
+# ===========================================================================
+# lockfile
+my $locker='/tmp/.linuxmuster.lock';
+checklock($locker) or exit 1;
+
+# ===========================================================================
+# Get information from system
+# ===========================================================================
+my @new_users = split(",", $userlist);
+my @allgroups = split(",", $grouplist);
+my @new_groups = ();
+my @new_projects = ();
+foreach my $group (@allgroups){
+	if($group =~ /^p\_/){
+		push @new_projects, $group;
+	} else {
+		push @new_groups, $group;
+	}
+}
+
+my  @old_members_by_option=&fetchmembers_by_option_from_project($Schulkonsole::Config::_wlan_ldap_group);
+my  @old_groups=&fetchgroups_from_project($Schulkonsole::Config::_wlan_ldap_group);
+my  @old_projects=&fetchprojects_from_project($Schulkonsole::Config::_wlan_ldap_group);
+
+if ($trigger eq 'on') {
+	my @users = (@old_members_by_option,@new_users);
+	my @groups = (@old_groups,@new_groups);
+	my @projects = (@old_projects,@new_projects);
+	
+	manage_memberships(\@users,\@groups,\@projects);
+
+} else {
+	# trigger = off
+	my %temp = map { $_ => 1 } @old_members_by_option;
+	foreach my $user (@new_users) {
+		delete $temp{$user} if defined $temp{$user};
+	}
+	my @users = keys %temp;
+	%temp = map { $_ => 1 } @old_groups;
+	foreach my $group (@new_groups) {
+		delete $temp{$group} if defined $temp{$group};
+	}
+	my @groups = keys %temp;
+	%temp = map { $_ => 1 } @old_projects;
+	foreach my $project (@new_projects) {
+		delete $temp{$project} if defined $temp{$project};
+	}
+	my @projects = keys %temp;
+	
+	manage_memberships(\@users,\@groups,\@projects);
+}
+
+dolog("Success!\n");
+
+exit_script(0);
+
+# ===========================================================================
+# Subroutinen
+# ===========================================================================
+sub exit_script {
+ my $code = shift;
+ unlink $locker or exit 2;
+ exit $code;
+}
+
+sub dolog {
+	my $msg = shift;
+	print $msg;
+}
+
+sub checklock {
+	my $lockflag = shift;
+  	if(-e "$lockflag"){
+    	print "Found lockfile $lockflag!\n";
+    	my $n=0;
+    	my $timeout = 60;
+	    while($n < $timeout) {
+	    	my $remaining=($timeout-$n)*10;
+	      	print "Remaining $remaining seconds to wait ...\n";
+	      	sleep 10;
+	      	if(not -e "$lockflag"){
+	        	system("touch $lockflag") or return 1;
+	        	print "Lockfile released!\n";
+	        	return 0;
+	     	}
+	     	$n += 1;
+		}
+    	print("Timed out! Exiting!\n");
+    	return 1;
+  	} else {
+    	system("touch $lockflag") or return 1;
+  	}
+  	return 0;
+}
+
+sub manage_memberships {
+	my @new_members = @{$_[0]};
+	my @new_groups = @{$_[1]};
+	my @new_projects = @{$_[2]};
+	
+    my %users_to_add=();
+    my %users_to_keep=();
+    my %users_to_add_by_option=();
+    my %users_to_keep_groupmembers=();
+    my %users_to_keep_projectmembers=();
+    my %groups_to_add=();
+    my %projects_to_add=();
+
+    my @users_to_add=();
+    my @groups_to_add=();
+    my @projects_to_add=();
+
+    my $old_users="";
+    my @old_users=();
+    my @old_members_by_option=();
+    my @old_groups=();
+    my @old_projects=();
+
+    my %seen=();
+
+    my @new_members_by_option=@new_members;
+
+    #&Sophomorix::SophomorixBase::provide_project_files($Schulkonsole::Config::_wlan_ldap_group);
+
+    # get old values
+    # users and admins
+    @old_users=&fetchusers_from_project($Schulkonsole::Config::_wlan_ldap_group);
+    @old_members_by_option=&fetchmembers_by_option_from_project($Schulkonsole::Config::_wlan_ldap_group);
+    @old_groups=&fetchgroups_from_project($Schulkonsole::Config::_wlan_ldap_group);
+    @old_projects=&fetchprojects_from_project($Schulkonsole::Config::_wlan_ldap_group);
+
+    # Add the users in the groups
+    foreach my $group (@new_groups){
+        my @new_users_pri=();
+        if (exists $seen{$group}){
+            next;
+        }
+        $seen{$group}="seen";
+        if ($group eq $Schulkonsole::Config::_wlan_ldap_group){
+		    next;
+        }
+        @new_users_pri=&fetchstudents_from_adminclass($group);
+        # removing doubles
+        foreach my $user (@new_users_pri){        
+           if (not exists $users_to_add{$user}){
+       	      $users_to_add{$user}="$group(primary)";
+           }
+           # this users must be kept because of their groupmembership
+           if (not exists $users_to_keep_groupmembers{$user}){
+       	      $users_to_keep_groupmembers{$user}="$group(primary)";
+           }
+        }
+    }
+
+    # Add the users in the projects
+    foreach my $m_project (@new_projects){
+        my @new_users_sec=();
+        unless ($m_project =~ m/^p\_/) { 
+            $m_project="p_".$m_project;
+        }
+        if (exists $seen{$m_project}){
+            next;
+        }
+        $seen{$m_project}="seen";
+        if ($m_project eq $Schulkonsole::Config::_wlan_ldap_group){
+		    next;
+        }
+        @new_users_sec=&fetchusers_from_project($m_project);
+        # removing doubles
+        foreach my $user (@new_users_sec){        
+           if (not exists $users_to_add{$user}){
+       	      $users_to_add{$user}="$m_project(secondary)";
+           }
+           if (not exists $users_to_keep_projectmembers{$user}){
+       	      $users_to_keep_projectmembers{$user}="$m_project(secondary)";
+           }
+        }
+    }
+    foreach my $memb (@new_members){
+		$users_to_add{ $memb }="member_by_option";
+    }
+    foreach my $memb (@new_members_by_option){
+		$users_to_add_by_option{ $memb }="by_option";
+    }
+    # remember this list (all of this users must be kept)
+    %users_to_keep = %users_to_add;    
+
+    foreach my $group (@new_groups){
+		$groups_to_add{ $group }="";
+    }
+    foreach my $project (@new_projects){
+		$projects_to_add{ $project }="";
+    }
+
+    # users
+    # ========================================
+    # calculating which users to add
+    foreach my $user (@old_users){
+       if (exists $users_to_add{$user}){
+          # remove user from users_to_add
+          delete $users_to_add{$user}; 
+       } elsif (not exists $users_to_add{$user}) {
+         # remove user
+		 &deleteuser_from_project($user,$Schulkonsole::Config::_wlan_ldap_group,1);
+       } 
+    }    
+    
+    while (my ($user) = each %users_to_add){
+       push @users_to_add, $user;
+    }
+    # sorting
+    @users_to_add = sort @users_to_add;
+    # adding the users
+    foreach my $user (@users_to_add) {
+       if ($user eq "root"){next;}
+       &adduser_to_project($user,$Schulkonsole::Config::_wlan_ldap_group);
+    }
+
+    # groups
+    # ========================================
+    # calculating which groups to add to project
+    foreach my $group (@old_groups){
+       if (exists $groups_to_add{$group}){
+          # remove group from groups_to_add
+          delete $groups_to_add{$group}; 
+       } elsif (not exists $groups_to_add{$group}) {
+         # remove user
+		 my @users_to_remove = fetchstudents_from_adminclass($group);
+		 foreach my $user (@users_to_remove){
+             # check if user must be kept
+             if (exists $users_to_keep_projectmembers{$user}){
+                 next;
+             }
+             &deleteuser_from_project($user,$Schulkonsole::Config::_wlan_ldap_group,1);
+         }
+	 &deletegroup_from_project($group,$Schulkonsole::Config::_wlan_ldap_group);
+       } 
+    }    
+    while (my ($group) = each %groups_to_add){
+       push @groups_to_add, $group;
+    }
+    # sorting
+    @groups_to_add = sort @groups_to_add;
+    # adding the groups
+    foreach my $group (@groups_to_add) {
+       	if ($group ne $Schulkonsole::Config::_wlan_ldap_group){
+           addgroup_to_project($group,$Schulkonsole::Config::_wlan_ldap_group);
+        }
+    }
+
+
+    # projects
+    # ========================================
+    # calculating which m_projects to add 
+    foreach my $m_project (@old_projects){
+       if (exists $projects_to_add{$m_project}){
+          delete $projects_to_add{$m_project}; 
+       } elsif (not exists $projects_to_add{$m_project}) {
+         # remove m_project
+         # select only members, not admins
+		 my @users_to_remove = &fetchmembers_from_project($m_project);
+		 foreach my $user (@users_to_remove){
+             # check if user must be kept
+             if (exists $users_to_keep_projectmembers{$user}){
+                 next;
+             }
+             if (exists $users_to_keep_groupmembers{$user}){
+                 next;
+             }
+
+             &deleteuser_from_project($user,$Schulkonsole::Config::_wlan_ldap_group,1);
+         }
+		 &deleteproject_from_project($m_project,$Schulkonsole::Config::_wlan_ldap_group);
+       } 
+    }    
+    while (my ($m_project) = each %projects_to_add){
+       push @projects_to_add, $m_project;
+    }
+    # sorting
+    @projects_to_add = sort @projects_to_add;
+    # adding the projects
+    foreach my $m_project (@projects_to_add) {
+	if ($m_project ne $Schulkonsole::Config::_wlan_ldap_group){
+            &addproject_to_project($m_project,$Schulkonsole::Config::_wlan_ldap_group);
+        }
+    }
+
+
+    { # can be  be a function later
+    my $dbh=&db_connect();
+    my ($id)= $dbh->selectrow_array( "SELECT id
+                                      FROM groups 
+                                      WHERE gid='$Schulkonsole::Config::_wlan_ldap_group'
+                                      ");
+    # delete all entries
+    my $sql="DELETE FROM projects_members 
+             WHERE projectid=$id 
+            ";	
+    $dbh->do($sql);
+ 
+    # add entries anew
+    while(my ($user, $value) = each(%users_to_add_by_option)) {
+        # do something with $key and $value
+        my ($uidnumber)= $dbh->selectrow_array( "SELECT uidnumber 
+                                         FROM posix_account 
+                                         WHERE uid='$user'");
+        if (defined $uidnumber){
+        my $sql="INSERT INTO projects_members
+                    (projectid,memberuidnumber)
+	             VALUES
+	            ('$id','$uidnumber')";	
+        $dbh->do($sql);
+        }
+    }
+    &db_disconnect($dbh);
+    } # end can be a function later
+}
+
+sub addgroup_to_project {
+    # add a group to a project(group), adminclass,hiddenclass or teacher group
+    my ($group,$project)=@_;
+    my $dbh=&db_connect();
+    # fetching project_id
+    my ($pro_id_sys)= $dbh->selectrow_array( "SELECT id 
+                                         FROM groups 
+                                         WHERE gid='$project'");
+    # is $group really a adminclass
+    my ($group_id_sys)= $dbh->selectrow_array( "SELECT id 
+                                         FROM classdata 
+                                         WHERE (id=(SELECT id 
+                                         FROM groups 
+                                         WHERE gid='$group')
+                                         AND (type='adminclass'
+                                          OR type='hiddenclass'
+                                          OR type='teacher'))");
+    # fetching gidnumber of group
+    my ($group_gidnumber)= $dbh->selectrow_array( "SELECT gidnumber 
+                                         FROM groups 
+                                         WHERE gid='$group'");
+    if (defined $group_gidnumber and defined $pro_id_sys 
+                                 and defined $group_id_sys){
+        print "   Adding group $group($group_gidnumber) ", 
+              "to $project(id=$pro_id_sys)\n";
+        my $sql="INSERT INTO project_groups
+                (projectid,membergid)
+	        VALUES
+	        ($pro_id_sys,$group_gidnumber)";	
+        if($Conf::log_level>=3){
+           print "\nSQL: $sql\n";
+        }
+        $dbh->do($sql);
+    } else {
+        if (not defined $group_gidnumber){
+           print "   Group $group does not exist, doing nothing. \n";
+        }
+        if (not defined $pro_id_sys){
+           print "   Project $project does not exist, doing nothing. \n";
+        }
+        if (not defined $group_id_sys){
+           print "   Group $group is not a primary group, doing nothing. \n";
+        }
+    }
+    &db_disconnect($dbh);
+}

@@ -1,0 +1,292 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+quotas_classes - quota settings for classes
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/quotas_classes
+
+=head1 DESCRIPTION
+
+C<quotas_classes> lets you edit the quotas of classes.
+The HTML template is quotas_classes.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<quotas_classes>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Session;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::SophomorixQuotas;
+use Sophomorix::SophomorixAPI;
+use Sophomorix::SophomorixConfig;
+
+
+my $this_file = 'quotas_classes';
+
+
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+if ($Conf::use_quota ne $Schulkonsole::Config::_sophomorix_conf_true) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	$url =~ s/$this_file$/quotas/g;
+	$sk_session->redirect($url);
+}
+
+my $q = $sk_session->query();
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+
+
+my @mountpoints = Schulkonsole::SophomorixQuotas::mountpoints();
+
+
+
+eval {
+COMMANDS: {
+$q->param('acceptclasses') and do {
+	my $classs = Schulkonsole::DB::classes();
+	my %new_classs;
+
+	my $is_changed = 0;
+	my @errors;
+	foreach my $param ($q->param) {
+		if (my ($gid, $action)
+		    	= $param =~ /^(.+)_class(.+-diskquota|mailquota)$/) {
+			if ($$classs{$gid}) {
+				my ($value) = $q->param($param) =~ /^\s*(.+?)\s*$/;
+				if ($value !~ /^\d*$/) {
+					push @errors, sprintf($sk_session->d()->get(
+							'%s: Quota muss eine Zahl sein'),
+						$$classs{$gid}{displayname});
+				} else {
+					if ($action =~ /^m/) {	# mailquota
+						if (   (   $$classs{$gid}{mailquota} == -1
+							    and length($value))
+						    or (    $$classs{$gid}{mailquota} != -1
+							    and $$classs{$gid}{mailquota} != $value)) {
+
+							$new_classs{$gid}{mailquota}
+								= (length($value) ? $value : -1);
+							$is_changed++;
+						}
+					} else {	# diskquota
+						my ($mountpoint) = $action =~ /^(.+?)-diskquota$/;
+						my $diskquotas =
+							(    exists $new_classs{$gid}
+							 and $new_classs{$gid}{diskquotas}) ?
+							  $new_classs{$gid}{diskquotas}
+							: Schulkonsole::SophomorixQuotas::split_diskquotas_to_hash($$classs{$gid}{quota});
+						if (   (    length($value)
+						        and not defined $$diskquotas{$mountpoint})
+						    or $$diskquotas{$mountpoint} ne $value) {
+							# add old values
+							$new_classs{$gid}{diskquotas} = $diskquotas
+								unless exists $new_classs{$gid}{diskquotas};
+
+							# overwrite with new value
+							$new_classs{$gid}{diskquotas}{$mountpoint} = $value;
+							$is_changed++;
+						}
+					}
+				}
+			} else {
+				push @errors, sprintf($sk_session->d()->get(
+					'Klasse %s unbekannt'), $gid);
+			}
+		}
+	}
+
+	if (@errors) {
+		$sk_session->set_status(join(', ', @errors), 1);
+	} elsif ($is_changed) {
+		my @queue;
+		# check values
+		foreach my $gid (keys %new_classs) {
+			my $diskquotas =
+				Schulkonsole::SophomorixQuotas::hash_to_quotastring(
+					$new_classs{$gid}{diskquotas})
+				if defined $new_classs{$gid}{diskquotas};
+			my $mailquota = $new_classs{$gid}{mailquota}
+				if defined $new_classs{$gid}{mailquota};
+			push @queue, [
+				$gid,
+				$diskquotas,
+				$mailquota ] if length $diskquotas || length $mailquota;
+		}
+
+		foreach my $quota_info (@queue) {
+			Schulkonsole::Sophomorix::class_set_quota(
+				$id, $password, @$quota_info);
+		}
+
+
+		$sk_session->set_status($sk_session->d()->get(
+			'Änderungen übernommen.'), 0);
+	} else {
+		$sk_session->set_status($sk_session->d()->get(
+			'Keine Änderungen.'), 1);
+	}
+
+
+	last COMMANDS;
+};	# end acceptclasses
+
+} # end COMMANDS
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+
+
+
+
+eval {
+my $classs = Schulkonsole::DB::classes();
+my @classs_array;
+foreach my $class (sort {
+		$$classs{$a}{displayname} cmp $$classs{$b}{displayname} }
+	keys %$classs) {
+	my $diskquotas = $$classs{$class}{quota};
+	my @quota_array;
+	if ($diskquotas ne $Schulkonsole::SophomorixQuotas::diskquota_undefined) {
+		@quota_array = split /\+(?!\+)/, $diskquotas;
+		@quota_array = () unless $#quota_array == $#mountpoints;
+	}
+	my @diskquotas;
+	foreach my $mountpoint (@mountpoints) {
+		push @diskquotas, {
+				mountpoint => $mountpoint,
+				quota => shift @quota_array,
+			};
+	}
+	my $mailquota = $$classs{$class}{mailquota};
+	$mailquota = '' if $mailquota < 0;
+
+	push @classs_array, {
+			gid => $class,
+			name => $$classs{$class}{displayname},
+			diskquotas => \@diskquotas,
+			mailquota => $mailquota,
+		};
+}
+
+=item C<classes>
+
+The quotas of the classes as an array of hashes with the keys
+
+=over
+
+=item C<gid>
+
+GID of a class
+
+=item C<name>
+
+Name of the class
+
+=item C<diskquotas>
+
+Disk quotas of the class as an array of hashes with the keys
+
+=over
+
+=item C<mountpoint>
+
+A mountpoint
+
+=item C<quota>
+
+Quota for this mountpoint in MB
+
+=back
+
+=item C<mailquota>
+
+Mail quota in MB
+
+=back
+
+=cut
+
+$sk_session->set_var('classes', \@classs_array);
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+
+=item C<mountpoints>
+
+An array with the mountpoints
+
+=cut
+
+$sk_session->set_var('mountpoints', \@mountpoints);
+
+=item C<mountpoints_cnt>
+
+The number of mountpoints
+
+=cut
+
+$sk_session->set_var('mountpoints_cnt', scalar(@mountpoints));
+
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<acceptclasses>
+
+Accept the changes of the form
+
+=item C<${classes{gid}}_class${classes{diskquotas}{mountpoint}}-diskquota>
+
+Disk quota for class C<$classes{gid}> for mountpoint
+C<$classes{diskquotas}{mountpoint}>.
+Created in loop over template variable C<classes{diskquotas}> in loop over
+template variable C<classes>
+
+=item C<${classes{gid}}_classmailquota>
+
+Mail quota for class C<$classes{gid}>.
+Created in loop over template variable C<classes>
+
+=back
+

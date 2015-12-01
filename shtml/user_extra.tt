@@ -1,0 +1,34 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Benutzer') _ " - " _ loc('Extralisten pflegen'),
+      menu     => 1,
+      submenu  => "user",
+      info     => loc('<p>Hier pflegen Sie Extraschüler und Extrakurse.</p><p>Editieren Sie die Listen in den entsprechenden Textfeldern. Geänderte Daten werden über die Schaltfläche &bdquo;Änderungen speichern&ldquo; im System gespeichert. Fahren Sie dann mit dem Menüpunkt &bdquo;Benutzerlisten prüfen&ldquo; fort.</p><p>Kommentarzeilen beginnen mit einem Gatter (#) und werden nicht ausgewertet.</p>'),
+   }
+%]
+
+<h2>[% loc('Benutzerverwaltung') %] :: [% loc('Extralisten pflegen') %]</h2>
+
+
+<form method="post" accept-charset="UTF-8">
+<h3><label [% labelfor("extrauser") %]>[% loc('Extraschüler editieren') %]</label></h3>
+
+<p>
+<textarea id="extrauser" name="extrauser" rows="20" cols="70">[% extrauser %]</textarea>
+</p>
+
+<p><input type="submit" name="extrauseredit" value="[% loc('Änderungen speichern') %]"></p>
+
+</form>
+
+<hr>
+
+<form method="post" accept-charset="UTF-8">
+<h3><label [% labelfor("extracourse") %]>[% loc('Extrakurse editieren') %]</label></h3>
+
+<p>
+<textarea id="extracourse" name="extracourse" rows="20" cols="70">[% extracourse %]</textarea>
+</p>
+
+<p><input type="submit" name="extracourseedit" value="[% loc('Änderungen speichern') %]"></p>
+
+</form>

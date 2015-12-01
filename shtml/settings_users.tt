@@ -1,0 +1,288 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Einstellungen') _ " - " _ loc('Benutzerverwaltung'),
+      menu     => 1,
+      submenu  => "settings",
+      info     => loc('<p>Bearbeiten Sie hier die globalen Einstellungen für die Benutzerverwaltung.</p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</p>'),
+   }
+%]
+
+<h2>[% loc('Einstellungen') %] :: [% loc('Benutzerverwaltung') %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+
+<h3>[% loc('Global') %]</h3>
+[% lfdnr = 1 %]
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("log_level") %]>[% loc('Log-Meldungen') %]</label></td>
+<td>
+<select name="log_level" id="log_level">
+<option value="1"[% IF log_level == 1 %] selected[% END %]>[% loc('Minimale Augabe') %]</option>
+<option value="2"[% IF log_level == 2 %] selected[% END %]>[% loc('Mittlere Ausgabe') %]</option>
+<option value="3"[% IF log_level == 3 %] selected[% END %]>[% loc('Maximale Ausgabe') %]</option>
+</select>
+</td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("mindest_schueler_anzahl_pro_klasse") %] accesskey="g">[% loc('Anzahl der Schüler pro Klasse') %]</label></td>
+<td><input type="text" size="5" maxlength="4" name="mindest_schueler_anzahl_pro_klasse" id="mindest_schueler_anzahl_pro_klasse" value="[% mindest_schueler_anzahl_pro_klasse %]">
+  - <input type="text" size="5" maxlength="4" name="maximale_schueler_anzahl_pro_klasse" id="maximale_schueler_anzahl_pro_klasse" value="[% maximale_schueler_anzahl_pro_klasse %]"></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("geburts_jahreszahl_start") %] accesskey="g">[% loc('Geburtsjahreszahl für Schüler') %]</label></td>
+<td><input type="text" size="5" maxlength="4" name="geburts_jahreszahl_start" id="geburts_jahreszahl_start" value="[% geburts_jahreszahl_start %]">
+  - <input type="text" size="5" maxlength="4" name="geburts_jahreszahl_stop" id="geburts_jahreszahl_stop" value="[% geburts_jahreszahl_stop %]"></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("splan_sternchenklassen_filtern") %] accesskey="f">[% loc('Sternchenklassen filtern') %]</label></td>
+<td><input type="checkbox" name="splan_sternchenklassen_filtern" id="splan_sternchenklassen_filtern"[% IF splan_sternchenklassen_filtern %] checked[% END %]></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("use_quota") %]>[% loc('Quota aktivieren') %]</label></td>
+<td><input type="checkbox" name="use_quota" id="use_quota"[% IF use_quota %] checked[% END %]></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+[% IF mountpoints %]
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td>[% loc('Standardquota Lehrer') %]</td>
+<td>
+
+<table class="tabletable">
+<tr>
+[% FOREACH m IN mountpoints %]
+<th><label [% labelfor("${m}_quotateacher") %]>[% m %]</label></th>
+[% END %]
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr>
+[% FOREACH m IN mountpoints %]
+<td><input size="6" maxlength="5" name="[% m %]_quotateacher" id="[% m %]_quotateacher" [% dovalue("${m}_quotateacher") %]> MB</td>
+[% END %]
+[% lfdnr = lfdnr + 1 %]</tr>
+</table>
+
+</td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td>[% loc('Standardquota Schüler') %]</td>
+<td>
+
+<table class="tabletable">
+<tr>
+[% FOREACH m IN mountpoints %]
+<th><label [% labelfor("${m}_quotastudent") %]>[% m %]</label></th>
+[% END %]
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr>
+[% FOREACH m IN mountpoints %]
+<td><input size="6" maxlength="5" name="[% m %]_quotastudent" id="[% m %]_quotastudent" [% dovalue("${m}_quotastudent") %]> MB</td>
+[% END %]
+[% lfdnr = lfdnr + 1 %]</tr>
+</table>
+
+</td>
+[% lfdnr = lfdnr + 1 %]</tr>
+[% END %]
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("activateglobalshares") %]>[% loc('Schulweites Tauschen aktivieren') %]</label></td>
+[% IF activateglobalshares %]
+<td><input type="checkbox" name="activateglobalshares" id="activateglobalshares" checked></td>
+[% ELSE %]
+<td><input type="checkbox" name="activateglobalshares" id="activateglobalshares"></td>
+[% END %]
+[% lfdnr = lfdnr + 1 %]</tr>
+</table>
+
+<hr>
+<h3>[% loc('Kodierungen') %]</h3>
+[% lfdnr = 1 %]
+
+<table class="settings">
+<colgroup span="2" width="50%"></colgroup>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("encoding_students") %]>[% loc('Kodierung der Datei schueler.txt') %]</label></td>
+<td><select name="encoding_students">
+[% FOREACH e IN encodings %]
+<option[% IF encoding_students == e %] selected[% END %]>[% e %]</option>
+[% END %]
+</select></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("encoding_teachers") %]>[% loc('Kodierung der Datei lehrer.txt') %]</label></td>
+<td><select name="encoding_teachers">
+[% FOREACH e IN encodings %]
+<option[% IF encoding_teachers == e %] selected[% END %]>[% e %]</option>
+[% END %]
+</select></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("encoding_students_extra") %]>[% loc('Kodierung der Datei extraschueler.txt') %]</label></td>
+<td><select name="encoding_students_extra">
+[% FOREACH e IN encodings %]
+<option[% IF encoding_students_extra == e %] selected[% END %]>[% e %]</option>
+[% END %]
+</select></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("encoding_courses_extra") %]>[% loc('Kodierung der Datei extrakurse.txt') %]</label></td>
+<td><select name="encoding_courses_extra">
+[% FOREACH e IN encodings %]
+<option[% IF encoding_courses_extra == e %] selected[% END %]>[% e %]</option>
+[% END %]
+</select></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+</table>
+
+<hr>
+
+<h3>[% loc('E-Mail') %]</h3>
+[% lfdnr = 1 %]
+
+<table class="settings">
+<colgroup span="2" width="50%"></colgroup>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("mail_aliases") %]>[% loc('Mailalias-Struktur') %]</label></td>
+<td><select name="mail_aliases">
+<option[% IF mail_aliases == 'vorname.nachname' %] selected[% END %]>vorname.nachname</option>
+<option[% IF mail_aliases == 'vorname_nachname' %] selected[% END %]>vorname_nachname</option>
+</select></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("mailquota_warnings") %] accesskey="f">[% loc('Mailquota-Warnungen') %]</label></td>
+<td><input type="checkbox" name="mailquota_warnings" id="mailquota_warnings"[% IF mailquota_warnings %] checked[% END %]></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("mailquota_warn_percentage") %]>[% loc('Warnung bei weniger als') %]</label></td>
+<td><input type="text" size="3" name="mailquota_warn_percentage" id="mailquota_warn_percentage" value="[% mailquota_warn_percentage %]"> % [% loc('Platz') %]</td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("mailquota_warn_kb") %]>[% loc('Warnung bei weniger als') %]</label></td>
+<td><input type="text" size="3" name="mailquota_warn_kb" id="mailquota_warn_kb" value="[% mailquota_warn_kb %]"> kB [% loc('Platz') %]</td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("mailquota_warnings_root") %] accesskey="f">[% loc('Mailquota-Überschreitung an root melden') %]</label></td>
+<td><input type="checkbox" name="mailquota_warnings_root" id="mailquota_warnings_root"[% IF mailquota_warnings_root %] checked[% END %]></td>
+</table>
+
+<hr>
+
+<h3>[% loc('Login') %] [% loc('(Lehrer)') %]</h3>
+[% lfdnr = 1 %]
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("lehrer_zufall_passwort") %]>[% loc('Zufallspasswort') %]</label></td>
+<td><input type="checkbox" name="lehrer_zufall_passwort" id="lehrer_zufall_passwort"[% IF lehrer_zufall_passwort %] checked[% END %]></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("zufall_passwort_anzahl_lehrer") %]>[% loc('Zufallspasswortzeichen') %]</label></td>
+<td><input type="text" size="3" name="zufall_passwort_anzahl_lehrer" id="zufall_passwort_anzahl_lehrer" value="[% zufall_passwort_anzahl_lehrer %]"></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("lehrer_per_ssh") %]>[% loc('Shell aktivieren') %]</label></td>
+<td><input type="checkbox" name="lehrer_per_ssh" id="lehrer_per_ssh"[% IF lehrer_per_ssh %] checked[% END %]></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("teacher_samba_pw_must_change") %]>[% loc('Sambapasswort bei Erstanmeldung ändern') %]</label></td>
+<td><input type="checkbox" name="teacher_samba_pw_must_change" id="teacher_samba_pw_must_change"[% IF teacher_samba_pw_must_change %] checked[% END %]></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+</table>
+
+<hr>
+
+<h3>[% loc('Login') %] [% loc('(Schüler)') %]</h3>
+[% lfdnr = 1 %]
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("schueler_zufall_passwort") %]>[% loc('Zufallspasswort') %]</label></td>
+<td><input type="checkbox" name="schueler_zufall_passwort" id="schueler_zufall_passwort"[% IF schueler_zufall_passwort %] checked[% END %]></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("zufall_passwort_anzahl_schueler") %]>[% loc('Zufallspasswortzeichen') %]</label></td>
+<td><input type="text" size="3" name="zufall_passwort_anzahl_schueler" id="zufall_passwort_anzahl_schueler"  value="[% zufall_passwort_anzahl_schueler %]"></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("schueler_per_ssh") %]>[% loc('Shell aktivieren') %]</label></td>
+<td><input type="checkbox" name="schueler_per_ssh" id="schueler_per_ssh"[% IF schueler_per_ssh %] checked[% END %]></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("student_samba_pw_must_change") %]>[% loc('Sambapasswort bei Erstanmeldung ändern') %]</label></td>
+<td><input type="checkbox" name="student_samba_pw_must_change" id="student_samba_pw_must_change"[% IF student_samba_pw_must_change %] checked[% END %]></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+</table>
+
+<hr>
+
+<h3>[% loc('Löschen') %] [% loc('(Lehrer)') %]</h3>
+[% lfdnr = 1 %]
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("lehrer_duldung_tage") %]>[% loc('Duldungszeitraum') %]</label></td>
+<td><input size="5" maxlength="4" name="lehrer_duldung_tage" id="lehrer_duldung_tage" value="[% lehrer_duldung_tage %]"> Tage</td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("lehrer_deaktivierung_tage") %]>[% loc('Deaktivierungszeitraum') %]</label></td>
+<td><input size="5" maxlength="4" name="lehrer_deaktivierung_tage" id="lehrer_deaktivierung_tage" value="[% lehrer_deaktivierung_tage %]"> Tage</td>
+[% lfdnr = lfdnr + 1 %]</tr>
+</table>
+
+<hr>
+
+<h3>[% loc('Löschen') %] [% loc('(Schüler)') %]</h3>
+[% lfdnr = 1 %]
+
+<table class="settings">
+<colgroup span="2" width="50%">
+</colgroup>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("schueler_duldung_tage") %]>[% loc('Duldungszeitraum') %]</label></td>
+<td><input size="5" maxlength="4" name="schueler_duldung_tage" id="schueler_duldung_tage" value="[% schueler_duldung_tage %]"> Tage</td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("schueler_deaktivierung_tage") %]>[% loc('Deaktivierungszeitraum') %]</label></td>
+<td><input size="5" maxlength="4" name="schueler_deaktivierung_tage" id="schueler_deaktivierung_tage" value="[% schueler_deaktivierung_tage %]"> Tage</td>
+[% lfdnr = lfdnr + 1 %]</tr>
+</table>
+
+<h3>[% loc('Druckdaten') %]</h3>
+[% lfdnr = 1 %]
+<table class="settings">
+<colgroup span="2" width="50%"></colgroup>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("schul_name") %]>[% loc('Schulname') %]</label></td>
+<td><input size="30" maxlength="80" name="schul_name" id="schul_name" value="[% schul_name %]"></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("server_fqdn_internal_print") %]>[% loc('Interner Servername') %]</label></td>
+<td><input size="30" maxlength="80" name="server_fqdn_internal_print" id="server_fqdn_internal_print" value="[% server_fqdn_internal_print %]"></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("server_fqdn_external_print") %]>[% loc('Externer Servername') %]</label></td>
+<td><input size="30" maxlength="80" name="server_fqdn_external_print" id="server_fqdn_external_print" value="[% server_fqdn_external_print %]"></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("smb_domain_print") %]>[% loc('Samba-Domäne') %]</label></td>
+<td><input size="30" maxlength="80" name="smb_domain_print" id="smb_domain_print" value="[% smb_domain_print %]"></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("moodle_url") %]>[% loc('Moodle-URL') %]</label></td>
+<td><input size="30" maxlength="80" name="moodle_url" id="moodle_url" value="[% moodle_url %]"></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td><label [% labelfor("admins_print") %]>[% loc('Administratoren') %]</label></td>
+<td><input size="40" maxlength="80" name="admins_print" id="admins_print" value="[% admins_print %]"></td>
+[% lfdnr = lfdnr + 1 %]</tr>
+</table>
+<p>
+<input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
+</p>
+
+</form>

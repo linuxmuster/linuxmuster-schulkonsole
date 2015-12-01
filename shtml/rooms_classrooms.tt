@@ -1,0 +1,51 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Räume') _ " - " _ loc('EDV-Räume'),
+      menu     => 1,
+      submenu  => "rooms",
+      info     => loc('<p>Legen Sie hier fest, welche Räume von der Schulkonsole als Computerraum unter &bdquo;aktueller Raum&ldquo; verwaltbar sein sollen.</p>'),
+   }
+%]
+
+[% IF unconfigured %]
+<p class="important">
+[% loc('Die Liste der konfigurierten Hosts und ihrer Räme stimmt nicht mit den tatsächlich im System vorhandenen Hosts überein. Bitte überprüfen Sie die <a href="hosts">Hosts-Liste</a>.') %]
+</p>
+[% ELSIF unimported %]
+<p class="important">
+[% loc('Es wurden noch nicht alle Hosts mit ihren Rämen in das System übernommen. Bitte überprüfen Sie die <a href="hosts">Hosts-Liste</a>.') %]
+</p>
+[% END %]
+
+<h2>[% loc('Räume') %]</h2>
+
+<form method="post" accept-charset="UTF-8">
+
+
+<table id="rooms" class="liste">
+<col width="10%">
+<col width="70%">
+<col width="20%">
+<tr>
+<th>[% loc('Nr.') %]</th>
+<th>[% loc('Raumbezeichnung') %]</th>
+<th>[% loc('Computerraum') %]</th>
+</tr>
+[% lfdnr=1 %]
+[% FOREACH r IN rooms %]
+    <tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+        <td class="lfdnr">[% lfdnr %].</td>
+        <td><label [% labelfor("${r.name}_classroom") %]>[% r.name %]</label></td>
+        <td><input type="checkbox" id="[% r.name %]_classroom" name="[% r.name %]_classroom"
+        [% IF r.selected %] checked[% END %]></td>
+    </tr>
+    [% lfdnr=lfdnr+1 %]
+[% END %]
+</table>
+
+
+
+<p>
+<input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
+</p>
+
+</form>

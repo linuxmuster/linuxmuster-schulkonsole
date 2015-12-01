@@ -24,6 +24,7 @@ Schulkonsole::Config - access to schulkonsole configuration
 
 use strict;
 use utf8;
+use utf8;
 use open ':utf8';
 
 package Schulkonsole::Config;
@@ -42,6 +43,7 @@ $VERSION = 0.06;
 	rooms
 	hosts
 	workstations
+	linbogroups
 
 	printers_room
 	printers
@@ -67,12 +69,12 @@ $VERSION = 0.06;
 	$_dhcpd_conf_file
 	$_printers_file
 	$_classrooms_file
-	$_blocked_hosts_internet_file
+	$_allowed_hosts_internet_file
 	$_blocked_hosts_intranet_file
 	$_unfiltered_hosts_file
 	$_cups_printers_conf_file
-	$_group_defaults_file
-	$_allowed_groups_wlan_file
+	$_wlan_defaults_file
+	$_wlan_ldap_group
 
 	$_login_template
 
@@ -81,6 +83,8 @@ $VERSION = 0.06;
 	$_login_expire_time
 	$_tmp_valid_time
 
+	$_min_password_len
+	$_max_password_len
 	$_http_root
 	$_htaccess_filename
 
@@ -129,6 +133,7 @@ $VERSION = 0.06;
 	$_cmd_wlan_on_off
 	$_cmd_linuxmuster_wlan_reset
 	$_cmd_horde_mail
+	$_cmd_linbo_remote
 
 	$_shell
 
@@ -136,7 +141,7 @@ $VERSION = 0.06;
 	$_sophomorix_conf_false
 
 	QUOTAAPP
-	CYRUSQUOTAAPP
+	CYRQUOTAAPP
 
 	INTERNETONOFFAPP
 	INTRANETONOFFAPP
@@ -146,6 +151,7 @@ $VERSION = 0.06;
 	URLFILTERONOFFAPP
 	ALLONAPP
 	ALLONATAPP
+	WLANALLOWEDAPP
 	WLANONOFFAPP
 	WLANRESETATAPP
 	WLANRESETAPP
@@ -156,13 +162,20 @@ $VERSION = 0.06;
 	PRINTERGETQUOTAAPP
 	SHARESTATESAPP
 	SHARESONOFFAPP
+	FILEMANAPP
+	STUDENTSFILEMANAPP
+	LSHANDEDOUTAPP
 	LSHANDOUTAPP
 	LSCOLLECTAPP
+	LSCOMMITSAPP
+	LSCOMMITAPP
 	HANDOUTAPP
 	COLLECTAPP
 	RESETROOMAPP
 	EDITOWNCLASSMEMBERSHIPAPP
 	PRINTCLASSAPP
+	PRINTALLUSERSAPP
+	PRINTCOMMITAPP
 	PRINTTEACHERSAPP
 	PRINTPROJECTAPP
 	SETPASSWORDSAPP
@@ -191,6 +204,9 @@ $VERSION = 0.06;
 	LINBOCOPYSTARTCONFAPP
 	LINBOCOPYREGPATCHAPP
 	LINBOIMAGEAPP
+	LINBOREMOTESTATUSAPP
+	LINBOREMOTEWINDOWAPP
+	LINBOREMOTEAPP
 
 	TEST_NONE
 	TEST_HANDOUT
@@ -267,6 +283,10 @@ C<all_on_at>
 
 C<rooms_reset>
 
+=item C<WLANALLOWEDAPP>
+
+C<allowed_groups_users_wlan>
+
 =item C<WLANONOFFAPP>
 
 C<wlan_on_off>
@@ -293,9 +313,10 @@ use constant {
 	ALLONAPP => 6007,
 	ALLONATAPP => 6008,
 	ROOMSRESETAPP => 6009,
-	WLANONOFFAPP => 6010,
-	WLANRESETATAPP => 6011,
-	WLANRESETAPP => 6012,
+	WLANALLOWEDAPP => 6010,
+	WLANONOFFAPP => 6011,
+	WLANRESETATAPP => 6012,
+	WLANRESETAPP => 6013,
 };
 
 =head3 Constants for wrapper-printer
@@ -346,6 +367,18 @@ C<share_states>
 
 C<shares_on_off>
 
+=item C<FILEMANAPP>
+
+C<fileman>
+
+=item C<STUDENTSFILEMANAPP>
+
+C<studentsfileman>
+
+=item C<LSHANDEDOUTAPP>
+
+C<ls_handedout>
+
 =item C<LSHANDOUTAPP>
 
 C<ls_handout>
@@ -353,6 +386,14 @@ C<ls_handout>
 =item C<LSCOLLECTAPP>
 
 C<ls_collect>
+
+=item C<LSCOMMITSAPP>
+
+C<ls_commits>
+
+=item C<LSCOMMITAPP>
+
+C<ls_commit>
 
 =item C<HANDOUTAPP>
 
@@ -373,6 +414,14 @@ C<edit_own_class_membership>
 =item C<PRINTCLASSAPP>
 
 C<print_class>
+
+=item C<PRINTALLUSERSAPP>
+
+C<print_allusers>
+
+=item C<PRINTCOMMITAPP>
+
+C<print_commit>
 
 =item C<PRINTTEACHERSAPP>
 
@@ -500,6 +549,13 @@ use constant {
 	CHANGEMAILLISTCLASSAPP => 8030,
 	CHANGEMAILALIASPROJECTAPP => 8031,
 	CHANGEMAILLISTPROJECTAPP => 8032,
+	FILEMANAPP => 8033,
+	STUDENTSFILEMANAPP => 8034,
+	LSHANDEDOUTAPP =>8035,
+	LSCOMMITSAPP => 8036,
+	LSCOMMITAPP => 8037,
+	PRINTALLUSERSAPP => 8038,
+	PRINTCOMMITAPP => 8039,
 };
 
 =head3 Constants for wrapper-cyrus
@@ -507,6 +563,8 @@ use constant {
 =over
 
 =item C<CYRUSQUOTAAPP>
+
+C<cyrusquota>
 
 =back
 
@@ -599,9 +657,21 @@ C<linbo_write>
 
 C<linbo_manage_images>
 
-=item C<LINBOWRITEPXEAPP>
+=item C<LINBOWRITEGRUBCFGAPP>
 
-C<linbo_write_pxe>
+C<linbo_write_grub_cfg>
+
+=item C<LINBOREMOTESTATUSAPP>
+
+C<linbo_remote_status>
+
+=item C<LINBOREMOTEWINDOWAPP>
+
+C<linbo_remote_window>
+
+=item C<LINBOREMOTEAPP>
+
+C<linbo_remote>
 
 =back
 
@@ -614,7 +684,10 @@ use constant {
 	LINBODELETEAPP => 13004,
 	LINBOWRITEAPP => 13005,
 	LINBOIMAGEAPP => 13006,
-	LINBOWRITEPXEAPP => 13007,
+	LINBOWRITEGRUBCFGAPP => 13007,
+	LINBOREMOTESTATUSAPP => 13008,
+	LINBOREMOTEWINDOWAPP => 13009,
+	LINBOREMOTEAPP => 13010,
 };
 
 
@@ -624,12 +697,15 @@ use constant {
 
 =item C<DEBCONFREADAPP>
 
+=item C<DEBCONFREADSMTPRELAYAPP>
+
 =back
 
 =cut
 
 use constant {
 	DEBCONFREADAPP => 15001,
+	DEBCONFREADSMTPRELAYAPP => 15002,
 };
 
 
@@ -758,9 +834,13 @@ Default network settings
 
 LINBO directory
 
-=item C<$_pxe_config_dir>
+=item C<$_grub_config_dir>
 
-PXE Config directory
+Grub Config directory
+
+=item C<$_grub_templates_dir>
+
+Grub templates directory
 
 =item C$_linbo_log_dir>
 
@@ -778,14 +858,14 @@ Directory holding LINBO templates for section [OS]
 
 The LINBO template for section [Partition]
 
-=item C<$_group_defaults_file>
+=item C<$_wlan_defaults_file>
 
 This file defines the default wlan settings
 
-=item C<$_allowed_groups_wlan_file>
+=item C<$_wlan_ldap_group>
 
-This file defines the actual allowed wlan classes/projects
-
+This variable holds the ldap group name, that wlan access is granted to.
+ 
 =back
 
 =cut
@@ -795,12 +875,13 @@ use vars qw($_workstations_file $_workstations_log_file
             $_room_defaults_file $_classrooms_file
             $_printers_file
             $_network_settings_file
-            $_linbo_dir $_pxe_config_dir 
+            $_linbo_dir $_grub_config_dir
+            $_grub_templates_dir
             $_linbo_log_dir $_linbo_start_conf_prefix
             $_linbo_templates_dir $_linbo_templates_os_dir
             $_linbo_template_partition
             $_dhcpd_conf_file
-            $_group_defaults_file $_allowed_groups_wlan_file);
+            $_wlan_defaults_file $_wlan_ldap_group);
 
 
 =head3 Files with status information
@@ -815,9 +896,9 @@ Major version of linuxmuster.net distribution
 
 Directory where Linuxmusterloesung caches information
 
-=item C<$_blocked_hosts_internet_file>
+=item C<$_allowed_hosts_internet_file>
 
-This file contains a cached list of hosts that are blocked from the internet
+This file contains a cached list of hosts that are allowed to access the internet
 
 =item C<$_blocked_hosts_intranet_file>
 
@@ -846,7 +927,7 @@ True if linuxmuster is started at boot time
 
 use vars qw($_lml_majorversion
             $_lml_cache_dir
-            $_blocked_hosts_internet_file $_blocked_hosts_intranet_file
+            $_allowed_hosts_internet_file $_blocked_hosts_intranet_file
             $_unfiltered_hosts_file $_cups_printers_conf_file
             $_workstation_file
             $_lml_start);
@@ -887,12 +968,20 @@ Time after which to delete the session if the user did not log in
 
 Time after which to invalidate temporarily stored data
 
+=item C<$_min_password_len>
+
+Minimal password length enforced.
+
+=item C<$_max_password_len>
+
+Maximal password length enforced.
+
 =back
 
 =cut
 
 use vars qw($_max_idle_time $_session_expire_time $_login_expire_time
-            $_tmp_valid_time);
+            $_tmp_valid_time $_min_password_len $_max_password_len);
 
 
 =head3 Web server settings
@@ -1124,6 +1213,10 @@ Path to command to reset group settings C<group-reset>
 
 Path to command to read mail forwards C<schulkonsole.php>
 
+=item C<$_cmd_linbo_remote>
+
+Path to command to schedule linbo-remote tasks.
+
 =back
 
 =cut
@@ -1159,7 +1252,8 @@ use vars qw(%_id_root_app_names
             $_cmd_ovpn_client_cert
             $_cmd_wlan_on_off
             $_cmd_linuxmuster_wlan_reset
-            $_cmd_horde_mail);
+            $_cmd_horde_mail
+            $_cmd_linbo_remote);
 
 
 =head3 Other variables
@@ -1200,7 +1294,8 @@ my %lml_env;
 tie %lml_env, 'Env::Bash', Source => $lml_config_file;
 $_lml_majorversion = $lml_env{DISTMAJORVERSION};
 $_lml_cache_dir = $lml_env{CACHEDIR};
-$_blocked_hosts_internet_file = $lml_env{BLOCKEDHOSTSINTERNET};
+# FIXME: neue dist-Variable
+$_allowed_hosts_internet_file = '/var/cache/linuxmuster/allowedips';
 $_blocked_hosts_intranet_file = $lml_env{BLOCKEDHOSTSINTRANET};
 $_unfiltered_hosts_file = $lml_env{UNFILTEREDHOSTS};
 $_workstations_file = $lml_env{WIMPORTDATA};
@@ -1212,13 +1307,14 @@ $_printers_file = $lml_env{PRINTERS};
 $_classrooms_file = $lml_env{CLASSROOMS};
 $_network_settings_file = $lml_env{NETWORKSETTINGS};
 $_linbo_dir = $lml_env{LINBODIR};
-$_pxe_config_dir = $lml_env{LINBODIR} . '/boot/grub';
+$_grub_templates_dir = '/usr/share/linuxmuster-linbo/templates';
+$_grub_config_dir = $lml_env{LINBODIR} . '/boot/grub';
 $_linbo_templates_dir = '@datadir@/@PACKAGE@/linbo/templates';
 $_linbo_log_dir = $lml_env{LINBOLOGDIR};
 $_linbo_templates_os_dir = "$_linbo_templates_dir/os";
 $_linbo_template_partition = "$_linbo_templates_dir/part/start.conf.partition";
-$_group_defaults_file = '/etc/linuxmuster/group_defaults';
-$_allowed_groups_wlan_file = '/etc/freeradius/users';
+$_wlan_defaults_file = '/etc/linuxmuster/wlan_defaults';
+$_wlan_ldap_group = 'p_wifi';
 
 $_linbo_start_conf_prefix = $_linbo_dir . '/start.conf.';
 
@@ -1235,7 +1331,7 @@ $_cups_printers_conf_file = '/etc/cups/printers.conf';
 
 $_workstation_file = "$_lml_cache_dir/logins/%s";
 
-$_login_template = 'login.shtml';
+$_login_template = 'login.tt';
 
 
 $_max_idle_time = '+30m';	# ask for password after 30 minutes idle time
@@ -1244,6 +1340,9 @@ $_login_expire_time = '+1h';	# invalidate session unless logged in within an
                              	# hour
 
 $_tmp_valid_time = '+1m';	# invalidate temporarily stored data after 1 minute
+
+$_min_password_len = 8;       # enforce password length requirement
+$_max_password_len = 15;
 
 $_http_root = '/schulkonsole';
 $_htaccess_filename = '.htaccess';
@@ -1266,6 +1365,7 @@ $_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
 %_id_root_app_names = (
 	INTERNETONOFFAPP() => 'internet_on_off',
 	INTRANETONOFFAPP() => 'intranet_on_off',
+	WLANALLOWEDAPP() => 'allowed_groups_users_wlan',
 	WLANONOFFAPP() => 'wlan_on_off',
 	WLANRESETATAPP() => 'wlan_reset_at',
 	WLANRESETAPP() => 'wlan_reset',
@@ -1283,13 +1383,20 @@ $_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
 	PRINTERGETQUOTAAPP() => 'print_quota',
 	SHARESTATESAPP() => 'share_states',
 	SHARESONOFFAPP() => 'shares_on_off',
+	FILEMANAPP() => 'fileman',
+	STUDENTSFILEMANAPP() => 'studentsfileman',
+	LSHANDEDOUTAPP() => 'ls_handedout',
 	LSHANDOUTAPP() => 'ls_handout',
 	LSCOLLECTAPP() => 'ls_collect',
+	LSCOMMITSAPP() => 'ls_commits',
+	LSCOMMITAPP() => 'ls_commit',
 	HANDOUTAPP() => 'handout',
 	COLLECTAPP() => 'collect',
 	RESETROOMAPP() => 'room_reset',
 	EDITOWNCLASSMEMBERSHIPAPP() => 'edit_own_class_membership',
 	PRINTCLASSAPP() => 'print_class',
+	PRINTALLUSERSAPP() => 'print_allusers',
+	PRINTCOMMITAPP() => 'print_commit',
 	PRINTTEACHERSAPP() => 'print_teachers',
 	PRINTPROJECTAPP() => 'print_project',
 	SETPASSWORDSAPP() => 'set_passwords',
@@ -1323,9 +1430,13 @@ $_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
 	LINBOCOPYREGPATCHAPP() => 'copy_regpatch',
 	LINBODELETEAPP() => 'linbo_delete',
 	LINBOWRITEAPP() => 'linbo_write',
-	LINBOWRITEPXEAPP() => 'linbo_write_pxe',
+	LINBOWRITEGRUBCFGAPP() => 'linbo_write_grub_cfg',
 	LINBOIMAGEAPP() => 'linbo_manage_images',
+	LINBOREMOTESTATUSAPP() => 'linbo_remote_status',
+	LINBOREMOTEWINDOWAPP() => 'linbo_remote_window',
+	LINBOREMOTEAPP() => 'linbo_remote',
 	DEBCONFREADAPP() => 'debconf_read',
+	DEBCONFREADSMTPRELAYAPP() => 'read_smtprelay',
 );
 
 
@@ -1358,10 +1469,10 @@ $_cmd_update_linbofs = '/usr/share/linuxmuster-linbo/update-linbofs.sh';
 $_cmd_update_logins = '/usr/share/linuxmuster/scripts/update-logins.sh';
 $_cmd_urlfilter_check = '/usr/share/linuxmuster/scripts/check_urlfilter.sh';
 $_cmd_urlfilter_on_off = '/usr/share/linuxmuster/scripts/urlfilter_on_off.sh';
-$_cmd_wlan_on_off = '/usr/share/linuxmuster/scripts/wlan_on_off.sh';
+$_cmd_wlan_on_off = '/usr/sbin/wlan_on_off';
 $_cmd_linuxmuster_wlan_reset = '/usr/sbin/linuxmuster-wlan-reset';
 $_cmd_horde_mail = '/usr/share/schulkonsole/Schulkonsole/horde-mail.php';
-
+$_cmd_linbo_remote = '/usr/sbin/linbo-remote';
 $_sophomorix_conf_true = 'yes';
 $_sophomorix_conf_false = 'no';
 
@@ -1975,6 +2086,42 @@ sub workstations {
 
 
 
+=head3 linbogroups()
+
+Get all groups that have a start.conf.*
+
+=head4 Return value
+
+A reference to a hash with the group names as keys
+
+=head4 Description
+
+Extracts the groupname from the filenames /var/linbo/start.conf.<GROUP>
+and returns them in a hash.
+
+=cut
+
+sub linbogroups {
+	my @files = glob($Schulkonsole::Config::_linbo_start_conf_prefix . '*');
+
+	my %re;
+	# this will take all files, that start with _linbo_start_conf_prefix
+	# plus a valid group name and optionally an arbitrary suffix (except it
+	# ends with '~')
+	foreach my $file (@files) {
+		next if $file =~ /~$/;	# skip editor backup files
+		my ($group) = $file =~ /^\Q${Schulkonsole::Config::_linbo_start_conf_prefix}\E([a-z\d_]+.*)/;
+		next unless $group;
+
+		$re{ Schulkonsole::Encode::from_fs($group) } = 1;
+	}
+
+	return \%re;
+}
+
+
+
+
 =head3 C<printers_room($room)>
 
 Returns a list of all printers in a room
@@ -2199,6 +2346,12 @@ $_max_idle_time = $preferences{max_idle_time}
 $_templatedir = $preferences{templatedir}
 	if (    exists $preferences{templatedir}
 	    and -d $preferences{templatedir});
+$_min_password_len = $preferences{min_password_len}
+	if (exists $preferences{min_password_len});
+$_max_password_len = $preferences{max_password_len}
+    if (exists $preferences{max_password_len});
+$_wlan_ldap_group = $preferences{wlan_ldap_group}
+	if (exists $preferences{wlan_ldap_group});
 };
 
 

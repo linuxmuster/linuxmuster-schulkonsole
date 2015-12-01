@@ -13,8 +13,10 @@ use CGI::Session qw(-ip_match);
 use Crypt::CBC;
 use Digest::MD5;
 use Schulkonsole::Config;
+use Sophomorix::SophomorixConfig;
 use Schulkonsole::DB;
-use Schulkonsole::Template;
+use Template;
+use Template::Constants qw ( :debug );
 
 
 package Schulkonsole::Session;
@@ -29,10 +31,12 @@ Schulkonsole::Session - session management for schulkonsole
 
  # create new session
  my $session = new Schulkonsole::Session('file.cgi');
-
+ # create new session with additional textdomain 'name'
+ my $session = new Schulkonsole::Session('file.cgi','name');
+ 
  my $q = $session->query(); # get CGI-object
  my $d = $session->d(); # get Locale::gettext-object
-
+ my $d = $session->d($textdomain); # get Locale::gettext-object for $textdomain
 
  # get information from user data
  my $username = $session->userdata('uid');
@@ -50,9 +54,9 @@ Schulkonsole::Session - session management for schulkonsole
  # put label for <input>-field 'username' in class="error"
  $session->mark_input_error('username');
 
- # produce output using template.shtml.
+ # produce output using template.tt.
  # unspecified <form>-action will be "file.cgi"
- $session->print_page('template.shtml', 'file.cgi');
+ $session->print_page('template.tt', 'file.cgi');
 
  # delete the underlying CGI::Session-object and
  # delete the user's session cookie
@@ -159,7 +163,8 @@ Corresponds to the environment variable SERVER_NAME
 sub new {
 	my $class = shift;
 	my $page = shift;
-
+        my $plugin = shift;
+        
 	my $this = {
 		template_vars => {},
 		input_errors => {},
@@ -168,7 +173,7 @@ sub new {
 	bless $this, $class;
 
 
-	$this->init($page);
+	$this->init($page,$plugin);
 
 	return $this;
 }
@@ -200,6 +205,81 @@ sub end_session {
 }
 
 
+
+=head3 C<print_header()>
+
+=head4 Description
+
+Saves the session data in a cookie for next invocation and sends header information.
+
+=cut
+
+sub print_header{
+	my $this = shift;
+
+		# if we have path-info the links within the page will not work
+	# we should not be here
+	my $path = $this->{query}->path_info();
+	if ($path) {
+		my $url = $this->{query}->url( -absolute => 1 );
+		$url =~ s:/+$::; # delete multiple / remaining from path-info
+		print $this->{query}->redirect( -uri => $url,
+		                         -status => 303 );
+
+		exit;
+	}
+
+	my $session_id = $this->{session}->id;
+
+	my $old_session_id = $this->{query}->cookie(CGI::Session->name());
+	my $no_cookies = 1 unless ($old_session_id or $this->{logout});
+
+	if ($this->{logout}) {
+		my @cookies = (
+			$this->{query}->cookie(
+				-name => $this->{session}->name,
+				-value => 'expired',
+				-expires => 'now',
+				-path => $Schulkonsole::Config::_http_root,
+				-secure => 1,
+			),
+			$this->{query}->cookie(
+				-name => 'key',
+				-value => 'expired',
+				-expires => 'now',
+				-path => $Schulkonsole::Config::_http_root,
+				-secure => 1,
+			),
+		);
+		print $this->{query}->header(-type => 'text/html', -charset => 'UTF-8',
+								 -cookie => \@cookies, -expires => 'now' );
+	} elsif (   $no_cookies
+	         or $session_id ne $old_session_id) {
+		my $cookie = $this->{query}->cookie(
+			-name => $this->{session}->name,
+			-value => $session_id,
+			-path => $Schulkonsole::Config::_http_root,
+			-secure => 1,
+		);
+		print $this->{query}->header( -type => 'text/html', -charset => 'UTF-8',
+								-cookie => $cookie, -expires => 'now' );
+	} elsif ($this->{key}) {
+		my $cookie = $this->{query}->cookie(
+			-name => 'key',
+			-value => $this->{key},
+			-path => $Schulkonsole::Config::_http_root,
+			-secure => 1,
+		);
+		print $this->{query}->header( -type => 'text/html', -charset => 'UTF-8',
+									-cookie => $cookie, -expires => 'now' );
+	} else {
+		print $this->{query}->header( -type => 'text/html', -charset => 'UTF-8',
+									-expires => 'now' );
+	}
+	
+	return $no_cookies;
+
+}
 
 
 =head3 C<set_var($var_name, $var_value)>
@@ -292,6 +372,35 @@ sub param {
 	return $this->{session}->param(@_);
 }
 
+
+
+=head3 C<clear($param_name)>
+
+Clear a session parameter
+
+=head4 Parameters
+
+=over
+
+=item C<$param_name>
+
+The name of the parameter
+
+=back
+
+=head4 Description
+
+Clears the session parameter C<$param_name>.
+
+=cut
+
+sub clear {
+	my $this = shift;
+	my $param_name = shift;
+	return if not defined $param_name;
+
+	$this->{session}->clear([$param_name]);
+}
 
 
 
@@ -458,6 +567,49 @@ sub set_status_redirect {
 
 
 
+=head3 C<set_status_reload($status, $action, $intervall)>
+
+Set status description
+
+=head4 Parameters
+
+=over
+
+=item C<$status>
+
+Description of the status
+
+=item C<$action>
+
+Action to reload
+
+=item C<$intervall>
+
+set the reload intervall to the specified amount of seconds
+
+=back
+
+=head4 Description
+
+Sets the status description of the last action. The page has
+a short lifetime and a busy symbol will be displayed.
+
+=cut
+
+sub set_status_reload {
+	my $this = shift;
+	my $status = shift;
+	my $action = shift;
+	my $intervall = shift;
+
+	$this->{session}->set_var('statusreload', $status);
+	$this->{session}->set_var('pagereload', $action);
+	$this->{session}->set_var('statusreloadintervall', $intervall);
+}
+
+
+
+
 =head3 C<mark_input_error($input_name)>
 
 Marks a user error at an <input> field
@@ -494,7 +646,7 @@ sub mark_input_error {
 
 
 
-=head3 C<print_page($filename, $action)>
+=head3 C<print_page($filename, $action, $textdomain)>
 
 Output of an HTML page
 
@@ -510,6 +662,10 @@ template directory.
 =item C<$action>
 
 The default action to be set in a <form> unless already specified.
+
+=item C<$textdomain>
+
+An additional msg catalog to be used for translations.
 
 =back
 
@@ -528,9 +684,56 @@ output. For a description of the template format see Schulkonsole::Template.
 =cut
 
 sub print_page {
-	my $this = $_[0];
+	my $this = shift;
+	my $file = shift;
+	my $action = shift;
+	my $textdomain = shift;
 
-	Schulkonsole::Template::print_page(@_);
+	my $template = Template->new({
+            ENCODING => 'utf8',
+            INCLUDE_PATH => ['/usr/share/schulkonsole/shtml','/usr/share/schulkonsole/css'],
+            WRAPPER => 'page.tt',
+        });
+
+	my $vars = $this->{template_vars};
+	foreach my $key ($this->{query}->param) {
+		$vars->{$key} = $this->{query}->param($key) unless defined $vars->{$key};
+	}
+	my $params = $this->{session}->dataref();
+	foreach my $key (keys \%$params) {
+            $vars->{$key} = $$params{$key} unless defined $vars->{$key};
+    }
+    $vars->{no_cookies} = $this->print_header();
+    $vars->{parent_page} = $this->{parent_page};
+	$vars->{is_error} = $this->{is_error};
+	# localization: [% d.get('Text') %]
+	$vars->{d} = $this->{d};
+	$vars->{page}{textdomain} = $textdomain if defined $textdomain;
+	$vars->{loc} = sub {
+            my $stash = $template->context()->stash();
+            my $textdomain = $stash->get(['page',0,'textdomain',0]);
+            my $default = $stash->get(['page',0,'default',0]);
+            
+            return $vars->{d}{default}->get(@_) if $textdomain eq '';
+            return $vars->{d}{default}->get(@_) unless $default eq '';
+            return $vars->{d}{$textdomain}->get(@_) if defined $vars->{d}{$textdomain};
+
+            return $vars->{d}{default}->get(@_);
+        };
+	$vars->{lang} = $this->{lang};
+	$vars->{input_errors} = %{ $this->{input_errors} };
+	$vars->{session_id} = $vars->{id};
+    $vars->{action} = $action;
+    if(defined $this->{dplugin}) {
+        $vars->{dplugin} = $this->{dplugin};
+    }
+    # colored labels an Stelle von for="text" jetzt [% labelfor("text") %]
+    $vars->{labelfor} = sub { return 'for="'.@_[0].'"'.($this->{input_errors}{@_[0]}? ' class="error"':''); };
+    $vars->{dohref} = sub { return 'href="'.@_[0].($vars->{no_cookies}?'?'.CGI::Session->name().'='.$this->{session}->id.'"':'"'); };
+    $vars->{dovalue} = sub { return 'value="' . $this->{query}->param(@_[0]) . '"'; };
+    $vars->{valueof} = sub { return $this->{query}->param(@_[0]); };
+
+	$template->process($file, $vars) or die "$0: " . $template->error()->as_string() . "!\n";
 
 	# occasionally the session is not automatically flushed
 	$this->{session}->flush();
@@ -581,9 +784,7 @@ sub exit_with_login_page {
 
 
 	$this->set_var('version', $Schulkonsole::Config::_version);
-	Schulkonsole::Template::print_page($this,
-		$Schulkonsole::Config::_login_template, $action);
-
+	$this->print_page($Schulkonsole::Config::_login_template, $action);
 	exit;
 }
 
@@ -886,9 +1087,15 @@ sub q_param {
 
 
 
-=head3 C<d()>
+=head3 C<d($textdomain)>
 
 Get the Locale::gettext-object of this session
+
+=head4 Parameter 
+
+=item C<$textdomain>
+
+Optional parameter use C<$textdomain>
 
 =head4 Return value
 
@@ -903,8 +1110,14 @@ and available language.
 
 sub d {
 	my $this = shift;
+	my $textdomain = shift;
 
-	return $this->{d};
+	return $this->{d}{default} unless defined $textdomain;
+	return $this->{d}{$textdomain} if defined $this->{d}{$textdomain};
+
+	$this->{d}{$textdomain} = Locale::gettext->domain($textdomain);
+	$this->{d}{$textdomain}->dir('/usr/share/locale');
+	return $this->{d}{$textdomain};
 }
 
 
@@ -1076,11 +1289,11 @@ sub init {
 	my $this = shift;
 
 	my $page = shift;
-
+        my $plugin = shift;
+        
 	$this->{query} = new CGI;
-
-	$this->{query}->charset('UTF-8');
-
+	binmode STDOUT, ':encoding(UTF-8)';
+	
 	umask(umask() | 077);	# session-file mode 0600
 	# create session from query to get the session id
 	$this->{session} = new CGI::Session("driver:File", $this->{query},
@@ -1111,7 +1324,8 @@ sub init {
 		       or not defined $this->{session}->{_DATA};
 
 	$this->{page} = $page;
-
+        $this->{plugin} = $plugin;
+        
 	$this->init_l10n();
 
 	$this->authenticate();
@@ -1123,7 +1337,7 @@ sub init {
 		$this->{session}->clear('statusredirectiserror');
 	} elsif ($this->{session}->param('statusbg')) {
 		$this->set_status(
-			  $this->{d}->get('Ausgabe des Hintergrundprozess: ')
+			  $this->{d}{default}->get('Ausgabe des Hintergrundprozess: ')
 			. $this->{session}->param('statusbg'), 
 		$this->{session}->param('statusbgiserror'));
 
@@ -1175,6 +1389,10 @@ sub init {
 	my $min = int($sec / 60);
 	$sec -= $min * 60;
 	$this->set_var('session_time', sprintf("%d:%02d:%02d", $hours, $min, $sec));
+	
+	# set menu access variables
+	$this->set_var('quotaactivated',$Conf::use_quota eq $Schulkonsole::Config::_sophomorix_conf_true);
+	
 }
 
 
@@ -1236,10 +1454,10 @@ sub authenticate {
 			$this->save_password($password);
 
 
-			$this->set_status($this->{d}->get('Angemeldet'), 0);
+			$this->set_status($this->{d}{default}->get('Angemeldet'), 0);
 
 		} else { # authentication failed
-			$this->set_status($this->{d}->get('Login fehlgeschlagen'), 1);
+			$this->set_status($this->{d}{default}->get('Login fehlgeschlagen'), 1);
 			$this->exit_with_login_page($page);
 		}
 
@@ -1257,6 +1475,10 @@ sub authenticate {
 	$this->read_groups_from_db();
 	my @groupnames = keys %{ $this->{groups} };
 
+	# FIXME: workaround for non existing students group!
+	if(! (grep(/^teachers$/,@groupnames) or grep(/^domadmins$/,@groupnames))) {
+		push @groupnames, 'students';
+	}
 	foreach my $group (('ALL', @groupnames)) {
 		foreach my $page (keys %{ $$permissions{$group} }) {
 			$this->{pages}{$page} = 1;
@@ -1265,13 +1487,13 @@ sub authenticate {
 	}
 
 	if (not $this->{pages}{$page}) {
-		$this->set_status("$page: " . $this->{d}->get('Zugriff verweigert'), 1);
+		$this->set_status("$page: " . $this->{d}{default}->get('Zugriff verweigert'), 1);
 		$this->exit_with_login_page($page);
 	}
 
 
 	my $groupname = join(', ', sort @groupnames);
-	$groupname = $this->{d}->get('Schueler') unless $groupname;
+	$groupname = $this->{d}{default}->get('Schueler') unless $groupname;
 	$this->set_var('groupname', $groupname);
 
 	my $parent_page = $page;
@@ -1287,10 +1509,14 @@ sub init_l10n
 	my $this = shift;
 
 	my $session = $this->{session};
+	my $plugin  = $this->{plugin};
 
-	$this->{d} = Locale::gettext->domain('@PACKAGE@');
-	$this->{d}->dir('@datadir@/locale');
-
+	$this->{d}{default} = Locale::gettext->domain('@PACKAGE@');
+	$this->{d}{default}->dir('@datadir@/locale');
+        if(defined $plugin) {
+            $this->{d}{$plugin} = Locale::gettext->domain($plugin);
+            $this->{d}{$plugin}->dir('@datadir@/locale');
+        }
 
 	my $lang = 'C';
 	if (defined $ENV{HTTP_ACCEPT_LANGUAGE}) {
@@ -1321,7 +1547,7 @@ sub init_l10n
 			}
 
 			POSIX::setlocale(POSIX::LC_ALL, $lang);
-			if ($this->{d}->get('')) {
+			if ($this->{d}{default}->get('')) {
 				($this->{'lang'}) = $lang =~ /^(..)/;
 				last;
 			}

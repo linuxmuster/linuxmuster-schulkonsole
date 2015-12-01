@@ -1,0 +1,31 @@
+[% page = {
+      title   => loc('Schulkonsole') _ " - " _ loc('Linbo'),
+      menu     => 1,
+      submenu  => "linbo",
+      info     => loc('Wählen Sie ein Untermenü.'),
+   }
+%]
+
+<h2>[% loc('linbo') %]</h2>
+
+
+<p>
+[% IF link_linbo_edit %]
+<a [% dohref("$linbo_edit") %]>[% loc('Gruppenkonfiguration editieren') %]</a></br>
+[% END %]
+[% IF link_linbo_new %]
+<a [% dohref("$linbo_new") %]>[% loc('Gruppenkonfiguration erstellen') %]</a></br>
+[% END %]
+[% IF link_linbo_regpatchedit %]
+<a [% dohref("$linbo_regpatchedit") %]>[% loc('Registrypatch editieren') %]</a></br>
+[% END %]
+[% IF link_linbo_pxeedit %]
+<a [% dohref("$linbo_pxeedit") %]>[% loc('PXE-Start') %]</a></br>
+[% END %]
+[% IF link_linbo_menuedit %]
+<a [% dohref("$linbo_menuedit") %]>[% loc('menu.lst editieren') %]</a></br>
+[% END %]
+[% IF link_linbo_images %]
+<a [% dohref("$linbo_images") %]>[% loc('Imageverwaltung') %]</a></br>
+[% END %]
+</p>

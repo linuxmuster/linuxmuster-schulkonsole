@@ -1,0 +1,190 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+myprojects_handedoutcopy - list, download, remove handed out copies
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/myprojects_handedoutcopy
+
+=head1 DESCRIPTION
+
+C<myprojects_handedoutcopy> lets you manipulate your projects handed out copies files. 
+The HTML template is myprojects_handedoutcopy.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<myprojects_handedoutcopy>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Session;
+use Schulkonsole::Info;
+use Schulkonsole::Sophomorix;
+use File::Basename;
+
+my $this_file = 'myprojects_handedoutcopy';
+my $transfername = 'handedoutcopy_myprojects';
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connection only:
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+my $d = $sk_session->d();
+
+my $myprojects = $sk_session->param('myprojects');
+
+if( not $myprojects ) {
+	$myprojects = Schulkonsole::Info::groups_projects($sk_session->groups());
+	$sk_session->param('myprojects',$myprojects);
+}
+
+if (   not $myprojects   ) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/myprojects/g;
+	$sk_session->redirect($url);
+}
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+eval {
+	SWITCHCOMMAND: {
+		foreach my $param ($q->param) {
+			if (my ($project, $file, $action)
+			    	= $param =~ /^(.+);(.+);(delete|download)$/) {
+				my $teacher_share_files = Schulkonsole::Sophomorix::ls_handedoutcopy_myprojects(
+						$sk_session->userdata('id'), $sk_session->get_password(), $project);
+				
+				SWITCHACTION: {
+				$action =~ /delete/ and do {
+					if(not defined $$teacher_share_files{$file}) {
+						$sk_session->set_status(
+							$d->get('Projekt-Datei ') . $project.'-'.$file
+									 . $d->get(' nicht als ausgeteilte Datei vorhanden.'), 1);
+						last SWITCHACTION;
+					}
+					Schulkonsole::Sophomorix::rm_handedoutcopy_myprojects(
+						$sk_session->userdata('id'), $sk_session->get_password(),
+						$project, $file, ($$teacher_share_files{$file}?1:0));
+					
+					$sk_session->set_status($d->get('Datei gelöscht.'),0);
+					
+					last SWITCHACTION;
+				};
+				
+				$action =~ /download/ and do {
+					if(not defined $$teacher_share_files{$file}) {
+						$sk_session->set_status(
+							$d->get('Projekt-Datei ') . $project.'-'.$file
+									 . $d->get(' nicht als augeteilte Datei vorhanden.'),	1);
+						last SWITCHACTION;
+					}
+					my $tmpfile = "dl_${transfername}_".$sk_session->session_id() . '_' . time;
+					
+					Schulkonsole::Sophomorix::dl_handedoutcopy_myprojects(
+						$sk_session->userdata('id'), $sk_session->get_password(),
+						$project, $file, ($$teacher_share_files{$file}?1:0), $tmpfile);
+					
+					if( -e "$Schulkonsole::Config::_runtimedir/$tmpfile") {
+						print $q->header( -type           => "application/x-download",
+								          -attachment     => $file,
+										   -Content_length => -s "$Schulkonsole::Config::_runtimedir/$tmpfile");
+									
+						if(! open(FILE, "<$Schulkonsole::Config::_runtimedir/$tmpfile")) {
+							$sk_session->set_status($d->get('Die temporäre Datei konnte nicht geöffnet werden.'), 1);
+							last SWITCHCOMMAND;
+						}
+						binmode(FILE);
+						binmode(STDOUT);
+						print while <FILE>;
+						if(!close(FILE)) {
+							$sk_session->set_status($d->get('Die temporäre Datei konnte nicht geschlossen werden.'), 1);
+							last SWITCHCOMMAND;
+						}
+
+						if($$teacher_share_files{$file}){
+							system("rm -rf $Schulkonsole::Config::_runtimedir/$tmpfile");
+						} else {
+							system("rm -f $Schulkonsole::Config::_runtimedir/$tmpfile");
+						}
+		
+						$sk_session->set_status($d->get('Die Datei wurde heruntergeladen.'), 0);
+						exit 0;
+						
+					} else {
+						$sk_session->set_status($d->get('Es konnte keine temporäre Datei erzeugt werden.'), 1);
+						last SWITCHCOMMAND;				
+					}
+					
+					last SWITCHACTION;
+				};
+				
+				} #SWITCHACTION
+			}
+		} # foreach param
+
+	} # SWITCHCOMMAND
+}; # eval
+
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+eval {
+my %students_files;
+foreach my $project (keys %$myprojects) {
+	my $pfiles = Schulkonsole::Sophomorix::ls_handedoutcopy_myprojects($id, $password, $project);
+	$students_files{$project} = $pfiles if $pfiles;
+}
+
+=item C<students_files>
+
+Available files as returned by C<Schulkonsole::Sophomorix::create_category_file_list()>
+
+=cut
+
+$sk_session->set_var('students_files',
+	Schulkonsole::Sophomorix::create_category_file_list(\%students_files));
+};
+if ($@) {
+	if (    ref $@
+		and $@->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Verzeichnis für ausgeteilte Dateien nicht gefunden'),
+				1);
+
+		print STDERR "$@\n";
+	} else {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+}
+
+
+=item C<myprojects>
+
+Students' projects hash
+
+=cut
+
+$sk_session->set_var('myprojects', $myprojects);
+
+$sk_session->print_page("$this_file.tt", $this_file);

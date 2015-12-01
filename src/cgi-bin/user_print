@@ -1,0 +1,214 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+user_print - print users lists
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/user_print
+
+=head1 DESCRIPTION
+
+C<user_print> lets you print users lists.
+The HTML template is user_print.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<user_print>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Session;
+use Schulkonsole::Sophomorix;
+
+
+my $this_file = 'user_print';
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+my $commit;
+my $action;
+
+foreach my $param ($q->param){
+	($commit,$action) = $param =~ /^(\d+|all|first|last|next|previous|close)_(show|printpdf|printcsv)$/;
+}
+
+my $path = $q->path_info();
+
+$path =~ s:^/+:: if defined $path;
+
+if($path){
+	eval {
+		COMMANDS: {
+			$action eq 'printpdf' and do {
+				print_passwords($id, $password, 0, $commit, $q->param('one_per_page')? 1 : 0);
+				last COMMANDS;
+			};
+			$action eq 'printcsv' and do {
+				print_passwords($id, $password, 1, $commit, 0);
+				last COMMANDS;
+			};
+		}
+	};
+	if ($@) {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+	
+	# in case of error, re-direct to URL without PATH_INFO
+	my $url = $q->url( -absolute => 1 );
+	$sk_session->redirect($url);
+}
+
+my $commits = Schulkonsole::Sophomorix::ls_commits($id, $password);
+
+# navigation through commits
+if($action eq 'show') {
+	if($commit eq 'next') {
+		$commit = $q->param('currentcommit');
+		$commit = ($commit < $#$commits? $commit + 1 : $#$commits);
+	} elsif ($commit eq 'previous') {
+		$commit = $q->param('currentcommit');
+		$commit = ($commit > 0 ? $commit - 1 : 0);
+	} elsif ($commit eq 'first') {
+		$commit = 0;
+	} elsif ($commit eq 'last') {
+		$commit = $#$commits;
+	} elsif ($commit eq 'close') {
+		$commit = undef;
+		$action = undef;
+	}
+}
+
+=head2 Template vars
+
+=over
+
+=item C<$commits>
+
+Array reference of commit date/times
+
+=back
+
+=cut
+
+$sk_session->set_var('commits',$commits);
+
+if($action eq 'show' and $commit =~ /^\d+$/) {
+	my $added_users = Schulkonsole::Sophomorix::ls_commit($id, $password, $commit);
+
+=item C<$added_users>
+
+Array reference to users added in specific commit
+
+=item C<$commit>
+
+No of specific commit
+
+=cut
+
+	$sk_session->set_var('added_users', $added_users);
+	$sk_session->set_var('commit', $commit);
+
+}
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<$commit>
+
+No. of commit to show
+
+=item C<$commit>_show
+
+Show commit no. $commit
+
+=item C<$commit>_printpdf
+
+Print PDF for commit no
+
+=item C<$commit>_printcsv
+
+Print csv for commit no
+
+=item C<all_printpdf>
+
+Print PDF for all users
+
+=item C<all_printcsv>
+
+Print csv for all users
+
+=back
+
+=cut
+
+sub print_passwords {
+	my $id = shift;
+	my $password = shift;
+	my $filetype = shift;
+	my $commit = shift;
+	my $one_per_page = shift;
+	$one_per_page = 0 if $filetype == 1;
+	
+	my $all = 1 if $commit =~ /^all$/;
+	
+	if (not defined $commit) {
+		$sk_session->set_status_redirect($sk_session->d()->get(
+		'Es wurde ein ungültiges Anlegedatum ausgewählt.'),1);
+		return;		
+	}
+	my $data;
+	if($all){
+		$data = Schulkonsole::Sophomorix::print_allusers($id, $password, $filetype, $one_per_page);		
+	} else {
+		$data = Schulkonsole::Sophomorix::print_commit($id, $password, $commit, $filetype, $one_per_page);
+	}
+	
+	if($filetype == 0 and $data =~ /^\%PDF/) {
+			binmode STDOUT;
+			
+			print $q->header( -type => 'application/pdf' ), $data;
+	
+			exit;
+	} elsif ($filetype == 1 and $data =~ /^.*;.*;.*;/) {
+			binmode STDOUT, ':utf8';
+
+			print $q->header( -type => 'text/comma-separated-values' ),
+			      $data;
+
+			exit;	
+	} else {
+		$sk_session->set_status_redirect($sk_session->d()->get(
+			'Fehler bei der Erzeugung des Dokuments'), 1);
+		return;
+	}
+}

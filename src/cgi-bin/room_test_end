@@ -1,0 +1,101 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+room_test_end - collect files from users and end an exam
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/room_test_end
+
+=head1 DESCRIPTION
+
+C<room_test_end> lets you move files of users in a selected room
+to your directory and end an exam.
+The HTML template is room_collect.tt.
+
+=head2 Template variables
+
+There are no other template variables but the variables of
+Schulkonsole::Session and Schulkonsole::Room::set_vars().
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Room;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::Session;
+
+my $this_file = 'room_test_end';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+my $q = $sk_session->query();
+
+my $room_session = new Schulkonsole::Room($sk_session);
+
+
+if (   not $room_session
+    or not $room_session->info('is_editing')) {
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room/g;
+	$sk_session->redirect($url);
+}
+
+
+
+
+if ($q->param('collectmove')) {
+	eval {
+	my $id = $sk_session->userdata('id');
+	my $password = $sk_session->get_password();
+
+	Schulkonsole::Sophomorix::collect_exam($id, $password,
+	                                       $room_session->info('name'));
+	Schulkonsole::Sophomorix::reset_room($id, $password,
+	                                     $room_session->info('name'));
+	$room_session->clear('test_step');
+
+	if (not $room_session->param('end_time')) {
+		$room_session->end_lesson_now($id, $password);
+	}
+
+	$sk_session->set_status_redirect($sk_session->d()->get('Eingesammelt'),
+		0);
+
+	$room_session->change_workstation_passwords(
+		$id, $password,
+		Schulkonsole::Room::random_password(12));
+
+	my $url = $q->url( -absolute => 1 );
+	$url =~ s/$this_file$/room/g;
+	$sk_session->redirect($url);
+	};
+	if ($@) {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+}
+
+
+
+$sk_session->set_status($sk_session->d()->get('Bitte bestätigen'), 0);
+
+
+$room_session->set_vars($sk_session);
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+=head2 Form fields
+
+=over
+
+=item C<collectmove>
+
+The files of the users are moved to the current users directory
+and the exam ends
+
+=back
+

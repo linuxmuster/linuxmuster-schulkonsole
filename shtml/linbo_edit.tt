@@ -1,0 +1,129 @@
+[% page = {
+      title   => loc('Schulkonsole') _ " - " _ loc('Linbo'),
+      menu     => 1,
+      submenu  => "linbo",
+      info     => loc('<p>Klicken Sie auf einen Gruppennamen, um den Editor zu öffnen.</p><p>Beachten Sie, daß sich im Editor der Radio-Button zur Deaktivierung des Autostarts am Seitenende befindet.</p><p>Beachten Sie außerdem, daß beim reboot-workaround in der gruppenspezifischen Linbo-Startdatei unter &quot;pxelinux.cfg/&lt;gruppe&gt;&quot; der Eintrag &quot;DEFAULT reboot&quot; aktiviert ist und der Rechner über PXE startet.</p>'),
+   }
+%]
+
+[% IF groups %]
+	<form method="post" accept-charset="UTF-8">
+	<p class="selectdomain">
+	<select name="group">
+	[% FOREACH g IN groups %] <option value="[% g %]">[% g %]</option>[% END %]
+	</select>
+	<input type="submit" value="[% loc('Datei wählen') %]">
+	</p>
+	</form>
+[% END %]
+
+<h2>[% loc('Konfigurationsdateien editieren') %]</h2>
+
+[% IF group %]
+	<form method="post" accept-charset="UTF-8" action="#edit">
+
+	<h3>[% loc('[LINBO] - globale Konfiguration') %]</h3>
+
+	[% INCLUDE linbo_edit_global.inc.tt %]
+	
+	<p><input type="submit" name="accept" value="[% loc('Änderungen speichern') %]"></p>
+	<p><input type="submit" name="adddevtop" value="[% loc('Neues System hinzufügen') %]">
+	<select name="adddevnewtop">
+	<option value="windows">[% loc('MS Windows') %]</option>
+	<option value="gnulinux">[% loc('GNU/Linux') %]</option>
+	<option value="data" selected>[% loc('Daten') %]</option>
+	<option value="swap">[% loc('Swap') %]</option>
+	[% IF ! iscached %]<option value="cache">[% loc('Cache') %]</option>[% END %]
+	<option value="ext">[% loc('erweitert') %]</option>
+	<option value="efi">[% loc('EFI') %]</option>
+	</select>
+	</p>
+
+	<h3>[% loc('Systeme') %]</h3>
+	<hr>
+	[% ds_nr = 0 %]
+	[% FOREACH ds IN devs %]
+		[% IF ds.oss %]
+			[% dos_nr = 0 %]
+			[% FOREACH dos IN ds.oss %]
+				
+				[% INCLUDE linbo_edit_oss.inc.tt %]
+				
+				<p><input type="submit" name="[% ds_nr %].[% dos_nr %]_deleteos" value="[% loc('Betriebssystem löschen') %]"><br>
+				<input type="submit" name="[% ds_nr %]_addos" value="[% loc('Betriebssystem hinzufügen') %]">
+				
+				<hr>
+				[% dos_nr = dos_nr + 1 %]
+			[% END %]
+		[% ELSE %]
+			
+			[% INCLUDE linbo_edit_data.inc.tt %]
+			
+			<p><input type="submit" name="accept" value="[% loc('Änderungen speichern') %]"></p>
+			<p><input type="submit" name="[% ds_nr %]_delete" value="[% loc('System löschen') %]"><br>
+			<select name="[% ds_nr %]_modifynew">
+			[% IF ds.type != 'windows' %]<option value="windows">[% loc('MS Windows') %]</option>[% END %]
+			[% IF ds.type != 'gnulinux' %]<option value="gnulinux">[% loc('GNU/Linux') %]</option>[% END %]
+			[% IF ds.type != 'data' %]<option value="data">[% loc('Daten') %]</option>[% END %]
+			[% IF ds.type != 'swap' %]<option value="swap">[% loc('Swap') %]</option>[% END %]
+			[% IF ds.type != 'cache' && ! iscached %]<option value="cache">[% loc('Cache') %]</option>[% END %]
+			[% IF ds.type != 'ext' %]<option value="ext">[% loc('erweitert') %]</option>[% END %]
+			[% IF ds.type != 'efi' %]<option value="efi">[% loc('EFI') %]</option>[% END %]
+			</select>&nbsp;<input type="submit" name="[% ds_nr %]_modify" value="[% loc('System ändern') %]">
+			
+			<hr>
+		[% END %]
+		[% ds_nr = ds_nr + 1 %]
+	[% END %]
+	[% IF page.isautostartpossible %]
+		[% lfdnr = 0 %]
+		<table class="settings">
+		<colgroup>
+		<col width="60%">
+		<col width="40%">
+		</colgroup>
+		<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+			<td><label [% labelfor("no_autostart") %]>[% loc('kein Betriebssystem automatisch starten') %]:</label></td>
+			<td><input type="radio" id="no_autostart" name="autostart" value="[% loc('none') %]"[% IF ! page.isautostartselected %] checked[% END %]></td>
+		[% lfdnr = lfdnr + 1 %]</tr>
+		</table>
+	[% END %]
+
+	<p><input type="submit" name="adddevbottom" value="[% loc('Neues System hinzufügen') %]">
+	<select name="adddevnewbottom">
+	<option value="windows">[% loc('MS Windows') %]</option>
+	<option value="gnulinux">[% loc('GNU/Linux') %]</option>
+	<option value="data" selected>[% loc('Daten') %]</option>
+	<option value="swap">[% loc('Swap') %]</option>
+	[% IF ! iscached %]<option value="cache">[% loc('Cache') %]</option>[% END %]
+	<option value="ext">[% loc('erweitert') %]</option>
+	<option value="efi">[% loc('EFI') %]</option>
+	</select>
+	</p>
+	<p><input type="submit" name="accept" value="[% loc('Änderungen speichern') %]"></p>
+
+	</form>
+
+[% ELSIF groups %]
+	<h3>[% loc('Bitte Rechnergruppe auswählen') %]</h3>
+	
+	
+	<form method="post" accept-charset="UTF-8">
+	
+	<h4>[% loc('Übersicht der Rechnergruppen') %]</h4>
+	
+	[% lfdnr = 0 %]
+	<table id="linbooverview" class="liste">
+	<tr>
+	<th>[% loc('Gruppe') %]</th><th></th>
+	</tr>
+	[% FOREACH g IN groups %]
+		<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+			<td><input type="submit" name="[% g %]_edit_start_conf" value="[% g %]"></td>
+			<td><input type="submit" name="[% g %]_delete_start_conf" value="[% loc('löschen') %]"></td>
+		[% lfdnr = lfdnr + 1 %]</tr>
+	[% END %]
+	</table>
+	
+	</form>
+[% END %]

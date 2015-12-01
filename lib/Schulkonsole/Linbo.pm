@@ -43,10 +43,9 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 $VERSION = 0.0917;
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(
-	groups
 	regpatches
 	example_regpatches
-	pxestarts
+	grubstarts
 	images
 
 	update_linbofs
@@ -63,7 +62,7 @@ $VERSION = 0.0917;
 	check_and_prepare_start_conf
 	handle_start_conf_errors
 	write_file
-	write_pxe_file
+	write_grub_cfg_file
 	delete_file
 	delete_image
 	move_image
@@ -74,7 +73,11 @@ $VERSION = 0.0917;
 	get_templates_os
 
 	partsize_to_kB
-
+	
+	remote_status
+	remote_window
+	remote
+	
 	%_allowed_keys
 );
 use vars qw(%_allowed_keys);
@@ -241,42 +244,6 @@ sub stop_wrapper {
 
 
 
-=head2 groups()
-
-Get all groups that have a start.conf.*
-
-=head3 Return value
-
-A reference to a hash with the group names as keys
-
-=head3 Description
-
-Extracts the groupname from the filenames /var/linbo/start.conf.<GROUP>
-and returns them in a hash.
-
-=cut
-
-sub groups {
-	my @files = glob($Schulkonsole::Config::_linbo_start_conf_prefix . '*');
-
-	my %re;
-	# this will take all files, that start with _linbo_start_conf_prefix
-	# plus a valid group name and optionally an arbitrary suffix (except it
-	# ends with '~')
-	foreach my $file (@files) {
-		next if $file =~ /~$/;	# skip editor backup files
-		my ($group) = $file =~ /^\Q${Schulkonsole::Config::_linbo_start_conf_prefix}\E([a-z\d_]+.*)/;
-		next unless $group;
-
-		$re{ Schulkonsole::Encode::from_fs($group) } = 1;
-	}
-
-	return \%re;
-}
-
-
-
-
 =head2 regpatches()
 
 Get all regpatches
@@ -350,7 +317,7 @@ A reference to a hash with the images as keys
 
 =head3 Description
 
-Gets the images in /var/linbo/
+Gets the images in Config::_linbo_dir
 and returns them in a hash.
 
 =cut
@@ -374,9 +341,44 @@ sub images {
 
 
 
-=head2 pxestarts()
+=head2 postsyncs()
 
-Get all PXE start files
+Get all postsync files
+
+=head3 Return value
+
+A reference to a hash with the postsyncs as keys
+and path names as values
+
+=head3 Description
+
+Gets the postsync files in Config::_linbo_dir
+and returns them in a hash.
+
+=cut
+
+sub postsyncs {
+	my %re;
+
+	foreach my $file ((
+			glob("$Schulkonsole::Config::_linbo_dir/*.cloop.postsync"),
+			glob("$Schulkonsole::Config::_linbo_dir/*.rsync.postsync")
+		)) {
+		my ($filename) = File::Basename::fileparse($file);
+		$re{ Schulkonsole::Encode::from_fs($filename) } = $file;
+	}
+
+	return \%re;
+}
+
+
+
+
+
+
+=head2 grubstarts()
+
+Get all grub cfg start files
 
 =head3 Return value
 
@@ -384,16 +386,16 @@ A reference to a hash with the filenames as keys
 
 =head3 Description
 
-Gets the PXE start files in LINBODIR/boot/grub
+Gets the grub cfg start files in LINBODIR/boot/grub
 and returns them in a hash.
 
 =cut
 
-sub pxestarts {
+sub grubstarts {
 	my %re;
 
 	foreach my $file ((
-			glob("$Schulkonsole::Config::_pxe_config_dir/*.cfg")
+			glob("$Schulkonsole::Config::_grub_config_dir/*.cfg")
 		)) {
 		next if -l$file or -d$file;
 		my ($filename) = File::Basename::fileparse($file);
@@ -404,6 +406,186 @@ sub pxestarts {
 	return \%re;
 }
 
+
+
+
+=head2 remote_status($id, $password)
+
+Get current status of linbo_remote commands.
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=back
+
+=head4 Return value
+
+List of current linbo_remote lines (output of linbo_remote -l).
+
+=head3 Description
+
+This wraps the command C<linbo-remote -l>.
+
+=cut
+
+sub remote_status {
+	my $id = shift;
+	my $password = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::LINBOREMOTESTATUSAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	my @in;
+	while(<SCRIPTIN>){
+		#local $/ = undef;
+		chomp;
+		push @in, $_;
+	}
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	#my $compartment = new Safe;
+
+	return \@in; #$compartment->reval($in);
+}
+
+
+
+=head2 remote_window($id, $password, $session)
+
+Get current content of the linbo-remote session.
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=item C<$session>
+
+The linbo-remote session name
+
+=back
+
+=head4 Return value
+
+List of the linbo-remote session content.
+
+=head3 Description
+
+This wraps the command C<screen -S ...>.
+
+=cut
+
+sub remote_window {
+	my $id = shift;
+	my $password = shift;
+	my $session = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::LINBOREMOTEWINDOWAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "$session\n";
+	
+	my @in;
+	while(<SCRIPTIN>){
+		#local $/ = undef;
+		chomp;
+		push @in, $_;
+	}
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	#my $compartment = new Safe;
+
+	return \@in; #$compartment->reval($in);
+}
+
+
+
+=head2 remote($id, $password, $type, $target, $run, $commands, $nr1, $nr2)
+
+Create new linbo_remote task with commands.
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=item C<$target>
+
+The target name (preceded by target type: group_, host_, room_).
+
+=item C<$run>
+
+Run commands immediately in screen session - c/run commands on next boot - p.
+
+=item C<$commands>
+
+List of linbo-remote commands with parameters.
+
+=item C<$nr1>
+
+Delay in seconds after each wakeup - run=c/disable buttons(=1)
+
+=item C<$nr2>
+
+Delay before command execution - run=w/bypass auto functions(=1)
+
+=back
+
+=head3 Description
+
+This wraps the command C<linbo-remote>.
+
+=cut
+
+sub remote {
+	my $id = shift;
+	my $password = shift;
+	my $target = shift;
+	my $now = shift;
+	my $commands = shift;
+	my $nr1 = shift;
+	my $nr2 = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::LINBOREMOTEAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "$target\n$now\n$commands\n$nr1\n$nr2\n";
+	
+	buffer_input(\*SCRIPTIN);
+	
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	return;
+
+}
 
 
 
@@ -987,16 +1169,16 @@ sub handle_start_conf_errors {
 					my $code = $$errors{oss}{$n}{errors}{$key};
 					my $key_descr = ($key_descr{$key} || "\u$key");
 					if ($code == 1) {
-						push @errors, sprintf($session->d()->get('Leerer Wert f&uuml;r &#8222;%s&#8220; bei %s auf %s'),
+						push @errors, sprintf($session->d()->get('Leerer Wert für "%s" bei %s auf %s'),
 									$key_descr, $os_name, $dev);
 					} elsif ($code == 2) {
-						push @errors, sprintf($session->d()->get('Ung&uuml;ltige Zeichen f&uuml;r &#8222;%s&#8220; bei %s auf %s'),
+						push @errors, sprintf($session->d()->get('Ungültige Zeichen für "%s" bei %s auf %s'),
 									$key_descr, $os_name, $dev);
 					} elsif ($code == 10) {
-						push @errors, sprintf($session->d()->get('Name mit Version (&#8222;%s&#8220;) muss bei Betriebssystemen eindeutig sein.'), $os_name);
+						push @errors, sprintf($session->d()->get('Name mit Version ("%s") muss bei Betriebssystemen eindeutig sein.'), $os_name);
 					} else {
 						push @errors, sprintf($session->d()->get(
-						                      'Unbekannter Fehler f&uuml;r %s bei %s auf %s'),
+						                      'Unbekannter Fehler für %s bei %s auf %s'),
 											  $key,
 						                      $os_name, $dev);
 					}
@@ -1021,32 +1203,32 @@ sub handle_start_conf_errors {
 					} elsif ($code == 2) {
 						if ($key eq 'dev') {
 							push @errors, sprintf($session->d()->get(
-							                      '%s ist kein g&uuml;ltiger Devicename'), $dev);
+							                      '%s ist kein gültiger Devicename'), $dev);
 						} else {
-							push @errors, $session->d()->get('ung&uuml;ltige Zeichen');
+							push @errors, $session->d()->get('ungültige Zeichen');
 						}
 					} elsif ($code == 3) {
 						push @errors, sprintf($session->d()->get(
 						                      '%s wird mehrmals verwendet'), $dev);
 					} elsif ($code == 4) {
 						push @errors, sprintf($session->d()->get(
-						                      'F&uuml;r die Partition %s existiert keine erweiterte Partition'), $dev);
+						                      'Für die Partition %s existiert keine erweiterte Partition'), $dev);
 					} elsif ($code == 5) {
 						my ($disk) = $dev =~ /^(.+?)\d*$/;
 						push @errors, sprintf($session->d()->get(
-						                      'F&uuml;r %s existieren mehrere erweiterte Partitionen'), $disk);
+						                      'Für %s existieren mehrere erweiterte Partitionen'), $disk);
 					} elsif ($code == 6) {
 						push @errors, sprintf($session->d()->get(
 						                      'Die erweiterte Partition %s ist nicht erlaubt'), $dev);
 					} elsif ($code == 7) {
 						push @errors, sprintf($session->d()->get(
-						                      'Bei %s muss eine Gr&ouml;&szlig;e angegeben werden'), $dev);
+						                      'Bei %s muss eine Größe angegeben werden'), $dev);
 					} elsif ($code == 8) {
 						push @errors, sprintf($session->d()->get(
 						                      'Auf der Cachepartition %s darf kein Betriebssystem installiert sein'), $dev);
 					} elsif ($code == 10) {
 						push @errors, sprintf($session->d()->get(
-						                      'Die Cachepartition %s ben&ouml;tigt ein GNU/Linux-Dateisystem'), $dev);
+						                      'Die Cachepartition %s benötigt ein GNU/Linux-Dateisystem'), $dev);
 					} else {
 						push @errors, sprintf($session->d()->get(
 						                      'Unbekannter Fehler bei %s/%s'),
@@ -1060,7 +1242,7 @@ sub handle_start_conf_errors {
 				if ($$errors{$section}{$key} == 1) {
 					push @errors, $session->d()->get('leerer Wert');
 				} elsif ($$errors{$section}{$key} == 2) {
-					push @errors, $session->d()->get('ung&uuml;ltige Zeichen');
+					push @errors, $session->d()->get('ungültige Zeichen');
 				} else {	# short cut (error code is 3 => cache)
 					push @errors, $session->d()->get('keine Cachepartition');
 				}
@@ -2083,9 +2265,9 @@ The basename of the file
 
 =head3 Description
 
-Deletes C<$filename> in C</var/linbo/>. Filename has to match C<*.cloop.reg>,
-C<*.rsync.reg>, C<boot/grub/(?:[a-z\d_]+)\.cfg>,
-C<start.conf.(?:[a-z\d_]+)>.
+Deletes C<$filename> in C<Config::_linbo_dir> rsp. C<Config::_grub_config_dir>. Filename has to match C<*.cloop.reg>,
+C<*.rsync.reg>, C<*.cloop.postsync>, C<*.rsync.postsync>, 
+C<boot/grub/(?:[a-z\d_]+)\.cfg>, C<start.conf.(?:[a-z\d_]+)>.
 
 =cut
 
@@ -2134,8 +2316,9 @@ The lines to be written
 
 =head3 Description
 
-Writes C<$lines> into C<$filename> in C</var/linbo/>. Filename has to
-match C<*.cloop.reg>, C<*.rsync.reg>>.
+Writes C<$lines> into C<$filename> in C<Config::_linbo_dir>. Filename has to
+match C<*.cloop.reg>, C<*.rsync.reg>, C<*.cloop.postsync>, C<*.rsync.postsync>,
+C<*.cloop.desc>, C<*.rsync.desc>.
 
 =cut
 
@@ -2161,9 +2344,9 @@ sub write_file {
 
 
 
-=head2 write_pxe_file($id, $password, $filename, $lines)
+=head2 write_grub_cfg_file($id, $password, $filename, $lines)
 
-Writes the LINBO pxe start file
+Writes the LINBO grub cfg file
 
 =head3 Parameters
 
@@ -2185,17 +2368,17 @@ The lines to be written
 
 =head3 Description
 
-Writes C<$lines> into C<$filename> in C<Schulkonsole::Config::_pxe_config_dir>.
+Writes C<$lines> into C<$filename> in C<Schulkonsole::Config::_grub_config_dir>.
 
 =cut
 
-sub write_pxe_file {
+sub write_grub_cfg_file {
 	my $id = shift;
 	my $password = shift;
 	my $filename = shift;
 	my $lines = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LINBOWRITEPXEAPP,
+	my $pid = start_wrapper(Schulkonsole::Config::LINBOWRITEGRUBCFGAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 

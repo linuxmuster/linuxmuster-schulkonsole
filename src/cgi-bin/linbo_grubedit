@@ -1,0 +1,310 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+linbo_grubedit - edit LINBO's grub.cfg files
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/linbo_grubedit
+
+=head1 DESCRIPTION
+
+C<linbo_grubedit> lets the user choose a grub group.cfg file and edit it.
+The HTML template is linbo_grubedit.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<linbo_grubedit>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use open ':utf8';
+use Schulkonsole::Encode;
+use Schulkonsole::Config;
+use Schulkonsole::Linbo;
+use Schulkonsole::Session;
+
+
+my $this_file = 'linbo_grubedit';
+
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $groups = Schulkonsole::Config::linbogroups();
+my $grubcfgs = Schulkonsole::Linbo::grubstarts();
+
+my $is_action;
+
+eval {
+
+SWITCHCOMMAND: {
+$q->param('add') and do {
+        my $filename = $q->param('filename');
+
+        if ($filename !~ /^(?:[a-z\d_]+)\.cfg$/) {
+                $sk_session->set_status(sprintf($sk_session->d()->get(
+                        '%s ist keine grub cfg-Datei'), $filename), 1);
+                last SWITCHCOMMAND;
+        }
+
+        if ($$grubcfgs{$filename}) {
+                $sk_session->set_status(sprintf($sk_session->d()->get(
+                        '%s existiert bereits'), $filename), 1);
+                last SWITCHCOMMAND;
+        }
+
+        my $lines;
+        if (open GRUBCFG, '<',
+                    Schulkonsole::Encode::to_fs(
+                        "$Schulkonsole::Config::_grub_templates_dir/grub.cfg.global")) {
+                flock GRUBCFG, 1;
+                seek GRUBCFG, 0, 0;
+
+                {
+                local $/ = undef;
+                $lines = <GRUBCFG>;
+                }
+        }
+        
+        Schulkonsole::Linbo::write_grub_cfg_file(
+                $sk_session->userdata('id'),
+                $sk_session->get_password(),
+                $filename,
+                $lines);
+
+        $grubcfgs = Schulkonsole::Linbo::grubstarts();
+        if ($$grubcfgs{$filename}) {
+                $sk_session->set_status(sprintf($sk_session->d()->get(
+                        '%s hinzugefügt'), $filename), 0);
+        } else {
+                $sk_session->set_status(sprintf($sk_session->d()->get(
+                        '%s konnte nicht hinzugefügt werden'), $filename), 0);
+        }
+
+        last SWITCHCOMMAND;
+};
+
+$q->param('delete') and do {
+	my $filename = $q->param('filename');
+
+	if ($filename !~ /^(?:[a-z\d_]+)\.cfg$/) {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s ist keine grub cfg-Datei'), $filename), 1);
+		last SWITCHCOMMAND;
+	}
+
+	if (not $$grubcfgs{$filename}) {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s existiert nicht'), $filename), 1);
+		last SWITCHCOMMAND;
+	}
+
+
+	Schulkonsole::Linbo::delete_file(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		$filename);
+
+	$grubcfgs = Schulkonsole::Linbo::grubcfgs();
+	if (not $$grubcfgs{$filename}) {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s gelöscht'), $filename), 0);
+	} else {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s konnte nicht gelöscht werden'), $filename), 0);
+	}
+
+	last SWITCHCOMMAND;
+};
+
+$q->param('edit') and do {
+	my $filename = $q->param('filename');
+	if (not $$grubcfgs{$filename}) {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s existiert nicht'), $filename), 1);
+		last SWITCHCOMMAND;
+	}
+
+
+	my $lines = $q->param('grubcfg');
+
+	Schulkonsole::Linbo::write_grub_cfg_file(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		$filename,
+		$lines);
+
+	
+	$sk_session->set_status(sprintf($sk_session->d()->get(
+		'%s geschrieben'), $filename), 0);
+
+	last SWITCHCOMMAND;
+};
+
+
+=head3 Parameters dependent on selected submit button
+
+The following variables are set if a submit button of the form
+<filename>_<command> has been selected. <filename> is the name of a
+grub cfg file, and command is either C<edit> or C<delete>.
+
+=cut
+
+foreach my $param ($q->param) {
+	if (my ($grubcfg, $command) = $param =~ /^(.+)_(edit|delete)$/) {
+		if (not $$grubcfgs{$grubcfg}) {
+			$sk_session->set_status(sprintf($sk_session->d()->get(
+				'%s existiert nicht'), $grubcfg), 1);
+
+			last SWITCHCOMMAND;
+		}
+
+		if ($command eq 'edit') {
+			if (open GRUBCFG, '<',
+			         Schulkonsole::Encode::to_fs(
+ 			         	"$Schulkonsole::Config::_grub_config_dir/$grubcfg")) {
+				flock GRUBCFG, 1;
+				seek GRUBCFG, 0, 0;
+
+				{
+				local $/ = undef;
+				my $lines = <GRUBCFG>;
+				$q->param('grubcfg', $lines);
+				}
+
+=item C<editfilename>
+
+Name of a file to edit, if <command> is C<edit>.
+The contents of the file are in the query parameter C<grubcfg>.
+
+=cut
+
+				$sk_session->set_var('editfilename', $grubcfg);
+				$is_action = 1;
+			} else {
+				$sk_session->set_status(sprintf($sk_session->d()->get(
+					'Kann Datei %s nicht öffnen'), $grubcfg),
+					1);
+
+			}
+
+			last SWITCHCOMMAND;
+		} elsif ($command eq 'delete') {
+
+=item C<deletefilename>
+
+Name of a file to delete, if <command> is C<delete>.
+(Waiting for confirmation).
+
+=cut
+
+			$sk_session->set_var('deletefilename', $grubcfg);
+			$is_action = 1;
+
+			$sk_session->set_status('Bitte bestätigen', 0);
+			last SWITCHCOMMAND;
+		}
+	}
+}
+
+}
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+
+if (not $is_action) {
+	my @array_grubcfgs = sort keys %$grubcfgs;
+
+=item C<grubcfgs>
+
+A list of all grubcfgs
+
+=cut
+
+	$sk_session->set_var('grubcfgs', \@array_grubcfgs);
+}
+
+
+if (not $is_action) {
+        my @array_nogrubcfgs = ();
+        foreach my $group (keys $groups) {
+            my $grubfile = $group.'.cfg';
+            if (not $$grubcfgs{$grubfile}) {
+                push(@array_nogrubcfgs, $grubfile);
+            }
+        }
+
+=item C<nogrubcfgs>
+
+A list of all groups without grub group.cfg files
+
+=cut
+        if (@array_nogrubcfgs) {
+            $sk_session->set_var('nogrubcfgs', \@array_nogrubcfgs);
+        }
+}
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+
+
+
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<filename>
+
+Filename to process
+
+=item C<delete>
+
+Delete C<filename> if selected
+
+=item C<edit> and C<grubcfg>
+
+Write C<grubcfg> to C<filename> if selected
+
+=item C<grubcfgs_edit>
+
+Edit file C<grubcfgs> if selected
+
+=item C<grubcfgs_delete>
+
+Ask to confirm deletion of file C<grubcfg> if selected
+
+=item C<grubcfg_new>
+
+Create C<filename> if selected
+
+=back
+

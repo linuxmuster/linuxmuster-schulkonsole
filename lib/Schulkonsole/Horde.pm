@@ -1,5 +1,4 @@
-# use strict;
-use CGI::Inspect;
+use strict;
 use open ':utf8';
 use IPC::Open3;
 use POSIX 'sys_wait_h';

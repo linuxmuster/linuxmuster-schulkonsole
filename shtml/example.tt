@@ -1,0 +1,23 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Beispielseite'),
+      classes  => "widecontent",
+      menu     => 1,
+      submenu  => "leer",
+      info     => loc('Das ist eine Beispiel-Seite.'),
+   }
+%]
+
+<h2>[% loc('Hallo ') %] [% firstname %]</h2>
+
+[% lfdnr=1 %]
+<table class="liste">
+<tr>
+<th>loc('Nr.')</th>
+<th>loc('Überschrift')</th>
+</tr>
+<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+<td class="lfdnr">[% lfdnr %].</td>
+<td>Beispielzeile</td>
+</tr>
+[% lfdnr=lfdnr+1 %]
+</table>

@@ -1,37 +1,40 @@
-<div id="menu">
-<!--#if expr="$link_start" -->
-   <a href="start"><gettext>Mein Konto</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_settings" -->
-<!--#else -->
-<!--#if expr="$link_room" -->
-   <a href="room"><gettext>aktueller Raum</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_class" -->
-   <a href="class"><gettext>Klassen</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_project" -->
-   <a href="project"><gettext>Projekte</gettext></a>
-<!--#endif -->
-<!--#endif -->
-<!--#if expr="$link_settings" -->
-   <a href="settings"><gettext>Einstellungen</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_user" -->
-   <a href="user"><gettext>Benutzer</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_quotas" -->
-   <a href="quotas"><gettext>Quota</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_rooms" -->
-   <a href="rooms"><gettext>R&auml;ume</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_printers" -->
-   <a href="printers"><gettext>Drucker</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_hosts" -->
-   <a href="hosts"><gettext>Hosts</gettext></a>
-<!--#endif -->
-<!--#if expr="$link_linbo" -->
-   <a href="linbo"><gettext>LINBO</gettext></a>
-<!--#endif -->
+<ul id="jMenu">
+[% IF link_start %]
+ <li><a [% dohref("start") %]>[% loc('Mein Konto') %]</a></li>
+[% END %]
+[% IF link_settings %]
+ <li><a [% dohref("settings") %]>[% loc('Einstellungen') %]</a><ul>[% INCLUDE "submenu-settings.inc.tt" %]</ul></li>
+[% END %]
+[% IF link_room %]
+ <li><a [% dohref("room") %]>[% loc('aktueller Raum') %]</a><ul>[% INCLUDE "submenu-room.inc.tt" %]</ul></li>
+[% ELSIF link_myroom %]
+ <li><a [% dohref("myroom") %]>[% loc('Mein aktueller Raum') %]</a><ul>[% INCLUDE "submenu-room.inc.tt" %]</ul></li>
+[% END %]
+[% IF link_class %]
+ <li><a [% dohref("class") %]>[% loc('Klassen') %]</a><ul>[% INCLUDE "submenu-class.inc.tt" %]</ul></li>
+[% ELSIF link_myclass %]
+ <li><a [% dohref("myclass") %]>[% loc('Meine Klasse') %]</a><ul>[% INCLUDE "submenu-class.inc.tt" %]</ul></li>
+[% END %]
+[% IF link_project %]
+ <li><a [% dohref("project") %]>[% loc('Projekte') %]</a><ul>[% INCLUDE "submenu-project.inc.tt" %]</ul></li>
+[% ELSIF link_myprojects %]
+ <li><a [% dohref("myprojects") %]>[% loc('Meine Projekte') %]</a><ul>[% INCLUDE "submenu-project.inc.tt" %]</ul></li>
+[% END %]
+[% IF link_user %]
+ <li><a [% dohref("user") %]>[% loc('Benutzer') %]</a><ul>[% INCLUDE "submenu-user.inc.tt" %]</ul></li>
+[% END %]
+[% IF link_quotas %]
+ <li><a [% dohref("quotas") %]>[% loc('Quota') %]</a><ul>[% INCLUDE "submenu-quotas.inc.tt" %]</ul></li>
+[% END %]
+[% IF link_rooms %]
+ <li><a [% dohref("rooms") %]>[% loc('Räume') %]</a><ul>[% INCLUDE "submenu-rooms.inc.tt" %]</ul></li>
+[% END %]
+[% IF link_printers %]
+ <li><a [% dohref("printers") %]>[% loc('Drucker') %]</a></li>
+[% END %]
+[% IF link_hosts %]
+ <li><a [% dohref("hosts") %]>[% loc('Hosts') %]</a></li>
+[% END %]
+[% IF link_linbo %]
+ <li><a [% dohref("linbo") %]>[% loc('LINBO') %]</a><ul>[% INCLUDE "submenu-linbo.inc.tt" %]</ul></li>
+[% END %]

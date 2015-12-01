@@ -1,0 +1,299 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+linbo_postsyncedit - edit LINBO's *.cloop.postsync/*.rsync.postsync files
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/linbo_postsyncedit
+
+=head1 DESCRIPTION
+
+C<linbo_postsyncedit> lets the user choose a grub postsync file and edit it.
+The HTML template is linbo_postsyncedit.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<linbo_postsyncedit>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use open ':utf8';
+use Schulkonsole::Encode;
+use Schulkonsole::Linbo;
+use Schulkonsole::Session;
+
+
+my $this_file = 'linbo_postsyncedit';
+
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $images = Schulkonsole::Linbo::images();
+my $postsyncs = Schulkonsole::Linbo::postsyncs();
+
+my $is_action;
+
+eval {
+
+SWITCHCOMMAND: {
+$q->param('add') and do {
+        my $filename = $q->param('filename');
+
+        if ($filename !~ /^([^\/]+)\.(?:cloop|rsync)\.postsync$/) {
+                $sk_session->set_status(sprintf($sk_session->d()->get(
+                        '%s ist keine postsync-Datei'), $filename), 1);
+                last SWITCHCOMMAND;
+        }
+
+        if ($$postsyncs{$filename}) {
+                $sk_session->set_status(sprintf($sk_session->d()->get(
+                        '%s existiert bereits'), $filename), 1);
+                last SWITCHCOMMAND;
+        }
+
+        my $lines = "echo \"##### POSTSYNC BEGIN #####\"\n"
+        			."echo \"##### POSTSYNC END #####\"\n\nexit 0\n";
+        
+        Schulkonsole::Linbo::write_file(
+                $sk_session->userdata('id'),
+                $sk_session->get_password(),
+                $filename,
+                $lines);
+
+        $postsyncs = Schulkonsole::Linbo::postsyncs();
+        if ($$postsyncs{$filename}) {
+                $sk_session->set_status(sprintf($sk_session->d()->get(
+                        '%s hinzugefügt'), $filename), 0);
+        } else {
+                $sk_session->set_status(sprintf($sk_session->d()->get(
+                        '%s konnte nicht hinzugefügt werden'), $filename), 0);
+        }
+
+        last SWITCHCOMMAND;
+};
+
+$q->param('delete') and do {
+	my $filename = $q->param('filename');
+
+	if ($filename !~ /^([^\/]+)\.(?:cloop|rsync)\.postsync$/) {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s ist keine postsync-Datei'), $filename), 1);
+		last SWITCHCOMMAND;
+	}
+
+	if (not $$postsyncs{$filename}) {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s existiert nicht'), $filename), 1);
+		last SWITCHCOMMAND;
+	}
+
+
+	Schulkonsole::Linbo::delete_file(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		$filename);
+
+	$postsyncs = Schulkonsole::Linbo::postsyncs();
+	if (not $$postsyncs{$filename}) {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s gelöscht'), $filename), 0);
+	} else {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s konnte nicht gelöscht werden'), $filename), 0);
+	}
+
+	last SWITCHCOMMAND;
+};
+
+$q->param('edit') and do {
+	my $filename = $q->param('filename');
+	if (not $$postsyncs{$filename}) {
+		$sk_session->set_status(sprintf($sk_session->d()->get(
+			'%s existiert nicht'), $filename), 1);
+		last SWITCHCOMMAND;
+	}
+
+
+	my $lines = $q->param('postsync');
+
+	Schulkonsole::Linbo::write_file(
+		$sk_session->userdata('id'),
+		$sk_session->get_password(),
+		$filename,
+		$lines);
+
+	
+	$sk_session->set_status(sprintf($sk_session->d()->get(
+		'%s geschrieben'), $filename), 0);
+
+	last SWITCHCOMMAND;
+};
+
+
+=head3 Parameters dependent on selected submit button
+
+The following variables are set if a submit button of the form
+<filename>_<command> has been selected. <filename> is the name of a
+postsync file, and command is either C<edit> or C<delete>.
+
+=cut
+
+foreach my $param ($q->param) {
+	if (my ($postsync, $command) = $param =~ /^(.+)_(edit|delete)$/) {
+		if (not $$postsyncs{$postsync}) {
+			$sk_session->set_status(sprintf($sk_session->d()->get(
+				'%s existiert nicht'), $postsync), 1);
+
+			last SWITCHCOMMAND;
+		}
+
+		if ($command eq 'edit') {
+			if (open POSTSYNC, '<',
+			         Schulkonsole::Encode::to_fs(
+ 			         	"$Schulkonsole::Config::_linbo_dir/$postsync")) {
+				flock POSTSYNC, 1;
+				seek POSTSYNC, 0, 0;
+
+				{
+				local $/ = undef;
+				my $lines = <POSTSYNC>;
+				$q->param('postsync', $lines);
+				}
+
+=item C<editfilename>
+
+Name of a file to edit, if <command> is C<edit>.
+The contents of the file are in the query parameter C<postsync>.
+
+=cut
+
+				$sk_session->set_var('editfilename', $postsync);
+				$is_action = 1;
+			} else {
+				$sk_session->set_status(sprintf($sk_session->d()->get(
+					'Kann Datei %s nicht öffnen'), $postsync),
+					1);
+
+			}
+
+			last SWITCHCOMMAND;
+		} elsif ($command eq 'delete') {
+
+=item C<deletefilename>
+
+Name of a file to delete, if <command> is C<delete>.
+(Waiting for confirmation).
+
+=cut
+
+			$sk_session->set_var('deletefilename', $postsync);
+			$is_action = 1;
+
+			$sk_session->set_status('Bitte bestätigen', 0);
+			last SWITCHCOMMAND;
+		}
+	}
+}
+
+}
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+
+if (not $is_action) {
+	my @array_postsyncs = sort keys %$postsyncs;
+
+=item C<postsyncs>
+
+A list of all postsyncs
+
+=cut
+
+	$sk_session->set_var('postsyncs', \@array_postsyncs);
+}
+
+
+if (not $is_action) {
+        my @array_nopostsyncs = ();
+        foreach my $image (keys $images) {
+            my $postsyncfile = $image.'.postsync';
+            if (not $$postsyncs{$postsyncfile}) {
+                push(@array_nopostsyncs, $postsyncfile);
+            }
+        }
+
+=item C<nopostsyncs>
+
+A list of all images without postsync files
+
+=cut
+        if (@array_nopostsyncs) {
+            $sk_session->set_var('nopostsyncs', \@array_nopostsyncs);
+        }
+}
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+
+
+
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<filename>
+
+Filename to process
+
+=item C<delete>
+
+Delete C<filename> if selected
+
+=item C<edit> and C<postsync>
+
+Write C<postsync> to C<filename> if selected
+
+=item C<postsync_edit>
+
+Edit file C<postsync> if selected
+
+=item C<postsync_delete>
+
+Ask to confirm deletion of file C<postsync> if selected
+
+=item C<postsync_new>
+
+Create C<filename> if selected
+
+=back
+

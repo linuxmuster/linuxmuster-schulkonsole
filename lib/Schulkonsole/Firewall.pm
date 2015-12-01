@@ -18,20 +18,19 @@ Schulkonsole::Firewall - interface to Linuxmusterloesung Firewall commands
 
  use Schulkonsole::Firewall;
 
- my $hosts = Schulkonsole::Firewall::blocked_hosts_internet();
- if ($$hosts{'00:00:39:F2:C9:A1'}) {
- 	print "00:00:39:F2:C9:A1 is blocked\n";
+ my $hosts = Schulkonsole::Firewall::allowed_hosts_internet();
+ if ($$hosts{'10.16.2.1'}) {
+ 	print "10.16.2.1 is allowed\n";
  }
 
  $hosts = Schulkonsole::Firewall::blocked_hosts_intranet();
  $hosts = Schulkonsole::Firewall::unfiltered_hosts();
 
- my @macs = ('00:00:39:F2:C9:A1', '00:00:39:F2:C9:A2');
  my @hosts = ('10.1.15.1', '10.1.15.2');
- Schulkonsole::Firewall::internet_on($id, $password, @macs);
- Schulkonsole::Firewall::internet_off($id, $password, @macs);
- Schulkonsole::Firewall::intranet_on($id, $password, @macs);
- Schulkonsole::Firewall::intranet_off($id, $password, @macs);
+ Schulkonsole::Firewall::internet_on($id, $password, @hosts);
+ Schulkonsole::Firewall::internet_off($id, $password, @hosts);
+ Schulkonsole::Firewall::intranet_on($id, $password, @hosts);
+ Schulkonsole::Firewall::intranet_off($id, $password, @hosts);
  Schulkonsole::Firewall::urlfilter_on($id, $password, @hosts);
  Schulkonsole::Firewall::urlfilter_off($id, $password, @hosts);
 
@@ -61,7 +60,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 $VERSION = 0.03;
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(
-	blocked_hosts_internet
+	allowed_hosts_internet
 	blocked_hosts_intranet
 	unfiltered_hosts
 	internet_on
@@ -188,9 +187,9 @@ sub stop_wrapper {
 
 =head2 Functions
 
-=head3 C<internet_on($id, $password, @macs)>
+=head3 C<internet_on($id, $password, @hosts)>
 
-Un-block hosts' access to the internet
+Allow hosts' access to the internet
 
 =head3 Parameters
 
@@ -204,32 +203,32 @@ The ID (not UID) of the user invoking the command
 
 The password of the user invoking the command
 
-=item C<@macs>
+=item C<@hosts>
 
-The MAC-adresses of the workstations
+The ip adresses of the workstations
 
 =back
 
 =head3 Description
 
 This wraps the command
-C<internet_on_off.sh --trigger=on --maclist=mac1,mac2,...>, where
-C<mac1,mac2,...> are the MACs in C<@macs>.
+C<internet_on_off.sh --trigger=on --hostlist=ip1,ip2,...>, where
+C<ip1,ip2,...> are the IPs in C<@hosts>.
 
 =cut
 
 sub internet_on {
 	my $id = shift;
 	my $password = shift;
-	my @macs = @_;
+	my @hosts = @_;
 
 	my $umask = umask(022);
 	my $pid = start_wrapper(Schulkonsole::Config::INTERNETONOFFAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	# set macs in list to on
-	print SCRIPTOUT "1\n", join("\n", @macs), "\n\n";
+	# set hosts in list to on
+	print SCRIPTOUT "1\n", join("\n", @hosts), "\n\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -240,7 +239,7 @@ sub internet_on {
 
 
 
-=head3 C<internet_off($id, $password, @macs)>
+=head3 C<internet_off($id, $password, @hosts)>
 
 Block hosts' access to the internet
 
@@ -256,32 +255,32 @@ The ID (not UID) of the user invoking the command
 
 The password of the user invoking the command
 
-=item C<@macs>
+=item C<@hosts>
 
-The MAC-adresses of the workstations
+The ip adresses of the workstations
 
 =back
 
 =head3 Description
 
 This wraps the command
-C<internet_on_off.sh --trigger=off --maclist=mac1,mac2,...>, where
-C<mac1,mac2,...> are the MACs in C<@macs>.
+C<internet_on_off.sh --trigger=off --hostlist=ip1,ip2,...>, where
+C<ip1,ip2,...> are the IPs in C<@hosts>.
 
 =cut
 
 sub internet_off {
 	my $id = shift;
 	my $password = shift;
-	my @macs = @_;
+	my @hosts = @_;
 
 	my $umask = umask(022);
 	my $pid = start_wrapper(Schulkonsole::Config::INTERNETONOFFAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	# set macs in list to off
-	print SCRIPTOUT "0\n", join("\n", @macs), "\n\n";
+	# set hosts in list to off
+	print SCRIPTOUT "0\n", join("\n", @hosts), "\n\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -292,7 +291,7 @@ sub internet_off {
 
 
 
-=head3 C<intranet_on($id, $password, @macs)>
+=head3 C<intranet_on($id, $password, @hosts)>
 
 Un-block hosts' access to the intranet
 
@@ -308,32 +307,32 @@ The ID (not UID) of the user invoking the command
 
 The password of the user invoking the command
 
-=item C<@macs>
+=item C<@hosts>
 
-The MAC-adresses of the workstations
+The IP adresses of the workstations
 
 =back
 
 =head3 Description
 
 This wraps the command
-C<intranet_on_off.sh --trigger=on --maclist=mac1,mac2,...>, where
-C<mac1,mac2,...> are the MACs in C<@macs>.
+C<intranet_on_off.sh --trigger=on --hostlist=host1,host2,...>, where
+C<host1,host2,...> are the IPs in C<@hosts>.
 
 =cut
 
 sub intranet_on {
 	my $id = shift;
 	my $password = shift;
-	my @macs = @_;
+	my @hosts = @_;
 
 	my $umask = umask(022);
 	my $pid = start_wrapper(Schulkonsole::Config::INTRANETONOFFAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	# set macs in list to on
-	print SCRIPTOUT "1\n", join("\n", @macs), "\n\n";
+	# set hosts in list to on
+	print SCRIPTOUT "1\n", join("\n", @hosts), "\n\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -344,7 +343,7 @@ sub intranet_on {
 
 
 
-=head3 C<intranet_off($id, $password, @macs)>
+=head3 C<intranet_off($id, $password, @hosts)>
 
 Block hosts' access to the intranet
 
@@ -360,32 +359,32 @@ The ID (not UID) of the user invoking the command
 
 The password of the user invoking the command
 
-=item C<@macs>
+=item C<@hosts>
 
-The MAC-adresses of the workstations
+The IP adresses of the workstations
 
 =back
 
 =head3 Description
 
 This wraps the command
-C<intranet_on_off.sh --trigger=off --maclist=mac1,mac2,...>, where
-C<mac1,mac2,...> are the MACs in C<@macs>.
+C<intranet_on_off.sh --trigger=off --hostlist=host1,host2,...>, where
+C<host1,host2,...> are the IPs in C<@hosts>.
 
 =cut
 
 sub intranet_off {
 	my $id = shift;
 	my $password = shift;
-	my @macs = @_;
+	my @hosts = @_;
 
 	my $umask = umask(022);
 	my $pid = start_wrapper(Schulkonsole::Config::INTRANETONOFFAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
-	# set macs in list to off
-	print SCRIPTOUT "0\n", join("\n", @macs), "\n\n";
+	# set hosts in list to off
+	print SCRIPTOUT "0\n", join("\n", @hosts), "\n\n";
 
 	buffer_input(\*SCRIPTIN);
 
@@ -708,42 +707,42 @@ sub all_on_at {
 
 
 
-sub read_mac_file {
+sub read_hosts_file {
 	my $filename = shift;
 
-	my %macs;
+	my %hosts;
 
 
-	if (not open MACS, "<$filename") {
+	if (not open HOSTS, "<$filename") {
 		warn "$0: Cannot open $filename";
 		return {};
 	}
 
-	while (<MACS>) {
+	while (<HOSTS>) {
 		chomp;
-		$macs{$_} = 1;
+		$hosts{$_} = 1;
 	}
 
-	close MACS;
+	close HOSTS;
 
-	return \%macs;
+	return \%hosts;
 }
 
 
 
 
-=head3 C<blocked_hosts_internet()>
+=head3 C<allowed_hosts_internet()>
 
-Returns which hosts' access to the internet is blocked
+Returns which hosts' access to the internet is allowed
 
 =head4 Return value
 
-A hash with blocked host's MAC-address as key and C<1> as value.
+A hash with allowed host's IP address as key and C<1> as value.
 
 =cut
 
-sub blocked_hosts_internet {
-	return read_mac_file($Schulkonsole::Config::_blocked_hosts_internet_file);
+sub allowed_hosts_internet {
+	return read_hosts_file($Schulkonsole::Config::_allowed_hosts_internet_file);
 }
 
 
@@ -755,12 +754,12 @@ Returns which hosts' access to the intranet is blocked
 
 =head4 Return value
 
-A hash with blocked host's MAC-address as key and C<1> as value.
+A hash with blocked host's IP address as key and C<1> as value.
 
 =cut
 
 sub blocked_hosts_intranet {
-	return read_mac_file($Schulkonsole::Config::_blocked_hosts_intranet_file);
+	return read_hosts_file($Schulkonsole::Config::_blocked_hosts_intranet_file);
 }
 
 
@@ -772,12 +771,12 @@ Returns which hosts' access to URLs is filtered
 
 =head4 Return value
 
-A hash with an unfiltered host's MAC-address as key and C<1> as value.
+A hash with an unfiltered host's IP address as key and C<1> as value.
 
 =cut
 
 sub unfiltered_hosts {
-	return read_mac_file($Schulkonsole::Config::_unfiltered_hosts_file);
+	return read_hosts_file($Schulkonsole::Config::_unfiltered_hosts_file);
 }
 
 

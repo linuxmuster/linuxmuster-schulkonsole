@@ -1,0 +1,622 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+settings_users - settings for user administration
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/settings_users
+
+=head1 DESCRIPTION
+
+C<settings> lets you change the settings of the user administration.
+The HTML template is settings_users.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<settings_users>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use open ':utf8';
+use Env::Bash;
+use Schulkonsole::Encode;
+use Schulkonsole::Files;
+use Schulkonsole::Session;
+use Schulkonsole::Sophomorix;
+use Sophomorix::SophomorixAPI;
+use Sophomorix::SophomorixConfig;
+use LaTeX::Encode;
+use LaTeX::Decode;
+
+my $this_file = 'settings_users';
+
+my $true = $Schulkonsole::Config::_sophomorix_conf_true;
+my $false = $Schulkonsole::Config::_sophomorix_conf_false;
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+
+
+
+my @mountpoints;
+my %mountpoints_seen;
+if (    @Conf::quota_filesystems
+    and $Conf::quota_filesystems[0] ne 'auto') {
+	@mountpoints = @Conf::quota_filesystems;
+} else {
+	use Quota;
+
+	Quota::setmntent();
+	while (my ($dev, $path, $type, $opts) = Quota::getmntent()) {
+		if ($opts =~ /usrquota/) {
+		    if (not exists $mountpoints_seen{$dev}){
+			push @mountpoints, $path;
+			$mountpoints_seen{$dev}="$path";
+		    }
+		}
+	}
+	Quota::endmntent();
+}
+
+
+
+# boolean values in sophomorix.conf are only defined if true in query
+# and are represented with $true and $false in sophomorix.conf
+my %sophomorix_conf_bool_in_form = (
+	splan_sternchenklassen_filtern => 1,
+	schueler_zufall_passwort => 1,
+	lehrer_zufall_passwort => 1,
+	student_samba_pw_must_change => 1,
+	teacher_samba_pw_must_change => 1,
+	use_quota => 1,
+	schueler_per_ssh => 1,
+	lehrer_per_ssh => 1,
+	mailquota_warnings => 1,
+	mailquota_warnings_root => 1,
+);
+
+# strings for latex need to be converted
+my %latex_string = (
+	admins_print => 1,
+	schul_name => 1,
+);
+
+
+my %sophomorix_conf = read_sophomorix_conf();
+my %quota_conf = read_quota_conf();
+my %filesystem_conf = read_filesystem_conf();
+my %sophomorix_conf_new;
+my %quota_conf_new;
+my %filesystem_conf_new;
+
+
+if ($q->param('accept')) {
+	eval {
+	my @errors;
+	foreach my $param ($q->param) {
+		if (exists $sophomorix_conf{$param}) {
+			if ($sophomorix_conf_bool_in_form{$param}) {
+				if (not $sophomorix_conf{$param}) {
+					$sophomorix_conf_new{$param} = 1;
+				}
+			} else {
+				my $value = $q->param($param);
+				if ($sophomorix_conf{$param} ne $value) {
+					CHECKVALUE: {
+					$param =~ /^geburts_jahreszahl/ and do {
+						if (   $value < 1900
+						    or $value > 3000) {
+							$sk_session->mark_input_error($param);
+							push @errors, $sk_session->d()->get(
+								'Geben Sie eine gültige 4-stellige Jahreszahl ein');
+						}
+						last CHECKVALUE;
+					};
+					$param =~ /^zufall_passwort_anzahl/ and do {
+						if ($value < 1) {
+							$sk_session->mark_input_error($param);
+							push @errors, $sk_session->d()->get(
+								'Die Passwortlänge muss eine Zahl > 0 sein');
+						}
+						last CHECKVALUE;
+					};
+					$param =~ /^(schueler|lehrer)_duldung_tage/ and do {
+						if ($value !~ /^\d+$/) {
+							$sk_session->mark_input_error($param);
+							push @errors, $sk_session->d()->get(
+								'Der Duldungszeitraum muss eine Zahl sein');
+						}
+						last CHECKVALUE;
+					};
+					$param =~ /^(schueler|lehrer)_deaktivierung_tage/ and do {
+						if ($value !~ /^\d+$/) {
+							$sk_session->mark_input_error($param);
+							push @errors, $sk_session->d()->get(
+								'Der Deaktivierungszeitraum muss eine Zahl sein');
+						}
+						last CHECKVALUE;
+					};
+					}
+					$sophomorix_conf_new{$param} = $q->param($param);
+				}
+			}
+		} elsif (exists $quota_conf{$param}) {
+			my $value = $q->param($param);
+			$value =~ s/\s+//g;
+			if ($quota_conf{$param} ne $value) {
+				if ($value !~ /^\d+$/) {
+					$sk_session->mark_input_error($param);
+					push @errors, $sk_session->d()->get('Quota muss eine Zahl sein');
+				}
+				$quota_conf_new{$param} = $value;
+			}
+		} elsif (exists $filesystem_conf{$param}) {
+			if (not $filesystem_conf{$param}) {
+				$filesystem_conf_new{$param} = 1;
+			}
+		}
+	}
+
+	# set undefined boolean values to false
+	foreach my $param (keys %sophomorix_conf_bool_in_form) {
+		if (    not defined $q->param($param)
+		    and $sophomorix_conf{$param}) {
+			$sophomorix_conf_new{$param} = 0;
+		}
+	}
+	foreach my $param (keys %filesystem_conf) {
+		if (    not defined $q->param($param)
+		    and $filesystem_conf{$param}) {
+			$filesystem_conf_new{$param} = 0;
+		}
+	}
+
+
+	# commit changes
+	if (@errors) {
+		$sk_session->set_status(join(', ', @errors), 1);
+	} else {
+		my $is_changed = 0;
+		my $do_quota_set = 0;
+		my $do_quota_student = 0;
+		my $do_quota_teacher = 0;
+		if (%sophomorix_conf_new) {
+			my $lines = new_sophomorix_lines(\%sophomorix_conf_new);
+			Schulkonsole::Sophomorix::write_sophomorix_conf(
+				$id, $password, $lines);
+
+			$do_quota_set = 1 if exists $sophomorix_conf_new{use_quota};
+
+			$is_changed = 1;
+		}
+		if (%quota_conf_new) {
+			my $lines = new_quota_lines(\%quota_conf_new, \%quota_conf);
+			Schulkonsole::Sophomorix::write_quota_conf(
+				$id, $password, $lines);
+
+			foreach my $key (keys %quota_conf_new) {
+				if ($key =~ /student$/) {
+					$do_quota_student = 1;
+				} else {
+					$do_quota_teacher = 1;
+				}
+			}
+
+			$is_changed = 1;
+		}
+		if (%filesystem_conf_new) {
+			if (defined $filesystem_conf_new{activateglobalshares}) {
+				if ($filesystem_conf_new{activateglobalshares}) {
+					Schulkonsole::Sophomorix::global_shares_on($id, $password);
+				} else {
+					Schulkonsole::Sophomorix::global_shares_off($id, $password);
+				}
+			}
+			$is_changed = 1;
+		}
+
+		if ($is_changed) {
+			Schulkonsole::Sophomorix::process_quota($id, $password,
+				  ($do_quota_set)
+				| ($do_quota_teacher << 1)
+				| ($do_quota_student << 2));
+
+			$sk_session->set_status(
+				$sk_session->d()->get('Änderungen übernommen'), 0);
+		}
+	}
+	};
+	if ($@) {
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+}
+
+
+
+# pre-set values for <form>
+foreach my $key (keys %sophomorix_conf) {
+	if (defined $sophomorix_conf_new{$key}) {
+		if ($sophomorix_conf_bool_in_form{$key}) {
+			$sk_session->set_var($key, $sophomorix_conf_new{$key});
+		} else {
+			$q->param($key, $sophomorix_conf_new{$key});
+		}
+	} else {
+		if ($sophomorix_conf_bool_in_form{$key}) {
+			$sk_session->set_var($key, $sophomorix_conf{$key});
+		} else {
+			$q->param($key, $sophomorix_conf{$key});
+		}
+	}
+}
+foreach my $key (keys %quota_conf) {
+	if (defined $quota_conf_new{$key}) {
+		$q->param($key, $quota_conf_new{$key});
+	} else {
+		$q->param($key, $quota_conf{$key});
+	}
+}
+
+
+
+=item C<mountpoints>
+
+An array with the mountpoints
+
+=cut
+
+$sk_session->set_var('mountpoints', \@mountpoints);
+foreach my $key (keys %filesystem_conf) {
+	if (defined $filesystem_conf_new{$key}) {
+		$sk_session->set_var($key, $filesystem_conf_new{$key});
+	} else {
+		$sk_session->set_var($key, $filesystem_conf{$key});
+	}
+}
+
+=item C<encodings>
+
+An array with the supported encodings
+
+=cut
+
+$sk_session->set_var('encodings', ['ascii','8859-1','8859-15','win1252','utf8']);
+
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<accept>
+
+Write the changes
+
+=cut
+
+
+
+sub read_sophomorix_conf {
+
+	my %ret = (
+		schul_name => $Conf::schul_name,
+		server_fqdn_internal_print => $Conf::server_fqdn_internal_print,
+		server_fqdn_external_print => $Conf::server_fqdn_external_print,
+		smb_domain_print => $Conf::smb_domain_print,
+		moodle_url => $Conf::moodle_url,
+		admins_print => $Conf::admins_print,
+		geburts_jahreszahl_start => $Conf::geburts_jahreszahl_start,
+		geburts_jahreszahl_stop => $Conf::geburts_jahreszahl_stop,
+		vorname_nachname_tausch => $Conf::vorname_nachname_tausch,
+		mindest_schueler_anzahl_pro_klasse => $Conf::mindest_schueler_anzahl_pro_klasse,
+		maximale_schueler_anzahl_pro_klasse => $Conf::maximale_schueler_anzahl_pro_klasse,
+		splan_sternchenklassen_filtern => ($Conf::splan_sternchenklassen_filtern eq $true),
+		schueler_login_nachname_zeichen => $Conf::schueler_login_nachname_zeichen,
+		schueler_login_vorname_zeichen => $Conf::schueler_login_vorname_zeichen,
+		schueler_zufall_passwort => ($Conf::schueler_zufall_passwort eq $true),
+		zufall_passwort_anzahl_schueler => $Conf::zufall_passwort_anzahl_schueler,
+		schueler_per_ssh => ($Conf::schueler_per_ssh eq $true),
+		student_samba_pw_must_change => ($Conf::student_samba_pw_must_change eq $true),
+		lehrer_zufall_passwort => ($Conf::lehrer_zufall_passwort eq $true),
+		zufall_passwort_anzahl_lehrer => $Conf::zufall_passwort_anzahl_lehrer,
+		lehrer_per_ssh => ($Conf::lehrer_per_ssh eq $true),
+		teacher_samba_pw_must_change => ($Conf::teacher_samba_pw_must_change eq $true),
+		schueler_duldung_tage => $Conf::schueler_duldung_tage,
+		lehrer_duldung_tage => $Conf::lehrer_duldung_tage,
+		schueler_deaktivierung_tage => $Conf::schueler_deaktivierung_tage,
+		lehrer_deaktivierung_tage => $Conf::lehrer_deaktivierung_tage,
+		mail_aliases => $Conf::mail_aliases,
+		mailquota_warnings => ($Conf::mailquota_warnings eq $true),
+		mailquota_warn_percentage => $Conf::mailquota_warn_percentage,
+		mailquota_warn_kb => $Conf::mailquota_warn_kb,
+		mailquota_warnings_root => ($Conf::mailquota_warnings_root eq $true),
+		log_level => $Conf::log_level,
+		use_quota => ($Conf::use_quota eq $true),
+		encoding_students => $Conf::encoding_students,
+		encoding_students_extra => $Conf::encoding_students_extra,
+		encoding_courses_extra => $Conf::encoding_courses_extra,
+		encoding_teachers => $Conf::encoding_teachers,
+		lang => $Conf::lang,
+		teacher_group_name => $Conf::teacher_group_name,
+		teachers_alias_name => $Conf::teacher_alias_name,
+		teachers_alias_additions => $Conf::teachers_alias_additions,
+		alumni_alias_additions => $Conf::alumni_alias_additions,
+	);
+	foreach my $key (keys %latex_string) {
+		$ret{$key} = from_latex($ret{$key}) if defined $ret{$key};
+	}
+	return %ret;
+}
+
+
+
+
+sub read_quota_conf {
+	my %re;
+
+=item C<${mountpoints}_quotateacher>
+
+Created in loop over template variable C<mountpoints>.
+The values as a plus sign separated list correspond to the value of
+standard-lehrer in F<quota.txt>
+
+=item C<${mountpoints}_quotastudent>
+
+Created in loop over template variable C<mountpoints>.
+The values as a plus sign separated list correspond to the value of
+standard-schueler in F<quota.txt>
+
+=cut
+
+	my %key_map = (
+		quotateacher => 'standard-lehrer',
+		quotastudent => 'standard-schueler',
+#		quotaworkstation => 'standard-workstations',
+	);
+
+
+	if (open QUOTACONF, '<',
+	         Schulkonsole::Encode::to_fs("$DevelConf::config_pfad/quota.txt")) {
+		flock QUOTACONF, 1;
+
+		my %quotas;
+		while (<QUOTACONF>) {
+			chomp;
+			s/\s+//g;
+			next if (not $_ or /^#/);
+
+			my ($key, $quota) = /^(\S+):(\d.+)$/;
+
+			$quotas{$key} = $quota;
+		}
+
+		close QUOTACONF;
+
+
+		my $insert_value = sub {
+			my $quota = shift;
+
+			my @quotas = split '\+', $quotas{$key_map{$quota}};
+			if ($#quotas != $#mountpoints) {
+				foreach my $mountpoint (@mountpoints) {
+					$re{"${mountpoint}_$quota"} = 0;
+				}
+			} else {
+				foreach my $mountpoint (@mountpoints) {
+					$re{"${mountpoint}_$quota"} = shift @quotas;
+				}
+			}
+		};
+
+		foreach my $key (keys %key_map) {
+			&$insert_value($key);
+		}
+
+
+	} else {
+		print STDERR "Cannot open $DevelConf::config_pfad/quota.txt\n";
+
+		foreach my $quota (keys %key_map) {
+			foreach my $mountpoint (@mountpoints) {
+				$re{"${mountpoint}_$quota"} = -1;
+			}
+		}
+	}
+
+	return %re;
+}
+
+
+
+
+sub read_filesystem_conf {
+	my @stat = stat $DevelConf::share_school;
+	my $perm_share_school = $stat[2];
+
+=item C<activateglobalshares>
+
+True if shares are accessible
+
+=cut
+
+	return (
+		activateglobalshares => $perm_share_school & 077,
+	);
+}
+
+
+
+
+sub new_sophomorix_lines {
+	my $new = shift;
+
+	if (open SOPHOMORIXCONF, '<',
+	         Schulkonsole::Encode::to_fs(
+	         	"$DevelConf::config_pfad/sophomorix.conf")) {
+		my @lines;
+		my %new = %$new;
+
+		while (my $line = <SOPHOMORIXCONF>) {
+			foreach my $key (keys %new) {
+				
+				if ($line =~ /^\s*\$$key\s*=/) {
+					my $value = $new{$key};
+					$value = to_latex($value) if defined $latex_string{$key};
+					if ($sophomorix_conf_bool_in_form{$key}) {
+						$line =
+							"\$$key = '" . ($value ? $true : $false) . "';\n";
+					} else {
+						if ($value =~ /^\d+$/) {
+							$line = "\$$key = $value;\n";
+						} else {
+							$line = "\$$key = '$value';\n";
+						}
+					}
+					delete $new{$key};
+
+					last;
+				}
+			}
+			push @lines, $line;
+		}
+
+		if (%new) {
+			push @lines, "# schulkonsole\n";
+
+			my $line;
+			foreach my $key (keys %new) {
+				my $value = $new{$key};
+				$value = to_latex($value) if defined $latex_string{$key};
+				if ($value =~ /^\d+$/) {
+					$line = "\$$key = $value;\n";
+				} else {
+					$line = "\$$key = '$value';\n";
+				}
+				push @lines, $line;
+			}
+		}
+
+
+		return \@lines;
+	} else {
+		die new Schulkonsole::Error(Schulkonsole::Error::CANNOT_OPEN_FILE,
+			"$DevelConf::config_pfad/sophomorix.conf");
+	}
+}
+
+sub to_latex {
+	my $string = shift;
+	# FIXME: conversion inserts spaces
+	$string = latex_encode($string);
+	$string =~ s/@/\\@/g;
+	return $string;
+}
+
+sub from_latex {
+	my $string = shift;
+	# FIXME: conversion with spaces
+	$string = latex_decode($string);
+	$string =~ s/\\\@/@/g;
+	# überflüssige Leerzeichen und geschweifte Klammern entfernen
+	$string =~ s/([ÄÖÜäöüß])\s/$1/g;
+	$string =~ s/\{\}//g;
+	return $string;
+}
+
+sub new_quota_lines {
+	my $new = shift;
+	my $old = shift;
+
+	my %key_map = (
+		quotateacher => 'standard-lehrer',
+		quotastudent => 'standard-schueler',
+#		quotaworkstation => 'standard-workstations',
+	);
+
+
+
+	my %new;
+	foreach my $key (keys %key_map) {
+		my $is_new = 0;
+		my @values;
+		foreach my $mountpoint (@mountpoints) {
+			my $new_value = $$new{"${mountpoint}_$key"};
+			if (length $new_value) {
+				push @values, $new_value;
+				$is_new = 1;
+			} else {
+				push @values, $$old{"${mountpoint}_$key"}
+			}
+		}
+
+		$new{$key} = join '+', @values if $is_new;
+	}
+
+	my @lines;
+	if (open QUOTACONF, '<',
+	         Schulkonsole::Encode::to_fs("$DevelConf::config_pfad/quota.txt")) {
+
+		while (my $line = <QUOTACONF>) {
+			foreach my $new_key (keys %new) {
+				my $key = $key_map{$new_key};
+				if ($line =~ /^\s*$key\s*:/) {
+					$line = "$key: $new{$new_key}\n";
+					delete $new{$new_key};
+
+					last;
+				}
+			}
+			push @lines, $line;
+		}
+	}
+
+	if (%new) {
+		push @lines, "# schulkonsole\n";
+
+		my $line;
+		foreach my $new_key (keys %new) {
+			push @lines, "$key_map{$new_key}: $new{$new_key}\n";
+		}
+	}
+
+
+	return \@lines;
+}
+
+
+
+
+
+=back

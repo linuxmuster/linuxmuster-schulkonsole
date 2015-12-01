@@ -1,0 +1,325 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+user_teachin - resolve name conflicts in user lists
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/user_teachin
+
+=head1 DESCRIPTION
+
+C<user_teachin> lets you resolve naming conflicts and uncertainty in user
+lists.
+The HTML templates are user_teachin.tt and showpassword.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<user_teachin>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Proc::ProcessTable;
+use Schulkonsole::Session;
+use Schulkonsole::Sophomorix;
+use Schulkonsole::TeachIn;
+
+
+my $this_file = 'user_teachin';
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+
+
+my $teachin = new Schulkonsole::TeachIn;
+if (not $teachin->is_read()) {
+	$teachin->read($id, $password);
+}
+my $users = $teachin->users();
+
+
+my $offset = $sk_session->param('showusersoffset');
+my $max = $sk_session->param('showusersmax') || 10;
+
+eval {
+COMMANDS: {
+$q->param('changemax') and do {
+	$max = $q->param('max') || 10;
+	$sk_session->param('showusersmax', $max);
+
+	last COMMANDS;
+};
+$q->param('prev') and do {
+	$offset -= $max;
+	$offset = 0 if $offset < 0;
+	$sk_session->param('showusersoffset', $offset);
+
+	# not last COMMANDS;
+};
+
+$q->param('next') and do {
+	my $end = keys %$users;
+	$offset += $max if $offset + $max < $end;
+	$sk_session->param('showusersoffset', $offset);
+
+	# not last COMMANDS
+};
+
+for my $param ($q->param) {
+	if (    my ($user) = $param =~ /^(.+)_user$/
+	    and $$users{$1}) {
+		my $alt = $q->param($param);
+		if (    $alt
+		    and $$users{$user}{alt}{$alt}) {
+			$$users{$user}{selected} = $alt;
+		} else {
+			delete $$users{$user}{selected};
+		}
+	} elsif (my ($page) = $param =~ /^(\d+)_page$/) {
+		my $end = keys %$users;
+		$offset = $max * ($page - 1);
+
+		if ($offset < 0) {
+			$offset = 0;
+		} elsif ($offset > $end) {
+			$offset = $end - $max;
+		}
+		$sk_session->param('showusersoffset', $offset);
+
+		# not last COMMANDS;
+	}
+}
+
+$q->param('write') and do {
+	Schulkonsole::Sophomorix::teachin_set($id, $password, $users);
+
+	if (Schulkonsole::Sophomorix::teachin_check($id, $password)) {
+		$sk_session->set_status($sk_session->d()->get(
+			'Es sind noch nicht alle Verknüpfungen eindeutig festgelegt'),
+			 1);
+
+		$teachin->read($id, $password);
+		$users = $teachin->users();
+
+		$offset = 0;
+		$sk_session->param('showusersoffset', $offset);
+
+	} else {
+		$teachin->delete();
+
+		$sk_session->set_status_redirect($sk_session->d()->get(
+			'Sie können die Benutzerdaten jetzt übernehmen'),
+			 0);
+
+		my $url = $q->url( -absolute => 1 );
+		$url =~ s/$this_file$/user_commit/g;
+
+		$sk_session->redirect($url);
+	}
+}
+
+}
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+
+
+my @users;
+if ($users) {
+
+	my @keys = sort keys %$users;
+	my $end = $offset + $max;
+
+	$end = @keys if @keys < $end;
+	for (my $i = $offset; $i < $end; $i++) {
+		my $user = $keys[$i];
+		my $selected = $$users{$user}{selected};
+	
+		my @alts;
+		if ($$users{$user}{alt}) {
+			foreach my $alt (sort keys %{ $$users{$user}{alt} }) {
+				my $alt_info = {
+					id => $alt,
+					class => $$users{$user}{alt}{$alt}{class},
+					selected => $alt eq $selected,
+				};
+				push @alts, $alt_info;
+			}
+		}
+	
+		my $user_info = {
+			login => $user,
+			id => $$users{$user}{id},
+			class => $$users{$user}{class},
+			alt => \@alts,
+			'delete' => (not $selected),
+		};
+		push @users, $user_info;
+	}
+
+	my @pages = 1..int($#keys / $max + 1);
+
+=item C<pages>
+
+An array with all page numbers
+
+=cut
+
+	$sk_session->set_var('pages', \@pages);
+
+=item C<firstpage>
+
+True if the current page is the first page
+
+=cut
+
+	$sk_session->set_var('firstpage', 1) if $offset == 0;
+
+=item C<lastpage>
+
+True if the current page is the last page
+
+=cut
+
+	$sk_session->set_var('lastpage', 1) if ($offset > $#keys - $max);
+
+
+=item C<currentpage>
+
+The number of the current page
+
+=cut
+
+	$sk_session->set_var('currentpage', int($offset / $max) + 1);
+
+=item C<maxpage>
+
+The number of pages
+
+=cut
+
+	$sk_session->set_var('maxpage', int($#keys / $max) + 1);
+}
+
+$q->param('max', $sk_session->param('showusersmax'))
+	if $sk_session->param('showusersmax');
+
+=item C<users>
+
+The conflicting accounts as an array of hashes with the keys
+
+=over
+
+=item C<login>
+
+The account name
+
+=item C<id>
+
+Identifier of user
+
+=item C<class>
+
+User's class
+
+=item C<alt>
+
+Possible alternatives as an array of hashes with the keys
+
+=over
+
+=item C<id>
+
+Identifier of alternative user
+
+=item C<class>
+
+Alternative user's class
+
+=item C<selected>
+
+True if this alternative is selected
+
+=back
+
+=item C<delete>
+
+True if the account is to be deleted
+
+=back
+
+=cut
+
+$sk_session->set_var('users', \@users);
+
+
+
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<changemax>
+
+Set new maximal number of users displayed to C<max>
+
+=item C<max>
+
+Maximal number of users displayed on one page
+
+=item C<prev>
+
+Decrement index of first user on page by maximal number of users displayed
+
+=item C<next>
+
+Increment index of first user on page by maximal number of users displayed
+
+=item C<${pages}_page>
+
+Set index of first user on page to be on this page.
+Created in loop over template variable C<pages>
+
+=item C<${users{login}}_user>
+
+Select this alternative for the login C<$users{login}>.
+Delete login if empty.
+
+=item C<write>
+
+Commit changes with C<sophomorix-teach-in>
+
+=back
+

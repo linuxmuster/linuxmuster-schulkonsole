@@ -90,6 +90,7 @@ sub new {
 			$is_editing = 1;
 			$is_allowed_stopedit = 1;
 		} elsif ($this->param('name') eq $remote_room) {
+			# FIXME - Können hier Schüler den Unterricht beenden?
 			$is_allowed_stopedit = 2;
 		}
 	}
@@ -151,38 +152,28 @@ sub start_lesson {
 	$this->param('start_time',$^T);
 
 
-	my $blocked_hosts_internet_all
-		= Schulkonsole::Firewall::blocked_hosts_internet();
+	my $allowed_hosts_internet_all
+		= Schulkonsole::Firewall::allowed_hosts_internet();
 	my $blocked_hosts_intranet_all
 		= Schulkonsole::Firewall::blocked_hosts_intranet();
 	my $unfiltered_hosts_all = Schulkonsole::Firewall::unfiltered_hosts();
 
 	my $lml_majorversion = "$Schulkonsole::Config::_lml_majorversion";
-	my %blocked_hosts_internet;
+	my %allowed_hosts_internet;
 	my %blocked_hosts_intranet;
 	my %unfiltered_hosts;
 
 	my $workstations =
 		Schulkonsole::Config::workstations_room($this->{_ROOMDATA}{name});
 	foreach my $workstation (keys %$workstations) {
-		my ($mac) = $$workstations{$workstation}{mac} =~ /^(\w{2}(?::\w{2}){5})$/;
 		my ($host) = $$workstations{$workstation}{ip} =~ /^([\w.-]+)$/i;
 
-		if ($lml_majorversion >= 6.1) {
-			$blocked_hosts_internet{$mac} = 1
-				if ($$blocked_hosts_internet_all{$host});
-			$blocked_hosts_intranet{$mac} = 1
-				if ($$blocked_hosts_intranet_all{$host});
-			$unfiltered_hosts{$mac} = 1
-				if ($$unfiltered_hosts_all{$host});
-		} else {
-			$blocked_hosts_internet{$mac} = 1
-				if ($$blocked_hosts_internet_all{$mac});
-			$blocked_hosts_intranet{$mac} = 1
-				if ($$blocked_hosts_intranet_all{$mac});
-			$unfiltered_hosts{$mac} = 1
-				if ($$unfiltered_hosts_all{$mac});
-		}
+		$allowed_hosts_internet{$host} = 1
+			if ($$allowed_hosts_internet_all{$host});
+		$blocked_hosts_intranet{$host} = 1
+			if ($$blocked_hosts_intranet_all{$host});
+		$unfiltered_hosts{$host} = 1
+			if ($$unfiltered_hosts_all{$host});
 	}
 
 
@@ -206,13 +197,15 @@ sub start_lesson {
 	my $share_states
 		= Schulkonsole::Sophomorix::share_states($id, $password, @login_ids);
 	$this->param('oldsettings', {
-		blocked_hosts_internet => \%blocked_hosts_internet,
+		allowed_hosts_internet => \%allowed_hosts_internet,
 		blocked_hosts_intranet => \%blocked_hosts_intranet,
 		unfiltered_hosts => \%unfiltered_hosts,
 		printers_accept => \%printers_accept,
 		share_states => $share_states,
 	});
-	$this->end_lesson_at($id, $password, int($^T / 300) * 300 + 2700);
+	my $suggested_end_time = $^T;
+	$suggested_end_time = int($suggested_end_time / 300);
+	$this->end_lesson_at($id, $password, $suggested_end_time * 300 + 2700);
 }
 
 
