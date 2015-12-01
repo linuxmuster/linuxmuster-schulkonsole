@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2015-12-01 17:37+0100\n"
+"POT-Creation-Date: 2015-12-01 19:56+0100\n"
 "PO-Revision-Date: 2014-04-06 14:22+0200\n"
 "Last-Translator: root <root@linuxmuster.lokal>\n"
 "Language-Team: German\n"
@@ -145,7 +145,7 @@ msgstr ""
 msgid "%s ist kein Registrypatch"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1201
+#: ../lib/Schulkonsole/Linbo.pm:1206
 #, perl-format
 msgid "%s ist kein gültiger Devicename"
 msgstr ""
@@ -201,7 +201,7 @@ msgstr ""
 msgid "%s nach %s umbenannt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1207
+#: ../lib/Schulkonsole/Linbo.pm:1212
 #, perl-format
 msgid "%s wird mehrmals verwendet"
 msgstr ""
@@ -346,14 +346,6 @@ msgid ""
 "<p>Bearbeiten Sie hier die globalen Einstellungen für die Benutzerverwaltung."
 "</p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren "
 "Sie bitte die Dokumentation.</p>"
-msgstr ""
-
-#: ../shtml/settings.tt:1
-msgid ""
-"<p>Bearbeiten Sie hier die globalen Einstellungen für die Schulkonsole, die "
-"Benutzerverwaltung und die Klassensichtbarkeit.</p><p>Für eine detaillierte "
-"Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</"
-"p>"
 msgstr ""
 
 #: ../shtml/settings_program.tt:1
@@ -990,7 +982,7 @@ msgstr ""
 msgid "Assistent zur Erstellung einer neuen Rechnergruppe"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1223
+#: ../lib/Schulkonsole/Linbo.pm:1228
 #, perl-format
 msgid "Auf der Cachepartition %s darf kein Betriebssystem installiert sein"
 msgstr ""
@@ -1183,7 +1175,7 @@ msgstr ""
 msgid "Befehle"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1220
+#: ../lib/Schulkonsole/Linbo.pm:1225
 #, perl-format
 msgid "Bei %s muss eine Größe angegeben werden"
 msgstr ""
@@ -1285,9 +1277,9 @@ msgstr ""
 msgid "Benutzername"
 msgstr ""
 
-#: ../shtml/settings.tt:16 ../shtml/settings_users.tt:1
-#: ../shtml/settings_users.tt:9 ../shtml/user.tt:9 ../shtml/user_check.tt:9
-#: ../shtml/user_commit.tt:9 ../shtml/user_extra.tt:9 ../shtml/user_print.tt:8
+#: ../shtml/settings_users.tt:1 ../shtml/settings_users.tt:9
+#: ../shtml/user.tt:9 ../shtml/user_check.tt:9 ../shtml/user_commit.tt:9
+#: ../shtml/user_extra.tt:9 ../shtml/user_print.tt:8
 #: ../shtml/user_reports.tt:9 ../shtml/user_students.tt:9
 #: ../shtml/user_teacherpasswords.tt:9 ../shtml/user_teachers.tt:9
 #: ../shtml/user_teachin.tt:9
@@ -1347,7 +1339,7 @@ msgstr ""
 msgid "Betriebssystem 2 (Partition 2)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:188
+#: ../src/cgi-bin/linbo_new:189
 msgid "Betriebssystem 2 muss Windows sein"
 msgstr ""
 
@@ -1355,7 +1347,7 @@ msgstr ""
 msgid "Betriebssystem 3 (Partition 5)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:215
+#: ../src/cgi-bin/linbo_new:216
 msgid "Betriebssystem 3 darf nicht Windows sein"
 msgstr ""
 
@@ -1363,7 +1355,7 @@ msgstr ""
 msgid "Betriebssystem 4 (Partition 6)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:242
+#: ../src/cgi-bin/linbo_new:243
 msgid "Betriebssystem 4 darf nicht Windows sein"
 msgstr ""
 
@@ -1574,7 +1566,7 @@ msgstr ""
 msgid "Dateiname"
 msgstr ""
 
-#: ../shtml/linbo_edit_oss.inc.tt:78 ../lib/Schulkonsole/Linbo.pm:1148
+#: ../shtml/linbo_edit_oss.inc.tt:78 ../lib/Schulkonsole/Linbo.pm:1153
 msgid "Dateiname des Basis-Image"
 msgstr ""
 
@@ -1612,11 +1604,11 @@ msgstr ""
 msgid "Deaktivierungszeitraum"
 msgstr ""
 
-#: ../src/cgi-bin/settings:189 ../src/cgi-bin/settings_users:161
+#: ../src/cgi-bin/settings_users:161
 msgid "Der Deaktivierungszeitraum muss eine Zahl sein"
 msgstr ""
 
-#: ../src/cgi-bin/settings:181 ../src/cgi-bin/settings_users:153
+#: ../src/cgi-bin/settings_users:153
 msgid "Der Duldungszeitraum muss eine Zahl sein"
 msgstr ""
 
@@ -1651,7 +1643,7 @@ msgstr ""
 msgid "Die Benutzerdaten müssen noch in das System übernommen werden."
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1226
+#: ../lib/Schulkonsole/Linbo.pm:1231
 #, perl-format
 msgid "Die Cachepartition %s benötigt ein GNU/Linux-Dateisystem"
 msgstr ""
@@ -1691,7 +1683,7 @@ msgid ""
 "href=\"hosts\">Hosts-Liste</a>."
 msgstr ""
 
-#: ../src/cgi-bin/settings:173 ../src/cgi-bin/settings_users:145
+#: ../src/cgi-bin/settings_users:145
 msgid "Die Passwortlänge muss eine Zahl > 0 sein"
 msgstr ""
 
@@ -1707,7 +1699,7 @@ msgstr ""
 msgid "Die Wartezeit nach jedem Rechner ist ungültig."
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1217
+#: ../lib/Schulkonsole/Linbo.pm:1222
 #, perl-format
 msgid "Die erweiterte Partition %s ist nicht erlaubt"
 msgstr ""
@@ -1890,11 +1882,10 @@ msgstr ""
 msgid "Einsammeln und beenden"
 msgstr ""
 
-#: ../shtml/settings.tt:1 ../shtml/settings.tt:9 ../shtml/settings_classs.tt:1
-#: ../shtml/settings_classs.tt:9 ../shtml/settings_program.tt:1
-#: ../shtml/settings_program.tt:9 ../shtml/settings_projects.tt:1
-#: ../shtml/settings_projects.tt:9 ../shtml/settings_users.tt:1
-#: ../shtml/settings_users.tt:9
+#: ../shtml/settings_classs.tt:1 ../shtml/settings_classs.tt:9
+#: ../shtml/settings_program.tt:1 ../shtml/settings_program.tt:9
+#: ../shtml/settings_projects.tt:1 ../shtml/settings_projects.tt:9
+#: ../shtml/settings_users.tt:1 ../shtml/settings_users.tt:9
 msgid "Einstellungen"
 msgstr ""
 
@@ -2177,11 +2168,11 @@ msgid "Festplattencontroller (ab LINBO 1.1.0 immer SATA (sda))"
 msgstr ""
 
 #: ../shtml/linbo_new.tt:37
-msgid "Festplattengröße in MB"
+msgid "Festplattengröße in <b>kB</b>(,M,G,T)"
 msgstr ""
 
 #: ../src/cgi-bin/linbo_new:140
-msgid "Festplattengröße muss eine Zahl sein"
+msgid "Festplattengröße muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr ""
 
 #: ../shtml/class_list.tt:109 ../shtml/class_list.tt:35
@@ -2209,7 +2200,7 @@ msgstr ""
 msgid "Für"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1214
+#: ../lib/Schulkonsole/Linbo.pm:1219
 #, perl-format
 msgid "Für %s existieren mehrere erweiterte Partitionen"
 msgstr ""
@@ -2223,7 +2214,7 @@ msgstr ""
 msgid "Für Diskquota müssen alle oder keine Felder ausgefüllt sein"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1210
+#: ../lib/Schulkonsole/Linbo.pm:1215
 #, perl-format
 msgid "Für die Partition %s existiert keine erweiterte Partition"
 msgstr ""
@@ -2234,7 +2225,7 @@ msgstr ""
 msgid "GNU/Linux"
 msgstr ""
 
-#: ../src/cgi-bin/settings:165 ../src/cgi-bin/settings_users:137
+#: ../src/cgi-bin/settings_users:137
 msgid "Geben Sie eine gültige 4-stellige Jahreszahl ein"
 msgstr ""
 
@@ -2288,19 +2279,19 @@ msgid "Gruppenkonfiguration erstellen"
 msgstr ""
 
 #: ../src/cgi-bin/linbo_new:169
-msgid "Größe für Betriebssystem 1 muss eine Zahl sein"
+msgid "Größe für Betriebssystem 1 muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:196
-msgid "Größe für Betriebssystem 2 muss eine Zahl sein"
+#: ../src/cgi-bin/linbo_new:197
+msgid "Größe für Betriebssystem 2 muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:223
-msgid "Größe für Betriebssystem 3 muss eine Zahl sein"
+#: ../src/cgi-bin/linbo_new:224
+msgid "Größe für Betriebssystem 3 muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:250
-msgid "Größe für Betriebssystem 4 muss eine Zahl sein"
+#: ../src/cgi-bin/linbo_new:251
+msgid "Größe für Betriebssystem 4 muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr ""
 
 #: ../shtml/class_collect.tt:50 ../shtml/class_handout.tt:49
@@ -2665,8 +2656,8 @@ msgstr ""
 #: ../shtml/class_passwords.tt:27 ../shtml/class_shares.tt:1
 #: ../shtml/class_shares.tt:27 ../shtml/myclass_handedoutcopy.tt:1
 #: ../shtml/quotas.tt:15 ../shtml/quotas_classes.tt:1
-#: ../shtml/quotas_classes.tt:9 ../shtml/settings.tt:19
-#: ../shtml/settings_classs.tt:1 ../shtml/settings_classs.tt:9
+#: ../shtml/quotas_classes.tt:9 ../shtml/settings_classs.tt:1
+#: ../shtml/settings_classs.tt:9
 msgid "Klassen"
 msgstr ""
 
@@ -2813,7 +2804,7 @@ msgstr ""
 msgid "LINBO-Kerneloptionen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1167
+#: ../lib/Schulkonsole/Linbo.pm:1172
 #, perl-format
 msgid "Leerer Wert für \"%s\" bei %s auf %s"
 msgstr ""
@@ -3145,7 +3136,7 @@ msgstr ""
 msgid "Name des Betriebssystems"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1173
+#: ../lib/Schulkonsole/Linbo.pm:1178
 #, perl-format
 msgid "Name mit Version (\"%s\") muss bei Betriebssystemen eindeutig sein."
 msgstr ""
@@ -3338,7 +3329,7 @@ msgstr ""
 msgid "Partition bootbar:"
 msgstr ""
 
-#: ../shtml/linbo_edit_oss.inc.tt:83 ../lib/Schulkonsole/Linbo.pm:1149
+#: ../shtml/linbo_edit_oss.inc.tt:83 ../lib/Schulkonsole/Linbo.pm:1154
 msgid "Partition, die Kernel und initrd enthält"
 msgstr ""
 
@@ -3351,7 +3342,7 @@ msgid "Partitionsgröße"
 msgstr ""
 
 #: ../shtml/linbo_new.tt:53
-msgid "Partitionsgrößen in MB"
+msgid "Partitionsgrößen in <b>kB</b>(,M,G,T)"
 msgstr ""
 
 #: ../shtml/login.tt:17
@@ -3419,7 +3410,7 @@ msgstr ""
 msgid "Passwörter zurückgesetzt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1150
+#: ../lib/Schulkonsole/Linbo.pm:1155
 msgid "Pfad zum Kernel"
 msgstr ""
 
@@ -3508,9 +3499,8 @@ msgstr ""
 #: ../shtml/project_members.tt:25 ../shtml/project_passwords.tt:1
 #: ../shtml/project_passwords.tt:27 ../shtml/project_shares.tt:1
 #: ../shtml/project_shares.tt:26 ../shtml/quotas.tt:16
-#: ../shtml/quotas_projects.tt:1 ../shtml/settings.tt:22
-#: ../shtml/settings_projects.tt:1 ../shtml/settings_projects.tt:9
-#: ../shtml/start.tt:212
+#: ../shtml/quotas_projects.tt:1 ../shtml/settings_projects.tt:1
+#: ../shtml/settings_projects.tt:9 ../shtml/start.tt:212
 msgid "Projekte"
 msgstr ""
 
@@ -3548,7 +3538,7 @@ msgstr ""
 msgid "Quota aktivieren"
 msgstr ""
 
-#: ../src/cgi-bin/settings:203 ../src/cgi-bin/settings_users:175
+#: ../src/cgi-bin/settings_users:175
 msgid "Quota muss eine Zahl sein"
 msgstr ""
 
@@ -3709,15 +3699,15 @@ msgstr ""
 #: ../shtml/room_lesson.tt:1 ../shtml/room_shares.tt:1 ../shtml/room_test.tt:1
 #: ../shtml/room_test_collect.tt:1 ../shtml/room_test_end.tt:1
 #: ../shtml/room_test_handout.tt:1 ../shtml/room_test_password.tt:1
-#: ../shtml/rooms.tt:1 ../shtml/rooms_classrooms.tt:1 ../shtml/settings.tt:1
-#: ../shtml/settings.tt:13 ../shtml/settings_classs.tt:1
-#: ../shtml/settings_program.tt:1 ../shtml/settings_program.tt:9
-#: ../shtml/settings_projects.tt:1 ../shtml/settings_users.tt:1
-#: ../shtml/showpassword.tt:1 ../shtml/start.tt:1 ../shtml/user.tt:1
-#: ../shtml/user_check.tt:1 ../shtml/user_commit.tt:1 ../shtml/user_extra.tt:1
-#: ../shtml/user_print.tt:1 ../shtml/user_reports.tt:1
-#: ../shtml/user_students.tt:1 ../shtml/user_teacherpasswords.tt:1
-#: ../shtml/user_teachers.tt:1 ../shtml/user_teachin.tt:1
+#: ../shtml/rooms.tt:1 ../shtml/rooms_classrooms.tt:1
+#: ../shtml/settings_classs.tt:1 ../shtml/settings_program.tt:1
+#: ../shtml/settings_program.tt:9 ../shtml/settings_projects.tt:1
+#: ../shtml/settings_users.tt:1 ../shtml/showpassword.tt:1 ../shtml/start.tt:1
+#: ../shtml/user.tt:1 ../shtml/user_check.tt:1 ../shtml/user_commit.tt:1
+#: ../shtml/user_extra.tt:1 ../shtml/user_print.tt:1
+#: ../shtml/user_reports.tt:1 ../shtml/user_students.tt:1
+#: ../shtml/user_teacherpasswords.tt:1 ../shtml/user_teachers.tt:1
+#: ../shtml/user_teachin.tt:1
 msgid "Schulkonsole"
 msgstr ""
 
@@ -4000,8 +3990,8 @@ msgstr ""
 msgid "Teach-In ist notwendig"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:156 ../src/cgi-bin/linbo_new:183
-#: ../src/cgi-bin/linbo_new:210 ../src/cgi-bin/linbo_new:237
+#: ../src/cgi-bin/linbo_new:156 ../src/cgi-bin/linbo_new:184
+#: ../src/cgi-bin/linbo_new:211 ../src/cgi-bin/linbo_new:238
 #, perl-format
 msgid "Template %s nicht vorhanden"
 msgstr ""
@@ -4027,12 +4017,12 @@ msgstr ""
 msgid "Unbekannter Fehler "
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1229
+#: ../lib/Schulkonsole/Linbo.pm:1234
 #, perl-format
 msgid "Unbekannter Fehler bei %s/%s"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1176
+#: ../lib/Schulkonsole/Linbo.pm:1181
 #, perl-format
 msgid "Unbekannter Fehler für %s bei %s auf %s"
 msgstr ""
@@ -4161,7 +4151,7 @@ msgstr ""
 msgid "Ungueltiges Projekt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1170
+#: ../lib/Schulkonsole/Linbo.pm:1175
 #, perl-format
 msgid "Ungültige Zeichen für \"%s\" bei %s auf %s"
 msgstr ""
@@ -4563,7 +4553,7 @@ msgstr ""
 msgid "kein Unterricht."
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1242
+#: ../lib/Schulkonsole/Linbo.pm:1247
 msgid "keine Cachepartition"
 msgstr ""
 
@@ -4579,11 +4569,11 @@ msgstr ""
 msgid "kopieren nach"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1194
+#: ../lib/Schulkonsole/Linbo.pm:1199
 msgid "leerer Devicename"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1196 ../lib/Schulkonsole/Linbo.pm:1238
+#: ../lib/Schulkonsole/Linbo.pm:1201 ../lib/Schulkonsole/Linbo.pm:1243
 msgid "leerer Wert"
 msgstr ""
 
@@ -4705,7 +4695,7 @@ msgstr ""
 msgid "unbekannt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1186
+#: ../lib/Schulkonsole/Linbo.pm:1191
 msgid "unbenannt"
 msgstr ""
 
@@ -4725,7 +4715,7 @@ msgstr ""
 msgid "ungültige Optionen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1203 ../lib/Schulkonsole/Linbo.pm:1240
+#: ../lib/Schulkonsole/Linbo.pm:1208 ../lib/Schulkonsole/Linbo.pm:1245
 msgid "ungültige Zeichen"
 msgstr ""
 
@@ -4841,8 +4831,8 @@ msgstr ""
 
 #: ../src/cgi-bin/printers_edit:253 ../src/cgi-bin/printers_edit:285
 #: ../src/cgi-bin/rooms:174 ../src/cgi-bin/rooms_classrooms:91
-#: ../src/cgi-bin/settings:279 ../src/cgi-bin/settings_program:128
-#: ../src/cgi-bin/settings_users:251 ../src/cgi-bin/user_teachers:225
+#: ../src/cgi-bin/settings_program:128 ../src/cgi-bin/settings_users:251
+#: ../src/cgi-bin/user_teachers:225
 msgid "Änderungen übernommen"
 msgstr ""
 
