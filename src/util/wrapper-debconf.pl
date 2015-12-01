@@ -77,10 +77,20 @@ exit (  Schulkonsole::Error::Debconf::WRAPPER_UNAUTHORIZED_ID
 my @allowed_names = ("linuxmuster-base/internsubrange","linuxmuster-base/fwconfig");
 
 SWITCH: {
+    $app_id == Schulkonsole::Config::DEBCONFREADAPP and do {
+	read_debconf();
+	last SWITCH;
+    };
+
+    $app_id == Schulkonsole::Config::DEBCONFREADSMTPRELAYAPP and do {
+	read_smtprelay();
+	last SWITCH;
+    };
+
+};
+
 
 =head3 read_debconf
-
-numeric constant: C<Schulkonsole::Config::WRITEFILEAPP>
 
 =head4 Parameters from standard input
 
@@ -98,7 +108,7 @@ name of debconf value to read
 
 =cut
 
-$app_id == Schulkonsole::Config::DEBCONFREADAPP and do {
+sub read_debconf() {
 	my $section = <>;
 	($section) = $section =~ /^([a-z\-]+)$/;
 	exit (  Schulkonsole::Error::Debconf::WRAPPER_INVALID_SECTION
@@ -120,7 +130,7 @@ $app_id == Schulkonsole::Config::DEBCONFREADAPP and do {
 	$( = $);
 	umask(022);
 
-	my $command = '/bin/bash -c "echo get '.$section.'/'.$name.' | debconf-communicate" |';
+	my $command = '/bin/bash -c "echo get '.$section.'/'.$name.' | debconf-communicate -fnoninteractive" |';
 	open(SCRIPTIN, $command) or
 	exit (  Schulkonsole::Error::Debconf::WRAPPER_SCRIPT_EXEC_FAILED
 	      - Schulkonsole::Error::Debconf::WRAPPER_ERROR_BASE);
@@ -135,9 +145,35 @@ $app_id == Schulkonsole::Config::DEBCONFREADAPP and do {
 	      - Schulkonsole::Error::Debconf::WRAPPER_ERROR_BASE);
 
 	exit 0;
-};
-
 }
 
+
+=head3 read_smtprelay
+
+=back
+
+=cut
+
+sub read_smtprelay() {
+
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+
+	my $command = '/bin/bash -c "echo get linuxmuster-base/smtprelay | debconf-communicate -fnoninteractive" |';
+	open(SCRIPTIN, $command) or
+	exit (  Schulkonsole::Error::Debconf::WRAPPER_SCRIPT_EXEC_FAILED
+	      - Schulkonsole::Error::Debconf::WRAPPER_ERROR_BASE);
+
+	my $line;
+	while(<SCRIPTIN>) {
+	    ($line) = $_ =~ /^(.*?)$/;
+	    print "$line\n" if defined $line;
+	}
+	close(SCRIPTIN);
+
+	exit 0;
+};
 exit -2;	# program error
 

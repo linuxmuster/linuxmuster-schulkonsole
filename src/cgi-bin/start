@@ -699,7 +699,7 @@ Boolean value (0|1).
 
 =cut
 
-my $smtprelay = Schulkonsole::Debconf::read('linuxmuster-base','smtprelay');
+my $smtprelay = Schulkonsole::Debconf::read_smtprelay($id, $password);
 $sk_session->set_var('has_smtprelay', $smtprelay eq ""? 0 : 1);
 
 my @mailaliass = Schulkonsole::Info::mailaliases($uid);

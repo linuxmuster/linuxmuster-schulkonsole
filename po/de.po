@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the schulkonsole package.
 # root <root@linuxmuster.lokal>, 2014.
 #
-#: ../lib/Schulkonsole/Session.pm.in:1507
+#: ../lib/Schulkonsole/Session.pm.in:1550
 msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2015-11-23 19:27+0100\n"
+"POT-Creation-Date: 2015-12-01 17:37+0100\n"
 "PO-Revision-Date: 2014-04-06 14:22+0200\n"
 "Last-Translator: root <root@linuxmuster.lokal>\n"
 "Language-Team: German\n"
@@ -66,21 +66,21 @@ msgstr ""
 
 #: ../src/cgi-bin/class_list:134 ../src/cgi-bin/class_list:153
 #: ../src/cgi-bin/project_members:368 ../src/cgi-bin/project_members:387
-#: ../src/cgi-bin/start:532 ../src/cgi-bin/start:551
+#: ../src/cgi-bin/start:538 ../src/cgi-bin/start:557
 #, perl-format
 msgid "%d Minuten"
 msgstr ""
 
 #: ../src/cgi-bin/class_list:131 ../src/cgi-bin/class_list:150
 #: ../src/cgi-bin/project_members:365 ../src/cgi-bin/project_members:384
-#: ../src/cgi-bin/start:529 ../src/cgi-bin/start:548
+#: ../src/cgi-bin/start:535 ../src/cgi-bin/start:554
 #, perl-format
 msgid "%d Stunden"
 msgstr ""
 
 #: ../src/cgi-bin/class_list:128 ../src/cgi-bin/class_list:147
 #: ../src/cgi-bin/project_members:362 ../src/cgi-bin/project_members:381
-#: ../src/cgi-bin/start:526 ../src/cgi-bin/start:545
+#: ../src/cgi-bin/start:532 ../src/cgi-bin/start:551
 #, perl-format
 msgid "%d Tage"
 msgstr ""
@@ -905,11 +905,11 @@ msgstr ""
 msgid "Altes Passwort"
 msgstr ""
 
-#: ../src/cgi-bin/start:244
+#: ../src/cgi-bin/start:250
 msgid "Altes Passwort eingeben"
 msgstr ""
 
-#: ../src/cgi-bin/start:249
+#: ../src/cgi-bin/start:255
 msgid "Altes Passwort stimmt nicht"
 msgstr ""
 
@@ -929,7 +929,7 @@ msgstr ""
 msgid "Angelegte Benutzer"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1414
+#: ../lib/Schulkonsole/Session.pm.in:1457
 msgid "Angemeldet"
 msgstr ""
 
@@ -1045,7 +1045,7 @@ msgstr ""
 msgid "Ausführung"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1297
+#: ../lib/Schulkonsole/Session.pm.in:1340
 msgid "Ausgabe des Hintergrundprozess: "
 msgstr ""
 
@@ -1596,7 +1596,7 @@ msgstr ""
 msgid "Daten"
 msgstr ""
 
-#: ../src/cgi-bin/start:269
+#: ../src/cgi-bin/start:275
 msgid "Daten zur Passwortänderung unvollständig"
 msgstr ""
 
@@ -1860,7 +1860,7 @@ msgstr ""
 msgid "Ein OpenVPN-Zertifikat wurde für Sie erstellt."
 msgstr ""
 
-#: ../src/cgi-bin/start:314
+#: ../src/cgi-bin/start:320
 msgid "Eine oder mehrere Mail-Adressen sind ungültig."
 msgstr ""
 
@@ -2070,7 +2070,7 @@ msgstr ""
 msgid "Es sind noch nicht alle Verknüpfungen eindeutig festgelegt"
 msgstr ""
 
-#: ../src/cgi-bin/start:380
+#: ../src/cgi-bin/start:386
 msgid "Es wurde bereits ein OpenVPN-Zertifikat erstellt"
 msgstr ""
 
@@ -2086,7 +2086,7 @@ msgstr ""
 msgid "Es wurde eine ungültige Kategorie für die Rechnerauswahl angegeben."
 msgstr ""
 
-#: ../src/cgi-bin/start:433
+#: ../src/cgi-bin/start:439
 msgid "Es wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> abgelegt"
 msgstr ""
 
@@ -2143,7 +2143,7 @@ msgstr ""
 msgid "Fehler bei der Erzeugung des Dokuments"
 msgstr ""
 
-#: ../src/cgi-bin/start:439
+#: ../src/cgi-bin/start:445
 msgid "Fehler bei der Zertifikatserstellung."
 msgstr ""
 
@@ -2379,7 +2379,7 @@ msgstr ""
 msgid "IP:"
 msgstr ""
 
-#: ../src/cgi-bin/start:457
+#: ../src/cgi-bin/start:463
 msgid ""
 "Ihr Zertifikat wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> "
 "abgelegt"
@@ -2482,7 +2482,7 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1142
+#: ../lib/Schulkonsole/Session.pm.in:1185
 msgid "Interner Fehler"
 msgstr ""
 
@@ -2781,7 +2781,7 @@ msgstr ""
 msgid "Konto von"
 msgstr ""
 
-#: ../shtml/start.tt:61
+#: ../shtml/start.tt:62
 msgid "Kopie behalten"
 msgstr ""
 
@@ -2909,7 +2909,7 @@ msgstr ""
 msgid "Login %s schon vorhanden"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1417
+#: ../lib/Schulkonsole/Session.pm.in:1460
 msgid "Login fehlgeschlagen"
 msgstr ""
 
@@ -2960,7 +2960,7 @@ msgstr ""
 msgid "Mail-Weiterleitung"
 msgstr ""
 
-#: ../shtml/start.tt:71
+#: ../shtml/start.tt:70
 msgid "Mailadresse(n) ändern"
 msgstr ""
 
@@ -2988,7 +2988,7 @@ msgstr ""
 msgid "Mailquota-Überschreitung an root melden"
 msgstr ""
 
-#: ../src/cgi-bin/start:327
+#: ../src/cgi-bin/start:333
 msgid "Mailweiterleitung erfolgreich geändert"
 msgstr ""
 
@@ -3178,19 +3178,19 @@ msgstr ""
 msgid "Neues Passwort"
 msgstr ""
 
-#: ../src/cgi-bin/start:256
+#: ../src/cgi-bin/start:262
 msgid "Neues Passwort eingeben"
 msgstr ""
 
-#: ../src/cgi-bin/start:284
+#: ../src/cgi-bin/start:290
 msgid "Neues Passwort ist zu schwach: "
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:125 ../src/cgi-bin/start:275
+#: ../lib/Schulkonsole/Error.pm:125 ../src/cgi-bin/start:281
 msgid "Neues Passwort nicht richtig wiederholt"
 msgstr ""
 
-#: ../src/cgi-bin/start:263
+#: ../src/cgi-bin/start:269
 msgid "Neues Passwort zur Kontrolle zweimal eingeben"
 msgstr ""
 
@@ -3266,19 +3266,19 @@ msgstr ""
 msgid "Offenes Projekt"
 msgstr ""
 
-#: ../src/cgi-bin/start:409
+#: ../src/cgi-bin/start:415
 msgid "OpenVPN-Passwort bestätigen"
 msgstr ""
 
-#: ../src/cgi-bin/start:389
+#: ../src/cgi-bin/start:395
 msgid "OpenVPN-Passwort eingegeben"
 msgstr ""
 
-#: ../src/cgi-bin/start:400
+#: ../src/cgi-bin/start:406
 msgid "OpenVPN-Passwort muss mindestens sechs Zeichen haben"
 msgstr ""
 
-#: ../src/cgi-bin/start:420
+#: ../src/cgi-bin/start:426
 msgid "OpenVPN-Passwort nicht richtig wiederholt"
 msgstr ""
 
@@ -3400,7 +3400,7 @@ msgstr ""
 msgid "Passwortänderung"
 msgstr ""
 
-#: ../src/cgi-bin/start:294
+#: ../src/cgi-bin/start:300
 msgid "Passwortänderung erfolgreich"
 msgstr ""
 
@@ -3678,7 +3678,7 @@ msgstr ""
 msgid "Schnellauswahl"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1453
+#: ../lib/Schulkonsole/Session.pm.in:1496
 msgid "Schueler"
 msgstr ""
 
@@ -3870,7 +3870,7 @@ msgstr ""
 msgid "Sonderquota"
 msgstr ""
 
-#: ../src/cgi-bin/start:599
+#: ../src/cgi-bin/start:605
 msgid "Speicherplatz"
 msgstr ""
 
@@ -4241,7 +4241,7 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: ../src/cgi-bin/start:442 ../src/cgi-bin/start:464
+#: ../src/cgi-bin/start:448 ../src/cgi-bin/start:470
 msgid "Verständigen Sie den Netzwerkadministrator"
 msgstr ""
 
@@ -4391,11 +4391,11 @@ msgstr ""
 msgid "Zertifikat erstellen und herunterladen"
 msgstr ""
 
-#: ../src/cgi-bin/start:461
+#: ../src/cgi-bin/start:467
 msgid "Zertifikat konnte nicht heruntergeladen werden."
 msgstr ""
 
-#: ../src/cgi-bin/start:430
+#: ../src/cgi-bin/start:436
 msgid "Zertifikat wurde erstellt."
 msgstr ""
 
@@ -4420,7 +4420,7 @@ msgstr ""
 msgid "Zufallspasswörter gesetzt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1447
+#: ../lib/Schulkonsole/Session.pm.in:1490
 msgid "Zugriff verweigert"
 msgstr ""
 
@@ -4436,13 +4436,13 @@ msgstr ""
 msgid "[LINBO] - globale Konfiguration"
 msgstr ""
 
-#: ../src/cgi-bin/start:366
+#: ../src/cgi-bin/start:372
 msgid "abgebrochen"
 msgstr ""
 
 #: ../src/cgi-bin/class_list:137 ../src/cgi-bin/class_list:156
 #: ../src/cgi-bin/project_members:371 ../src/cgi-bin/project_members:390
-#: ../src/cgi-bin/start:535 ../src/cgi-bin/start:554
+#: ../src/cgi-bin/start:541 ../src/cgi-bin/start:560
 msgid "abgelaufen"
 msgstr ""
 

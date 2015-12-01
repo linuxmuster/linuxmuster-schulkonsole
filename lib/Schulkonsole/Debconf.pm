@@ -26,6 +26,8 @@ Schulkonsole::Debconf - interface to read debconf section/values
  Schulkonsole::Debconf::read($id, $password,
  	'linuxmuster-base','internsubmask');
 
+ Schulkonsole::Debconf::read_smtprelay($id, $password);
+
 =head1 DESCRIPTION
 
 Schulkonsole::Debconf is an interface to read debconf values with root premissions
@@ -148,34 +150,42 @@ sub stop_wrapper {
 
 =head2 Functions
 
+=head3 C<read($id, $password, $section, $name)>
+
+Read and return a debconf value.
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$section>
+
+The debconf section to read the value from.
+
+=item C<$name>
+
+The debconf name for the variable to read the value from.
+
+=head4 Output
+
+Return the value.
+
+=back
+
+=head4 Description
+
+Read the value C<$name> specified in C<$section> from the
+debconf database.
+
 =cut
-
-#sub read {
-#	my $id = shift;
-#	my $password = shift;
-#	my $section = shift;
-#	my $name = shift;
-#
-#	my $pid = start_wrapper(Schulkonsole::Config::DEBCONFREADAPP,
-#		$id, $password,
-#		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-#
-#	print SCRIPTOUT "$section\n$name\n";
-#
-#	my @re;
-#	while (<SCRIPTIN>) {
-#		push @re, $_;
-#	}
-#
-#
-#	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-#
-#
-#	return \@re;
-#}
-
-
-
 
 sub read {
 	my $id = shift;
@@ -208,6 +218,62 @@ sub read {
 }
 
 
+=head3 C<read_smtprelay($id, $password)>
+
+Read and return the debconf value linuxmuster-base/smtprelay.
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=head4 Output
+
+Return the linuxmuster-base/smtprelay value.
+
+=back
+
+=head4 Description
+
+Read the value C<linuxmuster-base/smtprelay> from the
+debconf database.
+
+=cut
+
+sub read_smtprelay {
+	my $id = shift;
+	my $password = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::DEBCONFREADSMTPRELAYAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	my $ret;
+	my $value;
+	while (<SCRIPTIN>) {
+		($ret,$value) = $_ =~ /^(\d+)\s+([a-zA-Z\d\-\.]+)$/;
+		next if not defined $ret;
+		die new Schulkonsole::Error(
+			Schulkonsole::Error::Debconf::WRAPPER_INVALID_REQUEST,
+			$Schulkonsole::Config::_wrapper_debconf, $!,
+			    "debconf-communicate error $ret")
+			unless $ret == 0 || $ret == 10;
+	}
+
+	stop_wrapper($pid, undef, \*SCRIPTIN, \*SCRIPTIN);
+	if($ret == 0) {
+	    return $value;
+	} else {
+	    return "";
+	}
+}
 
 
 

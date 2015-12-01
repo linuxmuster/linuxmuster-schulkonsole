@@ -697,12 +697,15 @@ use constant {
 
 =item C<DEBCONFREADAPP>
 
+=item C<DEBCONFREADSMTPRELAYAPP>
+
 =back
 
 =cut
 
 use constant {
 	DEBCONFREADAPP => 15001,
+	DEBCONFREADSMTPRELAYAPP => 15002,
 };
 
 
@@ -1433,6 +1436,7 @@ $_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
 	LINBOREMOTEWINDOWAPP() => 'linbo_remote_window',
 	LINBOREMOTEAPP() => 'linbo_remote',
 	DEBCONFREADAPP() => 'debconf_read',
+	DEBCONFREADSMTPRELAYAPP() => 'read_smtprelay',
 );
 
 
