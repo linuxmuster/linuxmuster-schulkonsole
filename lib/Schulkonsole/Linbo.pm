@@ -1941,6 +1941,10 @@ The password of the teacher invoking the command
 
 The name of the workstation group
 
+=item C<$systemtype>
+
+The systemtype of the workstation group
+
 =item C<$server>
 
 The server IP address
@@ -1996,6 +2000,7 @@ sub create_start_conf_from_template {
 	my $password = shift;
 
 	my $group = shift;
+	my $systemtype = shift;
 	my $server = shift;
 	my $device = shift;
 
@@ -2037,6 +2042,7 @@ sub create_start_conf_from_template {
 
 	while (<PART>) {
 		s/\$RECHNERGRUPPE/$group/g;
+		s/\$SYSTEMTYPE/$systemtype/g;
 		s/\$DEVICE/$device/g;
 		s/\$SERVER-IP/$server/g;
 		s/\$PART1/$os_sizes[0]/g;

@@ -109,6 +109,7 @@ $q->param('create') and do {
 
 	my ($group) = $q->param('group') =~ /^\s*(.+?)\s*$/;
 	$group = lc $group;
+	my ($systemtype) = $q->param('systemtype') =~ /^\s*(.+?)\s*$/;
 	my ($disk_size) = $q->param('disksize') =~ /^\s*(.+?)\s*$/;
 	my ($device) = $q->param('device') =~ /^\s*(.+?)\s*$/;
 	my ($os_template_1) = $q->param('os1') =~ /^\s*(.+?)\s*$/;
@@ -131,6 +132,14 @@ $q->param('create') and do {
 		$sk_session->mark_input_error('group');
 	}
 
+	if (not $systemtype) {
+		push @errors, $sk_session->d()->get('Ungültiger Systemtyp');
+		$sk_session->mark_input_error('systemtype');
+	} elsif ($systemtype !~ /bios|bios64|efi32|efi64/) {
+		push @errors, $sk_session->d()->get('Unbekannter Systemtyp');
+		$sk_session->mark_input_error('systemtype');
+	}
+	
 	if (not $disk_size) {
 		push @errors, $sk_session->d()->get(
 		              	'Keine Festplattengröße angegeben');
@@ -273,6 +282,7 @@ $q->param('create') and do {
 			$sk_session->userdata('id'),
 			$sk_session->get_password(),
 			$group,
+			$systemtype,
 			$ENV{SERVER_ADDR},
 			$device,
 			$os_template_1, $os_size_1 * 1024,
@@ -315,6 +325,7 @@ foreach my $template_name (sort keys %$templates_os) {
 	}
 }
 
+my @templates_os = (@templates_os_nonwin, @templates_os_win);
 
 =item C<hastemplates>
 
@@ -344,7 +355,23 @@ List of all non-windows templates
 
 $sk_session->set_var('templatesosnonwin', \@templates_os_nonwin);
 
+=item C<templatesos>
 
+List of all os templates
+
+=cut
+
+$sk_session->set_var('templatesos', \@templates_os);
+
+=item C<systemtype>
+
+Specify systemtype to default 'bios'
+
+=cut
+
+if(not defined $sk_session->param('systemtype')) {
+	$sk_session->set_var('systemtype','bios');
+}
 
 
 
