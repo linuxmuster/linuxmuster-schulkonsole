@@ -21,7 +21,7 @@
 <th>[% loc('abgewählt') %]</th>
 </tr>
 <td>
-<select name="roomdeselect" multiple>
+<select name="roomdeselect" multiple size="20">
 [% FOREACH r IN roomsselected %]
 	<option value="[% r %]">[% r %]</option>
 [% END %]
@@ -32,7 +32,7 @@
 <input type="submit" name="[% printer %]_roomdeselect" value="[% loc('&gt;&gt;') %]">
 </td>
 <td>
-<select name="roomselect" multiple>
+<select name="roomselect" multiple size="20">
 [% FOREACH r IN roomsdeselected %]
 	<option value="[% r %]">[% r %]</option>
 [% END %]
@@ -60,7 +60,7 @@
 <th>[% loc('abgewählt') %]</th>
 </tr>
 <td>
-<select name="hostdeselect" multiple>
+<select name="hostdeselect" multiple size="20">
 [% FOREACH h IN hostsselected %]
 	<option value="[% h %]">[% h %]</option>
 [% END %]
@@ -71,7 +71,7 @@
 <input type="submit" name="[% printer %]_hostdeselect" value="[% loc('&gt;&gt;') %]">
 </td>
 <td>
-<select name="hostselect" multiple>
+<select name="hostselect" multiple size="20">
 [% FOREACH h IN hostsdeselected %]
 	<option value="[% h %]">[% h %]</option>
 [% END %]

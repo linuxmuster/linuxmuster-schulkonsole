@@ -15,7 +15,7 @@ KernelOptions =                # LINBO-Kernel-Parameter (z. B. acpi=off), m. Lee
 [Partition]       # Betriebssystempartition
 Dev = /dev/$DEVICE1   # Gerätename der Partition
                   # hda1 = erste Partition auf erster IDE-Platte
-Size = $PART1    # Partitionsgroesse in kB
+Size = $PART1    # Partitionsgroesse in kB(,M,G,T)
 Id = $ID1            # Partitionstyp (83 = Linux, 82 = swap,
                   # c = FAT32, 7 = NTFS, 5 = erweitere Partition)
 FSType = $FS1     # Dateisystem auf der Partition
@@ -23,56 +23,56 @@ Bootable = no     # Bootable-Flag
 
 [Partition]       # Betriebssystempartition
 Dev = /dev/$DEVICE2   # Gerätename der Partition
-Size = $PART2    # Partitionsgroesse in kB
+Size = $PART2    # Partitionsgroesse in kB(,M,G,T)
 Id = $ID2           
 FSType = $FS2     # Dateisystem auf der Partition
 Bootable = no     # Bootable-Flag
 
 [Partition]       # Betriebssystempartition
 Dev = /dev/$DEVICE3   # Gerätename der Partition
-Size = 50000    # Partitionsgroesse in kB
+Size = 50000    # Partitionsgroesse in kB(,M,G,T)
 Id = 83      
 FSType = ext2     # Dateisystem auf der Partition
 Bootable = yes     # Bootable-Flag
 
 [Partition]       # Betriebssystempartition
 Dev = /dev/$DEVICE4   # Gerätename der Partition
-Size =     # Partitionsgroesse in kB, keine Angabe = Rest
+Size =     # Partitionsgroesse in kB(,M,G,T), keine Angabe = Rest
 Id = 5        
 FSType =      # Dateisystem auf der Partition
 Bootable = no     # Bootable-Flag
 
 [Partition]       # Betriebssystempartition
 Dev = /dev/$DEVICE5   # Gerätename der Partition
-Size = $PART5    # Partitionsgroesse in kB
+Size = $PART5    # Partitionsgroesse in kB(,M,G,T)
 Id = $ID5      
 FSType = $FS5     # Dateisystem auf der Partition
 Bootable = no     # Bootable-Flag
 
 [Partition]       # Betriebssystempartition
 Dev = /dev/$DEVICE6   # Gerätename der Partition
-Size = $PART6    # Partitionsgroesse in kB
+Size = $PART6    # Partitionsgroesse in kB(,M,G,T)
 Id = $ID6            
 FSType = $FS6     # Dateisystem auf der Partition
 Bootable = no     # Bootable-Flag
 
 [Partition]       # Swappartition
 Dev = /dev/$DEVICE7   # Gerätename der Partition
-Size = 1000000    # Partitionsgroesse in kB
+Size = 1000000    # Partitionsgroesse in kB(,M,G,T)
 Id = 82      
 FSType = swap     # Dateisystem auf der Partition
 Bootable = no     # Bootable-Flag
 
 [Partition]       # Cachepartition
 Dev = /dev/$DEVICE8
-Size = $CACHE           # Partitionsgroesse in kB
+Size = $CACHE           # Partitionsgroesse in kB(,M,G,T)
 Id = 83
 FSType = reiserfs # Dateisystem fuer Cache (reiserfs empf.)
 Bootable = no
 
 [Partition]       # Datenpartition
 Dev = /dev/$DEVICE9
-Size =    # Partitionsgroesse in kB, keine Angabe = Rest
+Size =    # Partitionsgroesse in kB(,M,G,T), keine Angabe = Rest
 Id = c
 FSType = vfat
 Bootable = no

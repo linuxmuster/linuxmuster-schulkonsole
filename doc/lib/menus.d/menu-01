@@ -3,7 +3,7 @@
  <li><a [% dohref("start") %]>[% loc('Mein Konto') %]</a></li>
 [% END %]
 [% IF link_settings %]
- <li><a [% dohref("settings") %]>[% loc('Einstellungen') %]</a><ul>[% INCLUDE "submenu-settings.inc.tt" %]</ul></li>
+ <li><a>[% loc('Einstellungen') %]</a><ul>[% INCLUDE "submenu-settings.inc.tt" %]</ul></li>
 [% END %]
 [% IF link_room %]
  <li><a [% dohref("room") %]>[% loc('aktueller Raum') %]</a><ul>[% INCLUDE "submenu-room.inc.tt" %]</ul></li>
