@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2015-12-01 19:56+0100\n"
+"POT-Creation-Date: 2015-12-09 09:19+0100\n"
 "PO-Revision-Date: 2014-04-06 14:22+0200\n"
 "Last-Translator: root <root@linuxmuster.lokal>\n"
 "Language-Team: German\n"
@@ -867,8 +867,6 @@ msgstr ""
 #: ../shtml/hosts.tt:17 ../shtml/hosts.tt:36 ../shtml/linbo_remote.tt:19
 #: ../shtml/linbo_remote.tt:356 ../shtml/linbo_remote.tt:60
 #: ../shtml/room_test_collect.tt:91 ../shtml/room_test_handout.tt:51
-#: ../shtml/user_commit.tt:128 ../shtml/user_commit.tt:42
-#: ../shtml/user_commit.tt:83
 msgid "Aktualisieren"
 msgstr ""
 
@@ -933,19 +931,19 @@ msgstr ""
 msgid "Anlegen"
 msgstr ""
 
-#: ../src/cgi-bin/user_commit:104
+#: ../src/cgi-bin/user_commit:103
 msgid "Anlegen läuft schon"
 msgstr ""
 
-#: ../shtml/user_commit.tt:29
-msgid "Anlegen läuft."
+#: ../shtml/user_commit.tt:18
+msgid "Anlegen läuft..."
 msgstr ""
 
-#: ../src/cgi-bin/user_commit:110
+#: ../src/cgi-bin/user_commit:109
 msgid "Anlegen wurde gestartet"
 msgstr ""
 
-#: ../src/cgi-bin/user_commit:95
+#: ../src/cgi-bin/user_commit:94
 msgid "Anlegen, Löschen und Versetzen wurden gestartet"
 msgstr ""
 
@@ -1194,7 +1192,7 @@ msgid "Beispieltemplate %s nicht vorhanden"
 msgstr ""
 
 #: ../shtml/user.tt:1 ../shtml/user_check.tt:1 ../shtml/user_commit.tt:1
-#: ../shtml/user_commit.tt:139 ../shtml/user_commit.tt:94
+#: ../shtml/user_commit.tt:114 ../shtml/user_commit.tt:84
 #: ../shtml/user_extra.tt:1 ../shtml/user_print.tt:1 ../shtml/user_print.tt:35
 #: ../shtml/user_reports.tt:1 ../shtml/user_students.tt:1
 #: ../shtml/user_teacherpasswords.tt:1 ../shtml/user_teachers.tt:1
@@ -1232,23 +1230,23 @@ msgstr ""
 msgid "Benutzer %s unbekannt"
 msgstr ""
 
-#: ../shtml/user_commit.tt:33
+#: ../shtml/user_commit.tt:50
 msgid "Benutzer anlegen"
 msgstr ""
 
-#: ../shtml/user_commit.tt:19
+#: ../shtml/user_commit.tt:43
 msgid "Benutzer anlegen/versetzen/löschen"
 msgstr ""
 
-#: ../shtml/user_commit.tt:15
-msgid "Benutzer anlegen/versetzen/löschen läuft."
+#: ../shtml/user_commit.tt:16
+msgid "Benutzer anlegen/versetzen/löschen läuft..."
 msgstr ""
 
 #: ../lib/Schulkonsole/Error.pm:147
 msgid "Benutzer existiert nicht"
 msgstr ""
 
-#: ../shtml/user_commit.tt:119
+#: ../shtml/user_commit.tt:106
 msgid "Benutzer löschen"
 msgstr ""
 
@@ -1256,11 +1254,11 @@ msgstr ""
 msgid "Benutzer pro Seite:"
 msgstr ""
 
-#: ../shtml/user_commit.tt:74
+#: ../shtml/user_commit.tt:76
 msgid "Benutzer versetzen"
 msgstr ""
 
-#: ../shtml/page.tt:68 ../shtml/status.inc.tt:11
+#: ../shtml/page.tt:69 ../shtml/status.inc.tt:11
 msgid "Benutzer:"
 msgstr ""
 
@@ -1278,7 +1276,7 @@ msgid "Benutzername"
 msgstr ""
 
 #: ../shtml/settings_users.tt:1 ../shtml/settings_users.tt:9
-#: ../shtml/user.tt:9 ../shtml/user_check.tt:9 ../shtml/user_commit.tt:9
+#: ../shtml/user.tt:9 ../shtml/user_check.tt:9 ../shtml/user_commit.tt:10
 #: ../shtml/user_extra.tt:9 ../shtml/user_print.tt:8
 #: ../shtml/user_reports.tt:9 ../shtml/user_students.tt:9
 #: ../shtml/user_teacherpasswords.tt:9 ../shtml/user_teachers.tt:9
@@ -1323,39 +1321,39 @@ msgstr ""
 msgid "Bestätigen"
 msgstr ""
 
-#: ../shtml/linbo_new.tt:52
+#: ../shtml/linbo_new.tt:64
 msgid "Betriebssystem"
 msgstr ""
 
-#: ../shtml/linbo_new.tt:57
+#: ../shtml/linbo_new.tt:69
 msgid "Betriebssystem 1 (Partition 1)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:161
+#: ../src/cgi-bin/linbo_new:170
 msgid "Betriebssystem 1 muss Windows sein"
 msgstr ""
 
-#: ../shtml/linbo_new.tt:66
+#: ../shtml/linbo_new.tt:78
 msgid "Betriebssystem 2 (Partition 2)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:189
+#: ../src/cgi-bin/linbo_new:198
 msgid "Betriebssystem 2 muss Windows sein"
 msgstr ""
 
-#: ../shtml/linbo_new.tt:77
+#: ../shtml/linbo_new.tt:89
 msgid "Betriebssystem 3 (Partition 5)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:216
+#: ../src/cgi-bin/linbo_new:225
 msgid "Betriebssystem 3 darf nicht Windows sein"
 msgstr ""
 
-#: ../shtml/linbo_new.tt:86
+#: ../shtml/linbo_new.tt:98
 msgid "Betriebssystem 4 (Partition 6)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:243
+#: ../src/cgi-bin/linbo_new:252
 msgid "Betriebssystem 4 darf nicht Windows sein"
 msgstr ""
 
@@ -1379,8 +1377,8 @@ msgstr ""
 msgid "Betriebssystemversion (optional)"
 msgstr ""
 
-#: ../shtml/user_check.tt:29 ../shtml/user_commit.tt:140
-#: ../shtml/user_commit.tt:53 ../shtml/user_teachin.tt:56
+#: ../shtml/user_check.tt:29 ../shtml/user_commit.tt:115
+#: ../shtml/user_commit.tt:58 ../shtml/user_teachin.tt:56
 msgid "Bezeichner"
 msgstr ""
 
@@ -1388,11 +1386,11 @@ msgstr ""
 msgid "Bildschirmschriftfarbe"
 msgstr ""
 
-#: ../shtml/linbo_edit_global.inc.tt:28
+#: ../shtml/linbo_edit_global.inc.tt:28 ../shtml/linbo_new.tt:41
 msgid "Bios"
 msgstr ""
 
-#: ../shtml/linbo_edit_global.inc.tt:29
+#: ../shtml/linbo_edit_global.inc.tt:29 ../shtml/linbo_new.tt:42
 msgid "Bios64"
 msgstr ""
 
@@ -1821,11 +1819,11 @@ msgstr ""
 msgid "EFI"
 msgstr ""
 
-#: ../shtml/linbo_edit_global.inc.tt:30
+#: ../shtml/linbo_edit_global.inc.tt:30 ../shtml/linbo_new.tt:43
 msgid "EFI32"
 msgstr ""
 
-#: ../shtml/linbo_edit_global.inc.tt:31
+#: ../shtml/linbo_edit_global.inc.tt:31 ../shtml/linbo_new.tt:44
 msgid "EFI64"
 msgstr ""
 
@@ -2049,6 +2047,10 @@ msgstr ""
 msgid "Es sind keine Templateedateien vorhanden."
 msgstr ""
 
+#: ../shtml/user_commit.tt:37
+msgid "Es sind keine Vormerkungen vorhanden."
+msgstr ""
+
 #: ../shtml/linbo_grubedit.tt:68
 msgid "Es sind keine grub cfg-Dateien vorhanden."
 msgstr ""
@@ -2159,19 +2161,19 @@ msgstr ""
 msgid "Fernsteuerung"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:264
+#: ../src/cgi-bin/linbo_new:273
 msgid "Festplatte für die gewählte Gruppenkonfiguration zu klein"
 msgstr ""
 
-#: ../shtml/linbo_new.tt:41
+#: ../shtml/linbo_new.tt:53
 msgid "Festplattencontroller (ab LINBO 1.1.0 immer SATA (sda))"
 msgstr ""
 
-#: ../shtml/linbo_new.tt:37
+#: ../shtml/linbo_new.tt:49
 msgid "Festplattengröße in <b>kB</b>(,M,G,T)"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:140
+#: ../src/cgi-bin/linbo_new:149
 msgid "Festplattengröße muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr ""
 
@@ -2257,7 +2259,7 @@ msgid "Global"
 msgstr ""
 
 #: ../shtml/linbo_edit.tt:118 ../shtml/linbo_remote.tt:76
-#: ../shtml/user_commit.tt:54
+#: ../shtml/user_commit.tt:59
 msgid "Gruppe"
 msgstr ""
 
@@ -2274,23 +2276,23 @@ msgstr ""
 msgid "Gruppenkonfiguration editieren"
 msgstr ""
 
-#: ../shtml/linbo.tt:17 ../shtml/linbo_new.tt:97
+#: ../shtml/linbo.tt:17 ../shtml/linbo_new.tt:109
 msgid "Gruppenkonfiguration erstellen"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:169
+#: ../src/cgi-bin/linbo_new:178
 msgid "Größe für Betriebssystem 1 muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:197
+#: ../src/cgi-bin/linbo_new:206
 msgid "Größe für Betriebssystem 2 muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:224
+#: ../src/cgi-bin/linbo_new:233
 msgid "Größe für Betriebssystem 3 muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:251
+#: ../src/cgi-bin/linbo_new:260
 msgid "Größe für Betriebssystem 4 muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr ""
 
@@ -2366,7 +2368,7 @@ msgstr ""
 msgid "IP des TFTP-Servers, der Images vorhält"
 msgstr ""
 
-#: ../shtml/page.tt:78 ../shtml/status.inc.tt:21
+#: ../shtml/page.tt:79 ../shtml/status.inc.tt:21
 msgid "IP:"
 msgstr ""
 
@@ -2469,7 +2471,7 @@ msgstr ""
 msgid "In dieser Klasse wird bereits unterrichtet."
 msgstr ""
 
-#: ../shtml/page.tt:88 ../shtml/start.tt:75
+#: ../shtml/page.tt:89 ../shtml/start.tt:75
 msgid "Info"
 msgstr ""
 
@@ -2557,7 +2559,7 @@ msgstr ""
 msgid "Keine Drucker"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:136
+#: ../src/cgi-bin/linbo_new:145
 msgid "Keine Festplattengröße angegeben"
 msgstr ""
 
@@ -2577,7 +2579,7 @@ msgstr ""
 msgid "Keine Quota"
 msgstr ""
 
-#: ../shtml/linbo_new.tt:101
+#: ../shtml/linbo_new.tt:113
 msgid "Keine Templates vorhanden."
 msgstr ""
 
@@ -2732,7 +2734,7 @@ msgstr ""
 msgid "Kommentare bearbeiten"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:283
+#: ../src/cgi-bin/linbo_new:293
 msgid "Konfigurationsdatei erstellt"
 msgstr ""
 
@@ -2845,8 +2847,7 @@ msgstr ""
 msgid "Lehrerpasswörter"
 msgstr ""
 
-#: ../shtml/hosts.tt:19 ../shtml/hosts.tt:38 ../shtml/user_commit.tt:132
-#: ../shtml/user_commit.tt:46 ../shtml/user_commit.tt:87
+#: ../shtml/hosts.tt:19 ../shtml/hosts.tt:38
 msgid "Letzte Logdatei ansehen"
 msgstr ""
 
@@ -2929,8 +2930,8 @@ msgstr ""
 msgid "Löschen läuft schon"
 msgstr ""
 
-#: ../shtml/user_commit.tt:115
-msgid "Löschen läuft."
+#: ../shtml/user_commit.tt:22
+msgid "Löschen läuft..."
 msgstr ""
 
 #: ../src/cgi-bin/user_commit:182
@@ -3238,8 +3239,9 @@ msgstr ""
 #: ../shtml/room_handout.tt:67 ../shtml/room_lesson.tt:94
 #: ../shtml/room_shares.tt:34 ../shtml/room_test_collect.tt:39
 #: ../shtml/room_test_handout.tt:37 ../shtml/room_test_handout.tt:60
-#: ../shtml/rooms_classrooms.tt:29 ../shtml/user_print.tt:35
-#: ../shtml/user_print.tt:81
+#: ../shtml/rooms_classrooms.tt:29 ../shtml/user_commit.tt:113
+#: ../shtml/user_commit.tt:57 ../shtml/user_commit.tt:83
+#: ../shtml/user_print.tt:35 ../shtml/user_print.tt:81
 msgid "Nr."
 msgstr ""
 
@@ -3321,7 +3323,7 @@ msgstr ""
 msgid "Parition formatieren"
 msgstr ""
 
-#: ../shtml/linbo_new.tt:51
+#: ../shtml/linbo_new.tt:63
 msgid "Partition"
 msgstr ""
 
@@ -3341,7 +3343,7 @@ msgstr ""
 msgid "Partitionsgröße"
 msgstr ""
 
-#: ../shtml/linbo_new.tt:53
+#: ../shtml/linbo_new.tt:65
 msgid "Partitionsgrößen in <b>kB</b>(,M,G,T)"
 msgstr ""
 
@@ -3554,7 +3556,7 @@ msgstr ""
 msgid "Raum ist unbekannt"
 msgstr ""
 
-#: ../shtml/page.tt:70 ../shtml/status.inc.tt:13
+#: ../shtml/page.tt:71 ../shtml/status.inc.tt:13
 msgid "Raum:"
 msgstr ""
 
@@ -3586,7 +3588,7 @@ msgstr ""
 msgid "Rechnerauswahl"
 msgstr ""
 
-#: ../shtml/linbo_new.tt:33
+#: ../shtml/linbo_new.tt:34
 msgid "Rechnergruppe"
 msgstr ""
 
@@ -3594,7 +3596,7 @@ msgstr ""
 msgid "Rechnergruppenname"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:130
+#: ../src/cgi-bin/linbo_new:131
 msgid "Rechnergruppenname schon vergeben"
 msgstr ""
 
@@ -3638,7 +3640,7 @@ msgstr ""
 msgid "Räume"
 msgstr ""
 
-#: ../shtml/linbo_new.tt:44
+#: ../shtml/linbo_new.tt:56
 msgid "SATA"
 msgstr ""
 
@@ -3686,7 +3688,7 @@ msgstr ""
 #: ../shtml/myprojects_handedout.tt:1 ../shtml/myprojects_handedoutcopy.tt:1
 #: ../shtml/myprojects_tocollect.tt:1 ../shtml/myroom.tt:1
 #: ../shtml/myroom_handedoutcopy.tt:1 ../shtml/myroom_tocollect.tt:1
-#: ../shtml/page.tt:28 ../shtml/printers.tt:1 ../shtml/printers_edit.tt:1
+#: ../shtml/page.tt:29 ../shtml/printers.tt:1 ../shtml/printers_edit.tt:1
 #: ../shtml/project.tt:1 ../shtml/project_addmembers.tt:1
 #: ../shtml/project_collect.tt:1 ../shtml/project_drop_verify.tt:1
 #: ../shtml/project_handout.tt:1 ../shtml/project_handoutcopy.tt:1
@@ -3711,15 +3713,15 @@ msgstr ""
 msgid "Schulkonsole"
 msgstr ""
 
-#: ../shtml/header.inc.tt:6 ../shtml/page.tt:24
+#: ../shtml/header.inc.tt:6 ../shtml/page.tt:25
 msgid "Schulkonsole für Lehrer/innen"
 msgstr ""
 
-#: ../shtml/header.inc.tt:4 ../shtml/page.tt:22
+#: ../shtml/header.inc.tt:4 ../shtml/page.tt:23
 msgid "Schulkonsole für Netzwerkberater/innen"
 msgstr ""
 
-#: ../shtml/header.inc.tt:8 ../shtml/page.tt:26
+#: ../shtml/header.inc.tt:8 ../shtml/page.tt:27
 msgid "Schulkonsole für Schüler/innen"
 msgstr ""
 
@@ -3839,7 +3841,7 @@ msgstr ""
 msgid "Sitzungsdauer"
 msgstr ""
 
-#: ../shtml/page.tt:66 ../shtml/status.inc.tt:9
+#: ../shtml/page.tt:67 ../shtml/status.inc.tt:9
 msgid "Sitzungsdauer:"
 msgstr ""
 
@@ -3902,7 +3904,7 @@ msgid "Startseite"
 msgstr ""
 
 #: ../shtml/linbo_remote.tt:17 ../shtml/room_lesson.tt:200
-#: ../shtml/user_commit.tt:97
+#: ../shtml/user_commit.tt:87
 msgid "Status"
 msgstr ""
 
@@ -3952,7 +3954,7 @@ msgstr ""
 msgid "System ändern"
 msgstr ""
 
-#: ../shtml/linbo_edit_global.inc.tt:25
+#: ../shtml/linbo_edit_global.inc.tt:25 ../shtml/linbo_new.tt:38
 msgid "System-Typ"
 msgstr ""
 
@@ -3990,8 +3992,8 @@ msgstr ""
 msgid "Teach-In ist notwendig"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:156 ../src/cgi-bin/linbo_new:184
-#: ../src/cgi-bin/linbo_new:211 ../src/cgi-bin/linbo_new:238
+#: ../src/cgi-bin/linbo_new:165 ../src/cgi-bin/linbo_new:193
+#: ../src/cgi-bin/linbo_new:220 ../src/cgi-bin/linbo_new:247
 #, perl-format
 msgid "Template %s nicht vorhanden"
 msgstr ""
@@ -4027,8 +4029,12 @@ msgstr ""
 msgid "Unbekannter Fehler für %s bei %s auf %s"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:146
+#: ../src/cgi-bin/linbo_new:155
 msgid "Unbekannter Festplattencontroller"
+msgstr ""
+
+#: ../src/cgi-bin/linbo_new:139
+msgid "Unbekannter Systemtyp"
 msgstr ""
 
 #: ../lib/Schulkonsole/Error.pm:272
@@ -4156,8 +4162,12 @@ msgstr ""
 msgid "Ungültige Zeichen für \"%s\" bei %s auf %s"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_new:126
+#: ../src/cgi-bin/linbo_new:127
 msgid "Ungültiger Gruppenname"
+msgstr ""
+
+#: ../src/cgi-bin/linbo_new:136
+msgid "Ungültiger Systemtyp"
 msgstr ""
 
 #: ../src/cgi-bin/linbo_new:86
@@ -4219,15 +4229,15 @@ msgstr ""
 msgid "Versetzen läuft schon"
 msgstr ""
 
-#: ../shtml/user_commit.tt:70
-msgid "Versetzen läuft."
+#: ../shtml/user_commit.tt:20
+msgid "Versetzen läuft..."
 msgstr ""
 
 #: ../src/cgi-bin/user_commit:146
 msgid "Versetzen wurde gestartet"
 msgstr ""
 
-#: ../shtml/header.inc.tt:12 ../shtml/page.tt:30
+#: ../shtml/header.inc.tt:12 ../shtml/page.tt:31
 msgid "Version"
 msgstr ""
 
@@ -4337,7 +4347,7 @@ msgstr ""
 msgid "Weiterleitung(en)"
 msgstr ""
 
-#: ../shtml/page.tt:76 ../shtml/status.inc.tt:19
+#: ../shtml/page.tt:77 ../shtml/status.inc.tt:19
 msgid "Workstation:"
 msgstr ""
 
@@ -4444,11 +4454,11 @@ msgstr ""
 msgid "action muss 0, 1 oder 2 sein"
 msgstr ""
 
-#: ../shtml/page.tt:80 ../shtml/status.inc.tt:23
+#: ../shtml/page.tt:81 ../shtml/status.inc.tt:23
 msgid "aktive Klasse:"
 msgstr ""
 
-#: ../shtml/page.tt:83
+#: ../shtml/page.tt:84
 msgid "aktives Projekt:"
 msgstr ""
 
@@ -4598,7 +4608,7 @@ msgstr ""
 msgid "multicast"
 msgstr ""
 
-#: ../shtml/user_commit.tt:96
+#: ../shtml/user_commit.tt:86
 msgid "nach"
 msgstr ""
 
@@ -4690,7 +4700,7 @@ msgstr ""
 
 #: ../shtml/myroom.tt:1 ../shtml/myroom.tt:26
 #: ../shtml/myroom_handedoutcopy.tt:8 ../shtml/myroom_tocollect.tt:8
-#: ../shtml/page.tt:74 ../shtml/room.tt:27 ../shtml/room_lesson.tt:27
+#: ../shtml/page.tt:75 ../shtml/room.tt:27 ../shtml/room_lesson.tt:27
 #: ../shtml/status.inc.tt:17
 msgid "unbekannt"
 msgstr ""
@@ -4748,7 +4758,7 @@ msgstr ""
 msgid "unterrichtet in der Klasse"
 msgstr ""
 
-#: ../shtml/page.tt:67 ../shtml/status.inc.tt:10
+#: ../shtml/page.tt:68 ../shtml/status.inc.tt:10
 msgid "verbleibend:"
 msgstr ""
 
@@ -4766,7 +4776,7 @@ msgstr ""
 msgid "verwenden Sie für das Geburtsdatum das Format TT.MM.JJJJ"
 msgstr ""
 
-#: ../shtml/user_commit.tt:95
+#: ../shtml/user_commit.tt:85
 msgid "von"
 msgstr ""
 
@@ -4794,7 +4804,7 @@ msgstr ""
 msgid "zurück"
 msgstr ""
 
-#: ../shtml/user_commit.tt:1 ../shtml/user_commit.tt:9
+#: ../shtml/user_commit.tt:1 ../shtml/user_commit.tt:10
 #: ../shtml/user_teachin.tt:1
 msgid "Änderungen durchführen"
 msgstr ""

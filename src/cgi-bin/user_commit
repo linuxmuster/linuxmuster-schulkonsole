@@ -85,7 +85,6 @@ foreach my $process (@{ $process_table->table }) {
 }
 
 
-
 eval {
 COMMANDS: {
 $q->param('all') and do {
@@ -114,7 +113,7 @@ $q->param('add') and do {
 
 	last COMMANDS;
 };
-$q->param('showlogadd') and do {
+($q->param('logadd') or $running{add}) and do {
 	eval {
 		my $logadd =
 			Schulkonsole::Sophomorix::read_add_log_file($id, $password);
@@ -125,7 +124,8 @@ Output of C<sophomorix-add>
 
 =cut
 
-		$sk_session->set_var('logadd', join("\n", @$logadd));
+		splice @$logadd, 0, -30;
+		$sk_session->set_var('logadd', join("", @$logadd));
 	};
 	if ($@) {
 		$sk_session->set_status(
@@ -150,7 +150,7 @@ $q->param('move') and do {
 
 	last COMMANDS;
 };
-$q->param('showlogmove') and do {
+($q->param('showlogmove') or $running{move}) and do {
 	eval {
 		my $logmove =
 			Schulkonsole::Sophomorix::read_move_log_file($id, $password);
@@ -160,8 +160,8 @@ $q->param('showlogmove') and do {
 Output of C<sophomorix-move>
 
 =cut
-
-		$sk_session->set_var('logmove', join("\n", @$logmove));
+		splice @$logmove, 0, -30;
+		$sk_session->set_var('logmove', join("", @$logmove));
 	};
 	if ($@) {
 		$sk_session->set_status(
@@ -186,7 +186,7 @@ $q->param('kill') and do {
 
 	last COMMANDS;
 };
-$q->param('showlogkill') and do {
+($q->param('showlogkill') or $running{kill}) and do {
 	eval {
 		my $logkill =
 			Schulkonsole::Sophomorix::read_kill_log_file($id, $password);
@@ -196,8 +196,8 @@ $q->param('showlogkill') and do {
 Output of C<sophomorix-kill>
 
 =cut
-
-		$sk_session->set_var('logkill', join("\n", @$logkill));
+		splice @$logkill, 0, -30;
+		$sk_session->set_var('logkill', join("", @$logkill));
 	};
 	if ($@) {
 		$sk_session->set_status(
@@ -262,6 +262,13 @@ True if C<sophomorix-kill> is running
 
 $sk_session->set_var('iskilling', $running{kill});
 
+=item C<isbusy>
+
+True if one of C<sophomorix-add>, C<sophomorix-move>, C<sophomorix-kill> is running
+
+=cut
+
+$sk_session->set_var('isbusy', ($running{add} or $running{move} or $running{kill}? 1 : 0));
 
 =item C<addlist>
 

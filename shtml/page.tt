@@ -13,6 +13,7 @@
     </style>
     <![endif]-->
     <script type="text/javascript" src="schulkonsole.js"></script>
+    [% IF page.autorefresh %]<meta http-equiv='refresh' content='5;'>[% END %]
 </head>
 <body[% IF action %] class="[% action %]"[% END %]>
 
