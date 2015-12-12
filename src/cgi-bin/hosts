@@ -284,10 +284,9 @@ $q->param('import') and do {
                 $sk_session->d()->get('Keine Workstations zu importieren'), 1);
         }
     }
-
     last COMMANDS;
 };
-$q->param('showlogimport') and do {
+($running{wsimport} or $q->param('showlogimport')) and do {
         eval {
             my $id = $sk_session->userdata('id');
             my $password = $sk_session->get_password();
@@ -299,8 +298,8 @@ $q->param('showlogimport') and do {
 Output of C<import_workstations>
 
 =cut
-
-            $sk_session->set_var('logimport', join("\n", @$logimport));
+	    splice @$logimport, 0, -30;
+            $sk_session->set_var('logimport', join("", @$logimport));
         };
         if ($@) {
             $sk_session->set_status(

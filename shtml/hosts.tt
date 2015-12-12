@@ -1,23 +1,22 @@
 [% page = {
       title    => loc('Schulkonsole') _ " - " _ loc('Hosts'),
       classes  => "widecontent",
+      autorefresh => isimporting,
       menu     => 1,
       info     => loc('<p>Hier können Sie die Liste der importierten Arbeitsstationen  bearbeiten.</p><p>Ändern Sie einfach die entsprechenden Felder in der Liste.</p><p>Für einen neuen Rechner füllen Sie die nächste freie Zeile aus.</p><p>Um einen Eintrag zu löschen, setzen Sie das Häkchen in der entsprechenden Checkbox am Zeilenende.</p><p>Stellen Sie dem Raumnamen ein # voran, um einen Eintrag auszukommentieren und entfernen Sie ein vorangestelltes #, um einen auskommentierten Eintrag wieder zu aktivieren.</p><p>Schliessen Sie die Aktion mit &bdquo;Änderungen übernehmen&ldquo;  ab.</p>'),
    }
 %]
 
-<h2>[% loc('Hosts') %]</h2>
+<h1>[% loc('Hosts') %]</h1>
 
 <form method="post" accept-charset="UTF-8">
 
 [% IF isimporting %]
-    <p>[% loc('Importieren läuft.') %]</p>
-    [% IF logimport %]
-        <pre>[% logimport %]</pre>
-        <p><input type="submit" name="showlogimport" value="[% loc('Aktualisieren') %]"></p>
-    [% ELSE %]
-        <p><input type="submit" name="showlogimport" value="[% loc('Letzte Logdatei ansehen') %]"></p>
-    [% END %]
+    [% busy.msg=loc('Importieren läuft') %]
+    [% busy.log=logimport %]
+    
+    [% INCLUDE busy.inc.tt %]
+
 [% ELSE %]
     [% IF unconfigured %]
         <form method="post" accept-charset="UTF-8">
@@ -29,13 +28,6 @@
         <p class="important">[% loc('Es wurden noch nicht alle Hosts in das System übernommen.') %]</p>
         <p><input type="submit" name="import" value="[% loc('Hosts jetzt übernehmen') %]"></p>
         </form>
-    [% END %]
-
-    [% IF logimport %]
-        <pre>[% logimport %]</pre>
-        <p><input type="submit" name="showlogimport" value="[% loc('Aktualisieren') %]"></p>
-    [% ELSE %]
-        <p><input type="submit" name="showlogimport" value="[% loc('Letzte Logdatei ansehen') %]"></p>
     [% END %]
 
     <p></p>
@@ -126,5 +118,6 @@
     <input type="reset" value="[% loc('Zurücksetzen') %]">
     </p>
 
-    </form>
 [% END %]
+
+</form>
