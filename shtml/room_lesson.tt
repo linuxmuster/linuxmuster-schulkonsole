@@ -27,7 +27,7 @@
 <h2>[% loc('Aktueller Raum') %]: [% IF room %][% room %][% ELSE %][% loc('unbekannt') %][% END %]</h2>
 
 [% IF room %]
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<p>
 	[% loc('Nutzung:') %]
 	[% IF editinguser %]
@@ -44,7 +44,7 @@
 			<p>[% loc('Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.') %]</p>
 			[% IF stopedit %]
 				<p>[% loc('Unterricht beenden:') %]
-				<input type="submit" name="end_lesson_now" value="[% loc('sofort beenden') %]">
+				<input type="submit" name="end_lesson_now"  value="[% loc('sofort beenden') %]">
 				[% IF edit %]
 					[% loc('- oder -') %] [% loc('um') %] 
 					<select name="lesson_end_hours">
@@ -88,7 +88,7 @@
 [% IF room && ! exammode %]
 	<h3>[% loc('Übersicht PCs') %]</h3>
 	
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<table id="roomoverview" class="liste">
 	<tr>
 	<th>[% loc('Nr.') %]</th>
@@ -193,6 +193,7 @@
 [% IF room && ! exammode %]
 	<h3>[% loc('Übersicht Drucker') %]</h3>
 	
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<table id="printersoverview" class="liste">
 	<colgroup span="2" width="40%"></colgroup>
 	<tr>

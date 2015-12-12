@@ -23,3 +23,10 @@
     </div>
 
 [% END %]
+
+<script type="text/javascript">
+function showBusy() {
+	$.isLoading();
+	return true;
+}
+</script>
