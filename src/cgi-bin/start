@@ -214,7 +214,6 @@ if ($@) {
 
 
 
-
 sub password_cb {
 	return $password;
 }
@@ -649,28 +648,28 @@ if (my $var_mailquotas = $sk_session->temp_param('var_mailquotas')) {
 
 
 
-eval {
-my ($usage, $limit) = Schulkonsole::Printer::own_quota($id, $password);
+if ( -e $Schulkonsole::Config::_cmd_linuxmuster_pk ) {
+	eval {
+		my ($usage, $limit) = Schulkonsole::Printer::own_quota($id, $password);
 
-my $usage_percent = $usage ?
-	  sprintf('%.1f', 100 * $usage / $limit)
-	: 0;
+		my $usage_percent = $usage ?
+			sprintf('%.1f', 100 * $usage / $limit)
+			: 0;
 
-my $printquota = {
-	usage => $usage,
-	limit => $limit,
-	percent => $usage_percent,
-	percent_rounded => ($usage_percent < 100.0 ?
-	                      int($usage_percent + 0.5)
-	                    : 100),
-        'warn' => $usage > $limit,
-};
-
-
-$sk_session->set_var('printquota', $printquota);
-};
-if ($@) {
-	warn "$@\n";
+		my $printquota = {
+			usage => $usage,
+			limit => $limit,
+			percent => $usage_percent,
+			percent_rounded => ($usage_percent < 100.0 ?
+					int($usage_percent + 0.5)
+					: 100),
+			'warn' => $usage > $limit,
+		};
+		$sk_session->set_var('printquota', $printquota);
+	};
+	if ($@) {
+		warn "$@\n";
+	}
 }
 
 
