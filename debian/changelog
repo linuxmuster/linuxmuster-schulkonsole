@@ -1,30 +1,58 @@
-linuxmuster-schulkonsole (0.10.19-11) babo; urgency=low
+linuxmuster-schulkonsole (0.12.0-2) babo-testing; urgency=low
 
-  * Fix warning for start: wrapper-printer.
+  * Added missing dependency, alias for apache2 config.
 
- -- Frank Schütte <fschuett@gymhim.de>  Sun, 13 Dec 2015 11:40:16 +0100
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Mon, 20 Jul 2015 19:31:40 +0200
 
-linuxmuster-schulkonsole (0.10.19-10) babo; urgency=low
+linuxmuster-schulkonsole (0.12.0-1) babo-testing; urgency=low
 
-  * Fix room.in to use new allowe_hosts_internet.
+  * #473 add jquery for prominent error messages
 
- -- Frank Schütte <fschuett@gymhim.de>  Tue, 08 Dec 2015 15:13:08 +0100
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Mon, 20 Jul 2015 19:21:22 +0200
 
-linuxmuster-schulkonsole (0.10.19-9) babo; urgency=low
+linuxmuster-schulkonsole (0.11.6-1) babo-testing; urgency=low
 
-  * readded old code for all_on and fixed it (less time consuming at lesson end)
-  * Removed macs from Room, Firewall, ...
-  * Fix reset share states.
-  * Enforce minimal/maximal password length (configurable: settings-program) #134
-  * Fix sharesonoff.
+  * Remove settings backup related stuff.
+  * Fix share states not restored on lesson end.
+  * Add php structures for php plugins.
 
- -- Frank Schütte <fschuett@gymhim.de>  Sat, 28 Nov 2015 22:48:26 +0100
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Fri, 20 Feb 2015 17:35:43 +0100
 
-linuxmuster-schulkonsole (0.10.19-8) babo; urgency=low
+linuxmuster-schulkonsole (0.11.4-2fschuett) babo; urgency=low
 
   * Fix #454
 
  -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Wed, 11 Mar 2015 16:16:59 +0100
+
+linuxmuster-schulkonsole (0.11.4-1fschuett) babo; urgency=low
+
+  * New settings-projects, enhanced settings-classes with maillist, mailalias.
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Fri, 13 Feb 2015 17:31:32 +0100
+
+linuxmuster-schulkonsole (0.11.3-1fschuett) babo; urgency=low
+
+  * Fixed #430.
+  * Fixed #407.
+  * Fixed #434.
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Tue, 27 Jan 2015 19:25:46 +0100
+
+linuxmuster-schulkonsole (0.11.2-1fschuett) babo; urgency=low
+
+  * Added feature/plugins
+
+ -- root <fschuett@gymnasium-himmelsthuer.de>  Thu, 15 Jan 2015 11:38:23 +0100
+
+linuxmuster-schulkonsole (0.11.1-1fschuett) babo; urgency=low
+
+  * Added type efi to LINBO
+  * Added type to partitions for internal editing of start.conf files
+  * Cleaned up in linbo_edit, Linbo.pm
+  * Added menu.lst editing feature
+  * Fix: pxegrub -> pxelinux.
+
+ -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Sat, 13 Dec 2014 12:33:53 +0100
 
 linuxmuster-schulkonsole (0.10.19-7) babo; urgency=low
 
@@ -61,6 +89,8 @@ linuxmuster-schulkonsole (0.10.19-1) babo; urgency=low
 linuxmuster-schulkonsole (0.10.19-0) babo; urgency=low
 
   * Fix for request #406 make hosts table sortable
+  * merged uefi
+  * included wlan
 
  -- Frank Schütte <fschuett@gymnasium-himmelsthuer.de>  Sat, 15 Nov 2014 13:25:59 +0100
 

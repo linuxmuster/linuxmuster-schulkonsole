@@ -128,10 +128,6 @@ sub start_wrapper {
 
 	print $out "$id\n$password\n$app_id\n";
 
-
-
-
-
 	return $pid;
 }
 

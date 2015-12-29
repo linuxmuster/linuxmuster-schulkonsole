@@ -1,18 +1,19 @@
 shtmldir = $(datarootdir)/schulkonsole/shtml
 dist_shtml_DATA = example.shtml login.shtml logout.shtml start.shtml \
-	menu.shtml.inc status.shtml.inc \
+	status.shtml.inc \
 	room.shtml room_handout.shtml room_collect.shtml room_shares.shtml \
 	room_test.shtml room_test_end.shtml \
 	room_test_handout.shtml room_test_password.shtml room_test_collect.shtml \
 	room_end_lesson_verify.shtml \
 	class.shtml class_list.shtml class_passwords.shtml showpassword.shtml \
 	class_handoutcopy.shtml class_handout.shtml class_collect.shtml \
-	class_shares.shtml \
+	class_shares.shtml class_lesson.shtml \
 	project.shtml project_members.shtml project_addmembers.shtml \
 	project_handoutcopy.shtml project_handout.shtml project_collect.shtml \
-	project_shares.shtml project_drop_verify.shtml \
+	project_shares.shtml project_drop_verify.shtml project_lesson.shtml \
+	project_passwords.shtml \
 	settings.shtml settings_program.shtml settings_users.shtml \
-	settings_classs.shtml settings_backup.shtml \
+	settings_classs.shtml settings_projects.shtml \
 	user.shtml user_students.shtml user_teachers.shtml user_extra.shtml \
 	user_teacherpasswords.shtml \
 	user_check.shtml user_teachin.shtml user_commit.shtml user_reports.shtml\
@@ -23,12 +24,7 @@ dist_shtml_DATA = example.shtml login.shtml logout.shtml start.shtml \
 	quotas_others.shtml \
 	linbo.shtml \
 	linbo_edit.shtml linbo_images.shtml linbo_new.shtml linbo_pxeedit.shtml \
-	linbo_regpatchedit.shtml \
-	submenu-room.shtml.inc submenu-class.shtml.inc \
-	submenu-project.shtml.inc submenu-user.shtml.inc \
-	submenu-settings.shtml.inc submenu-quotas.shtml.inc \
-	submenu-rooms.shtml.inc subsubmenu-room_test.shtml.inc \
-	submenu-linbo.shtml.inc \
+	linbo_regpatchedit.shtml linbo_menuedit.shtml \
 	schulkonsole.js
 
 CLEANFILES = messages.pl

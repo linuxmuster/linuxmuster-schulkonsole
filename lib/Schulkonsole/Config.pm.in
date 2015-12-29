@@ -33,6 +33,7 @@ $VERSION = 0.06;
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(
 	db
+	ldap
 	permissions_pages
 	permissions_apps
 	workstation_info
@@ -61,6 +62,8 @@ $VERSION = 0.06;
 	$_permissions_conf_file
 	$_db_conf_file
 	$_workstations_file
+	$_workstations_log_file
+	$_workstations_tmp_log_file
 	$_room_defaults_file
 	$_dhcpd_conf_file
 	$_printers_file
@@ -69,6 +72,8 @@ $VERSION = 0.06;
 	$_blocked_hosts_intranet_file
 	$_unfiltered_hosts_file
 	$_cups_printers_conf_file
+	$_group_defaults_file
+	$_allowed_groups_wlan_file
 
 	$_login_template
 
@@ -90,6 +95,7 @@ $VERSION = 0.06;
 	$_wrapper_collab
 	$_wrapper_files
 	$_wrapper_linbo
+	$_wrapper_radius
 
 	%_id_root_app_names
 	$_cmd_internet_on_off
@@ -116,17 +122,17 @@ $VERSION = 0.06;
 	$_cmd_sophomorix_teachin
 	$_cmd_sophomorix_quota
 	$_cmd_sophomorix_class
+	$_cmd_sophomorix_mail
 	$_cmd_import_workstations
 	$_cmd_import_printers
 	$_cmd_ovpn_client_cert
+	$_cmd_wlan_on_off
+	$_cmd_linuxmuster_wlan_reset
 
 	$_shell
 
 	$_sophomorix_conf_true
 	$_sophomorix_conf_false
-
-	$_backup_conf_true
-	$_backup_conf_false
 
 	QUOTAAPP
 	CYRUSQUOTAAPP
@@ -139,6 +145,9 @@ $VERSION = 0.06;
 	URLFILTERONOFFAPP
 	ALLONAPP
 	ALLONATAPP
+	WLANONOFFAPP
+	WLANRESETATAPP
+	WLANRESETAPP
 	PRINTERINFOAPP
 	PRINTERONOFFAPP
 	PRINTERALLOWDENYAPP
@@ -154,6 +163,7 @@ $VERSION = 0.06;
 	EDITOWNCLASSMEMBERSHIPAPP
 	PRINTCLASSAPP
 	PRINTTEACHERSAPP
+	PRINTPROJECTAPP
 	SETPASSWORDSAPP
 	PROJECTMEMBERSAPP
 	PROJECTCREATEDROPAPP
@@ -256,6 +266,18 @@ C<all_on_at>
 
 C<rooms_reset>
 
+=item C<WLANONOFFAPP>
+
+C<wlan_on_off>
+
+=item C<WLANRESETATAPP>
+
+C<wlan_reset_at>
+
+=item C<WLANRESETAPP>
+
+C<wlan_reset>
+
 =back
 
 =cut
@@ -270,6 +292,9 @@ use constant {
 	ALLONAPP => 6007,
 	ALLONATAPP => 6008,
 	ROOMSRESETAPP => 6009,
+	WLANONOFFAPP => 6010,
+	WLANRESETATAPP => 6011,
+	WLANRESETAPP => 6012,
 };
 
 =head3 Constants for wrapper-printer
@@ -352,6 +377,10 @@ C<print_class>
 
 C<print_teachers>
 
+=item C<PRINTPROJECTAPP>
+
+C<print_project>
+
 =item C<SETPASSWORDSAPP>
 
 C<set_passwords>
@@ -416,7 +445,24 @@ C<set_own_password>
 
 C<hide_unhide_class>
 
+=item C<CHANGEMAILALIASCLASSAPP>
+
+C<change_mailalias_classes>
+
+=item C<CHANGEMAILLISTCLASSAPP>
+
+C<change_maillist_classes>
+
+=item C<CHANGEMAILALIASPROJECTAPP>
+
+C<change_mailalias_projects>
+
+=item C<CHANGEMAILLISTPROJECTAPP>
+
+C<change_maillist_projects>
+
 =back
+
 
 =cut
 
@@ -431,23 +477,28 @@ use constant {
 	EDITOWNCLASSMEMBERSHIPAPP => 8008,
 	PRINTCLASSAPP => 8009,
 	PRINTTEACHERSAPP => 8010,
-	SETPASSWORDSAPP => 8011,
-	WWWPERMISSIONSAPP => 8012,
-	PROJECTMEMBERSAPP => 8013,
-	PROJECTCREATEDROPAPP => 8014,
-	PROJECTJOINNOJOINAPP => 8015,
-	READSOPHOMORIXFILEAPP => 8016,
-	WRITESOPHOMORIXFILEAPP => 8017,
-	USERSCHECKAPP => 8018,
-	USERSADDAPP => 8019,
-	USERSMOVEAPP => 8020,
-	USERSKILLAPP => 8021,
-	USERSADDMOVEKILLAPP => 8022,
-	TEACHINAPP => 8023,
-	CHMODAPP => 8024,
-	SETQUOTAAPP => 8025,
-	SETOWNPASSWORDAPP => 8026,
-	HIDEUNHIDECLASSAPP => 8027,
+	PRINTPROJECTAPP => 8011,
+	SETPASSWORDSAPP => 8012,
+	WWWPERMISSIONSAPP => 8013,
+	PROJECTMEMBERSAPP => 8014,
+	PROJECTCREATEDROPAPP => 8015,
+	PROJECTJOINNOJOINAPP => 8016,
+	READSOPHOMORIXFILEAPP => 8017,
+	WRITESOPHOMORIXFILEAPP => 8018,
+	USERSCHECKAPP => 8019,
+	USERSADDAPP => 8020,
+	USERSMOVEAPP => 8021,
+	USERSKILLAPP => 8022,
+	USERSADDMOVEKILLAPP => 8023,
+	TEACHINAPP => 8024,
+	CHMODAPP => 8025,
+	SETQUOTAAPP => 8026,
+	SETOWNPASSWORDAPP => 8027,
+	HIDEUNHIDECLASSAPP => 8028,
+	CHANGEMAILALIASCLASSAPP => 8029,
+	CHANGEMAILLISTCLASSAPP => 8030,
+	CHANGEMAILALIASPROJECTAPP => 8031,
+	CHANGEMAILLISTPROJECTAPP => 8032,
 };
 
 =head3 Constants for wrapper-cyrus
@@ -547,6 +598,10 @@ C<linbo_write>
 
 C<linbo_manage_images>
 
+=item C<LINBOWRITEPXEAPP>
+
+C<linbo_write_pxe>
+
 =back
 
 =cut
@@ -558,6 +613,7 @@ use constant {
 	LINBODELETEAPP => 13004,
 	LINBOWRITEAPP => 13005,
 	LINBOIMAGEAPP => 13006,
+	LINBOWRITEPXEAPP => 13007,
 };
 
 
@@ -654,6 +710,14 @@ use vars qw($_preferences_conf_file $_permissions_conf_file $_db_conf_file);
 
 This file lists the workstations
 
+=item C<$_workstations_log_file>
+
+This file is the log file of the last run of import_workstations
+
+=item C<$_workstations_tmp_log_file>
+
+This file is the log file of the current run of import_workstations
+
 =item C<$_room_defaults_file>
 
 This file defines the default internet, intranet, and webfilter settings
@@ -678,6 +742,14 @@ Default network settings
 
 LINBO directory
 
+=item C<$_pxe_config_dir>
+
+PXE Config directory
+
+=item C$_linbo_log_dir>
+
+LINBO log directory
+
 =item C<$_linbo_start_conf_prefix>
 
 Prefix of start.conf.* files
@@ -690,21 +762,29 @@ Directory holding LINBO templates for section [OS]
 
 The LINBO template for section [Partition]
 
-=item C<$_backup_conf_file>
+=item C<$_group_defaults_file>
 
-Setup for automated backup
+This file defines the default wlan settings
+
+=item C<$_allowed_groups_wlan_file>
+
+This file defines the actual allowed wlan classes/projects
 
 =back
 
 =cut
 
-use vars qw($_workstations_file $_room_defaults_file $_classrooms_file
+use vars qw($_workstations_file $_workstations_log_file 
+            $_workstations_tmp_log_file 
+            $_room_defaults_file $_classrooms_file
             $_printers_file
             $_network_settings_file
-            $_linbo_dir $_linbo_start_conf_prefix
+            $_linbo_dir $_pxe_config_dir 
+            $_linbo_log_dir $_linbo_start_conf_prefix
             $_linbo_templates_dir $_linbo_templates_os_dir
             $_linbo_template_partition
-            $_backup_conf_file $_dhcpd_conf_file);
+            $_dhcpd_conf_file
+            $_group_defaults_file $_allowed_groups_wlan_file);
 
 
 =head3 Files with status information
@@ -875,11 +955,19 @@ Path to wrapper to write linbo configuration files
 
 =back
 
+Path to wrapper to write files with root permissions
+
+=item C<$_wrapper_radius>
+
+Path to wrapper to write radius configuration files
+
+=back
+
 =cut
 
 use vars qw($_wrapper_user $_wrapper_firewall $_wrapper_ovpn $_wrapper_printer
             $_wrapper_sophomorix $_wrapper_cyrus $_wrapper_collab
-            $_wrapper_files $_wrapper_linbo);
+            $_wrapper_files $_wrapper_linbo $_wrapper_radius);
 
 
 =head3 Variables used by wrappers
@@ -987,6 +1075,10 @@ Path to Sophomorix command C<sophomorix-quota>
 
 Path to Sophomorix command C<sophomorix-class>
 
+=item C$_cmd_sophomorix_mail>
+
+Path to Sophomorix command C<sophomorix-mail>
+
 =item C<$_cmd_import_workstations>
 
 Path to command to import workstations into room C<import_workstations>
@@ -998,6 +1090,14 @@ Path to command to import printers into room C<import_printers>
 =item C<$_cmd_ovpn_client_cert>
 
 Path to command to administer OVPN certificates C<ovpn-client-cert.sh>
+
+=item C<$_cmd_wlan_on_off>
+
+Path to command to administer wlan configuration C<wlan_on_off>
+
+=item C<$_cmd_linuxmuster_wlan_reset>
+
+Path to command to reset group settings C<group-reset>
 
 =back
 
@@ -1028,9 +1128,12 @@ use vars qw(%_id_root_app_names
             $_cmd_sophomorix_teachin
             $_cmd_sophomorix_quota
             $_cmd_sophomorix_class
+            $_cmd_sophomorix_mail
             $_cmd_import_workstations
             $_cmd_import_printers
-            $_cmd_ovpn_client_cert);
+            $_cmd_ovpn_client_cert
+            $_cmd_wlan_on_off
+            $_cmd_linuxmuster_wlan_reset);
 
 
 =head3 Other variables
@@ -1045,20 +1148,11 @@ Value used for 'true' in Sophomorix configuration files
 
 Value used for 'false' in Sophomorix configuration files
 
-=item C<$_backup_conf_true>
-
-Value used for 'true' in backup.conf
-
-=item C<_backup_conf_false>
-
-Value used for 'false' in backup.conf
-
 =back
 
 =cut
 
-use vars qw($_sophomorix_conf_true $_sophomorix_conf_false
-            $_backup_conf_true $_backup_conf_false);
+use vars qw($_sophomorix_conf_true $_sophomorix_conf_false);
 
 
 
@@ -1085,17 +1179,22 @@ $_allowed_hosts_internet_file = '/var/cache/linuxmuster/allowedips';
 $_blocked_hosts_intranet_file = $lml_env{BLOCKEDHOSTSINTRANET};
 $_unfiltered_hosts_file = $lml_env{UNFILTEREDHOSTS};
 $_workstations_file = $lml_env{WIMPORTDATA};
+$_workstations_tmp_log_file = "/var/tmp/import_workstations.log";
+$_workstations_log_file = "$lml_env{LOGDIR}/import_workstations.log";
 $_room_defaults_file = $lml_env{ROOMDEFAULTS};
 $_dhcpd_conf_file = $lml_env{DHCPDCONF};
 $_printers_file = $lml_env{PRINTERS};
 $_classrooms_file = $lml_env{CLASSROOMS};
 $_network_settings_file = $lml_env{NETWORKSETTINGS};
 $_linbo_dir = $lml_env{LINBODIR};
+$_pxe_config_dir = $lml_env{PXECFGDIR};
 $_linbo_templates_dir = '@datadir@/@PACKAGE@/linbo/templates';
+$_linbo_log_dir = $lml_env{LINBOLOGDIR};
 $_linbo_templates_os_dir = "$_linbo_templates_dir/os";
 $_linbo_template_partition = "$_linbo_templates_dir/part/start.conf.partition";
+$_group_defaults_file = '/etc/linuxmuster/group_defaults';
+$_allowed_groups_wlan_file = '/etc/freeradius/users';
 
-$_backup_conf_file = $lml_env{SYSCONFDIR} . '/backup.conf';
 $_linbo_start_conf_prefix = $_linbo_dir . '/start.conf.';
 
 
@@ -1133,6 +1232,7 @@ $_wrapper_cyrus = '@pkglibexecdir@/bin/wrapper-cyrus';
 $_wrapper_collab = '@pkglibexecdir@/bin/wrapper-collab';
 $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 $_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
+$_wrapper_radius = '@pkglibexecdir@/bin/wrapper-radius';
 
 
 
@@ -1140,6 +1240,9 @@ $_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
 %_id_root_app_names = (
 	INTERNETONOFFAPP() => 'internet_on_off',
 	INTRANETONOFFAPP() => 'intranet_on_off',
+	WLANONOFFAPP() => 'wlan_on_off',
+	WLANRESETATAPP() => 'wlan_reset_at',
+	WLANRESETAPP() => 'wlan_reset',
 	UPDATELOGINSAPP() => 'update_logins',
 	UPDATELINBOFSAPP() => 'update_linbofs',
 	URLFILTERCHECKAPP() => 'urlfilter_check',
@@ -1162,6 +1265,7 @@ $_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
 	EDITOWNCLASSMEMBERSHIPAPP() => 'edit_own_class_membership',
 	PRINTCLASSAPP() => 'print_class',
 	PRINTTEACHERSAPP() => 'print_teachers',
+	PRINTPROJECTAPP() => 'print_project',
 	SETPASSWORDSAPP() => 'set_passwords',
 	PROJECTMEMBERSAPP() => 'project_members',
 	PROJECTCREATEDROPAPP() => 'project_create_drop',
@@ -1177,6 +1281,10 @@ $_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
 	CHMODAPP() => 'chmod',
 	SETQUOTAAPP() => 'quota',
 	HIDEUNHIDECLASSAPP() => 'hide_unhide_class',
+	CHANGEMAILALIASCLASSAPP() => 'change_mailalias_classes',
+	CHANGEMAILLISTCLASSAPP() => 'change_maillist_classes',
+	CHANGEMAILALIASPROJECTAPP() => 'change_mailalias_projects',
+	CHANGEMAILLISTPROJECTAPP() => 'change_maillist_projects',
 	SETOWNPASSWORDAPP() => 'set_own_password',
 	WRITEFILEAPP() => 'write_file',
 	IMPORTWORKSTATIONSAPP() => 'import_workstations',
@@ -1189,6 +1297,7 @@ $_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
 	LINBOCOPYREGPATCHAPP() => 'copy_regpatch',
 	LINBODELETEAPP() => 'linbo_delete',
 	LINBOWRITEAPP() => 'linbo_write',
+	LINBOWRITEPXEAPP() => 'linbo_write_pxe',
 	LINBOIMAGEAPP() => 'linbo_manage_images',
 );
 
@@ -1208,6 +1317,7 @@ $_cmd_linuxmuster_pk = '/usr/bin/linuxmuster-pk';
 $_cmd_sophomorix_add = '/usr/sbin/sophomorix-add';
 $_cmd_sophomorix_check = '/usr/sbin/sophomorix-check';
 $_cmd_sophomorix_class = '/usr/sbin/sophomorix-class';
+$_cmd_sophomorix_mail = '/usr/sbin/sophomorix-mail';
 $_cmd_sophomorix_kill = '/usr/sbin/sophomorix-kill';
 $_cmd_sophomorix_move = '/usr/sbin/sophomorix-move';
 $_cmd_sophomorix_passwd = '/usr/sbin/sophomorix-passwd';
@@ -1221,13 +1331,12 @@ $_cmd_update_linbofs = '/usr/share/linuxmuster-linbo/update-linbofs.sh';
 $_cmd_update_logins = '/usr/share/linuxmuster/scripts/update-logins.sh';
 $_cmd_urlfilter_check = '/usr/share/linuxmuster/scripts/check_urlfilter.sh';
 $_cmd_urlfilter_on_off = '/usr/share/linuxmuster/scripts/urlfilter_on_off.sh';
+$_cmd_wlan_on_off = '/usr/share/linuxmuster/scripts/wlan_on_off.sh';
+$_cmd_linuxmuster_wlan_reset = '/usr/sbin/linuxmuster-wlan-reset';
 
 
 $_sophomorix_conf_true = 'yes';
 $_sophomorix_conf_false = 'no';
-
-$_backup_conf_true = 'yes';
-$_backup_conf_false = 'no';
 
 
 
@@ -1249,6 +1358,44 @@ A hash with the configuration parameter's name as key and the value as value
 
 sub db {
 	return read_conf($_db_conf_file);
+}
+
+
+
+
+=head2 Functions
+
+=head3 C<ldap()>
+
+=head4 Description
+
+Returns the ldap configuration
+
+=head4 Return value
+
+A hash with the configuration parameter's name as key and the value as value
+
+=cut
+
+sub ldap {
+        my $filename = '/etc/ldap/ldap.conf';
+        my %conf;
+
+        open CONF, '<', Schulkonsole::Encode::to_fs($filename)
+                or die "$0: Cannot open $filename: $!\n";
+
+        while (<CONF>) {
+                next if /^#/ or /^\s*$/;
+
+                my ($key, $value) = /^(.+?)\s+(.*)/;
+
+                die "$0: Syntax error in $filename, line $.\n" unless $key;
+
+                $conf{$key} = $value;
+        }
+        close CONF;
+
+        return %conf;
 }
 
 

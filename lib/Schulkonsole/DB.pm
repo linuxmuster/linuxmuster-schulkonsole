@@ -5,6 +5,7 @@ use Crypt::SmbHash;
 use Digest::MD5;
 use Digest::SHA;
 use MIME::Base64;
+use Net::LDAP;
 use Schulkonsole::Error;
 use Schulkonsole::Config;
 
@@ -51,6 +52,7 @@ $VERSION = 0.06;
 @EXPORT_OK = qw(
 	get_userdata
 	get_userdata_by_id
+	get_usermail
 	verify_password
 	verify_password_by_id
 	user_groups
@@ -63,6 +65,7 @@ $VERSION = 0.06;
 	get_class_userdatas
 	projects
 	get_projectdata
+	get_project_userdatas
 	is_project_admin
 	project_admins
 	project_user_members
@@ -78,6 +81,8 @@ $VERSION = 0.06;
 );
 
 my $_dbh;
+my $_ldap;
+my $_ldapbase;
 
 my $_select_userdata = 'SELECT * FROM userdata ';
 my $_select_basic_userdata = 'SELECT userdata.id AS id,
@@ -133,6 +138,30 @@ sub get_userdata {
 }
 
 
+
+sub get_usermail {
+        my $uid = shift;
+
+        utf8::encode($uid);
+
+        $_ldap->bind;
+        my $data = $_ldap->search(
+                        base => $_ldapbase,
+                        filter => "(&(objectclass=posixAccount)(uid=$uid))",
+                        sizelimit => 1,
+                        attrs => 'mail');
+        $data->code and die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+                        "ldapsearch (&(objectclass=posixAccount)(uid=$uid))", $data->error);
+        my $re;
+        if ($data->entries) {
+                my @entries = $data->entries;
+                $re = @entries[0]->get_value( 'mail' );
+        }
+        $_ldap->unbind;
+        utf8::decode($re);
+
+        return $re;
+}
 
 
 sub get_userdata_by_id {
@@ -722,6 +751,62 @@ sub get_projectdata {
 
 	return $row;
 
+}
+
+
+
+
+=head3 C<get_project_userdatas($gid)>
+
+Returns userdatas of student members of project
+
+=head4 Parameters
+
+=over
+
+=item C<$gid>
+
+The GID of the project
+
+=back
+
+=head4 Return value
+
+A reference to a hash with the student users' GID as key and the userdata as
+values.
+
+=head4 Description
+
+Returns the userdatas of the student members of project C<$gid>.
+
+=cut
+
+sub get_project_userdatas {
+	my $projectgid = shift;
+
+
+	my $prepare_groups_users = $_select_userdata .
+	   'JOIN    groups_users
+		     ON userdata.uidnumber = groups_users.memberuidnumber
+		     JOIN projectdata
+			    ON groups_users.gidnumber = projectdata.gidnumber 
+		WHERE userdata.gid != \'teachers\' AND projectdata.gid = ?';
+	my $sth = $_dbh->prepare($prepare_groups_users)
+		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+			$prepare_groups_users);
+	$sth->execute($projectgid)
+		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+			$prepare_groups_users,
+			"[gid = $projectgid]");
+
+	my %re;
+	while (my $row = $sth->fetchrow_hashref) {
+		utf8_decode_userdata($row);
+		$re{$$row{uid}} = $row;
+	}
+
+
+	return \%re;
 }
 
 
@@ -1435,12 +1520,20 @@ sub db_connect {
 	return $_dbh;
 }
 
+sub ldap_connect {
+        if (not defined $_ldap) {
+                my %conf = Schulkonsole::Config::ldap();
+                $_ldap = Net::LDAP->new($conf{URI})
+                        or die "$@";
+                $_ldapbase = $conf{BASE} or die "LDAP Base not set.";
+        }
 
-
-
+        return $_ldap;
+}
 
 BEGIN {
 	db_connect();
+	ldap_connect();
 }
 
 

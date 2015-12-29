@@ -10,7 +10,7 @@ if ($@) {
 }
 use CGI qw(-utf8);
 use CGI::Session qw(-ip_match);
-use Crypt::Rijndael;
+use Crypt::CBC;
 use Digest::MD5;
 use Schulkonsole::Config;
 use Schulkonsole::DB;
@@ -672,18 +672,20 @@ sub save_password {
 
 	utf8::encode($password);
 
+	my $iv = substr(Digest::MD5::md5_hex(rand(10000), time, $$),1,16);
 	my $key = Digest::MD5::md5_hex(rand(10000), time, $$);
-	my $cipher = new Crypt::Rijndael($key, Crypt::Rijndael::MODE_CBC);
+	my $cipher = Crypt::CBC->new(
+                        -literal_key    => 1,
+                        -key            => $key,
+                        -header         => 'none',
+                        -iv             => $iv,
+                        -padding        => 'null',
+                        -cipher         => 'Crypt::Rijndael');
 
-	my $len = length($password);
-	my $max = (int($len / 16) + 1) * 16;
-	my $fill = $max - $len;
-	my $password_filled = $password . "\a" x $fill;
-
-	my $encrypted_password = $cipher->encrypt($password_filled);
-
-	$this->{key} = $key;
-	$this->{session}->param('password', $encrypted_password);
+	my $encrypted_password = $cipher->encrypt($password);
+        my $encrypted_block = unpack( 'H*', $iv . $encrypted_password );
+	$this->{key} = unpack( 'H*', $key );
+	$this->{session}->param('password', $encrypted_block);
 	$this->{session}->expire('password', $Schulkonsole::Config::_max_idle_time);
 }
 
@@ -712,11 +714,17 @@ sub get_password {
 
 	my $key = $this->{query}->cookie('key');
 	$key = $this->{query}->param('key') unless $key;
-	my $encrypted_password = $this->{session}->param('password');
-	if ($key and $encrypted_password) {
-		my $cipher = new Crypt::Rijndael($key, Crypt::Rijndael::MODE_CBC);
-		my ($password) = $cipher->decrypt($encrypted_password) =~ /^(.*?)\a/;
-
+	my $encrypted_block = $this->{session}->param('password');
+	if ($key and $encrypted_block) {
+                my ($iv, $encrypted_password) = unpack( 'a16a*', pack( 'H*', $encrypted_block ) );
+                my $cipher = Crypt::CBC->new(
+                                -literal_key    => 1,
+                                -key            => pack( 'H*', $key),
+                                -header         => 'none',
+                                -iv             => $iv,
+                                -padding        => 'null',
+                                -cipher         => 'Crypt::Rijndael');
+		my $password = $cipher->decrypt($encrypted_password);
 
 		utf8::decode($password);
 

@@ -47,10 +47,15 @@ $VERSION = 0.0917;
 	regpatches
 	example_regpatches
 	pxestarts
+	menulsts
 	images
 
 	update_linbofs
 	read_start_conf
+	set_partition_id
+	set_partition_type
+	find_free_dev
+	partition_insert_sorted
 	get_conf_from_query
 	write_start_conf
 	copy_start_conf
@@ -59,6 +64,7 @@ $VERSION = 0.0917;
 	check_and_prepare_start_conf
 	handle_start_conf_errors
 	write_file
+	write_pxe_file
 	delete_file
 	delete_image
 	move_image
@@ -81,6 +87,8 @@ use vars qw(%_allowed_keys);
 		id => 3,
 		fstype => 1,
 		bootable => 4,
+		type => 1,
+		label => 1,
 	},
 	2 => {	# [OS]
 		name => 1,
@@ -107,6 +115,7 @@ use vars qw(%_allowed_keys);
 		cache => 1,
 		server => 1,
 		downloadtype => 1,
+		systemtype => 1,
 		roottimeout => 2,
 		autopartition => 4,
 		autoformat => 4,
@@ -383,14 +392,46 @@ sub pxestarts {
 	my %re;
 
 	foreach my $file ((
-			glob("$Schulkonsole::Config::_linbo_dir/pxegrub.lst.*")
+			glob("$Schulkonsole::Config::_pxe_config_dir/*")
 		)) {
+		next if -l$file or -d$file;
 		my ($filename) = File::Basename::fileparse($file);
-		$re{ Schulkonsole::Encode::from_fs($filename) } = $file
-			if $filename =~ /^pxegrub\.lst\.(?:[a-z\d_]+)$/;
+		$re{ Schulkonsole::Encode::from_fs($filename) } = $file;
 	}
 
 	return \%re;
+}
+
+
+
+
+=head2 menulsts()
+
+Get all menu.lst files
+
+=head3 Return value
+
+A reference to a hash with the filenames as keys
+
+=head3 Description
+
+Gets the menu.lst files in /var/linbo/
+and returns them in a hash.
+
+=cut
+
+sub menulsts {
+        my %re;
+
+        foreach my $file ((
+                        glob("$Schulkonsole::Config::_linbo_dir/menu.lst.*")
+                )) {
+                next if -l$file or -d$file;
+                my ($filename) = File::Basename::fileparse($file);
+                $re{ Schulkonsole::Encode::from_fs($filename) } = $file;
+        }
+
+        return \%re;
 }
 
 
@@ -457,7 +498,10 @@ The name of a group
 =head3 Return value
 
 A reference to a hash with the following keys and values:
-
+linbo hash with linbo section
+partitions hash indexed by number with partition sections
+    sorted by device
+    
 =head3 Description
 
 Reads /var/linbo/start.conf.<group>, where group is C<$group> and returns
@@ -476,7 +520,7 @@ sub read_start_conf {
 	seek CONF, 0, 0;
 
 
-	my %partitions;
+	my @devs;
 	my @oss;
 	my %linbo;
 	my $partition = {};
@@ -493,12 +537,11 @@ sub read_start_conf {
 				push @oss, $os;
 				$os = {};
 			} elsif (%$partition) {
-				if (not $$partition{dev}) {
-					$partitions{"? $unnamed_partitions_cnt"} = $partition;
-					$unnamed_partitions_cnt++;
-				} else {
-					$partitions{$$partition{dev}} = $partition;
-				}
+                                if (not $$partition{dev}) {
+                                    $$partition{dev} = "? $unnamed_partitions_cnt";
+                                    $unnamed_partitions_cnt++;
+                                }
+				push @devs, $partition;
 				$partition = {};
 			}
 
@@ -550,25 +593,25 @@ sub read_start_conf {
 		push @oss, $os;
 		$os = {};
 	} elsif (%$partition) {
-		if (not $$partition{dev}) {
-			$partitions{"? $unnamed_partitions_cnt"} = $partition;
-			$unnamed_partitions_cnt++;
-		} else {
-			$partitions{$$partition{dev}} = $partition;
-		}
+		push @devs, $partition;
 		$partition = {};
 	}
 
-
-
+        # Zuordnung zwischen Partitionseintrag und OS
 	foreach my $os (@oss) {
 		my $partition = $$os{root};
-
-		if (not exists $partitions{$partition}) {
-			$partitions{$partition} = {
+                my $n = -1;
+                for my $i (0 .. $#devs) {
+                        if($partition eq $devs[$i]{dev}) {
+                                $n = $i;
+                        }
+                }
+		if ($n == -1) {
+			push @devs, {
 					dev => $partition,
 					id => ($$os{kernel} eq ('grub.exe' || 'reboot') ? 0x07 : 0x83),
 				};
+                        $n = @devs[-1];
 		}
 
 		if (not $$os{baseimage}) {
@@ -582,13 +625,33 @@ sub read_start_conf {
 
 		$$os{image} =~ s/\.rsync$//;
 
-		push @{ $partitions{$partition}{oss} }, $os;
+		push @{ $devs[$n]{oss} }, $os;
 	}
+        
+        # sort partitions by device
+        my %partitions;
+        my $nn = 0;
+        foreach my $n (sort {
+                my ($name_a, $number_a)
+                        = $devs[$a]{dev} =~ /^(.*?)(\d*)$/;
+                my ($name_b, $number_b)
+                        = $devs[$b]{dev} =~ /^(.*?)(\d*)$/;
 
+                return (   $name_a cmp $name_b
+                        or $number_a <=> $number_b);
+                } keys @devs) {
+            $partitions{$nn} = $devs[$n];
+            $nn++;
+        }
+        
+	foreach my $partition (values %partitions) {
+                set_partition_type(\%{$partition}, \%linbo);
+        }
 
 	return {
 		partitions => \%partitions,
 		linbo => \%linbo,
+		partitions_cnt => scalar(keys %partitions),
 	};
 }
 
@@ -857,7 +920,6 @@ sub check_and_prepare_start_conf {
 		}
 	}
 
-
 	die new Schulkonsole::Error(Schulkonsole::Error::Linbo::START_CONF_ERROR,
 	                            \%errors)
 		if %errors;
@@ -1082,8 +1144,8 @@ sub write_start_conf {
 	my $conf = shift;
 
 	$$conf{linbo}{group} = $group;
-	my $start_conf = check_and_prepare_start_conf($conf);
 
+	my $start_conf = check_and_prepare_start_conf($conf);
 
 	my $filename = $Schulkonsole::Config::_linbo_start_conf_prefix . $group;
 
@@ -1274,7 +1336,7 @@ sub write_start_conf {
 	} else {
 		$lines .= "[LINBO]\n";
 	}
-	foreach my $key (('Cache', 'Server', 'Group', 'RootTimeout',
+	foreach my $key (('Cache', 'Server', 'Group', 'SystemType', 'RootTimeout',
 	                  'Autopartition', 'AutoFormat', 'AutoInitCache',
 	                  'DownloadType', 'BackgroundFontColor',
                       'ConsoleFontColorStdout', 'ConsoleFontColorStderr', 'KernelOptions')) {
@@ -1305,7 +1367,7 @@ sub write_start_conf {
 			$lines .= "[Partition]\n";
 		}
 
-		foreach my $key (('Dev', 'Size', 'Id', 'FSType', 'Bootable', )) {
+		foreach my $key (('Dev', 'Size', 'Id', 'FSType', 'Bootable','Label', )) {
 			my $key_data = $partitions{$dev}{Keys}{lc $key};
 			next unless $key_data;
 
@@ -1384,6 +1446,209 @@ sub write_start_conf {
 }
 
 
+=head2 set_partition_type($partition, $linbo)
+
+Set Partition type for partition.
+
+=head3 Parameteres
+
+=over
+
+=item C<$partition>
+
+The hash of the partition
+
+=item C<$linbo>
+
+The hash of linbo section
+
+=back
+
+=head3 Description
+
+Add the key C<type> to the hash partition of the
+specified partition. C<type> can have the values 
+C<windows> for a partition holding a Windows OS,
+C<gnulinux> for a partition holding a GNU/Linux OS,
+C<data> for a data partition,
+C<swap> for a swap partition,
+C<cache> for the cache partition,
+C<ext> for an extended parition,
+C<efi> for an EFI partition.
+
+=cut
+
+sub set_partition_type {
+    my $partition = shift;
+    my $linbo = shift;
+
+    if ($$partition{id} == 0x05) {
+            $$partition{type} = 'ext';
+    } elsif (    exists $$partition{oss}
+                and @{ $$partition{oss} }) {
+            if ($$partition{id} == 0x83) {
+                    $$partition{type} = 'gnulinux';
+            } else {
+                    $$partition{type} = 'windows';
+            }
+    } elsif ($$partition{id} == 0x82) {
+            $$partition{type} = 'swap';
+    } elsif ($$partition{dev} eq $$linbo{cache}) {
+            $$partition{type} = 'cache';
+    } elsif ($$partition{id} == 0xef) {
+            $$partition{type} = 'efi';
+    } else {
+            $$partition{type} = 'data';
+    }
+
+}
+
+=head2 set_partition_id($partition)
+
+Set Partition id for partition.
+
+=head3 Parameteres
+
+=over
+
+=item C<$partition>
+
+The hash of the partition
+
+=back
+
+=head3 Description
+
+Add the key C<id> to the hash partition of the
+specified partition.
+
+=cut
+
+sub set_partition_id {
+    my $partition = shift;
+    
+    my $fstype = $$partition{fstype};
+    my $type = $$partition{type};
+    my $id;
+    
+        ((   $fstype eq 'ext2'
+            or $fstype eq 'ext3'
+            or $fstype eq 'reiserfs') and $id = 0x83)
+    or ($fstype eq 'swap' and $id = 0x82)
+    or ($type eq 'efi' and $fstype eq 'vfat' and $id = 0xef)
+    or ($fstype eq 'vfat' and $id = 0x0c)
+    or ($fstype eq 'ntfs' and $id = 0x07)
+    or (not $fstype and $id = 0x05)
+    or ($fstype = 'ext3' and $id = 0x83);   # fallback
+
+    $$partition{id} = $id;
+
+}
+
+=head2 find_free_dev($partitions)
+
+Find first free partition in partitions hash
+
+=head3 Parameteres
+
+=over
+
+=item C<$partitions>
+
+The hash of the partitions indexed by number sorted
+by device
+
+=back
+
+=head3 Return value
+
+A device name string
+    
+=head3 Description
+
+Cycles through device names until a gap is found. Otherwise
+append device at the end.
+
+=cut
+
+sub find_free_dev {
+    my $partitions = shift;
+    
+    my $dev_name = '/dev/sda';
+    my $dev_nr = 1;
+    my $device = $dev_name . $dev_nr;
+    my $found = 0;
+    if (%{ $partitions} ) {
+        my $frei = 1;
+        do {
+            foreach my $np (keys %$partitions) {
+                $frei = 0 if ($device eq $$partitions{$np}{dev});
+            }
+            $found = $device if ($frei);
+            $dev_nr++;
+            $device = $dev_name . $dev_nr;
+            $frei = 1;
+        } while(not $found and ($dev_nr < 100));
+    }
+    return $found;
+}
+
+
+=head2 partition_insert_sorted($partitions, $partition)
+
+Append C<$partition> to C<$partitions> and then resort according
+to device names
+
+=head3 Parameters
+
+=over
+
+=item C<$partitions>
+
+The hash of the partitions indexed by number sorted
+by device
+
+=item C<$partition>
+
+The hash of the new partition to be inserted
+
+=back
+
+=head3 Return value
+
+The new partitions hash
+    
+=head3 Description
+
+Append C<$partition> and resort.
+
+=cut
+
+sub partition_insert_sorted {
+    my $partitions = shift;
+    my $partition = shift;
+    
+    my @devs;
+    foreach my $part (values $partitions) {
+        push @devs, $part;
+    }
+    push @devs, $partition;
+    $partitions = ();
+    my $nn = 0;
+    foreach my $n (sort {
+            my ($name_a, $number_a)
+                    = $devs[$a]{dev} =~ /^(.*?)(\d*)$/;
+            my ($name_b, $number_b)
+                    = $devs[$b]{dev} =~ /^(.*?)(\d*)$/;
+
+            return (   $name_a cmp $name_b
+                    or $number_a <=> $number_b);
+            } keys @devs) {
+        $$partitions{$nn} = $devs[$n];
+        $nn++;
+    }
+    return \%$partitions;
+}
 
 
 =head2 copy_start_conf($id, $password, $src, $dest)
@@ -1724,7 +1989,7 @@ sub get_conf_from_query {
 	my @os_params;
 	my %linbo_params;
 	my $cache_hd;
-	foreach my $param ($q->param) {
+foreach my $param ($q->param) {
 		if (my ($dev_n, $os_n, $key) = $param =~ /^(\d+)\.(\d+)_(.+)$/) {
 			if ($_allowed_keys{2}{$key}) {
 				$os_params[$dev_n][$os_n]{$key} = $q->param($param);
@@ -1756,30 +2021,16 @@ sub get_conf_from_query {
 
 	return undef unless $submit;
 
-
 	my %partitions;
 	for (my $dev_n = 0; $dev_n < @partition_params; $dev_n++) {
 		next unless $partition_params[$dev_n];
 
-		$partitions{$dev_n}{n} = $dev_n;
 		foreach my $key (keys %{ $_allowed_keys{1} }) {
 			$partitions{$dev_n}{$key} = $partition_params[$dev_n]{$key};
 		}
-
-		my $fstype = $partitions{$dev_n}{fstype};
-		my $id;
-		   ((   $fstype eq 'ext2'
-		     or $fstype eq 'ext3'
-		     or $fstype eq 'reiserfs') and $id = 0x83)
-		or ($fstype eq 'swap' and $id = 0x82)
-		or ($fstype eq 'vfat' and $id = 0x0c)
-		or ($fstype eq 'ntfs' and $id = 0x07)
-		or (not $fstype and $id = 0x05)
-		or ($fstype = 'ext3' and $id = 0x83);	# fallback
-
-		$partitions{$dev_n}{id} = $id;
+		
+		set_partition_id(\%{ $partitions{$dev_n}});
 	}
-
 
 	my $autostart = $q->param('autostart');
 
@@ -1813,31 +2064,26 @@ sub get_conf_from_query {
 
 
 	if (defined $submit_dev_n) {
-		if (defined $partitions{$submit_dev_n}) {
-			$submit_partition
-				= $partitions{$submit_dev_n};
-
-			if (defined $submit_os_n) {
-				if (defined $os_params[$submit_dev_n][$submit_os_n]) {
-					$submit_os = $os_params[$submit_dev_n][$submit_os_n];
-				} else {
-					return undef;
-				}
-			}
-		} else {
+		if (not defined $partitions{$submit_dev_n}) {
 			return undef;
-		}
+		} elsif (defined $submit_os_n) {
+                        if (not defined $os_params[$submit_dev_n][$submit_os_n]) {
+                                return undef;
+                        }
+                }
 	}
 
-
+	foreach my $partition (values %partitions) {
+            set_partition_type(\%{$partition}, \%linbo_params);
+        }
 
 	return {
 		partitions => \%partitions,
 		linbo => \%linbo_params,
 		partitions_cnt => scalar(@partition_params),
 		action => $submit,
-		action_partition => $submit_partition,
-		action_os => $submit_os,
+		action_partition => $submit_dev_n,
+		action_os => $submit_os_n,
 	};
 }
 
@@ -1865,7 +2111,8 @@ The basename of the file
 =head3 Description
 
 Deletes C<$filename> in C</var/linbo/>. Filename has to match C<*.cloop.reg>,
-C<*.rsync.reg>, or C<pxegrub\.lst\.(?:[a-z\d_]+)>.
+C<*.rsync.reg>, C<menu\.lst\.(?:[a-z\d_]+)>,
+C<start.conf.(?:[a-z\d_]+)>, or C<pxelinux\.lst\.(?:[a-z\d_]+)>.
 
 =cut
 
@@ -1915,7 +2162,7 @@ The lines to be written
 =head3 Description
 
 Writes C<$lines> into C<$filename> in C</var/linbo/>. Filename has to
-match C<*.cloop.reg>, C<*.rsync.reg>, or C<pxegrub\.lst\.(?:[a-z\d_]+)>.
+match C<*.cloop.reg>, C<*.rsync.reg>>.
 
 =cut
 
@@ -1927,6 +2174,55 @@ sub write_file {
 
 
 	my $pid = start_wrapper(Schulkonsole::Config::LINBOWRITEAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "$filename\n$lines";
+	close \*SCRIPTOUT;
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, undef, \*SCRIPTIN, \*SCRIPTIN);
+}
+
+
+
+
+=head2 write_pxe_file($id, $password, $filename, $lines)
+
+Writes a LINBO file
+
+=head3 Parameters
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$filename>
+
+The basename of the file
+
+=item C<$lines>
+
+The lines to be written
+
+=head3 Description
+
+Writes C<$lines> into C<$filename> in C<Schulkonsole::Config::_pxe_config_dir>.
+
+=cut
+
+sub write_pxe_file {
+	my $id = shift;
+	my $password = shift;
+	my $filename = shift;
+	my $lines = shift;
+
+	my $pid = start_wrapper(Schulkonsole::Config::LINBOWRITEPXEAPP,
 		$id, $password,
 		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 

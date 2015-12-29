@@ -66,7 +66,7 @@
 <!--#if expr="$projects{joinable}" -->
 <td><input type="checkbox" disabled checked></td>
 <!--#else -->
-<td><input type="checkbox" disabled</td>
+<td><input type="checkbox" disabled></td>
 <!--#endif -->
 <!--#if expr="$projects{joinable}" -->
 <!--#if expr="$projects{islastadmin}" -->
