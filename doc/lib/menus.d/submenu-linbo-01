@@ -11,7 +11,7 @@
 	<li><a [% dohref("linbo_pxeedit") %]>[% loc('PXE-Start') %]</a>
 [% END %]
 [% IF link_linbo_menuedit %]
-	<a class="separator" href="linbo_menuedit">[% d.get('menu.lst editieren') %]</a></br>
+	<li><a [% dohref("linbo_menuedit") %]>[% loc('menu.lst editieren') %]</a>
 [% END %]
 [% IF link_linbo_images %]
 	<li><a [% dohref("linbo_images") %]>[% loc('Imageverwaltung') %]</a>
