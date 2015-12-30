@@ -106,8 +106,10 @@ eval {
 						$file, ($$teacher_share_files{$file}?1:0), $tmpfile);
 					
 					if( -e "$Schulkonsole::Config::_runtimedir/$tmpfile") {
+						my $filename = $file;
+						utf8::decode($filename);
 						print $q->header( -type           => "application/x-download",
-								          -attachment     => $file,
+								          -attachment     => $filename,
 										   -Content_length => -s "$Schulkonsole::Config::_runtimedir/$tmpfile");
 									
 						if(! open(FILE, "<$Schulkonsole::Config::_runtimedir/$tmpfile")) {

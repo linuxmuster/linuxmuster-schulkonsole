@@ -165,8 +165,10 @@ eval {
 					}
 					
 					if( -e "$Schulkonsole::Config::_runtimedir/$tmpfile") {
+						my $filename = $dlfile;
+						utf8::decode($filename);
 						print $q->header( -type           => "application/x-download",
-								          -attachment     => $dlfile,
+								          -attachment     => $filename,
 										  -Content_length => -s "$Schulkonsole::Config::_runtimedir/$tmpfile");
 						
 						if(! open(FILE, "<$Schulkonsole::Config::_runtimedir/$tmpfile")) {
