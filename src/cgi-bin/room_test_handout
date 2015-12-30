@@ -107,6 +107,7 @@ $q->param('upload_test_handout') and do {
 foreach my $param ($q->param) {
 	if (my ($file, $action)
 	    	= $param =~ /^(.+);(delete|download)$/) {
+		utf8::decode($file);
 		my $teacher_share_files = Schulkonsole::Sophomorix::ls_handout_exam(
 				$sk_session->userdata('id'), $sk_session->get_password());
 		
