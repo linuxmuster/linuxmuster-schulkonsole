@@ -110,6 +110,7 @@ eval {
 		
 		$q->param($transfername) and do {
 			my $file = $q->param($transfername);
+			utf8::decode($file);
 			my $tmpfile = "$Schulkonsole::Config::_runtimedir/${transfername}_"
 							. $sk_session->session_id() . '_' . time;
 			if(! open(DAT,'>'.$tmpfile)) {

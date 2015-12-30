@@ -64,6 +64,7 @@ eval {
 	SWITCHCOMMAND: {
 		$q->param('ul_' . $this_file) and do {
 			my $file = $q->param('ul_' . $this_file);
+			utf8::decode($file);
 			my $tmpfile = "$Schulkonsole::Config::_runtimedir/ul_" . $this_file
 							. $sk_session->session_id() . '_' . time;
 			if(! open(DAT,'>'.$tmpfile)) {

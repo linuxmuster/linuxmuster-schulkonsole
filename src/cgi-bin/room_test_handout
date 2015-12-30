@@ -84,6 +84,7 @@ $q->param('continue') and do {
 
 $q->param('upload_test_handout') and do {
 	my $file = $q->param('upload_test_handout');
+	utf8::decode($file);
 	my $tmpfile = "$Schulkonsole::Config::_runtimedir/upload_test_handout_".$sk_session->session_id() . '_' . time;
 	if(! open(DAT,'>'.$tmpfile)) {
 		$sk_session->set_status($d->get('Es konnte keine temporäre Datei erzeugt werden.'),1);
