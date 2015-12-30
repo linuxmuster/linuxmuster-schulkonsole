@@ -70,6 +70,7 @@ eval {
 		foreach my $param ($q->param) {
 			if (my ($project, $file, $action)
 			    	= $param =~ /^(.+);(.+);(delete|download)$/) {
+				utf8::decode($file);
 				my $teacher_share_files = Schulkonsole::Sophomorix::ls_handedoutcopy_myprojects(
 						$sk_session->userdata('id'), $sk_session->get_password(), $project);
 				

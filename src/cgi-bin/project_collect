@@ -143,6 +143,7 @@ eval {
 		foreach my $param ($q->param) {
 			if (my ($file, $action)
 			    	= $param =~ /^(.+);(delete|download)$/) {
+				utf8::decode($file);
 				my $admin_collected_files = Schulkonsole::Sophomorix::ls_collected_project(
 						$sk_session->userdata('id'), $sk_session->get_password(), $project);
 				
