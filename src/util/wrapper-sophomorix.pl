@@ -489,7 +489,7 @@ sub filemanapp() {
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
 		  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 		unless defined $filename;
-	
+	$filename = get_decoded($filename);
 	my $isdir = <>;
 	($isdir) = $isdir =~ /^(\d+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILETYPE
@@ -516,6 +516,7 @@ sub filemanapp() {
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
 			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			  unless defined $fromfile;
+		$fromfile = get_decoded($fromfile);
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_FILE
 			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			  unless -e "$Schulkonsole::Config::_runtimedir/$fromfile";
@@ -540,6 +541,7 @@ sub filemanapp() {
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
 			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			  unless defined $tofile;
+		$tofile = get_decoded($tofile);
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_FILE
 			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			  unless -e "$share_dir/$filename";
@@ -691,7 +693,7 @@ sub studentsfilemanapp() {
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
 		  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 		unless defined $filename;
-	
+	$filename = get_decoded($filename);
 	my $isdir = <>;
 	($isdir) = $isdir =~ /^(\d+)$/;
 	exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILETYPE
@@ -718,6 +720,7 @@ sub studentsfilemanapp() {
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
 			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			  unless defined $fromfile;
+		$fromfile = get_decoded($fromfile);
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_FILE
 			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			  unless -e "$Schulkonsole::Config::_runtimedir/$fromfile";
@@ -742,6 +745,7 @@ sub studentsfilemanapp() {
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILENAME
 			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			  unless defined $tofile;
+		$tofile = get_decoded($tofile);
 		exit (  Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_FILE
 			  - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 			  unless -e "$share_dir/$filename";
