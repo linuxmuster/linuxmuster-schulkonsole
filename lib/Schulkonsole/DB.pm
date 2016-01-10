@@ -9,6 +9,7 @@ use MIME::Base64;
 use Net::LDAP;
 use Schulkonsole::Error;
 use Schulkonsole::Config;
+use Sophomorix::SophomorixPgLdap;
 
 
 =head1 NAME
@@ -54,6 +55,7 @@ $VERSION = 0.06;
 	get_userdata
 	get_userdata_by_id
 	get_usermail
+	set_user_mymail
 	verify_password
 	verify_password_by_id
 	user_groups
@@ -103,6 +105,7 @@ my $_where_userdata_uid = 'WHERE uid = ?';
 my $_where_userdata_gid = 'WHERE gid = ?';
 my $_where_userdata_id = 'WHERE id = ?';
 
+my $_update_mymail = 'UPDATE posix_account_details SET mymail = ? ';
 
 
 
@@ -163,6 +166,30 @@ sub get_usermail {
 
         return $re;
 }
+
+
+sub set_user_mymail {
+	my $uid = shift;
+	my $mymail = shift;
+
+	utf8::encode($uid);
+	utf8::encode($mymail);
+	
+	my $userdata = get_userdata($uid);
+	
+	my $sth = $_dbh->prepare($_update_mymail . $_where_userdata_id)
+		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+			$_update_mymail . $_where_userdata_id);
+	$sth->execute($mymail, $$userdata{id})
+		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+			$_update_mymail . $_where_userdata_id, "[uid = $uid, id = $$userdata{id}, mymail = $mymail]");
+	$sth->finish;
+	my $ldap = &Sophomorix::SophomorixPgLdap::auth_connect();
+	&Sophomorix::SophomorixPgLdap::update_user_ldap($ldap,$uid);
+	&Sophomorix::SophomorixPgLdap::auth_disconnect($ldap);
+
+}
+
 
 
 sub get_userdata_by_id {

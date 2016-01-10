@@ -8456,6 +8456,50 @@ sub hide_unhide_classes {
 }
 
 
+=head3 C<set_user_mymail($id,$password,$mymail)>
+
+Set users private mail address
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=item C<$mymail>
+
+The string containing the mail address (can be empty)
+
+=back
+
+=head4 Description
+
+This wraps the subroutine DB::set_user_myail($uid,$mymail).
+
+=cut
+
+sub set_user_mymail {
+	my $id = shift;
+	my $password = shift;
+	my $mymail = shift;
+	
+	my $pid = start_wrapper(Schulkonsole::Config::SETMYMAILAPP,
+		$id, $password,
+		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+
+	print SCRIPTOUT "$mymail\n\n";
+
+	buffer_input(\*SCRIPTIN);
+
+	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);	
+}
+
 =head3 C<change_mailalias_classes($id, $password, $create_mailalias_classs, remove_mailalias_classs)>
 
 Create/Remove mailaliases for classes

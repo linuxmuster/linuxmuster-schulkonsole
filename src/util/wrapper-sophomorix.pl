@@ -240,6 +240,11 @@ $app_id == Schulkonsole::Config::HIDEUNHIDECLASSAPP and do {
 	last SWITCH;
 };
 
+$app_id == Schulkonsole::Config::SETMYMAILAPP and do {
+	set_mymailapp();
+	last SWITCH;
+};
+
 $app_id == Schulkonsole::Config::CHANGEMAILALIASCLASSAPP and do {
 	changemailaliasclassapp();
 	last SWITCH;
@@ -3091,6 +3096,34 @@ sub hideunhideclassapp() {
 	}
 
 
+	exit 0;
+}
+
+=head3 set_mymailapp
+
+numeric constant: C<Schulkonsole::Config::SETMYMAILAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item mymail
+
+String containing users mail address (can be empty)
+
+=back
+
+=cut
+
+sub set_mymailapp(){
+	my $mymail = <>;
+	$mymail =~ s/^\s+|\s+$//g;
+	$mymail ne "" and $mymail !~ /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b/
+		and exit (  Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_MAILADDRESS
+		          - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+	
+	&Schulkonsole::DB::set_user_mymail($$userdata{uid}, $mymail);
+	
 	exit 0;
 }
 

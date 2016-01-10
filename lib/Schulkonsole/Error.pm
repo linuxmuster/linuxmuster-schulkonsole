@@ -363,6 +363,10 @@ sub what {
 		and return $this->{d}->get('Erwarte 1,2 oder 3 fuer action');
 	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_FILETYPE
 		and return $this->{d}->get('Erwarte Verzeichnis, fand Datei (oder umgekehrt)');
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_INVALID_MAILADDRESS
+		and return $this->{d}->get('Die angegebene Mailadresse ist ungültig');
+	$this->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_SETMYMAIL
+		and return $this->{d}->get('Die Mailadresse konnte nicht gespeichert werden.');
 	$this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_SECTION
 		and return $this->{d}->get('Ungueltiger Debconf-Bereich');
 	$this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_NAME

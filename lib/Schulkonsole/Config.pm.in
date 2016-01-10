@@ -511,6 +511,10 @@ C<change_mailalias_projects>
 
 C<change_maillist_projects>
 
+=item C<SETMYMAILAPP>
+
+C<set_user_mymail>
+
 =back
 
 
@@ -556,6 +560,7 @@ use constant {
 	LSCOMMITAPP => 8037,
 	PRINTALLUSERSAPP => 8038,
 	PRINTCOMMITAPP => 8039,
+	SETMYMAILAPP => 8040,
 };
 
 =head3 Constants for wrapper-cyrus
@@ -1414,6 +1419,7 @@ $_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
 	CHMODAPP() => 'chmod',
 	SETQUOTAAPP() => 'quota',
 	HIDEUNHIDECLASSAPP() => 'hide_unhide_class',
+	SETMYMAILAPP() => 'set_user_mymail',
 	CHANGEMAILALIASCLASSAPP() => 'change_mailalias_classes',
 	CHANGEMAILLISTCLASSAPP() => 'change_maillist_classes',
 	CHANGEMAILALIASPROJECTAPP() => 'change_mailalias_projects',

@@ -2,10 +2,16 @@
         title   => loc('Schulkonsole') _ " - " _ loc('Startseite'),
         classes => "widecontent",
         menu    => 1,
-        info    => loc('<p>Auf dieser Seite können Sie eigene Druckaufträge löschen und Ihr Passwort ändern.<p>Weiterhin können Sie eine Mail-Weiterleitung an eine oder mehrere durch Komma getrennte Mail-Adressen einrichten und festlegen, ob eine Kopie im Postfach verbleiben soll.<p>Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch auf dem Server und in Ihrem Postfach. Alle Werte sind in Kilobyte angegeben. Zusätzlich wird angezeigt in welchen Projekten Sie Mitglied sind.</p><p>Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden. Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner &bdquo;OpenVPN&ldquo; abgelegt.</p>'),
+        info    => loc('<p>Auf dieser Seite können Sie eigene Druckaufträge löschen und Ihr Passwort ändern.</p>'),
    }
 %]
-
+[% IF link_start_mymail %]
+[% SET page.info = "$page.info" _ loc('<p>Im Abschnitt <b>Private Mailadresse</b> können Sie eine private Mailadresse hinterlegen.</p>') %]
+[% END %]
+[% SET page.info = "$page.info" _ loc('<p>Weiterhin können Sie eine Mail-Weiterleitung an eine oder mehrere durch Komma getrennte Mail-Adressen einrichten und festlegen, ob eine Kopie im Postfach verbleiben soll.<p>Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch auf dem Server und in Ihrem Postfach. Alle Werte sind in Kilobyte angegeben. Zusätzlich wird angezeigt in welchen Projekten Sie Mitglied sind.</p>') %]
+[% IF link_start_openvpn %]
+[% SET page.info = "$page.info" _ loc('<p>Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden. Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner &bdquo;OpenVPN&ldquo; abgelegt.</p>') %]
+[% END %]
 <h2>[% loc('Konto von') %] [% firstname %] [% surname %]</h2>
 
 
@@ -47,6 +53,20 @@
 </table>
 <p><input type="submit" value="[% loc('Passwort ändern') %]"></p>
 </form>
+
+[% IF link_start_mymail %]
+	<h3>[% loc('Private Mail-Adresse') %]</h3>
+	<form method="post" accept-charset="UTF-8">
+	<table>
+	<tr>
+	<td><label [% labelfor("mymail") %]>[% loc('Mailadresse') %]</label>: </td>
+	<td><input id="mymail" name="mymail" value="[% mymail %]"></td>
+	</tr>
+	<tr>
+	</table>
+	<p><input type="submit" name="set_mymail" value="[% loc('Speichern') %]"></p>
+	</form>
+[% END %]
 
 <h3>[% loc('Mail-Weiterleitung') %]</h3>
 <form meth="post" accept-charset="UTF-8">
@@ -222,27 +242,27 @@
 <hr>
 
 [% IF link_start_openvpn %]
-<form method="post" accept-charset="UTF-8">
-<h3>[% loc('OpenVPN-Zertifikat') %]</h3>
-[% IF has_ovpn %]
-<p>[% loc('Ein OpenVPN-Zertifikat wurde für Sie erstellt.') %]</p>
-<p><input type="submit" name="ovpndownload" value="[% loc('OpenVPN-Zertifikat herunterladen') %]"></p>
-[% ELSE %]
-<h4>[% loc('OpenVPN-Zertifikat erstellen') %]</h4>
-
-<table>
-<tr>
-<td><label [% labelfor("ovpnpassword") %]>[% loc('Zertifikatspasswort (mind. 6 Zeichen):') %]</label></td>
-<td><input type="password" id="ovpnpassword" name="ovpnpassword"></td>
-</tr>
-<tr>
-<td><label [% labelfor("ovpnpasswordagain") %]>[% loc('Zertifikatspasswort bestätigen:') %]</label></td>
-<td><input type="password" id="ovpnpasswordagain" name="ovpnpasswordagain"></td>
-</tr>
-</table>
-
-<p><input type="submit" value="[% loc('Zertifikat erstellen und herunterladen') %]"></p>
-
-[% END %]
-</form>
+	<form method="post" accept-charset="UTF-8">
+	<h3>[% loc('OpenVPN-Zertifikat') %]</h3>
+	[% IF has_ovpn %]
+		<p>[% loc('Ein OpenVPN-Zertifikat wurde für Sie erstellt.') %]</p>
+		<p><input type="submit" name="ovpndownload" value="[% loc('OpenVPN-Zertifikat herunterladen') %]"></p>
+	[% ELSE %]
+		<h4>[% loc('OpenVPN-Zertifikat erstellen') %]</h4>
+		
+		<table>
+		<tr>
+		<td><label [% labelfor("ovpnpassword") %]>[% loc('Zertifikatspasswort (mind. 6 Zeichen):') %]</label></td>
+		<td><input type="password" id="ovpnpassword" name="ovpnpassword"></td>
+		</tr>
+		<tr>
+		<td><label [% labelfor("ovpnpasswordagain") %]>[% loc('Zertifikatspasswort bestätigen:') %]</label></td>
+		<td><input type="password" id="ovpnpasswordagain" name="ovpnpasswordagain"></td>
+		</tr>
+		</table>
+		
+		<p><input type="submit" value="[% loc('Zertifikat erstellen und herunterladen') %]"></p>
+		
+	[% END %]
+	</form>
 [% END %]

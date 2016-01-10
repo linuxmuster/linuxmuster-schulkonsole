@@ -44,6 +44,10 @@ the title of the printed document
 
 =over
 
+=item C<mymail>
+
+A string wit a private mail address for this user.
+
 =item C<mailforwards>
 
 A string with a comma separated list of mail addresses to forward mail for
@@ -54,6 +58,10 @@ this user to.
 A boolean value to keep a copy of the forwarded mail in the users mailbox.
 
 =back
+
+=item C<mymail>
+
+A string containing a mail address.
 
 =item C<diskquotas>
 
@@ -305,6 +313,24 @@ COMMANDS: {
 	}
 
 	last COMMANDS;
+};
+
+# change mymail
+defined $q->param('set_mymail') and do {
+	my $mymail = $q->param('mymail');
+    $mymail =~ s/^\s+|\s+$//g;
+    if(not defined $mymail) {
+    	$mymail = "";
+    }
+    if($mymail ne "" and $mymail !~ /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b/) {
+        $sk_session->mark_input_error('mymail');
+        $sk_session->set_status($sk_session->d()->get(
+			'Die eingegebene Mail-Adresse ist ungültig.'), 1);
+        last COMMANDS;
+    }
+    Schulkonsole::Sophomorix::set_user_mymail($id,$password,$mymail);
+    
+    last COMMANDS;
 };
 
 # change mailforwards
@@ -705,6 +731,14 @@ my @mailaliass = Schulkonsole::Info::mailaliases($uid);
 my $var_mailaliases = join ', ', @mailaliass;
 my $usermail = Schulkonsole::DB::get_usermail($uid);
 
+=item C<mymail>
+
+A string containing users mail address
+
+=cut
+
+$sk_session->set_var('mymail', $usermail);
+
 =item C<mailaliases>
 
 A comma separated list of the user's mailaliases
@@ -787,6 +821,18 @@ The new password
 =item newpasswordagain
 
 Used to rule typos out
+
+=back
+
+=head3 Mailaddress change
+
+The following form field is used to change users mail address:
+
+=over
+
+=item mymail
+
+A string containing a mail address.
 
 =back
 
