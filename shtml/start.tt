@@ -8,7 +8,10 @@
 [% IF link_start_mymail %]
 [% SET page.info = "$page.info" _ loc('<p>Im Abschnitt <b>Private Mailadresse</b> können Sie eine private Mailadresse hinterlegen.</p>') %]
 [% END %]
-[% SET page.info = "$page.info" _ loc('<p>Weiterhin können Sie eine Mail-Weiterleitung an eine oder mehrere durch Komma getrennte Mail-Adressen einrichten und festlegen, ob eine Kopie im Postfach verbleiben soll.<p>Im Info-Bereich sehen Sie Ihren Speicherplatzverbrauch auf dem Server und in Ihrem Postfach. Alle Werte sind in Kilobyte angegeben. Zusätzlich wird angezeigt in welchen Projekten Sie Mitglied sind.</p>') %]
+[% IF has_smtprelay %]
+[% SET page.info = "$page.info" _ loc('<p>Im Abschnitt  <b>Mail-Weiterleitung</b> können Sie eine Weiterleitung an eine oder mehrere durch Komma getrennte Mail-Adressen einrichten und festlegen, ob eine Kopie im Postfach verbleiben soll.</p>') %]
+[% END %]
+[% SET page.info = "$page.info" _ loc('<p>Im <b>Info-Bereich</b> sehen Sie Ihren Speicherplatzverbrauch auf dem Server und in Ihrem Postfach. Alle Werte sind in Kilobyte angegeben. Zusätzlich wird angezeigt in welchen Projekten Sie Mitglied sind.</p>') %]
 [% IF link_start_openvpn %]
 [% SET page.info = "$page.info" _ loc('<p>Im untersten Bereich kann ein OpenVPN-Zertifikat erstellt werden. Das Zertifikat wird in Ihrem Heimatverzeichnis (H:) im Ordner &bdquo;OpenVPN&ldquo; abgelegt.</p>') %]
 [% END %]
@@ -64,32 +67,29 @@
 	</tr>
 	<tr>
 	</table>
-	<p><input type="submit" name="set_mymail" value="[% loc('Speichern') %]"></p>
+	<p><input type="submit" name="set_mymail" value="[% loc('Mailadresse ändern') %]"></p>
 	</form>
 [% END %]
 
-<h3>[% loc('Mail-Weiterleitung') %]</h3>
-<form meth="post" accept-charset="UTF-8">
-<table id="mailforward">
-<col width="30%">
-<col width="70%">
-<tr>
-<td><label [% labelfor("mailforwards") %]>[% loc('Weiterleitung(en)') %]</label>: </td>
-<td><input id="mailforwards" name="mailforwards" value="[% mailforwards %]"
-[% IF ! has_smtprelay %] disabled[% END %]></td>
-</tr>
-<tr>
-<td><label [% labelfor("mailkeep") %]>[% loc('Kopie behalten') %]</label>: </td>
-<td>
-<input id="mailkeep" name="mailkeep" type="checkbox"
-[% IF mailkeep %] checked[% END %]
-[% IF ! has_smtprelay %] disabled[% END %]>
-</td>
-</tr>
-</table>
-<p><input type="submit" name="mailchange" value="[% loc('Mailadresse(n) ändern') %]"
-[% IF ! has_smtprelay %] disabled[% END %]>
-
+[% IF has_smtprelay %]
+    <h3>[% loc('Mail-Weiterleitung') %]</h3>
+    <form meth="post" accept-charset="UTF-8">
+    <table id="mailforward">
+    <col width="30%">
+    <col width="70%">
+    <tr>
+    <td><label [% labelfor("mailforwards") %]>[% loc('Weiterleitung(en)') %]</label>: </td>
+    <td><input id="mailforwards" name="mailforwards" value="[% mailforwards %]"></td>
+    </tr>
+    <tr>
+    <td><label [% labelfor("mailkeep") %]>[% loc('Kopie behalten') %]</label>: </td>
+    <td>
+    <input id="mailkeep" name="mailkeep" type="checkbox"[% IF mailkeep %] checked[% END %]>
+    </td>
+    </tr>
+    </table>
+    <p><input type="submit" name="mailchange" value="[% loc('Weiterleitung(en) ändern') %]">
+[% END %]
 <hr>
 
 <h3>[% loc('Info') %]</h3>
