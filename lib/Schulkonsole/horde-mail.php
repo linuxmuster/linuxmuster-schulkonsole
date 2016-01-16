@@ -14,6 +14,7 @@
 
 function kill( $data ) { die( var_dump ( $data ) ); }
 
+session_start();
 
 /**
  * horde initialization
@@ -26,7 +27,6 @@ function kill( $data ) { die( var_dump ( $data ) ); }
 @define('HORDE_BASE', '/usr/share/horde3');
 @define('AUTH_HANDLER', true);
 $no_compress = true;
-$GLOBALS['session_control'] = 'none';
 
 // Do CLI checks and environment setup first.
 require_once HORDE_BASE . '/lib/core.php';
@@ -157,6 +157,7 @@ if(! $auth_success) {
 @define('INGO_BASE', '/usr/share/horde3/ingo');
 require_once INGO_BASE . '/lib/base.php';
 $registry = &Registry::singleton();
+
 if (is_a(($pushed = $registry->pushApp('ingo', !defined('AUTH_HANDLER'))), 'PEAR_Error')) {
     $cli->message('Cannot switch to ingo registry.','cli.error');
     exit(1);
