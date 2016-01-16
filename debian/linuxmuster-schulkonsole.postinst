@@ -85,7 +85,7 @@ case "$1" in
     	fi
     	echo "Adding jquery alias to schulkonsole's apache2.conf."
     	sed '/\tAlias \/schulkonsole\/css\//{ i\
-\tAlias /jquery /usr/share/schulkonsole/jquery/
+\tAlias /jquery/ /usr/share/schulkonsole/jquery/
 
 }' -i $conf
  	fi
