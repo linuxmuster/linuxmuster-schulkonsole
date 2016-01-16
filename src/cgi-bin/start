@@ -302,7 +302,7 @@ COMMANDS: {
 					$oldpassword, $newpassword);
 	
 				$sk_session->save_password($newpasswordagain);
-	
+				$password = $newpasswordagain;
 				$sk_session->set_status(
 					$sk_session->d()->get('Passwortänderung erfolgreich'), 0);
 			};

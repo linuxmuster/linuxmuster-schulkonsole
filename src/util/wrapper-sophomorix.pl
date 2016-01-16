@@ -3023,14 +3023,16 @@ sub setownpasswordapp() {
 	      - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE)
 		unless $password;
 
-	my $opts = "--nofirstpassupdate --user \Q$$userdata{uid}\E --pass \Q$password";
+	my $opts = "--nofirstpassupdate --user \Q$$userdata{uid}\E --pass \Q$password\E";
 
 	# sophomorix-passwd cannot be invoked with taint checks enabled
 	$< = $>;
 	$( = $);
 	exec Schulkonsole::Encode::to_cli(
-	     	"$Schulkonsole::Config::_cmd_sophomorix_passwd $opts")
-		or return;
+	    "$Schulkonsole::Config::_cmd_sophomorix_passwd $opts") or
+	    exit (  Schulkonsole::Error::Sophomorix::WRAPPER_GENERAL_ERROR
+	          - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
+	exit 0;
 }
 
 =head3 hide_unhide_class
