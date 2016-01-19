@@ -1,8 +1,14 @@
 linuxmuster-schulkonsole (0.21.0-2) babo-testing; urgency=low
 
-  * Fix mail forward saving error (missing session).
+  * de3800e fix blocked_hosts.intranet access rights
+  * 5614dfb change case to lower case in ldap connect
+  * 5cd4573 add workaround for missing uri line in /etc/ldap/ldap.conf
+  * 33b246e added missing dependency for javascript-common
+  * 9e30ff0 Fix page start: Private Mailadressen und Weiterleitungen.
+  * 2caed42 Fix mail forward saving (missing session added).
+  * 62228bf libproc-process-perl obsolet
 
- -- root <fschuett@gymhim.de>  Sat, 16 Jan 2016 10:45:35 +0100
+ -- Frank Schütte <fschuett@gymhim.de>  Sat, 16 Jan 2016 10:45:35 +0100
 
 linuxmuster-schulkonsole (0.21.0-1) babo-testing; urgency=low
 
