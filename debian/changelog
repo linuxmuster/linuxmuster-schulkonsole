@@ -1,3 +1,12 @@
+linuxmuster-schulkonsole (0.19.0-2) babo; urgency=low
+
+  * 52c27b6 fix blocked_hosts.intranet access rights
+  * e068e7f change case to lower case in ldap connect
+  * 6294230 add workaround for missing uri line in /etc/ldap/ldap.conf
+  * 697f71a added missing dependency for javascript-common
+
+ -- Frank Schütte <fschuett@gymhim.de>  Tue, 19 Jan 2016 12:45:49 +0100
+
 linuxmuster-schulkonsole (0.19.0-1) babo; urgency=low
 
   * Fixed some backporting issues
