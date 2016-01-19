@@ -76,6 +76,9 @@ case "$1" in
 	   sed -e "s|Alias ${replace[$i]} .*|${searchstr[$i]}|g" -i "$conf"
 	  fi
 	 done
+	# fix access rights
+	touch /var/cache/linuxmuster/blocked_hosts.intranet
+	chmod -f 644 /var/cache/linuxmuster/blocked_hosts.intranet
 	# fixes missing jquery alias FIXME: match only once
 	if ! grep -q 'Alias[[:space:]]*/jquery/[[:space:]].*' $conf; then
     	if [ -z "$backed_up" ]; then
