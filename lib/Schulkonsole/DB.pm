@@ -1524,14 +1524,14 @@ sub db_connect {
 sub ldap_connect {
         if (not defined $_ldap) {
                 my %conf = Schulkonsole::Config::ldap();
-                my $ldaphost = $conf{URI};
+                my $ldaphost = $conf{uri};
                 if(not defined $ldaphost or $ldaphost eq ""){
-                  $ldaphost = $conf{HOST};
+                  $ldaphost = $conf{host};
                 }
-                die "LDAP Host/URI not set." unless defined $ldaphost and $ldaphost ne "";
+                die "Neither LDAP host nor uri set." unless defined $ldaphost and $ldaphost ne "";
                 $_ldap = Net::LDAP->new($ldaphost)
                         or die "$@";
-                $_ldapbase = $conf{BASE} or die "LDAP Base not set.";
+                $_ldapbase = $conf{base} or die "LDAP base not set.";
         }
 
         return $_ldap;
