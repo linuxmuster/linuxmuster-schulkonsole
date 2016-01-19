@@ -1534,7 +1534,7 @@ sub ldap {
                 my ($key, $value) = /^(.+?)\s+(.*)/;
 
                 die "$0: Syntax error in $filename, line $.\n" unless $key;
-
+                $key = lc $key;
                 $conf{$key} = $value;
         }
         close CONF;
