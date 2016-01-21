@@ -48,16 +48,6 @@
 <td>[% loc('Rechnergruppenname') %]:</td>
 <td>[% group %]<input type="hidden" name="group" value="[% group %]"></td>
 </tr>
-<tr class="even">
-<td><label [% labelfor("linbo_systemtype") %]>[% loc('System-Typ') %]:</label></td>
-<td>
-<select name="linbo_systemtype">
-<option value="bios"[% IF linbo.systemtype == 'bios' %] selected[% END %]>[% loc('Bios') %]</option>
-<option value="bios64"[% IF linbo.systemtype == 'bios64' %] selected[% END %]>[% loc('Bios64') %]</option>
-<option value="efi32"[% IF linbo.systemtype == 'efi32' %] selected[% END %]>[% loc('EFI32') %]</option>
-<option value="efi64"[% IF linbo.systemtype == 'efi64' %] selected[% END %]>[% loc('EFI64') %]</option>
-</td>
-</tr>
 <tr class="odd">
 <td><label [% labelfor("linbo_roottimeout") %]>[% loc('automatischer Rootlogout nach') %]:</label></td>
 <td><input id="linbo_roottimeout" name="linbo_roottimeout" value="[% linbo_roottimeout %]"> [% loc('Sekunden') %]</td>
