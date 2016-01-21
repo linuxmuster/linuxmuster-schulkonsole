@@ -52,10 +52,10 @@
 <td><label [% labelfor("linbo_systemtype") %]>[% loc('System-Typ') %]:</label></td>
 <td>
 <select name="linbo_systemtype">
-<option value="bios">[% loc('Bios') %]</option>
-<option value="bios64">[% loc('Bios64') %]</option>
-<option value="efi32">[% loc('EFI32') %]</option>
-<option value="efi64">[% loc('EFI64') %]</option>
+<option value="bios"[% IF linbo.systemtype == 'bios' %] selected[% END %]>[% loc('Bios') %]</option>
+<option value="bios64"[% IF linbo.systemtype == 'bios64' %] selected[% END %]>[% loc('Bios64') %]</option>
+<option value="efi32"[% IF linbo.systemtype == 'efi32' %] selected[% END %]>[% loc('EFI32') %]</option>
+<option value="efi64"[% IF linbo.systemtype == 'efi64' %] selected[% END %]>[% loc('EFI64') %]</option>
 </td>
 </tr>
 <tr class="odd">
@@ -81,9 +81,9 @@
 <td><label [% labelfor("linbo_downloadtype") %]>[% loc('Downloadtype auswählen') %]:</label></td>
 <td>
 <select name="linbo_downloadtype">
-<option value="rsync">[% loc('rsync') %]</option>
-<option value="multicast">[% loc('multicast') %]</option>
-<option value="torrent">[% loc('torrent') %]</option>
+<option value="rsync"[% IF linbo.downloadtype == 'rsync' %] selected[% END %]>[% loc('rsync') %]</option>
+<option value="multicast"[% IF linbo.downloadtype == 'multicast' %] selected[% END %]>[% loc('multicast') %]</option>
+<option value="torrent"[% IF linbo.downloadtype == 'torrent' %] selected[% END %]>[% loc('torrent') %]</option>
 </select>
 </td>
 </tr>
@@ -375,20 +375,20 @@
 <td>[% IF ds.iscache %]
 <input type="hidden" name="[% ds.n %]_iscache" value="1">
 <select id="[% ds.n %]_fstype" name="[% ds.n %]_fstype">
-<option value="ext3">[% loc('EXT3') %]</option>
-<option value="ext4">[% loc('EXT4') %]</option>
-<option value="reiserfs">[% loc('ReiserFS') %]</option>
+<option value="ext3"[% IF ds.fstype == 'ext3' %] selected[% END %]>[% loc('EXT3') %]</option>
+<option value="ext4"[% IF ds.fstype == 'ext4' %] selected[% END %]>[% loc('EXT4') %]</option>
+<option value="reiserfs"[% IF ds.fstype == 'reiserfs' %] selected[% END %]>[% loc('ReiserFS') %]</option>
 </select>
 [% ELSE %]
 [% IF ds.isefi %]
 <input type="hidden" id="[% ds.n %]_fstype" name="[% ds.n %]_fstype" value="vfat"><label>[% loc('VFAT') %]</label>
 [% ELSE %]
 <select id="[% ds.n %]_fstype" name="[% ds.n %]_fstype">
-<option value="vfat">[% loc('VFAT') %]</option>
-<option value="ntfs">[% loc('NTFS') %]</option>
-<option value="ext3">[% loc('EXT3') %]</option>
-<option value="ext4">[% loc('EXT4') %]</option>
-<option value="reiserfs">[% loc('ReiserFS') %]</option>
+<option value="vfat"[% IF ds.fstype == 'vfat' %] selected[% END %]>[% loc('VFAT') %]</option>
+<option value="ntfs"[% IF ds.fstype == 'ntfs' %] selected[% END %]>[% loc('NTFS') %]</option>
+<option value="ext3"[% IF ds.fstype == 'ext3' %] selected[% END %]>[% loc('EXT3') %]</option>
+<option value="ext4"[% IF ds.fstype == 'ext4' %] selected[% END %]>[% loc('EXT4') %]</option>
+<option value="reiserfs"[% IF ds.fstype == 'reiserfs' %] selected[% END %]>[% loc('ReiserFS') %]</option>
 </select>
 [% END %]
 [% END %]
