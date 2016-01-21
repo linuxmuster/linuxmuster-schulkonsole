@@ -18,7 +18,6 @@
 <tr><th>[% loc('Klassenname') %]</th><th>[% loc('sichtbar') %]</th>
 <th>[% loc('Liste') %]</th>
 <th>[% loc('Aliase') %]</th>
-<th>[% loc('WLAN') %]</th></tr>
 [% FOREACH c IN classes %]
 [% IF odd %][% odd=0 %]<tr class="odd">
 [% ELSE %][% odd=1 %]<tr class="even">[% END %]
@@ -42,13 +41,6 @@
 [% ELSE %]
 <input type="checkbox" name="[% c.gid %]_mailalias" id="[% c.gid %]_mailalias">
 [% END %]
-</td>
-<td>
-<select name="[% c.gid %]_wlan">
-<option value="-1"[% IF valueof("${c.gid}_wlan") == "-1" %] selected[% END %]>-</option>
-<option value="1"[% IF valueof("${c.gid}_wlan") == "1" %] selected[% END %]>[% loc('An') %]</option>
-<option value="0"[% IF valueof("${c.gid}_wlan") == "0" %] selected[% END %]>[% loc('Aus') %]</option>
-</select>
 </td>
 </tr>
 [% END %]

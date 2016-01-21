@@ -2,7 +2,7 @@
       title    => loc('Schulkonsole') _ " - " _ loc('Klassen') _ ":  $class_name - " _ loc('Klassenliste'),
       menu     => 1,
       submenu  => "class",
-      info     => loc('<p>Hier sehen Sie Informationen zu den Schüler/innen der aktuell ausgewählten Klasse {class}</p>',class => $class_name),
+      info     => loc('<p>Hier sehen Sie Informationen zu den Schüler/innen der aktuell ausgewählten Klasse.</p>',class => $class_name),
    }
 %]
 

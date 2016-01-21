@@ -17,9 +17,6 @@
 	[% IF link_project_shares %]
 		<li><a class="separator" [% dohref("project_shares") %]>[% loc('Tauschen') %]</a></li>
 	[% END %]
-	[% IF link_project_lesson %]
-		<li><a class="separator" [% dohref("project_lesson") %]>[% loc('Unterricht') %]</a></li>
-	[% END %]
 [% ELSE %]
 	[% IF link_project_handoutcopy %]
 		<li><span class="disabled">[% loc('Austeilen') %]</span></li>
@@ -32,9 +29,6 @@
 	[% END %]
 	[% IF link_project_shares %]
 		<li><span class="disabled">[% loc('Tauschen') %]</span></li>
-	[% END %]
-	[% IF link_project_lesson %]
-	        <li><span class="disabled">[% loc('Unterricht') %]</span></li>
 	[% END %]
 	[% IF link_myprojects_handedoutcopy %]
 		<li><a [% dohref("myprojects_handedoutcopy") %]>[% loc('Ausgeteilt') %]</a></li>

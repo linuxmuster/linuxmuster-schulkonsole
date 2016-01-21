@@ -25,6 +25,3 @@
 [% IF link_myclass_tocollect %]
 	<li><a [% dohref("myclass_tocollect") %]>[% loc('Einzusammeln') %]</a></li>
 [% END %]
-[% IF link_class_lesson %]
-	<li><a class="end" [% dohref("class_lesson") %]>[% loc('Unterricht') %]</a></li>
-[% END %]
