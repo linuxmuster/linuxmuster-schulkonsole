@@ -34,13 +34,7 @@
 [% lfdnr = lfdnr + 1 %]</tr>
 <tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
 	<td><label [% labelfor("${ds_nr}_sizevalue") %]>[% loc('Partitionsgröße') %]:</label></td>
-	<td><div class="quantity"><input class="quantityvalue" id="[% ds_nr %]_sizevalue" name="[% ds_nr %]_sizevalue" value="[% ds.sizevalue %]">
-	<select class="quantityunit" name="[% ds_nr %]_sizeunit">
-		<option value="k"[% IF "k" == ds.sizeunit %] selected[% END %]>k</option>
-		<option value="M"[% IF "M" == ds.sizeunit %] selected[% END %]>M</option>
-		<option value="G"[% IF "G" == ds.sizeunit %] selected[% END %]>G</option>
-		<option value="T"[% IF "T" == ds.sizeunit %] selected[% END %]>T</option>
-	</select></div>
+	<td><input id="[% ds_nr %]_size" name="[% ds_nr %]_size" value="[% ds.size %]">
 	[% IF ds.bootable %]<input type="hidden" id="[% ds_nr %]_bootable" name="[% ds_nr %]_bootable" value="1">[% END %]
 	[% IF ds.type == 'swap' %]<input type="hidden" name="[% ds_nr %]_fstype" value="swap">
 	[% ELSIF ds.type == 'ext' %]<input type="hidden" name="[% ds_nr %]_fstype" value="">
