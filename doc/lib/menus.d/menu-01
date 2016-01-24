@@ -4,21 +4,22 @@
 [% END %]
 [% IF link_settings %]
  <li><a [% dohref("settings") %]>[% loc('Einstellungen') %]</a><ul>[% INCLUDE "submenu-settings.inc.tt" %]</ul></li>
-[% END %]
-[% IF link_room %]
- <li><a [% dohref("room") %]>[% loc('aktueller Raum') %]</a><ul>[% INCLUDE "submenu-room.inc.tt" %]</ul></li>
-[% ELSIF link_myroom %]
- <li><a [% dohref("myroom") %]>[% loc('Mein aktueller Raum') %]</a><ul>[% INCLUDE "submenu-room.inc.tt" %]</ul></li>
-[% END %]
-[% IF link_class %]
- <li><a [% dohref("class") %]>[% loc('Klassen') %]</a><ul>[% INCLUDE "submenu-class.inc.tt" %]</ul></li>
-[% ELSIF link_myclass %]
- <li><a [% dohref("myclass") %]>[% loc('Meine Klasse') %]</a><ul>[% INCLUDE "submenu-class.inc.tt" %]</ul></li>
-[% END %]
-[% IF link_project %]
- <li><a [% dohref("project") %]>[% loc('Projekte') %]</a><ul>[% INCLUDE "submenu-project.inc.tt" %]</ul></li>
-[% ELSIF link_myprojects %]
- <li><a [% dohref("myprojects") %]>[% loc('Meine Projekte') %]</a><ul>[% INCLUDE "submenu-project.inc.tt" %]</ul></li>
+[% ELSE %]
+ [% IF link_room %]
+  <li><a [% dohref("room") %]>[% loc('aktueller Raum') %]</a><ul>[% INCLUDE "submenu-room.inc.tt" %]</ul></li>
+ [% ELSIF link_myroom %]
+  <li><a [% dohref("myroom") %]>[% loc('Mein aktueller Raum') %]</a><ul>[% INCLUDE "submenu-room.inc.tt" %]</ul></li>
+ [% END %]
+ [% IF link_class %]
+  <li><a [% dohref("class") %]>[% loc('Klassen') %]</a><ul>[% INCLUDE "submenu-class.inc.tt" %]</ul></li>
+ [% ELSIF link_myclass %]
+  <li><a [% dohref("myclass") %]>[% loc('Meine Klasse') %]</a><ul>[% INCLUDE "submenu-class.inc.tt" %]</ul></li>
+ [% END %]
+ [% IF link_project %]
+  <li><a [% dohref("project") %]>[% loc('Projekte') %]</a><ul>[% INCLUDE "submenu-project.inc.tt" %]</ul></li>
+ [% ELSIF link_myprojects %]
+  <li><a [% dohref("myprojects") %]>[% loc('Meine Projekte') %]</a><ul>[% INCLUDE "submenu-project.inc.tt" %]</ul></li>
+ [% END %]
 [% END %]
 [% IF link_user %]
  <li><a [% dohref("user") %]>[% loc('Benutzer') %]</a><ul>[% INCLUDE "submenu-user.inc.tt" %]</ul></li>
