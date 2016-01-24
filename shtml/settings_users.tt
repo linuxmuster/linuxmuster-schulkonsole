@@ -140,7 +140,7 @@
 </tr>
 <tr class="odd">
 <td><label [% labelfor("randompasswordlengthstudent") %]>[% loc('Zufallspasswortzeichen') %]</label></td>
-<td><input type="text" size="3" name="randompasswordlengthstudent" id="randompasswordlengthstudent"></td>
+<td><input type="text" size="3" name="randompasswordlengthstudent" id="randompasswordlengthstudent" value="[% randompasswordlengthstudent %]"></td>
 </tr>
 <tr class="even">
 <td><label [% labelfor("activatesshstudent") %]>[% loc('Shell aktivieren') %]</label></td>
