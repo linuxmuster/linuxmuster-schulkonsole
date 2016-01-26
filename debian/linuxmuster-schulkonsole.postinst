@@ -92,7 +92,7 @@ case "$1" in
 
 }' -i $conf
  	fi
-	[ -n "$backed_up" ] && apache2ctl graceful 2> /dev/null || true
+	apache2ctl graceful 2> /dev/null || true
 	;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)
