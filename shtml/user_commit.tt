@@ -3,11 +3,13 @@
       autorefresh  => isbusy,
       menu     => 1,
       submenu  => "user",
-      info     => loc('<p>Auf dieser Seite bekommen Sie zunächst einen Überblick über die durchzuführenden Änderungen.</p><p>Sie können die anstehenden Aktionen entweder in einem Durchgang oder nacheinander ausführen lassen.</p><p>Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund ausgeführt wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen Prozesses können Sie sich über die Schaltfläche &bdquo;Letze Logdatei ansehen&ldquo; anzeigen lassen.</p>'),
+      info     => loc('<p>Auf dieser Seite bekommen Sie zunächst einen Überblick über die durchzuführenden Änderungen.</p><p>Sie können die anstehenden Aktionen entweder in einem Durchgang oder nacheinander ausführen lassen.</p><p>Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund ausgeführt wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen Prozesses können Sie sich über die Schaltfläche &bdquo;Letzte Logdatei ansehen&ldquo; anzeigen lassen.</p>'),
    }
 %]
 
 <h2>[% loc('Benutzerverwaltung') %] :: [% loc('Änderungen durchführen') %]</h2>
+
+<hr>
 
 <form method="post" accept-charset="UTF-8">
 
@@ -46,11 +48,6 @@
 
 	<hr>
 	
-	<p>
-	<input type="submit" name="add" value="[% loc('Benutzer anlegen') %]"
-	[% IF !(addlist && addlist.size > 0) %] disabled[% END %]>
-	</p>
-
 	[% IF addlist && addlist.size > 0 %]
 	<table id="commitadd" class="liste">
 	<tr>
@@ -68,14 +65,12 @@
 	  [% END %]
 	</table>
 	[% END %]
-
+	<p>
+	<input type="submit" name="add" value="[% loc('Benutzer anlegen') %]"
+	[% IF !(addlist && addlist.size > 0) %] disabled[% END %]>
+	</p>
 
 	<hr>
-
-	<p>
-	<input type="submit" name="move" value="[% loc('Benutzer versetzen') %]"
-	[% IF !(movelist && movelist.size > 0) %] disabled[% END %]>
-	</p>
 
 	[% IF movelist && movelist.size > 0 %]
 	<table id="commitmove" class="liste">
@@ -99,13 +94,12 @@
 	</table>
 	[% END %]
 
+	<p>
+	<input type="submit" name="move" value="[% loc('Benutzer versetzen') %]"
+	[% IF !(movelist && movelist.size > 0) %] disabled[% END %]>
+	</p>
 
 	<hr>
-
-	<p>
-	<input type="submit" name="kill" value="[% loc('Benutzer löschen') %]"
-	[% IF !(killlist && killlist.size > 0) %] disabled[% END %]>
-	</p>
 
 	[% IF killlist && killlist.size > 0 %]
 	<table id="commitkill" class="liste">
@@ -124,6 +118,11 @@
 	[% END %]
 	</table>
 	[% END %]
+
+	<p>
+	<input type="submit" name="kill" value="[% loc('Benutzer löschen') %]"
+	[% IF !(killlist && killlist.size > 0) %] disabled[% END %]>
+	</p>
 
 [% END %]
 </form>
