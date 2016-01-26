@@ -2,11 +2,13 @@
       title    => loc('Schulkonsole') _ " - " _ loc('Benutzer') _ " - " _ loc('Änderungen durchführen'),
       menu     => 1,
       submenu  => "user",
-      info     => loc('<p>Auf dieser Seite bekommen Sie zunächst einen Überblick über die durchzuführenden Änderungen.</p><p>Sie können die anstehenden Aktionen entweder in einem Durchgang oder nacheinander ausführen lassen.</p><p>Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund ausgeführt wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen Prozesses können Sie sich über die Schaltfläche &bdquo;Letze Logdatei ansehen&ldquo; anzeigen lassen.</p>'),
+      info     => loc('<p>Auf dieser Seite bekommen Sie zunächst einen Überblick über die durchzuführenden Änderungen.</p><p>Sie können die anstehenden Aktionen entweder in einem Durchgang oder nacheinander ausführen lassen.</p><p>Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund ausgeführt wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen Prozesses können Sie sich über die Schaltfläche &bdquo;Letzte Logdatei ansehen&ldquo; anzeigen lassen.</p>'),
    }
 %]
 
 <h2>[% loc('Benutzerverwaltung') %] :: [% loc('Änderungen durchführen') %]</h2>
+
+<hr>
 
 <form method="post" accept-charset="UTF-8">
 
@@ -20,9 +22,22 @@
 </p>
 [% END %]
 
-
 <hr>
 
+[% IF addlist %]
+<table id="commitadd" class="liste">
+<tr>
+<th>[% loc('Bezeichner') %]</th>
+<th>[% loc('Gruppe') %]</th>
+</tr>
+[% FOREACH al IN addlist %]
+<tr>
+<td>[% al.identifier %]</td>
+<td>[% al.group %]</td>
+</tr>
+[% END %]
+</table>
+[% END %]
 
 [% IF isadding %]
 <p>
@@ -47,23 +62,26 @@
 </p>
 [% END %]
 
-[% IF addlist %]
-<table id="commitadd" class="liste">
+<hr>
+
+[% IF movelist %]
+<table id="commitmove" class="liste">
 <tr>
-<th>[% loc('Bezeichner') %]</th>
-<th>[% loc('Gruppe') %]</th>
+<th>[% loc('Benutzer') %]</th>
+<th>[% loc('von') %]</th>
+<th>[% loc('nach') %]</th>
+<th>[% loc('Status') %]</th>
 </tr>
-[% FOREACH al IN addlist %]
+[% FOREACH ml IN movelist %]
 <tr>
-<td>[% al.identifier %]</td>
-<td>[% al.group %]</td>
+<td>[% ml.login %]</td>
+<td>[% ml.from %]</td>
+<td>[% ml.to %]</td>
+<td>[% ml.status %]</td>
 </tr>
 [% END %]
 </table>
 [% END %]
-
-
-<hr>
 
 [% IF ismoving %]
 <p>
@@ -88,27 +106,22 @@
 </p>
 [% END %]
 
-[% IF movelist %]
-<table id="commitmove" class="liste">
+<hr>
+
+[% IF killlist %]
+<table id="commitkill" class="liste">
 <tr>
 <th>[% loc('Benutzer') %]</th>
-<th>[% loc('von') %]</th>
-<th>[% loc('nach') %]</th>
-<th>[% loc('Status') %]</th>
+<th>[% loc('Bezeichner') %]</th>
 </tr>
-[% FOREACH ml IN movelist %]
+[% FOREACH kl IN killlist %]
 <tr>
-<td>[% ml.login %]</td>
-<td>[% ml.from %]</td>
-<td>[% ml.to %]</td>
-<td>[% ml.status %]</td>
+<td>[% kl.login %]</td>
+<td>[% kl.identifier %]</td>
 </tr>
 [% END %]
 </table>
 [% END %]
-
-
-<hr>
 
 [% IF iskilling %]
 <p>
@@ -132,22 +145,5 @@
 <input type="submit" name="showlogkill" value="[% loc('Letzte Logdatei ansehen') %]">
 </p>
 [% END %]
-
-[% IF killlist %]
-<table id="commitkill" class="liste">
-<tr>
-<th>[% loc('Benutzer') %]</th>
-<th>[% loc('Bezeichner') %]</th>
-</tr>
-[% FOREACH kl IN killlist %]
-<tr>
-<td>[% kl.login %]</td>
-<td>[% kl.identifier %]</td>
-</tr>
-[% END %]
-</table>
-[% END %]
-
-
 
 </form>
