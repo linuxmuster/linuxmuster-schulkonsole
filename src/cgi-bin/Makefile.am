@@ -19,7 +19,7 @@ pkglibexec_SCRIPTS = example start logout \
 	printers printers_edit hosts \
 	quotas \
 	quotas_teachers quotas_classes quotas_projects quotas_others \
-	linbo linbo_edit linbo_new linbo_regpatchedit \
+	linbo_edit linbo_new linbo_regpatchedit \
 	linbo_images linbo_grubedit linbo_postsyncedit linbo_remote \
 	myclass myclass_handedout myclass_handedoutcopy myclass_tocollect \
 	myprojects myprojects_handedout myprojects_handedoutcopy myprojects_tocollect \

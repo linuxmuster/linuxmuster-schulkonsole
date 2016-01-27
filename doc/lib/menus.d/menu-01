@@ -36,5 +36,5 @@
  <li><a [% dohref("hosts") %]>[% loc('Hosts') %]</a></li>
 [% END %]
 [% IF link_linbo %]
- <li><a [% dohref("linbo") %]>[% loc('LINBO') %]</a><ul>[% INCLUDE "submenu-linbo.inc.tt" %]</ul></li>
+ <li><a>[% loc('LINBO') %]</a><ul>[% INCLUDE "submenu-linbo.inc.tt" %]</ul></li>
 [% END %]
