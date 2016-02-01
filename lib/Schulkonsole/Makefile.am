@@ -33,6 +33,7 @@ nobase_dist_perllib_DATA = \
 	Sophomorix.pm \
 	SophomorixQuotas.pm \
 	TeachIn.pm \
+	Wrapper.pm \
 	File.php \
 	Session.php \
 	Template.php \

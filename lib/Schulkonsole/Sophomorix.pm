@@ -5,6 +5,7 @@ use POSIX 'sys_wait_h';
 use Sophomorix::SophomorixConfig;
 use Sophomorix::SophomorixAPI;
 
+use Schulkonsole::Wrapper;
 use Schulkonsole::Error;
 use Schulkonsole::ExternalError;
 use Schulkonsole::Config;
@@ -183,7 +184,7 @@ $VERSION = 0.05;
 );
 
 
-
+my $wrapcmd = $Schulkonsole::Config::_wrapper_sophomorix;
 
 my $input_buffer;
 sub buffer_input {
@@ -327,19 +328,13 @@ sub share_states {
 
 	my %shares_infos;
 
-	my $pid = start_wrapper(Schulkonsole::Config::SHARESTATESAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	my $wrapper = new Wrapper($wrapcmd,Schulkonsole::Config::SHARESTATESAPP,$id, $password);
 
-	print SCRIPTOUT join("\n", @login_ids), "\n\n";
+	$wrapper->write(join("\n", @login_ids), "\n\n");
 
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
+	my $in = $wrapper->read();
 
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	$wrapper->stop();
 
 
 	my $compartment = new Safe;
@@ -8489,15 +8484,15 @@ sub set_user_mymail {
 	my $password = shift;
 	my $mymail = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::SETMYMAILAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	my $wrapper = new Schulkonsole::Wrapper($wrapcmd, Schulkonsole::Config::SETMYMAILAPP,	$id, $password);
 
-	print SCRIPTOUT "$mymail\n\n";
+	$wrapper->start();
+	
+	$wrapper->write("$mymail\n\n");
 
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);	
+	$wrapper->read();
+	
+	$wrapper->stop();	
 }
 
 =head3 C<change_mailalias_classes($id, $password, $create_mailalias_classs, remove_mailalias_classs)>
