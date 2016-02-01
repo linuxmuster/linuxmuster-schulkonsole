@@ -583,8 +583,8 @@ sub all_on {
 	my $oldsettings = $room_session->param('oldsettings');
 
 	# reset internet, intranet, webfilter settings to old stat from session file
-	my $allowed_hosts_internet
-		= Schulkonsole::Firewall::allowed_hosts_internet();
+	my $blocked_hosts_internet
+		= Schulkonsole::Firewall::blocked_hosts_internet();
 	my $blocked_hosts_intranet
 		= Schulkonsole::Firewall::blocked_hosts_intranet();
 	my $unfiltered_hosts = Schulkonsole::Firewall::unfiltered_hosts();
@@ -596,14 +596,14 @@ sub all_on {
 	my @webfilter_offs;
 	foreach my $workstation (keys %$workstations) {
 		my ($host) = $$workstations{$workstation}{ip} =~ /^([\w.-]+)$/i;
-		if ($$oldsettings{allowed_hosts_internet} 
-		    and $$oldsettings{allowed_hosts_internet}{$host}
-		    and ! $$allowed_hosts_internet{$host}) {
-			push @internet_ons, $host;
-		} elsif ($$oldsettings{allowed_hosts_internet}
-                    and ! $$oldsettings{allowed_hosts_internet}{$host}
-		    and $$allowed_hosts_internet{$host}) {
-                        push @internet_offs, $host;
+		if ($$oldsettings{blocked_hosts_internet} 
+		    and $$oldsettings{blocked_hosts_internet}{$host}
+		    and ! $$blocked_hosts_internet{$host}) {
+			push @internet_offs, $host;
+		} elsif ($$oldsettings{blocked_hosts_internet}
+                    and ! $$oldsettings{blocked_hosts_internet}{$host}
+		    and $$blocked_hosts_internet{$host}) {
+                        push @internet_ons, $host;
 		}
 		if ($$oldsettings{blocked_hosts_intranet}
 		    and $$oldsettings{blocked_hosts_intranet}{$host}

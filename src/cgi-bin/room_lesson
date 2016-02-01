@@ -110,8 +110,8 @@ if ($q->param('acceptfirewall')) {
 		last COMMANDS;
 	}
 
-	my $allowed_hosts_internet
-		= Schulkonsole::Firewall::allowed_hosts_internet();
+	my $blocked_hosts_internet
+		= Schulkonsole::Firewall::blocked_hosts_internet();
 	my @block_hosts_internet = ();
 	my @unblock_hosts_internet = ();
 	my $blocked_hosts_intranet
@@ -137,10 +137,10 @@ foreach my $host (keys %$workstations) {
 
 		if ($q->param("$host;internet")) {
 			push @unblock_hosts_internet, $hostip
-				unless $$allowed_hosts_internet{$hostip};
+				if $$blocked_hosts_internet{$hostip};
 		} else {
 			push @block_hosts_internet, $hostip
-				if $$allowed_hosts_internet{$hostip};
+				unless $$blocked_hosts_internet{$hostip};
 		}
 		if ($q->param("$host;intranet")) {
 			push @unblock_hosts_intranet, $hostip
@@ -386,8 +386,8 @@ if ($@) {
 # collect data for output
 
 eval {
-my $allowed_hosts_internet =
-	Schulkonsole::Firewall::allowed_hosts_internet();
+my $blocked_hosts_internet =
+	Schulkonsole::Firewall::blocked_hosts_internet();
 my $blocked_hosts_intranet =
 	Schulkonsole::Firewall::blocked_hosts_intranet();
 my $unfiltered_hosts = ($is_urlfilter_active ?
@@ -416,7 +416,7 @@ foreach my $workstation (sort keys %$workstations) {
 				editing => ($$userdata{uid} eq $editing_user),
 				login => $$userdata{uid},
 				first => $first_login,
-				internet => ($$allowed_hosts_internet{$hostip} ? 1 : 0),
+				internet => ($$blocked_hosts_internet{$hostip} ? 0 : 1),
 				intranet => ($$blocked_hosts_intranet{$hostip} ? 0 : 1),
 				webfilter => ($$unfiltered_hosts{$hostip} ? 0 : 1),
 				shares => $$share_states{$$userdata{id}},
@@ -439,7 +439,7 @@ foreach my $workstation (sort keys %$workstations) {
 			name => $workstation,
 			editinghost => $is_editing_host,
 			first => 1,
-			internet => ($$allowed_hosts_internet{$hostip} ? 1 : 0),
+			internet => ($$blocked_hosts_internet{$hostip} ? 0 : 1),
 			intranet => ($$blocked_hosts_intranet{$hostip} ? 0 : 1),
 			webfilter => ($$unfiltered_hosts{$hostip} ? 0 : 1),
 			info => '',

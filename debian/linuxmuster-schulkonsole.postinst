@@ -78,6 +78,8 @@ case "$1" in
 	  fi
 	 done
 	# fix access rights
+	touch /var/cache/linuxmuster/blocked_hosts.internet
+	chmod -f 644 /var/cache/linuxmuster/blocked_hosts.internet
 	touch /var/cache/linuxmuster/blocked_hosts.intranet
 	chmod -f 644 /var/cache/linuxmuster/blocked_hosts.intranet
 	# fixes missing jquery alias FIXME: match only once

@@ -63,8 +63,8 @@ if ($q->param('starttest')) {
 			my $workstations = Schulkonsole::Config::workstations_room(
 				$room_session->info('name'));
 
-			my $allowed_hosts_internet
-				= Schulkonsole::Firewall::allowed_hosts_internet();
+			my $blocked_hosts_internet
+				= Schulkonsole::Firewall::blocked_hosts_internet();
 			my $blocked_hosts_intranet
 				= Schulkonsole::Firewall::blocked_hosts_intranet();
 
@@ -76,7 +76,7 @@ if ($q->param('starttest')) {
 				    	$sk_session->{template_vars}{remote_workstation}) {
 					$hostip = $$workstations{$host}{ip};
 					push @hosts_internet, $hostip
-						if $$allowed_hosts_internet{$hostip};
+						unless $$blocked_hosts_internet{$hostip};
 					push @hosts_intranet, $hostip
 						unless $$blocked_hosts_intranet{$hostip};
 				}
