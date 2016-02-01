@@ -34,6 +34,7 @@
 <th>[% loc('Name') %]</th>
 <th>[% loc('Festplattenquota') %]</th>
 <th>[% loc('E-Mailquota') %]</th>
+[% IF printquotas %]<th>[% loc('Ausdrucke') %]</th>[% END %]
 <th>[% loc('Subklasse') %]</th>
 <th>[% loc('Projekte') %]</th>
 </tr>
@@ -99,6 +100,13 @@
 </li>
 </ul>
 [% ELSE %]-[% END %]</td>
+[% IF printquotas %]
+    <td>
+    [% IF students.printquotas.limit %]
+	[% students.printquotas.usage %] von [% students.printquotas.limit %]
+    [% ELSE %]-[% END %]
+    </td>
+[% END %]
 <td>[% students.subclass %]</td>
 <td>[% students.projects_str %]</td>
 </tr>
@@ -108,6 +116,7 @@
 <th>[% loc('Name') %]</th>
 <th>[% loc('Festplattenquota') %]</th>
 <th>[% loc('E-Mailquota') %]</th>
+[% IF printquotas %]<th>[% loc('Ausdrucke') %]</th>[% END %]
 <th>[% loc('Subklasse') %]</th>
 <th>[% loc('Projekte') %]</th>
 </tr>

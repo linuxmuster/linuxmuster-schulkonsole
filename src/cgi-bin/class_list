@@ -18,6 +18,7 @@ The HTML template is class_list.tt.
 use strict;
 use utf8;
 use lib '/usr/share/schulkonsole';
+use Schulkonsole::Config;
 use Schulkonsole::Cyrus;
 use Schulkonsole::DB;
 use Schulkonsole::Info;
@@ -81,6 +82,12 @@ delete $$all_classs{'attic'};
 
 my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
 my $user_quotaroots = Schulkonsole::Cyrus::quota(keys %$class_userdatas);
+
+my $user_printquotas;
+if ( -e $Schulkonsole::Config::_cmd_linuxmuster_pk ) {
+    $user_printquotas = Schulkonsole::Printer::quota($id, $password, keys %$class_userdatas);
+    $sk_session->set_var('printquotas',1);
+}
 
 my @students;
 foreach my $user (sort {
@@ -194,9 +201,32 @@ foreach my $user (sort {
 		'warn' => ($quotaemail_usage > $quotaemail_limit)
 	};
 
+	my $printquota;
+	if ($$user_printquotas{$user}) {
+		my $usage = $$user_printquotas{$user}{usage};
+		my $limit = $$user_printquotas{$user}{limit};
 
+		my $usage_percent = $usage ?
+			sprintf('%.1f', 100 * $usage / $limit)
+			: 0;
 
-
+		$printquota = {
+			usage => $usage,
+			limit => $limit,
+			percent => $usage_percent,
+			percent_rounded => ($usage_percent < 100.0 ?
+					int($usage_percent + 0.5)
+					: 100),
+			'warn' => $usage > $limit,
+		};
+	} elsif(defined $user_printquotas) {
+		$printquota = {
+			usage => 0,
+			limit => 0,
+			percent => 0,
+			percent_rounded => 0,
+		};
+	}
 
 	my $groups = Schulkonsole::DB::user_groups(
 		$$class_userdatas{$user}{uidnumber},
@@ -219,6 +249,9 @@ foreach my $user (sort {
 		subclass => $$class_userdatas{$user}{subclass},
 		projects_str => $projects_str,
 	};
+	if(defined $user_printquotas){
+		$$student{printquotas} = $printquota;
+	}
 	push @students, $student;
 }
 
