@@ -18,9 +18,9 @@ Schulkonsole::Firewall - interface to Linuxmusterloesung Firewall commands
 
  use Schulkonsole::Firewall;
 
- my $hosts = Schulkonsole::Firewall::allowed_hosts_internet();
+ my $hosts = Schulkonsole::Firewall::blocked_hosts_internet();
  if ($$hosts{'10.16.2.1'}) {
- 	print "10.16.2.1 is allowed\n";
+ 	print "10.16.2.1 is blocked\n";
  }
 
  $hosts = Schulkonsole::Firewall::blocked_hosts_intranet();
@@ -60,7 +60,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 $VERSION = 0.03;
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(
-	allowed_hosts_internet
+	blocked_hosts_internet
 	blocked_hosts_intranet
 	unfiltered_hosts
 	internet_on
@@ -189,7 +189,7 @@ sub stop_wrapper {
 
 =head3 C<internet_on($id, $password, @hosts)>
 
-Allow hosts' access to the internet
+Unblock hosts' access to the internet
 
 =head3 Parameters
 
@@ -731,18 +731,18 @@ sub read_hosts_file {
 
 
 
-=head3 C<allowed_hosts_internet()>
+=head3 C<blocked_hosts_internet()>
 
-Returns which hosts' access to the internet is allowed
+Returns which hosts' access to the internet is blocked
 
 =head4 Return value
 
-A hash with allowed host's IP address as key and C<1> as value.
+A hash with blocked host's IP address as key and C<1> as value.
 
 =cut
 
-sub allowed_hosts_internet {
-	return read_hosts_file($Schulkonsole::Config::_allowed_hosts_internet_file);
+sub blocked_hosts_internet {
+	return read_hosts_file($Schulkonsole::Config::_blocked_hosts_internet_file);
 }
 
 

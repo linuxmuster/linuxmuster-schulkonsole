@@ -152,14 +152,14 @@ sub start_lesson {
 	$this->param('start_time',$^T);
 
 
-	my $allowed_hosts_internet_all
-		= Schulkonsole::Firewall::allowed_hosts_internet();
+	my $blocked_hosts_internet_all
+		= Schulkonsole::Firewall::blocked_hosts_internet();
 	my $blocked_hosts_intranet_all
 		= Schulkonsole::Firewall::blocked_hosts_intranet();
 	my $unfiltered_hosts_all = Schulkonsole::Firewall::unfiltered_hosts();
 
 	my $lml_majorversion = "$Schulkonsole::Config::_lml_majorversion";
-	my %allowed_hosts_internet;
+	my %blocked_hosts_internet;
 	my %blocked_hosts_intranet;
 	my %unfiltered_hosts;
 
@@ -168,8 +168,8 @@ sub start_lesson {
 	foreach my $workstation (keys %$workstations) {
 		my ($host) = $$workstations{$workstation}{ip} =~ /^([\w.-]+)$/i;
 
-		$allowed_hosts_internet{$host} = 1
-			if ($$allowed_hosts_internet_all{$host});
+		$blocked_hosts_internet{$host} = 1
+			if ($$blocked_hosts_internet_all{$host});
 		$blocked_hosts_intranet{$host} = 1
 			if ($$blocked_hosts_intranet_all{$host});
 		$unfiltered_hosts{$host} = 1
@@ -197,7 +197,7 @@ sub start_lesson {
 	my $share_states
 		= Schulkonsole::Sophomorix::share_states($id, $password, @login_ids);
 	$this->param('oldsettings', {
-		allowed_hosts_internet => \%allowed_hosts_internet,
+		blocked_hosts_internet => \%blocked_hosts_internet,
 		blocked_hosts_intranet => \%blocked_hosts_intranet,
 		unfiltered_hosts => \%unfiltered_hosts,
 		printers_accept => \%printers_accept,
