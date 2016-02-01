@@ -117,7 +117,7 @@
 [% END %]
 <tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
 	<td><label [% labelfor("${ds_nr}.${dos_nr}_autostart") %]>[% loc('Betriebssystem automatisch starten') %]:</label></td>
-	<td><input type="radio" id="[% ds_nr %].[% dos_nr %]_autostart" name="autostart" value="[% dos.n %]"
+	<td><input type="radio" id="[% ds_nr %].[% dos_nr %]_autostart" name="autostart" value="[% ds_nr %].[% dos_nr %]"
 	[% IF dos.autostart %][% page.isautostartselected=1 %] checked[% ELSE %][% page.isautostartpossible=1 %][% END %]>
 	</td>
 [% lfdnr = lfdnr + 1 %]</tr>
