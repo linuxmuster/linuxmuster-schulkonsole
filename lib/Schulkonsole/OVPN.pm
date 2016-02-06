@@ -1,7 +1,7 @@
 use strict;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
-use Schulkonsole::Error;
+use Schulkonsole::Error::Error;
 use Schulkonsole::Config;
 
 
@@ -31,8 +31,8 @@ Schulkonsole::OVPN - interface to Linuxmusterloesung OpenVPN commands
 Schulkonsole::OVPN is an interface to the Linuxmusterloesung OpenVPN
 commands used by schulkonsole.
 
-If a wrapper command fails, it usually dies with a Schulkonsole::Error.
-The output of the failed command is stored in the Schulkonsole::Error.
+If a wrapper command fails, it usually dies with a Schulkonsole::Error::Error or subclass.
+The output of the failed command is stored in the Schulkonsole::Error::Error subclass.
 
 =cut
 

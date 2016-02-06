@@ -1,5 +1,6 @@
 use strict;
 use utf8;
+use base ("Error");
 
 package Schulkonsole::Error::Sophomorix;
 require Exporter;
@@ -7,16 +8,10 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 $VERSION = 0.16;
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(
-	OK
-	WRAPPER_ERROR_BASE
-	WRAPPER_GENERAL_ERROR
-	WRAPPER_PROGRAM_ERROR
-	WRAPPER_UNAUTHORIZED_UID
-	WRAPPER_CANNOT_FORK
-	WRAPPER_SCRIPT_EXEC_FAILED
-	WRAPPER_UNAUTHENTICATED_ID
-	WRAPPER_APP_ID_DOES_NOT_EXIST
-	WRAPPER_UNAUTHORIZED_ID
+	new
+	what
+	errstr
+
 	WRAPPER_ON_UNDEFINED
 	WRAPPER_INVALID_USER
 	WRAPPER_NO_USERS
@@ -66,15 +61,6 @@ $VERSION = 0.16;
 use constant {
 	OK => 0,
 
-	WRAPPER_ERROR_BASE => 8000,
-	WRAPPER_GENERAL_ERROR => 8000 -1,
-	WRAPPER_PROGRAM_ERROR => 8000 -2,
-	WRAPPER_UNAUTHORIZED_UID => 8000 -3,
-	WRAPPER_SCRIPT_EXEC_FAILED => 8000 -6,
-	WRAPPER_UNAUTHENTICATED_ID => 8000 -32,
-	WRAPPER_APP_ID_DOES_NOT_EXIST => 8000 -33,
-	WRAPPER_UNAUTHORIZED_ID => 8000 -34,
-	WRAPPER_CANNOT_FORK => 8000 -44,
 	WRAPPER_ON_UNDEFINED => 8000 -80,
 	WRAPPER_INVALID_USER => 8000 -81,
 	WRAPPER_NO_USERS => 8000 -82,
@@ -122,6 +108,22 @@ use constant {
 	WRAPPER_ERROR_SETMYMAIL => 8000 -124,
 };
 
+sub new {
+	my $class = shift;
+	my $this = $class->SUPER::new(@_);
+	bless $this, $class;
+	return $this;
+}
+
+sub what {
+	my $this = shift;
+
+	SWITCH: {
+	$this->{code} == OK and return $this->{d}->get('kein Fehler');
+	$this->{what} and return $this->{what};
+
+	return SUPER::what();
+	}
 
 
 1;

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2016-01-27 20:05+0100\n"
+"POT-Creation-Date: 2016-02-02 20:00+0100\n"
 "PO-Revision-Date: 2014-04-06 14:22+0200\n"
 "Last-Translator: root <root@linuxmuster.lokal>\n"
 "Language-Team: German\n"
@@ -64,21 +64,21 @@ msgstr ""
 msgid " nicht als einzusammelnde Datei vorhanden."
 msgstr ""
 
-#: ../src/cgi-bin/class_list:134 ../src/cgi-bin/class_list:153
+#: ../src/cgi-bin/class_list:141 ../src/cgi-bin/class_list:160
 #: ../src/cgi-bin/project_members:368 ../src/cgi-bin/project_members:387
 #: ../src/cgi-bin/start:563 ../src/cgi-bin/start:582
 #, perl-format
 msgid "%d Minuten"
 msgstr ""
 
-#: ../src/cgi-bin/class_list:131 ../src/cgi-bin/class_list:150
+#: ../src/cgi-bin/class_list:138 ../src/cgi-bin/class_list:157
 #: ../src/cgi-bin/project_members:365 ../src/cgi-bin/project_members:384
 #: ../src/cgi-bin/start:560 ../src/cgi-bin/start:579
 #, perl-format
 msgid "%d Stunden"
 msgstr ""
 
-#: ../src/cgi-bin/class_list:128 ../src/cgi-bin/class_list:147
+#: ../src/cgi-bin/class_list:135 ../src/cgi-bin/class_list:154
 #: ../src/cgi-bin/project_members:362 ../src/cgi-bin/project_members:381
 #: ../src/cgi-bin/start:557 ../src/cgi-bin/start:576
 #, perl-format
@@ -285,7 +285,7 @@ msgid ""
 "p><p>Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund "
 "ausgeführt wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle "
 "Ausgabe des jeweiligen Prozesses können Sie sich über die Schaltfläche "
-"&bdquo;Letze Logdatei ansehen&ldquo; anzeigen lassen.</p>"
+"&bdquo;Letzte Logdatei ansehen&ldquo; anzeigen lassen.</p>"
 msgstr ""
 
 #: ../shtml/user_print.tt:1
@@ -955,7 +955,7 @@ msgstr ""
 msgid "Anlegen läuft schon"
 msgstr ""
 
-#: ../shtml/user_commit.tt:18
+#: ../shtml/user_commit.tt:20
 msgid "Anlegen läuft..."
 msgstr ""
 
@@ -1051,6 +1051,10 @@ msgstr ""
 msgid "Aus Projekt %s ausgetragen"
 msgstr ""
 
+#: ../shtml/class_list.tt:119 ../shtml/class_list.tt:37
+msgid "Ausdrucke"
+msgstr ""
+
 #: ../shtml/linbo_remote.tt:104
 msgid "Ausführung"
 msgstr ""
@@ -1138,11 +1142,11 @@ msgstr ""
 msgid "Auszuteilende Dateien"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:123
+#: ../lib/Schulkonsole/Error.pm:127
 msgid "Authentifizierung fehlgeschlagen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:217
+#: ../lib/Schulkonsole/Error.pm:221
 msgid "Authentifizierung fehlgeschlagen nach ID"
 msgstr ""
 
@@ -1212,7 +1216,7 @@ msgid "Beispieltemplate %s nicht vorhanden"
 msgstr ""
 
 #: ../shtml/user.tt:1 ../shtml/user_check.tt:1 ../shtml/user_commit.tt:1
-#: ../shtml/user_commit.tt:114 ../shtml/user_commit.tt:84
+#: ../shtml/user_commit.tt:108 ../shtml/user_commit.tt:79
 #: ../shtml/user_extra.tt:1 ../shtml/user_print.tt:1 ../shtml/user_print.tt:35
 #: ../shtml/user_reports.tt:1 ../shtml/user_students.tt:1
 #: ../shtml/user_teacherpasswords.tt:1 ../shtml/user_teachers.tt:1
@@ -1220,7 +1224,7 @@ msgstr ""
 msgid "Benutzer"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:326
+#: ../lib/Schulkonsole/Error.pm:330
 msgid "Benutzer \"cyrus\" gibt es nicht"
 msgstr ""
 
@@ -1250,23 +1254,23 @@ msgstr ""
 msgid "Benutzer %s unbekannt"
 msgstr ""
 
-#: ../shtml/user_commit.tt:50
+#: ../shtml/user_commit.tt:69
 msgid "Benutzer anlegen"
 msgstr ""
 
-#: ../shtml/user_commit.tt:43
+#: ../shtml/user_commit.tt:45
 msgid "Benutzer anlegen/versetzen/löschen"
 msgstr ""
 
-#: ../shtml/user_commit.tt:16
+#: ../shtml/user_commit.tt:18
 msgid "Benutzer anlegen/versetzen/löschen läuft..."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:147
+#: ../lib/Schulkonsole/Error.pm:151
 msgid "Benutzer existiert nicht"
 msgstr ""
 
-#: ../shtml/user_commit.tt:106
+#: ../shtml/user_commit.tt:123
 msgid "Benutzer löschen"
 msgstr ""
 
@@ -1274,7 +1278,7 @@ msgstr ""
 msgid "Benutzer pro Seite:"
 msgstr ""
 
-#: ../shtml/user_commit.tt:76
+#: ../shtml/user_commit.tt:98
 msgid "Benutzer versetzen"
 msgstr ""
 
@@ -1397,8 +1401,8 @@ msgstr ""
 msgid "Betriebssystemversion (optional)"
 msgstr ""
 
-#: ../shtml/user_check.tt:29 ../shtml/user_commit.tt:115
-#: ../shtml/user_commit.tt:58 ../shtml/user_teachin.tt:56
+#: ../shtml/user_check.tt:29 ../shtml/user_commit.tt:109
+#: ../shtml/user_commit.tt:55 ../shtml/user_teachin.tt:56
 msgid "Bezeichner"
 msgstr ""
 
@@ -1521,7 +1525,7 @@ msgstr ""
 msgid "Datei gelöscht."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:156
+#: ../lib/Schulkonsole/Error.pm:160
 msgid "Datei hat falsches Format"
 msgstr ""
 
@@ -1567,7 +1571,7 @@ msgstr ""
 msgid "Dateien"
 msgstr ""
 
-#: ../shtml/class_list.tt:59 ../shtml/project_members.tt:203
+#: ../shtml/class_list.tt:60 ../shtml/project_members.tt:203
 #: ../shtml/start.tt:122
 msgid "Dateien:"
 msgstr ""
@@ -1610,11 +1614,11 @@ msgstr ""
 msgid "Daten zur Passwortänderung unvollständig"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:162
+#: ../lib/Schulkonsole/Error.pm:166
 msgid "Datenuebertragung (lesen) unterbrochen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:160
+#: ../lib/Schulkonsole/Error.pm:164
 msgid "Datenuebertragung (schreiben) unterbrochen"
 msgstr ""
 
@@ -1701,7 +1705,7 @@ msgid ""
 "href=\"hosts\">Hosts-Liste</a>."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:369
+#: ../lib/Schulkonsole/Error.pm:373
 msgid "Die Mailadresse konnte nicht gespeichert werden."
 msgstr ""
 
@@ -1721,7 +1725,7 @@ msgstr ""
 msgid "Die Wartezeit nach jedem Rechner ist ungültig."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:367
+#: ../lib/Schulkonsole/Error.pm:371
 msgid "Die angegebene Mailadresse ist ungültig"
 msgstr ""
 
@@ -1773,7 +1777,7 @@ msgid ""
 "Sie es bitte in Kürze noch einmal."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:375
+#: ../lib/Schulkonsole/Error.pm:379
 msgid "Dieser Bereich/Name darf nicht abgefragt werden"
 msgstr ""
 
@@ -1831,12 +1835,12 @@ msgstr ""
 msgid "E-Mail"
 msgstr ""
 
-#: ../shtml/class_list.tt:86 ../shtml/project_members.tt:225
+#: ../shtml/class_list.tt:87 ../shtml/project_members.tt:225
 #: ../shtml/start.tt:167
 msgid "E-Mail-Speicher/KB:"
 msgstr ""
 
-#: ../shtml/class_list.tt:110 ../shtml/class_list.tt:36
+#: ../shtml/class_list.tt:118 ../shtml/class_list.tt:36
 #: ../shtml/project_members.tt:181 ../shtml/project_members.tt:251
 msgid "E-Mailquota"
 msgstr ""
@@ -1955,75 +1959,75 @@ msgstr ""
 msgid "Erstpasswort anzeigen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:305
+#: ../lib/Schulkonsole/Error.pm:309
 msgid "Erwarte 0 (PDF) oder 1 (CSV) fuer filetype"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:307
+#: ../lib/Schulkonsole/Error.pm:311
 msgid "Erwarte 0 (reset), 1 (passwd) oder 3 (random) fuer type"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:252
+#: ../lib/Schulkonsole/Error.pm:256
 msgid "Erwarte 0 oder 1 fuer scope"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:345
+#: ../lib/Schulkonsole/Error.pm:349
 msgid "Erwarte 0, 1 oder 2 fuer mode"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:320
+#: ../lib/Schulkonsole/Error.pm:324
 msgid "Erwarte 0, 1, 2 oder 3 fuer scope"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:349
+#: ../lib/Schulkonsole/Error.pm:353
 msgid "Erwarte 1 bis 7 fuer flags"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:303
+#: ../lib/Schulkonsole/Error.pm:307
 msgid "Erwarte 1 oder 0 fuer do_add"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:289
+#: ../lib/Schulkonsole/Error.pm:293
 msgid "Erwarte 1 oder 0 fuer do_copy"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:322
+#: ../lib/Schulkonsole/Error.pm:326
 msgid "Erwarte 1 oder 0 fuer do_create"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:334
+#: ../lib/Schulkonsole/Error.pm:338
 msgid "Erwarte 1 oder 0 fuer is_example"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:312
+#: ../lib/Schulkonsole/Error.pm:316
 msgid "Erwarte 1 oder 0 fuer is_groups"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:355
+#: ../lib/Schulkonsole/Error.pm:359
 msgid "Erwarte 1 oder 0 fuer is_open"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:314
+#: ../lib/Schulkonsole/Error.pm:318
 msgid "Erwarte 1 oder 0 fuer is_public"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:316
+#: ../lib/Schulkonsole/Error.pm:320
 msgid "Erwarte 1 oder 0 fuer is_upload"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:363
+#: ../lib/Schulkonsole/Error.pm:367
 msgid "Erwarte 1,2 oder 3 fuer action"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:365
+#: ../lib/Schulkonsole/Error.pm:369
 msgid "Erwarte Verzeichnis, fand Datei (oder umgekehrt)"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:291
+#: ../lib/Schulkonsole/Error.pm:295
 msgid "Erwarte numerische Angabe fuer \"from\""
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:293
+#: ../lib/Schulkonsole/Error.pm:297
 msgid "Erwarte numerische Angabe fuer \"type\""
 msgstr ""
 
@@ -2079,7 +2083,7 @@ msgstr ""
 msgid "Es sind keine Templateedateien vorhanden."
 msgstr ""
 
-#: ../shtml/user_commit.tt:37
+#: ../shtml/user_commit.tt:39
 msgid "Es sind keine Vormerkungen vorhanden."
 msgstr ""
 
@@ -2141,7 +2145,7 @@ msgid ""
 "Bitte überprüfen Sie die <a href=\"hosts\">Hosts-Liste</a>."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:141
+#: ../lib/Schulkonsole/Error.pm:145
 msgid "Execute fehlgeschlagen"
 msgstr ""
 
@@ -2172,15 +2176,15 @@ msgstr ""
 msgid "Fehler bei der Zertifikatserstellung."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:137
+#: ../lib/Schulkonsole/Error.pm:141
 msgid "Fehler im Hintergrundprozess"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:133
+#: ../lib/Schulkonsole/Error.pm:137
 msgid "Fehler im Hintergrundprozess: "
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:135
+#: ../lib/Schulkonsole/Error.pm:139
 msgid "Fehler in der Konfiguration"
 msgstr ""
 
@@ -2209,7 +2213,7 @@ msgstr ""
 msgid "Festplattengröße muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr ""
 
-#: ../shtml/class_list.tt:109 ../shtml/class_list.tt:35
+#: ../shtml/class_list.tt:117 ../shtml/class_list.tt:35
 #: ../shtml/project_members.tt:180 ../shtml/project_members.tt:250
 msgid "Festplattenquota"
 msgstr ""
@@ -2218,7 +2222,7 @@ msgstr ""
 msgid "Festplattenquota:"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:143
+#: ../lib/Schulkonsole/Error.pm:147
 msgid "Fetch fehlgeschlagen"
 msgstr ""
 
@@ -2226,7 +2230,7 @@ msgstr ""
 msgid "Folgende Benutzer werden automatisch entfernt:"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:257
+#: ../lib/Schulkonsole/Error.pm:261
 msgid "Fork nicht moeglich"
 msgstr ""
 
@@ -2244,7 +2248,7 @@ msgstr ""
 msgid "Für Benutzer %s gibt es bereits einen Eintrag"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:131
+#: ../lib/Schulkonsole/Error.pm:135
 msgid "Für Diskquota müssen alle oder keine Felder ausgefüllt sein"
 msgstr ""
 
@@ -2291,7 +2295,7 @@ msgid "Global"
 msgstr ""
 
 #: ../shtml/linbo_edit.tt:118 ../shtml/linbo_remote.tt:76
-#: ../shtml/user_commit.tt:59
+#: ../shtml/user_commit.tt:56
 msgid "Gruppe"
 msgstr ""
 
@@ -2531,7 +2535,7 @@ msgstr ""
 msgid "Kann Datei %s nicht öffnen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:154
+#: ../lib/Schulkonsole/Error.pm:158
 msgid "Kann Datei nicht oeffnen"
 msgstr ""
 
@@ -2540,7 +2544,7 @@ msgstr ""
 msgid "Kann Logdatei nicht öffnen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:260
+#: ../lib/Schulkonsole/Error.pm:264
 msgid "Kann printers.conf nicht oeffnen"
 msgstr ""
 
@@ -2553,7 +2557,7 @@ msgstr ""
 msgid "Kein Workstationpasswort angegeben."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:279
+#: ../lib/Schulkonsole/Error.pm:283
 msgid "Keine Benutzer"
 msgstr ""
 
@@ -2567,7 +2571,7 @@ msgstr ""
 msgid "Keine Benutzer ausgewählt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:283
+#: ../lib/Schulkonsole/Error.pm:287
 msgid "Keine Benutzer-IDs"
 msgstr ""
 
@@ -2579,7 +2583,7 @@ msgstr ""
 msgid "Keine Druckaufträge"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:264
+#: ../lib/Schulkonsole/Error.pm:268
 msgid "Keine Drucker"
 msgstr ""
 
@@ -2591,7 +2595,7 @@ msgstr ""
 msgid "Keine Gruppe ausgewählt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:240
+#: ../lib/Schulkonsole/Error.pm:244
 msgid "Keine Hosts"
 msgstr ""
 
@@ -2607,7 +2611,7 @@ msgstr ""
 msgid "Keine Templates vorhanden."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:149
+#: ../lib/Schulkonsole/Error.pm:153
 msgid "Keine Workstationbenutzer"
 msgstr ""
 
@@ -2669,7 +2673,7 @@ msgstr ""
 msgid "Klasse unbekannt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:129
+#: ../lib/Schulkonsole/Error.pm:133
 msgid "Klasse/Projekt ist unbekannt"
 msgstr ""
 
@@ -2778,11 +2782,11 @@ msgstr ""
 msgid "Konfigurationsdateien editieren"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:347
+#: ../lib/Schulkonsole/Error.pm:351
 msgid "Konnte Berechtigung nicht aendern"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:361
+#: ../lib/Schulkonsole/Error.pm:365
 msgid "Konnte Datei nicht finden"
 msgstr ""
 
@@ -2892,7 +2896,7 @@ msgid "Log-Meldungen"
 msgstr ""
 
 #: ../shtml/class_collect.tt:82 ../shtml/class_handoutcopy.tt:69
-#: ../shtml/class_lesson.tt:94 ../shtml/class_list.tt:107
+#: ../shtml/class_lesson.tt:94 ../shtml/class_list.tt:115
 #: ../shtml/class_list.tt:33 ../shtml/class_passwords.tt:54
 #: ../shtml/class_passwords.tt:83 ../shtml/class_shares.tt:35
 #: ../shtml/login.tt:1 ../shtml/project_addmembers.tt:19
@@ -2950,7 +2954,7 @@ msgstr ""
 msgid "Löschen läuft schon"
 msgstr ""
 
-#: ../shtml/user_commit.tt:22
+#: ../shtml/user_commit.tt:24
 msgid "Löschen läuft..."
 msgstr ""
 
@@ -3134,7 +3138,7 @@ msgid "Nachname ist leer"
 msgstr ""
 
 #: ../shtml/class_collect.tt:83 ../shtml/class_handoutcopy.tt:70
-#: ../shtml/class_lesson.tt:95 ../shtml/class_list.tt:108
+#: ../shtml/class_lesson.tt:95 ../shtml/class_list.tt:116
 #: ../shtml/class_list.tt:34 ../shtml/class_passwords.tt:55
 #: ../shtml/class_passwords.tt:84 ../shtml/class_shares.tt:36
 #: ../shtml/project_addmembers.tt:105 ../shtml/project_addmembers.tt:116
@@ -3202,7 +3206,7 @@ msgstr ""
 msgid "Neues Passwort ist zu schwach: "
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:125 ../src/cgi-bin/start:288
+#: ../lib/Schulkonsole/Error.pm:129 ../src/cgi-bin/start:288
 msgid "Neues Passwort nicht richtig wiederholt"
 msgstr ""
 
@@ -3222,11 +3226,11 @@ msgstr ""
 msgid "Nicht alle angegebenen Befehle sind gültig."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:185
+#: ../lib/Schulkonsole/Error.pm:189
 msgid "Nicht autorisierter Aufrufer"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:234
+#: ../lib/Schulkonsole/Error.pm:238
 msgid "Nicht autorisierter Aufrufer nach ID"
 msgstr ""
 
@@ -3263,8 +3267,8 @@ msgstr ""
 #: ../shtml/room_handout.tt:67 ../shtml/room_lesson.tt:94
 #: ../shtml/room_shares.tt:34 ../shtml/room_test_collect.tt:39
 #: ../shtml/room_test_handout.tt:37 ../shtml/room_test_handout.tt:60
-#: ../shtml/rooms_classrooms.tt:29 ../shtml/user_commit.tt:113
-#: ../shtml/user_commit.tt:57 ../shtml/user_commit.tt:83
+#: ../shtml/rooms_classrooms.tt:29 ../shtml/user_commit.tt:107
+#: ../shtml/user_commit.tt:54 ../shtml/user_commit.tt:78
 #: ../shtml/user_print.tt:35 ../shtml/user_print.tt:81
 msgid "Nr."
 msgstr ""
@@ -3444,7 +3448,7 @@ msgstr ""
 msgid "Platz"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:139
+#: ../lib/Schulkonsole/Error.pm:143
 msgid "Prepare fehlgeschlagen"
 msgstr ""
 
@@ -3452,11 +3456,11 @@ msgstr ""
 msgid "Private Mail-Adresse"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:226
+#: ../lib/Schulkonsole/Error.pm:230
 msgid "Programm-ID unbekannt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:173
+#: ../lib/Schulkonsole/Error.pm:177
 msgid "Programmaufruf fehlgeschlagen"
 msgstr ""
 
@@ -3514,7 +3518,7 @@ msgstr ""
 msgid "Projekt-Lehrer-Datei "
 msgstr ""
 
-#: ../shtml/class_list.tt:112 ../shtml/class_list.tt:38 ../shtml/project.tt:1
+#: ../shtml/class_list.tt:121 ../shtml/class_list.tt:39 ../shtml/project.tt:1
 #: ../shtml/project.tt:28 ../shtml/project_addmembers.tt:1
 #: ../shtml/project_addmembers.tt:9 ../shtml/project_collect.tt:1
 #: ../shtml/project_collect.tt:26 ../shtml/project_drop_verify.tt:1
@@ -3548,7 +3552,7 @@ msgstr ""
 msgid "Projektname"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:343
+#: ../lib/Schulkonsole/Error.pm:347
 msgid "Prozess laeuft schon"
 msgstr ""
 
@@ -3576,7 +3580,7 @@ msgstr ""
 msgid "Raum"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:127
+#: ../lib/Schulkonsole/Error.pm:131
 msgid "Raum ist unbekannt"
 msgstr ""
 
@@ -3588,11 +3592,11 @@ msgstr ""
 msgid "Raumbezeichnung"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:250
+#: ../lib/Schulkonsole/Error.pm:254
 msgid "Raumdatei kann nicht gelesen werden"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:248
+#: ../lib/Schulkonsole/Error.pm:252
 msgid "Raumdatei kann nicht geschrieben werden"
 msgstr ""
 
@@ -3865,11 +3869,11 @@ msgstr ""
 msgid "Sitzungsdauer:"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:196
+#: ../lib/Schulkonsole/Error.pm:200
 msgid "Skript nicht vorhanden"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:208
+#: ../lib/Schulkonsole/Error.pm:212
 msgid "Skriptaufruf fehlgeschlagen"
 msgstr ""
 
@@ -3886,7 +3890,7 @@ msgstr ""
 msgid "Speicherplatz"
 msgstr ""
 
-#: ../shtml/class_list.tt:53 ../shtml/project_members.tt:197
+#: ../shtml/class_list.tt:54 ../shtml/project_members.tt:197
 #: ../shtml/start.tt:116
 msgid "Speicherplatz/KB:"
 msgstr ""
@@ -3924,7 +3928,7 @@ msgid "Startseite"
 msgstr ""
 
 #: ../shtml/linbo_remote.tt:17 ../shtml/room_lesson.tt:201
-#: ../shtml/user_commit.tt:87
+#: ../shtml/user_commit.tt:82
 msgid "Status"
 msgstr ""
 
@@ -3932,7 +3936,7 @@ msgstr ""
 msgid "Sternchenklassen filtern"
 msgstr ""
 
-#: ../shtml/class_list.tt:111 ../shtml/class_list.tt:37
+#: ../shtml/class_list.tt:120 ../shtml/class_list.tt:38
 msgid "Subklasse"
 msgstr ""
 
@@ -4031,11 +4035,11 @@ msgstr ""
 msgid "Uhr"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:145
+#: ../lib/Schulkonsole/Error.pm:149
 msgid "Unbekannte Passwortverschluesselung"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:379
+#: ../lib/Schulkonsole/Error.pm:383
 msgid "Unbekannter Fehler "
 msgstr ""
 
@@ -4057,123 +4061,123 @@ msgstr ""
 msgid "Unbekannter Systemtyp"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:272
+#: ../lib/Schulkonsole/Error.pm:276
 msgid "Unerwartete Programmausgabe"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:281
+#: ../lib/Schulkonsole/Error.pm:285
 msgid "Ungueltige Benutzer-ID"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:270
+#: ../lib/Schulkonsole/Error.pm:274
 msgid "Ungueltige Daten fuer Druckquota"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:268
+#: ../lib/Schulkonsole/Error.pm:272
 msgid "Ungueltige Daten fuer genutzte Druckquota"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:299
+#: ../lib/Schulkonsole/Error.pm:303
 msgid "Ungueltige Klassen-GID"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:242
+#: ../lib/Schulkonsole/Error.pm:246
 msgid "Ungueltige Raumbezeichnung"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:236
+#: ../lib/Schulkonsole/Error.pm:240
 msgid "Ungueltige Session-ID"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:301
+#: ../lib/Schulkonsole/Error.pm:305
 msgid "Ungueltige Subklasse"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:246
+#: ../lib/Schulkonsole/Error.pm:250
 msgid "Ungueltige Zeitangabe fuer Unterrichtsende"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:276
+#: ../lib/Schulkonsole/Error.pm:280
 msgid "Ungueltiger Benutzer"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:332
+#: ../lib/Schulkonsole/Error.pm:336
 msgid "Ungueltiger Dateiname"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:371
+#: ../lib/Schulkonsole/Error.pm:375
 msgid "Ungueltiger Debconf-Bereich"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:373
+#: ../lib/Schulkonsole/Error.pm:377
 msgid "Ungueltiger Debconf-Name"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:262
+#: ../lib/Schulkonsole/Error.pm:266
 msgid "Ungueltiger Druckername"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:266
+#: ../lib/Schulkonsole/Error.pm:270
 msgid "Ungueltiger Druckernutzer"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:330
+#: ../lib/Schulkonsole/Error.pm:334
 msgid "Ungueltiger Gruppenname"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:238
+#: ../lib/Schulkonsole/Error.pm:242
 msgid "Ungueltiger Host"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:336
+#: ../lib/Schulkonsole/Error.pm:340
 msgid "Ungueltiger Image-Dateiname"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:244
+#: ../lib/Schulkonsole/Error.pm:248
 msgid "Ungueltiger Modus fuer Unterricht"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:295
+#: ../lib/Schulkonsole/Error.pm:299
 msgid "Ungueltiger Raum"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:287
+#: ../lib/Schulkonsole/Error.pm:291
 msgid "Ungueltiger Raumbezeichner"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:359
+#: ../lib/Schulkonsole/Error.pm:363
 msgid "Ungueltiger Wert fuer Dateiname"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:351
+#: ../lib/Schulkonsole/Error.pm:355
 msgid "Ungueltiger Wert fuer diskquota"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:324
+#: ../lib/Schulkonsole/Error.pm:328
 msgid "Ungueltiger Wert fuer longname"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:353
+#: ../lib/Schulkonsole/Error.pm:357
 msgid "Ungueltiger Wert fuer mailquota"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:341
+#: ../lib/Schulkonsole/Error.pm:345
 msgid "Ungueltiger Wert fuer number"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:310
+#: ../lib/Schulkonsole/Error.pm:314
 msgid "Ungueltiger Wert fuer password"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:318
+#: ../lib/Schulkonsole/Error.pm:322
 msgid "Ungueltiger Wert fuer projectgid"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:357
+#: ../lib/Schulkonsole/Error.pm:361
 msgid "Ungueltiger Wert, action sollte eine Zahl sein"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:297
+#: ../lib/Schulkonsole/Error.pm:301
 msgid "Ungueltiges Projekt"
 msgstr ""
 
@@ -4249,7 +4253,7 @@ msgstr ""
 msgid "Versetzen läuft schon"
 msgstr ""
 
-#: ../shtml/user_commit.tt:20
+#: ../shtml/user_commit.tt:22
 msgid "Versetzen läuft..."
 msgstr ""
 
@@ -4275,7 +4279,7 @@ msgstr ""
 msgid "Verzeichnis für bereitgestellte Dateien nicht gefunden"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:285
+#: ../lib/Schulkonsole/Error.pm:289
 msgid "Verzeichnis nicht gefunden"
 msgstr ""
 
@@ -4343,11 +4347,11 @@ msgstr ""
 msgid "Webspace"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:189
+#: ../lib/Schulkonsole/Error.pm:193
 msgid "Wechsel zu diesem Benutzer nicht erlaubt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:192
+#: ../lib/Schulkonsole/Error.pm:196
 msgid "Wechsel zu diesem Benutzer nicht moeglich"
 msgstr ""
 
@@ -4387,7 +4391,7 @@ msgstr ""
 msgid "Workstations werden importiert"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:158
+#: ../lib/Schulkonsole/Error.pm:162
 msgid "Wrapperaufruf fehlgeschlagen"
 msgstr ""
 
@@ -4460,7 +4464,7 @@ msgstr ""
 msgid "abgebrochen"
 msgstr ""
 
-#: ../src/cgi-bin/class_list:137 ../src/cgi-bin/class_list:156
+#: ../src/cgi-bin/class_list:144 ../src/cgi-bin/class_list:163
 #: ../src/cgi-bin/project_members:371 ../src/cgi-bin/project_members:390
 #: ../src/cgi-bin/start:566 ../src/cgi-bin/start:585
 msgid "abgelaufen"
@@ -4470,7 +4474,7 @@ msgstr ""
 msgid "abgewählt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:338
+#: ../lib/Schulkonsole/Error.pm:342
 msgid "action muss 0, 1 oder 2 sein"
 msgstr ""
 
@@ -4574,7 +4578,7 @@ msgstr ""
 msgid "kein Betriebssystem automatisch starten"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:121
+#: ../lib/Schulkonsole/Error.pm:125
 msgid "kein Fehler"
 msgstr ""
 
@@ -4620,7 +4624,7 @@ msgstr ""
 msgid "multicast"
 msgstr ""
 
-#: ../shtml/user_commit.tt:86
+#: ../shtml/user_commit.tt:81
 msgid "nach"
 msgstr ""
 
@@ -4636,7 +4640,7 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:274
+#: ../lib/Schulkonsole/Error.pm:278
 msgid "on muss 1 oder 0 sein"
 msgstr ""
 
@@ -4774,7 +4778,7 @@ msgstr ""
 msgid "verbleibend:"
 msgstr ""
 
-#: ../shtml/class_list.tt:58 ../shtml/class_list.tt:64
+#: ../shtml/class_list.tt:59 ../shtml/class_list.tt:65
 #: ../shtml/project_members.tt:202 ../shtml/project_members.tt:208
 #: ../shtml/start.tt:121 ../shtml/start.tt:127
 msgid "verbleibende Zeit:"
@@ -4788,7 +4792,7 @@ msgstr ""
 msgid "verwenden Sie für das Geburtsdatum das Format TT.MM.JJJJ"
 msgstr ""
 
-#: ../shtml/user_commit.tt:85
+#: ../shtml/user_commit.tt:80
 msgid "von"
 msgstr ""
 
@@ -4807,7 +4811,7 @@ msgstr ""
 msgid "wirklich löschen?"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error.pm:328
+#: ../lib/Schulkonsole/Error.pm:332
 msgid "wrapper-cyrus gehoert nicht Benutzer \"cyrus\" oder SUID nicht gesetzt"
 msgstr ""
 
