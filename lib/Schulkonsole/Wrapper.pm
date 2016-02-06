@@ -7,6 +7,39 @@ use Sophomorix::SophomorixAPI;
 
 package Schulkonsole::Wrapper;
 
+sub wrapcommand {
+	my $wrapcmd = shift;
+	my $app_id = shift;
+	my $id = shift;
+	my $password = shift;
+	my $args = shift;
+	my $binaer = shift;
+	
+	my $wrapper = new Wrapper($wrapcmd,$app_id,$id, $password, $binaer);
+
+	$wrapper->writefinal($args);
+	
+	$wrapper->readfinal();
+}
+
+sub wrap {
+	my $wrapcmd = shift;
+	my $app_id = shift;
+	my $id = shift;
+	my $password = shift;
+	my $args = shift;
+	my $binaer = shift;
+	
+	my $wrapper = new Schulkonsole::Wrapper($wrapcmd,$app_id,$id, $password, $binaer);
+
+	$wrapper->writefinal($args);
+	
+	my $in = $wrapper->readfinal();
+
+	return $in;
+	
+}
+
 sub new {
 	my $class = shift;
     my $wrapcmd = shift;
@@ -37,7 +70,7 @@ sub buffer_input {
     
 	local $/ = undef if $this->{binaer};
 	while (<$in>) {
-		$this->{input_buffer} .= $_;
+		$this->{input_buffer} .= readline($in);
 	}
 }
 
@@ -55,15 +88,17 @@ sub init {
 		Schulkonsole::Error::WRAPPER_UNKNOWN,
 		$wrapcmd, 1)
 		unless $this->{wrapper_command};
+	
+	$this->start();
 }
 
 
 sub start {
 	my $this = shift;
+	$this->{out} = \*SCRIPTOUT;
+	$this->{in} = \*SCRIPTIN;
+	$this->{err} = \*SCRIPTIN;
 	
-	$this->{out} = *SCRIPTOUT;
-	$this->{in} = *SCRIPTIN;
-	$this->{err} = *SCRIPTIN;
 	$this->{pid} = IPC::Open3::open3 $this->{out}, $this->{in}, $this->{err}, $this->{wrapper_command}
 		or die new Schulkonsole::Error(
 			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
@@ -72,7 +107,6 @@ sub start {
 	binmode $this->{out}, ':utf8';
 	binmode $this->{in}, ':utf8';
 	binmode $this->{err}, ':utf8';
-
 
 	my $re = waitpid $this->{pid}, POSIX::WNOHANG;
 	if (   $re == $this->{pid}
@@ -88,8 +122,9 @@ sub start {
 				$this->{wrapper_command});
 		}
 	}
+	
+	print {$this->{out}} "$this->{id}\n$this->{password}\n$this->{app_id}\n";
 
-	print "$this->{out}" "$this->{id}\n$this->{password}\n$this->{app_id}\n";
 }
 
 
@@ -135,9 +170,18 @@ sub stop {
 sub write {
 	my $this = shift;
 	my $string = shift;
+
+	print {$this->{out}} $string;
 	
-	print($this->{out}, $string);
+}
+
+sub writefinal {
+	my $this = shift;
+	my $string = shift;
 	
+	$this->write($string);
+	
+	$this->closeout();
 }
 
 sub read {
@@ -146,6 +190,29 @@ sub read {
 	
 	return $this->{input_buffer};
 }
+
+sub readfinal {
+	my $this = shift;
+	
+	$this->read();
+	
+	$this->stop();
+	
+	return $this->{input_buffer};
+}
+
+sub closeout {
+	my $this = shift;
+	
+	close $this->{out}
+				or die new Schulkonsole::Error(
+				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_OUT,
+				$this->{wrapper_command}, $!,
+				($this->{input_buffer} ? "Output: $this->{input_buffer}" : 'No Output'));
+	undef $this->{out};
+}
+
+
 
 
 1;

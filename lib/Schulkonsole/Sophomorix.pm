@@ -328,14 +328,9 @@ sub share_states {
 
 	my %shares_infos;
 
-	my $wrapper = new Wrapper($wrapcmd,Schulkonsole::Config::SHARESTATESAPP,$id, $password);
-
-	$wrapper->write(join("\n", @login_ids), "\n\n");
-
-	my $in = $wrapper->read();
-
-	$wrapper->stop();
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,Schulkonsole::Config::SHARESTATESAPP,
+							$id, $password,
+							join("\n", @login_ids)."\n\n");
 
 	my $compartment = new Safe;
 
