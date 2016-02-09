@@ -6,8 +6,8 @@ use Sophomorix::SophomorixConfig;
 use Sophomorix::SophomorixAPI;
 
 use Schulkonsole::Wrapper;
-use Schulkonsole::Error;
-use Schulkonsole::ExternalError;
+use Schulkonsole::Error::SophomorixError;
+use Schulkonsole::Error::ExternalError;
 use Schulkonsole::Config;
 use Safe;
 
@@ -185,103 +185,7 @@ $VERSION = 0.05;
 
 
 my $wrapcmd = $Schulkonsole::Config::_wrapper_sophomorix;
-
-my $input_buffer;
-sub buffer_input {
-	my $in = shift;
-
-	while (<$in>) {
-		$input_buffer .= $_;
-	}
-}
-
-
-
-
-sub start_wrapper {
-	my $app_id = shift;
-	my $id = shift;
-	my $password = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-	my $pid = IPC::Open3::open3 $out, $in, $err,
-		$Schulkonsole::Config::_wrapper_sophomorix
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-			$Schulkonsole::Config::_wrapper_sophomorix, $!);
-
-	binmode $out, ':utf8';
-	binmode $in, ':utf8';
-	binmode $err, ':utf8';
-
-
-	my $re = waitpid $pid, POSIX::WNOHANG;
-	if (   $re == $pid
-	    or $re == -1) {
-		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-				$Schulkonsole::Config::_wrapper_sophomorix, $!);
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_sophomorix);
-		}
-	}
-
-	print $out "$id\n$password\n$app_id\n";
-
-
-	return $pid;
-}
-
-
-
-
-sub stop_wrapper {
-	my $pid = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-
-	my $re = waitpid $pid, 0;
-	if (    ($re == $pid or $re == -1)
-	    and $?) {
-		my $error = ($? >> 8);
-		if ($error <= 128) {
-			die new Schulkonsole::ExternalError(
-				Sophomorix::SophomorixAPI::fetch_error_string($error), 0,
-				$Schulkonsole::Config::_wrapper_sophomorix, $!,
-				($input_buffer ? "Output: $input_buffer" : 'No Output'));
-		} else {
-			$error -= 256;
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_sophomorix);
-		}
-	}
-
-	if ($out) {
-		close $out
-			or die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_OUT,
-				$Schulkonsole::Config::_wrapper_sophomorix, $!,
-				($input_buffer ? "Output: $input_buffer" : 'No Output'));
-	}
-
-	close $in
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-			$Schulkonsole::Config::_wrapper_sophomorix, $!,
-			($input_buffer ? "Output: $input_buffer" : 'No Output'));
-
-	undef $input_buffer;
-}
-
-
-
+my $errorclass = Schulkonsole::Error::SophomorixError;
 
 =head2 Functions
 
@@ -328,7 +232,7 @@ sub share_states {
 
 	my %shares_infos;
 
-	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,Schulkonsole::Config::SHARESTATESAPP,
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::SHARESTATESAPP,
 							$id, $password,
 							join("\n", @login_ids)."\n\n");
 
@@ -373,16 +277,9 @@ sub shares_on {
 	my $password = shift;
 	my @users = @_;
 
-	my $pid = start_wrapper(Schulkonsole::Config::SHARESONOFFAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SHARESONOFFAPP,
+						$id, $password,
+						"1\n", join("\n", @users), "\n\n");
 }
 
 
@@ -421,16 +318,9 @@ sub shares_off {
 	my $password = shift;
 	my @users = @_;
 
-	my $pid = start_wrapper(Schulkonsole::Config::SHARESONOFFAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SHARESONOFFAPP,
+						$id, $password,
+						"0\n", join("\n", @users), "\n\n");
 }
 
 
@@ -465,15 +355,9 @@ sub global_shares_on {
 	my $password = shift;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::CHMODAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n1\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::CHMODAPP,
+						$id, $password,
+						"0\n1\n");
 }
 
 
@@ -508,15 +392,9 @@ sub global_shares_off {
 	my $password = shift;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::CHMODAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n0\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::CHMODAPP,
+						$id, $password,
+						"0\n0\n");
 }
 
 
@@ -565,16 +443,9 @@ sub add_handout_exam {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n0\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
+						$id, $password,
+						"2\n0\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -623,16 +494,9 @@ sub dl_handout_exam {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n0\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
+						$id, $password,
+						"3\n0\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -676,16 +540,9 @@ sub rm_handout_exam {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n0\n1\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
+						$id, $password,
+						"1\n0\n1\n$filename\n".($isdir?"1\n":"0\n"));
 }
 
 
@@ -724,20 +581,9 @@ sub ls_handout_exam {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n1\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDOUTAPP,
+						$id, $password,
+						"0\n1\n", 1);
 
 	my $compartment = new Safe;
 

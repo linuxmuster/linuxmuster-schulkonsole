@@ -1,10 +1,11 @@
 use strict;
+use base("Error");
 
-package Schulkonsole::ExternalError;
+package Schulkonsole::Error::ExternalError;
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 $VERSION = 0.06;
-@ISA = qw(Schulkonsole::Error Exporter);
+@ISA = qw(Schulkonsole::Error::Error Exporter);
 @EXPORT_OK = qw(
 	new
 	what
