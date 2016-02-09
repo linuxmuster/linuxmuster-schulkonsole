@@ -5,7 +5,8 @@ nobase_dist_perllib_DATA = \
 	DB.pm \
 	Debconf.pm \
 	Encode.pm \
-	Error.pm ExternalError.pm \
+	Error/Error.pm \
+	Error/ExternalError.pm \
 	Error/Cyrus.pm \
 	Error/Files.pm \
 	Error/Firewall.pm \
@@ -13,7 +14,7 @@ nobase_dist_perllib_DATA = \
 	Error/OVPN.pm \
 	Error/Printer.pm \
 	Error/Radius.pm \
-	Error/Sophomorix.pm \
+	Error/SophomorixError.pm \
 	Error/User.pm \
 	Error/Horde.pm \
 	Error/Debconf.pm \

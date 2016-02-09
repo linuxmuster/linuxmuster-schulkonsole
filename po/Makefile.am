@@ -32,6 +32,8 @@ clean-local:
 	-rm -f -- $(MSGFILES)
 	-rm -f -- $(POFILES:=~)
 	-rm -f -- $(TEMPLATE)
+	-rm -f -- POTFILES.tt.in
+	-rm -f -- POTFILES.perl.in
 
 messages: $(POFILES)
 
@@ -40,11 +42,11 @@ template: $(TEMPLATE)
 
 POTFILES.tt.in:
 	find ../doc/lib/menus.d -type f |sort >POTFILES.tt.in
-	find ../shtml -name '*.tt' |sort >>POTFILES.tt.in
+	find ../shtml -type f -name '*.tt' |sort >>POTFILES.tt.in
 
 POTFILES.perl.in:
-	find ../lib/Schulkonsole -name '*.pm.*' |sort >POTFILES.perl.in
-	find ../src/cgi-bin -not -name 'Makefile.*' |sort >>POTFILES.perl.in
+	find ../lib/Schulkonsole -type f -name '*.pm*' |sort >POTFILES.perl.in
+	find ../src/cgi-bin -type f -not -name 'Makefile.*' |sort >>POTFILES.perl.in
 
 $(TEMPLATE): POTFILES.tt.in POTFILES.perl.in
 	$(XGETTEXTTT) --plugin tt2 --gnu-gettext --use-gettext-style \

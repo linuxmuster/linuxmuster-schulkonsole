@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2016-02-02 20:00+0100\n"
+"POT-Creation-Date: 2016-02-09 19:49+0100\n"
 "PO-Revision-Date: 2015-11-10 12:50+0100\n"
 "Last-Translator: Frank Schütte <fschuett@gymhim.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -204,7 +204,7 @@ msgid "%s nach %s umbenannt"
 msgstr "%s renamed %s"
 
 #: ../lib/Schulkonsole/Linbo.pm:1212
-#, perl-format
+#, fuzzy, perl-format
 msgid "%s wird mehrmals verwendet"
 msgstr "% is not unique"
 
@@ -1382,11 +1382,11 @@ msgstr "reset selection"
 msgid "Auszuteilende Dateien"
 msgstr "Files to be distributed"
 
-#: ../lib/Schulkonsole/Error.pm:127
+#: ../lib/Schulkonsole/Error/Error.pm:130
 msgid "Authentifizierung fehlgeschlagen"
 msgstr "Authentication failed"
 
-#: ../lib/Schulkonsole/Error.pm:221
+#: ../lib/Schulkonsole/Error/Error.pm:174
 msgid "Authentifizierung fehlgeschlagen nach ID"
 msgstr "Authentication failed according to ID"
 
@@ -1466,10 +1466,6 @@ msgstr "Sample template %s is not available"
 msgid "Benutzer"
 msgstr "User"
 
-#: ../lib/Schulkonsole/Error.pm:330
-msgid "Benutzer \"cyrus\" gibt es nicht"
-msgstr "User \"cyrus\" does not exist"
-
 #: ../src/cgi-bin/project_addmembers:98 ../src/cgi-bin/project_addmembers:145
 #: ../src/cgi-bin/project_members:164
 #, perl-format
@@ -1509,7 +1505,7 @@ msgstr "Create/move/delete user is running."
 msgid "Benutzer anlegen/versetzen/löschen läuft..."
 msgstr "Create/move/delete user is running."
 
-#: ../lib/Schulkonsole/Error.pm:151
+#: ../lib/Schulkonsole/Error/Error.pm:144
 msgid "Benutzer existiert nicht"
 msgstr "User does not exist"
 
@@ -1768,7 +1764,7 @@ msgstr "File %s is empty"
 msgid "Datei gelöscht."
 msgstr "Image file deleted."
 
-#: ../lib/Schulkonsole/Error.pm:160
+#: ../lib/Schulkonsole/Error/Error.pm:150
 msgid "Datei hat falsches Format"
 msgstr "File does not have correct format"
 
@@ -1857,11 +1853,11 @@ msgstr "Data"
 msgid "Daten zur Passwortänderung unvollständig"
 msgstr "Data for password change incomplete"
 
-#: ../lib/Schulkonsole/Error.pm:166
+#: ../lib/Schulkonsole/Error/Error.pm:156
 msgid "Datenuebertragung (lesen) unterbrochen"
 msgstr "Data transfer (reading) interrupted"
 
-#: ../lib/Schulkonsole/Error.pm:164
+#: ../lib/Schulkonsole/Error/Error.pm:154
 msgid "Datenuebertragung (schreiben) unterbrochen"
 msgstr "Data transfer (writing) interrupted"
 
@@ -1957,7 +1953,7 @@ msgstr ""
 "The list of the configured hosts does not match the available hosts actually "
 "in the system."
 
-#: ../lib/Schulkonsole/Error.pm:373
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:199
 #, fuzzy
 msgid "Die Mailadresse konnte nicht gespeichert werden."
 msgstr "%s could not be deleted"
@@ -1978,7 +1974,7 @@ msgstr "The timeout after wakeup is invalid."
 msgid "Die Wartezeit nach jedem Rechner ist ungültig."
 msgstr "The timeout after each host wakeup is invalid."
 
-#: ../lib/Schulkonsole/Error.pm:371
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:197
 #, fuzzy
 msgid "Die angegebene Mailadresse ist ungültig"
 msgstr "At least one of the supplied mail addresses contains errors."
@@ -2032,10 +2028,6 @@ msgid ""
 "Sie es bitte in Kürze noch einmal."
 msgstr ""
 "This function is currently locked by another user. Please try again soon."
-
-#: ../lib/Schulkonsole/Error.pm:379
-msgid "Dieser Bereich/Name darf nicht abgefragt werden"
-msgstr "This section / name could not be queried."
 
 #: ../shtml/linbo_remote.tt:293
 msgid "Diff. Image erstellen"
@@ -2215,75 +2207,67 @@ msgstr "First password"
 msgid "Erstpasswort anzeigen"
 msgstr "Show first password"
 
-#: ../lib/Schulkonsole/Error.pm:309
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:151
 msgid "Erwarte 0 (PDF) oder 1 (CSV) fuer filetype"
 msgstr "Expect 0 (PDF) or 1 (CSV) for filetype"
 
-#: ../lib/Schulkonsole/Error.pm:311
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:153
 msgid "Erwarte 0 (reset), 1 (passwd) oder 3 (random) fuer type"
 msgstr "Expect 0 (reset), 1 (passwd) or 3 (random) for type"
 
-#: ../lib/Schulkonsole/Error.pm:256
-msgid "Erwarte 0 oder 1 fuer scope"
-msgstr "Expect 0 or 1 for scope"
-
-#: ../lib/Schulkonsole/Error.pm:349
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:175
 msgid "Erwarte 0, 1 oder 2 fuer mode"
 msgstr "Expect 0, 1 or 2 for mode"
 
-#: ../lib/Schulkonsole/Error.pm:324
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:165
 msgid "Erwarte 0, 1, 2 oder 3 fuer scope"
 msgstr "Expect 0, 1, 2 or 3 for scope"
 
-#: ../lib/Schulkonsole/Error.pm:353
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:179
 msgid "Erwarte 1 bis 7 fuer flags"
 msgstr "Expect 1 to 7 for flags"
 
-#: ../lib/Schulkonsole/Error.pm:307
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:149
 msgid "Erwarte 1 oder 0 fuer do_add"
 msgstr "Expect 1 or 0 for do_add"
 
-#: ../lib/Schulkonsole/Error.pm:293
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:135
 msgid "Erwarte 1 oder 0 fuer do_copy"
 msgstr "Expect 1 or 0 for do_copy"
 
-#: ../lib/Schulkonsole/Error.pm:326
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:167
 msgid "Erwarte 1 oder 0 fuer do_create"
 msgstr "Expect 1 or 0 for do_create"
 
-#: ../lib/Schulkonsole/Error.pm:338
-msgid "Erwarte 1 oder 0 fuer is_example"
-msgstr "Expect 1 or 0 for is_example"
-
-#: ../lib/Schulkonsole/Error.pm:316
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:157
 msgid "Erwarte 1 oder 0 fuer is_groups"
 msgstr "Expect 1 or 0 for is_groups"
 
-#: ../lib/Schulkonsole/Error.pm:359
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:185
 msgid "Erwarte 1 oder 0 fuer is_open"
 msgstr "Expect 1 or 0 for is_open"
 
-#: ../lib/Schulkonsole/Error.pm:318
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:159
 msgid "Erwarte 1 oder 0 fuer is_public"
 msgstr "Expect 1 or 0 for is_public"
 
-#: ../lib/Schulkonsole/Error.pm:320
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:161
 msgid "Erwarte 1 oder 0 fuer is_upload"
 msgstr "Expect 1 or 0 for is_upload"
 
-#: ../lib/Schulkonsole/Error.pm:367
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:193
 msgid "Erwarte 1,2 oder 3 fuer action"
 msgstr "Expect  1, 2 or 3 for scope"
 
-#: ../lib/Schulkonsole/Error.pm:369
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:195
 msgid "Erwarte Verzeichnis, fand Datei (oder umgekehrt)"
 msgstr "Expected directory, found file (or the other way round)"
 
-#: ../lib/Schulkonsole/Error.pm:295
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:137
 msgid "Erwarte numerische Angabe fuer \"from\""
 msgstr "Expect numeric designation for \"from\""
 
-#: ../lib/Schulkonsole/Error.pm:297
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:139
 msgid "Erwarte numerische Angabe fuer \"type\""
 msgstr "Expect numeric designation for \"type\""
 
@@ -2404,7 +2388,7 @@ msgstr ""
 "Not all host entries were applied to the system.Please check the <a href="
 "\"hosts\">Host's list</a>."
 
-#: ../lib/Schulkonsole/Error.pm:145
+#: ../lib/Schulkonsole/Error/Error.pm:138
 msgid "Execute fehlgeschlagen"
 msgstr "Execute failed"
 
@@ -2424,6 +2408,11 @@ msgstr "Maintain extra lists"
 msgid "Extraschüler editieren"
 msgstr "Edit extra students"
 
+#: ../lib/Schulkonsole/Error/Error.pm:158
+#, fuzzy
+msgid "Falscher Programmaufruf"
+msgstr "Unexpected program output"
+
 #: ../src/cgi-bin/class_passwords:126 ../src/cgi-bin/class_passwords:146
 #: ../src/cgi-bin/project_passwords:160 ../src/cgi-bin/project_passwords:180
 #: ../src/cgi-bin/user_print:211 ../src/cgi-bin/user_teacherpasswords:72
@@ -2435,17 +2424,13 @@ msgstr "Error in the production of the document"
 msgid "Fehler bei der Zertifikatserstellung."
 msgstr "Error during the creation of the certificate."
 
-#: ../lib/Schulkonsole/Error.pm:141
+#: ../lib/Schulkonsole/Error/Error.pm:134
 msgid "Fehler im Hintergrundprozess"
 msgstr "Error in background process"
 
-#: ../lib/Schulkonsole/Error.pm:137
+#: ../lib/Schulkonsole/Error/Error.pm:132
 msgid "Fehler im Hintergrundprozess: "
 msgstr "Error in background process: "
-
-#: ../lib/Schulkonsole/Error.pm:139
-msgid "Fehler in der Konfiguration"
-msgstr "Error in configuration"
 
 #: ../shtml/user_teachers.tt:54
 msgid "Fehler korrigieren"
@@ -2483,7 +2468,7 @@ msgstr "Hard drive quota"
 msgid "Festplattenquota:"
 msgstr "Hard drive quota:"
 
-#: ../lib/Schulkonsole/Error.pm:147
+#: ../lib/Schulkonsole/Error/Error.pm:140
 msgid "Fetch fehlgeschlagen"
 msgstr "Fetch failed"
 
@@ -2491,7 +2476,7 @@ msgstr "Fetch failed"
 msgid "Folgende Benutzer werden automatisch entfernt:"
 msgstr "The following users are being automatically deleted:"
 
-#: ../lib/Schulkonsole/Error.pm:261
+#: ../lib/Schulkonsole/Error/Error.pm:182
 msgid "Fork nicht moeglich"
 msgstr "Fork not possible"
 
@@ -2508,10 +2493,6 @@ msgstr "for %s multiple extended partitions do exist"
 #, perl-format
 msgid "Für Benutzer %s gibt es bereits einen Eintrag"
 msgstr "There is already an entry for user %s"
-
-#: ../lib/Schulkonsole/Error.pm:135
-msgid "Für Diskquota müssen alle oder keine Felder ausgefüllt sein"
-msgstr "For disk quota, you must fill out all or none of the fields"
 
 #: ../lib/Schulkonsole/Linbo.pm:1215
 #, perl-format
@@ -2803,7 +2784,7 @@ msgstr "K"
 msgid "Kann Datei %s nicht öffnen"
 msgstr "can not open file %s"
 
-#: ../lib/Schulkonsole/Error.pm:158
+#: ../lib/Schulkonsole/Error/Error.pm:148
 msgid "Kann Datei nicht oeffnen"
 msgstr "can not open file"
 
@@ -2811,10 +2792,6 @@ msgstr "can not open file"
 #: ../src/cgi-bin/user_commit:168 ../src/cgi-bin/user_commit:204
 msgid "Kann Logdatei nicht öffnen"
 msgstr "Can not open log file"
-
-#: ../lib/Schulkonsole/Error.pm:264
-msgid "Kann printers.conf nicht oeffnen"
-msgstr "Can not open printers.conf"
 
 #: ../src/cgi-bin/class_passwords:331 ../src/cgi-bin/project_passwords:373
 #: ../src/cgi-bin/user_teacherpasswords:167
@@ -2825,7 +2802,7 @@ msgstr "No password entered"
 msgid "Kein Workstationpasswort angegeben."
 msgstr "No work station password entered."
 
-#: ../lib/Schulkonsole/Error.pm:283
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:125
 msgid "Keine Benutzer"
 msgstr "No users"
 
@@ -2839,7 +2816,7 @@ msgstr "No users"
 msgid "Keine Benutzer ausgewählt"
 msgstr "No users selected"
 
-#: ../lib/Schulkonsole/Error.pm:287
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:129
 msgid "Keine Benutzer-IDs"
 msgstr "No User IDs"
 
@@ -2851,10 +2828,6 @@ msgstr "No files"
 msgid "Keine Druckaufträge"
 msgstr "No print jobs"
 
-#: ../lib/Schulkonsole/Error.pm:268
-msgid "Keine Drucker"
-msgstr "No Printers"
-
 #: ../src/cgi-bin/linbo_new:145
 msgid "Keine Festplattengröße angegeben"
 msgstr "No hard drive size entered"
@@ -2862,10 +2835,6 @@ msgstr "No hard drive size entered"
 #: ../src/cgi-bin/linbo_new:65
 msgid "Keine Gruppe ausgewählt"
 msgstr "No group selected"
-
-#: ../lib/Schulkonsole/Error.pm:244
-msgid "Keine Hosts"
-msgstr "No Hosts"
 
 #: ../shtml/myprojects.tt:26
 msgid "Keine Projekte gefunden."
@@ -2879,7 +2848,7 @@ msgstr "No quota"
 msgid "Keine Templates vorhanden."
 msgstr "No templates are available."
 
-#: ../lib/Schulkonsole/Error.pm:153
+#: ../lib/Schulkonsole/Error/Error.pm:146
 msgid "Keine Workstationbenutzer"
 msgstr "No workstation user"
 
@@ -2940,10 +2909,6 @@ msgstr "Class %s unknown"
 #: ../shtml/myclass_tocollect.tt:9
 msgid "Klasse unbekannt"
 msgstr "Class unknown"
-
-#: ../lib/Schulkonsole/Error.pm:133
-msgid "Klasse/Projekt ist unbekannt"
-msgstr "Class / Project %s unknown"
 
 #: ../shtml/class.tt:1 ../shtml/class.tt:27 ../shtml/class_collect.tt:1
 #: ../shtml/class_collect.tt:27 ../shtml/class_handout.tt:1
@@ -3050,11 +3015,11 @@ msgstr "Configuration file copied"
 msgid "Konfigurationsdateien editieren"
 msgstr "Edit configuration files"
 
-#: ../lib/Schulkonsole/Error.pm:351
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:177
 msgid "Konnte Berechtigung nicht aendern"
 msgstr "Could not change authorization"
 
-#: ../lib/Schulkonsole/Error.pm:365
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:191
 msgid "Konnte Datei nicht finden"
 msgstr "can not open file"
 
@@ -3480,7 +3445,7 @@ msgstr "Enter the new password"
 msgid "Neues Passwort ist zu schwach: "
 msgstr "New password is too weak:"
 
-#: ../lib/Schulkonsole/Error.pm:129 ../src/cgi-bin/start:288
+#: ../src/cgi-bin/start:288
 msgid "Neues Passwort nicht richtig wiederholt"
 msgstr "New password not properly repeated"
 
@@ -3500,11 +3465,11 @@ msgstr "Add new system"
 msgid "Nicht alle angegebenen Befehle sind gültig."
 msgstr "not all supplied commands are valid."
 
-#: ../lib/Schulkonsole/Error.pm:189
+#: ../lib/Schulkonsole/Error/Error.pm:164
 msgid "Nicht autorisierter Aufrufer"
 msgstr "Unauthorized caller"
 
-#: ../lib/Schulkonsole/Error.pm:238
+#: ../lib/Schulkonsole/Error/Error.pm:178
 msgid "Nicht autorisierter Aufrufer nach ID"
 msgstr "Unauthorized caller according to ID"
 
@@ -3723,7 +3688,7 @@ msgstr "Path to kernel"
 msgid "Platz"
 msgstr "room"
 
-#: ../lib/Schulkonsole/Error.pm:143
+#: ../lib/Schulkonsole/Error/Error.pm:136
 msgid "Prepare fehlgeschlagen"
 msgstr "Prepare failed"
 
@@ -3732,11 +3697,11 @@ msgstr "Prepare failed"
 msgid "Private Mail-Adresse"
 msgstr "No MAC address"
 
-#: ../lib/Schulkonsole/Error.pm:230
+#: ../lib/Schulkonsole/Error/Error.pm:176
 msgid "Programm-ID unbekannt"
 msgstr "Program ID unknown"
 
-#: ../lib/Schulkonsole/Error.pm:177
+#: ../lib/Schulkonsole/Error/Error.pm:162
 msgid "Programmaufruf fehlgeschlagen"
 msgstr "Program call failed"
 
@@ -3828,7 +3793,7 @@ msgstr "Project management"
 msgid "Projektname"
 msgstr "Project name"
 
-#: ../lib/Schulkonsole/Error.pm:347
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:173
 msgid "Prozess laeuft schon"
 msgstr "Process is running already"
 
@@ -3856,10 +3821,6 @@ msgstr "Quota is not activated."
 msgid "Raum"
 msgstr "Room"
 
-#: ../lib/Schulkonsole/Error.pm:131
-msgid "Raum ist unbekannt"
-msgstr "Room is unknown"
-
 #: ../shtml/page.tt:72 ../shtml/status.inc.tt:13
 msgid "Raum:"
 msgstr "Room:"
@@ -3867,14 +3828,6 @@ msgstr "Room:"
 #: ../shtml/rooms_classrooms.tt:30
 msgid "Raumbezeichnung"
 msgstr "Room designation"
-
-#: ../lib/Schulkonsole/Error.pm:254
-msgid "Raumdatei kann nicht gelesen werden"
-msgstr "Can not read room file"
-
-#: ../lib/Schulkonsole/Error.pm:252
-msgid "Raumdatei kann nicht geschrieben werden"
-msgstr "Can not write room file"
 
 #: ../shtml/linbo_remote.tt:88 ../shtml/printers.tt:25
 msgid "Rechner"
@@ -4145,11 +4098,11 @@ msgstr "Duration of session"
 msgid "Sitzungsdauer:"
 msgstr "Duration of session:"
 
-#: ../lib/Schulkonsole/Error.pm:200
+#: ../lib/Schulkonsole/Error/Error.pm:170
 msgid "Skript nicht vorhanden"
 msgstr "Script not available"
 
-#: ../lib/Schulkonsole/Error.pm:212
+#: ../lib/Schulkonsole/Error/Error.pm:172
 msgid "Skriptaufruf fehlgeschlagen"
 msgstr "Script call failed"
 
@@ -4311,11 +4264,11 @@ msgstr "U"
 msgid "Uhr"
 msgstr "Clock"
 
-#: ../lib/Schulkonsole/Error.pm:149
+#: ../lib/Schulkonsole/Error/Error.pm:142
 msgid "Unbekannte Passwortverschluesselung"
 msgstr "Unknown password encryption"
 
-#: ../lib/Schulkonsole/Error.pm:383
+#: ../lib/Schulkonsole/Error/Error.pm:186
 msgid "Unbekannter Fehler "
 msgstr "Unknown Error"
 
@@ -4333,128 +4286,77 @@ msgstr "Unknown Error for %s at %s on %s"
 msgid "Unbekannter Festplattencontroller"
 msgstr "Unknown hard drive controller"
 
+#: ../lib/Schulkonsole/Error/Error.pm:160
+#, fuzzy
+msgid "Unbekannter Programmaufruf"
+msgstr "Unexpected program output"
+
 #: ../src/cgi-bin/linbo_new:139
 #, fuzzy
 msgid "Unbekannter Systemtyp"
 msgstr "Unknown Error"
 
-#: ../lib/Schulkonsole/Error.pm:276
-msgid "Unerwartete Programmausgabe"
-msgstr "Unexpected program output"
-
-#: ../lib/Schulkonsole/Error.pm:285
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:127
 msgid "Ungueltige Benutzer-ID"
 msgstr "Invalid user ID"
 
-#: ../lib/Schulkonsole/Error.pm:274
-msgid "Ungueltige Daten fuer Druckquota"
-msgstr "Invalid data for printing quota"
-
-#: ../lib/Schulkonsole/Error.pm:272
-msgid "Ungueltige Daten fuer genutzte Druckquota"
-msgstr "Invalid data for used printing quota"
-
-#: ../lib/Schulkonsole/Error.pm:303
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:145
 msgid "Ungueltige Klassen-GID"
 msgstr "Invalid class GID"
 
-#: ../lib/Schulkonsole/Error.pm:246
-msgid "Ungueltige Raumbezeichnung"
-msgstr "Invalid room designation"
-
-#: ../lib/Schulkonsole/Error.pm:240
+#: ../lib/Schulkonsole/Error/Error.pm:180
 msgid "Ungueltige Session-ID"
 msgstr "Invalid session ID"
 
-#: ../lib/Schulkonsole/Error.pm:305
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:147
 msgid "Ungueltige Subklasse"
 msgstr "Invalid subclass"
 
-#: ../lib/Schulkonsole/Error.pm:250
-msgid "Ungueltige Zeitangabe fuer Unterrichtsende"
-msgstr "Invalid time designation for end of lesson"
-
-#: ../lib/Schulkonsole/Error.pm:280
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:123
 msgid "Ungueltiger Benutzer"
 msgstr "Invalid user"
 
-#: ../lib/Schulkonsole/Error.pm:336
-msgid "Ungueltiger Dateiname"
-msgstr "Invalid file name"
-
-#: ../lib/Schulkonsole/Error.pm:375
-msgid "Ungueltiger Debconf-Bereich"
-msgstr "Invalid debconf section"
-
-#: ../lib/Schulkonsole/Error.pm:377
-msgid "Ungueltiger Debconf-Name"
-msgstr "Invalid debconf name"
-
-#: ../lib/Schulkonsole/Error.pm:266
-msgid "Ungueltiger Druckername"
-msgstr "Invalid printer name"
-
-#: ../lib/Schulkonsole/Error.pm:270
-msgid "Ungueltiger Druckernutzer"
-msgstr "Invalid printer user"
-
-#: ../lib/Schulkonsole/Error.pm:334
-msgid "Ungueltiger Gruppenname"
-msgstr "Invalid group name"
-
-#: ../lib/Schulkonsole/Error.pm:242
-msgid "Ungueltiger Host"
-msgstr "Invalid host"
-
-#: ../lib/Schulkonsole/Error.pm:340
-msgid "Ungueltiger Image-Dateiname"
-msgstr "Invalid image file name"
-
-#: ../lib/Schulkonsole/Error.pm:248
-msgid "Ungueltiger Modus fuer Unterricht"
-msgstr "Invalid mode for lesson"
-
-#: ../lib/Schulkonsole/Error.pm:299
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:141
 msgid "Ungueltiger Raum"
 msgstr "Invalid room"
 
-#: ../lib/Schulkonsole/Error.pm:291
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:133
 msgid "Ungueltiger Raumbezeichner"
 msgstr "Invalid room designation"
 
-#: ../lib/Schulkonsole/Error.pm:363
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:189
 msgid "Ungueltiger Wert fuer Dateiname"
 msgstr "Invalid file name"
 
-#: ../lib/Schulkonsole/Error.pm:355
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:181
 msgid "Ungueltiger Wert fuer diskquota"
 msgstr "Invalid value for disk quota"
 
-#: ../lib/Schulkonsole/Error.pm:328
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:169
 msgid "Ungueltiger Wert fuer longname"
 msgstr "Invalid value for longname"
 
-#: ../lib/Schulkonsole/Error.pm:357
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:183
 msgid "Ungueltiger Wert fuer mailquota"
 msgstr "Invalid value for mail quota"
 
-#: ../lib/Schulkonsole/Error.pm:345
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:171
 msgid "Ungueltiger Wert fuer number"
 msgstr "Invalid value for number"
 
-#: ../lib/Schulkonsole/Error.pm:314
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:155
 msgid "Ungueltiger Wert fuer password"
 msgstr "Invalid value for password"
 
-#: ../lib/Schulkonsole/Error.pm:322
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:163
 msgid "Ungueltiger Wert fuer projectgid"
 msgstr "Invalid value for projectgid"
 
-#: ../lib/Schulkonsole/Error.pm:361
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:187
 msgid "Ungueltiger Wert, action sollte eine Zahl sein"
 msgstr "invalid value, action needs to be a number"
 
-#: ../lib/Schulkonsole/Error.pm:301
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:143
 msgid "Ungueltiges Projekt"
 msgstr "Invalid project"
 
@@ -4558,7 +4460,7 @@ msgstr "Directory for distributed files not found"
 msgid "Verzeichnis für bereitgestellte Dateien nicht gefunden"
 msgstr "Directory for distributed templates not found"
 
-#: ../lib/Schulkonsole/Error.pm:289
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:131
 msgid "Verzeichnis nicht gefunden"
 msgstr "Directory not found"
 
@@ -4626,11 +4528,11 @@ msgstr "Web filter"
 msgid "Webspace"
 msgstr "Web space"
 
-#: ../lib/Schulkonsole/Error.pm:193
+#: ../lib/Schulkonsole/Error/Error.pm:166
 msgid "Wechsel zu diesem Benutzer nicht erlaubt"
 msgstr "Changes to this user not allowed"
 
-#: ../lib/Schulkonsole/Error.pm:196
+#: ../lib/Schulkonsole/Error/Error.pm:168
 msgid "Wechsel zu diesem Benutzer nicht moeglich"
 msgstr "Changes to this user not possible"
 
@@ -4671,7 +4573,7 @@ msgstr "Work station password changed."
 msgid "Workstations werden importiert"
 msgstr "Work stations are being imported"
 
-#: ../lib/Schulkonsole/Error.pm:162
+#: ../lib/Schulkonsole/Error/Error.pm:152
 msgid "Wrapperaufruf fehlgeschlagen"
 msgstr "Wrapper call failed"
 
@@ -4754,10 +4656,6 @@ msgstr "expired"
 msgid "abgewählt"
 msgstr "Deselected"
 
-#: ../lib/Schulkonsole/Error.pm:342
-msgid "action muss 0, 1 oder 2 sein"
-msgstr "action must be 0, 1 or 2"
-
 #: ../shtml/page.tt:82 ../shtml/status.inc.tt:23
 msgid "aktive Klasse:"
 msgstr "active class:"
@@ -4765,6 +4663,11 @@ msgstr "active class:"
 #: ../shtml/page.tt:85
 msgid "aktives Projekt:"
 msgstr "current project:"
+
+#: ../shtml/busy.inc.tt:9
+#, fuzzy
+msgid "aktualisieren"
+msgstr "Update"
 
 #: ../shtml/myroom.tt:1 ../shtml/room.tt:1 ../shtml/room_collect.tt:1
 #: ../shtml/room_end_lesson_verify.tt:1 ../shtml/room_handout.tt:1
@@ -4799,6 +4702,11 @@ msgstr "on next boot"
 #: ../shtml/room_test_handout.tt:76
 msgid "bereitstellen"
 msgstr "supply"
+
+#: ../shtml/busy.inc.tt:4
+#, fuzzy
+msgid "beschäftigt..."
+msgstr "Delete is running."
 
 #: ../shtml/project_addmembers.tt:141 ../shtml/project_members.tt:52
 msgid "class"
@@ -4859,7 +4767,7 @@ msgstr "is in the class"
 msgid "kein Betriebssystem automatisch starten"
 msgstr "Do not start any operating system automatically"
 
-#: ../lib/Schulkonsole/Error.pm:125
+#: ../lib/Schulkonsole/Error/Error.pm:128
 msgid "kein Fehler"
 msgstr "No Error"
 
@@ -4921,7 +4829,7 @@ msgstr "again"
 msgid "none"
 msgstr "none"
 
-#: ../lib/Schulkonsole/Error.pm:278
+#: ../lib/Schulkonsole/Error/SophomorixError.pm:121
 msgid "on muss 1 oder 0 sein"
 msgstr "on must be 1 or 0"
 
@@ -5091,10 +4999,6 @@ msgstr "white"
 #: ../shtml/linbo_postsyncedit.tt:16 ../shtml/linbo_regpatchedit.tt:17
 msgid "wirklich löschen?"
 msgstr "Are you sure you want to delete?"
-
-#: ../lib/Schulkonsole/Error.pm:332
-msgid "wrapper-cyrus gehoert nicht Benutzer \"cyrus\" oder SUID nicht gesetzt"
-msgstr "wrapper-cyrus does not belong to \"cyrus\" or SUID not set"
 
 #: ../shtml/user_teachin.tt:31 ../shtml/user_teachin.tt:33
 #: ../shtml/user_teachin.tt:84 ../shtml/user_teachin.tt:86
@@ -5442,6 +5346,9 @@ msgstr "overwrite?"
 #~ "End the teach in session, when you have checked\n"
 #~ "all pages."
 
+#~ msgid "Benutzer \"cyrus\" gibt es nicht"
+#~ msgstr "User \"cyrus\" does not exist"
+
 #~ msgid "Benutzer anlegen/versetzen/l&ouml;schen"
 #~ msgstr "Create/move/delete user"
 
@@ -5492,6 +5399,9 @@ msgstr "overwrite?"
 #~ "Afterwards, carry out further data maintenance with\n"
 #~ "this page."
 
+#~ msgid "Dieser Bereich/Name darf nicht abgefragt werden"
+#~ msgstr "This section / name could not be queried."
+
 #~ msgid "Druckauftr&auml;ge l&ouml;schen"
 #~ msgstr "Delete print jobs"
 
@@ -5526,6 +5436,12 @@ msgstr "overwrite?"
 #~ msgstr ""
 #~ "Figures allowed for the short name of a new project are a-z and\n"
 #~ "0-9 as well as _ and -. The name must be between 3 and 14 figures long."
+
+#~ msgid "Erwarte 0 oder 1 fuer scope"
+#~ msgstr "Expect 0 or 1 for scope"
+
+#~ msgid "Erwarte 1 oder 0 fuer is_example"
+#~ msgstr "Expect 1 or 0 for is_example"
 
 #~ msgid ""
 #~ "Erwarte Zahl gr&ouml;&szlig;er gleich 1 bei Anzahl der vorgehaltenen "
@@ -5592,9 +5508,15 @@ msgstr "overwrite?"
 #~ "can update the view with the button &#8222;Check login status &uuml;"
 #~ "berpr&uuml;fen&#8220;."
 
+#~ msgid "Fehler in der Konfiguration"
+#~ msgstr "Error in configuration"
+
 #, fuzzy
 #~ msgid "Firewall-Einstellungen sichern?"
 #~ msgstr "Save IPCop settings?"
+
+#~ msgid "Für Diskquota müssen alle oder keine Felder ausgefüllt sein"
+#~ msgstr "For disk quota, you must fill out all or none of the fields"
 
 #~ msgid "Geben Sie eine g&uuml;ltige 4-stellige Jahreszahl ein"
 #~ msgstr "Enter a valid 4-figure year"
@@ -5708,6 +5630,9 @@ msgstr "overwrite?"
 #~ msgid "Kann Logdatei nicht &ouml;ffnen"
 #~ msgstr "Can not open log file"
 
+#~ msgid "Kann printers.conf nicht oeffnen"
+#~ msgstr "Can not open printers.conf"
+
 #~ msgid "Keine &Auml;nderungen."
 #~ msgstr "No changes."
 
@@ -5716,6 +5641,15 @@ msgstr "overwrite?"
 
 #~ msgid "Keine Druckauftr&auml;ge"
 #~ msgstr "No print jobs"
+
+#~ msgid "Keine Drucker"
+#~ msgstr "No Printers"
+
+#~ msgid "Keine Hosts"
+#~ msgstr "No Hosts"
+
+#~ msgid "Klasse/Projekt ist unbekannt"
+#~ msgstr "Class / Project %s unknown"
 
 #~ msgid "Klassenarbeit"
 #~ msgstr "Exam"
@@ -5853,6 +5787,15 @@ msgstr "overwrite?"
 
 #~ msgid "R&auml;ume"
 #~ msgstr "Rooms"
+
+#~ msgid "Raum ist unbekannt"
+#~ msgstr "Room is unknown"
+
+#~ msgid "Raumdatei kann nicht gelesen werden"
+#~ msgstr "Can not read room file"
+
+#~ msgid "Raumdatei kann nicht geschrieben werden"
+#~ msgstr "Can not write room file"
 
 #~ msgid "Registrypatch editieren"
 #~ msgstr "Edit registry patch"
@@ -6125,8 +6068,47 @@ msgstr "overwrite?"
 #~ msgid "Ung&uuml;ltiger Gruppenname"
 #~ msgstr "Invalid group name"
 
+#~ msgid "Ungueltige Daten fuer Druckquota"
+#~ msgstr "Invalid data for printing quota"
+
+#~ msgid "Ungueltige Daten fuer genutzte Druckquota"
+#~ msgstr "Invalid data for used printing quota"
+
 #~ msgid "Ungueltige MAC-Adresse"
 #~ msgstr "Invalid MAC address"
+
+#~ msgid "Ungueltige Raumbezeichnung"
+#~ msgstr "Invalid room designation"
+
+#~ msgid "Ungueltige Zeitangabe fuer Unterrichtsende"
+#~ msgstr "Invalid time designation for end of lesson"
+
+#~ msgid "Ungueltiger Dateiname"
+#~ msgstr "Invalid file name"
+
+#~ msgid "Ungueltiger Debconf-Bereich"
+#~ msgstr "Invalid debconf section"
+
+#~ msgid "Ungueltiger Debconf-Name"
+#~ msgstr "Invalid debconf name"
+
+#~ msgid "Ungueltiger Druckername"
+#~ msgstr "Invalid printer name"
+
+#~ msgid "Ungueltiger Druckernutzer"
+#~ msgstr "Invalid printer user"
+
+#~ msgid "Ungueltiger Gruppenname"
+#~ msgstr "Invalid group name"
+
+#~ msgid "Ungueltiger Host"
+#~ msgstr "Invalid host"
+
+#~ msgid "Ungueltiger Image-Dateiname"
+#~ msgstr "Invalid image file name"
+
+#~ msgid "Ungueltiger Modus fuer Unterricht"
+#~ msgstr "Invalid mode for lesson"
 
 #~ msgid ""
 #~ "Unter &#8222;Administrator-Report&#8220; erhalten Sie ein Protokoll des "
@@ -6328,6 +6310,9 @@ msgstr "overwrite?"
 #~ msgid "__Report-Msgid-Bugs-To"
 #~ msgstr "fschuett@gymnasium-himmelsthuer.de"
 
+#~ msgid "action muss 0, 1 oder 2 sein"
+#~ msgstr "action must be 0, 1 or 2"
+
 #~ msgid "activateglobalshares"
 #~ msgstr "activateglobalshares"
 
@@ -6360,6 +6345,10 @@ msgstr "overwrite?"
 
 #~ msgid "swap"
 #~ msgstr "swap"
+
+#~ msgid ""
+#~ "wrapper-cyrus gehoert nicht Benutzer \"cyrus\" oder SUID nicht gesetzt"
+#~ msgstr "wrapper-cyrus does not belong to \"cyrus\" or SUID not set"
 
 #~ msgid "zur&uuml;ck"
 #~ msgstr "return"
