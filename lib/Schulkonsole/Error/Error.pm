@@ -8,7 +8,7 @@ if ($@) {
 	require Schulkonsole::Gettext;
 }
 
-package Schulkonsole::Error;
+package Schulkonsole::Error::Error;
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 $VERSION = 0.06;
@@ -20,15 +20,11 @@ $VERSION = 0.06;
 
 	OK
 	USER_AUTHENTICATION_FAILED
-	USER_PASSWORD_MISMATCH
-	UNKNOWN_ROOM
-	UNKNOWN_GROUP
-	QUOTA_NOT_ALL_MOUNTPOINTS
 	PUBLIC_BG_ERROR
-	INTERNAL_BG_ERROR
 	DB_PREPARE_FAILED
 	DB_EXECUTE_FAILED
 	DB_FETCH_FAILED
+	INTERNAL_BG_ERROR
 	UNKNOWN_PASSWORD_ENCRYPTION
 	DB_USER_DOES_NOT_EXIST
 	DB_NO_WORKSTATION_USERS
@@ -37,8 +33,20 @@ $VERSION = 0.06;
 	WRAPPER_EXEC_FAILED
 	WRAPPER_BROKEN_PIPE_OUT
 	WRAPPER_BROKEN_PIPE_IN
-	WRAPPER_WRONG,
-	WRAPPER_UNKNOWN,
+	WRAPPER_WRONG
+	WRAPPER_UNKNOWN
+	WRAPPER_PROGRAM_ERROR
+	WRAPPER_UNAUTHORIZED_UID
+	WRAPPER_INVALID_UID
+	WRAPPER_SETUID_FAILED
+	WRAPPER_INVALID_SCRIPT
+	WRAPPER_SCRIPT_EXEC_FAILED
+	WRAPPER_UNAUTHENTICATED_ID
+	WRAPPER_APP_ID_DOES_NOT_EXIST
+	WRAPPER_UNAUTHORIZED_ID
+	WRAPPER_INVALID_SESSION_ID
+	WRAPPER_CANNOT_FORK
+	NEXT_ERROR
 );
 
 # package constants
@@ -46,16 +54,8 @@ use constant {
 	OK => 0,
 
 	USER_AUTHENTICATION_FAILED  => 1,
-	USER_PASSWORD_MISMATCH => 2,
-
-
-	UNKNOWN_ROOM => 3,
-	UNKNOWN_GROUP => 4,
-
-	QUOTA_NOT_ALL_MOUNTPOINTS => 10,
 
 	PUBLIC_BG_ERROR => 20,
-
 
 	INTERNAL => 1000,
 	DB_PREPARE_FAILED => 1001,
@@ -76,6 +76,20 @@ use constant {
 	WRAPPER_BROKEN_PIPE_IN => 3003,
 	WRAPPER_WRONG => 3004,
 	WRAPPER_UNKNOWN => 3005,
+
+	WRAPPER_PROGRAM_ERROR => 3010,
+	WRAPPER_UNAUTHORIZED_UID => 3011,
+	WRAPPER_INVALID_UID => 3012,
+	WRAPPER_SETUID_FAILED => 3013,
+	WRAPPER_INVALID_SCRIPT => 3014,
+	WRAPPER_SCRIPT_EXEC_FAILED => 3015,
+	WRAPPER_UNAUTHENTICATED_ID => 3016,
+	WRAPPER_APP_ID_DOES_NOT_EXIST => 3017,
+	WRAPPER_UNAUTHORIZED_ID => 3018,
+	WRAPPER_INVALID_SESSION_ID => 3019,
+	WRAPPER_CANNOT_FORK => 3020,
+	
+	NEXT_ERROR => 4000,
 };
 
 use overload
@@ -114,14 +128,6 @@ sub what {
 	$this->{code} == OK and return $this->{d}->get('kein Fehler');
 	$this->{code} == USER_AUTHENTICATION_FAILED
 		and return $this->{d}->get('Authentifizierung fehlgeschlagen');
-	$this->{code} == USER_PASSWORD_MISMATCH
-		and return $this->{d}->get('Neues Passwort nicht richtig wiederholt');
-	$this->{code} == UNKNOWN_ROOM
-		and return $this->{d}->get('Raum ist unbekannt');
-	$this->{code} == UNKNOWN_GROUP
-		and return $this->{d}->get('Klasse/Projekt ist unbekannt');
-	$this->{code} == QUOTA_NOT_ALL_MOUNTPOINTS
-		and return $this->{d}->get('Für Diskquota müssen alle oder keine Felder ausgefüllt sein');
 	$this->{code} == PUBLIC_BG_ERROR
 		and return $this->{d}->get('Fehler im Hintergrundprozess: ') . ${ $this->{info} }[0];
 	$this->{code} == INTERNAL_BG_ERROR
@@ -138,7 +144,7 @@ sub what {
 		and return $this->{d}->get('Benutzer existiert nicht');
 	$this->{code} == DB_NO_WORKSTATION_USERS
 		and return $this->{d}->get('Keine Workstationbenutzer');
-	(   $this->{code} == CANNOT_OPEN_FILE)
+	$this->{code} == CANNOT_OPEN_FILE
 		and return $this->{d}->get('Kann Datei nicht oeffnen');
 	$this->{code} == FILE_FORMAT_ERROR
 		and return $this->{d}->get('Datei hat falsches Format');
@@ -148,6 +154,32 @@ sub what {
 		and return $this->{d}->get('Datenuebertragung (schreiben) unterbrochen');
 	$this->{code} == WRAPPER_BROKEN_PIPE_IN
 		and return $this->{d}->get('Datenuebertragung (lesen) unterbrochen');
+	$this->{code} == WRAPPER_WRONG
+		and return $this->{d}->get('Falscher Programmaufruf');
+	$this->{code} == WRAPPER_UNKNOWN
+		and return $this->{d}->get('Unbekannter Programmaufruf');
+	$this->{code} == WRAPPER_PROGRAM_ERROR
+		and return $this->{d}->get('Programmaufruf fehlgeschlagen');
+	$this->{code} == WRAPPER_UNAUTHORIZED_UID
+		and return $this->{d}->get('Nicht autorisierter Aufrufer');
+	$this->{code} == WRAPPER_INVALID_UID
+		and return $this->{d}->get('Wechsel zu diesem Benutzer nicht erlaubt');
+	$this->{code} == WRAPPER_SETUID_FAILED
+		and return $this->{d}->get('Wechsel zu diesem Benutzer nicht moeglich');
+	$this->{code} == WRAPPER_INVALID_SCRIPT
+		and return $this->{d}->get('Skript nicht vorhanden');
+	$this->{code} == WRAPPER_SCRIPT_EXEC_FAILED
+		and return $this->{d}->get('Skriptaufruf fehlgeschlagen');
+	$this->{code} == WRAPPER_UNAUTHENTICATED_ID
+		and return $this->{d}->get('Authentifizierung fehlgeschlagen nach ID');
+	$this->{code} == WRAPPER_APP_ID_DOES_NOT_EXIST
+		and return $this->{d}->get('Programm-ID unbekannt');
+	$this->{code} == WRAPPER_UNAUTHORIZED_ID
+		and return $this->{d}->get('Nicht autorisierter Aufrufer nach ID');
+	$this->{code} == WRAPPER_INVALID_SESSION_ID
+		and return $this->{d}->get('Ungueltige Session-ID');
+	$this->{code} == WRAPPER_CANNOT_FORK
+		and return $this->{d}->get('Fork nicht moeglich');
 	$this->{what}
 		and return $this->{what};
 

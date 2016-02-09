@@ -38,6 +38,14 @@ messages: $(POFILES)
 # refresh the template from the source code
 template: $(TEMPLATE)
 
+POTFILES.tt.in:
+	find ../doc/lib/menus.d -type f |sort >POTFILES.tt.in
+	find ../shtml -name '*.tt' |sort >>POTFILES.tt.in
+
+POTFILES.perl.in:
+	find ../lib/Schulkonsole -name '*.pm.*' |sort >POTFILES.perl.in
+	find ../src/cgi-bin -not -name 'Makefile.*' |sort >>POTFILES.perl.in
+
 $(TEMPLATE): POTFILES.tt.in POTFILES.perl.in
 	$(XGETTEXTTT) --plugin tt2 --gnu-gettext --use-gettext-style \
 	--output=$(TEMPLATE) --files-from=POTFILES.tt.in
