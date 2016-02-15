@@ -7,6 +7,7 @@ nobase_dist_perllib_DATA = \
 	Encode.pm \
 	Error.pm \
 	ExternalError.pm \
+	Error/Sophomorix.pm \
 	Error/Error.pm \
 	Error/ExternalError.pm \
 	Error/Cyrus.pm \
