@@ -114,9 +114,9 @@ sub init {
 
 sub start {
 	my $this = shift;
-	$this->{out} = \*SCRIPTOUT;
-	$this->{in} = \*SCRIPTIN;
-	$this->{err} = \*SCRIPTIN;
+	use Symbol 'gensym';
+	$this->{err} = gensym;
+	$this->{in} = $this->{err};
 	
 	$this->{pid} = IPC::Open3::open3 $this->{out}, $this->{in}, $this->{err}, $this->{wrapper_command}
 		or die new $this->{errorclass}(
@@ -213,11 +213,11 @@ sub read {
 sub readfinal {
 	my $this = shift;
 	
-	$this->read();
+	my $ret = $this->read();
 	
 	$this->stop();
 	
-	return $this->{input_buffer};
+	return $ret;
 }
 
 sub closeout {

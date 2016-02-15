@@ -185,7 +185,7 @@ $VERSION = 0.05;
 
 
 my $wrapcmd = $Schulkonsole::Config::_wrapper_sophomorix;
-my $errorclass = Schulkonsole::Error::SophomorixError;
+my $errorclass = "Schulkonsole::Error::SophomorixError";
 
 =head2 Functions
 
@@ -1761,7 +1761,7 @@ sub ls_handedoutcopy_myprojects {
 	
 	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDEDOUTAPP,
 						$id, $password,
-						"1\n4\n$project\n",);
+						"1\n4\n$project\n", Schulkonsole::Wrapper::MODE_FILE);
 
 	my $compartment = new Safe;
 
@@ -4623,8 +4623,8 @@ sub ls_commits {
 	
 	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSCOMMITSAPP,
 						$id, $password);
-	my @ar = split($in,"\R");
-	
+	my @ar = split('\R', $in);
+
 	return \@ar;
 }
 
@@ -4672,7 +4672,7 @@ sub ls_commit {
 						$id, $password,
 						"$commit\n");
 
-	my @ar = split($in, "\R");
+	my @ar = split('\R', $in);
 
 	return \@ar;
 }
@@ -5742,7 +5742,7 @@ sub create_project {
 
 	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::PROJECTCREATEDROPAPP,
 		$id, $password,
-		"$project_gid\n1\n" . ($is_open ? 1 : 0)  "\n");
+		"$project_gid\n1\n" . ($is_open ? 1 : 0) . "\n");
 }
 
 
@@ -5802,7 +5802,7 @@ sub read_file {
 						$id, $password,
 						"$file_number\n");
 
-	my @re = split($in, "\R");
+	my @re = split('\R', $in);
 
 	return \@re;
 }
@@ -6547,7 +6547,7 @@ sub list_add {
 						"2\n");
 
 	my @re;
-	while (split($in, "\R")) {
+	while (split('\R', $in)) {
 		my ($group, $identifier) = split '::';
 		if (not $identifier) {
 			die new Schulkonsole::Error(Schulkonsole::Error::FILE_FORMAT_ERROR,
@@ -6605,7 +6605,7 @@ sub list_move {
 						"3\n");
 
 	my @re;
-	while (split($in, '\R')) {
+	while (split('\R', $in)) {
 		my ($login, $from, $to, $status) = split '::';
 		if (not $to) {
 			die new Schulkonsole::Error(Schulkonsole::Error::FILE_FORMAT_ERROR,
@@ -6665,7 +6665,7 @@ sub list_kill {
 						"4\n");
 
 	my @re;
-	while (split($in,'\R')) {
+	while (split('\R', $in)) {
 		my ($identifier, $login) = split '::';
 		if (not $login) {
 			die new Schulkonsole::Error(Schulkonsole::Error::FILE_FORMAT_ERROR,
@@ -6925,8 +6925,7 @@ sub teachin_check {
 						"0\n");
 
 	my $re = 0;
-	while (split($in, '\R')) {
-		$input_buffer .= $_;
+	while (split('\R', $in)) {
 		if (/^next::/) {
 			my @values = split '::';
 			if (@values > 5) {
@@ -6986,7 +6985,6 @@ sub teachin_list {
 
 	my %re;
 	while ($in) {
-		$input_buffer .= $_;
 		if (/^next::/) {
 			my (@values) = split '::';
 			shift @values;	# "next"
@@ -7502,7 +7500,7 @@ sub change_maillist_classes {
 
 	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::CHANGEMAILLISTCLASSAPP,
 		$id, $password,
-	    (@$create_maillist_classs ? join("\n", @$create_maillist_classs) . "\n\n" : "\n") 
+	    (@$create_maillist_classs ? join("\n", @$create_maillist_classs) . "\n\n" : "\n") .
 	    (@$remove_maillist_classs ? join("\n", @$remove_maillist_classs) . "\n\n" : "\n"));
 }
 
