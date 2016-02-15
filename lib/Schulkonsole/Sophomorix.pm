@@ -641,15 +641,9 @@ sub add_handout_class {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n0\n8\n$class\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
+						$id, $password,
+						"2\n0\n8\n$class\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 
 }
 
@@ -704,15 +698,9 @@ sub dl_handout_class {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n0\n8\n$class\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
+						$id, $password,
+						"3\n0\n8\n$class\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 
 }
 
@@ -762,15 +750,9 @@ sub rm_handout_class {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n0\n8\n$class\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
+						$id, $password,
+						"1\n0\n8\n$class\n$filename\n".($isdir?"1\n":"0\n"));
 
 }
 
@@ -815,21 +797,9 @@ sub ls_handout_class {
 	my $password = shift;
 	my $class = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n8\n$class\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDOUTAPP,
+						$id, $password,
+						"0\n8\n$class\n",1);
 
 	my $compartment = new Safe;
 
@@ -887,16 +857,9 @@ sub dl_handedout_myclass {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n0\n8\n$teacher\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n0\n8\n$teacher\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -945,16 +908,9 @@ sub dl_handedoutcopy_myclass {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n1\n8\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n1\n8\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -998,16 +954,9 @@ sub rm_handedout_myclass {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n0\n8\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"1\n0\n8\n$filename\n".($isdir?"1\n":"0\n"));
 }
 
 
@@ -1051,16 +1000,9 @@ sub rm_handedoutcopy_myclass {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n1\n8\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"1\n1\n8\n$filename\n".($isdir?"1\n":"0\n"));
 }
 
 
@@ -1104,21 +1046,9 @@ sub ls_handedout_myclass {
 	my $password = shift;
 	my $uid = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDEDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n8\n$uid\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDEDOUTAPP,
+						$id, $password,
+						"0\n8\n$uid\n",1);
 
 	my $compartment = new Safe;
 
@@ -1161,21 +1091,9 @@ sub ls_handedoutcopy_myclass {
 	my $id = shift;
 	my $password = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDEDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n8\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDEDOUTAPP,
+						$id, $password,
+						"1\n8\n",1);
 
 	my $compartment = new Safe;
 
@@ -1228,16 +1146,9 @@ sub add_myclass_tocollect {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n2\n8\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"2\n2\n8\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -1286,16 +1197,9 @@ sub dl_myclass_tocollect {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n2\n8\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n2\n8\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -1339,16 +1243,9 @@ sub rm_myclass_tocollect {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n2\n8\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"1\n2\n8\n$filename\n".($isdir?"1\n":"0\n"));
 }
 
 
@@ -1387,21 +1284,9 @@ sub ls_myclass_tocollect {
 	my $id = shift;
 	my $password = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDEDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n8\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDEDOUTAPP,
+						$id, $password,
+						"2\n8\n",1);
 
 	my $compartment = new Safe;
 
@@ -1459,16 +1344,9 @@ sub add_handout_project {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n0\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"2\n0\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -1522,16 +1400,9 @@ sub dl_handout_project {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n0\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n0\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -1580,16 +1451,9 @@ sub rm_handout_project {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n0\n4\n$project\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"1\n0\n4\n$project\n$filename\n".($isdir?"1\n":"0\n"));
 }
 
 
@@ -1633,21 +1497,9 @@ sub ls_handout_project {
 	my $password = shift;
 	my $project = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n4\n$project\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDOUTAPP,
+						$id, $password,
+						"0\n4\n$project\n",1);
 
 	my $compartment = new Safe;
 
@@ -1710,16 +1562,9 @@ sub dl_handedout_myprojects {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n0\n4\n$project\n$teacher\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n0\n4\n$project\n$teacher\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -1758,20 +1603,9 @@ sub ls_handedout_myprojects {
 	my $password = shift;
 	my $project = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDEDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n4\n$project\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDEDOUTAPP,
+						$id, $password,
+						"0\n4\n$project\n",1);
 
 	my $compartment = new Safe;
 
@@ -1829,16 +1663,9 @@ sub dl_handedoutcopy_myprojects {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n1\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n1\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -1891,16 +1718,9 @@ sub rm_handedoutcopy_myprojects {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n1\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"1\n1\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -1939,21 +1759,9 @@ sub ls_handedoutcopy_myprojects {
 	my $password = shift;
 	my $project = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDEDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n4\n$project\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDEDOUTAPP,
+						$id, $password,
+						"1\n4\n$project\n",);
 
 	my $compartment = new Safe;
 
@@ -2006,16 +1814,9 @@ sub add_handoutcopy_current_room {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n1\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"2\n1\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -2064,16 +1865,9 @@ sub dl_handoutcopy_current_room {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n1\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n1\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -2117,16 +1911,9 @@ sub rm_handoutcopy_current_room {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n1\n1\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"1\n1\n1\n$filename\n".($isdir?"1\n":"0\n"));
 }
 
 
@@ -2165,21 +1952,9 @@ sub ls_handoutcopy_current_room {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n1\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDOUTAPP,
+						$id, $password,
+						"1\n1\n",1);
 
 	my $compartment = new Safe;
 
@@ -2232,16 +2007,9 @@ sub dl_myroom_handedoutcopy {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n1\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n1\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -2285,16 +2053,9 @@ sub rm_myroom_handedoutcopy {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n1\n1\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"1\n1\n1\n$filename\n".($isdir?"1\n":"0\n"));
 }
 
 
@@ -2333,21 +2094,9 @@ sub ls_myroom_handedoutcopy {
 	my $id = shift;
 	my $password = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDEDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n1\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDEDOUTAPP,
+						$id, $password,
+						"1\n1\n",1);
 
 	my $compartment = new Safe;
 
@@ -2400,16 +2149,9 @@ sub add_myroom_tocollect {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n2\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"2\n2\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -2458,16 +2200,9 @@ sub dl_myroom_tocollect {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n2\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n2\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -2511,16 +2246,9 @@ sub rm_myroom_tocollect {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n2\n1\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"1\n2\n1\n$filename\n".($isdir?"1\n":"0\n"));
 }
 
 
@@ -2559,21 +2287,9 @@ sub ls_myroom_tocollect {
 	my $id = shift;
 	my $password = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDEDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n1\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDEDOUTAPP,
+						$id, $password,
+						"2\n1\n",1);
 
 	my $compartment = new Safe;
 
@@ -2631,16 +2347,9 @@ sub add_handoutcopy_class {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n1\n8\n$class\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"2\n1\n8\n$class\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -2694,16 +2403,9 @@ sub dl_handoutcopy_class {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n1\n8\n$class\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n1\n8\n$class\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -2752,16 +2454,9 @@ sub rm_handoutcopy_class {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n1\n8\n$class\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"1\n1\n8\n$class\n$filename\n".($isdir?"1\n":"0\n"));
 }
 
 
@@ -2805,21 +2500,9 @@ sub ls_handoutcopy_class {
 	my $password = shift;
 	my $class = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n8\n$class\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDOUTAPP,
+						$id, $password,
+						"1\n8\n$class\n",1);
 
 	my $compartment = new Safe;
 
@@ -2877,16 +2560,9 @@ sub add_handoutcopy_project {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n1\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"2\n1\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -2940,16 +2616,9 @@ sub dl_handoutcopy_project {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n1\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n1\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -2998,16 +2667,9 @@ sub rm_handoutcopy_project {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n1\n4\n$project\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"1\n1\n4\n$project\n$filename\n".($isdir?"1\n":"0\n"));
 }
 
 
@@ -3051,21 +2713,9 @@ sub ls_handoutcopy_project {
 	my $password = shift;
 	my $project = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n4\n$project\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDOUTAPP,
+						$id, $password,
+						"1\n4\n$project\n",1);
 
 	my $compartment = new Safe;
 
@@ -3123,16 +2773,9 @@ sub dl_collected_class {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n2\n8\n$class\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n2\n8\n$class\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -3181,16 +2824,9 @@ sub rm_collected_class {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n2\n8\n$class\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"1\n2\n8\n$class\n$filename\n".($isdir?"1\n":"0\n"));
 }
 
 
@@ -3233,21 +2869,9 @@ sub ls_collected_class {
 	my $password = shift;
 	my $class = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n8\n$class\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDOUTAPP,
+						$id, $password,
+						"2\n8\n$class\n",1);
 
 	my $compartment = new Safe;
 
@@ -3305,16 +2929,9 @@ sub dl_collected_project {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n2\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n2\n4\n$project\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -3363,16 +2980,9 @@ sub rm_collected_project {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n2\n4\n$project\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"1\n2\n4\n$project\n$filename\n".($isdir?"1\n":"0\n"));
 }
 
 
@@ -3415,21 +3025,9 @@ sub ls_collected_project {
 	my $password = shift;
 	my $project = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n4\n$project\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDOUTAPP,
+						$id, $password,
+						"2\n4\n$project\n",1);
 
 	my $compartment = new Safe;
 
@@ -3482,16 +3080,9 @@ sub add_myprojects_tocollect {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n2\n4\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"2\n2\n4\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -3540,16 +3131,9 @@ sub dl_myprojects_tocollect {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n2\n4\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n2\n4\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -3593,16 +3177,9 @@ sub rm_myprojects_tocollect {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::STUDENTSFILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::STUDENTSFILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n2\n4\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"1\n2\n4\n$filename\n".($isdir?"1\n":"0\n"));
 }
 
 
@@ -3641,21 +3218,9 @@ sub ls_myprojects_tocollect {
 	my $id = shift;
 	my $password = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDEDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n4\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDEDOUTAPP,
+						$id, $password,
+						"2\n4\n",1);
 
 	my $compartment = new Safe;
 
@@ -3708,16 +3273,9 @@ sub dl_collected_exam {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n2\n2\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n2\n2\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -3761,16 +3319,9 @@ sub rm_collected_exam {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n2\n2\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"1\n2\n2\n$filename\n".($isdir?"1\n":"0\n"));
 }
 
 
@@ -3808,21 +3359,9 @@ sub ls_collected_exam {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n2\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDOUTAPP,
+						$id, $password,
+						"2\n2\n",1);
 
 	my $compartment = new Safe;
 
@@ -3875,16 +3414,9 @@ sub dl_collected_current_room {
 	my $isdir = shift;
 	my $tmpfile = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n2\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"3\n2\n1\n$filename\n".($isdir?"1\n":"0\n") . "$tmpfile\n");
 }
 
 
@@ -3928,16 +3460,9 @@ sub rm_collected_current_room {
 	my $filename = shift;
 	my $isdir = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::FILEMANAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::FILEMANAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n2\n1\n$filename\n".($isdir?"1\n":"0\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+		"1\n2\n1\n$filename\n".($isdir?"1\n":"0\n"));
 }
 
 
@@ -3975,21 +3500,9 @@ sub ls_collected_current_room {
 	my $id = shift;
 	my $password = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::LSHANDOUTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n1\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSHANDOUTAPP,
+						$id, $password,
+						"2\n1\n",1);
 
 	my $compartment = new Safe;
 
@@ -4040,20 +3553,9 @@ sub ls_collect {
 
 	return {} unless @login_ids;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LSCOLLECTAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT join("\n", @login_ids), "\n\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSCOLLECTAPP,
+						$id, $password,
+						join("\n", @login_ids) . "\n\n",1);
 
 	my $compartment = new Safe;
 
@@ -4254,15 +3756,9 @@ sub handout_from_room {
 	my $password = shift;
 	my $room = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::HANDOUTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::HANDOUTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n2\n$room\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"0\n2\n$room\n");
 }
 
 
@@ -4305,15 +3801,9 @@ sub handout_class {
 	my $password = shift;
 	my $class = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::HANDOUTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::HANDOUTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n8\n$class\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"0\n8\n$class\n");
 }
 
 
@@ -4356,15 +3846,9 @@ sub handout_project {
 	my $password = shift;
 	my $project = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::HANDOUTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::HANDOUTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n4\n$project\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"0\n4\n$project\n");
 }
 
 
@@ -4409,15 +3893,9 @@ sub handoutcopy_from_room_to_users {
 
 	return unless @users;
 
-	my $pid = start_wrapper(Schulkonsole::Config::HANDOUTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::HANDOUTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n1\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"1\n1\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -4466,15 +3944,9 @@ sub handoutcopy_from_class_to_users {
 
 	return unless @users;
 
-	my $pid = start_wrapper(Schulkonsole::Config::HANDOUTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::HANDOUTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n8\n$class\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"1\n8\n$class\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -4523,15 +3995,9 @@ sub handoutcopy_from_project_to_users {
 
 	return unless @users;
 
-	my $pid = start_wrapper(Schulkonsole::Config::HANDOUTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::HANDOUTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n4\n$project\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"1\n4\n$project\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -4580,15 +4046,9 @@ sub collect_from_room_users {
 
 	return unless @users;
 
-	my $pid = start_wrapper(Schulkonsole::Config::COLLECTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::COLLECTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n0\n1\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"0\n0\n1\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -4637,15 +4097,9 @@ sub collect_from_class_users {
 
 	return unless @users;
 
-	my $pid = start_wrapper(Schulkonsole::Config::COLLECTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::COLLECTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n0\n8\n$class\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"0\n0\n8\n$class\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -4694,15 +4148,9 @@ sub collect_from_project_users {
 
 	return unless @users;
 
-	my $pid = start_wrapper(Schulkonsole::Config::COLLECTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::COLLECTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n0\n4\n$project\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"0\n0\n4\n$project\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -4751,15 +4199,9 @@ sub collectcopy_from_room_users {
 
 	return unless @users;
 
-	my $pid = start_wrapper(Schulkonsole::Config::COLLECTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::COLLECTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n0\n1\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"1\n0\n1\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -4808,15 +4250,9 @@ sub collectcopy_from_class_users {
 
 	return unless @users;
 
-	my $pid = start_wrapper(Schulkonsole::Config::COLLECTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::COLLECTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n0\n8\n$class\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"1\n0\n8\n$class\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -4865,15 +4301,9 @@ sub collectcopy_from_project_users {
 
 	return unless @users;
 
-	my $pid = start_wrapper(Schulkonsole::Config::COLLECTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::COLLECTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n0\n4\n$project\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"1\n0\n4\n$project\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -4914,15 +4344,9 @@ sub collect_exam {
 	my $password = shift;
 	my $room = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::COLLECTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::COLLECTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n1\n0\n2\n$room\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"0\n1\n0\n2\n$room\n");
 }
 
 
@@ -4963,15 +4387,9 @@ sub collectcopy_exam {
 	my $password = shift;
 	my $room = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::COLLECTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::COLLECTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n1\n0\n2\n$room\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"1\n1\n0\n2\n$room\n");
 }
 
 
@@ -5011,15 +4429,9 @@ sub reset_room {
 	my $password = shift;
 	my $room = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::RESETROOMAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::RESETROOMAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$room\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"$room\n");
 }
 
 
@@ -5060,15 +4472,9 @@ sub add_to_class {
 	my $password = shift;
 	my $class_gid = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::EDITOWNCLASSMEMBERSHIPAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::EDITOWNCLASSMEMBERSHIPAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$class_gid\n1\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"$class_gid\n1\n");
 }
 
 
@@ -5109,15 +4515,9 @@ sub remove_from_class {
 	my $password = shift;
 	my $class_gid = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::EDITOWNCLASSMEMBERSHIPAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::EDITOWNCLASSMEMBERSHIPAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$class_gid\n0\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"$class_gid\n0\n");
 }
 
 
@@ -5168,29 +4568,16 @@ sub print_class {
 	my $class_gid = shift;
 	my $filetype = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PRINTCLASSAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	binmode SCRIPTIN, ':raw' if $filetype == 0;
-
-	print SCRIPTOUT "$class_gid\n$filetype\n";
-
-	my $data;
+	my $data = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::PRINTCLASSAPP,
+						$id, $password,
+						"$class_gid\n$filetype\n",
+						($filetype == 0 ? Schulkonsole::Wrapper::MODE_RAW : Schulkonsole::Wrapper::MODE_FILE));
 	my $is_error = 0;
-	{
-		local $/ = undef;
-		while (<SCRIPTIN>) {
-			$data .= $_;
-		}
-	}
 	if (    $filetype == 0
 	    and $data !~ /^\%PDF/) {
 		$is_error = 1;
-		$input_buffer = $data;
+#FIXME		$input_buffer = $data;
 	}
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
 
 	if ($is_error) {
 		return undef;
@@ -5234,19 +4621,11 @@ sub ls_commits {
 	my $id = shift;
 	my $password = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::LSCOMMITSAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	my @in;
-	while(<SCRIPTIN>){
-		s/\R//g;
-		push @in, $_;
-	}
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSCOMMITSAPP,
+						$id, $password);
+	my @ar = split($in,"\R");
 	
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	return \@in;
+	return \@ar;
 }
 
 
@@ -5289,23 +4668,13 @@ sub ls_commit {
 	my $password = shift;
 	my $commit = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::LSCOMMITAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSCOMMITAPP,
+						$id, $password,
+						"$commit\n");
 
-	print SCRIPTOUT "$commit\n";
+	my @ar = split($in, "\R");
 
-	my @in;
-	while(<SCRIPTIN>){
-		s/\R//g;
-		push @in,$_;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-
-	return \@in;
+	return \@ar;
 }
 
 
@@ -5356,30 +4725,17 @@ sub print_allusers {
 	my $filetype = shift;
 	my $one_per_page = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::PRINTALLUSERSAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	binmode SCRIPTIN, ':raw' if $filetype == 0;
+	my $data = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::PRINTALLUSERSAPP,
+						$id, $password,
+						"$filetype\n$one_per_page\n",
+						($filetype == 0 ? Schulkonsole::Wrapper::MODE_RAW : Schulkonsole::Wrapper::MODE_FILE));
 
-	print SCRIPTOUT "$filetype\n$one_per_page\n";
-
-	my $data;
 	my $is_error = 0;
-	{
-		local $/ = undef;
-		while (<SCRIPTIN>) {
-			$data .= $_;
-		}
-	}
 	if (    $filetype == 0
 	    and $data !~ /^\%PDF/) {
 		$is_error = 1;
-		$input_buffer = $data;
+#FIXME		$input_buffer = $data;
 	}
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-
 	if ($is_error) {
 		return undef;
 	} else {
@@ -5440,30 +4796,16 @@ sub print_commit {
 	my $filetype = shift;
 	my $one_per_page = shift;
 	
-	my $pid = start_wrapper(Schulkonsole::Config::PRINTCOMMITAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	binmode SCRIPTIN, ':raw' if $filetype == 0;
-
-	print SCRIPTOUT "$commit\n$filetype\n$one_per_page\n";
-
-	my $data;
+	my $data = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::PRINTCOMMITAPP,
+						$id, $password,
+						"$commit\n$filetype\n$one_per_page\n",
+						($filetype == 0 ? Schulkonsole::Wrapper::MODE_RAW : Schulkonsole::Wrapper::MODE_FILE));
 	my $is_error = 0;
-	{
-		local $/ = undef;
-		while (<SCRIPTIN>) {
-			$data .= $_;
-		}
-	}
 	if (    $filetype == 0
 	    and $data !~ /^\%PDF/) {
 		$is_error = 1;
-		$input_buffer = $data;
+#FIXME		$input_buffer = $data;
 	}
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-
 	if ($is_error) {
 		return undef;
 	} else {
@@ -5514,30 +4856,17 @@ sub print_teachers {
 	my $password = shift;
 	my $filetype = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PRINTTEACHERSAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	binmode SCRIPTIN, ':raw' if $filetype == 0;
+	my $data = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::PRINTTEACHERSAPP,
+						$id, $password,
+						"$filetype\n",
+						($filetype == 0 ? Schulkonsole::Wrapper::MODE_RAW : Schulkonsole::Wrapper::MODE_FILE));
 
-	print SCRIPTOUT "$filetype\n";
-
-	my $data;
 	my $is_error = 0;
-	{
-		local $/ = undef;
-		while (<SCRIPTIN>) {
-			$data .= $_;
-		}
-	}
 	if (    $filetype == 0
 	    and $data !~ /^\%PDF/) {
 		$is_error = 1;
-		$input_buffer = $data;
+#FIXME		$input_buffer = $data;
 	}
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-
 	if ($is_error) {
 		return undef;
 	} else {
@@ -5593,30 +4922,17 @@ sub print_project {
         my $project_gid = shift;
         my $filetype = shift;
 
-        my $pid = start_wrapper(Schulkonsole::Config::PRINTPROJECTAPP,
-                $id, $password,
-                \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-        binmode SCRIPTIN, ':raw' if $filetype == 0;
+        my $data = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::PRINTPROJECTAPP,
+						$id, $password,
+						"$project_gid\n$filetype\n",
+						($filetype == 0 ? Schulkonsole::Wrapper::MODE_RAW : Schulkonsole::Wrapper::MODE_FILE));
 
-        print SCRIPTOUT "$project_gid\n$filetype\n";
-
-        my $data;
         my $is_error = 0;
-        {
-                local $/ = undef;
-                while (<SCRIPTIN>) {
-                        $data .= $_;
-                }
-        }
         if (    $filetype == 0
             and $data !~ /^\%PDF/) {
                 $is_error = 1;
-                $input_buffer = $data;
+#FIXME                $input_buffer = $data;
         }
-
-        stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-
         if ($is_error) {
                 return undef;
         } else {
@@ -5662,15 +4978,9 @@ sub passwords_reset {
 	my $password = shift;
 	my @users = @_;
 
-	my $pid = start_wrapper(Schulkonsole::Config::SETPASSWORDSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SETPASSWORDSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n0\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"0\n0\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -5711,15 +5021,9 @@ sub passwords_random {
 	my $password = shift;
 	my @users = @_;
 
-	my $pid = start_wrapper(Schulkonsole::Config::SETPASSWORDSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SETPASSWORDSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n0\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"2\n0\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -5766,15 +5070,9 @@ sub passwords_set {
 	my $user_password = shift;
 	my @users = @_;
 
-	my $pid = start_wrapper(Schulkonsole::Config::SETPASSWORDSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SETPASSWORDSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n0\n$user_password\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"1\n0\n$user_password\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -5830,15 +5128,9 @@ sub www_set_user_permissions {
 	my $is_upload = shift;
 	my @users = @_;
 
-	my $pid = start_wrapper(Schulkonsole::Config::WWWPERMISSIONSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::WWWPERMISSIONSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n$is_public\n$is_upload\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"1\n$is_public\n$is_upload\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -5894,15 +5186,9 @@ sub www_set_group_permissions {
 	my $is_upload = shift;
 	my $group = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::WWWPERMISSIONSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::WWWPERMISSIONSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n$is_public\n$is_upload\n$group\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"0\n$is_public\n$is_upload\n$group\n\n");
 }
 
 
@@ -5942,15 +5228,9 @@ sub www_set_global_permissions {
 	my $on = shift;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::CHMODAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::CHMODAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n$on\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"1\n$on\n");
 }
 
 
@@ -5999,15 +5279,9 @@ sub add_to_project {
 	my $project_gid = shift;
 	my @users = @_;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PROJECTMEMBERSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::PROJECTMEMBERSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$project_gid\n1\n0\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"$project_gid\n1\n0\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -6057,15 +5331,9 @@ sub remove_from_project {
 	my $project_gid = shift;
 	my @users = @_;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PROJECTMEMBERSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::PROJECTMEMBERSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$project_gid\n0\n0\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"$project_gid\n0\n0\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -6114,15 +5382,9 @@ sub add_admin_to_project {
 	my $project_gid = shift;
 	my @users = @_;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PROJECTMEMBERSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::PROJECTMEMBERSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$project_gid\n1\n1\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"$project_gid\n1\n1\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -6171,15 +5433,9 @@ sub remove_admin_from_project {
 	my $project_gid = shift;
 	my @users = @_;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PROJECTMEMBERSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::PROJECTMEMBERSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$project_gid\n0\n1\n", join("\n", @users), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"$project_gid\n0\n1\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -6228,19 +5484,9 @@ sub set_project_joinable {
 	my $project_gid = shift;
 	my $is_join = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PROJECTJOINNOJOINAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::PROJECTJOINNOJOINAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	if ($is_join) {
-		print SCRIPTOUT "$project_gid\n\n\n";
-	} else {
-		print SCRIPTOUT "\n$project_gid\n\n";
-	}
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		($is_join ? "$project_gid\n\n\n" : "\n$project_gid\n\n"));
 }
 
 
@@ -6289,15 +5535,9 @@ sub add_class_to_project {
 	my $project_gid = shift;
 	my @groups = @_;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PROJECTMEMBERSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::PROJECTMEMBERSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$project_gid\n1\n2\n", join("\n", @groups), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"$project_gid\n1\n2\n" . join("\n", @groups) . "\n\n");
 }
 
 
@@ -6346,15 +5586,9 @@ sub remove_class_from_project {
 	my $project_gid = shift;
 	my @groups = @_;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PROJECTMEMBERSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::PROJECTMEMBERSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$project_gid\n0\n2\n", join("\n", @groups), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"$project_gid\n0\n2\n" . join("\n", @groups) . "\n\n");
 }
 
 
@@ -6403,15 +5637,9 @@ sub add_project_to_project {
 	my $project_gid = shift;
 	my @groups = @_;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PROJECTMEMBERSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::PROJECTMEMBERSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$project_gid\n1\n3\n", join("\n", @groups), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"$project_gid\n1\n3\n" . join("\n", @groups) . "\n\n");
 }
 
 
@@ -6460,15 +5688,9 @@ sub remove_project_from_project {
 	my $project_gid = shift;
 	my @groups = @_;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PROJECTMEMBERSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::PROJECTMEMBERSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$project_gid\n0\n3\n", join("\n", @groups), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"$project_gid\n0\n3\n" . join("\n", @groups) . "\n\n");
 }
 
 
@@ -6518,15 +5740,9 @@ sub create_project {
 	my $project_gid = shift;
 	my $is_open = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PROJECTCREATEDROPAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::PROJECTCREATEDROPAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$project_gid\n1\n", ($is_open ? 1 : 0), "\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"$project_gid\n1\n" . ($is_open ? 1 : 0)  "\n");
 }
 
 
@@ -6569,15 +5785,9 @@ sub drop_project {
 	my $password = shift;
 	my $project_gid = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PROJECTCREATEDROPAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::PROJECTCREATEDROPAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$project_gid\n0\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"$project_gid\n0\n");
 }
 
 
@@ -6588,20 +5798,11 @@ sub read_file {
 	my $password = shift;
 	my $file_number = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::READSOPHOMORIXFILEAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::READSOPHOMORIXFILEAPP,
+						$id, $password,
+						"$file_number\n");
 
-	print SCRIPTOUT "$file_number\n";
-
-	my @re;
-	while (<SCRIPTIN>) {
-		push @re, $_;
-	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my @re = split($in, "\R");
 
 	return \@re;
 }
@@ -7047,16 +6248,9 @@ sub write_file {
 	my $lines = shift;
 	my $file_number = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::WRITESOPHOMORIXFILEAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::WRITESOPHOMORIXFILEAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$file_number\n", join('', @$lines);
-	close SCRIPTOUT;
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, undef, \*SCRIPTIN, \*SCRIPTIN);
+		"$file_number\n" . join('', @$lines));
 }
 
 
@@ -7348,19 +6542,16 @@ sub list_add {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::READSOPHOMORIXFILEAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n";
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::READSOPHOMORIXFILEAPP,
+						$id, $password,
+						"2\n");
 
 	my @re;
-	while (<SCRIPTIN>) {
+	while (split($in, "\R")) {
 		my ($group, $identifier) = split '::';
 		if (not $identifier) {
-			buffer_input(\*SCRIPTIN);
 			die new Schulkonsole::Error(Schulkonsole::Error::FILE_FORMAT_ERROR,
-				'sophomorix.add', $input_buffer);
+				'sophomorix.add', $in);
 		}
 
 		push @re, {
@@ -7368,10 +6559,6 @@ sub list_add {
 				group => $group,
 			};
 	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
 
 	return \@re;
 }
@@ -7413,19 +6600,16 @@ sub list_move {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::READSOPHOMORIXFILEAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "3\n";
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::READSOPHOMORIXFILEAPP,
+						$id, $password,
+						"3\n");
 
 	my @re;
-	while (<SCRIPTIN>) {
+	while (split($in, '\R')) {
 		my ($login, $from, $to, $status) = split '::';
 		if (not $to) {
-			buffer_input(\*SCRIPTIN);
 			die new Schulkonsole::Error(Schulkonsole::Error::FILE_FORMAT_ERROR,
-				'sophomorix.move', $input_buffer);
+				'sophomorix.move', $in);
 		}
 
 		push @re, {
@@ -7435,10 +6619,6 @@ sub list_move {
 				status => $status,
 			};
 	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
 
 	return \@re;
 }
@@ -7480,19 +6660,16 @@ sub list_kill {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::READSOPHOMORIXFILEAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "4\n";
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::READSOPHOMORIXFILEAPP,
+						$id, $password,
+						"4\n");
 
 	my @re;
-	while (<SCRIPTIN>) {
+	while (split($in,'\R')) {
 		my ($identifier, $login) = split '::';
 		if (not $login) {
-			buffer_input(\*SCRIPTIN);
 			die new Schulkonsole::Error(Schulkonsole::Error::FILE_FORMAT_ERROR,
-				'sophomorix.move', $input_buffer);
+				'sophomorix.move', $in);
 		}
 
 		push @re, {
@@ -7500,10 +6677,6 @@ sub list_kill {
 				identifier => $identifier
 			};
 	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
 
 	return \@re;
 }
@@ -7543,18 +6716,10 @@ sub users_check {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::USERSCHECKAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	buffer_input(\*SCRIPTIN);
-
-	my $re = $input_buffer;
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-
-	return $re;
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::USERSCHECKAPP,
+						$id, $password);
+	
+	return $in;
 }
 
 
@@ -7592,19 +6757,11 @@ sub users_add {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::USERSADDAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	buffer_input(\*SCRIPTIN);
-
-	my $log_file = $input_buffer;
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	
-	chomp $log_file;
-	return $log_file;
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::USERSADDAPP,
+						$id, $password);
+		
+	chomp $in;
+	return $in;
 }
 
 
@@ -7642,19 +6799,11 @@ sub users_move {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::USERSMOVEAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	buffer_input(\*SCRIPTIN);
-
-	my $log_file = $input_buffer;
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-
-	chomp $log_file;
-	return $log_file;
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::USERSMOVEAPP,
+						$id, $password);
+	
+	chomp $in;
+	return $in;
 }
 
 
@@ -7692,18 +6841,11 @@ sub users_kill {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::USERSKILLAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	buffer_input(\*SCRIPTIN);
-
-	my $log_file = $input_buffer;
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-
-	chomp $log_file;
-	return $log_file;
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::USERSKILLAPP,
+						$id, $password);
+	
+	chomp $in;
+	return $in;
 }
 
 
@@ -7738,15 +6880,8 @@ sub users_addmovekill {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::USERSADDMOVEKILLAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	buffer_input(\*SCRIPTIN);
-
-	my $lock_file = $input_buffer;
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::USERSADDMOVEKILLAPP,
+		$id, $password);
 }
 
 
@@ -7785,14 +6920,12 @@ sub teachin_check {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::TEACHINAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n";
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::TEACHINAPP,
+						$id, $password,
+						"0\n");
 
 	my $re = 0;
-	while (<SCRIPTIN>) {
+	while (split($in, '\R')) {
 		$input_buffer .= $_;
 		if (/^next::/) {
 			my @values = split '::';
@@ -7802,10 +6935,6 @@ sub teachin_check {
 			}
 		}
 	}
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
 
 	return $re;
 }
@@ -7851,14 +6980,12 @@ sub teachin_list {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::TEACHINAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n";
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::TEACHINAPP,
+						$id, $password,
+						"1\n");
 
 	my %re;
-	while (<SCRIPTIN>) {
+	while ($in) {
 		$input_buffer .= $_;
 		if (/^next::/) {
 			my (@values) = split '::';
@@ -7880,10 +7007,6 @@ sub teachin_list {
 			}
 		}
 	}
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
 
 	return \%re;
 }
@@ -7930,21 +7053,15 @@ sub teachin_set {
 
 	return unless %$users;
 
-
-	my $pid = start_wrapper(Schulkonsole::Config::TEACHINAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n";
-
+	my $output;
 	foreach my $username (keys %$users) {
-		print SCRIPTOUT "$username\t$$users{$username}{selected}\n";
+		$output .= "$username\t$$users{$username}{selected}\n";
 	}
-	print SCRIPTOUT "\n";
+	$output .= "\n";
 
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::TEACHINAPP,
+						$id, $password,
+						"2\n$output");
 }
 
 
@@ -7990,15 +7107,9 @@ sub process_quota {
 	return unless $scope;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::SETQUOTAAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SETQUOTAAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$scope\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"$scope\n");
 }
 
 
@@ -8051,15 +7162,9 @@ sub class_set_quota {
 	my $mailquota = shift;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::SETQUOTAAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SETQUOTAAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "16\n$class\n$diskquota\n$mailquota\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"16\n$class\n$diskquota\n$mailquota\n");
 }
 
 
@@ -8114,15 +7219,9 @@ sub project_set_quota {
 	my $mailquota = shift;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::SETQUOTAAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SETQUOTAAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "17\n$project\n$diskquota\n$mailquota\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"17\n$project\n$diskquota\n$mailquota\n");
 }
 
 
@@ -8165,15 +7264,9 @@ sub change_password {
 	my $newpassword = shift;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::SETOWNPASSWORDAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SETOWNPASSWORDAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$newpassword\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"$newpassword\n");
 }
 
 
@@ -8221,15 +7314,9 @@ sub change_room_password {
 	my @rooms = @_;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::SETPASSWORDSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SETPASSWORDSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n1\n$newpassword\n", join("\n", @rooms), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+		"1\n1\n$newpassword\n" . join("\n", @rooms) . "\n\n");
 }
 
 
@@ -8278,17 +7365,10 @@ sub hide_unhide_classes {
 	my $hide_classs = shift;
 	my $unhide_classs = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::HIDEUNHIDECLASSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::HIDEUNHIDECLASSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT
-	      (@$hide_classs ? join("\n", @$hide_classs) . "\n\n" : "\n"),
-	      (@$unhide_classs ? join("\n", @$unhide_classs) . "\n\n" : "\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+      	(@$hide_classs ? join("\n", @$hide_classs) . "\n\n" : "\n") .
+	    (@$unhide_classs ? join("\n", @$unhide_classs) . "\n\n" : "\n"));
 }
 
 
@@ -8325,15 +7405,10 @@ sub set_user_mymail {
 	my $password = shift;
 	my $mymail = shift;
 	
-	my $wrapper = new Schulkonsole::Wrapper($wrapcmd, Schulkonsole::Config::SETMYMAILAPP,	$id, $password);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SETMYMAILAPP,
+						$id, $password,
+						"$mymail\n\n");
 
-	$wrapper->start();
-	
-	$wrapper->write("$mymail\n\n");
-
-	$wrapper->read();
-	
-	$wrapper->stop();	
 }
 
 =head3 C<change_mailalias_classes($id, $password, $create_mailalias_classs, remove_mailalias_classs)>
@@ -8377,17 +7452,10 @@ sub change_mailalias_classes {
 	my $create_mailalias_classs = shift;
 	my $remove_mailalias_classs = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::CHANGEMAILALIASCLASSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::CHANGEMAILALIASCLASSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT
-	      (@$create_mailalias_classs ? join("\n", @$create_mailalias_classs) . "\n\n" : "\n"),
-	      (@$remove_mailalias_classs ? join("\n", @$remove_mailalias_classs) . "\n\n" : "\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	    (@$create_mailalias_classs ? join("\n", @$create_mailalias_classs) . "\n\n" : "\n") .
+	    (@$remove_mailalias_classs ? join("\n", @$remove_mailalias_classs) . "\n\n" : "\n"));
 }
 
 
@@ -8432,17 +7500,10 @@ sub change_maillist_classes {
 	my $create_maillist_classs = shift;
 	my $remove_maillist_classs = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::CHANGEMAILLISTCLASSAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::CHANGEMAILLISTCLASSAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT
-	      (@$create_maillist_classs ? join("\n", @$create_maillist_classs) . "\n\n" : "\n"),
-	      (@$remove_maillist_classs ? join("\n", @$remove_maillist_classs) . "\n\n" : "\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	    (@$create_maillist_classs ? join("\n", @$create_maillist_classs) . "\n\n" : "\n") 
+	    (@$remove_maillist_classs ? join("\n", @$remove_maillist_classs) . "\n\n" : "\n"));
 }
 
 
@@ -8487,17 +7548,10 @@ sub change_mailalias_projects {
 	my $create_mailalias_projects = shift;
 	my $remove_mailalias_projects = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::CHANGEMAILALIASPROJECTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::CHANGEMAILALIASPROJECTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT
-	      (@$create_mailalias_projects ? join("\n", @$create_mailalias_projects) . "\n\n" : "\n"),
-	      (@$remove_mailalias_projects ? join("\n", @$remove_mailalias_projects) . "\n\n" : "\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+        (@$create_mailalias_projects ? join("\n", @$create_mailalias_projects) . "\n\n" : "\n") .
+	    (@$remove_mailalias_projects ? join("\n", @$remove_mailalias_projects) . "\n\n" : "\n"));
 }
 
 
@@ -8542,17 +7596,10 @@ sub change_maillist_projects {
 	my $create_maillist_projects = shift;
 	my $remove_maillist_projects = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::CHANGEMAILLISTPROJECTAPP,
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::CHANGEMAILLISTPROJECTAPP,
 		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT
-	      (@$create_maillist_projects ? join("\n", @$create_maillist_projects) . "\n\n" : "\n"),
-	      (@$remove_maillist_projects ? join("\n", @$remove_maillist_projects) . "\n\n" : "\n");
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	    (@$create_maillist_projects ? join("\n", @$create_maillist_projects) . "\n\n" : "\n") .
+	    (@$remove_maillist_projects ? join("\n", @$remove_maillist_projects) . "\n\n" : "\n"));
 }
 
 

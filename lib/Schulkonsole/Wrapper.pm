@@ -6,6 +6,20 @@ use Schulkonsole::Error::ExternalError;
 use Sophomorix::SophomorixAPI;
 
 package Schulkonsole::Wrapper;
+require Exporter;
+use vars qw(@ISA @EXPORT @EXPORT_OK);
+@ISA=qw(Exporter);
+@EXPORT_OK=qw(
+	MODE_LINES
+	MODE_FILE
+	MODE_RAW
+);
+
+use constant {
+	MODE_LINES => 0,
+	MODE_FILE  => 1,
+	MODE_RAW   => 2,
+};
 
 sub wrapcommand {
 	my $wrapcmd = shift;
@@ -14,9 +28,9 @@ sub wrapcommand {
 	my $id = shift;
 	my $password = shift;
 	my $args = shift;
-	my $binaer = shift;
+	my $mode = shift;
 	
-	my $wrapper = new Wrapper($wrapcmd,$errorclass,$app_id,$id, $password, $binaer);
+	my $wrapper = new Wrapper($wrapcmd,$errorclass,$app_id,$id, $password, $mode);
 
 	$wrapper->writefinal($args);
 	
@@ -30,9 +44,9 @@ sub wrap {
 	my $id = shift;
 	my $password = shift;
 	my $args = shift;
-	my $binaer = shift;
+	my $mode = shift;
 	
-	my $wrapper = new Schulkonsole::Wrapper($wrapcmd,$errorclass,$app_id,$id, $password, $binaer);
+	my $wrapper = new Schulkonsole::Wrapper($wrapcmd,$errorclass,$app_id,$id, $password, $mode);
 
 	$wrapper->writefinal($args);
 	
@@ -52,7 +66,7 @@ sub new {
 		app_id => shift,
 		id => shift,
 		password => shift,
-		binaer => shift,
+		mode => shift,
 		in => undef,
 		out => undef,
 		err => undef,
@@ -71,7 +85,9 @@ sub buffer_input {
 	my $this = shift;
     my $in = $this->{in};
     
-	local $/ = undef if $this->{binaer};
+	local $/ = undef if $this->{mode} == MODE_FILE;
+	binmode $in, ':raw' if $this->{mode} == MODE_RAW;
+	
 	while (<$in>) {
 		$this->{input_buffer} .= readline($in);
 	}
