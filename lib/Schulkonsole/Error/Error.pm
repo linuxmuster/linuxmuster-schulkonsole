@@ -17,6 +17,7 @@ $VERSION = 0.06;
 	new
 	what
 	errstr
+	fetch_error_string
 
 	OK
 	USER_AUTHENTICATION_FAILED
@@ -30,6 +31,7 @@ $VERSION = 0.06;
 	DB_NO_WORKSTATION_USERS
 	CANNOT_OPEN_FILE
 	FILE_FORMAT_ERROR
+	WRAPPER_GENERAL_ERROR
 	WRAPPER_EXEC_FAILED
 	WRAPPER_BROKEN_PIPE_OUT
 	WRAPPER_BROKEN_PIPE_IN
@@ -71,11 +73,12 @@ use constant {
 	CANNOT_OPEN_FILE => 2501,
 	FILE_FORMAT_ERROR => 2502,
 
-	WRAPPER_EXEC_FAILED => 3001,
-	WRAPPER_BROKEN_PIPE_OUT => 3002,
-	WRAPPER_BROKEN_PIPE_IN => 3003,
-	WRAPPER_WRONG => 3004,
-	WRAPPER_UNKNOWN => 3005,
+	WRAPPER_GENERAL_ERROR => 3001,
+	WRAPPER_EXEC_FAILED => 3002,
+	WRAPPER_BROKEN_PIPE_OUT => 3003,
+	WRAPPER_BROKEN_PIPE_IN => 3004,
+	WRAPPER_WRONG => 3005,
+	WRAPPER_UNKNOWN => 3006,
 
 	WRAPPER_PROGRAM_ERROR => 3010,
 	WRAPPER_UNAUTHORIZED_UID => 3011,
@@ -84,12 +87,14 @@ use constant {
 	WRAPPER_INVALID_SCRIPT => 3014,
 	WRAPPER_SCRIPT_EXEC_FAILED => 3015,
 	WRAPPER_UNAUTHENTICATED_ID => 3016,
-	WRAPPER_APP_ID_DOES_NOT_EXIST => 3017,
+	WRAPPER_APP_ID_DOES_NOT_EXIST => 3027,
 	WRAPPER_UNAUTHORIZED_ID => 3018,
 	WRAPPER_INVALID_SESSION_ID => 3019,
 	WRAPPER_CANNOT_FORK => 3020,
 	
-	NEXT_ERROR => 4000,
+	EXTERNAL_ERROR => 4000,
+	
+	NEXT_ERROR => 5000,
 };
 
 use overload
@@ -148,6 +153,8 @@ sub what {
 		and return $this->{d}->get('Kann Datei nicht oeffnen');
 	$this->{code} == FILE_FORMAT_ERROR
 		and return $this->{d}->get('Datei hat falsches Format');
+	$this->{code} == WRAPPER_GENERAL_ERROR
+		and return $this->{d}->get('Allgemeiner Fehler');
 	$this->{code} == WRAPPER_EXEC_FAILED
 		and return $this->{d}->get('Wrapperaufruf fehlgeschlagen');
 	$this->{code} == WRAPPER_BROKEN_PIPE_OUT
@@ -180,6 +187,8 @@ sub what {
 		and return $this->{d}->get('Ungueltige Session-ID');
 	$this->{code} == WRAPPER_CANNOT_FORK
 		and return $this->{d}->get('Fork nicht moeglich');
+	int($this->{code} / EXTERNAL_ERROR) * EXTERNAL_ERROR == EXTERNAL_ERROR
+		and return $this->fetch_error_string($this->{code} % EXTERNAL_ERROR);
 	$this->{what}
 		and return $this->{what};
 
@@ -188,7 +197,12 @@ sub what {
 	}
 }
 
-
+sub fetch_error_string {
+	my $this = shift;
+	my $extcode = shift;
+	return $this->{d}->get('Unbekannter externer Fehler ') . $this->{extcode}
+		. ' [' . join(', ', (caller(2))[1..3]) . ']';
+}
 
 sub errstr {
 	my $this = shift;

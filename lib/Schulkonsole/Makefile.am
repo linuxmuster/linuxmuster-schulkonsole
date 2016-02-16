@@ -6,10 +6,7 @@ nobase_dist_perllib_DATA = \
 	Debconf.pm \
 	Encode.pm \
 	Error.pm \
-	ExternalError.pm \
-	Error/Sophomorix.pm \
 	Error/Error.pm \
-	Error/ExternalError.pm \
 	Error/Cyrus.pm \
 	Error/Files.pm \
 	Error/Firewall.pm \

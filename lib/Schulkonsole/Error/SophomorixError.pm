@@ -1,16 +1,17 @@
 use strict;
 use utf8;
-use base ("Error");
+use parent ("Error");
 
 package Schulkonsole::Error::SophomorixError;
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 $VERSION = 0.16;
-@ISA = qw(Exporter);
+@ISA = qw(Exporter Error);
 @EXPORT_OK = qw(
 	new
 	what
 	errstr
+	fetch_error_string
 
 	WRAPPER_ON_UNDEFINED
 	WRAPPER_INVALID_USER
@@ -59,63 +60,63 @@ $VERSION = 0.16;
 
 # package constants
 use constant {
-	WRAPPER_ON_UNDEFINED => NEXT_ERROR +80,
-	WRAPPER_INVALID_USER => NEXT_ERROR +81,
-	WRAPPER_NO_USERS => NEXT_ERROR +82,
-	WRAPPER_INVALID_USERID => NEXT_ERROR +83,
-	WRAPPER_NO_USERIDS => NEXT_ERROR +84,
-	WRAPPER_NO_SUCH_DIRECTORY => NEXT_ERROR +85,
-	WRAPPER_INVALID_DO_COPY => NEXT_ERROR +86,
-	WRAPPER_INVALID_FROM => NEXT_ERROR +87,
-	WRAPPER_INVALID_TYPE => NEXT_ERROR +88,
-	WRAPPER_INVALID_ROOM => NEXT_ERROR +89,
-	WRAPPER_INVALID_PROJECT => NEXT_ERROR +90,
-	WRAPPER_INVALID_CLASS => NEXT_ERROR +91,
-	WRAPPER_INVALID_SUBCLASS => NEXT_ERROR +92,
-	WRAPPER_INVALID_IS_EXAM => NEXT_ERROR +93,
-	WRAPPER_INVALID_DO_ADD => NEXT_ERROR +94,
-	WRAPPER_INVALID_FILE_TYPE => NEXT_ERROR +95,
-	WRAPPER_INVALID_SET_PASSWORD_TYPE => NEXT_ERROR +96,
-	WRAPPER_INVALID_PASSWORD => NEXT_ERROR +97,
-	WRAPPER_INVALID_IS_GROUPS => NEXT_ERROR +98,
-	WRAPPER_INVALID_IS_PUBLIC => NEXT_ERROR +99,
-	WRAPPER_INVALID_IS_UPLOAD => NEXT_ERROR +100,
-	WRAPPER_INVALID_PROJECTGID => NEXT_ERROR +101,
-	WRAPPER_INVALID_MEMBERSCOPE => NEXT_ERROR +102,
-	WRAPPER_INVALID_DO_CREATE => NEXT_ERROR +103,
-	WRAPPER_INVALID_LONGNAME => NEXT_ERROR +104,
-	WRAPPER_INVALID_FILENUMBER => NEXT_ERROR +105,
-	WRAPPER_CANNOT_OPEN_FILE => NEXT_ERROR +106,
-	WRAPPER_PROCESS_RUNNING => NEXT_ERROR +107,
-	WRAPPER_INVALID_MODE => NEXT_ERROR +108,
-	WRAPPER_CHMOD_FAILED => NEXT_ERROR +109,
-	WRAPPER_INVALID_FLAGS => NEXT_ERROR +110,
-	WRAPPER_INVALID_DISKQUOTA => NEXT_ERROR +111,
-	WRAPPER_INVALID_MAILQUOTA => NEXT_ERROR +112,
-	WRAPPER_INVALID_IS_JOIN => NEXT_ERROR +113,
-	WRAPPER_INVALID_ACTION => NEXT_ERROR +114,
-	WRAPPER_INVALID_FILENAME => NEXT_ERROR +115,
-	WRAPPER_NO_SUCH_FILE => NEXT_ERROR +116,
-	WRAPPER_ACTION_NOT_SUPPORTED => NEXT_ERROR +117,
-	WRAPPER_INVALID_FILETYPE => NEXT_ERROR + 118,
-	WRAPPER_INVALID_CLASS_TEACHER => NEXT_ERROR + 119,
-	WRAPPER_INVALID_PROJECT_TEACHER => NEXT_ERROR + 120,
-	WRAPPER_INVALID_COMMIT => NEXT_ERROR + 121,
-	WRAPPER_INVALID_PAGING => NEXT_ERROR + 122,
-	WRAPPER_INVALID_MAILADDRESS => NEXT_ERROR +123,
-	WRAPPER_ERROR_SETMYMAIL => NEXT_ERROR +124,
+	WRAPPER_ON_UNDEFINED => Schulkonsole::Error::Error::NEXT_ERROR +80,
+	WRAPPER_INVALID_USER => Schulkonsole::Error::Error::NEXT_ERROR +81,
+	WRAPPER_NO_USERS => Schulkonsole::Error::Error::NEXT_ERROR +82,
+	WRAPPER_INVALID_USERID => Schulkonsole::Error::Error::NEXT_ERROR +83,
+	WRAPPER_NO_USERIDS => Schulkonsole::Error::Error::NEXT_ERROR +84,
+	WRAPPER_NO_SUCH_DIRECTORY => Schulkonsole::Error::Error::NEXT_ERROR +85,
+	WRAPPER_INVALID_DO_COPY => Schulkonsole::Error::Error::NEXT_ERROR +86,
+	WRAPPER_INVALID_FROM => Schulkonsole::Error::Error::NEXT_ERROR +87,
+	WRAPPER_INVALID_TYPE => Schulkonsole::Error::Error::NEXT_ERROR +88,
+	WRAPPER_INVALID_ROOM => Schulkonsole::Error::Error::NEXT_ERROR +89,
+	WRAPPER_INVALID_PROJECT => Schulkonsole::Error::Error::NEXT_ERROR +90,
+	WRAPPER_INVALID_CLASS => Schulkonsole::Error::Error::NEXT_ERROR +91,
+	WRAPPER_INVALID_SUBCLASS => Schulkonsole::Error::Error::NEXT_ERROR +92,
+	WRAPPER_INVALID_IS_EXAM => Schulkonsole::Error::Error::NEXT_ERROR +93,
+	WRAPPER_INVALID_DO_ADD => Schulkonsole::Error::Error::NEXT_ERROR +94,
+	WRAPPER_INVALID_FILE_TYPE => Schulkonsole::Error::Error::NEXT_ERROR +95,
+	WRAPPER_INVALID_SET_PASSWORD_TYPE => Schulkonsole::Error::Error::NEXT_ERROR +96,
+	WRAPPER_INVALID_PASSWORD => Schulkonsole::Error::Error::NEXT_ERROR +97,
+	WRAPPER_INVALID_IS_GROUPS => Schulkonsole::Error::Error::NEXT_ERROR +98,
+	WRAPPER_INVALID_IS_PUBLIC => Schulkonsole::Error::Error::NEXT_ERROR +99,
+	WRAPPER_INVALID_IS_UPLOAD => Schulkonsole::Error::Error::NEXT_ERROR +100,
+	WRAPPER_INVALID_PROJECTGID => Schulkonsole::Error::Error::NEXT_ERROR +101,
+	WRAPPER_INVALID_MEMBERSCOPE => Schulkonsole::Error::Error::NEXT_ERROR +102,
+	WRAPPER_INVALID_DO_CREATE => Schulkonsole::Error::Error::NEXT_ERROR +103,
+	WRAPPER_INVALID_LONGNAME => Schulkonsole::Error::Error::NEXT_ERROR +104,
+	WRAPPER_INVALID_FILENUMBER => Schulkonsole::Error::Error::NEXT_ERROR +105,
+	WRAPPER_CANNOT_OPEN_FILE => Schulkonsole::Error::Error::NEXT_ERROR +106,
+	WRAPPER_PROCESS_RUNNING => Schulkonsole::Error::Error::NEXT_ERROR +107,
+	WRAPPER_INVALID_MODE => Schulkonsole::Error::Error::NEXT_ERROR +108,
+	WRAPPER_CHMOD_FAILED => Schulkonsole::Error::Error::NEXT_ERROR +109,
+	WRAPPER_INVALID_FLAGS => Schulkonsole::Error::Error::NEXT_ERROR +110,
+	WRAPPER_INVALID_DISKQUOTA => Schulkonsole::Error::Error::NEXT_ERROR +111,
+	WRAPPER_INVALID_MAILQUOTA => Schulkonsole::Error::Error::NEXT_ERROR +112,
+	WRAPPER_INVALID_IS_JOIN => Schulkonsole::Error::Error::NEXT_ERROR +113,
+	WRAPPER_INVALID_ACTION => Schulkonsole::Error::Error::NEXT_ERROR +114,
+	WRAPPER_INVALID_FILENAME => Schulkonsole::Error::Error::NEXT_ERROR +115,
+	WRAPPER_NO_SUCH_FILE => Schulkonsole::Error::Error::NEXT_ERROR +116,
+	WRAPPER_ACTION_NOT_SUPPORTED => Schulkonsole::Error::Error::NEXT_ERROR +117,
+	WRAPPER_INVALID_FILETYPE => Schulkonsole::Error::Error::NEXT_ERROR + 118,
+	WRAPPER_INVALID_CLASS_TEACHER => Schulkonsole::Error::Error::NEXT_ERROR + 119,
+	WRAPPER_INVALID_PROJECT_TEACHER => Schulkonsole::Error::Error::NEXT_ERROR + 120,
+	WRAPPER_INVALID_COMMIT => Schulkonsole::Error::Error::NEXT_ERROR + 121,
+	WRAPPER_INVALID_PAGING => Schulkonsole::Error::Error::NEXT_ERROR + 122,
+	WRAPPER_INVALID_MAILADDRESS => Schulkonsole::Error::Error::NEXT_ERROR +123,
+	WRAPPER_ERROR_SETMYMAIL => Schulkonsole::Error::Error::NEXT_ERROR +124,
 };
 
 sub new {
 	my $class = shift;
 	my $this = $class->SUPER::new(@_);
 	bless $this, $class;
+	
 	return $this;
 }
 
 sub what {
 	my $this = shift;
-
 	SWITCH: {
 	$this->{code} == WRAPPER_ON_UNDEFINED
 		and return $this->{d}->get('on muss 1 oder 0 sein');
@@ -197,9 +198,16 @@ sub what {
 		and return $this->{d}->get('Die angegebene Mailadresse ist ungültig');
 	$this->{code} == WRAPPER_ERROR_SETMYMAIL
 		and return $this->{d}->get('Die Mailadresse konnte nicht gespeichert werden.');
-
+	};
+	
 	return SUPER::what();
 }
 
+sub fetch_error_string {
+	my $this = shift;
+	my $extcode = shift;
+	
+	return Sophomorix::SophomorixAPI::fetch_error_string($extcode);
+}
 
 1;

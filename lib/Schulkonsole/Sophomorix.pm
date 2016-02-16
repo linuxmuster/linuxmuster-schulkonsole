@@ -7,7 +7,6 @@ use Sophomorix::SophomorixAPI;
 
 use Schulkonsole::Wrapper;
 use Schulkonsole::Error::SophomorixError;
-use Schulkonsole::Error::ExternalError;
 use Schulkonsole::Config;
 use Safe;
 
@@ -4621,7 +4620,7 @@ sub ls_commits {
 	my $id = shift;
 	my $password = shift;
 	
-	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::LSCOMMITSAPP,
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,  100001,#Schulkonsole::Config::LSCOMMITSAPP,
 						$id, $password);
 	my @ar = split('\R', $in);
 

@@ -1,9 +1,6 @@
 use strict;
 use utf8;
 use Schulkonsole::Error::Error;
-use Schulkonsole::Error::ExternalError;
-
-use Sophomorix::SophomorixAPI;
 
 package Schulkonsole::Wrapper;
 require Exporter;
@@ -97,20 +94,25 @@ sub init {
 	my $this = shift;
 	my $wrapcmd = shift;
 	
-	die new $this->{errorclass}(
-		Schulkonsole::Error::Error::WRAPPER_WRONG,
-		$wrapcmd, 1)
+	die $this->trigger_errror(Schulkonsole::Error::Error::WRAPPER_WRONG, $wrapcmd, 1)
 		unless $wrapcmd =~ /^\/usr\/lib\/schulkonsole\/bin\/wrapper-[a-z]{1,30}$/;
 		
 	$this->{wrapper_command} = $wrapcmd;
-	die new $this->{errorclass}(
-		Schulkonsole::Error::Error::WRAPPER_UNKNOWN,
-		$wrapcmd, 1)
+	die $this->trigger_errror(Schulkonsole::Error::Error::WRAPPER_UNKNOWN, $wrapcmd, 1)
 		unless $this->{wrapper_command};
 	
 	$this->start();
 }
 
+sub trigger_errror {
+	my $this = shift;
+	my $temp = $this->{errorclass};
+	my $filename = $this->{errorclass} . '.pm';
+	$filename =~ s/::/\//g;
+	require $filename;
+
+	return $temp->new(@_);
+}
 
 sub start {
 	my $this = shift;
@@ -119,7 +121,7 @@ sub start {
 	$this->{in} = $this->{err};
 	
 	$this->{pid} = IPC::Open3::open3 $this->{out}, $this->{in}, $this->{err}, $this->{wrapper_command}
-		or die new $this->{errorclass}(
+		or die $this->trigger_errror(
 			Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED,
 			$this->{wrapper_command}, $!);
 
@@ -132,11 +134,11 @@ sub start {
 	    or $re == -1) {
 		my $error = ($? >> 8) - 256;
 		if ($error < -127) {
-			die new $this->{errorclass}(
+			die $this->trigger_errror(
 				Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED,
 				$this->{wrapper_command}, $!);
 		} else {
-			die new $this->{errorclass}(
+			die $this->trigger_errror(
 				$error,
 				$this->{wrapper_command});
 		}
@@ -151,34 +153,32 @@ sub start {
 
 sub stop {
 	my $this = shift;
-
+	
 	my $re = waitpid $this->{pid}, 0;
+	my $reply = $?;
 	if (    ($re == $this->{pid} or $re == -1)
 	    and $?) {
 		my $error = ($? >> 8);
 		if ($error <= 128) {
-			die new Schulkonsole::Error::ExternalError(
-				Sophomorix::SophomorixAPI::fetch_error_string($error), 0,
+			die $this->trigger_errror(Schulkonsole::Error::Error::EXTERNAL_ERROR + $error,
 				$this->{wrapper_command}, $!,
 				($this->{input_buffer} ? "Output: $this->{input_buffer}" : 'No Output'));
 		} else {
 			$error -= 256;
-			die new $this->{errorclass}(
-				$error,
-				$this->{wrapper_command});
+			die $this->trigger_errror($error, $this->{wrapper_command});
 		}
 	}
 
 	if ($this->{out}) {
 		close $this->{out}
-			or die new $this->{errorclass}(
+			or die $this->trigger_errror(
 				Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_OUT,
 				$this->{wrapper_command}, $!,
 				($this->{input_buffer} ? "Output: $this->{input_buffer}" : 'No Output'));
 	}
 
 	close $this->{in}
-		or die new $this->{errorclass}(
+		or die $this->trigger_errror(
 			Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_IN,
 			$this->{wrapper_command}, $!,
 			($this->{input_buffer} ? "Output: $this->{input_buffer}" : 'No Output'));
@@ -224,8 +224,7 @@ sub closeout {
 	my $this = shift;
 	
 	close $this->{out}
-				or die new $this->{errorclass}(
-				Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_OUT,
+				or die $this->trigger_errror(Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_OUT,
 				$this->{wrapper_command}, $!,
 				($this->{input_buffer} ? "Output: $this->{input_buffer}" : 'No Output'));
 	undef $this->{out};
