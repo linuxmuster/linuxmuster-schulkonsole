@@ -23,7 +23,6 @@ wrapper-sophomorix.pl - wrapper for sophomorix access
 =cut
 
 use strict;
-use CGI::Inspect;
 use lib '/usr/share/schulkonsole';
 use open ':utf8';
 use open ':std';
