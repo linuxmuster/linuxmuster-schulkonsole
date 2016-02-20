@@ -1,8 +1,44 @@
 use strict;
+use CGI::Inspect;
 use utf8;
 use Schulkonsole::Error::Error;
 
 package Schulkonsole::Wrapper;
+
+=head1 NAME
+
+Schulkonsole::Wrapper - interface to system commands
+
+=head1 SYNOPSIS
+
+ use Schulkonsole::Wrapper;
+
+ my $in = Schulkonsole::Wrapper::wrap(
+ 		$wrapcmd,  - _cmd_... from Schulkonsole::Config
+ 		$errorclass, - string error class
+		$app_id, - constant from Schulkonsole::Config
+		$id, - invoking user id
+		$password, - invoking user password
+		$args, - additional args passed through input stream
+	    $mode); - stream mode
+
+ my $in = Schulkonsole::Wrapper::wrap(
+		Schulkonsole::Config::_cmd_sophomorix,
+		'Schulkonsole::Error::SophomorixError',
+		Schulkonsole::Config::SHARESTATESAPP,
+		$id, $password,
+	    join("\n", @login_ids)."\n\n",
+	    Schulkonsole::Wrapper::MODE_LINES);
+
+=head1 DESCRIPTION
+
+Schulkonsole::Wrapper is used to execute commands with root premissions
+
+If a wrapper command fails, it usually dies with a subclass of Schulkonsole::Error.
+The output of the failed command is stored in the Schulkonsole::Error subclass.
+
+=cut
+
 require Exporter;
 use vars qw(@ISA @EXPORT @EXPORT_OK);
 @ISA=qw(Exporter);
@@ -12,12 +48,70 @@ use vars qw(@ISA @EXPORT @EXPORT_OK);
 	MODE_RAW
 );
 
+=head2 stream modes
+
+=over
+
+=head3 MODE_LINES
+
+The return value is returned line by line.
+
+=head3 MODE_FILE
+
+The return value is returned in an array containing the output lines.
+
+=head3 MODE_RAW
+
+The return value is returned in a raw stream.
+
+=back
+
+=cut
 use constant {
 	MODE_LINES => 0,
 	MODE_FILE  => 1,
 	MODE_RAW   => 2,
 };
 
+=head3 wrapcommand($wrapcmd,$errorclass,$app_id,$id,$password,$args,$mode)
+
+Execute a command with root access.
+
+=over
+
+=<$wrapcmd> string
+
+command from Schulkonsole::Config::_cmd...
+
+=<$errorclass> string
+
+subclass from Schulkonsole::Error that is created on error
+
+=<$app_id>
+
+valid app id from Schulkonsole::Config
+
+=<$id>
+
+invoking users id
+
+=<$password>
+
+invoking users password
+
+=<$args> string
+
+string containing additional arguments, which is fed to process STDIN
+
+=<$mode>
+
+stream mode for the subprocess
+
+=back
+
+Execute a command with root access.
+
+=cut
 sub wrapcommand {
 	my $wrapcmd = shift;
 	my $errorclass = shift;
@@ -34,6 +128,50 @@ sub wrapcommand {
 	$wrapper->readfinal();
 }
 
+=head3 wrap($wrapcmd,$errorclass,$app_id,$id,$password,$args,$mode)
+
+Execute a function with root access and return it's result value
+
+=over
+
+=<$wrapcmd> string
+
+command from Schulkonsole::Config::_cmd...
+
+=<$errorclass> string
+
+subclass from Schulkonsole::Error that is created on error
+
+=<$app_id>
+
+valid app id from Schulkonsole::Config
+
+=<$id>
+
+invoking users id
+
+=<$password>
+
+invoking users password
+
+=<$args> string
+
+string containing additional arguments, which is fed to process STDIN
+
+=<$mode>
+
+stream mode for the subprocess
+
+=output
+
+return the functions value either as subsequent lines or as an array of strings
+or as a raw stream.
+
+=back
+
+Execute a function with root access and return it's result value.
+
+=cut
 sub wrap {
 	my $wrapcmd = shift;
 	my $errorclass = shift;
@@ -121,8 +259,7 @@ sub start {
 	$this->{in} = $this->{err};
 	
 	$this->{pid} = IPC::Open3::open3 $this->{out}, $this->{in}, $this->{err}, $this->{wrapper_command}
-		or die $this->trigger_errror(
-			Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED,
+		or die $this->trigger_errror(Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED,
 			$this->{wrapper_command}, $!);
 
 	binmode $this->{out}, ':utf8';
@@ -133,15 +270,7 @@ sub start {
 	if (   $re == $this->{pid}
 	    or $re == -1) {
 		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die $this->trigger_errror(
-				Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED,
-				$this->{wrapper_command}, $!);
-		} else {
-			die $this->trigger_errror(
-				$error,
-				$this->{wrapper_command});
-		}
+		die $this->trigger_errror($error, $this->{wrapper_command},$!);
 	}
 	
 	print {$this->{out}} "$this->{id}\n$this->{password}\n$this->{app_id}\n";
@@ -159,7 +288,8 @@ sub stop {
 	if (    ($re == $this->{pid} or $re == -1)
 	    and $?) {
 		my $error = ($? >> 8);
-		if ($error <= 128) {
+		
+		if ($error < Schulkonsole::Error::Error::EXTERNAL_ERROR) {
 			die $this->trigger_errror(Schulkonsole::Error::Error::EXTERNAL_ERROR + $error,
 				$this->{wrapper_command}, $!,
 				($this->{input_buffer} ? "Output: $this->{input_buffer}" : 'No Output'));

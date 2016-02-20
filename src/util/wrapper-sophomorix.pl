@@ -23,6 +23,7 @@ wrapper-sophomorix.pl - wrapper for sophomorix access
 =cut
 
 use strict;
+use CGI::Inspect;
 use lib '/usr/share/schulkonsole';
 use open ':utf8';
 use open ':std';
@@ -1695,14 +1696,15 @@ sub ls_commits() {
 	$( = $);
 	$ENV{HOME}="/root" if not defined $ENV{HOME};
 	open(PRINT, Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_print $opts |"))
-		or exit ($? >> 8);
-
+		or exit Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED;
 	while(<PRINT>){
 		my $line = $_;
 		my ($date,$time) = $_ =~ /^\s*--back-in-time\s*\d+\s*-->\s*(\S+)(?: (\S+))?.*$/;
 		next unless $date;
 		print "$date" . ($time?" $time\n":"\n");
 	}
+	close(PRINT) or exit ($? >> 8);
+	
 	exit 0;
 }
 
@@ -1743,7 +1745,7 @@ sub ls_commit() {
 	$( = $);
 	$ENV{HOME}="/root" if not defined $ENV{HOME};
 	open(SCRIPTIN, Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_print $opts |"))
-		or exit ($? >> 8);
+		or exit Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED;
 
 	my $start = 0;
 	my @uids;
@@ -1758,6 +1760,8 @@ sub ls_commit() {
 		next unless $uid;
 		push @uids,$uid;
 	}
+	close(SCRIPTIN) or exit ($? >> 8);
+	
 	my @uuids = keys { map { $_ => 1 } @uids }; 
 	print join("\n", @uuids);
 	exit 0;

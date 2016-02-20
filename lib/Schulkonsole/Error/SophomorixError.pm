@@ -1,12 +1,12 @@
 use strict;
 use utf8;
-use parent ("Error");
+use parent ("Schulkonsole::Error::Error");
 
 package Schulkonsole::Error::SophomorixError;
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 $VERSION = 0.16;
-@ISA = qw(Exporter Error);
+@ISA = qw(Exporter Schulkonsole::Error::Error);
 @EXPORT_OK = qw(
 	new
 	what
@@ -60,51 +60,51 @@ $VERSION = 0.16;
 
 # package constants
 use constant {
-	WRAPPER_ON_UNDEFINED => Schulkonsole::Error::Error::NEXT_ERROR +80,
-	WRAPPER_INVALID_USER => Schulkonsole::Error::Error::NEXT_ERROR +81,
-	WRAPPER_NO_USERS => Schulkonsole::Error::Error::NEXT_ERROR +82,
-	WRAPPER_INVALID_USERID => Schulkonsole::Error::Error::NEXT_ERROR +83,
-	WRAPPER_NO_USERIDS => Schulkonsole::Error::Error::NEXT_ERROR +84,
-	WRAPPER_NO_SUCH_DIRECTORY => Schulkonsole::Error::Error::NEXT_ERROR +85,
-	WRAPPER_INVALID_DO_COPY => Schulkonsole::Error::Error::NEXT_ERROR +86,
-	WRAPPER_INVALID_FROM => Schulkonsole::Error::Error::NEXT_ERROR +87,
-	WRAPPER_INVALID_TYPE => Schulkonsole::Error::Error::NEXT_ERROR +88,
-	WRAPPER_INVALID_ROOM => Schulkonsole::Error::Error::NEXT_ERROR +89,
-	WRAPPER_INVALID_PROJECT => Schulkonsole::Error::Error::NEXT_ERROR +90,
-	WRAPPER_INVALID_CLASS => Schulkonsole::Error::Error::NEXT_ERROR +91,
-	WRAPPER_INVALID_SUBCLASS => Schulkonsole::Error::Error::NEXT_ERROR +92,
-	WRAPPER_INVALID_IS_EXAM => Schulkonsole::Error::Error::NEXT_ERROR +93,
-	WRAPPER_INVALID_DO_ADD => Schulkonsole::Error::Error::NEXT_ERROR +94,
-	WRAPPER_INVALID_FILE_TYPE => Schulkonsole::Error::Error::NEXT_ERROR +95,
-	WRAPPER_INVALID_SET_PASSWORD_TYPE => Schulkonsole::Error::Error::NEXT_ERROR +96,
-	WRAPPER_INVALID_PASSWORD => Schulkonsole::Error::Error::NEXT_ERROR +97,
-	WRAPPER_INVALID_IS_GROUPS => Schulkonsole::Error::Error::NEXT_ERROR +98,
-	WRAPPER_INVALID_IS_PUBLIC => Schulkonsole::Error::Error::NEXT_ERROR +99,
-	WRAPPER_INVALID_IS_UPLOAD => Schulkonsole::Error::Error::NEXT_ERROR +100,
-	WRAPPER_INVALID_PROJECTGID => Schulkonsole::Error::Error::NEXT_ERROR +101,
-	WRAPPER_INVALID_MEMBERSCOPE => Schulkonsole::Error::Error::NEXT_ERROR +102,
-	WRAPPER_INVALID_DO_CREATE => Schulkonsole::Error::Error::NEXT_ERROR +103,
-	WRAPPER_INVALID_LONGNAME => Schulkonsole::Error::Error::NEXT_ERROR +104,
-	WRAPPER_INVALID_FILENUMBER => Schulkonsole::Error::Error::NEXT_ERROR +105,
-	WRAPPER_CANNOT_OPEN_FILE => Schulkonsole::Error::Error::NEXT_ERROR +106,
-	WRAPPER_PROCESS_RUNNING => Schulkonsole::Error::Error::NEXT_ERROR +107,
-	WRAPPER_INVALID_MODE => Schulkonsole::Error::Error::NEXT_ERROR +108,
-	WRAPPER_CHMOD_FAILED => Schulkonsole::Error::Error::NEXT_ERROR +109,
-	WRAPPER_INVALID_FLAGS => Schulkonsole::Error::Error::NEXT_ERROR +110,
-	WRAPPER_INVALID_DISKQUOTA => Schulkonsole::Error::Error::NEXT_ERROR +111,
-	WRAPPER_INVALID_MAILQUOTA => Schulkonsole::Error::Error::NEXT_ERROR +112,
-	WRAPPER_INVALID_IS_JOIN => Schulkonsole::Error::Error::NEXT_ERROR +113,
-	WRAPPER_INVALID_ACTION => Schulkonsole::Error::Error::NEXT_ERROR +114,
-	WRAPPER_INVALID_FILENAME => Schulkonsole::Error::Error::NEXT_ERROR +115,
-	WRAPPER_NO_SUCH_FILE => Schulkonsole::Error::Error::NEXT_ERROR +116,
-	WRAPPER_ACTION_NOT_SUPPORTED => Schulkonsole::Error::Error::NEXT_ERROR +117,
-	WRAPPER_INVALID_FILETYPE => Schulkonsole::Error::Error::NEXT_ERROR + 118,
-	WRAPPER_INVALID_CLASS_TEACHER => Schulkonsole::Error::Error::NEXT_ERROR + 119,
-	WRAPPER_INVALID_PROJECT_TEACHER => Schulkonsole::Error::Error::NEXT_ERROR + 120,
-	WRAPPER_INVALID_COMMIT => Schulkonsole::Error::Error::NEXT_ERROR + 121,
-	WRAPPER_INVALID_PAGING => Schulkonsole::Error::Error::NEXT_ERROR + 122,
-	WRAPPER_INVALID_MAILADDRESS => Schulkonsole::Error::Error::NEXT_ERROR +123,
-	WRAPPER_ERROR_SETMYMAIL => Schulkonsole::Error::Error::NEXT_ERROR +124,
+	WRAPPER_ON_UNDEFINED => Schulkonsole::Error::Error::NEXT_ERROR -0,
+	WRAPPER_INVALID_USER => Schulkonsole::Error::Error::NEXT_ERROR -1,
+	WRAPPER_NO_USERS => Schulkonsole::Error::Error::NEXT_ERROR -2,
+	WRAPPER_INVALID_USERID => Schulkonsole::Error::Error::NEXT_ERROR -3,
+	WRAPPER_NO_USERIDS => Schulkonsole::Error::Error::NEXT_ERROR -4,
+	WRAPPER_NO_SUCH_DIRECTORY => Schulkonsole::Error::Error::NEXT_ERROR -5,
+	WRAPPER_INVALID_DO_COPY => Schulkonsole::Error::Error::NEXT_ERROR -6,
+	WRAPPER_INVALID_FROM => Schulkonsole::Error::Error::NEXT_ERROR -7,
+	WRAPPER_INVALID_TYPE => Schulkonsole::Error::Error::NEXT_ERROR -8,
+	WRAPPER_INVALID_ROOM => Schulkonsole::Error::Error::NEXT_ERROR -9,
+	WRAPPER_INVALID_PROJECT => Schulkonsole::Error::Error::NEXT_ERROR -10,
+	WRAPPER_INVALID_CLASS => Schulkonsole::Error::Error::NEXT_ERROR -11,
+	WRAPPER_INVALID_SUBCLASS => Schulkonsole::Error::Error::NEXT_ERROR -12,
+	WRAPPER_INVALID_IS_EXAM => Schulkonsole::Error::Error::NEXT_ERROR -13,
+	WRAPPER_INVALID_DO_ADD => Schulkonsole::Error::Error::NEXT_ERROR -14,
+	WRAPPER_INVALID_FILE_TYPE => Schulkonsole::Error::Error::NEXT_ERROR -15,
+	WRAPPER_INVALID_SET_PASSWORD_TYPE => Schulkonsole::Error::Error::NEXT_ERROR -16,
+	WRAPPER_INVALID_PASSWORD => Schulkonsole::Error::Error::NEXT_ERROR -17,
+	WRAPPER_INVALID_IS_GROUPS => Schulkonsole::Error::Error::NEXT_ERROR -18,
+	WRAPPER_INVALID_IS_PUBLIC => Schulkonsole::Error::Error::NEXT_ERROR -19,
+	WRAPPER_INVALID_IS_UPLOAD => Schulkonsole::Error::Error::NEXT_ERROR -20,
+	WRAPPER_INVALID_PROJECTGID => Schulkonsole::Error::Error::NEXT_ERROR -21,
+	WRAPPER_INVALID_MEMBERSCOPE => Schulkonsole::Error::Error::NEXT_ERROR -22,
+	WRAPPER_INVALID_DO_CREATE => Schulkonsole::Error::Error::NEXT_ERROR -23,
+	WRAPPER_INVALID_LONGNAME => Schulkonsole::Error::Error::NEXT_ERROR -24,
+	WRAPPER_INVALID_FILENUMBER => Schulkonsole::Error::Error::NEXT_ERROR -25,
+	WRAPPER_CANNOT_OPEN_FILE => Schulkonsole::Error::Error::NEXT_ERROR -26,
+	WRAPPER_PROCESS_RUNNING => Schulkonsole::Error::Error::NEXT_ERROR -27,
+	WRAPPER_INVALID_MODE => Schulkonsole::Error::Error::NEXT_ERROR -28,
+	WRAPPER_CHMOD_FAILED => Schulkonsole::Error::Error::NEXT_ERROR -29,
+	WRAPPER_INVALID_FLAGS => Schulkonsole::Error::Error::NEXT_ERROR -30,
+	WRAPPER_INVALID_DISKQUOTA => Schulkonsole::Error::Error::NEXT_ERROR -31,
+	WRAPPER_INVALID_MAILQUOTA => Schulkonsole::Error::Error::NEXT_ERROR -32,
+	WRAPPER_INVALID_IS_JOIN => Schulkonsole::Error::Error::NEXT_ERROR -33,
+	WRAPPER_INVALID_ACTION => Schulkonsole::Error::Error::NEXT_ERROR -34,
+	WRAPPER_INVALID_FILENAME => Schulkonsole::Error::Error::NEXT_ERROR -35,
+	WRAPPER_NO_SUCH_FILE => Schulkonsole::Error::Error::NEXT_ERROR -36,
+	WRAPPER_ACTION_NOT_SUPPORTED => Schulkonsole::Error::Error::NEXT_ERROR -37,
+	WRAPPER_INVALID_FILETYPE => Schulkonsole::Error::Error::NEXT_ERROR - 38,
+	WRAPPER_INVALID_CLASS_TEACHER => Schulkonsole::Error::Error::NEXT_ERROR - 39,
+	WRAPPER_INVALID_PROJECT_TEACHER => Schulkonsole::Error::Error::NEXT_ERROR - 40,
+	WRAPPER_INVALID_COMMIT => Schulkonsole::Error::Error::NEXT_ERROR - 41,
+	WRAPPER_INVALID_PAGING => Schulkonsole::Error::Error::NEXT_ERROR - 42,
+	WRAPPER_INVALID_MAILADDRESS => Schulkonsole::Error::Error::NEXT_ERROR -43,
+	WRAPPER_ERROR_SETMYMAIL => Schulkonsole::Error::Error::NEXT_ERROR -44,
 };
 
 sub new {
@@ -200,7 +200,7 @@ sub what {
 		and return $this->{d}->get('Die Mailadresse konnte nicht gespeichert werden.');
 	};
 	
-	return SUPER::what();
+	return $this->SUPER::what();
 }
 
 sub fetch_error_string {

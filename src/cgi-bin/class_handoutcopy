@@ -238,7 +238,7 @@ $sk_session->set_var('teacher_share_files',
 };
 if ($@) {
 	if (    ref $@
-		and $@->{code} == Schulkonsole::Error::Sophomorix::WRAPPER_NO_SUCH_DIRECTORY) {
+		and $@->{code} == Schulkonsole::Error::SophomorixError::WRAPPER_NO_SUCH_DIRECTORY) {
 		$sk_session->set_status(
 			$sk_session->d()->get('Verzeichnis zum Austeilen nicht gefunden'),
 				1);

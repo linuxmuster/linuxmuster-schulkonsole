@@ -82,25 +82,26 @@ if($path){
 	$sk_session->redirect($url);
 }
 
-my $commits = Schulkonsole::Sophomorix::ls_commits($id, $password);
-
-# navigation through commits
-if($action eq 'show') {
-	if($commit eq 'next') {
-		$commit = $q->param('currentcommit');
-		$commit = ($commit < $#$commits? $commit + 1 : $#$commits);
-	} elsif ($commit eq 'previous') {
-		$commit = $q->param('currentcommit');
-		$commit = ($commit > 0 ? $commit - 1 : 0);
-	} elsif ($commit eq 'first') {
-		$commit = 0;
-	} elsif ($commit eq 'last') {
-		$commit = $#$commits;
-	} elsif ($commit eq 'close') {
-		$commit = undef;
-		$action = undef;
+eval {
+	my $commits = Schulkonsole::Sophomorix::ls_commits($id, $password);
+	
+	# navigation through commits
+	if($action eq 'show') {
+		if($commit eq 'next') {
+			$commit = $q->param('currentcommit');
+			$commit = ($commit < $#$commits? $commit + 1 : $#$commits);
+		} elsif ($commit eq 'previous') {
+			$commit = $q->param('currentcommit');
+			$commit = ($commit > 0 ? $commit - 1 : 0);
+		} elsif ($commit eq 'first') {
+			$commit = 0;
+		} elsif ($commit eq 'last') {
+			$commit = $#$commits;
+		} elsif ($commit eq 'close') {
+			$commit = undef;
+			$action = undef;
+		}
 	}
-}
 
 =head2 Template vars
 
@@ -114,11 +115,11 @@ Array reference of commit date/times
 
 =cut
 
-$sk_session->set_var('commits',$commits);
-
-if($action eq 'show' and $commit =~ /^\d+$/) {
-	my $added_users = Schulkonsole::Sophomorix::ls_commit($id, $password, $commit);
-
+	$sk_session->set_var('commits',$commits);
+	
+	if($action eq 'show' and $commit =~ /^\d+$/) {
+		my $added_users = Schulkonsole::Sophomorix::ls_commit($id, $password, $commit);
+	
 =item C<$added_users>
 
 Array reference to users added in specific commit
@@ -129,9 +130,13 @@ No of specific commit
 
 =cut
 
-	$sk_session->set_var('added_users', $added_users);
-	$sk_session->set_var('commit', $commit);
-
+		$sk_session->set_var('added_users', $added_users);
+		$sk_session->set_var('commit', $commit);
+	
+	}
+};
+if($@) {
+	$sk_session->standard_error_handling($this_file, $@);	
 }
 
 $sk_session->print_page("$this_file.tt", $this_file);

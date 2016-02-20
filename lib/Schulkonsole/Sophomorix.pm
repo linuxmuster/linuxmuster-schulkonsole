@@ -1,4 +1,5 @@
 use strict;
+use CGI::Inspect;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
 
@@ -4620,7 +4621,7 @@ sub ls_commits {
 	my $id = shift;
 	my $password = shift;
 	
-	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,  100001,#Schulkonsole::Config::LSCOMMITSAPP,
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass, Schulkonsole::Config::LSCOMMITSAPP,
 						$id, $password);
 	my @ar = split('\R', $in);
 
