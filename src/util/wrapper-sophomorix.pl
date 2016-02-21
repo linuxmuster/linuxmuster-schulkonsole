@@ -1916,7 +1916,7 @@ sub printteachersapp(){
 	};
 	}
 
-	close DATA;
+	close DATA or exit ($? >> 8);
 
 	exit 0;
 }

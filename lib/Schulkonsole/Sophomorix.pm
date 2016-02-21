@@ -72,8 +72,8 @@ Schulkonsole::Sophomorix is an interface to Sophomorix commands used
 by schulkonsole. It also provides functions related to Sophomorix.
 Namely commands to display the contents of Sophomorix directories.
 
-If a wrapper command fails, it usually dies with a Schulkonsole::Error.
-The output of the failed command is stored in the Schulkonsole::Error.
+If a wrapper command fails, it usually dies with a Schulkonsole::SophomorixError.
+The output of the failed command is stored in the Schulkonsole::SophomorixError.
 
 =cut
 
@@ -4570,12 +4570,11 @@ sub print_class {
 	my $data = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::PRINTCLASSAPP,
 						$id, $password,
 						"$class_gid\n$filetype\n",
-						($filetype == 0 ? Schulkonsole::Wrapper::MODE_RAW : Schulkonsole::Wrapper::MODE_FILE));
+						($filetype == 0 ? Schulkonsole::Wrapper::MODE_RAW : Schulkonsole::Wrapper::MODE_LINES));
 	my $is_error = 0;
 	if (    $filetype == 0
 	    and $data !~ /^\%PDF/) {
 		$is_error = 1;
-#FIXME		$input_buffer = $data;
 	}
 
 	if ($is_error) {
@@ -4727,13 +4726,12 @@ sub print_allusers {
 	my $data = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::PRINTALLUSERSAPP,
 						$id, $password,
 						"$filetype\n$one_per_page\n",
-						($filetype == 0 ? Schulkonsole::Wrapper::MODE_RAW : Schulkonsole::Wrapper::MODE_FILE));
+						($filetype == 0 ? Schulkonsole::Wrapper::MODE_RAW : Schulkonsole::Wrapper::MODE_LINES));
 
 	my $is_error = 0;
 	if (    $filetype == 0
 	    and $data !~ /^\%PDF/) {
 		$is_error = 1;
-#FIXME		$input_buffer = $data;
 	}
 	if ($is_error) {
 		return undef;
@@ -4798,12 +4796,11 @@ sub print_commit {
 	my $data = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::PRINTCOMMITAPP,
 						$id, $password,
 						"$commit\n$filetype\n$one_per_page\n",
-						($filetype == 0 ? Schulkonsole::Wrapper::MODE_RAW : Schulkonsole::Wrapper::MODE_FILE));
+						($filetype == 0 ? Schulkonsole::Wrapper::MODE_RAW : Schulkonsole::Wrapper::MODE_LINES));
 	my $is_error = 0;
 	if (    $filetype == 0
 	    and $data !~ /^\%PDF/) {
 		$is_error = 1;
-#FIXME		$input_buffer = $data;
 	}
 	if ($is_error) {
 		return undef;
@@ -4858,13 +4855,12 @@ sub print_teachers {
 	my $data = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::PRINTTEACHERSAPP,
 						$id, $password,
 						"$filetype\n",
-						($filetype == 0 ? Schulkonsole::Wrapper::MODE_RAW : Schulkonsole::Wrapper::MODE_FILE));
+						($filetype == 0 ? Schulkonsole::Wrapper::MODE_RAW : Schulkonsole::Wrapper::MODE_LINES));
 
 	my $is_error = 0;
 	if (    $filetype == 0
 	    and $data !~ /^\%PDF/) {
 		$is_error = 1;
-#FIXME		$input_buffer = $data;
 	}
 	if ($is_error) {
 		return undef;
@@ -4924,13 +4920,12 @@ sub print_project {
         my $data = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::PRINTPROJECTAPP,
 						$id, $password,
 						"$project_gid\n$filetype\n",
-						($filetype == 0 ? Schulkonsole::Wrapper::MODE_RAW : Schulkonsole::Wrapper::MODE_FILE));
+						($filetype == 0 ? Schulkonsole::Wrapper::MODE_RAW : Schulkonsole::Wrapper::MODE_LINES));
 
         my $is_error = 0;
         if (    $filetype == 0
             and $data !~ /^\%PDF/) {
                 $is_error = 1;
-#FIXME                $input_buffer = $data;
         }
         if ($is_error) {
                 return undef;

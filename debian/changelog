@@ -1,5 +1,18 @@
 linuxmuster-schulkonsole (0.22.0-1) babo-testing; urgency=low
 
+  * e62017d remove debug entries and fix wrapper-sophomorix.pl file mode
+  * c418f79 Debug new SophomorixError class usage
+  * 41b13af Readd temporarily Error/Sophomorix.pm
+  * 7ac0742 fix wrapper error class, make wrapper-sophomorix.pl return error codes
+  * d0f47c2 fix return value and line splitting
+  * 85b3bcb readd Sophomorix Error constants
+  * 0b8e556 readd old Error files for a while
+  * 0431591 converted Sophomorix.pm to use new Wrapper class
+  * 3ad067b started converting Sophomorix.pm
+  * 55a27da fix build process
+  * 2e4abf9 created SophomorixError as subclass of Error, automated POTFILES creation
+  * a442493 convert Error.pm to object
+  * 7937f65 changelog entry added
   * implement perl Wrapper class
   * a59d6e5 make Wrapper work, new methods wrap, wrapcommand
 

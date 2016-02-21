@@ -120,7 +120,7 @@ sub wrapcommand {
 	my $args = shift;
 	my $mode = shift;
 	
-	my $wrapper = new Wrapper($wrapcmd,$errorclass,$app_id,$id, $password, $mode);
+	my $wrapper = new Schulkonsole::Wrapper($wrapcmd,$errorclass,$app_id,$id, $password, $mode);
 
 	$wrapper->writefinal($args);
 	
@@ -185,7 +185,6 @@ sub wrap {
 	$wrapper->writefinal($args);
 	
 	my $in = $wrapper->readfinal();
-
 	return $in;
 	
 }
@@ -223,8 +222,9 @@ sub buffer_input {
 	binmode $in, ':raw' if $this->{mode} == MODE_RAW;
 	
 	while (<$in>) {
-		$this->{input_buffer} .= readline($in);
+		$this->{input_buffer} .= $_ ;
 	}
+
 }
 
 sub init {
@@ -335,7 +335,6 @@ sub writefinal {
 sub read {
 	my $this = shift;
 	$this->buffer_input();
-	
 	return $this->{input_buffer};
 }
 
@@ -343,7 +342,6 @@ sub readfinal {
 	my $this = shift;
 	
 	my $ret = $this->read();
-	
 	$this->stop();
 	
 	return $ret;
