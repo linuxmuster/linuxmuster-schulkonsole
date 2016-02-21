@@ -17,7 +17,7 @@ nobase_dist_perllib_DATA = \
 	Error/SophomorixError.pm \
 	Error/User.pm \
 	Error/Horde.pm \
-	Error/Debconf.pm \
+	Error/DebconfError.pm \
 	Files.pm \
 	Firewall.pm \
 	Gettext.pm \

@@ -2,7 +2,7 @@ use strict;
 use utf8;
 use parent("Schulkonsole::Error::Error");
 
-package Schulkonsole::Error::Debconf;
+package Schulkonsole::Error::DebconfError;
 
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);

@@ -94,11 +94,12 @@ sub read {
 	my $name = shift;
 
 	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::DEBCONFREADAPP,
-										$id, $password, "$section\n$name\n", Schulkonsole::Wrapper::MODE_FILE);
+										$id, $password, "$section\n$name\n", Schulkonsole::Wrapper::MODE_LINES);
 
+	my $ret;
 	my $value;
-	while my $line (split('\R', $in)) {
-		($ret,$value) = $line =~ /^(\d+)\s+([a-zA-Z\d\-]+)$/;
+	foreach (split('\R', $in)) {
+		($ret,$value) = $_ =~ /^(\d+)\s+([a-zA-Z\d\-]+)$/;
 		next if not defined $ret;
 		die new Schulkonsole::Error::DebconfError(
 			Schulkonsole::Error::DebconfError::WRAPPER_INVALID_REQUEST,
@@ -146,10 +147,9 @@ sub read_smtprelay {
 
 	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::DEBCONFREADSMTPRELAYAPP,
 										$id, $password, "\n",Schulkonsole::Wrapper::MODE_FILE);
-
 	my $ret;
 	my $value;
-	while my $line (split('\R', $in)) {
+	foreach (split('\R', $in)) {
 		($ret,$value) = $_ =~ /^(\d+)\s+([a-zA-Z\d\-\.]+)$/;
 		next if not defined $ret;
 		die new Schulkonsole::Error::DebconfError(
