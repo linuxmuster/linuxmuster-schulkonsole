@@ -14,6 +14,7 @@ use Crypt::CBC;
 use Digest::MD5;
 use Schulkonsole::Config;
 use Sophomorix::SophomorixConfig;
+use Schulkonsole::Error::Error;
 use Schulkonsole::DB;
 use Template;
 use Template::Constants qw ( :debug );
@@ -1196,8 +1197,8 @@ sub standard_error_handling {
 
 		# password changed -> re-authenticate
 		if (   $error->{code}
-				== Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID
-			or $error->{code}
+			== Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID
+		    or $error->{code}
 		       	== Schulkonsole::Error::Firewall::WRAPPER_UNAUTHENTICATED_ID
 		    or $error->{code}
 		       	== Schulkonsole::Error::Printer::WRAPPER_UNAUTHENTICATED_ID
