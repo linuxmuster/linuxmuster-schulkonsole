@@ -16,7 +16,6 @@ use Schulkonsole::Error::OVPN;
 use Schulkonsole::Error::Printer;
 use Schulkonsole::Error::User;
 use Schulkonsole::Error::Horde;
-use Schulkonsole::Error::Debconf;
 
 package Schulkonsole::Error;
 require Exporter;
@@ -160,7 +159,6 @@ sub what {
 		and return $this->{d}->get('Datenuebertragung (lesen) unterbrochen');
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_PROGRAM_ERROR
-	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_PROGRAM_ERROR
@@ -170,7 +168,6 @@ sub what {
 		and return $this->{d}->get('Programmaufruf fehlgeschlagen');
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_UNAUTHORIZED_UID
-	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_UID
@@ -180,8 +177,7 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHORIZED_UID)
 		and return $this->{d}->get('Nicht autorisierter Aufrufer');
 	(    $this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_UID
-	or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_INVALID_UID
-	or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_UID)
+	or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_INVALID_UID)
 		and return $this->{d}->get('Wechsel zu diesem Benutzer nicht erlaubt');
 	(    $this->{code} == Schulkonsole::Error::User::WRAPPER_SETUID_FAILED
 	or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_SETUID_FAILED)
@@ -192,7 +188,6 @@ sub what {
 		and return $this->{d}->get('Skript nicht vorhanden');
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_SCRIPT_EXEC_FAILED
-	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_SCRIPT_EXEC_FAILED
@@ -203,7 +198,6 @@ sub what {
 		and return $this->{d}->get('Skriptaufruf fehlgeschlagen');
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHENTICATED_ID
-	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHENTICATED_ID
@@ -211,7 +205,6 @@ sub what {
 		and return $this->{d}->get('Authentifizierung fehlgeschlagen nach ID');
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_APP_ID_DOES_NOT_EXIST
-	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_APP_ID_DOES_NOT_EXIST
@@ -243,7 +236,6 @@ sub what {
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM_SCOPE
 		and return $this->{d}->get('Erwarte 0 oder 1 fuer scope');
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_FORK
-	 or $this->{code} == Schulkonsole::Error::Debconf::WRAPPER_CANNOT_FORK
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_CANNOT_FORK)
 		and return $this->{d}->get('Fork nicht moeglich');
 	(   $this->{code} == Schulkonsole::Error::Printer::WRAPPER_CANNOT_OPEN_PRINTERSCONF
@@ -279,12 +271,6 @@ sub what {
 		and return $this->{d}->get('action muss 0, 1 oder 2 sein');
 	$this->{code} == Schulkonsole::Error::Files::WRAPPER_INVALID_FILENUMBER
 		and return $this->{d}->get('Ungueltiger Wert fuer number');
-	$this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_SECTION
-		and return $this->{d}->get('Ungueltiger Debconf-Bereich');
-	$this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_NAME
-		and return $this->{d}->get('Ungueltiger Debconf-Name');
-	$this->{code} == Schulkonsole::Error::Debconf::WRAPPER_INVALID_REQUEST
-		and return $this->{d}->get('Dieser Bereich/Name darf nicht abgefragt werden');
 	$this->{what}
 		and return $this->{what};
 

@@ -32,7 +32,8 @@ use open ':std';
 use Schulkonsole::Config;
 use Schulkonsole::DB;
 use Schulkonsole::Encode;
-use Schulkonsole::Error::Debconf;
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::DebconfError;
 
 
 my $id = <>;
@@ -41,19 +42,16 @@ my $password = <>;
 chomp $password;
 
 my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
-exit (  Schulkonsole::Error::Debconf::WRAPPER_UNAUTHENTICATED_ID
-      - Schulkonsole::Error::Debconf::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID)
 	unless $userdata;
 
 my $app_id = <>;
 ($app_id) = $app_id =~ /^(\d+)$/;
-exit (  Schulkonsole::Error::Debconf::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::Debconf::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST)
 	unless defined $app_id;
 
 my $app_name = $Schulkonsole::Config::_id_root_app_names{$app_id};
-exit (  Schulkonsole::Error::Debconf::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::Debconf::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST)
 	unless defined $app_name;
 
 
@@ -69,8 +67,7 @@ foreach my $group (('ALL', keys %$groups)) {
 		last;
 	}
 }
-exit (  Schulkonsole::Error::Debconf::WRAPPER_UNAUTHORIZED_ID
-      - Schulkonsole::Error::Debconf::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHORIZED_ID)
 	unless $is_permission_found;
 
 
@@ -111,18 +108,15 @@ name of debconf value to read
 sub read_debconf() {
 	my $section = <>;
 	($section) = $section =~ /^([a-z\-]+)$/;
-	exit (  Schulkonsole::Error::Debconf::WRAPPER_INVALID_SECTION
-	      - Schulkonsole::Error::Debconf::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::DebconfError::WRAPPER_INVALID_SECTION)
 		unless defined $section;
 
 	my $name = <>;
 	($name) = $name =~ /^([a-z\-]+)$/;
-	exit (  Schulkonsole::Error::Debconf::WRAPPER_INVALID_NAME
-	      - Schulkonsole::Error::Debconf::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::DebconfError::WRAPPER_INVALID_NAME)
 		unless defined $name;
 
-	exit (  Schulkonsole::Error::Debconf::WRAPPER_INVALID_REQUEST
-	      - Schulkonsole::Error::Debconf::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::DebconfError::WRAPPER_INVALID_REQUEST)
 		unless /$section\/$name/ ~~ @allowed_names;
 
 	$< = $>;
@@ -132,8 +126,7 @@ sub read_debconf() {
 
 	my $command = '/bin/bash -c "echo get '.$section.'/'.$name.' | debconf-communicate -fnoninteractive" |';
 	open(SCRIPTIN, $command) or
-	exit (  Schulkonsole::Error::Debconf::WRAPPER_SCRIPT_EXEC_FAILED
-	      - Schulkonsole::Error::Debconf::WRAPPER_ERROR_BASE);
+	exit (  Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED);
 
 	my $line;
 	while(<SCRIPTIN>) {
@@ -141,8 +134,7 @@ sub read_debconf() {
 	    print "$line\n" if defined $line;
 	}
 	close(SCRIPTIN) or 
-	exit (  Schulkonsole::Error::Debconf::WRAPPER_SCRIPT_EXEC_FAILED
-	      - Schulkonsole::Error::Debconf::WRAPPER_ERROR_BASE);
+	exit (  Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED);
 
 	exit 0;
 }
@@ -163,15 +155,15 @@ sub read_smtprelay() {
 
 	my $command = '/bin/bash -c "echo get linuxmuster-base/smtprelay | debconf-communicate -fnoninteractive" |';
 	open(SCRIPTIN, $command) or
-	exit (  Schulkonsole::Error::Debconf::WRAPPER_SCRIPT_EXEC_FAILED
-	      - Schulkonsole::Error::Debconf::WRAPPER_ERROR_BASE);
+	exit (  Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED);
 
 	my $line;
 	while(<SCRIPTIN>) {
 	    ($line) = $_ =~ /^(.*?)$/;
 	    print "$line\n" if defined $line;
 	}
-	close(SCRIPTIN);
+	close(SCRIPTIN)
+		or exit ( Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED );
 
 	exit 0;
 };

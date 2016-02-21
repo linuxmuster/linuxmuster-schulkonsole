@@ -2,8 +2,8 @@ use strict;
 use utf8;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
-use Schulkonsole::Error;
-use Schulkonsole::Error::Debconf;
+use Schulkonsole::Wrapper;
+use Schulkonsole::Error::DebconfError;
 use Schulkonsole::Config;
 
 
@@ -32,8 +32,8 @@ Schulkonsole::Debconf - interface to read debconf section/values
 
 Schulkonsole::Debconf is an interface to read debconf values with root premissions
 
-If a wrapper command fails, it usually dies with a Schulkonsole::Error.
-The output of the failed command is stored in the Schulkonsole::Error.
+If a wrapper command fails, it usually dies with a Schulkonsole::Error::DebconfError.
+The output of the failed command is stored in the Schulkonsole::Error::DebconfError.
 
 =cut
 
@@ -45,108 +45,8 @@ $VERSION = 0.06;
 	read
 );
 
-
-
-
-my $input_buffer;
-sub buffer_input {
-	my $in = shift;
-
-	while (<$in>) {
-		$input_buffer .= $_;
-	}
-}
-
-
-
-
-sub start_wrapper {
-	my $app_id = shift;
-	my $id = shift;
-	my $password = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-
-	my $pid = IPC::Open3::open3 $out, $in, $err,
-		$Schulkonsole::Config::_wrapper_debconf
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-			$Schulkonsole::Config::_wrapper_debconf, $!);
-
-	binmode $out, ':utf8';
-	binmode $in, ':utf8';
-	binmode $err, ':utf8';
-
-
-	my $re = waitpid $pid, POSIX::WNOHANG;
-	if (   $re == $pid
-	    or $re == -1) {
-		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-				$Schulkonsole::Config::_wrapper_debconf, $!);
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Files::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_debconf);
-		}
-	}
-
-	print $out "$id\n$password\n$app_id\n";
-
-
-
-
-
-	return $pid;
-}
-
-
-
-
-sub stop_wrapper {
-	my $pid = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-
-	my $re = waitpid $pid, 0;
-	if (    ($re == $pid or $re == -1)
-	    and $?) {
-		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-				$Schulkonsole::Config::_wrapper_debconf, $!,
-				($input_buffer ? "Output: $input_buffer" : 'No Output'));
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Files::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_debconf);
-		}
-	}
-
-	if ($out) {
-		close $out
-			or die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_OUT,
-				$Schulkonsole::Config::_wrapper_debconf, $!,
-				($input_buffer ? "Output: $input_buffer" : 'No Output'));
-	}
-
-	close $in
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-			$Schulkonsole::Config::_wrapper_debconf, $!,
-			($input_buffer ? "Output: $input_buffer" : 'No Output'));
-
-	undef $input_buffer;
-}
-
-
-
+my $wrapcmd = $Schulkonsole::Config::_wrapper_debconf;
+my $errorclass = "Schulkonsole::Error::DebconfError";
 
 =head2 Functions
 
@@ -193,26 +93,19 @@ sub read {
 	my $section = shift;
 	my $name = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::DEBCONFREADAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::DEBCONFREADAPP,
+										$id, $password, "$section\n$name\n", Schulkonsole::Wrapper::MODE_FILE);
 
-	print SCRIPTOUT "$section\n$name\n";
-	close SCRIPTOUT;
-
-	my $ret;
 	my $value;
-	while (<SCRIPTIN>) {
-		($ret,$value) = $_ =~ /^(\d+)\s+([a-zA-Z\d\-]+)$/;
+	while my $line (split('\R', $in)) {
+		($ret,$value) = $line =~ /^(\d+)\s+([a-zA-Z\d\-]+)$/;
 		next if not defined $ret;
-		die new Schulkonsole::Error(
-			Schulkonsole::Error::Debconf::WRAPPER_INVALID_REQUEST,
+		die new Schulkonsole::Error::DebconfError(
+			Schulkonsole::Error::DebconfError::WRAPPER_INVALID_REQUEST,
 			$Schulkonsole::Config::_wrapper_debconf, $!,
 			    "debconf-communicate error $ret")
 			unless $ret == 0;
 	}
-
-	stop_wrapper($pid, undef, \*SCRIPTIN, \*SCRIPTIN);
 
 	return $value;
 }
@@ -251,23 +144,21 @@ sub read_smtprelay {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::DEBCONFREADSMTPRELAYAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::DEBCONFREADSMTPRELAYAPP,
+										$id, $password, "\n",Schulkonsole::Wrapper::MODE_FILE);
 
 	my $ret;
 	my $value;
-	while (<SCRIPTIN>) {
+	while my $line (split('\R', $in)) {
 		($ret,$value) = $_ =~ /^(\d+)\s+([a-zA-Z\d\-\.]+)$/;
 		next if not defined $ret;
-		die new Schulkonsole::Error(
-			Schulkonsole::Error::Debconf::WRAPPER_INVALID_REQUEST,
+		die new Schulkonsole::Error::DebconfError(
+			Schulkonsole::Error::DebconfError::WRAPPER_INVALID_REQUEST,
 			$Schulkonsole::Config::_wrapper_debconf, $!,
 			    "debconf-communicate error $ret")
 			unless $ret == 0 || $ret == 10;
 	}
 
-	stop_wrapper($pid, undef, \*SCRIPTIN, \*SCRIPTIN);
 	if($ret == 0) {
 	    return $value;
 	} else {
