@@ -1201,9 +1201,7 @@ sub standard_error_handling {
 		    or $error->{code}
 		       	== Schulkonsole::Error::Firewall::WRAPPER_UNAUTHENTICATED_ID
 		    or $error->{code}
-		       	== Schulkonsole::Error::Printer::WRAPPER_UNAUTHENTICATED_ID
-		    or $error->{code}
-		       	== Schulkonsole::Error::Files::WRAPPER_UNAUTHENTICATED_ID) {
+		       	== Schulkonsole::Error::Printer::WRAPPER_UNAUTHENTICATED_ID) {
 			$this->exit_with_login_page($page);
 		}
 	} else {

@@ -7,7 +7,6 @@ eval {
 if ($@) {
 	require Schulkonsole::Gettext;
 }
-use Schulkonsole::Error::Files;
 use Schulkonsole::Error::Firewall;
 use Schulkonsole::Error::Radius;
 use Schulkonsole::Error::Linbo;
@@ -145,7 +144,6 @@ sub what {
 	$this->{code} == DB_NO_WORKSTATION_USERS
 		and return $this->{d}->get('Keine Workstationbenutzer');
 	(   $this->{code} == CANNOT_OPEN_FILE
-	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_CANNOT_OPEN_FILE
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE)
 		and return $this->{d}->get('Kann Datei nicht oeffnen');
 	$this->{code} == FILE_FORMAT_ERROR
@@ -161,7 +159,6 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_PROGRAM_ERROR
-	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_PROGRAM_ERROR)
 		and return $this->{d}->get('Programmaufruf fehlgeschlagen');
@@ -170,7 +167,6 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_UID
-	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHORIZED_UID)
 		and return $this->{d}->get('Nicht autorisierter Aufrufer');
@@ -188,33 +184,27 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_SCRIPT_EXEC_FAILED
-	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_SCRIPT_EXEC_FAILED)
 		and return $this->{d}->get('Skriptaufruf fehlgeschlagen');
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHENTICATED_ID
-	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHENTICATED_ID)
 		and return $this->{d}->get('Authentifizierung fehlgeschlagen nach ID');
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_APP_ID_DOES_NOT_EXIST
-	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_APP_ID_DOES_NOT_EXIST)
 		and return $this->{d}->get('Programm-ID unbekannt');
 	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_ID
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_ID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_ID
-	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_UNAUTHORIZED_ID
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHORIZED_ID
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHORIZED_ID)
 		and return $this->{d}->get('Nicht autorisierter Aufrufer nach ID');
-	$this->{code} == Schulkonsole::Error::Files::WRAPPER_INVALID_SESSION_ID
-		and return $this->{d}->get('Ungueltige Session-ID');
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_HOST
 		and return $this->{d}->get('Ungueltiger Host');
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_NO_HOSTS
@@ -231,8 +221,7 @@ sub what {
 		and return $this->{d}->get('Raumdatei kann nicht gelesen werden');
 	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM_SCOPE
 		and return $this->{d}->get('Erwarte 0 oder 1 fuer scope');
-	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_FORK
-	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_CANNOT_FORK)
+	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_FORK
 		and return $this->{d}->get('Fork nicht moeglich');
 	(   $this->{code} == Schulkonsole::Error::Printer::WRAPPER_CANNOT_OPEN_PRINTERSCONF
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_OPEN_PRINTERSCONF)
@@ -261,8 +250,6 @@ sub what {
 		and return $this->{d}->get('Ungueltiger Image-Dateiname');
 	$this->{code} == Schulkonsole::Error::Linbo::WRAPPER_INVALID_ACTION
 		and return $this->{d}->get('action muss 0, 1 oder 2 sein');
-	$this->{code} == Schulkonsole::Error::Files::WRAPPER_INVALID_FILENUMBER
-		and return $this->{d}->get('Ungueltiger Wert fuer number');
 	$this->{what}
 		and return $this->{what};
 

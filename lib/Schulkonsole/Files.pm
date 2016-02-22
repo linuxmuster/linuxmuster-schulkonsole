@@ -1,7 +1,8 @@
 use strict;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
-use Schulkonsole::Error;
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::FilesError;
 use Schulkonsole::Config;
 
 
@@ -28,8 +29,8 @@ Schulkonsole::Files - interface to read and write files
 
 Schulkonsole::Files is an interface to write files with root premissions
 
-If a wrapper command fails, it usually dies with a Schulkonsole::Error.
-The output of the failed command is stored in the Schulkonsole::Error.
+If a wrapper command fails, it usually dies with a Schulkonsole::Error::FilesError.
+The output of the failed command is stored in the Schulkonsole::Error::FilesError.
 
 =cut
 
@@ -50,106 +51,8 @@ $VERSION = 0.06;
 );
 
 
-
-
-my $input_buffer;
-sub buffer_input {
-	my $in = shift;
-
-	while (<$in>) {
-		$input_buffer .= $_;
-	}
-}
-
-
-
-
-sub start_wrapper {
-	my $app_id = shift;
-	my $id = shift;
-	my $password = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-
-	my $pid = IPC::Open3::open3 $out, $in, $err,
-		$Schulkonsole::Config::_wrapper_files
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-			$Schulkonsole::Config::_wrapper_files, $!);
-
-	binmode $out, ':utf8';
-	binmode $in, ':utf8';
-	binmode $err, ':utf8';
-
-
-	my $re = waitpid $pid, POSIX::WNOHANG;
-	if (   $re == $pid
-	    or $re == -1) {
-		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-				$Schulkonsole::Config::_wrapper_files, $!);
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Files::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_files);
-		}
-	}
-
-	print $out "$id\n$password\n$app_id\n";
-
-
-
-
-
-	return $pid;
-}
-
-
-
-
-sub stop_wrapper {
-	my $pid = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-
-	my $re = waitpid $pid, 0;
-	if (    ($re == $pid or $re == -1)
-	    and $?) {
-		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-				$Schulkonsole::Config::_wrapper_files, $!,
-				($input_buffer ? "Output: $input_buffer" : 'No Output'));
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Files::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_files);
-		}
-	}
-
-	if ($out) {
-		close $out
-			or die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_OUT,
-				$Schulkonsole::Config::_wrapper_files, $!,
-				($input_buffer ? "Output: $input_buffer" : 'No Output'));
-	}
-
-	close $in
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-			$Schulkonsole::Config::_wrapper_files, $!,
-			($input_buffer ? "Output: $input_buffer" : 'No Output'));
-
-	undef $input_buffer;
-}
-
-
+my $wrapcmd = $Schulkonsole::Config::_cmd_wrapper_files;
+my $errorclass = "Schulkonsole::Error::FilesError";
 
 
 =head2 Functions
@@ -188,16 +91,9 @@ sub write_file {
 	my $lines = shift;
 	my $file_number = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::WRITEFILEAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$file_number\n", join('', @$lines);
-	close SCRIPTOUT;
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, undef, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::WRITEFILEAPP,
+						$id, $password,
+						"$file_number\n" . join('', @$lines));
 }
 
 
@@ -444,15 +340,9 @@ sub import_workstations {
 
 	$sk_session->put_aside_session();
 
-	my $pid = start_wrapper(Schulkonsole::Config::IMPORTWORKSTATIONSAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	print SCRIPTOUT $sk_session->session_id(), "\n";
-
-	buffer_input(\*SCRIPTIN);
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::IMPORTWORKSTATIONSAPP,
+					      $id, $password,
+					      $sk_session->session_id() . "\n");
 
 	sleep 1;
 
@@ -465,9 +355,7 @@ sub import_workstations {
 		$cgi_session->clear('statusbg');
 		$cgi_session->clear('statusbgiserror');
 
-		die new Schulkonsole::Error(
-			Schulkonsole::Error::PUBLIC_BG_ERROR,
-			$statusbg);
+		die new $errorclass(Schulkonsole::Error::PUBLIC_BG_ERROR, $statusbg);
 	}
 }
 
@@ -558,18 +446,9 @@ sub import_printers {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::IMPORTPRINTERSAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::IMPORTPRINTERSAPP,
+					      $id, $password);
 }
-
-
-
-
 
 
 1;
