@@ -81,7 +81,7 @@ my $all_classs = Schulkonsole::DB::classes();
 delete $$all_classs{'attic'};
 
 my $class_userdatas = Schulkonsole::DB::get_class_userdatas($class);
-my $user_quotaroots = Schulkonsole::Cyrus::quota(keys %$class_userdatas);
+my $user_quotaroots = Schulkonsole::Cyrus::quota($id, $password, keys %$class_userdatas);
 
 my $user_printquotas;
 if ( -e $Schulkonsole::Config::_cmd_linuxmuster_pk ) {

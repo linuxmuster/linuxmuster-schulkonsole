@@ -7,7 +7,7 @@ nobase_dist_perllib_DATA = \
 	Encode.pm \
 	Error.pm \
 	Error/Error.pm \
-	Error/Cyrus.pm \
+	Error/CyrusError.pm \
 	Error/Files.pm \
 	Error/Firewall.pm \
 	Error/Linbo.pm \

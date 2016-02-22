@@ -7,7 +7,6 @@ eval {
 if ($@) {
 	require Schulkonsole::Gettext;
 }
-use Schulkonsole::Error::Cyrus;
 use Schulkonsole::Error::Files;
 use Schulkonsole::Error::Firewall;
 use Schulkonsole::Error::Radius;
@@ -171,7 +170,6 @@ sub what {
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_UID
-	 or $this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHORIZED_UID)
@@ -183,15 +181,13 @@ sub what {
 	or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_SETUID_FAILED)
 		and return $this->{d}->get('Wechsel zu diesem Benutzer nicht moeglich');
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_SCRIPT
-	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_INVALID_SCRIPT
-	 or $this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_INVALID_SCRIPT)
+	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_INVALID_SCRIPT)
 		and return $this->{d}->get('Skript nicht vorhanden');
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_SCRIPT_EXEC_FAILED
-	 or $this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Files::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_SCRIPT_EXEC_FAILED)
@@ -255,10 +251,6 @@ sub what {
 		and return $this->{d}->get('Unerwartete Programmausgabe');
 	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_NO_USERS
 		and return $this->{d}->get('Keine Benutzer');
-	$this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_NO_CYRUS_USER
-		and return $this->{d}->get('Benutzer "cyrus" gibt es nicht');
-	$this->{code} == Schulkonsole::Error::Cyrus::WRAPPER_INVALID_EUID
-		and return $this->{d}->get('wrapper-cyrus gehoert nicht Benutzer "cyrus" oder SUID nicht gesetzt');
 	$this->{code} == Schulkonsole::Error::Linbo::WRAPPER_INVALID_GROUP
 		and return $this->{d}->get('Ungueltiger Gruppenname');
 	$this->{code} == Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
