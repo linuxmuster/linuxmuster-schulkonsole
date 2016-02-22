@@ -4,7 +4,8 @@
 use strict;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
-use Schulkonsole::Error;
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::FirewallError;
 use Schulkonsole::Config;
 
 
@@ -78,7 +79,8 @@ $VERSION = 0.03;
 );
 
 
-
+my $wrapcmd = $Schulkonsole::Config::_cmd_wrapper_firewall;
+my $errorclass = "Schulkonsole::
 
 my $input_buffer;
 sub buffer_input {

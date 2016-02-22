@@ -7,7 +7,6 @@ eval {
 if ($@) {
 	require Schulkonsole::Gettext;
 }
-use Schulkonsole::Error::Firewall;
 use Schulkonsole::Error::Radius;
 use Schulkonsole::Error::Linbo;
 use Schulkonsole::Error::OVPN;
@@ -156,7 +155,6 @@ sub what {
 		and return $this->{d}->get('Datenuebertragung (lesen) unterbrochen');
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_PROGRAM_ERROR
-	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_PROGRAM_ERROR
@@ -164,7 +162,6 @@ sub what {
 		and return $this->{d}->get('Programmaufruf fehlgeschlagen');
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_UNAUTHORIZED_UID
-	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHORIZED_UID
@@ -181,51 +178,28 @@ sub what {
 		and return $this->{d}->get('Skript nicht vorhanden');
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_SCRIPT_EXEC_FAILED
-	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_SCRIPT_EXEC_FAILED)
 		and return $this->{d}->get('Skriptaufruf fehlgeschlagen');
-	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHENTICATED_ID
-	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHENTICATED_ID
+	 ($this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHENTICATED_ID
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHENTICATED_ID)
 		and return $this->{d}->get('Authentifizierung fehlgeschlagen nach ID');
-	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_APP_ID_DOES_NOT_EXIST
-	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_APP_ID_DOES_NOT_EXIST
+	($this->{code} == Schulkonsole::Error::Radius::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_APP_ID_DOES_NOT_EXIST
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_APP_ID_DOES_NOT_EXIST)
 		and return $this->{d}->get('Programm-ID unbekannt');
-	(   $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_ID
-	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_ID
+	($this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_ID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_ID
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHORIZED_ID
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHORIZED_ID)
 		and return $this->{d}->get('Nicht autorisierter Aufrufer nach ID');
-	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_HOST
-		and return $this->{d}->get('Ungueltiger Host');
-	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_NO_HOSTS
-		and return $this->{d}->get('Keine Hosts');
-	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM
-		and return $this->{d}->get('Ungueltige Raumbezeichnung');
-	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_LESSONMODE
-		and return $this->{d}->get('Ungueltiger Modus fuer Unterricht');
-	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_LESSONTIME
-		and return $this->{d}->get('Ungueltige Zeitangabe fuer Unterrichtsende');
-	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_WRITE_ROOMFILE
-		and return $this->{d}->get('Raumdatei kann nicht geschrieben werden');
-	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_READ_ROOMFILE
-		and return $this->{d}->get('Raumdatei kann nicht gelesen werden');
-	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM_SCOPE
-		and return $this->{d}->get('Erwarte 0 oder 1 fuer scope');
-	$this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_FORK
-		and return $this->{d}->get('Fork nicht moeglich');
-	(   $this->{code} == Schulkonsole::Error::Printer::WRAPPER_CANNOT_OPEN_PRINTERSCONF
-	 or $this->{code} == Schulkonsole::Error::Firewall::WRAPPER_CANNOT_OPEN_PRINTERSCONF)
-		and return $this->{d}->get('Kann printers.conf nicht oeffnen');
+	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_CANNOT_OPEN_PRINTERSCONF
+	        and return $this->{d}->get('Kann printers.conf nicht oeffnen');
 	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_INVALID_PRINTER_NAME
 		and return $this->{d}->get('Ungueltiger Druckername');
 	$this->{code} == Schulkonsole::Error::Printer::WRAPPER_NO_PRINTERS
