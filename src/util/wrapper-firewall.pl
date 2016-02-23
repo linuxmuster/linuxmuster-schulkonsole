@@ -38,7 +38,8 @@ use Sophomorix::SophomorixConfig;
 use Schulkonsole::Config;
 use Schulkonsole::DB;
 use Schulkonsole::Encode;
-use Schulkonsole::Error::Firewall;
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::FirewallError;
 use Schulkonsole::Firewall;
 use Schulkonsole::RoomSession;
 use Schulkonsole::Sophomorix;
@@ -51,20 +52,20 @@ my $password = <>;
 chomp $password;
 
 my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
-exit (  Schulkonsole::Error::Firewall::WRAPPER_UNAUTHENTICATED_ID
-      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID
+      )
 	unless $userdata;
 
 
 my $app_id = <>;
 ($app_id) = $app_id =~ /^(\d+)$/;
-exit (  Schulkonsole::Error::Firewall::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST
+      )
 	unless defined $app_id;
 
 my $app_name = $Schulkonsole::Config::_id_root_app_names{$app_id};
-exit (  Schulkonsole::Error::Firewall::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST
+      )
 	unless defined $app_name;
 
 
@@ -84,8 +85,8 @@ foreach my $group (('ALL', keys %$groups)) {
 		last;
 	}
 }
-exit (  Schulkonsole::Error::Firewall::WRAPPER_UNAUTHORIZED_ID
-      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHORIZED_ID
+      )
 	unless $is_permission_found;
 
 
@@ -188,14 +189,14 @@ sub internet_on_off_app() {
 		last if $host =~ /^$/;
 
 		($host) = $host =~ /^([\w.-]+)$/i;
-		exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_HOST
-		      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::FirewallError::WRAPPER_INVALID_HOST
+		      )
 			unless $host;
 
 		push @hosts, $host;
 	}
-	exit (  Schulkonsole::Error::Firewall::WRAPPER_NO_HOSTS
-	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::FirewallError::WRAPPER_NO_HOSTS
+	      )
 		unless @hosts;
 
 	my $cmd = ($app_id == Schulkonsole::Config::INTERNETONOFFAPP ?
@@ -249,14 +250,14 @@ sub urlfilter_on_off_app() {
 		last if $host =~ /^$/;
 
 		($host) = $host =~ /^([\w.-]+)$/i;
-		exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_HOST
-		      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::FirewallError::WRAPPER_INVALID_HOST
+		      )
 			unless $host;
 
 		push @hosts, $host;
 	}
-	exit (  Schulkonsole::Error::Firewall::WRAPPER_NO_HOSTS
-	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::FirewallError::WRAPPER_NO_HOSTS
+	      )
 		unless @hosts;
 
 	my $opts = "--trigger=$trigger --hostlist=" . join(',', @hosts);
@@ -283,8 +284,8 @@ invokes C<update-logins.sh>
 sub update_logins_app() {
 	my $room = <>;
 	($room) = $room =~ /^([\w -]+)$/;
-	exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM
-	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::FirewallError::WRAPPER_INVALID_ROOM
+	      )
 		unless $room;
 	# set ruid
 	local $< = $>;
@@ -332,8 +333,8 @@ The name of the room
 sub all_on_app() {
 	my $room = <>;
 	($room) = $room =~ /^([\w -]+)$/;
-	exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM
-	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::FirewallError::WRAPPER_INVALID_ROOM
+	      )
 		unless $room;
 
 	my $room_session = room_session($room);
@@ -372,14 +373,14 @@ Absolute time in seconds since the Epoch
 sub all_on_at_app(){
 	my $room = <>;
 	($room) = $room =~ /^([\w -]+)$/;
-	exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM
-	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::FirewallError::WRAPPER_INVALID_ROOM
+	      )
 		unless $room;
 
 	my $time = <>;
 	($time) = $time =~ /^(\d+)$/;
-	exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_LESSONTIME
-	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::FirewallError::WRAPPER_INVALID_LESSONTIME
+	      )
 		unless $time;
 
 	{ # write values and close session
@@ -388,8 +389,8 @@ sub all_on_at_app(){
 	}
 
 	my $pid = fork;
-	exit (  Schulkonsole::Error::Firewall::WRAPPER_CANNOT_FORK
-	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::FirewallError::WRAPPER_CANNOT_FORK
+	      )
 		unless defined $pid;
 
 	if (not $pid) {
@@ -404,16 +405,16 @@ sub all_on_at_app(){
 		my $room_session = room_session($room);
 
 		my $stored_room = $room_session->param('name');
-		exit (  Schulkonsole::Error::Firewall::WRAPPER_CANNOT_READ_ROOMFILE
-		      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::FirewallError::WRAPPER_CANNOT_READ_ROOMFILE
+		      )
 			unless $stored_room;
 		my $stored_id = $room_session->param('user_id');
-		exit (  Schulkonsole::Error::Firewall::WRAPPER_CANNOT_READ_ROOMFILE
-		      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::FirewallError::WRAPPER_CANNOT_READ_ROOMFILE
+		      )
 			unless $stored_id;
 		my $stored_time = $room_session->param('end_time');
-		exit (  Schulkonsole::Error::Firewall::WRAPPER_CANNOT_READ_ROOMFILE
-		      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::FirewallError::WRAPPER_CANNOT_READ_ROOMFILE
+		      )
 			unless $stored_time;
 		my $is_exam_mode = $room_session->param('test_step');
 
@@ -455,8 +456,8 @@ Resets the workstation settings in a room
 sub rooms_reset_app(){
 	my $scope = <>;
 	($scope) = $scope =~ /^([01])$/;
-	exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM_SCOPE
-	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::FirewallError::WRAPPER_INVALID_ROOM_SCOPE
+	      )
 		unless defined $scope;
 
 	if ($scope == 0) {
@@ -470,8 +471,8 @@ sub rooms_reset_app(){
 		while (<>) {
 			last if /^$/;
 			my ($room) = /^([\w -]+)$/;
-			exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_ROOM
-			      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+			exit (  Schulkonsole::Error::FirewallError::WRAPPER_INVALID_ROOM
+			      )
 				unless $room;
 			push @rooms_reset, $room;
 		}
@@ -479,8 +480,8 @@ sub rooms_reset_app(){
 		while (<>) {
 			last if /^$/;
 			my ($host) = /^([\w.-]+)$/i;
-			exit (  Schulkonsole::Error::Firewall::WRAPPER_INVALID_HOST
-			      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+			exit (  Schulkonsole::Error::FirewallError::WRAPPER_INVALID_HOST
+			      )
 				unless $host;
 			push @hosts_reset, $host;
 		}
@@ -525,8 +526,8 @@ sub room_session {
 
 	my $session = new Schulkonsole::RoomSession($room);
 
-	exit (  Schulkonsole::Error::Firewall::WRAPPER_GENERAL_ERROR
-	      - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::FirewallError::WRAPPER_GENERAL_ERROR
+	      )
 		unless $session;
 
 	# 'unprivileged' is set in the main CGI-script
@@ -579,10 +580,10 @@ sub all_on {
 
 	# reset internet, intranet, webfilter settings to old stat from session file
 	my $allowed_hosts_internet
-		= Schulkonsole::Firewall::allowed_hosts_internet();
+		= Schulkonsole::FirewallError::allowed_hosts_internet();
 	my $blocked_hosts_intranet
-		= Schulkonsole::Firewall::blocked_hosts_intranet();
-	my $unfiltered_hosts = Schulkonsole::Firewall::unfiltered_hosts();
+		= Schulkonsole::FirewallError::blocked_hosts_intranet();
+	my $unfiltered_hosts = Schulkonsole::FirewallError::unfiltered_hosts();
 	my @internet_ons;
 	my @internet_offs;
 	my @intranet_ons;
@@ -674,8 +675,8 @@ sub all_on {
 	
 		open PRINTERSCONF, '<', Schulkonsole::Encode::to_fs(
 		     	$Schulkonsole::Config::_cups_printers_conf_file)
-			or exit (  Schulkonsole::Error::Firewall::WRAPPER_CANNOT_OPEN_PRINTERSCONF
-			         - Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE);
+			or exit (  Schulkonsole::Error::FirewallError::WRAPPER_CANNOT_OPEN_PRINTERSCONF
+			         );
 
 		my $printer;
 		my %printer_info;

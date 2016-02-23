@@ -32,7 +32,8 @@ use open ':std';
 use Schulkonsole::Config;
 use Schulkonsole::DB;
 use Schulkonsole::Encode;
-use Schulkonsole::Error::OVPN;
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::OVPNError;
 
 
 
@@ -42,19 +43,19 @@ my $password = <>;
 chomp $password;
 
 my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
-exit (  Schulkonsole::Error::OVPN::WRAPPER_UNAUTHENTICATED_ID
-      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID
+      )
 	unless $userdata;
 
 my $app_id = <>;
 ($app_id) = $app_id =~ /^(\d+)$/;
-exit (  Schulkonsole::Error::OVPN::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST
+      )
 	unless defined $app_id;
 
 my $app_name = $Schulkonsole::Config::_id_root_app_names{$app_id};
-exit (  Schulkonsole::Error::OVPN::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST
+      )
 	unless defined $app_name;
 
 
@@ -70,8 +71,8 @@ foreach my $group (('ALL', keys %$groups)) {
         last;
     }
 }
-exit (  Schulkonsole::Error::OVPN::WRAPPER_UNAUTHORIZED_ID
-      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHORIZED_ID
+      )
     unless $is_permission_found;
 
 
@@ -120,8 +121,8 @@ none
 	if ($app_id == Schulkonsole::Config::OVPNCREATEAPP) {
 		my $ovpn_password = <>;
 		($ovpn_password) = $ovpn_password =~ /^(.{6,})$/;
-		exit (  Schulkonsole::Error::OVPN::WRAPPER_INVALID_PASSWORD
-		      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::OVPNError::WRAPPER_INVALID_PASSWORD
+		      )
 			unless $ovpn_password;
 
 		# give password on cmdline because read does not handle pipes

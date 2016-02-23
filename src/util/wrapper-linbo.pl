@@ -33,7 +33,8 @@ use open ':std';
 use Schulkonsole::Config;
 use Schulkonsole::DB;
 use Schulkonsole::Encode;
-use Schulkonsole::Error::Linbo;
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::LinboError;
 use POSIX;
 
 
@@ -44,19 +45,19 @@ my $password = <>;
 chomp $password;
 
 my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
-exit (  Schulkonsole::Error::Linbo::WRAPPER_UNAUTHENTICATED_ID
-      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID
+      )
 	unless $userdata;
 
 my $app_id = <>;
 ($app_id) = $app_id =~ /^(\d+)$/;
-exit (  Schulkonsole::Error::Linbo::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST
+      )
 	unless defined $app_id;
 
 my $app_name = $Schulkonsole::Config::_id_root_app_names{$app_id};
-exit (  Schulkonsole::Error::Linbo::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST
+      )
 	unless defined $app_name;
 
 
@@ -72,8 +73,8 @@ foreach my $group (('ALL', keys %$groups)) {
 		last;
 	}
 }
-exit (  Schulkonsole::Error::Linbo::WRAPPER_UNAUTHORIZED_ID
-      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHORIZED_ID
+      )
 	unless $is_permission_found;
 
 
@@ -177,8 +178,8 @@ Writes lines into a start.conf.<group>
 sub write_start_conf {
 	my $group = <>;
 	($group) = $group =~ /^([a-z\d_]+)$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_GROUP
-	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_GROUP
+	      )
 		unless defined $group;
 
 	my $filename = Schulkonsole::Encode::to_fs(
@@ -209,8 +210,8 @@ sub write_start_conf {
 	umask(022);
 
 	open FILE, '>', $filename
-		or exit (  Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE
-		         - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
+		or exit (  Schulkonsole::Error::LinboError::WRAPPER_CANNOT_OPEN_FILE
+		         );
 	flock FILE, 2;
 	seek FILE, 0, 0;
 
@@ -246,15 +247,15 @@ sub copy_start_conf {
 	my $src = <>;
 	chomp $src;
 	($src) = $src =~ /^([a-z\d_]+[^\/]*)$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_GROUP
-	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_GROUP
+	      )
 		unless defined $src;
 
 	my $dest = <>;
 	chomp $dest;
 	($dest) = $dest =~ /^([a-z\d_]+)$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_GROUP
-	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_GROUP
+	      )
 		unless defined $dest;
 
 
@@ -284,14 +285,14 @@ sub copy_start_conf {
 	umask(022);
 
 	open SRC, '<', $src_filename
-		or exit (  Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE
-		         - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
+		or exit (  Schulkonsole::Error::LinboError::WRAPPER_CANNOT_OPEN_FILE
+		         );
 	flock SRC, 1;
 	seek SRC, 0, 0;
 
 	open DEST, '>', $dest_filename
-		or exit (  Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE
-		         - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
+		or exit (  Schulkonsole::Error::LinboError::WRAPPER_CANNOT_OPEN_FILE
+		         );
 	flock DEST, 2;
 	seek DEST, 0, 0;
 
@@ -332,20 +333,20 @@ Copies a template to <image>.reg
 sub copy_regpatch {
 	my $regpatch = <>;
 	($regpatch) = $regpatch =~ /^([^\/]+\.reg)$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
-	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_FILENAME
+	      )
 		unless defined $regpatch;
 
 	my $is_example = <>;
 	($is_example) = $is_example =~ /^([01])$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_IS_EXAMPLE
-	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_IS_EXAMPLE
+	      )
 		unless defined $is_example;
 
 	my $image = <>;
 	($image) = $image =~ /^([^\/]+\.(?:cloop|rsync))$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_IMAGE
-	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_IMAGE
+	      )
 		unless defined $image;
 
 	my $src_filename = Schulkonsole::Encode::to_fs(($is_example ?
@@ -361,14 +362,14 @@ sub copy_regpatch {
 	umask(022);
 
 	open SRC, '<', $src_filename
-		or exit (  Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE
-		         - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
+		or exit (  Schulkonsole::Error::LinboError::WRAPPER_CANNOT_OPEN_FILE
+		         );
 	flock SRC, 1;
 	seek SRC, 0, 0;
 
 	open DEST, '>', $dest_filename
-		or exit (  Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE
-		         - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
+		or exit (  Schulkonsole::Error::LinboError::WRAPPER_CANNOT_OPEN_FILE
+		         );
 	flock DEST, 2;
 	seek DEST, 0, 0;
 
@@ -417,8 +418,8 @@ sub linbo_delete {
     ($tmpfilename) = $filename =~ /^([a-z\d_]+\.cfg)$/ unless defined $tmpfilename;
     ($tmpfilename) = $filename =~ /^(start\.conf\.[a-z\d_]+)$/ unless defined $tmpfilename;
     $filename = $tmpfilename;
-    exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
-	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+    exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_FILENAME
+	      )
 		unless defined $filename;
 
     my $path = "$Schulkonsole::Config::_linbo_dir";
@@ -460,14 +461,14 @@ New image name without C<.cloop> and C<.rsync> suffix
 sub linbo_manage_images {
 	my $action = <>;
 	($action) = $action =~ /^([012])$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_ACTION
-	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_ACTION
+	      )
 		unless defined $action;
 
 	my $filename = <>;
 	my ($image, $image_suffix) = $filename =~ /^([^\/]+)\.(cloop|rsync)$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_IMAGE
-	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_IMAGE
+	      )
 		unless defined $image;
 
 	my $file = "$Schulkonsole::Config::_linbo_dir/$image.$image_suffix";
@@ -477,8 +478,8 @@ sub linbo_manage_images {
 	if ($action) {
 		my $new_image = <>;
 		($new_image) = $new_image =~ /^([^\/]+?)$/;
-		exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_IMAGE
-		      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_IMAGE
+		      )
 			unless defined $new_image;
 
 		my $new_file
@@ -541,8 +542,8 @@ The text lines of the file to write
 sub linbo_write {
 	my $filename = <>;
 	($filename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.(?:reg|desc|postsync))$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
-	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_FILENAME
+	      )
 		unless defined $filename;
 
 	my $file = Schulkonsole::Encode::to_fs("$Schulkonsole::Config::_linbo_dir/$filename");
@@ -586,8 +587,8 @@ Writes a LINBO grub cfg start file
 sub linbo_write_grub_cfg {
 	my $filename = <>;
 	($filename) = $filename =~ /^([a-z\d_]+\.cfg)$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME
-	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_FILENAME
+	      )
 		unless defined $filename;
 
 	my $file = Schulkonsole::Encode::to_fs(
@@ -630,8 +631,8 @@ sub linbo_remote_status() {
 	umask(022);
 
 	open(CMDIN,$cmd) || 
-		exit (	Schulkonsole::Error::Linbo::WRAPPER_CANNOT_RUN_COMMAND
-				- Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
+		exit (	Schulkonsole::Error::LinboError::WRAPPER_CANNOT_RUN_COMMAND
+				);
 	while(<CMDIN>) {
 		print $_;
 	}
@@ -660,8 +661,8 @@ Screen session name.
 sub linbo_remote_window() {
 	my $session = <>;
 	($session) = $session =~ /^(.+)$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_SESSION_NAME
-	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_SESSION_NAME
+	      )
 	      unless $session;
 	
 	my $tmpfile = "$Schulkonsole::Config::_runtimedir/screen_hardcopy_" . $$userdata{uidnumber} . '_' . time;
@@ -673,15 +674,15 @@ sub linbo_remote_window() {
 	umask(022);
 
 	system $cmd || 
-		exit (	Schulkonsole::Error::Linbo::WRAPPER_CANNOT_RUN_COMMAND
-				- Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
+		exit (	Schulkonsole::Error::LinboError::WRAPPER_CANNOT_RUN_COMMAND
+				);
 	sleep 1;
 	if(! -e $tmpfile) {
 	  exit 0;
 	}
 	open(FILEIN, '<:encoding(UTF-8)', Schulkonsole::Encode::to_cli($tmpfile)) ||
-		exit (  Schulkonsole::Error::Linbo::WRAPPER_CANNOT_OPEN_FILE
-		      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
+		exit (  Schulkonsole::Error::LinboError::WRAPPER_CANNOT_OPEN_FILE
+		      );
 	
 	while(<FILEIN>) {
 		print $_;
@@ -741,54 +742,54 @@ sub linbo_remote() {
 	$type = $ttype{$type};
 	
 	($type) = $type =~ /^(i|g|r)$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_TYPE
-	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_TYPE
+	      )
 		unless defined $type;
 
 	($target) = $target =~ /^([a-zA-Z\d_-]+)$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_TARGET
-	      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_TARGET
+	      )
 		unless defined $target;
 	
 	if($type eq 'i') {
 		my $hosts = Schulkonsole::Config::hosts();
-		exit (  Schulkonsole::Error::Linbo::WRAPPER_NO_SUCH_HOST
-			  - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::LinboError::WRAPPER_NO_SUCH_HOST
+			  )
 			  unless $$hosts{$target};
 	} elsif($type eq 'g') {
 		my $groups = Schulkonsole::Config::linbogroups();
-		exit (  Schulkonsole::Error::Linbo::WRAPPER_NO_SUCH_GROUP
-		      - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::LinboError::WRAPPER_NO_SUCH_GROUP
+		      )
 		      unless $$groups{$target};
 	} else { # $type eq 'r'
 		my $rooms = Schulkonsole::Config::rooms();
-		exit (  Schulkonsole::Error::Linbo::WRAPPER_NO_SUCH_ROOM
-			  - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::LinboError::WRAPPER_NO_SUCH_ROOM
+			  )
 			  unless $$rooms{$target};
 	}
 	
 	my $now = <>;
 	($now) = $now =~ /^(0|1)$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_RUN
-		  - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_RUN
+		  )
 		  unless defined $now;
 	
 	my $commands = <>;
 	($commands) = $commands =~ /^(.+)$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_COMMANDS
-		  - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_COMMANDS
+		  )
 		  unless defined $commands;
 	
 	my $nr1 = <>;
 	($nr1) = $nr1 =~ /^(-?\d+)$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_ARG
-		  - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_ARG
+		  )
 		  unless defined $nr1;
 	
 	my $nr2 = <>;
 	($nr2) = $nr2 =~ /^(\d+)$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_ARG
-		  - Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_ARG
+		  )
 		  unless defined $nr2;
 		
 	my $cmd = $Schulkonsole::Config::_cmd_linbo_remote;
@@ -806,8 +807,8 @@ sub linbo_remote() {
 	umask(022);
 	
 	exec($cmd) || 
-		exit (	Schulkonsole::Error::Linbo::WRAPPER_CANNOT_RUN_COMMAND
-				- Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE);
+		exit (	Schulkonsole::Error::LinboError::WRAPPER_CANNOT_RUN_COMMAND
+				);
 	
 	exit 0;
 }

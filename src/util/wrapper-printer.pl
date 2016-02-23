@@ -29,7 +29,8 @@ use open ':std';
 use Data::Dumper;
 use Schulkonsole::Config;
 use Schulkonsole::DB;
-use Schulkonsole::Error::Printer;
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::PrinterError;
 
 
 
@@ -39,19 +40,19 @@ my $password = <>;
 chomp $password;
 
 my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
-exit (  Schulkonsole::Error::Printer::WRAPPER_UNAUTHENTICATED_ID
-      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID
+      )
 	unless $userdata;
 
 my $app_id = <>;
 ($app_id) = $app_id =~ /^(\d+)$/;
-exit (  Schulkonsole::Error::Printer::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST
+      )
 	unless defined $app_id;
 
 my $app_name = $Schulkonsole::Config::_id_root_app_names{$app_id};
-exit (  Schulkonsole::Error::Printer::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST
+      )
 	unless defined $app_name;
 
 
@@ -71,8 +72,8 @@ foreach my $group (('ALL', keys %$groups)) {
 		last;
 	}
 }
-exit (  Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_ID
-      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHORIZED_ID
+      )
 	unless $is_permission_found;
 
 
@@ -136,14 +137,14 @@ $app_id == Schulkonsole::Config::PRINTERONOFFAPP and do {
 		last if $printer =~ /^$/;
 
 		($printer) = $printer =~ /^(\S{0,127})$/;
-		exit (  Schulkonsole::Error::Printer::WRAPPER_INVALID_PRINTER_NAME
-		      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::PrinterError::WRAPPER_INVALID_PRINTER_NAME
+		      )
 			unless $printer;
 
 		push @printers, $printer
 	}
-	exit (  Schulkonsole::Error::Printer::WRAPPER_NO_PRINTERS
-	      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::PrinterError::WRAPPER_NO_PRINTERS
+	      )
 		unless @printers;
 
 	$< = $>;
@@ -194,23 +195,23 @@ $app_id == Schulkonsole::Config::PRINTERALLOWDENYAPP and do {
 	while (my $printer = <>) {
 		last if $printer =~ /^$/;
 		($printer) = $printer =~ /^(\S{0,127})$/;
-		exit (  Schulkonsole::Error::Printer::WRAPPER_INVALID_PRINTER_NAME
-		      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::PrinterError::WRAPPER_INVALID_PRINTER_NAME
+		      )
 			unless $printer;
 
 		$printer_users{$printer} = [];
 		while (my $user = <>) {
 			last if $user =~ /^$/;
 			($user) = $user =~ /^(.+)$/;
-			exit (  Schulkonsole::Error::Printer::WRAPPER_INVALID_USER
-			      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+			exit (  Schulkonsole::Error::PrinterError::WRAPPER_INVALID_USER
+			      )
 				unless $user;
 
 			push @{ $printer_users{$printer} }, "\Q$user";
 		}
 	}
-	exit (  Schulkonsole::Error::Printer::WRAPPER_NO_PRINTERS
-	      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::PrinterError::WRAPPER_NO_PRINTERS
+	      )
 		unless %printer_users;
 
 	$< = $>;
@@ -251,8 +252,8 @@ $app_id == Schulkonsole::Config::PRINTERGETOWNQUOTAAPP and do {
 	my $pages = `$pages_cmd` or last SWITCH;
 
 	($pages) = $pages =~ /^(\d+)$/;
-	exit (  Schulkonsole::Error::Printer::WRAPPER_INVALID_PAGES
-	      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::PrinterError::WRAPPER_INVALID_PAGES
+	      )
 		unless defined $pages;
 
 
@@ -262,8 +263,8 @@ $app_id == Schulkonsole::Config::PRINTERGETOWNQUOTAAPP and do {
 	my $max = `$max_cmd` or last SWITCH;
 
 	($max) = $max =~ /^(\d+)$/;
-	exit (  Schulkonsole::Error::Printer::WRAPPER_INVALID_MAX_PAGES
-	      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::PrinterError::WRAPPER_INVALID_MAX_PAGES
+	      )
 		unless defined $max;
 
 
@@ -300,15 +301,15 @@ $app_id == Schulkonsole::Config::PRINTERGETQUOTAAPP and do {
 	while (my $user = <>) {
 		last if $user =~ /^$/;
 		($user) = $user =~ /^(.+)$/;
-		exit (  Schulkonsole::Error::Printer::WRAPPER_INVALID_USER
-		      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::PrinterError::WRAPPER_INVALID_USER
+		      )
 			unless $user;
 
 		push @users, "\Q$user";
 	}
 
-	exit (  Schulkonsole::Error::Printer::WRAPPER_NO_USERS
-	      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::PrinterError::WRAPPER_NO_USERS
+	      )
 		unless @users;
 
 
@@ -323,16 +324,16 @@ $app_id == Schulkonsole::Config::PRINTERGETQUOTAAPP and do {
 		my $pages = `$pages_cmd $opt_user ` or last SWITCH;
 
 		($pages) = $pages =~ /^(\d+)$/;
-		exit (  Schulkonsole::Error::Printer::WRAPPER_INVALID_PAGES
-		      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::PrinterError::WRAPPER_INVALID_PAGES
+		      )
 			unless defined $pages;
 
 
 		my $max = `$max_cmd $opt_user` or last SWITCH;
 
 		($max) = $max =~ /^(\d+)$/;
-		exit (  Schulkonsole::Error::Printer::WRAPPER_INVALID_MAX_PAGES
-		      - Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::PrinterError::WRAPPER_INVALID_MAX_PAGES
+		      )
 			unless defined $max;
 
 
