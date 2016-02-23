@@ -12,7 +12,6 @@ use Schulkonsole::Error::Linbo;
 use Schulkonsole::Error::OVPN;
 use Schulkonsole::Error::Printer;
 use Schulkonsole::Error::User;
-use Schulkonsole::Error::Horde;
 
 package Schulkonsole::Error;
 require Exporter;
@@ -154,30 +153,24 @@ sub what {
 	$this->{code} == WRAPPER_BROKEN_PIPE_IN
 		and return $this->{d}->get('Datenuebertragung (lesen) unterbrochen');
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_PROGRAM_ERROR
-	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_PROGRAM_ERROR
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_PROGRAM_ERROR)
 		and return $this->{d}->get('Programmaufruf fehlgeschlagen');
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_UNAUTHORIZED_UID
-	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_UNAUTHORIZED_UID
 	 or $this->{code} == Schulkonsole::Error::Linbo::WRAPPER_UNAUTHORIZED_UID)
 		and return $this->{d}->get('Nicht autorisierter Aufrufer');
-	(    $this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_UID
-	or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_INVALID_UID)
+	$this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_UID
 		and return $this->{d}->get('Wechsel zu diesem Benutzer nicht erlaubt');
-	(    $this->{code} == Schulkonsole::Error::User::WRAPPER_SETUID_FAILED
-	or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_SETUID_FAILED)
+	$this->{code} == Schulkonsole::Error::User::WRAPPER_SETUID_FAILED
 		and return $this->{d}->get('Wechsel zu diesem Benutzer nicht moeglich');
-	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_SCRIPT
-	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_INVALID_SCRIPT)
+	$this->{code} == Schulkonsole::Error::User::WRAPPER_INVALID_SCRIPT
 		and return $this->{d}->get('Skript nicht vorhanden');
 	(   $this->{code} == Schulkonsole::Error::User::WRAPPER_SCRIPT_EXEC_FAILED
-	 or $this->{code} == Schulkonsole::Error::Horde::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Radius::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::Printer::WRAPPER_SCRIPT_EXEC_FAILED
 	 or $this->{code} == Schulkonsole::Error::OVPN::WRAPPER_SCRIPT_EXEC_FAILED
