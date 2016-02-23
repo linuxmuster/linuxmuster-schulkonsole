@@ -1,7 +1,9 @@
 use strict;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
-use Schulkonsole::Error;
+use Schulkonsole::Wrapper;
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::PrinterError;
 use Schulkonsole::Config;
 
 =head1 NAME
@@ -25,104 +27,8 @@ $VERSION = 0.03;
 );
 
 
-
-
-my $input_buffer;
-sub buffer_input {
-	my $in = shift;
-
-	while (<$in>) {
-		$input_buffer .= $_;
-	}
-}
-
-
-
-
-sub start_wrapper {
-	my $app_id = shift;
-	my $id = shift;
-	my $password = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-
-	my $pid = IPC::Open3::open3 $out, $in, $err,
-		$Schulkonsole::Config::_wrapper_printer
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-			$Schulkonsole::Config::_wrapper_printer, $!);
-
-	binmode $out, ':utf8';
-	binmode $in, ':utf8';
-	binmode $err, ':utf8';
-
-
-	my $re = waitpid $pid, POSIX::WNOHANG;
-	if (   $re == $pid
-	    or $re == -1) {
-		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-				$Schulkonsole::Config::_wrapper_printer, $!);
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_printer);
-		}
-	}
-
-	print $out "$id\n$password\n$app_id\n";
-
-
-
-
-
-	return $pid;
-}
-
-
-
-
-sub stop_wrapper {
-	my $pid = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-
-	my $re = waitpid $pid, 0;
-	if (    ($re == $pid or $re == -1)
-	    and $?) {
-		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-				$Schulkonsole::Config::_wrapper_printer, $!,
-				($input_buffer ? "Output: $input_buffer" : 'No Output'));
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Printer::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_printer);
-		}
-	}
-
-	close $out
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_OUT,
-			$Schulkonsole::Config::_wrapper_printer, $!,
-			($input_buffer ? "Output: $input_buffer" : 'No Output'));
-
-	close $in
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-			$Schulkonsole::Config::_wrapper_printer, $!,
-			($input_buffer ? "Output: $input_buffer" : 'No Output'));
-
-	undef $input_buffer;
-}
-
-
+my $wrapcmd = $Schulkonsole::Config::_cmd_wrapper_printer;
+my $errorclass = "Schulkonsole::Error::PrinterError";
 
 
 =head2 C<printer_info($id, $password)>
@@ -163,14 +69,14 @@ sub printer_info {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PRINTERINFOAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	my @in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::PRINTERINFOAPP,
+		$id, $password,"",Schulkonsole::Wrapper::MODE_LINES);
 
 	my %printers = ();
 	my %printer = ();
 	my $pname;
-	while (<SCRIPTIN>) {
+	while(@in) {#
+		shift @in;
 		chomp;
 		if (/^printer /){
 			if ($pname) {
@@ -194,7 +100,7 @@ sub printer_info {
 		} elsif (/^\tRejecting Jobs/) {
 			$printer{'Accepting'}='No';
 		} elsif (/^\tUsers allowed:/) {
-			$_ = <SCRIPTIN>;
+			$_ = shift @in;
 			chomp;
 			if (/\(all\)/) {
 				$printer{'Deny'}='None';
@@ -208,8 +114,6 @@ sub printer_info {
 	if ($pname) {
 		$printers{$pname}={%printer};
 	}
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 
 	return \%printers;
 }
@@ -251,16 +155,9 @@ sub printer_on {
 	my $password = shift;
 	my $printers = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PRINTERONOFFAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::PRINTERONOFFAPP,
+		$id, $password, "1\n" . join("\n", @$printers) . "\n\n");
 
-	print SCRIPTOUT "1\n",
-		join("\n", @$printers), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 }
 
 
@@ -300,16 +197,9 @@ sub printer_off {
 	my $password = shift;
 	my $printers = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PRINTERONOFFAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::PRINTERONOFFAPP,
+		$id, $password, "0\n" . join("\n", @$printers) . "\n\n");
 
-	print SCRIPTOUT "0\n",
-		join("\n", @$printers), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 }
 
 
@@ -352,19 +242,14 @@ sub printer_deny {
 	my $password = shift;
 	my $printer_users = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PRINTERALLOWDENYAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $out = "";
 	foreach my $printer (keys %$printer_users) {
-		print SCRIPTOUT "$printer\n",
-			join("\n", @{ $$printer_users{$printer} }, ''), "\n";
+		$out .= "$printer\n" . join("\n", @{ $$printer_users{$printer} }, '') . "\n";
 	}
-	print SCRIPTOUT "\n";
 
-	buffer_input(\*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::PRINTERALLOWDENYAPP,
+		$id, $password, "$out\n");
 
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 }
 
 
@@ -408,25 +293,16 @@ sub own_quota {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::PRINTERGETOWNQUOTAAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::PRINTERGETOWNQUOTAAPP,
+		$id, $password);
 
+	my ($pages, $max) = $in =~ /^(\d+)\t(\d+)$/;
 
-	buffer_input(\*SCRIPTIN);
-
-	my ($pages, $max) = $input_buffer =~ /^(\d+)\t(\d+)$/;
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-
-	die new Schulkonsole::Error(
-		Schulkonsole::Error::Printer::WRAPPER_UNEXPECTED_DATA,
+	die new Schulkonsole::Error::PrinterError(
+		Schulkonsole::Error::PrinterError::WRAPPER_UNEXPECTED_DATA,
 		$Schulkonsole::Config::_wrapper_printer,
 	    $input_buffer)
 		unless defined $max;
-
 
 	return ($pages, $max);
 }
@@ -485,21 +361,17 @@ sub quota {
 	return {} unless @users;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::PRINTERGETQUOTAAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-
-	print SCRIPTOUT join("\n", @users), "\n\n";
+	my @in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::PRINTERGETQUOTAAPP,
+		$id, $password, join("\n", @users) . "\n\n", Schulkonsole::Wrapper::MODE_LINES;
 
 	my %re;
-	while (<SCRIPTIN>) {
+	foreach (@in) {
 		$input_buffer .= $_;
 
 		my ($user, $pages, $max) = /^(.+)\t(\d+)\t(\d+)$/;
 
-		die new Schulkonsole::Error(
-			Schulkonsole::Error::Printer::WRAPPER_UNEXPECTED_DATA,
+		die new Schulkonsole::Error::PrinterError(
+			Schulkonsole::Error::PrinterError::WRAPPER_UNEXPECTED_DATA,
 			$Schulkonsole::Config::_wrapper_printer,
 			$input_buffer)
 			unless defined $max;
@@ -510,10 +382,6 @@ sub quota {
 			limit => $max,
 		};
 	}
-
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
 
 	return \%re;
 }

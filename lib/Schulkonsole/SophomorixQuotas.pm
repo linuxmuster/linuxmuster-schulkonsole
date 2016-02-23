@@ -1,5 +1,5 @@
 use strict;
-use Schulkonsole::Error;
+use Schulkonsole::Error::SophomorixError;
 use Sophomorix::SophomorixAPI;
 use Sophomorix::SophomorixConfig;
 
@@ -175,7 +175,7 @@ sub hash_to_quotastring {
 	}
 	return $diskquota_undefined unless $is_defined;
 
-	die new Schulkonsole::Error(Schulkonsole::Error::QUOTA_NOT_ALL_MOUNTPOINTS)
+	die new Schulkonsole::Error::SophomorixError(Schulkonsole::Error::SophomorixError::QUOTA_NOT_ALL_MOUNTPOINTS)
 		unless ($defaults or $is_defined == @mountpoints);
 
 

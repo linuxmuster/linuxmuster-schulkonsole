@@ -49,6 +49,7 @@ $VERSION = 0.06;
 	WRAPPER_UNAUTHORIZED_ID
 	WRAPPER_INVALID_SESSION_ID
 	WRAPPER_CANNOT_FORK
+	WRAPPER_CANNOT_OPEN_FILE
 	NEXT_ERROR
 );
 
@@ -84,6 +85,7 @@ use constant {
 	WRAPPER_UNAUTHORIZED_ID => -28,
 	WRAPPER_INVALID_SESSION_ID => -29,
 	WRAPPER_CANNOT_FORK => -30,
+	WRAPPER_CANNOT_OPEN_FILE => -31,
 	NEXT_ERROR => -64,
 	
 	EXTERNAL_ERROR => 128,
@@ -180,6 +182,8 @@ sub what {
 		and return $this->{d}->get('Ungueltige Session-ID');
 	$this->{code} == WRAPPER_CANNOT_FORK
 		and return $this->{d}->get('Fork nicht moeglich');
+	$this->{code} == WRAPPER_CANNOT_OPEN_FILE
+		and return $this->{d}->get('Kann Datei nicht oeffnen');
 	int($this->{code} / EXTERNAL_ERROR) * EXTERNAL_ERROR == EXTERNAL_ERROR
 		and return $this->fetch_error_string($this->{code} % EXTERNAL_ERROR);
 	$this->{what}

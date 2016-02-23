@@ -4,7 +4,9 @@
 use strict;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
-use Schulkonsole::Error;
+use Schulkonsole::Wrapper;
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::RadiusError;
 use Schulkonsole::Config;
 
 package Schulkonsole::Radius;
@@ -40,8 +42,8 @@ commands used by schulkonsole. It also provides functions related to
 these commands.
 Namely commands to get lists of currently allowed groups.
 
-If a wrapper command fails, it usually dies with a Schulkonsole::Error.
-The output of the failed command is stored in the Schulkonsole::Error.
+If a wrapper command fails, it usually dies with a Schulkonsole::Error::RadiusError.
+The output of the failed command is stored in the Schulkonsole::Error::RadiusError.
 
 =cut
 
@@ -58,112 +60,8 @@ $VERSION = 0.03;
 	wlan_reset_all
 );
 
-
-
-
-my $input_buffer;
-sub buffer_input {
-	my $in = shift;
-
-	while (<$in>) {
-		$input_buffer .= $_;
-	}
-}
-
-
-
-
-sub start_wrapper {
-	my $app_id = shift;
-	my $id = shift;
-	my $password = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-	my $pid = IPC::Open3::open3 $out, $in, $err,
-		$Schulkonsole::Config::_wrapper_radius
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-			$Schulkonsole::Config::_wrapper_radius, $!);
-
-	binmode $out, ':utf8';
-	binmode $in, ':utf8';
-	binmode $err, ':utf8';
-
-
-
-	my $re = waitpid $pid, POSIX::WNOHANG;
-	if (   $re == $pid
-	    or $re == -1) {
-		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-				$Schulkonsole::Config::_wrapper_radius, $!);
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_radius);
-		}
-	}
-
-	print $out "$id\n$password\n$app_id\n";
-
-	return $pid;
-}
-
-
-
-
-sub stop_wrapper {
-	my $pid = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-	my $one_is_good = shift;
-
-	my $rv = undef;
-
-
-	my $re = waitpid $pid, 0;
-	if (    ($re == $pid or $re == -1)
-	    and $?) {
-		my $error = ($? >> 8) - 256;
-		if (    $one_is_good
-		    and $error == -255) {
-			$rv = 1;
-		} elsif ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-				$Schulkonsole::Config::_wrapper_radius, $!,
-				($input_buffer ? "Output: $input_buffer" : 'No Output'));
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_radius,
-				($input_buffer ? "Output: $input_buffer" : 'No Output'));
-		}
-	}
-
-	close $out
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_OUT,
-			$Schulkonsole::Config::_wrapper_radius, $!,
-			($input_buffer ? "Output: $input_buffer" : 'No Output'));
-
-	close $in
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-			$Schulkonsole::Config::_wrapper_radius, $!,
-			($input_buffer ? "Output: $input_buffer" : 'No Output'));
-	
-	undef $input_buffer;
-
-
-	return $rv;
-}
-
-
+my $wrapcmd = $Schulkonsole::Config::_cmd_wrapper_radius;
+my $errorclass = "Schulkonsole::Error::RadiusError";
 
 
 =head2 Functions
@@ -210,15 +108,8 @@ sub wlan_on {
 	my @users = @{$_[3]};
 
 	my $umask = umask(022);
-	my $pid = start_wrapper(Schulkonsole::Config::WLANONOFFAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	# set groups in list to on
-	print SCRIPTOUT "1\n", join(",", @groups), "\n", join("," ,@users), "\n";
-        buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::WLANONOFFAPP,
+		$id, $password, "1\n" . join(",", @groups) . "\n" . join("," ,@users) . "\n");
 	umask($umask);
 }
 
@@ -266,18 +157,12 @@ sub wlan_off {
 	my @groups = @{$_[2]};
 	my @users = @{$_[3]};
 
+#FIXME umask kann im Wrapper gesetzt werden.
 	my $umask = umask(022);
-	my $pid = start_wrapper(Schulkonsole::Config::WLANONOFFAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	# set groups in list to off
-	print SCRIPTOUT "0\n", join(",", @groups),"\n", join(",", @users), "\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::WLANONOFFAPP,
+		$id, $password, "0\n" . join(",", @groups) . "\n" . join(",", @users) . "\n");
 	umask($umask);
+
 }
 
 
@@ -329,16 +214,10 @@ sub wlan_reset_at {
 	my $time = $_[4];
 
 	my $umask = umask(022);
-	my $pid = start_wrapper(Schulkonsole::Config::WLANRESETATAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT join(",", @groups),"\n", join(",",@users), "\n$time\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::WLANRESETATAPP,
+		$id, $password, join(",", @groups) . "\n" . join(",",@users) . "\n$time\n");
 	umask($umask);
+
 }
 
 
@@ -373,20 +252,8 @@ sub allowed_groups_users_wlan {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::WLANALLOWEDAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "\n\n";
-
-	my $in;
-	{
-		local $/ = undef;
-		$in = <SCRIPTIN>;
-	}
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::WLANALLOWEDAPP,
+		$id, $password, "\n\n", Schulkonsole::Wrapper::MODE_FILE);
 
 	my $compartment = new Safe;
 
@@ -477,15 +344,9 @@ sub wlan_reset_all {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::WLANRESETAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::WLANRESETAPP,
+		$id, $password, "1\n\n\n");
 
-	print SCRIPTOUT "1\n\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 }
 
 
@@ -527,15 +388,9 @@ sub wlan_reset {
         my @groups = @{$_[2]};
         my @users = @{$_[3]};
         
-        my $pid = start_wrapper(Schulkonsole::Config::WLANRESETAPP,
-                $id, $password,
-                \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+        Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::WLANRESETAPP,
+                $id, $password, "0\n" . join(",", @groups) . "\n" . join(",", @users) . "\n");
 
-        print SCRIPTOUT "0\n", join(",", @groups),"\n", join(",", @users),"\n";
-
-        buffer_input(\*SCRIPTIN);
-
-        stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 }
 
 
