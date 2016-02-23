@@ -30,6 +30,7 @@ use Env::Bash;
 use Schulkonsole::Encode;
 use Schulkonsole::Files;
 use Schulkonsole::Session;
+use Schulkonsole::Error::Error;
 use Schulkonsole::Sophomorix;
 use Sophomorix::SophomorixAPI;
 use Sophomorix::SophomorixConfig;
@@ -531,7 +532,7 @@ sub new_sophomorix_lines {
 
 		return \@lines;
 	} else {
-		die new Schulkonsole::Error(Schulkonsole::Error::CANNOT_OPEN_FILE,
+		die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::CANNOT_OPEN_FILE,
 			"$DevelConf::config_pfad/sophomorix.conf");
 	}
 }
