@@ -8,11 +8,13 @@
  *
  * See the enclosed file LICENSE for license information (ASL).  If you
  * did not receive this file, see http://www.horde.org/licenses/asl.php.
+ *
+ * Copyright 2016, Frank Schütte
  */
+ 
 //ini_set('display_errors',1);
 //ini_set('display_startup_errors',1);
-
-function kill( $data ) { die( var_dump ( $data ) ); }
+//function kill( $data ) { die( var_dump ( $data ) ); }
 
 session_start();
 
@@ -22,8 +24,8 @@ session_start();
  * HORDE_BASE   - must be defined for all horde applications
  * AUTH_HANDLER - this application handles authorization
  * no_compress  - output is not compressed
- * session_control - none : no session is started
  */
+
 @define('HORDE_BASE', '/usr/share/horde3');
 @define('AUTH_HANDLER', true);
 $no_compress = true;
@@ -31,8 +33,10 @@ $no_compress = true;
 // Do CLI checks and environment setup first.
 require_once HORDE_BASE . '/lib/core.php';
 require_once 'Horde/CLI.php';
+
 // Make sure no one runs this from the web.
 if (!Horde_CLI::runningFromCLI()) {
+    session_destroy();
     exit("Must be run from the command line\n");
 }
 
@@ -142,29 +146,37 @@ Parameters:
     -k|--keep                keep a copy of all forwarded mail
 
 EOF;
+session_destroy();
 exit;
 }
 $auth_success = $auth->authenticate($options['user'], array('password' => $options['password']), true);
 if (is_a($auth, 'PEAR_Error')) {
 	$cli->message(_("Authentication error."), 'cli.error');
+	session_destroy();
 	exit(1);
 }
 if(! $auth_success) {
 	$cli->message(_("Authentication error."), 'cli.error');
+	session_destroy();
 	exit(1);
 }
 
 @define('INGO_BASE', '/usr/share/horde3/ingo');
 require_once INGO_BASE . '/lib/base.php';
-$registry = &Registry::singleton();
+
+/* Redirect if forward is not available. */
+if (!in_array(INGO_STORAGE_ACTION_FORWARD, $_SESSION['ingo']['script_categories'])) {
+    $cli->message("Forward is not supported in the current filtering driver.", 'cli.error');
+    exit(1);
+}
 
 if (is_a(($pushed = $registry->pushApp('ingo', !defined('AUTH_HANDLER'))), 'PEAR_Error')) {
     $cli->message('Cannot switch to ingo registry.','cli.error');
+    session_destroy();
     exit(1);
 }
-$_SESSION['ingo']['backend']['params']['username'] = $options['user'];
-$_SESSION['ingo']['backend']['params']['password'] = $options['password'];
-unset($_SESSION['ingo']['backend']['hordeauth']);
+
+
 
 /// *** main ***
 
@@ -186,6 +198,8 @@ if(isset($options['get-forwards'])) {
 } else if(isset($options['remove-forwards'])) {
     setForwards();
 }
+session_destroy();
+
 exit(0);
 
 /**
@@ -204,6 +218,7 @@ function getForwards()
     /* Redirect if forward is not available. */
     if (!in_array(INGO_STORAGE_ACTION_FORWARD, $_SESSION['ingo']['script_categories'])) {
         $cli->message(_("Forward is not supported in the current filtering driver."), 'cli.error');
+	session_destroy();
         exit;
     }
     /* Get the forward object and rule. */
@@ -212,7 +227,11 @@ function getForwards()
     $fwd_id = $filters->findRuleId(INGO_STORAGE_ACTION_FORWARD);
     $fwd_rule = $filters->getRule($fwd_id);
     $params = array();
-    $params['enabled'] = ! $fwd_rule['disable'];
+    if(isset($fwd_rule['disable'])) {
+      $params['enabled'] = ! $fwd_rule['disable'];
+    } else {
+      $params['enabled'] = true;
+    }
     $params['keep'] = $forward->getForwardKeep();
     $params['addresses'] = $forward->getForwardAddresses();
     return $params;
@@ -229,6 +248,7 @@ function setForwards($addresses = array(),$keep = false)
     /* Redirect if forward is not available. */
     if (!in_array(INGO_STORAGE_ACTION_FORWARD, $_SESSION['ingo']['script_categories'])) {
         $cli->message(_("Forward is not supported in the current filtering driver."), 'cli.error');
+	session_destroy();
         exit;
     }
 
