@@ -1,6 +1,7 @@
 use strict;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
+use Schulkonsole::Wrapper;
 use Schulkonsole::Error::Error;
 use Schulkonsole::Error::FilesError;
 use Schulkonsole::Config;
@@ -51,7 +52,7 @@ $VERSION = 0.06;
 );
 
 
-my $wrapcmd = $Schulkonsole::Config::_cmd_wrapper_files;
+my $wrapcmd = $Schulkonsole::Config::_wrapper_files;
 my $errorclass = "Schulkonsole::Error::FilesError";
 
 
@@ -355,7 +356,7 @@ sub import_workstations {
 		$cgi_session->clear('statusbg');
 		$cgi_session->clear('statusbgiserror');
 
-		die new $errorclass(Schulkonsole::Error::PUBLIC_BG_ERROR, $statusbg);
+		die new $errorclass(Schulkonsole::Error::Error::PUBLIC_BG_ERROR, $statusbg);
 	}
 }
 

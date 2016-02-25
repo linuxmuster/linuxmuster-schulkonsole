@@ -261,7 +261,7 @@ sub verify_password_by_userdata {
 			last SWITCH;
 		};
 		my $error = new Schulkonsole::Error::Error(
-			Schulkonsole::Error::UNKNOWN_PASSWORD_ENCRYPTION,
+			Schulkonsole::Error::Error::UNKNOWN_PASSWORD_ENCRYPTION,
 			$$userdata{uid});
 			print STDERR "$error\n";
 		}

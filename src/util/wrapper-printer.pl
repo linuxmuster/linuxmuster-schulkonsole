@@ -23,6 +23,7 @@ wrapper-printer.pl - wrapper for printer access
 =cut
 
 use strict;
+use CGI::Inspect;
 use lib '/usr/share/schulkonsole';
 use open ':utf8';
 use open ':std';
@@ -151,12 +152,12 @@ $app_id == Schulkonsole::Config::PRINTERONOFFAPP and do {
 	if ($on) {
 		foreach my $printer (@printers) {
 			system Schulkonsole::Encode::to_cli(
-			       	"$Schulkonsole::Config::_cmd_printer_accept \Q$printer");
+			       	"$Schulkonsole::Config::_cmd_printer_accept \Q$printer\E");
 		}
 	} else {
 		foreach my $printer (@printers) {
 			system Schulkonsole::Encode::to_cli(
-			       	"$Schulkonsole::Config::_cmd_printer_reject \Q$printer");
+			       	"$Schulkonsole::Config::_cmd_printer_reject \Q$printer\E");
 		}
 	}
 

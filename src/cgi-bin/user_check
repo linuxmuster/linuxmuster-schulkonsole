@@ -23,6 +23,7 @@ provides the following variables:
 =cut
 
 use strict;
+use CGI::Inspect;
 use utf8;
 use lib '/usr/share/schulkonsole';
 use Sophomorix::SophomorixAPI;
@@ -93,6 +94,7 @@ eval {
 COMMANDS: {
 $q->param('check') and do {
 	my $log = Schulkonsole::Sophomorix::users_check($id, $password);
+	#CGI::Inspect::inspect();
 
 	if (Schulkonsole::Sophomorix::teachin_check($id, $password)) {
 		$sk_session->set_status($sk_session->d()->get(

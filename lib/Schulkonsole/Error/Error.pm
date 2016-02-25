@@ -21,7 +21,7 @@ $VERSION = 0.06;
 	fetch_error_string
 
 	OK
-	USER_AUTHENTICATION_FAILED
+	PERL_ERROR
 	PUBLIC_BG_ERROR
 	DB_PREPARE_FAILED
 	DB_EXECUTE_FAILED
@@ -50,13 +50,15 @@ $VERSION = 0.06;
 	WRAPPER_INVALID_SESSION_ID
 	WRAPPER_CANNOT_FORK
 	WRAPPER_CANNOT_OPEN_FILE
+	USER_AUTHENTICATION_FAILED
+	UNKNOWN_GROUP
 	NEXT_ERROR
 );
 
 # package constants
 use constant {
 	OK => 0,
-	USER_AUTHENTICATION_FAILED  => -1,
+	PERL_ERROR  => -1,
 	PUBLIC_BG_ERROR => -2,
 	INTERNAL => -3,
 	DB_PREPARE_FAILED => -4,
@@ -86,6 +88,8 @@ use constant {
 	WRAPPER_INVALID_SESSION_ID => -29,
 	WRAPPER_CANNOT_FORK => -30,
 	WRAPPER_CANNOT_OPEN_FILE => -31,
+	USER_AUTHENTICATION_FAILED => -32,
+	UNKNOWN_GROUP => -33,
 	NEXT_ERROR => -64,
 	
 	EXTERNAL_ERROR => 128,
@@ -126,8 +130,8 @@ sub what {
 
 	SWITCH: {
 	$this->{code} == OK and return $this->{d}->get('kein Fehler');
-	$this->{code} == USER_AUTHENTICATION_FAILED
-		and return $this->{d}->get('Authentifizierung fehlgeschlagen');
+	$this->{code} == PERL_ERROR
+		and return $this->{d}->get('Perl Kompilierungsfehler') . ${$this->{info}}[0];
 	$this->{code} == PUBLIC_BG_ERROR
 		and return $this->{d}->get('Fehler im Hintergrundprozess: ') . ${ $this->{info} }[0];
 	$this->{code} == INTERNAL_BG_ERROR
@@ -157,7 +161,7 @@ sub what {
 	$this->{code} == WRAPPER_BROKEN_PIPE_IN
 		and return $this->{d}->get('Datenuebertragung (lesen) unterbrochen');
 	$this->{code} == WRAPPER_WRONG
-		and return $this->{d}->get('Falscher Programmaufruf');
+		and return $this->{d}->get('Falscher Programmaufruf') . ' [' . join(', ', (caller(2))[1..3]) . ']';
 	$this->{code} == WRAPPER_UNKNOWN
 		and return $this->{d}->get('Unbekannter Programmaufruf');
 	$this->{code} == WRAPPER_PROGRAM_ERROR
@@ -184,6 +188,10 @@ sub what {
 		and return $this->{d}->get('Fork nicht moeglich');
 	$this->{code} == WRAPPER_CANNOT_OPEN_FILE
 		and return $this->{d}->get('Kann Datei nicht oeffnen');
+	$this->{code} == USER_AUTHENTICATION_FAILED
+		and return $this->{d}->get('Authentifizierung fehlgeschlagen');
+	$this->{code} == UNKNOWN_GROUP
+		and return $this->{d}->get('Unbekannte Gruppe');
 	int($this->{code} / EXTERNAL_ERROR) * EXTERNAL_ERROR == EXTERNAL_ERROR
 		and return $this->fetch_error_string($this->{code} % EXTERNAL_ERROR);
 	$this->{what}

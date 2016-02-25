@@ -1,4 +1,5 @@
 use strict;
+use CGI::Inspect;
 use open ':utf8';
 use IPC::Open3;
 use POSIX 'sys_wait_h';
@@ -47,7 +48,7 @@ $VERSION = 0.0917;
 @EXPORT_OK = qw(
 	regpatches
 	example_regpatches
-	grubstarts
+	grubcfgs
 	images
 
 	update_linbofs
@@ -84,7 +85,7 @@ $VERSION = 0.0917;
 );
 use vars qw(%_allowed_keys);
 
-my $wrapcmd = $Schulkonsole::Config::_cmd_wrapper_linbo;
+my $wrapcmd = $Schulkonsole::Config::_wrapper_linbo;
 my $errorclass = "Schulkonsole::Error::LinboError";
 
 %_allowed_keys = (
@@ -278,7 +279,7 @@ sub postsyncs {
 
 
 
-=head2 grubstarts()
+=head2 grubcfgs()
 
 Get all grub cfg start files
 
@@ -293,7 +294,7 @@ and returns them in a hash.
 
 =cut
 
-sub grubstarts {
+sub grubcfgs {
 	my %re;
 
 	foreach my $file ((
@@ -343,10 +344,14 @@ sub remote_status {
 	my $id = shift;
 	my $password = shift;
 
-	my @in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::LINBOREMOTESTATUSAPP,
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::LINBOREMOTESTATUSAPP,
 		$id, $password, "", Schulkonsole::Wrapper::MODE_LINES);
-
-	return \@in;
+		
+	my @ret;
+	foreach(split('\R',$in)){
+		push @ret, $_;
+	}
+	return \@ret;
 }
 
 
@@ -387,7 +392,7 @@ sub remote_window {
 	my $id = shift;
 	my $password = shift;
 	my $session = shift;
-
+#CGI::Inspect::inspect();
 	my @in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::LINBOREMOTEWINDOWAPP,
 		$id, $password, "$session\n", Schulkonsole::Wrapper::MODE_LINES);
 

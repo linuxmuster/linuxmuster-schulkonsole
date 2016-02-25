@@ -7,7 +7,8 @@ use Schulkonsole::Config;
 use Schulkonsole::Wrapper;
 use Schulkonsole::Error::Error;
 use Schulkonsole::Error::HordeError;
-
+#FIXME: convert calls to wrapper class
+ 
 =head1 NAME
 
 Schulkonsole::Horde - get/set mail forwards
@@ -43,7 +44,7 @@ sub get_mailforwards {
 	my $pid = IPC::Open3::open3 \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN,
 		$command
 		or die new Schulkonsole::Error::HordeError(
-			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
+			Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED,
 			$Schulkonsole::Config::_cmd_horde_mail, $!);
 	
 	binmode SCRIPTIN, ':utf8';
@@ -55,7 +56,7 @@ sub get_mailforwards {
 	    my $error = ($? >> 8) - 256;
 		if ($error < -127) {
 			die new Schulkonsole::Error::HordeError(
-				Schulkonsole::Error::WRAPPER_EXEC_FAILED,
+				Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED,
 				$Schulkonsole::Config::_cmd_horde_mail, $!);
 		} else {
 			die new Schulkonsole::Error::HordeError($error,
@@ -65,7 +66,7 @@ sub get_mailforwards {
 
 	close SCRIPTOUT
 		or die new Schulkonsole::Error::HordeError(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_OUT,
+			Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_OUT,
 			$Schulkonsole::Config::_cmd_horde_mail, $!);
 
 	my $mailforwards;
@@ -89,18 +90,17 @@ sub get_mailforwards {
 	    my $error = ($? >> 8) - 256;
 		if ($error < -127) {
 			die new Schulkonsole::Error::HordeError(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
+				Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_IN,
 				$Schulkonsole::Config::_cmd_horde_mail, $!);
 		} else {
-			die new Schulkonsole::Error::HordeError(
-				Schulkonsole::Error::User::WRAPPER_ERROR_BASE + $error,
+			die new Schulkonsole::Error::HordeError($error,
 				$Schulkonsole::Config::_cmd_horde_mail);
 		}
 	}
 
 	close SCRIPTIN
 		or die new Schulkonsole::Error::HordeError(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
+			Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_IN,
 			$Schulkonsole::Config::_cmd_horde_mail, $!);
 
 	return ($mailforwards,$mailkeep);
@@ -135,7 +135,7 @@ sub set_mailforwards {
 	my $pid = IPC::Open3::open3 \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN,
 		$command
 		or die new Schulkonsole::Error::HordeError(
-			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
+			Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED,
 			$Schulkonsole::Config::_cmd_horde_mail, $!);
 	
 	binmode SCRIPTIN, ':utf8';
@@ -147,7 +147,7 @@ sub set_mailforwards {
 	    my $error = ($? >> 8) - 256;
 		if ($error < -127) {
 			die new Schulkonsole::Erro::HordeError(
-				Schulkonsole::Error::WRAPPER_EXEC_FAILED,
+				Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED,
 				$Schulkonsole::Config::_cmd_horde_mail, $!);
 		} else {
 			die new Schulkonsole::Error::HordeError($error,
@@ -157,7 +157,7 @@ sub set_mailforwards {
 
 	close SCRIPTOUT
 		or die new Schulkonsole::Error::HordeError(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_OUT,
+			Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_OUT,
 			$Schulkonsole::Config::_cmd_horde_mail, $!);
 
 	$re = waitpid $pid, 0;
@@ -166,17 +166,17 @@ sub set_mailforwards {
 	    my $error = ($? >> 8) - 256;
 		if ($error < -127) {
 			die new Schulkonsole::Error::HordeError(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
+				Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_IN,
 				$Schulkonsole::Config::_cmd_horde_mail, $!);
 		} else {
-			die new Schulkonsole::Error::HordeError($error,
+			die new Schulkonsole::Error::Error::HordeError($error,
 				$Schulkonsole::Config::_cmd_horde_mail);
 		}
 	}
 
 	close SCRIPTIN
 		or die new Schulkonsole::Error::HordeError(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
+			Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_IN,
 			$Schulkonsole::Config::_cmd_horde_mail, $!);
 
 	return 0;
@@ -205,7 +205,7 @@ sub remove_mailforwards {
 	my $pid = IPC::Open3::open3 \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN,
 		$command
 		or die new Schulkonsole::Error::HordeError(
-			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
+			Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED,
 			$Schulkonsole::Config::_cmd_horde_mail, $!);
 	
 	binmode SCRIPTIN, ':utf8';
@@ -217,7 +217,7 @@ sub remove_mailforwards {
 	    my $error = ($? >> 8) - 256;
 		if ($error < -127) {
 			die new Schulkonsole::Error::HordeError(
-				Schulkonsole::Error::WRAPPER_EXEC_FAILED,
+				Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED,
 				$Schulkonsole::Config::_cmd_horde_mail, $!);
 		} else {
 			die new Schulkonsole::Error::HordeError($error,
@@ -227,7 +227,7 @@ sub remove_mailforwards {
 
 	close SCRIPTOUT
 		or die new Schulkonsole::Error::HordeError(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_OUT,
+			Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_OUT,
 			$Schulkonsole::Config::_cmd_horde_mail, $!);
 
 	$re = waitpid $pid, 0;
@@ -236,7 +236,7 @@ sub remove_mailforwards {
 	    my $error = ($? >> 8) - 256;
 		if ($error < -127) {
 			die new Schulkonsole::Error::HordeError(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
+				Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_IN,
 				$Schulkonsole::Config::_cmd_horde_mail, $!);
 		} else {
 			die new Schulkonsole::Error::HordeError($error,
@@ -246,7 +246,7 @@ sub remove_mailforwards {
 
 	close SCRIPTIN
 		or die new Schulkonsole::Error::HordeError(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
+			Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_IN,
 			$Schulkonsole::Config::_cmd_horde_mail, $!);
 
 	return 0;

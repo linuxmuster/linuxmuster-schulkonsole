@@ -60,7 +60,7 @@ $VERSION = 0.03;
 	wlan_reset_all
 );
 
-my $wrapcmd = $Schulkonsole::Config::_cmd_wrapper_radius;
+my $wrapcmd = $Schulkonsole::Config::_wrapper_radius;
 my $errorclass = "Schulkonsole::Error::RadiusError";
 
 

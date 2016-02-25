@@ -27,7 +27,7 @@ $VERSION = 0.03;
 );
 
 
-my $wrapcmd = $Schulkonsole::Config::_cmd_wrapper_printer;
+my $wrapcmd = $Schulkonsole::Config::_wrapper_printer;
 my $errorclass = "Schulkonsole::Error::PrinterError";
 
 
@@ -69,14 +69,16 @@ sub printer_info {
 	my $id = shift;
 	my $password = shift;
 
-	my @in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::PRINTERINFOAPP,
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::PRINTERINFOAPP,
 		$id, $password,"",Schulkonsole::Wrapper::MODE_LINES);
 
 	my %printers = ();
 	my %printer = ();
 	my $pname;
+	
+	my @in = split('\R', $in);
 	while(@in) {#
-		shift @in;
+		$_ = shift @in;
 		chomp;
 		if (/^printer /){
 			if ($pname) {
@@ -301,7 +303,7 @@ sub own_quota {
 	die new Schulkonsole::Error::PrinterError(
 		Schulkonsole::Error::PrinterError::WRAPPER_UNEXPECTED_DATA,
 		$Schulkonsole::Config::_wrapper_printer,
-	    $input_buffer)
+	    $in)
 		unless defined $max;
 
 	return ($pages, $max);
@@ -362,18 +364,18 @@ sub quota {
 
 
 	my @in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::PRINTERGETQUOTAAPP,
-		$id, $password, join("\n", @users) . "\n\n", Schulkonsole::Wrapper::MODE_LINES;
+		$id, $password, join("\n", @users) . "\n\n", Schulkonsole::Wrapper::MODE_LINES);
 
 	my %re;
+	my $buffer;
 	foreach (@in) {
-		$input_buffer .= $_;
-
+		$buffer .= $_;
 		my ($user, $pages, $max) = /^(.+)\t(\d+)\t(\d+)$/;
 
 		die new Schulkonsole::Error::PrinterError(
 			Schulkonsole::Error::PrinterError::WRAPPER_UNEXPECTED_DATA,
 			$Schulkonsole::Config::_wrapper_printer,
-			$input_buffer)
+			$buffer)
 			unless defined $max;
 
 

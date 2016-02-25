@@ -306,8 +306,15 @@ invokes C<check_urlfilter.sh>
 sub urlfilter_check_app() {
 	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;
-	exec Schulkonsole::Encode::to_cli(
-	     	$Schulkonsole::Config::_cmd_urlfilter_check);
+	my $ret = system(Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_urlfilter_check >/dev/null 2>/dev/null"));
+	if($ret){
+		print "0\n";
+	} 
+	else {
+		print "1\n";
+	}
+	exit 0;
 }
 
 =head3 all_on
@@ -389,7 +396,7 @@ sub all_on_at_app(){
 	}
 
 	my $pid = fork;
-	exit (  Schulkonsole::Error::FirewallError::WRAPPER_CANNOT_FORK
+	exit (  Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK
 	      )
 		unless defined $pid;
 
@@ -526,8 +533,7 @@ sub room_session {
 
 	my $session = new Schulkonsole::RoomSession($room);
 
-	exit (  Schulkonsole::Error::FirewallError::WRAPPER_GENERAL_ERROR
-	      )
+	exit (  Schulkonsole::Error::FirewallError::INVALID_SESSION  )
 		unless $session;
 
 	# 'unprivileged' is set in the main CGI-script
@@ -580,10 +586,10 @@ sub all_on {
 
 	# reset internet, intranet, webfilter settings to old stat from session file
 	my $allowed_hosts_internet
-		= Schulkonsole::FirewallError::allowed_hosts_internet();
+		= Schulkonsole::Firewall::allowed_hosts_internet();
 	my $blocked_hosts_intranet
-		= Schulkonsole::FirewallError::blocked_hosts_intranet();
-	my $unfiltered_hosts = Schulkonsole::FirewallError::unfiltered_hosts();
+		= Schulkonsole::Firewall::blocked_hosts_intranet();
+	my $unfiltered_hosts = Schulkonsole::Firewall::unfiltered_hosts();
 	my @internet_ons;
 	my @internet_offs;
 	my @intranet_ons;

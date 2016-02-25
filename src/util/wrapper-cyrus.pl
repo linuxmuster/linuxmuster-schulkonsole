@@ -1,10 +1,12 @@
 #! /usr/bin/perl
 use strict;
+use CGI::Inspect;
 
 print STDERR ">\n";
 
 my @users;
 while (<>) {
+	CGI::Inspect::inspect();
 	my ($user) = /^(.+)$/;
 	last unless $user;
 

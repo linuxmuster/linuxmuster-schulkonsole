@@ -19,6 +19,7 @@ $VERSION = 0.16;
 	WRAPPER_CANNOT_WRITE_ROOMFILE
 	WRAPPER_CANNOT_READ_ROOMFILE
 	UNKnOWN_ROOM
+	INVALID_SESSION
 );
 
 # package constants
@@ -33,6 +34,7 @@ use constant {
 	WRAPPER_INVALID_ROOM_SCOPE => Schulkonsole::Error::Error::NEXT_ERROR - 8,
 	WRAPPER_CANNOT_OPEN_PRINTERSCONF => Schulkonsole::Error::Error::NEXT_ERROR - 9,
 	UNKNOWN_ROOM => Schulkonsole::Error::Error::NEXT_ERROR - 10,
+	INVALID_SESSION => Schulkonsole::Error::Error::NEXT_ERROR - 11,
 };
 
 sub new {
@@ -66,6 +68,8 @@ sub what {
 	        and return $this->{d}->get('Kann printers.conf nicht öffnen');
 	$this->{code} == UNKNOWN_ROOM
 		and return $this->{d}->get('Unbekannter Raum');
+	$this->{code} and INVALID_SESSION
+		and return $this->{d}->get('Ungültige Session');
 	};
 	return $this->SUPER::what();
 }

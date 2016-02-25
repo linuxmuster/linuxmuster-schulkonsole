@@ -1,4 +1,5 @@
 use strict;
+use CGI::Inspect;
 use utf8;
 use Schulkonsole::Error::Error;
 
@@ -271,9 +272,8 @@ sub start {
 		my $error = ($? >> 8) - 256;
 		die $this->trigger_errror($error, $this->{wrapper_command},$!);
 	}
-	
-	print {$this->{out}} "$this->{id}\n$this->{password}\n$this->{app_id}\n";
 
+	print {$this->{out}} "$this->{id}\n$this->{password}\n$this->{app_id}\n";
 }
 
 
@@ -287,14 +287,13 @@ sub stop {
 	if (    ($re == $this->{pid} or $re == -1)
 	    and $?) {
 		my $error = ($? >> 8);
-		
 		if ($error < Schulkonsole::Error::Error::EXTERNAL_ERROR) {
 			die $this->trigger_errror(Schulkonsole::Error::Error::EXTERNAL_ERROR + $error,
 				$this->{wrapper_command}, $!,
 				($this->{input_buffer} ? "Output: $this->{input_buffer}" : 'No Output'));
 		} else {
 			$error -= 256;
-			die $this->trigger_errror($error, $this->{wrapper_command});
+			die $this->trigger_errror($error, $this->{wrapper_command} . '[' . $this->{input_buffer} . ']');
 		}
 	}
 

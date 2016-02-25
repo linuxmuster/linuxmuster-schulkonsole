@@ -23,6 +23,7 @@ wrapper-sophomorix.pl - wrapper for sophomorix access
 =cut
 
 use strict;
+use CGI::Inspect;
 use lib '/usr/share/schulkonsole';
 use open ':utf8';
 use open ':std';
@@ -2393,7 +2394,10 @@ sub userscheckapp(){
 	$< = $>;
 	$) = 0;
 	$( = $);
-	exec $Schulkonsole::Config::_cmd_sophomorix_check or return;
+	#CGI::Inspect::inspect();
+	system $Schulkonsole::Config::_cmd_sophomorix_check;
+	#CGI::Inspect::inspect();
+	exit 0;
 }
 
 =head3 add_users

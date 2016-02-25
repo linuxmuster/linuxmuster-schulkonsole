@@ -52,7 +52,7 @@ if (not $sk_session->get_password()) {
 my $q = $sk_session->query();
 
 my $groups = Schulkonsole::Config::linbogroups();
-my $grubcfgs = Schulkonsole::Linbo::grubstarts();
+my $grubcfgs = Schulkonsole::Linbo::grubcfgs();
 
 my $is_action;
 
@@ -93,7 +93,7 @@ $q->param('add') and do {
                 $filename,
                 $lines);
 
-        $grubcfgs = Schulkonsole::Linbo::grubstarts();
+        $grubcfgs = Schulkonsole::Linbo::grubcfgs();
         if ($$grubcfgs{$filename}) {
                 $sk_session->set_status(sprintf($sk_session->d()->get(
                         '%s hinzugefügt'), $filename), 0);

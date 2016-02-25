@@ -1196,12 +1196,7 @@ sub standard_error_handling {
 		}
 
 		# password changed -> re-authenticate
-		if (   $error->{code}
-			== Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID
-		    or $error->{code}
-		       	== Schulkonsole::Error::Firewall::WRAPPER_UNAUTHENTICATED_ID
-		    or $error->{code}
-		       	== Schulkonsole::Error::Printer::WRAPPER_UNAUTHENTICATED_ID) {
+		if (   $error->{code} == Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID) {
 			$this->exit_with_login_page($page);
 		}
 	} else {

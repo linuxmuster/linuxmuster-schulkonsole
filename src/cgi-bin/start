@@ -179,6 +179,7 @@ A comma separated list of the user's classes
 =cut
 
 use strict;
+use CGI::Inspect;
 use utf8;
 use lib '/usr/share/schulkonsole';
 use Sys::Hostname;
@@ -417,8 +418,9 @@ defined $q->param('printjobs') and do {
 	my $ovpn_password = $q->param('ovpnpassword');
 	if (not $ovpn_password) {
 		$sk_session->set_status(
-			$sk_session->d()->get('OpenVPN-Passwort eingegeben'), 1);
+			$sk_session->d()->get('OpenVPN-Passwort eingeben'), 1);
 		$sk_session->mark_input_error('ovpnpassword');
+		$sk_session->mark_input_error('ovpnpasswordagain');
 
 		last COMMANDS;
 	}

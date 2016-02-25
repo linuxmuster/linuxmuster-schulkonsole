@@ -1,4 +1,5 @@
 use strict;
+use CGI::Inspect;
 use POSIX qw(strftime);
 use Schulkonsole::Config;
 use Schulkonsole::DB;
@@ -223,6 +224,7 @@ sub end_lesson_now {
 
 	$this->unlock();
 	Schulkonsole::Firewall::all_on($id, $password, $this->{_ROOMDATA}{name});
+	#CGI::Inspect::inspect();
 	$this->lock();
 
 	$this->delete();

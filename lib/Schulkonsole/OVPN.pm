@@ -1,4 +1,5 @@
 use strict;
+use CGI::Inspect;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
 use Schulkonsole::Wrapper;
@@ -48,7 +49,7 @@ $VERSION = 0.03;
 	download
 );
 
-my $wrapcmd = $Schulkonsole::Config::_cmd_wrapper_ovpn;
+my $wrapcmd = $Schulkonsole::Config::_wrapper_ovpn;
 my $errorclass = "Schulkonsole::Error::OVPNError";
 
 
@@ -84,14 +85,10 @@ sub check {
 	my $id = shift;
 	my $password = shift;
 
-	my $umask = umask(022);
 	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::OVPNCHECKAPP,
 		$id, $password);
-	umask($umask);
-
-# FIXME $in = stop_wrapper... ?
-
-	return not $in;
+	chomp $in;
+	return ($in == 0 ? 0 : 1); 
 }
 
 
@@ -133,14 +130,10 @@ sub create {
 	my $password = shift;
 	my $ovpn_password = shift;
 
-	my $umask = umask(022);
 	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::OVPNCREATEAPP,
 		$id, $password, "$ovpn_password\n");
-	umask($umask);
-
-# FIXME $in = stop_wrapper... ?
-
-	return not $in;
+	chomp $in;
+	return ($in == 0? 0: 1);
 }
 
 
@@ -177,14 +170,10 @@ sub download {
 	my $id = shift;
 	my $password = shift;
 
-	my $umask = umask(022);
 	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::OVPNDOWNLOADAPP,
 		$id, $password);
-	umask($umask);
-
-# FIXME $in = stop_wrapper... ?
-
-	return not $in;
+	chomp $in;
+	return ($in == 0? 0 : 1);
 }
 
 

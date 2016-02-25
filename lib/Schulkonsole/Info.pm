@@ -4,7 +4,8 @@ use IPC::Open3;
 use POSIX 'sys_wait_h';
 use Net::IMAP::Simple;
 use Schulkonsole::Config;
-use Schulkonsole::Erro::Error;
+use Schulkonsole::Error::Error;
+#FIXME: convert calls to Wrapper class
 
 =head1 NAME
 
@@ -57,8 +58,7 @@ sub disk_quotas {
 				Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED,
 				$Schulkonsole::Config::_wrapper_user, $!);
 		} else {
-			die new Schulkonsole::Error::Error(
-				Schulkonsole::Error::Error::User::WRAPPER_ERROR_BASE + $error,
+			die new Schulkonsole::Error::Error($error,
 				$Schulkonsole::Config::_wrapper_user);
 		}
 	}
@@ -88,8 +88,7 @@ sub disk_quotas {
 				Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_IN,
 				$Schulkonsole::Config::_wrapper_user, $!);
 		} else {
-			die new Schulkonsole::Error::Error(
-				Schulkonsole::Error::Error::User::WRAPPER_ERROR_BASE + $error,
+			die new Schulkonsole::Error::Error($error,
 				$Schulkonsole::Config::_wrapper_user);
 		}
 	}

@@ -210,7 +210,7 @@ sub write_start_conf {
 	umask(022);
 
 	open FILE, '>', $filename
-		or exit (  Schulkonsole::Error::LinboError::WRAPPER_CANNOT_OPEN_FILE
+		or exit (  Schulkonsole::Error::Error::WRAPPER_CANNOT_OPEN_FILE
 		         );
 	flock FILE, 2;
 	seek FILE, 0, 0;
@@ -285,13 +285,13 @@ sub copy_start_conf {
 	umask(022);
 
 	open SRC, '<', $src_filename
-		or exit (  Schulkonsole::Error::LinboError::WRAPPER_CANNOT_OPEN_FILE
+		or exit (  Schulkonsole::Error::Error::WRAPPER_CANNOT_OPEN_FILE
 		         );
 	flock SRC, 1;
 	seek SRC, 0, 0;
 
 	open DEST, '>', $dest_filename
-		or exit (  Schulkonsole::Error::LinboError::WRAPPER_CANNOT_OPEN_FILE
+		or exit (  Schulkonsole::Error::Error::WRAPPER_CANNOT_OPEN_FILE
 		         );
 	flock DEST, 2;
 	seek DEST, 0, 0;
@@ -362,13 +362,13 @@ sub copy_regpatch {
 	umask(022);
 
 	open SRC, '<', $src_filename
-		or exit (  Schulkonsole::Error::LinboError::WRAPPER_CANNOT_OPEN_FILE
+		or exit (  Schulkonsole::Error::Error::WRAPPER_CANNOT_OPEN_FILE
 		         );
 	flock SRC, 1;
 	seek SRC, 0, 0;
 
 	open DEST, '>', $dest_filename
-		or exit (  Schulkonsole::Error::LinboError::WRAPPER_CANNOT_OPEN_FILE
+		or exit (  Schulkonsole::Error::Error::WRAPPER_CANNOT_OPEN_FILE
 		         );
 	flock DEST, 2;
 	seek DEST, 0, 0;
@@ -636,7 +636,8 @@ sub linbo_remote_status() {
 	while(<CMDIN>) {
 		print $_;
 	}
-
+	close(CMDIN) or exit (Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED);
+	
 	exit 0;
 }
 
@@ -681,7 +682,7 @@ sub linbo_remote_window() {
 	  exit 0;
 	}
 	open(FILEIN, '<:encoding(UTF-8)', Schulkonsole::Encode::to_cli($tmpfile)) ||
-		exit (  Schulkonsole::Error::LinboError::WRAPPER_CANNOT_OPEN_FILE
+		exit (  Schulkonsole::Error::Error::WRAPPER_CANNOT_OPEN_FILE
 		      );
 	
 	while(<FILEIN>) {

@@ -1,7 +1,9 @@
 use strict;
+use CGI::Inspect;
 use utf8;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
+use Schulkonsole::Wrapper;
 use Schulkonsole::Error::Error;
 use Schulkonsole::Error::CyrusError;
 use Schulkonsole::Config;
@@ -39,7 +41,7 @@ $VERSION = 0.03;
 );
 
 my $errorclass = "Schulkonsole::Error::CyrusError";
-my $wrapcmd = $Schulkonsole::Config::_cmd_wrapper_cyrus;
+my $wrapcmd = $Schulkonsole::Config::_wrapper_cyrus;
 
 
 
@@ -89,7 +91,7 @@ Returns the quotas of the users C<@users>.
 =cut
 
 sub quota {
-	my $user = shift;
+	my $id = shift;
 	my $password = shift;
 	my @users = @_;
 
@@ -97,7 +99,7 @@ sub quota {
 
 	return {} unless @users;
 
-	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::CYRUSQUOTAAPP, $user, $password,
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::CYRUSQUOTAAPP, $id, $password,
 			join("\n", @users) . "\n\n", Schulkonsole::Wrapper::MODE_FILE);
 
 	foreach (split('\R', $in)) {
