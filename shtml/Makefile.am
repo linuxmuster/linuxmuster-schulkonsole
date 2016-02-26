@@ -22,7 +22,6 @@ dist_shtml_DATA = example.tt login.tt logout.tt start.tt \
 	user_check.tt user_teachin.tt user_commit.tt user_reports.tt\
 	rooms.tt rooms_classrooms.tt \
 	printers.tt printers_edit.tt hosts.tt \
-	quotas.tt \
 	quotas_teachers.tt quotas_classes.tt quotas_projects.tt \
 	quotas_others.tt \
 	linbo_edit.tt linbo_edit_global.inc.tt linbo_edit_oss.inc.tt linbo_edit_data.inc.tt \

@@ -43,7 +43,7 @@ Printquota
 
 Menü
 ====
- o altes Quotas-Hauptmenü entfernen
+ x altes Quotas-Hauptmenü entfernen
 
 Quota
 =====
@@ -54,18 +54,18 @@ Quota
 Fehler
 ======
  o linbo_edit Partitionsgrößeneinheit Listenfeld zu klein
- o linbo_regpatchedit: leere Auswahlliste
  o aktueller Raum: checkbox disabled darf sich durch quick button nicht verändern
  o aktueller Raum - Austeilen: Datei mit Umlaut kann weder heruntergeladen noch gelöscht werden
  o Klasse - Tauschen global ausschalten funktioniert nicht
  o Klasse - WLAN einschalten funktioniert nicht
+ o Printer.pm enthält Quota-Funktionen, die in das Plugin gehören.
 
 Plugins anpassen
 ================
  o Dokumentation
- o Backup
- o Print-Quota
+ x Backup (feature/wrapper)
+ x Print-Quota (feature/wrapper)
 
 Wrapper
 =======
- o wrapper-printer -> subroutines
+ x wrapper-printer -> subroutines
