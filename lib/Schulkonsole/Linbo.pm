@@ -1,5 +1,4 @@
 use strict;
-use CGI::Inspect;
 use open ':utf8';
 use IPC::Open3;
 use POSIX 'sys_wait_h';
@@ -392,7 +391,7 @@ sub remote_window {
 	my $id = shift;
 	my $password = shift;
 	my $session = shift;
-#CGI::Inspect::inspect();
+
 	my @in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::LINBOREMOTEWINDOWAPP,
 		$id, $password, "$session\n", Schulkonsole::Wrapper::MODE_LINES);
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2016-02-25 20:10+0100\n"
+"POT-Creation-Date: 2016-02-26 18:39+0100\n"
 "PO-Revision-Date: 2015-11-10 12:50+0100\n"
 "Last-Translator: Frank Schütte <fschuett@gymhim.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -1002,12 +1002,6 @@ msgstr "<p>To activate a class function, choose a menu entry.</p>"
 #: ../shtml/project_drop_verify.tt:1
 msgid "<p>Wählen Sie &bdquo;Ja&ldquo;, um das Projekt wirklich zu löschen.</p>"
 msgstr "<p>Select &ldquo;Yes&rdquo;, to actually deletethe project.</p>"
-
-#: ../shtml/quotas.tt:1
-msgid ""
-"<p>Wählen Sie aus in welchem Bereich Sie Quota-Anpassungen vornehmen wollen."
-"</p>"
-msgstr "<p>Select the field in which you want to make quota adjustments.</p>"
 
 #: ../shtml/project_addmembers.tt:0
 msgid ""
@@ -2554,11 +2548,6 @@ msgstr "Date of birth"
 msgid "Geburtsjahreszahl für Schüler"
 msgstr "Students birth year"
 
-#: ../shtml/quotas.tt:22
-msgid ""
-"Gehen Sie auf <a href=\"settings\">Einstellungen</a> um Quota zu aktivieren."
-msgstr "Go to <a href=\"settings\">Settings</a> to activate quota."
-
 #: ../shtml/user_print.tt:10
 msgid "Gesamtliste"
 msgstr "complete user list"
@@ -2991,9 +2980,8 @@ msgstr "Class unknown"
 #: ../shtml/class_list.tt:27 ../shtml/class_passwords.tt:1
 #: ../shtml/class_passwords.tt:27 ../shtml/class_shares.tt:1
 #: ../shtml/class_shares.tt:27 ../shtml/myclass_handedoutcopy.tt:1
-#: ../shtml/quotas.tt:15 ../shtml/quotas_classes.tt:1
-#: ../shtml/quotas_classes.tt:9 ../shtml/settings_classs.tt:1
-#: ../shtml/settings_classs.tt:9
+#: ../shtml/quotas_classes.tt:1 ../shtml/quotas_classes.tt:9
+#: ../shtml/settings_classs.tt:1 ../shtml/settings_classs.tt:9
 msgid "Klassen"
 msgstr "Classes"
 
@@ -3147,8 +3135,7 @@ msgstr "empty value for \"%s\" for %s on %s"
 
 #: ../shtml/myclass_handedout.tt:23 ../shtml/myprojects_handedout.tt:18
 #: ../shtml/project_addmembers.tt:140 ../shtml/project_members.tt:51
-#: ../shtml/quotas.tt:14 ../shtml/quotas_teachers.tt:1
-#: ../shtml/quotas_teachers.tt:9
+#: ../shtml/quotas_teachers.tt:1 ../shtml/quotas_teachers.tt:9
 msgid "Lehrer"
 msgstr "Teacher"
 
@@ -3851,9 +3838,9 @@ msgstr "Project Teacher File"
 #: ../shtml/project_lesson.tt:25 ../shtml/project_members.tt:1
 #: ../shtml/project_members.tt:25 ../shtml/project_passwords.tt:1
 #: ../shtml/project_passwords.tt:27 ../shtml/project_shares.tt:1
-#: ../shtml/project_shares.tt:26 ../shtml/quotas.tt:16
-#: ../shtml/quotas_projects.tt:1 ../shtml/settings_projects.tt:1
-#: ../shtml/settings_projects.tt:9 ../shtml/start.tt:232
+#: ../shtml/project_shares.tt:26 ../shtml/quotas_projects.tt:1
+#: ../shtml/settings_projects.tt:1 ../shtml/settings_projects.tt:9
+#: ../shtml/start.tt:232
 msgid "Projekte"
 msgstr "Projects"
 
@@ -3879,11 +3866,11 @@ msgstr "Project name"
 msgid "Prozess laeuft schon"
 msgstr "Process is running already"
 
-#: ../shtml/quotas.tt:1 ../shtml/quotas.tt:9 ../shtml/quotas_classes.tt:1
-#: ../shtml/quotas_classes.tt:9 ../shtml/quotas_others.tt:1
-#: ../shtml/quotas_others.tt:9 ../shtml/quotas_projects.tt:1
-#: ../shtml/quotas_projects.tt:9 ../shtml/quotas_teachers.tt:1
-#: ../shtml/quotas_teachers.tt:9 ../shtml/start.tt:97
+#: ../shtml/quotas_classes.tt:1 ../shtml/quotas_classes.tt:9
+#: ../shtml/quotas_others.tt:1 ../shtml/quotas_others.tt:9
+#: ../shtml/quotas_projects.tt:1 ../shtml/quotas_projects.tt:9
+#: ../shtml/quotas_teachers.tt:1 ../shtml/quotas_teachers.tt:9
+#: ../shtml/start.tt:97
 msgid "Quota"
 msgstr "Quota"
 
@@ -3894,10 +3881,6 @@ msgstr "Activate quota"
 #: ../src/cgi-bin/settings_users:176
 msgid "Quota muss eine Zahl sein"
 msgstr "Quota must be a number"
-
-#: ../shtml/quotas.tt:20
-msgid "Quota sind nicht aktiviert."
-msgstr "Quota is not activated."
 
 #: ../shtml/hosts.tt:47 ../shtml/linbo_remote.tt:82
 msgid "Raum"
@@ -4046,10 +4029,9 @@ msgstr "Student"
 #: ../shtml/project_drop_verify.tt:1 ../shtml/project_handout.tt:1
 #: ../shtml/project_handoutcopy.tt:1 ../shtml/project_lesson.tt:1
 #: ../shtml/project_members.tt:1 ../shtml/project_passwords.tt:1
-#: ../shtml/project_shares.tt:1 ../shtml/quotas.tt:1
-#: ../shtml/quotas_classes.tt:1 ../shtml/quotas_others.tt:1
-#: ../shtml/quotas_projects.tt:1 ../shtml/quotas_teachers.tt:1
-#: ../shtml/room.tt:1 ../shtml/room_collect.tt:1
+#: ../shtml/project_shares.tt:1 ../shtml/quotas_classes.tt:1
+#: ../shtml/quotas_others.tt:1 ../shtml/quotas_projects.tt:1
+#: ../shtml/quotas_teachers.tt:1 ../shtml/room.tt:1 ../shtml/room_collect.tt:1
 #: ../shtml/room_end_lesson_verify.tt:1 ../shtml/room_handout.tt:1
 #: ../shtml/room_lesson.tt:1 ../shtml/room_shares.tt:1 ../shtml/room_test.tt:1
 #: ../shtml/room_test_collect.tt:1 ../shtml/room_test_end.tt:1
@@ -4210,8 +4192,7 @@ msgstr "Script call failed"
 msgid "Soll der Unterricht wirklich beendet werden?"
 msgstr "Should lessons really end?"
 
-#: ../shtml/quotas.tt:17 ../shtml/quotas_others.tt:1
-#: ../shtml/quotas_others.tt:9
+#: ../shtml/quotas_others.tt:1 ../shtml/quotas_others.tt:9
 msgid "Sonderquota"
 msgstr "Special quota"
 
@@ -5487,6 +5468,12 @@ msgstr "overwrite?"
 #~ msgstr "<p>Information for the current room.</p>"
 
 #~ msgid ""
+#~ "<p>Wählen Sie aus in welchem Bereich Sie Quota-Anpassungen vornehmen "
+#~ "wollen.</p>"
+#~ msgstr ""
+#~ "<p>Select the field in which you want to make quota adjustments.</p>"
+
+#~ msgid ""
 #~ "<strong>Hinweis:</strong> Die Host-Liste enth&auml;t manuell\n"
 #~ "hinzugef&uuml;gte Kommentarzeilen. Diese werden beim Speichern\n"
 #~ "gel&ouml;scht."
@@ -5761,6 +5748,11 @@ msgstr "overwrite?"
 #~ msgid "Geben Sie eine g&uuml;ltige 4-stellige Jahreszahl ein"
 #~ msgstr "Enter a valid 4-figure year"
 
+#~ msgid ""
+#~ "Gehen Sie auf <a href=\"settings\">Einstellungen</a> um Quota zu "
+#~ "aktivieren."
+#~ msgstr "Go to <a href=\"settings\">Settings</a> to activate quota."
+
 #~ msgid "Gr&ouml;&szlig;e der ISO-Dateien in MB"
 #~ msgstr "Size of the ISO files in MB"
 
@@ -6015,6 +6007,9 @@ msgstr "overwrite?"
 
 #~ msgid "Pr&auml;fix f&uuml;r ISO-Dateien"
 #~ msgstr "Prefix or ISO files"
+
+#~ msgid "Quota sind nicht aktiviert."
+#~ msgstr "Quota is not activated."
 
 #~ msgid "R&auml;ume"
 #~ msgstr "Rooms"

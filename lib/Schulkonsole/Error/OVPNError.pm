@@ -1,5 +1,4 @@
 use strict;
-use CGI::Inspect;
 use utf8;
 use parent("Schulkonsole::Error::Error");
 

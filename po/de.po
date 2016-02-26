@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2016-02-25 20:10+0100\n"
+"POT-Creation-Date: 2016-02-26 18:39+0100\n"
 "PO-Revision-Date: 2014-04-06 14:22+0200\n"
 "Last-Translator: root <root@linuxmuster.lokal>\n"
 "Language-Team: German\n"
@@ -791,12 +791,6 @@ msgstr ""
 
 #: ../shtml/project_drop_verify.tt:1
 msgid "<p>Wählen Sie &bdquo;Ja&ldquo;, um das Projekt wirklich zu löschen.</p>"
-msgstr ""
-
-#: ../shtml/quotas.tt:1
-msgid ""
-"<p>Wählen Sie aus in welchem Bereich Sie Quota-Anpassungen vornehmen wollen."
-"</p>"
 msgstr ""
 
 #: ../shtml/project_addmembers.tt:0
@@ -2288,11 +2282,6 @@ msgstr ""
 msgid "Geburtsjahreszahl für Schüler"
 msgstr ""
 
-#: ../shtml/quotas.tt:22
-msgid ""
-"Gehen Sie auf <a href=\"settings\">Einstellungen</a> um Quota zu aktivieren."
-msgstr ""
-
 #: ../shtml/user_print.tt:10
 msgid "Gesamtliste"
 msgstr ""
@@ -2712,9 +2701,8 @@ msgstr ""
 #: ../shtml/class_list.tt:27 ../shtml/class_passwords.tt:1
 #: ../shtml/class_passwords.tt:27 ../shtml/class_shares.tt:1
 #: ../shtml/class_shares.tt:27 ../shtml/myclass_handedoutcopy.tt:1
-#: ../shtml/quotas.tt:15 ../shtml/quotas_classes.tt:1
-#: ../shtml/quotas_classes.tt:9 ../shtml/settings_classs.tt:1
-#: ../shtml/settings_classs.tt:9
+#: ../shtml/quotas_classes.tt:1 ../shtml/quotas_classes.tt:9
+#: ../shtml/settings_classs.tt:1 ../shtml/settings_classs.tt:9
 msgid "Klassen"
 msgstr ""
 
@@ -2868,8 +2856,7 @@ msgstr ""
 
 #: ../shtml/myclass_handedout.tt:23 ../shtml/myprojects_handedout.tt:18
 #: ../shtml/project_addmembers.tt:140 ../shtml/project_members.tt:51
-#: ../shtml/quotas.tt:14 ../shtml/quotas_teachers.tt:1
-#: ../shtml/quotas_teachers.tt:9
+#: ../shtml/quotas_teachers.tt:1 ../shtml/quotas_teachers.tt:9
 msgid "Lehrer"
 msgstr ""
 
@@ -3563,9 +3550,9 @@ msgstr ""
 #: ../shtml/project_lesson.tt:25 ../shtml/project_members.tt:1
 #: ../shtml/project_members.tt:25 ../shtml/project_passwords.tt:1
 #: ../shtml/project_passwords.tt:27 ../shtml/project_shares.tt:1
-#: ../shtml/project_shares.tt:26 ../shtml/quotas.tt:16
-#: ../shtml/quotas_projects.tt:1 ../shtml/settings_projects.tt:1
-#: ../shtml/settings_projects.tt:9 ../shtml/start.tt:232
+#: ../shtml/project_shares.tt:26 ../shtml/quotas_projects.tt:1
+#: ../shtml/settings_projects.tt:1 ../shtml/settings_projects.tt:9
+#: ../shtml/start.tt:232
 msgid "Projekte"
 msgstr ""
 
@@ -3591,11 +3578,11 @@ msgstr ""
 msgid "Prozess laeuft schon"
 msgstr ""
 
-#: ../shtml/quotas.tt:1 ../shtml/quotas.tt:9 ../shtml/quotas_classes.tt:1
-#: ../shtml/quotas_classes.tt:9 ../shtml/quotas_others.tt:1
-#: ../shtml/quotas_others.tt:9 ../shtml/quotas_projects.tt:1
-#: ../shtml/quotas_projects.tt:9 ../shtml/quotas_teachers.tt:1
-#: ../shtml/quotas_teachers.tt:9 ../shtml/start.tt:97
+#: ../shtml/quotas_classes.tt:1 ../shtml/quotas_classes.tt:9
+#: ../shtml/quotas_others.tt:1 ../shtml/quotas_others.tt:9
+#: ../shtml/quotas_projects.tt:1 ../shtml/quotas_projects.tt:9
+#: ../shtml/quotas_teachers.tt:1 ../shtml/quotas_teachers.tt:9
+#: ../shtml/start.tt:97
 msgid "Quota"
 msgstr ""
 
@@ -3605,10 +3592,6 @@ msgstr ""
 
 #: ../src/cgi-bin/settings_users:176
 msgid "Quota muss eine Zahl sein"
-msgstr ""
-
-#: ../shtml/quotas.tt:20
-msgid "Quota sind nicht aktiviert."
 msgstr ""
 
 #: ../shtml/hosts.tt:47 ../shtml/linbo_remote.tt:82
@@ -3756,10 +3739,9 @@ msgstr ""
 #: ../shtml/project_drop_verify.tt:1 ../shtml/project_handout.tt:1
 #: ../shtml/project_handoutcopy.tt:1 ../shtml/project_lesson.tt:1
 #: ../shtml/project_members.tt:1 ../shtml/project_passwords.tt:1
-#: ../shtml/project_shares.tt:1 ../shtml/quotas.tt:1
-#: ../shtml/quotas_classes.tt:1 ../shtml/quotas_others.tt:1
-#: ../shtml/quotas_projects.tt:1 ../shtml/quotas_teachers.tt:1
-#: ../shtml/room.tt:1 ../shtml/room_collect.tt:1
+#: ../shtml/project_shares.tt:1 ../shtml/quotas_classes.tt:1
+#: ../shtml/quotas_others.tt:1 ../shtml/quotas_projects.tt:1
+#: ../shtml/quotas_teachers.tt:1 ../shtml/room.tt:1 ../shtml/room_collect.tt:1
 #: ../shtml/room_end_lesson_verify.tt:1 ../shtml/room_handout.tt:1
 #: ../shtml/room_lesson.tt:1 ../shtml/room_shares.tt:1 ../shtml/room_test.tt:1
 #: ../shtml/room_test_collect.tt:1 ../shtml/room_test_end.tt:1
@@ -3920,8 +3902,7 @@ msgstr ""
 msgid "Soll der Unterricht wirklich beendet werden?"
 msgstr ""
 
-#: ../shtml/quotas.tt:17 ../shtml/quotas_others.tt:1
-#: ../shtml/quotas_others.tt:9
+#: ../shtml/quotas_others.tt:1 ../shtml/quotas_others.tt:9
 msgid "Sonderquota"
 msgstr ""
 

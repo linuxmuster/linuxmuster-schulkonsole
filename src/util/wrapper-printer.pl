@@ -23,7 +23,6 @@ wrapper-printer.pl - wrapper for printer access
 =cut
 
 use strict;
-use CGI::Inspect;
 use lib '/usr/share/schulkonsole';
 use open ':utf8';
 use open ':std';
@@ -122,7 +121,7 @@ none
 
 =cut
 
-sub printer_info(){
+sub printer_info {
 	$< = $>;
 	system Schulkonsole::Encode::to_cli(
 	       	"$Schulkonsole::Config::_cmd_printer_info -l -p");
@@ -154,7 +153,7 @@ Printer names, one per line, end with empty line
 
 =cut
 
-sub printer_on_off(){
+sub printer_on_off {
 	my $on = <>;
 	($on) = $on =~ /^(\d)$/;
 
@@ -215,7 +214,7 @@ Finish with additional empty line.
 
 =cut
 
-sub printer_allow_deny(){
+sub printer_allow_deny {
 	my %printer_users;
 
 	while (my $printer = <>) {
@@ -269,7 +268,7 @@ None
 
 =cut
 
-sub own_print_quota(){
+sub own_print_quota {
 	my $opt_user = "--user=\Q$$userdata{uid}\E";
 
 
@@ -322,7 +321,7 @@ End users list with empty line.
 
 =cut
 
-sub print_quota(){
+sub print_quota {
 	my @users;
 
 	while (my $user = <>) {

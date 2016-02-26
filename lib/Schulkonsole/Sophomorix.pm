@@ -1,5 +1,4 @@
 use strict;
-use CGI::Inspect;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
 
@@ -6713,10 +6712,10 @@ This wraps the command C<sophomorix-check> and returns the output
 sub users_check {
 	my $id = shift;
 	my $password = shift;
-#CGI::Inspect::inspect();
+
 	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::USERSCHECKAPP,
 						$id, $password);
-	#CGI::Inspect::inspect();
+
 	return $in;
 }
 

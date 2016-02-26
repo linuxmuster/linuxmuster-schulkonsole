@@ -1,5 +1,4 @@
 use strict;
-use CGI::Inspect;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
 use Schulkonsole::Wrapper;
