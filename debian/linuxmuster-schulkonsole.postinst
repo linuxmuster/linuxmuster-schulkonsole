@@ -96,15 +96,18 @@ case "$1" in
 	apache2ctl graceful 2> /dev/null || true
 
 	# create wifi project
-	echo -n "Ensure existance of wlan_ldap_group(default: p_wifi) as sophomorix project..."
+	echo "Ensure existance of wlan_ldap_group(default: p_wifi) as sophomorix project..."
 	wlan_ldap_group=p_wifi
 	if grep -q '^wlan_ldap_group' $prefconf; then
 	    wlan_ldap_group="$(grep '^wlan_ldap_group' $prefconf| cut -d\= -f2)"
+	    echo "   preferences.conf: wlan_ldap_group=${wlan_ldap_group}"
 	fi
-	if ! ldapsearch -x "(cn=${wlan_ldap_group}"|grep -q 'posixGroup'; then
-	    sophomorix-project -p ${wlan_ldap_group} --create --admins administrator
+	if ! ldapsearch -x "(cn=${wlan_ldap_group})"|grep -q 'posixGroup'; then
+	    echo -n "   creating non-existing project ${wlan_ldap_group}..."
+	    sophomorix-project -p ${wlan_ldap_group} --create --admins administrator >/dev/null 2>/dev/null \
+		&& echo "Done." || echo "Failed."
 	fi
-	echo "Done."
+
 	;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)
