@@ -9,6 +9,7 @@ linbo
  x Partitionsnamen
  x EFI-Partitionen
  o GPT
+ o detect and use linbo 2.2/2.3
 
 uefi
 ====
@@ -50,10 +51,10 @@ Quota
 =====
  o Quota Klassen wird verspätet angezeigt
  o Quota-Einträge löschen
- o Sonderquota: Systembenutzer leere Tabelle 2x
 
 Fehler
 ======
+ x Sonderquota: Systembenutzer leere Tabelle 2x
  o aktueller Raum: checkbox disabled darf sich durch quick button nicht verändern
  o aktueller Raum - Austeilen: Datei mit Umlaut kann weder heruntergeladen noch gelöscht werden
  o Klasse - Tauschen global ausschalten funktioniert nicht
@@ -70,3 +71,8 @@ Wrapper
 =======
  x wrapper-printer -> subroutines
  o Umgang mit übrig gebliebenen lock-Dateien (stehlen nach einer Stunde)
+
+Vereinfachung
+=============
+ o build Umgebung ohne configure
+ o Fehler abfangen ohne eval, sonder mit $SIG{__DIE__}-Routine
