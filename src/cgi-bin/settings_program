@@ -208,6 +208,7 @@ sub new_preferences_lines {
 		conf_max_idle_time => 'max_idle_time',
 		conf_min_password_len => 'min_password_len',
 		conf_max_password_len => 'max_password_len',
+		conf_wlan_ldap_group => 'wlan_ldap_group',
 	);
 	my %key_map_rev = reverse %key_map;
 

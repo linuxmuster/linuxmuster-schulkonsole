@@ -15,6 +15,7 @@ dbconf_ex="$exdir/$(basename $dbconf)"
 permfile="$confdir/permissions.conf"
 permfile_ex="$exdir/$(basename $permfile)"
 rtdir="/var/lib/schulkonsole"
+prefconf="$confdir/preferences.conf"
 
 case "$1" in
 	configure)
@@ -93,6 +94,17 @@ case "$1" in
 }' -i $conf
  	fi
 	apache2ctl graceful 2> /dev/null || true
+
+	# create wifi project
+	echo -n "Ensure existance of wlan_ldap_group(default: p_wifi) as sophomorix project..."
+	wlan_ldap_group=p_wifi
+	if grep -q '^wlan_ldap_group' $prefconf; then
+	    wlan_ldap_group="$(grep '^wlan_ldap_group' $prefconf| cut -d\= -f2)"
+	fi
+	if ! ldapsearch -x "(cn=${wlan_ldap_group}"|grep -q 'posixGroup'; then
+	    sophomorix-project -p ${wlan_ldap_group} --create --admins administrator
+	fi
+	echo "Done."
 	;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)

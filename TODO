@@ -56,7 +56,7 @@ Fehler
  o aktueller Raum: checkbox disabled darf sich durch quick button nicht verändern
  o aktueller Raum - Austeilen: Datei mit Umlaut kann weder heruntergeladen noch gelöscht werden
  o Klasse - Tauschen global ausschalten funktioniert nicht
- o Klasse - WLAN einschalten funktioniert nicht
+ o Gruppe p_wifi muss bei der Installation angelegt werden!
  x Printer.pm enthält Quota-Funktionen, die in das Plugin gehören. Erledigt
 
 Plugins anpassen
@@ -68,3 +68,4 @@ Plugins anpassen
 Wrapper
 =======
  x wrapper-printer -> subroutines
+ o Umgang mit übrig gebliebenen lock-Dateien (stehlen nach einer Stunde)
