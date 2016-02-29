@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the schulkonsole package.
 # root <root@linuxmuster.lokal>, 2014.
 #
-#: ../lib/Schulkonsole/Session.pm.in:1544
+#: ../lib/Schulkonsole/Session.pm.in:1567
 msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2016-02-28 14:56+0100\n"
+"POT-Creation-Date: 2016-02-29 13:53+0100\n"
 "PO-Revision-Date: 2014-04-06 14:22+0200\n"
 "Last-Translator: root <root@linuxmuster.lokal>\n"
 "Language-Team: German\n"
@@ -92,7 +92,7 @@ msgid "%s aus Projekt %s ausgetragen"
 msgstr ""
 
 #: ../src/cgi-bin/linbo_grubedit:73 ../src/cgi-bin/linbo_images:358
-#: ../src/cgi-bin/linbo_postsyncedit:72
+#: ../src/cgi-bin/linbo_menuedit:73 ../src/cgi-bin/linbo_postsyncedit:72
 #, perl-format
 msgid "%s existiert bereits"
 msgstr ""
@@ -100,12 +100,20 @@ msgstr ""
 #: ../src/cgi-bin/linbo_grubedit:119 ../src/cgi-bin/linbo_grubedit:145
 #: ../src/cgi-bin/linbo_grubedit:178 ../src/cgi-bin/linbo_images:73
 #: ../src/cgi-bin/linbo_images:111 ../src/cgi-bin/linbo_images:172
-#: ../src/cgi-bin/linbo_images:206 ../src/cgi-bin/linbo_postsyncedit:108
-#: ../src/cgi-bin/linbo_postsyncedit:134 ../src/cgi-bin/linbo_postsyncedit:167
+#: ../src/cgi-bin/linbo_images:206 ../src/cgi-bin/linbo_menuedit:119
+#: ../src/cgi-bin/linbo_menuedit:145 ../src/cgi-bin/linbo_menuedit:178
+#: ../src/cgi-bin/linbo_postsyncedit:108 ../src/cgi-bin/linbo_postsyncedit:134
+#: ../src/cgi-bin/linbo_postsyncedit:167 ../src/cgi-bin/linbo_pxeedit:73
+#: ../src/cgi-bin/linbo_pxeedit:99 ../src/cgi-bin/linbo_pxeedit:132
 #: ../src/cgi-bin/linbo_regpatchedit:150 ../src/cgi-bin/linbo_regpatchedit:183
 #: ../src/cgi-bin/linbo_regpatchedit:216
 #, perl-format
 msgid "%s existiert nicht"
+msgstr ""
+
+#: ../src/cgi-bin/linbo_menuedit:132 ../src/cgi-bin/linbo_pxeedit:86
+#, perl-format
+msgid "%s gel&ouml;scht"
 msgstr ""
 
 #: ../src/cgi-bin/linbo_grubedit:132 ../src/cgi-bin/linbo_images:86
@@ -115,12 +123,14 @@ msgid "%s gelöscht"
 msgstr ""
 
 #: ../src/cgi-bin/linbo_grubedit:160 ../src/cgi-bin/linbo_images:187
-#: ../src/cgi-bin/linbo_postsyncedit:149 ../src/cgi-bin/linbo_regpatchedit:198
+#: ../src/cgi-bin/linbo_menuedit:160 ../src/cgi-bin/linbo_postsyncedit:149
+#: ../src/cgi-bin/linbo_pxeedit:114 ../src/cgi-bin/linbo_regpatchedit:198
 #, perl-format
 msgid "%s geschrieben"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_grubedit:99 ../src/cgi-bin/linbo_postsyncedit:88
+#: ../src/cgi-bin/linbo_grubedit:99 ../src/cgi-bin/linbo_menuedit:99
+#: ../src/cgi-bin/linbo_postsyncedit:88
 #, perl-format
 msgid "%s hinzugefügt"
 msgstr ""
@@ -145,7 +155,7 @@ msgstr ""
 msgid "%s ist kein Registrypatch"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1074
+#: ../lib/Schulkonsole/Linbo.pm:1141
 #, perl-format
 msgid "%s ist kein gültiger Devicename"
 msgstr ""
@@ -155,9 +165,19 @@ msgstr ""
 msgid "%s ist keine Beschreibungsdatei"
 msgstr ""
 
+#: ../src/cgi-bin/linbo_pxeedit:67
+#, perl-format
+msgid "%s ist keine PXE-Start-Datei"
+msgstr ""
+
 #: ../src/cgi-bin/linbo_grubedit:67 ../src/cgi-bin/linbo_grubedit:113
 #, perl-format
 msgid "%s ist keine grub cfg-Datei"
+msgstr ""
+
+#: ../src/cgi-bin/linbo_menuedit:67 ../src/cgi-bin/linbo_menuedit:113
+#, perl-format
+msgid "%s ist keine menu.lst-Datei"
 msgstr ""
 
 #: ../src/cgi-bin/linbo_postsyncedit:66 ../src/cgi-bin/linbo_postsyncedit:102
@@ -170,13 +190,19 @@ msgstr ""
 msgid "%s ist schon über Raum %s zugänglich"
 msgstr ""
 
+#: ../src/cgi-bin/linbo_menuedit:135 ../src/cgi-bin/linbo_pxeedit:89
+#, perl-format
+msgid "%s konnte nicht gel&ouml;scht werden"
+msgstr ""
+
 #: ../src/cgi-bin/linbo_grubedit:135 ../src/cgi-bin/linbo_images:89
 #: ../src/cgi-bin/linbo_postsyncedit:124 ../src/cgi-bin/linbo_regpatchedit:166
 #, perl-format
 msgid "%s konnte nicht gelöscht werden"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_grubedit:102 ../src/cgi-bin/linbo_postsyncedit:91
+#: ../src/cgi-bin/linbo_grubedit:102 ../src/cgi-bin/linbo_menuedit:102
+#: ../src/cgi-bin/linbo_postsyncedit:91
 #, perl-format
 msgid "%s konnte nicht hinzugefügt werden"
 msgstr ""
@@ -201,7 +227,7 @@ msgstr ""
 msgid "%s nach %s umbenannt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1080
+#: ../lib/Schulkonsole/Linbo.pm:1147
 #, perl-format
 msgid "%s wird mehrmals verwendet"
 msgstr ""
@@ -249,7 +275,8 @@ msgstr ""
 msgid "- oder -"
 msgstr ""
 
-#: ../shtml/linbo_grubedit.tt:1 ../shtml/linbo_postsyncedit.tt:1
+#: ../shtml/linbo_grubedit.tt:1 ../shtml/linbo_menuedit.tt:1
+#: ../shtml/linbo_postsyncedit.tt:1 ../shtml/linbo_pxeedit.tt:1
 msgid "."
 msgstr ""
 
@@ -861,7 +888,8 @@ msgstr ""
 
 #: ../shtml/linbo_grubedit.tt:20 ../shtml/linbo_images.tt:19
 #: ../shtml/linbo_images.tt:32 ../shtml/linbo_images.tt:45
-#: ../shtml/linbo_postsyncedit.tt:19 ../shtml/linbo_regpatchedit.tt:20
+#: ../shtml/linbo_menuedit.tt:20 ../shtml/linbo_postsyncedit.tt:19
+#: ../shtml/linbo_pxeedit.tt:20 ../shtml/linbo_regpatchedit.tt:20
 #: ../shtml/linbo_remote.tt:370
 msgid "Abbrechen"
 msgstr ""
@@ -937,7 +965,7 @@ msgstr ""
 msgid "Angelegte Benutzer"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1451
+#: ../lib/Schulkonsole/Session.pm.in:1474
 msgid "Angemeldet"
 msgstr ""
 
@@ -998,7 +1026,7 @@ msgstr ""
 msgid "Assistent zur Erstellung einer neuen Rechnergruppe"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1096
+#: ../lib/Schulkonsole/Linbo.pm:1163
 #, perl-format
 msgid "Auf der Cachepartition %s darf kein Betriebssystem installiert sein"
 msgstr ""
@@ -1057,7 +1085,7 @@ msgstr ""
 msgid "Ausführung"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1334
+#: ../lib/Schulkonsole/Session.pm.in:1350
 msgid "Ausgabe des Hintergrundprozess: "
 msgstr ""
 
@@ -1199,7 +1227,7 @@ msgstr ""
 msgid "Befehle"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1093
+#: ../lib/Schulkonsole/Linbo.pm:1160
 #, perl-format
 msgid "Bei %s muss eine Größe angegeben werden"
 msgstr ""
@@ -1342,7 +1370,8 @@ msgid "Bestehende Gruppenkonfiguration einer Rechnergruppe kopieren"
 msgstr ""
 
 #: ../shtml/linbo_grubedit.tt:19 ../shtml/linbo_images.tt:18
-#: ../shtml/linbo_postsyncedit.tt:18 ../shtml/linbo_regpatchedit.tt:19
+#: ../shtml/linbo_menuedit.tt:19 ../shtml/linbo_postsyncedit.tt:18
+#: ../shtml/linbo_pxeedit.tt:19 ../shtml/linbo_regpatchedit.tt:19
 #: ../shtml/room_end_lesson_verify.tt:34 ../shtml/room_test_end.tt:35
 msgid "Bestätigen"
 msgstr ""
@@ -1435,7 +1464,8 @@ msgstr ""
 
 #: ../shtml/linbo_grubedit.tt:14 ../shtml/linbo_images.tt:13
 #: ../shtml/linbo_images.tt:26 ../shtml/linbo_images.tt:39
-#: ../shtml/linbo_postsyncedit.tt:13 ../shtml/linbo_regpatchedit.tt:14
+#: ../shtml/linbo_menuedit.tt:14 ../shtml/linbo_postsyncedit.tt:13
+#: ../shtml/linbo_pxeedit.tt:14 ../shtml/linbo_regpatchedit.tt:14
 #: ../shtml/project_drop_verify.tt:15 ../shtml/room_end_lesson_verify.tt:28
 #: ../shtml/room_test_end.tt:31 ../src/cgi-bin/project:254
 #: ../src/cgi-bin/room_test_end:83
@@ -1590,7 +1620,7 @@ msgstr ""
 msgid "Dateiname"
 msgstr ""
 
-#: ../shtml/linbo_edit_oss.inc.tt:78 ../lib/Schulkonsole/Linbo.pm:1021
+#: ../shtml/linbo_edit_oss.inc.tt:78 ../lib/Schulkonsole/Linbo.pm:1088
 msgid "Dateiname des Basis-Image"
 msgstr ""
 
@@ -1640,7 +1670,7 @@ msgstr ""
 msgid "Der Loginname muss aus 2 bis 16 Kleinbuchstaben (ohne Umlaute) bestehen"
 msgstr ""
 
-#: ../src/cgi-bin/settings_program:107
+#: ../src/cgi-bin/settings_program:115
 msgid "Der Name der WLAN-LDAP-Gruppe ist ungültig."
 msgstr ""
 
@@ -1651,11 +1681,11 @@ msgid ""
 "sein."
 msgstr ""
 
-#: ../src/cgi-bin/settings_program:97
+#: ../src/cgi-bin/settings_program:105
 msgid "Der Wert für die maximale Passwortlänge ist ungültig"
 msgstr ""
 
-#: ../src/cgi-bin/settings_program:87
+#: ../src/cgi-bin/settings_program:95
 msgid "Der Wert für die minimale Passwortlänge ist ungültig"
 msgstr ""
 
@@ -1667,7 +1697,7 @@ msgstr ""
 msgid "Die Benutzerdaten müssen noch in das System übernommen werden."
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1099
+#: ../lib/Schulkonsole/Linbo.pm:1166
 #, perl-format
 msgid "Die Cachepartition %s benötigt ein GNU/Linux-Dateisystem"
 msgstr ""
@@ -1715,7 +1745,7 @@ msgstr ""
 msgid "Die Passwortlänge muss eine Zahl > 0 sein"
 msgstr ""
 
-#: ../src/cgi-bin/settings_program:76
+#: ../src/cgi-bin/settings_program:84
 msgid "Die Sitzungsdauer muss in Minuten angegeben werden"
 msgstr ""
 
@@ -1735,7 +1765,7 @@ msgstr ""
 msgid "Die eingegebene Mail-Adresse ist ungültig."
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1090
+#: ../lib/Schulkonsole/Linbo.pm:1157
 #, perl-format
 msgid "Die erweiterte Partition %s ist nicht erlaubt"
 msgstr ""
@@ -1793,7 +1823,7 @@ msgstr ""
 
 #: ../shtml/quotas_classes.tt:21 ../shtml/quotas_others.tt:112
 #: ../shtml/quotas_others.tt:163 ../shtml/quotas_others.tt:20
-#: ../shtml/quotas_others.tt:214 ../shtml/quotas_others.tt:262
+#: ../shtml/quotas_others.tt:214 ../shtml/quotas_others.tt:263
 #: ../shtml/quotas_others.tt:64 ../shtml/quotas_projects.tt:21
 #: ../shtml/quotas_teachers.tt:21
 msgid "Diskquota"
@@ -2077,6 +2107,10 @@ msgstr ""
 msgid "Es konnte keine temporäre Datei erzeugt werden."
 msgstr ""
 
+#: ../shtml/linbo_pxeedit.tt:53
+msgid "Es sind keine PXE-Start-Dateien vorhanden."
+msgstr ""
+
 #: ../shtml/linbo_regpatchedit.tt:52
 msgid "Es sind keine Registrypatch-Dateien vorhanden."
 msgstr ""
@@ -2091,6 +2125,10 @@ msgstr ""
 
 #: ../shtml/linbo_grubedit.tt:68
 msgid "Es sind keine grub cfg-Dateien vorhanden."
+msgstr ""
+
+#: ../shtml/linbo_menuedit.tt:68
+msgid "Es sind keine menu.lst-Dateien vorhanden."
 msgstr ""
 
 #: ../shtml/linbo_postsyncedit.tt:67
@@ -2244,7 +2282,7 @@ msgstr ""
 msgid "Für"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1087
+#: ../lib/Schulkonsole/Linbo.pm:1154
 #, perl-format
 msgid "Für %s existieren mehrere erweiterte Partitionen"
 msgstr ""
@@ -2254,7 +2292,7 @@ msgstr ""
 msgid "Für Benutzer %s gibt es bereits einen Eintrag"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1083
+#: ../lib/Schulkonsole/Linbo.pm:1150
 #, perl-format
 msgid "Für die Partition %s existiert keine erweiterte Partition"
 msgstr ""
@@ -2373,8 +2411,8 @@ msgstr ""
 msgid "Hinweis"
 msgstr ""
 
-#: ../shtml/linbo_grubedit.tt:50 ../shtml/linbo_postsyncedit.tt:49
-#: ../shtml/linbo_remote.tt:369
+#: ../shtml/linbo_grubedit.tt:50 ../shtml/linbo_menuedit.tt:50
+#: ../shtml/linbo_postsyncedit.tt:49 ../shtml/linbo_remote.tt:369
 msgid "Hinzufügen"
 msgstr ""
 
@@ -2534,6 +2572,11 @@ msgstr ""
 
 #: ../shtml/linbo_images.tt:108 ../shtml/linbo_images.tt:146
 msgid "K"
+msgstr ""
+
+#: ../src/cgi-bin/linbo_menuedit:207 ../src/cgi-bin/linbo_pxeedit:161
+#, perl-format
+msgid "Kann Datei %s nicht &ouml;ffnen"
 msgstr ""
 
 #: ../src/cgi-bin/linbo_grubedit:207 ../src/cgi-bin/linbo_images:233
@@ -2849,7 +2892,7 @@ msgstr ""
 msgid "LINBO-Kerneloptionen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1040
+#: ../lib/Schulkonsole/Linbo.pm:1107
 #, perl-format
 msgid "Leerer Wert für \"%s\" bei %s auf %s"
 msgstr ""
@@ -2890,8 +2933,9 @@ msgid "Lehrerpasswörter"
 msgstr ""
 
 #: ../shtml/linbo_edit.tt:1 ../shtml/linbo_grubedit.tt:1
-#: ../shtml/linbo_images.tt:1 ../shtml/linbo_new.tt:1
-#: ../shtml/linbo_postsyncedit.tt:1 ../shtml/linbo_regpatchedit.tt:1
+#: ../shtml/linbo_images.tt:1 ../shtml/linbo_menuedit.tt:1
+#: ../shtml/linbo_new.tt:1 ../shtml/linbo_postsyncedit.tt:1
+#: ../shtml/linbo_pxeedit.tt:1 ../shtml/linbo_regpatchedit.tt:1
 #: ../shtml/linbo_remote.tt:1 ../shtml/linbo_remote.tt:17
 #: ../shtml/linbo_remote.tt:69 ../shtml/linbo_remote.tt:9
 msgid "Linbo"
@@ -2922,7 +2966,7 @@ msgstr ""
 #: ../shtml/project_passwords.tt:54 ../shtml/project_passwords.tt:82
 #: ../shtml/project_shares.tt:34 ../shtml/quotas_others.tt:109
 #: ../shtml/quotas_others.tt:160 ../shtml/quotas_others.tt:18
-#: ../shtml/quotas_others.tt:212 ../shtml/quotas_others.tt:260
+#: ../shtml/quotas_others.tt:212 ../shtml/quotas_others.tt:261
 #: ../shtml/quotas_others.tt:62 ../shtml/quotas_teachers.tt:18
 #: ../shtml/room_collect.tt:79 ../shtml/room_handout.tt:69
 #: ../shtml/room_lesson.tt:96 ../shtml/room_shares.tt:36
@@ -2939,7 +2983,7 @@ msgstr ""
 msgid "Login %s schon vorhanden"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1454
+#: ../lib/Schulkonsole/Session.pm.in:1477
 msgid "Login fehlgeschlagen"
 msgstr ""
 
@@ -3004,7 +3048,7 @@ msgstr ""
 
 #: ../shtml/quotas_classes.tt:23 ../shtml/quotas_others.tt:114
 #: ../shtml/quotas_others.tt:165 ../shtml/quotas_others.tt:216
-#: ../shtml/quotas_others.tt:22 ../shtml/quotas_others.tt:264
+#: ../shtml/quotas_others.tt:22 ../shtml/quotas_others.tt:265
 #: ../shtml/quotas_others.tt:66 ../shtml/quotas_projects.tt:23
 #: ../shtml/quotas_teachers.tt:23
 msgid "Mailquota"
@@ -3179,7 +3223,7 @@ msgstr ""
 msgid "Name des Betriebssystems"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1046
+#: ../lib/Schulkonsole/Linbo.pm:1113
 #, perl-format
 msgid "Name mit Version (\"%s\") muss bei Betriebssystemen eindeutig sein."
 msgstr ""
@@ -3361,6 +3405,11 @@ msgstr ""
 msgid "PXE mit Opsi"
 msgstr ""
 
+#: ../shtml/linbo_pxeedit.tt:12 ../shtml/linbo_pxeedit.tt:27
+#: ../shtml/linbo_pxeedit.tt:38
+msgid "PXE-Start-Dateien der Rechnergruppen editieren"
+msgstr ""
+
 #: ../shtml/linbo_remote.tt:187
 msgid "Parition formatieren"
 msgstr ""
@@ -3373,7 +3422,7 @@ msgstr ""
 msgid "Partition bootbar:"
 msgstr ""
 
-#: ../shtml/linbo_edit_oss.inc.tt:83 ../lib/Schulkonsole/Linbo.pm:1022
+#: ../shtml/linbo_edit_oss.inc.tt:83 ../lib/Schulkonsole/Linbo.pm:1089
 msgid "Partition, die Kernel und initrd enthält"
 msgstr ""
 
@@ -3458,7 +3507,7 @@ msgstr ""
 msgid "Perl Kompilierungsfehler"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1023
+#: ../lib/Schulkonsole/Linbo.pm:1090
 msgid "Pfad zum Kernel"
 msgstr ""
 
@@ -3700,7 +3749,8 @@ msgstr ""
 
 #: ../shtml/linbo_grubedit.tt:32 ../shtml/linbo_images.tt:56
 #: ../shtml/linbo_images.tt:66 ../shtml/linbo_images.tt:75
-#: ../shtml/linbo_postsyncedit.tt:31 ../shtml/linbo_regpatchedit.tt:31
+#: ../shtml/linbo_menuedit.tt:32 ../shtml/linbo_postsyncedit.tt:31
+#: ../shtml/linbo_pxeedit.tt:32 ../shtml/linbo_regpatchedit.tt:31
 #: ../shtml/user_print.tt:69
 msgid "Schließen"
 msgstr ""
@@ -3716,7 +3766,7 @@ msgstr ""
 msgid "Schnellauswahl"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1490
+#: ../lib/Schulkonsole/Session.pm.in:1513
 msgid "Schueler"
 msgstr ""
 
@@ -3725,8 +3775,9 @@ msgstr ""
 #: ../shtml/class_list.tt:1 ../shtml/class_passwords.tt:1
 #: ../shtml/class_shares.tt:1 ../shtml/example.tt:1 ../shtml/header.inc.tt:10
 #: ../shtml/hosts.tt:1 ../shtml/linbo_edit.tt:1 ../shtml/linbo_grubedit.tt:1
-#: ../shtml/linbo_images.tt:1 ../shtml/linbo_new.tt:1
-#: ../shtml/linbo_postsyncedit.tt:1 ../shtml/linbo_regpatchedit.tt:1
+#: ../shtml/linbo_images.tt:1 ../shtml/linbo_menuedit.tt:1
+#: ../shtml/linbo_new.tt:1 ../shtml/linbo_postsyncedit.tt:1
+#: ../shtml/linbo_pxeedit.tt:1 ../shtml/linbo_regpatchedit.tt:1
 #: ../shtml/linbo_remote.tt:1 ../shtml/login.tt:1 ../shtml/logout.tt:1
 #: ../shtml/myclass.tt:1 ../shtml/myclass_handedout.tt:1
 #: ../shtml/myclass_handedoutcopy.tt:1 ../shtml/myclass_tocollect.tt:1
@@ -4002,7 +4053,7 @@ msgstr ""
 msgid "System-Typ"
 msgstr ""
 
-#: ../shtml/quotas_others.tt:248
+#: ../shtml/quotas_others.tt:249
 msgid "Systembenutzer"
 msgstr ""
 
@@ -4050,6 +4101,10 @@ msgstr ""
 msgid "U"
 msgstr ""
 
+#: ../shtml/settings_program.tt:35
+msgid "UEFI verwenden"
+msgstr ""
+
 #: ../shtml/class_lesson.tt:69 ../shtml/project_lesson.tt:69
 #: ../shtml/room_lesson.tt:70
 msgid "Uhr"
@@ -4067,12 +4122,12 @@ msgstr ""
 msgid "Unbekannter Fehler "
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1102
+#: ../lib/Schulkonsole/Linbo.pm:1169
 #, perl-format
 msgid "Unbekannter Fehler bei %s/%s"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1049
+#: ../lib/Schulkonsole/Linbo.pm:1116
 #, perl-format
 msgid "Unbekannter Fehler für %s bei %s auf %s"
 msgstr ""
@@ -4197,7 +4252,7 @@ msgstr ""
 msgid "Ungültige Unterrichtszeit"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1043
+#: ../lib/Schulkonsole/Linbo.pm:1110
 #, perl-format
 msgid "Ungültige Zeichen für \"%s\" bei %s auf %s"
 msgstr ""
@@ -4530,7 +4585,7 @@ msgstr ""
 msgid "Zufallspasswörter gesetzt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1484
+#: ../lib/Schulkonsole/Session.pm.in:1507
 msgid "Zugriff verweigert"
 msgstr ""
 
@@ -4681,7 +4736,7 @@ msgstr ""
 msgid "kein Unterricht."
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1115
+#: ../lib/Schulkonsole/Linbo.pm:1182
 msgid "keine Cachepartition"
 msgstr ""
 
@@ -4697,11 +4752,11 @@ msgstr ""
 msgid "kopieren nach"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1067
+#: ../lib/Schulkonsole/Linbo.pm:1134
 msgid "leerer Devicename"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1069 ../lib/Schulkonsole/Linbo.pm:1111
+#: ../lib/Schulkonsole/Linbo.pm:1136 ../lib/Schulkonsole/Linbo.pm:1178
 msgid "leerer Wert"
 msgstr ""
 
@@ -4710,8 +4765,14 @@ msgid "lehrer.txt existiert bereits"
 msgstr ""
 
 #: ../shtml/linbo_edit.tt:123 ../shtml/linbo_grubedit.tt:62
-#: ../shtml/linbo_postsyncedit.tt:61 ../shtml/linbo_regpatchedit.tt:46
+#: ../shtml/linbo_menuedit.tt:62 ../shtml/linbo_postsyncedit.tt:61
+#: ../shtml/linbo_pxeedit.tt:47 ../shtml/linbo_regpatchedit.tt:46
 msgid "löschen"
+msgstr ""
+
+#: ../shtml/linbo_menuedit.tt:12 ../shtml/linbo_menuedit.tt:27
+#: ../shtml/linbo_menuedit.tt:38
+msgid "menu.lst-Dateien der Rechnergruppen editieren"
 msgstr ""
 
 #: ../shtml/linbo_edit_global.inc.tt:57
@@ -4815,7 +4876,7 @@ msgstr ""
 msgid "unbekannt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1059
+#: ../lib/Schulkonsole/Linbo.pm:1126
 msgid "unbenannt"
 msgstr ""
 
@@ -4835,7 +4896,7 @@ msgstr ""
 msgid "ungültige Optionen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1076 ../lib/Schulkonsole/Linbo.pm:1113
+#: ../lib/Schulkonsole/Linbo.pm:1143 ../lib/Schulkonsole/Linbo.pm:1180
 msgid "ungültige Zeichen"
 msgstr ""
 
@@ -4901,7 +4962,8 @@ msgid "white"
 msgstr ""
 
 #: ../shtml/linbo_grubedit.tt:17 ../shtml/linbo_images.tt:16
-#: ../shtml/linbo_postsyncedit.tt:16 ../shtml/linbo_regpatchedit.tt:17
+#: ../shtml/linbo_menuedit.tt:17 ../shtml/linbo_postsyncedit.tt:16
+#: ../shtml/linbo_pxeedit.tt:17 ../shtml/linbo_regpatchedit.tt:17
 msgid "wirklich löschen?"
 msgstr ""
 
@@ -4927,7 +4989,8 @@ msgstr ""
 #: ../shtml/linbo_edit.tt:103 ../shtml/linbo_edit.tt:29
 #: ../shtml/linbo_edit.tt:62 ../shtml/linbo_edit_oss.inc.tt:147
 #: ../shtml/linbo_grubedit.tt:31 ../shtml/linbo_images.tt:55
-#: ../shtml/linbo_postsyncedit.tt:30 ../shtml/linbo_regpatchedit.tt:30
+#: ../shtml/linbo_menuedit.tt:31 ../shtml/linbo_postsyncedit.tt:30
+#: ../shtml/linbo_pxeedit.tt:31 ../shtml/linbo_regpatchedit.tt:30
 #: ../shtml/project_members.tt:37 ../shtml/user_extra.tt:19
 #: ../shtml/user_extra.tt:32 ../shtml/user_students.tt:28
 msgid "Änderungen speichern"
@@ -4938,20 +5001,20 @@ msgstr ""
 #: ../shtml/printers_edit.tt:85 ../shtml/project_lesson.tt:122
 #: ../shtml/project_shares.tt:62 ../shtml/quotas_classes.tt:46
 #: ../shtml/quotas_others.tt:138 ../shtml/quotas_others.tt:189
-#: ../shtml/quotas_others.tt:238 ../shtml/quotas_others.tt:287
+#: ../shtml/quotas_others.tt:239 ../shtml/quotas_others.tt:288
 #: ../shtml/quotas_others.tt:42 ../shtml/quotas_others.tt:86
 #: ../shtml/quotas_projects.tt:46 ../shtml/quotas_teachers.tt:47
 #: ../shtml/room_lesson.tt:188 ../shtml/room_lesson.tt:234
 #: ../shtml/room_shares.tt:65 ../shtml/rooms.tt:153
 #: ../shtml/rooms_classrooms.tt:48 ../shtml/settings_classs.tt:58
-#: ../shtml/settings_program.tt:37 ../shtml/settings_projects.tt:52
+#: ../shtml/settings_program.tt:41 ../shtml/settings_projects.tt:52
 #: ../shtml/settings_users.tt:285 ../shtml/user_teachin.tt:99
 msgid "Änderungen übernehmen"
 msgstr ""
 
 #: ../src/cgi-bin/printers_edit:240 ../src/cgi-bin/printers_edit:272
 #: ../src/cgi-bin/rooms:174 ../src/cgi-bin/rooms_classrooms:91
-#: ../src/cgi-bin/settings_program:128 ../src/cgi-bin/settings_users:252
+#: ../src/cgi-bin/settings_program:136 ../src/cgi-bin/settings_users:252
 #: ../src/cgi-bin/user_teachers:225
 msgid "Änderungen übernommen"
 msgstr ""

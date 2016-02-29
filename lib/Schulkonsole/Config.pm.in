@@ -74,6 +74,7 @@ $VERSION = 0.06;
 	$_cups_printers_conf_file
 	$_wlan_defaults_file
 	$_wlan_ldap_group
+	$_uefi_on
 
 	$_login_template
 
@@ -663,6 +664,10 @@ C<linbo_remote_window>
 
 C<linbo_remote>
 
+=item C<LINBOWRITEPXEAPP>
+
+C<linbo_write_pxe>
+
 =back
 
 =cut
@@ -678,6 +683,7 @@ use constant {
 	LINBOREMOTESTATUSAPP => 13008,
 	LINBOREMOTEWINDOWAPP => 13009,
 	LINBOREMOTEAPP => 13010,
+	LINBOWRITEPXEAPP => 13011,
 };
 
 
@@ -828,6 +834,10 @@ LINBO directory
 
 Grub Config directory
 
+=item C<$_pxe_config_dir>
+
+PXE Config directory
+
 =item C<$_grub_templates_dir>
 
 Grub templates directory
@@ -855,7 +865,11 @@ This file defines the default wlan settings
 =item C<$_wlan_ldap_group>
 
 This variable holds the ldap group name, that wlan access is granted to.
- 
+
+=item C<$_uefi_on>
+
+This variable controls Schulkonsole uefi functions usage
+
 =back
 
 =cut
@@ -866,11 +880,13 @@ use vars qw($_workstations_file $_workstations_log_file
             $_printers_file
             $_network_settings_file
             $_linbo_dir $_grub_config_dir
+            $_pxe_config_dir
             $_grub_templates_dir
             $_linbo_log_dir $_linbo_start_conf_prefix
             $_linbo_templates_dir $_linbo_templates_os_dir
             $_linbo_template_partition
             $_dhcpd_conf_file
+            $_uefi_on
             $_wlan_defaults_file $_wlan_ldap_group);
 
 
@@ -1294,12 +1310,14 @@ $_network_settings_file = $lml_env{NETWORKSETTINGS};
 $_linbo_dir = $lml_env{LINBODIR};
 $_grub_templates_dir = '/usr/share/linuxmuster-linbo/templates';
 $_grub_config_dir = $lml_env{LINBODIR} . '/boot/grub';
+$_pxe_config_dir = $lml_env{PXECFGDIR};
 $_linbo_templates_dir = '@datadir@/@PACKAGE@/linbo/templates';
 $_linbo_log_dir = $lml_env{LINBOLOGDIR};
 $_linbo_templates_os_dir = "$_linbo_templates_dir/os";
 $_linbo_template_partition = "$_linbo_templates_dir/part/start.conf.partition";
 $_wlan_defaults_file = '/etc/linuxmuster/wlan_defaults';
 $_wlan_ldap_group = 'p_wifi';
+$_uefi_on = 0;
 
 $_linbo_start_conf_prefix = $_linbo_dir . '/start.conf.';
 
@@ -1415,6 +1433,7 @@ $_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
 	LINBODELETEAPP() => 'linbo_delete',
 	LINBOWRITEAPP() => 'linbo_write',
 	LINBOWRITEGRUBCFGAPP() => 'linbo_write_grub_cfg',
+	LINBOWRITEPXEAPP() => 'linbo_write_pxe',
 	LINBOIMAGEAPP() => 'linbo_manage_images',
 	LINBOREMOTESTATUSAPP() => 'linbo_remote_status',
 	LINBOREMOTEWINDOWAPP() => 'linbo_remote_window',
@@ -2335,6 +2354,8 @@ $_max_password_len = $preferences{max_password_len}
     if (exists $preferences{max_password_len});
 $_wlan_ldap_group = $preferences{wlan_ldap_group}
 	if (exists $preferences{wlan_ldap_group});
+$_uefi_on = $preferences{uefi_on}
+	if (exists $preferences{uefi_on});
 };
 
 

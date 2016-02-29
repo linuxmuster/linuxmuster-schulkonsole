@@ -48,6 +48,8 @@ $VERSION = 0.0917;
 	regpatches
 	example_regpatches
 	grubcfgs
+	pxestarts
+	menulsts
 	images
 
 	update_linbofs
@@ -65,6 +67,7 @@ $VERSION = 0.0917;
 	handle_start_conf_errors
 	write_file
 	write_grub_cfg_file
+	write_pxe_file
 	delete_file
 	delete_image
 	move_image
@@ -306,6 +309,70 @@ sub grubcfgs {
 	}
 
 	return \%re;
+}
+
+
+
+
+=head2 pxestarts()
+
+Get all PXE start files
+
+=head3 Return value
+
+A reference to a hash with the filenames as keys
+
+=head3 Description
+
+Gets the PXE start files in /var/linbo/
+and returns them in a hash.
+
+=cut
+
+sub pxestarts {
+	my %re;
+
+	foreach my $file ((
+			glob("$Schulkonsole::Config::_pxe_config_dir/*")
+		)) {
+		next if -l$file or -d$file;
+		my ($filename) = File::Basename::fileparse($file);
+		$re{ Schulkonsole::Encode::from_fs($filename) } = $file;
+	}
+
+	return \%re;
+}
+
+
+
+
+=head2 menulsts()
+
+Get all menu.lst files
+
+=head3 Return value
+
+A reference to a hash with the filenames as keys
+
+=head3 Description
+
+Gets the menu.lst files in /var/linbo/
+and returns them in a hash.
+
+=cut
+
+sub menulsts {
+        my %re;
+
+        foreach my $file ((
+                        glob("$Schulkonsole::Config::_linbo_dir/menu.lst.*")
+                )) {
+                next if -l$file or -d$file;
+                my ($filename) = File::Basename::fileparse($file);
+                $re{ Schulkonsole::Encode::from_fs($filename) } = $file;
+        }
+
+        return \%re;
 }
 
 
@@ -2092,6 +2159,47 @@ foreach my $param ($q->param) {
 
 
 
+=head2 write_pxe_file($id, $password, $filename, $lines)
+
+Writes a LINBO file
+
+=head3 Parameters
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$filename>
+
+The basename of the file
+
+=item C<$lines>
+
+The lines to be written
+
+=head3 Description
+
+Writes C<$lines> into C<$filename> in C<Schulkonsole::Config::_pxe_config_dir>.
+
+=cut
+
+sub write_pxe_file {
+	my $id = shift;
+	my $password = shift;
+	my $filename = shift;
+	my $lines = shift;
+
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOWRITEPXEAPP,
+		$id, $password, "$filename\n$lines";
+}
+
+
+
+
 =head2 delete_file($id, $password, $filename)
 
 Deletes a LINBO file
@@ -2113,7 +2221,8 @@ The basename of the file
 =head3 Description
 
 Deletes C<$filename> in C<Config::_linbo_dir> rsp. C<Config::_grub_config_dir>. Filename has to match C<*.cloop.reg>,
-C<*.rsync.reg>, C<*.cloop.postsync>, C<*.rsync.postsync>, 
+C<*.rsync.reg>, C<*.cloop.postsync>, C<*.rsync.postsync>,
+C<menu\.lst\.(?:[a-z\d_]+)>, C<pxelinux\.lst\.(?:[a-z\d_]+)>,
 C<boot/grub/(?:[a-z\d_]+)\.cfg>, C<start.conf.(?:[a-z\d_]+)>.
 
 =cut

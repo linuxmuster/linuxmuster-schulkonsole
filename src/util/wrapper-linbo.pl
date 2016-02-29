@@ -136,6 +136,11 @@ SWITCH: {
 		last SWITCH;
 	};
 
+	$app_id == Schulkonsole::Config::LINBOWRITEPXEAPP and do {
+		linbo_write_pxe();
+		last SWITCH;
+	};
+
 }		
 
 exit -2;	# program error
@@ -406,7 +411,7 @@ Deletes a LINBO file
 =head3 Description
 
 Deletes C<$filename> in C<Config::_linbo_dir> rsp. C<Config::_grub_config_dir>.
-Filename has to match C<*.cloop.reg>, C<*.rsync.reg>, C<*.cloop.postsync>, C<*.rsync.postsync>, 
+Filename has to match C<*.cloop.reg>, C<*.rsync.reg>, C<*.cloop.postsync>, C<*.rsync.postsync>,
 C<(?:[a-z\d_]+)\.cfg>, C<start.conf.(?:[a-z\d_]+)>.
 
 =cut
@@ -417,6 +422,8 @@ sub linbo_delete {
 	($tmpfilename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.(?:reg|postsync))$/;
     ($tmpfilename) = $filename =~ /^([a-z\d_]+\.cfg)$/ unless defined $tmpfilename;
     ($tmpfilename) = $filename =~ /^(start\.conf\.[a-z\d_]+)$/ unless defined $tmpfilename;
+	($tmpfilename) = $filename =~ /^([^\/]+\.pxelinux\.lst\.(?:[a-z\d_]+))$/ unless defined $tmpfilename;
+	($tmpfilename) = $filename =~ /^(menu\.lst\.[a-z\d_]+)$/ unless defined $tmpfilename;
     $filename = $tmpfilename;
     exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_FILENAME
 	      )
@@ -541,7 +548,8 @@ The text lines of the file to write
 
 sub linbo_write {
 	my $filename = <>;
-	($filename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.(?:reg|desc|postsync))$/;
+	my ($tmpfilename) = $filename =~ /^([^\/]+\.(?:cloop|rsync)\.(?:reg|desc|postsync))$/;
+	($tmpfilename) = $filename =~ /^(menu\.lst\.[a-z\d_]+)$/ unless defined $tmpfilename;
 	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_FILENAME
 	      )
 		unless defined $filename;
@@ -611,6 +619,53 @@ sub linbo_write_grub_cfg {
 
 	exit 0;
 }
+
+=head3 linbo_write_pxe
+
+numeric constant: C<Schulkonsole::Config::LINBOWRITEPXEAPP>
+
+=head4 Description
+
+Writes a LINBO PXE start file
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<filename>
+
+=item C<lines>
+
+=cut
+
+sub linbo_write_pxe {
+	my $filename = <>;
+	($filename) = $filename =~ /^([a-z\d_]+)$/;
+	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME   )
+		unless defined $filename;
+
+	my $file = Schulkonsole::Encode::to_fs(
+	           	"$Schulkonsole::Config::_pxe_config_dir/$filename");
+
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+
+	open FILE, '>', $file or exit -106;
+	flock FILE, 2;
+	seek FILE, 0, 0;
+
+	while (<>) {
+		print FILE;
+	}
+
+	close FILE;
+
+	exit 0;
+}
+
+
 
 =head3 linbo_remote_status
 
