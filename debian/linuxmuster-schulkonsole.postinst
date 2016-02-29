@@ -104,7 +104,7 @@ case "$1" in
 	fi
 	if ! ldapsearch -x "(cn=${wlan_ldap_group})"|grep -q 'posixGroup'; then
 	    echo -n "   creating non-existing project ${wlan_ldap_group}..."
-	    sophomorix-project -p ${wlan_ldap_group} --create --admins administrator >/dev/null 2>/dev/null \
+	    sophomorix-project -p ${wlan_ldap_group} --create --admins administrator --nojoin >/dev/null 2>/dev/null \
 		&& echo "Done." || echo "Failed."
 	fi
 

@@ -207,6 +207,7 @@ sub wlan_on_off {
 	$opts = "--trigger=$trigger";
 	$opts .= " --grouplist=$grouplist" if $grouplist;
 	$opts .= " --userlist=$userlist" if $userlist;
+	$opts .= " --caller administrator";
 
 	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;
