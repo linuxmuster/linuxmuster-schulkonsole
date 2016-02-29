@@ -9,13 +9,12 @@ linbo
  x Partitionsnamen
  x EFI-Partitionen
  o GPT
- o detect and use linbo 2.2/2.3
+ x detect and use linbo 2.2/2.3 (Einstellungen->UEFI verwenden)
 
 uefi
 ====
  x Integration in Linbo
  o Grub2, Bootmenü-Absicherung ( -> Linbo )
- o detect and use linbo2.2/2.3 (use /var/linbo/linbo-version)
 
 Schüler-Netbooks
 ================
@@ -76,4 +75,4 @@ Wrapper
 Vereinfachung
 =============
  o build Umgebung ohne configure
- o Fehler abfangen ohne eval, sonder mit $SIG{__DIE__}-Routine
+ o Fehler abfangen ohne eval, sondern mit $SIG{__DIE__}-Routine
