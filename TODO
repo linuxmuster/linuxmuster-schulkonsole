@@ -15,6 +15,7 @@ uefi
 ====
  x Integration in Linbo
  o Grub2, Bootmenü-Absicherung ( -> Linbo )
+ o detect and use linbo2.2/2.3 (use /var/linbo/linbo-version)
 
 Schüler-Netbooks
 ================
@@ -55,10 +56,10 @@ Quota
 Fehler
 ======
  x Sonderquota: Systembenutzer leere Tabelle 2x
- o aktueller Raum: checkbox disabled darf sich durch quick button nicht verändern
+ x aktueller Raum: checkbox disabled darf sich durch quick button nicht verändern
  o aktueller Raum - Austeilen: Datei mit Umlaut kann weder heruntergeladen noch gelöscht werden
  o Klasse - Tauschen global ausschalten funktioniert nicht
- o Gruppe p_wifi muss bei der Installation angelegt werden!
+ x Gruppe p_wifi muss bei der Installation angelegt werden!
  x Printer.pm enthält Quota-Funktionen, die in das Plugin gehören. Erledigt
 
 Plugins anpassen
