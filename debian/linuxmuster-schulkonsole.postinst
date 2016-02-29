@@ -106,6 +106,15 @@ case "$1" in
 	    echo -n "   creating non-existing project ${wlan_ldap_group}..."
 	    sophomorix-project -p ${wlan_ldap_group} --create --admins administrator --nojoin >/dev/null 2>/dev/null \
 		&& echo "Done." || echo "Failed."
+	else
+	    admin="$(sophomorix-project -p p_wifi -i|cut -d\| -f3|grep administrator| tr -d '[[:space:]]')"
+	    nojoin="$(sophomorix-project -p p_wifi -i|cut -d\| -f2|grep '^Joinable'|cut -d\: -f2|grep '0' | tr -d '[[:space:]]')"
+	    if [ ! "${admin}" = "administrator" ]; then
+		echo "    --> Please add user administrator to wlan project ${wlan_ldap_group}! <--"
+	    fi
+	    if [ ! "${nojoin}" = "0" ]; then
+		echo "    --> Please set flag --nojoin for wlan project ${wlan_ldap_group}! <--"
+	    fi
 	fi
 
 	;;
