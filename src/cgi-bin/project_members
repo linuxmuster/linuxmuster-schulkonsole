@@ -276,7 +276,9 @@ my $member_projectdatas
 	= Schulkonsole::DB::project_project_members($$projects{$project}{id});
 
 
-my $member_quotaroots = Schulkonsole::Cyrus::quota(keys %$member_userdatas);
+my $member_quotaroots = Schulkonsole::Cyrus::quota($sk_session->userdata('id'), 
+							$sk_session->get_password(), 
+							keys %$member_userdatas);
 
 
 

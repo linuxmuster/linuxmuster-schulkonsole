@@ -1,7 +1,9 @@
 use strict;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
+use Schulkonsole::Wrapper;
 use Schulkonsole::Error::Error;
+use Schulkonsole::Error::OVPNError;
 use Schulkonsole::Config;
 
 
@@ -46,114 +48,8 @@ $VERSION = 0.03;
 	download
 );
 
-
-
-
-my $input_buffer;
-sub buffer_input {
-	my $in = shift;
-
-	while (<$in>) {
-		$input_buffer .= $_;
-	}
-}
-
-
-
-
-sub start_wrapper {
-	my $app_id = shift;
-	my $id = shift;
-	my $password = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-
-	my $pid = IPC::Open3::open3 $out, $in, $err,
-		$Schulkonsole::Config::_wrapper_ovpn
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-			$Schulkonsole::Config::_wrapper_ovpn, $!);
-
-	binmode $out, ':utf8';
-	binmode $in, ':utf8';
-	binmode $err, ':utf8';
-
-
-	my $re = waitpid $pid, POSIX::WNOHANG;
-	if (   $re == $pid
-	    or $re == -1) {
-		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-				$Schulkonsole::Config::_wrapper_ovpn, $!);
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_ovpn);
-		}
-	}
-
-	print $out "$id\n$password\n$app_id\n";
-
-
-
-
-
-	return $pid;
-}
-
-
-
-
-sub stop_wrapper {
-	my $pid = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-
-	my $return_code = 0;
-
-	my $re = waitpid $pid, 0;
-	if (    ($re == $pid or $re == -1)
-	    and $?) {
-		$return_code = ($? >> 8);
-
-		# ovpn-client-cert.sh returns 1 if there is no certificate (no error)
-		if ($return_code != 1) {
-			my $error = $return_code - 256;
-			if ($error < -127) {
-				die new Schulkonsole::Error(
-					Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-					$Schulkonsole::Config::_wrapper_ovpn, $!,
-					($input_buffer ? "Output: $input_buffer" : 'No Output'));
-			} else {
-				die new Schulkonsole::Error(
-					Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE + $error,
-					$Schulkonsole::Config::_wrapper_ovpn);
-			}
-		}
-	}
-
-	close $out
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_OUT,
-			$Schulkonsole::Config::_wrapper_ovpn, $!,
-			($input_buffer ? "Output: $input_buffer" : 'No Output'));
-
-	close $in
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-			$Schulkonsole::Config::_wrapper_ovpn, $!,
-			($input_buffer ? "Output: $input_buffer" : 'No Output'));
-	
-	undef $input_buffer;
-
-	return $return_code;
-}
-
-
+my $wrapcmd = $Schulkonsole::Config::_wrapper_ovpn;
+my $errorclass = "Schulkonsole::Error::OVPNError";
 
 
 =head2 Functions
@@ -188,18 +84,10 @@ sub check {
 	my $id = shift;
 	my $password = shift;
 
-	my $umask = umask(022);
-	my $pid = start_wrapper(Schulkonsole::Config::OVPNCHECKAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	buffer_input(\*SCRIPTIN);
-
-	my $not_re = stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	umask($umask);
-
-
-	return not $not_re;
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::OVPNCHECKAPP,
+		$id, $password);
+	chomp $in;
+	return ($in == 0 ? 0 : 1); 
 }
 
 
@@ -241,20 +129,10 @@ sub create {
 	my $password = shift;
 	my $ovpn_password = shift;
 
-	my $umask = umask(022);
-	my $pid = start_wrapper(Schulkonsole::Config::OVPNCREATEAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$ovpn_password\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	my $not_re = stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	umask($umask);
-
-
-	return not $not_re;
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::OVPNCREATEAPP,
+		$id, $password, "$ovpn_password\n");
+	chomp $in;
+	return ($in == 0? 0: 1);
 }
 
 
@@ -291,18 +169,10 @@ sub download {
 	my $id = shift;
 	my $password = shift;
 
-	my $umask = umask(022);
-	my $pid = start_wrapper(Schulkonsole::Config::OVPNDOWNLOADAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	buffer_input(\*SCRIPTIN);
-
-	my $not_re = stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	umask($umask);
-
-
-	return not $not_re;
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::OVPNDOWNLOADAPP,
+		$id, $password);
+	chomp $in;
+	return ($in == 0? 0 : 1);
 }
 
 

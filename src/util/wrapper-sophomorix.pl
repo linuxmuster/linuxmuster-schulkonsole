@@ -2393,7 +2393,10 @@ sub userscheckapp(){
 	$< = $>;
 	$) = 0;
 	$( = $);
-	exec $Schulkonsole::Config::_cmd_sophomorix_check or return;
+
+	system $Schulkonsole::Config::_cmd_sophomorix_check;
+
+	exit 0;
 }
 
 =head3 add_users

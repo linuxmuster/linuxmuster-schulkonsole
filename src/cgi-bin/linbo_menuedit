@@ -2,20 +2,20 @@
 
 =head1 NAME
 
-linbo_grubedit - edit LINBO's grub.cfg files
+linbo_menuedit - edit LINBO's menu.lst files
 
 =head1 SYNOPSIS
 
- https://server/schulkonsole/linbo_grubedit
+ https://server/schulkonsole/linbo_menuedit
 
 =head1 DESCRIPTION
 
-C<linbo_grubedit> lets the user choose a grub group.cfg file and edit it.
-The HTML template is linbo_grubedit.tt.
+C<linbo_menuedit> lets the user choose a menu.lst file and edit it.
+The HTML template is linbo_menuedit.tt.
 
 =head2 Template variables
 
-Additionally to the variables of Schulkonsole::Session C<linbo_grubedit>
+Additionally to the variables of Schulkonsole::Session C<linbo_menuedit>
 provides the following variables:
 
 =over
@@ -27,12 +27,11 @@ use utf8;
 use lib '/usr/share/schulkonsole';
 use open ':utf8';
 use Schulkonsole::Encode;
-use Schulkonsole::Config;
 use Schulkonsole::Linbo;
 use Schulkonsole::Session;
 
 
-my $this_file = 'linbo_grubedit';
+my $this_file = 'linbo_menuedit';
 
 
 
@@ -51,8 +50,9 @@ if (not $sk_session->get_password()) {
 
 my $q = $sk_session->query();
 
-my $groups = Schulkonsole::Config::linbogroups();
-my $grubcfgs = Schulkonsole::Linbo::grubcfgs();
+my $groups = Schulkonsole::Linbo::groups();
+my $menulsts = Schulkonsole::Linbo::menulsts();
+my $images = Schulkonsole::Linbo::images();
 
 my $is_action;
 
@@ -62,39 +62,39 @@ SWITCHCOMMAND: {
 $q->param('add') and do {
         my $filename = $q->param('filename');
 
-        if ($filename !~ /^(?:[a-z\d_]+)\.cfg$/) {
+        if ($filename !~ /^menu\.lst\.(?:[a-z\d_]+)$/) {
                 $sk_session->set_status(sprintf($sk_session->d()->get(
-                        '%s ist keine grub cfg-Datei'), $filename), 1);
+                        '%s ist keine menu.lst-Datei'), $filename), 1);
                 last SWITCHCOMMAND;
         }
 
-        if ($$grubcfgs{$filename}) {
+        if ($$menulsts{$filename}) {
                 $sk_session->set_status(sprintf($sk_session->d()->get(
                         '%s existiert bereits'), $filename), 1);
                 last SWITCHCOMMAND;
         }
 
         my $lines;
-        if (open GRUBCFG, '<',
+        if (open MENULST, '<',
                     Schulkonsole::Encode::to_fs(
-                        "$Schulkonsole::Config::_grub_templates_dir/grub.cfg.global")) {
-                flock GRUBCFG, 1;
-                seek GRUBCFG, 0, 0;
+                        "$Schulkonsole::Config::_linbo_dir/examples/menu.lst")) {
+                flock MENULST, 1;
+                seek MENULST, 0, 0;
 
                 {
                 local $/ = undef;
-                $lines = <GRUBCFG>;
+                $lines = <MENULST>;
                 }
         }
         
-        Schulkonsole::Linbo::write_grub_cfg_file(
+        Schulkonsole::Linbo::write_file(
                 $sk_session->userdata('id'),
                 $sk_session->get_password(),
                 $filename,
                 $lines);
 
-        $grubcfgs = Schulkonsole::Linbo::grubcfgs();
-        if ($$grubcfgs{$filename}) {
+        $menulsts = Schulkonsole::Linbo::menulsts();
+        if ($$menulsts{$filename}) {
                 $sk_session->set_status(sprintf($sk_session->d()->get(
                         '%s hinzugefügt'), $filename), 0);
         } else {
@@ -108,13 +108,13 @@ $q->param('add') and do {
 $q->param('delete') and do {
 	my $filename = $q->param('filename');
 
-	if ($filename !~ /^(?:[a-z\d_]+)\.cfg$/) {
+	if ($filename !~ /^menu\.lst\.(?:[a-z\d_]+)$/) {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
-			'%s ist keine grub cfg-Datei'), $filename), 1);
+			'%s ist keine menu.lst-Datei'), $filename), 1);
 		last SWITCHCOMMAND;
 	}
 
-	if (not $$grubcfgs{$filename}) {
+	if (not $$menulsts{$filename}) {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
 			'%s existiert nicht'), $filename), 1);
 		last SWITCHCOMMAND;
@@ -126,13 +126,13 @@ $q->param('delete') and do {
 		$sk_session->get_password(),
 		$filename);
 
-	$grubcfgs = Schulkonsole::Linbo::grubcfgs();
-	if (not $$grubcfgs{$filename}) {
+	$menulsts = Schulkonsole::Linbo::menulsts();
+	if (not $$menulsts{$filename}) {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
-			'%s gelöscht'), $filename), 0);
+			'%s gel&ouml;scht'), $filename), 0);
 	} else {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
-			'%s konnte nicht gelöscht werden'), $filename), 0);
+			'%s konnte nicht gel&ouml;scht werden'), $filename), 0);
 	}
 
 	last SWITCHCOMMAND;
@@ -140,16 +140,16 @@ $q->param('delete') and do {
 
 $q->param('edit') and do {
 	my $filename = $q->param('filename');
-	if (not $$grubcfgs{$filename}) {
+	if (not $$menulsts{$filename}) {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
 			'%s existiert nicht'), $filename), 1);
 		last SWITCHCOMMAND;
 	}
 
 
-	my $lines = $q->param('grubcfg');
+	my $lines = $q->param('menulst');
 
-	Schulkonsole::Linbo::write_grub_cfg_file(
+	Schulkonsole::Linbo::write_file(
 		$sk_session->userdata('id'),
 		$sk_session->get_password(),
 		$filename,
@@ -167,44 +167,44 @@ $q->param('edit') and do {
 
 The following variables are set if a submit button of the form
 <filename>_<command> has been selected. <filename> is the name of a
-grub cfg file, and command is either C<edit> or C<delete>.
+menu.lst file, and command is either C<edit> or C<delete>.
 
 =cut
 
 foreach my $param ($q->param) {
-	if (my ($grubcfg, $command) = $param =~ /^(.+)_(edit|delete)$/) {
-		if (not $$grubcfgs{$grubcfg}) {
+	if (my ($menulst, $command) = $param =~ /^(.+)_(edit|delete)$/) {
+		if (not $$menulsts{$menulst}) {
 			$sk_session->set_status(sprintf($sk_session->d()->get(
-				'%s existiert nicht'), $grubcfg), 1);
+				'%s existiert nicht'), $menulst), 1);
 
 			last SWITCHCOMMAND;
 		}
 
 		if ($command eq 'edit') {
-			if (open GRUBCFG, '<',
+			if (open MENULST, '<',
 			         Schulkonsole::Encode::to_fs(
- 			         	"$Schulkonsole::Config::_grub_config_dir/$grubcfg")) {
-				flock GRUBCFG, 1;
-				seek GRUBCFG, 0, 0;
+ 			         	"$Schulkonsole::Config::_linbo_dir/$menulst")) {
+				flock MENULST, 1;
+				seek MENULST, 0, 0;
 
 				{
 				local $/ = undef;
-				my $lines = <GRUBCFG>;
-				$q->param('grubcfg', $lines);
+				my $lines = <MENULST>;
+				$q->param('menulst', $lines);
 				}
 
 =item C<editfilename>
 
 Name of a file to edit, if <command> is C<edit>.
-The contents of the file are in the query parameter C<grubcfg>.
+The contents of the file are in the query parameter C<menulst>.
 
 =cut
 
-				$sk_session->set_var('editfilename', $grubcfg);
+				$sk_session->set_var('editfilename', $menulst);
 				$is_action = 1;
 			} else {
 				$sk_session->set_status(sprintf($sk_session->d()->get(
-					'Kann Datei %s nicht öffnen'), $grubcfg),
+					'Kann Datei %s nicht &ouml;ffnen'), $menulst),
 					1);
 
 			}
@@ -219,10 +219,10 @@ Name of a file to delete, if <command> is C<delete>.
 
 =cut
 
-			$sk_session->set_var('deletefilename', $grubcfg);
+			$sk_session->set_var('deletefilename', $menulst);
 			$is_action = 1;
 
-			$sk_session->set_status('Bitte bestätigen', 0);
+			$sk_session->set_status('Bitte best&auml;tigen', 0);
 			last SWITCHCOMMAND;
 		}
 	}
@@ -237,34 +237,34 @@ if ($@) {
 
 
 if (not $is_action) {
-	my @array_grubcfgs = sort keys %$grubcfgs;
+	my @array_menulsts = sort keys %$menulsts;
 
-=item C<grubcfgs>
+=item C<menulsts>
 
-A list of all grubcfgs
+A list of all menulsts
 
 =cut
 
-	$sk_session->set_var('grubcfgs', \@array_grubcfgs);
+	$sk_session->set_var('menulsts', \@array_menulsts);
 }
 
 
 if (not $is_action) {
-        my @array_nogrubcfgs = ();
+        my @array_nomenulsts = ();
         foreach my $group (keys $groups) {
-            my $grubfile = $group.'.cfg';
-            if (not $$grubcfgs{$grubfile}) {
-                push(@array_nogrubcfgs, $grubfile);
+            my $menufile = 'menu.lst.'.$group;
+            if (not $$menulsts{$menufile}) {
+                push(@array_nomenulsts, $menufile);
             }
         }
 
-=item C<nogrubcfgs>
+=item C<nomenulsts>
 
-A list of all groups without grub group.cfg files
+A list of all groups without menu.lsts.group files
 
 =cut
-        if (@array_nogrubcfgs) {
-            $sk_session->set_var('nogrubcfgs', \@array_nogrubcfgs);
+        if (@array_nomenulsts) {
+            $sk_session->set_var('nomenulsts', \@array_nomenulsts);
         }
 }
 
@@ -290,19 +290,19 @@ Filename to process
 
 Delete C<filename> if selected
 
-=item C<edit> and C<grubcfg>
+=item C<edit> and C<menulst>
 
-Write C<grubcfg> to C<filename> if selected
+Write C<menulst> to C<filename> if selected
 
-=item C<grubcfgs_edit>
+=item C<menulsts_edit>
 
-Edit file C<grubcfgs> if selected
+Edit file C<menulsts> if selected
 
-=item C<grubcfgs_delete>
+=item C<menulsts_delete>
 
-Ask to confirm deletion of file C<grubcfg> if selected
+Ask to confirm deletion of file C<menulst> if selected
 
-=item C<grubcfg_new>
+=item C<menulst_new>
 
 Create C<filename> if selected
 

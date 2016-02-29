@@ -172,7 +172,8 @@
 				name="intranet" checked onClick="check_uncheck(this)"></td>
 			<td><input type="button" 
 				value="[% IF quickwebfilteroff %][% loc('Aus') %][% ELSE %][% loc('An') %][% END %]" 
-				name="webfilter" onClick="check_uncheck(this)"></td>
+				name="webfilter" onClick="check_uncheck(this)"
+				[% IF ! urlfilteractive %] disabled[% END %]></td>
 			[% FOREACH p IN printers %]
 				<td><input type="button" value="[% loc('Aus') %]" 
 					name="[% p %];printer" checked onClick="check_uncheck(this)"></td>

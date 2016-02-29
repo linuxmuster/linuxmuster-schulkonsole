@@ -4,7 +4,8 @@
 use strict;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
-use Schulkonsole::Error;
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::FirewallError;
 use Schulkonsole::Config;
 
 
@@ -78,112 +79,8 @@ $VERSION = 0.03;
 );
 
 
-
-
-my $input_buffer;
-sub buffer_input {
-	my $in = shift;
-
-	while (<$in>) {
-		$input_buffer .= $_;
-	}
-}
-
-
-
-
-sub start_wrapper {
-	my $app_id = shift;
-	my $id = shift;
-	my $password = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-
-	my $pid = IPC::Open3::open3 $out, $in, $err,
-		$Schulkonsole::Config::_wrapper_firewall
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-			$Schulkonsole::Config::_wrapper_firewall, $!);
-
-	binmode $out, ':utf8';
-	binmode $in, ':utf8';
-	binmode $err, ':utf8';
-
-
-	my $re = waitpid $pid, POSIX::WNOHANG;
-	if (   $re == $pid
-	    or $re == -1) {
-		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-				$Schulkonsole::Config::_wrapper_firewall, $!);
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_firewall);
-		}
-	}
-
-	print $out "$id\n$password\n$app_id\n";
-
-	return $pid;
-}
-
-
-
-
-sub stop_wrapper {
-	my $pid = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-	my $one_is_good = shift;
-
-	my $rv = undef;
-
-
-	my $re = waitpid $pid, 0;
-	if (    ($re == $pid or $re == -1)
-	    and $?) {
-		my $error = ($? >> 8) - 256;
-		if (    $one_is_good
-		    and $error == -255) {
-			$rv = 1;
-		} elsif ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-				$Schulkonsole::Config::_wrapper_firewall, $!,
-				($input_buffer ? "Output: $input_buffer" : 'No Output'));
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Firewall::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_firewall,
-				($input_buffer ? "Output: $input_buffer" : 'No Output'));
-		}
-	}
-
-	close $out
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_OUT,
-			$Schulkonsole::Config::_wrapper_firewall, $!,
-			($input_buffer ? "Output: $input_buffer" : 'No Output'));
-
-	close $in
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-			$Schulkonsole::Config::_wrapper_firewall, $!,
-			($input_buffer ? "Output: $input_buffer" : 'No Output'));
-	
-	undef $input_buffer;
-
-
-	return $rv;
-}
-
-
-
+my $wrapcmd = $Schulkonsole::Config::_wrapper_firewall;
+my $errorclass = "Schulkonsole::Error::FirewallError";
 
 =head2 Functions
 
@@ -222,18 +119,8 @@ sub internet_on {
 	my $password = shift;
 	my @hosts = @_;
 
-	my $umask = umask(022);
-	my $pid = start_wrapper(Schulkonsole::Config::INTERNETONOFFAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	# set hosts in list to on
-	print SCRIPTOUT "1\n", join("\n", @hosts), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	umask($umask);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::INTERNETONOFFAPP,
+		$id, $password, "1\n" . join("\n", @hosts) . "\n\n");
 }
 
 
@@ -274,18 +161,8 @@ sub internet_off {
 	my $password = shift;
 	my @hosts = @_;
 
-	my $umask = umask(022);
-	my $pid = start_wrapper(Schulkonsole::Config::INTERNETONOFFAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	# set hosts in list to off
-	print SCRIPTOUT "0\n", join("\n", @hosts), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	umask($umask);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::INTERNETONOFFAPP,
+		$id, $password, "0\n" . join("\n", @hosts) . "\n\n");
 }
 
 
@@ -326,18 +203,8 @@ sub intranet_on {
 	my $password = shift;
 	my @hosts = @_;
 
-	my $umask = umask(022);
-	my $pid = start_wrapper(Schulkonsole::Config::INTRANETONOFFAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	# set hosts in list to on
-	print SCRIPTOUT "1\n", join("\n", @hosts), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	umask($umask);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::INTRANETONOFFAPP,
+		$id, $password, "1\n" . join("\n", @hosts) . "\n\n");
 }
 
 
@@ -378,18 +245,8 @@ sub intranet_off {
 	my $password = shift;
 	my @hosts = @_;
 
-	my $umask = umask(022);
-	my $pid = start_wrapper(Schulkonsole::Config::INTRANETONOFFAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	# set hosts in list to off
-	print SCRIPTOUT "0\n", join("\n", @hosts), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	umask($umask);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::INTRANETONOFFAPP,
+		$id, $password, "0\n" . join("\n", @hosts) . "\n\n");
 }
 
 
@@ -432,17 +289,8 @@ sub update_logins {
 	my $password = shift;
 	my $room = shift;
 
-	my $umask = umask(022);
-	my $pid = start_wrapper(Schulkonsole::Config::UPDATELOGINSAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$room\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	umask($umask);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::UPDATELOGINSAPP,
+		$id, $password, "$room\n");
 }
 
 
@@ -480,14 +328,10 @@ sub urlfilter_check {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::URLFILTERCHECKAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	buffer_input(\*SCRIPTIN);
-
-
-	return not stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN, 1);
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::URLFILTERCHECKAPP,
+		$id, $password);
+		chomp $in;
+	return $in;
 }
 
 
@@ -528,18 +372,8 @@ sub urlfilter_on {
 	my $password = shift;
 	my @hosts = @_;
 
-	my $umask = umask(022);
-	my $pid = start_wrapper(Schulkonsole::Config::URLFILTERONOFFAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	# set hosts in list to on
-	print SCRIPTOUT "1\n", join("\n", @hosts), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	umask($umask);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::URLFILTERONOFFAPP,
+		$id, $password, "1\n" . join("\n", @hosts) . "\n\n");
 }
 
 
@@ -580,18 +414,8 @@ sub urlfilter_off {
 	my $password = shift;
 	my @hosts = @_;
 
-	my $umask = umask(022);
-	my $pid = start_wrapper(Schulkonsole::Config::URLFILTERONOFFAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	# set hosts in list to off
-	print SCRIPTOUT "0\n", join("\n", @hosts), "\n\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	umask($umask);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::URLFILTERONOFFAPP,
+		$id, $password, "0\n" . join("\n", @hosts) . "\n\n");
 }
 
 
@@ -633,17 +457,8 @@ sub all_on {
 	my $password = shift;
 	my $room = shift;
 
-	my $umask = umask(022);
-	my $pid = start_wrapper(Schulkonsole::Config::ALLONAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$room\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	umask($umask);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::ALLONAPP,
+		$id, $password, "$room\n");
 }
 
 
@@ -690,17 +505,8 @@ sub all_on_at {
 	my $room = shift;
 	my $time = shift;
 
-	my $umask = umask(022);
-	my $pid = start_wrapper(Schulkonsole::Config::ALLONATAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$room\n$time\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-	umask($umask);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::ALLONATAPP,
+		$id, $password, "$room\n$time\n");
 }
 
 
@@ -810,15 +616,8 @@ sub rooms_reset_all {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::ROOMSRESETAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::ROOMSRESETAPP,
+		$id, $password, "0\n");
 }
 
 
@@ -865,16 +664,8 @@ sub rooms_reset {
 	my $rooms = shift;
 	my $hosts = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::ROOMSRESETAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n", join("\n", @$rooms, ''), "\n",
-	                       join("\n", @$hosts, ''), "\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::ROOMSRESETAPP,
+		$id, $password, "1\n" . join("\n", @$rooms, '') . "\n" . join("\n", @$hosts, '') . "\n");
 }
 
 

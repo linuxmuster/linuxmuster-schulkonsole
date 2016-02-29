@@ -4,7 +4,8 @@ use IPC::Open3;
 use POSIX 'sys_wait_h';
 use Net::IMAP::Simple;
 use Schulkonsole::Config;
-use Schulkonsole::Error;
+use Schulkonsole::Error::Error;
+#FIXME: convert calls to Wrapper class
 
 =head1 NAME
 
@@ -40,8 +41,8 @@ sub disk_quotas {
 
 	my $pid = IPC::Open3::open3 \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN,
 		$Schulkonsole::Config::_wrapper_user
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
+		or die new Schulkonsole::Error::Error(
+			Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED,
 			$Schulkonsole::Config::_wrapper_user, $!);
 
 	binmode SCRIPTOUT, ':utf8';
@@ -53,12 +54,11 @@ sub disk_quotas {
 	    or $re == -1) {
 	    my $error = ($? >> 8) - 256;
 		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_EXEC_FAILED,
+			die new Schulkonsole::Error::Error(
+				Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED,
 				$Schulkonsole::Config::_wrapper_user, $!);
 		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::User::WRAPPER_ERROR_BASE + $error,
+			die new Schulkonsole::Error::Error($error,
 				$Schulkonsole::Config::_wrapper_user);
 		}
 	}
@@ -67,8 +67,8 @@ sub disk_quotas {
 	print SCRIPTOUT "$uidnumber\n", Schulkonsole::Config::QUOTAAPP, "\n";
 
 	close SCRIPTOUT
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_OUT,
+		or die new Schulkonsole::Error::Error(
+			Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_OUT,
 			$Schulkonsole::Config::_wrapper_user, $!);
 
 	my @quotas;
@@ -84,19 +84,18 @@ sub disk_quotas {
 	    and $?) {
 	    my $error = ($? >> 8) - 256;
 		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
+			die new Schulkonsole::Error::Error(
+				Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_IN,
 				$Schulkonsole::Config::_wrapper_user, $!);
 		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::User::WRAPPER_ERROR_BASE + $error,
+			die new Schulkonsole::Error::Error($error,
 				$Schulkonsole::Config::_wrapper_user);
 		}
 	}
 
 	close SCRIPTIN
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
+		or die new Schulkonsole::Error::Error(
+			Schulkonsole::Error::Error::WRAPPER_BROKEN_PIPE_IN,
 			$Schulkonsole::Config::_wrapper_user, $!);
 
 

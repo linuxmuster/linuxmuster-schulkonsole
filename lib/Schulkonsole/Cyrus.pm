@@ -2,7 +2,9 @@ use strict;
 use utf8;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
-use Schulkonsole::Error;
+use Schulkonsole::Wrapper;
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::CyrusError;
 use Schulkonsole::Config;
 use Safe;
 
@@ -24,8 +26,8 @@ Schulkonsole::Cyrus - interface to Cyrus commands
 Schulkonsole::Cyrus is an interface to Cyrus commands used
 by schulkonsole.
 
-If a wrapper command fails, it usually dies with a Schulkonsole::Error.
-The output of the failed command is stored in the Schulkonsole::Error.
+If a wrapper command fails, it usually dies with a Schulkonsole::Error::CyrusError.
+The output of the failed command is stored in the Schulkonsole::Error::CyrusError.
 
 =cut
 
@@ -37,95 +39,8 @@ $VERSION = 0.03;
 	quota
 );
 
-
-
-
-my $input_buffer;
-
-
-
-
-sub start_wrapper {
-	my $app_id = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-
-	my $pid = IPC::Open3::open3 $out, $in, $err,
-		$Schulkonsole::Config::_wrapper_cyrus
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-			$Schulkonsole::Config::_wrapper_cyrus, $!);
-
-	binmode $out, ':utf8';
-	binmode $in, ':utf8';
-	binmode $err, ':utf8';
-
-
-	my $re = waitpid $pid, POSIX::WNOHANG;
-	if (   $re == $pid
-	    or $re == -1) {
-		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-				$Schulkonsole::Config::_wrapper_cyrus, $!);
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Cyrus::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_cyrus);
-		}
-	}
-
-	print $out "$app_id\n";
-
-
-
-
-
-	return $pid;
-}
-
-
-
-
-sub stop_wrapper {
-	my $pid = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-
-	my $re = waitpid $pid, 0;
-	if (    ($re == $pid or $re == -1)
-	    and $?) {
-		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-				$Schulkonsole::Config::_wrapper_cyrus, $!,
-				($input_buffer ? "Output: $input_buffer" : 'No Output'));
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Cyrus::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_cyrus);
-		}
-	}
-
-	close $out
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_OUT,
-			$Schulkonsole::Config::_wrapper_cyrus, $!,
-			($input_buffer ? "Output: $input_buffer" : 'No Output'));
-
-	close $in
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-			$Schulkonsole::Config::_wrapper_cyrus, $!,
-			($input_buffer ? "Output: $input_buffer" : 'No Output'));
-
-	undef $input_buffer;
-}
-
+my $errorclass = "Schulkonsole::Error::CyrusError";
+my $wrapcmd = $Schulkonsole::Config::_wrapper_cyrus;
 
 
 
@@ -175,21 +90,18 @@ Returns the quotas of the users C<@users>.
 =cut
 
 sub quota {
+	my $id = shift;
+	my $password = shift;
 	my @users = @_;
 
 	my %user_quotaroots;
 
 	return {} unless @users;
 
-	my $pid = start_wrapper(Schulkonsole::Config::CYRUSQUOTAAPP,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::CYRUSQUOTAAPP, $id, $password,
+			join("\n", @users) . "\n\n", Schulkonsole::Wrapper::MODE_FILE);
 
-	my $ready = <SCRIPTIN>;
-	print SCRIPTOUT join("\n", @users), "\n\n";
-
-	while (<SCRIPTIN>) {
-		$input_buffer .= $_;
-
+	foreach (split('\R', $in)) {
 		if (my ($limit, $usage_percent, $usage, $user)
 		    	= /^\s*(\d+)\s+(\d+)\s+(\d+)\s+user\.(.+)/) {
 			$user_quotaroots{$user}{"user.$user"}{quota}{STORAGE}{usage}
@@ -199,9 +111,6 @@ sub quota {
 			$user_quotaroots{$user}{"user.$user"}{mbox} = [ 'INBOX' ];
 		}
 	}
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
 
 	return \%user_quotaroots;
 }

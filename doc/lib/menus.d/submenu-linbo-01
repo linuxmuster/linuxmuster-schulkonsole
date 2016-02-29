@@ -4,7 +4,13 @@
 [% IF link_linbo_new %]
 	<li><a [% dohref("linbo_new") %]>[% loc('Gruppenkonfiguration erstellen') %]</a>
 [% END %]
-[% IF link_linbo_grubedit %]
+[% IF ! uefi_on and link_linbo_menuedit %]
+	<li><a [% dohref("linbo_menuedit") %]>[% loc('menu.lst-Startdatei') %]</a>
+[% END %]
+[% IF ! uefi_on and link_linbo_pxeedit %]
+	<li><a [% dohref("linbo_pxeedit") %]>[% loc('PXE-Startdatei') %]</a>
+[% END %]
+[% IF uefi_on and link_linbo_grubedit %]
 	<li><a [% dohref("linbo_grubedit") %]>[% loc('GRUB-Startdatei') %]</a>
 [% END %]
 [% IF link_linbo_images %]

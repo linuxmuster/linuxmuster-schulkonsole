@@ -5,7 +5,7 @@ use Schulkonsole::DB;
 use Schulkonsole::LessonSession;
 use Schulkonsole::Sophomorix;
 use Schulkonsole::Info;
-use Schulkonsole::Error;
+use Schulkonsole::Error::Error;
 
 =head1 NAME
 
@@ -126,7 +126,7 @@ sub start_lesson {
 	my $password = shift;
 
 	if (not $this->{_LESSONDATA}{name}) {
-		die new Schulkonsole::Error(Schulkonsole::Error::UNKNOWN_GROUP);
+		die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::UNKNOWN_GROUP);
 	}
 
 

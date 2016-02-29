@@ -33,6 +33,8 @@ use Schulkonsole::Sophomorix;
 use Schulkonsole::SophomorixQuotas;
 use Sophomorix::SophomorixAPI;
 use Sophomorix::SophomorixConfig;
+use Schulkonsole::Error::SophomorixError;
+
 
 
 my $this_file = 'quotas_others';
@@ -116,7 +118,7 @@ $q->param('acceptusers') and do {
 		}
 		if (    $is_undefined
 		    and $is_undefined != @mountpoints) {
-			die new Schulkonsole::Error(Schulkonsole::Error::QUOTA_NOT_ALL_MOUNTPOINTS)
+			die new Schulkonsole::SophomorixError(Schulkonsole::Error::SophomorixError::QUOTA_NOT_ALL_MOUNTPOINTS)
 		}
 		my $mailquota = $q->param('newmailquota');
 		push @processed_params, 'newmailquota';

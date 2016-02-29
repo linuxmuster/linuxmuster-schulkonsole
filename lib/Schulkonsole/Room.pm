@@ -3,6 +3,7 @@ use POSIX qw(strftime);
 use Schulkonsole::Config;
 use Schulkonsole::DB;
 use Schulkonsole::Firewall;
+use Schulkonsole::Error::FirewallError;
 use Schulkonsole::RoomSession;
 use Schulkonsole::Sophomorix;
 use Sophomorix::SophomorixBase;
@@ -135,7 +136,7 @@ sub start_lesson {
 	my $password = shift;
 
 	if (not $this->{_ROOMDATA}{name}) {
-		die new Schulkonsole::Error(Schulkonsole::Error::UNKNOWN_ROOM);
+		die new Schulkonsole::Error::FirewallError(Schulkonsole::Error::FirewallError::UNKNOWN_ROOM);
 	}
 
 

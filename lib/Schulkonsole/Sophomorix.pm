@@ -6,6 +6,7 @@ use Sophomorix::SophomorixConfig;
 use Sophomorix::SophomorixAPI;
 
 use Schulkonsole::Wrapper;
+use Schulkonsole::Error::Error;
 use Schulkonsole::Error::SophomorixError;
 use Schulkonsole::Config;
 use Safe;
@@ -5794,10 +5795,12 @@ sub read_file {
 
 	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::READSOPHOMORIXFILEAPP,
 						$id, $password,
-						"$file_number\n");
+						"$file_number\n", Schulkonsole::Wrapper::MODE_FILE);
 
 	my @re = split('\R', $in);
-
+	foreach(@re){
+		$_ .= "\n";
+	}
 	return \@re;
 }
 
@@ -6541,10 +6544,10 @@ sub list_add {
 						"2\n");
 
 	my @re;
-	while (split('\R', $in)) {
+	foreach (split('\R', $in)) {
 		my ($group, $identifier) = split '::';
 		if (not $identifier) {
-			die new Schulkonsole::Error(Schulkonsole::Error::FILE_FORMAT_ERROR,
+			die new Schulkonsole::Error::SophomorixError(Schulkonsole::Error::Error::FILE_FORMAT_ERROR,
 				'sophomorix.add', $in);
 		}
 
@@ -6599,10 +6602,10 @@ sub list_move {
 						"3\n");
 
 	my @re;
-	while (split('\R', $in)) {
+	foreach (split('\R', $in)) {
 		my ($login, $from, $to, $status) = split '::';
 		if (not $to) {
-			die new Schulkonsole::Error(Schulkonsole::Error::FILE_FORMAT_ERROR,
+			die new Schulkonsole::Error::SophomorixError(Schulkonsole::Error::Error::FILE_FORMAT_ERROR,
 				'sophomorix.move', $in);
 		}
 
@@ -6659,10 +6662,10 @@ sub list_kill {
 						"4\n");
 
 	my @re;
-	while (split('\R', $in)) {
+	foreach (split('\R', $in)) {
 		my ($identifier, $login) = split '::';
 		if (not $login) {
-			die new Schulkonsole::Error(Schulkonsole::Error::FILE_FORMAT_ERROR,
+			die new Schulkonsole::Error::SophomorixError(Schulkonsole::Error::Error::FILE_FORMAT_ERROR,
 				'sophomorix.move', $in);
 		}
 
@@ -6712,7 +6715,7 @@ sub users_check {
 
 	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::USERSCHECKAPP,
 						$id, $password);
-	
+
 	return $in;
 }
 
@@ -6917,9 +6920,8 @@ sub teachin_check {
 	my $in = Schulkonsole::Wrapper::wrap($wrapcmd,$errorclass,Schulkonsole::Config::TEACHINAPP,
 						$id, $password,
 						"0\n");
-
 	my $re = 0;
-	while (split('\R', $in)) {
+	foreach (split('\R', $in)) {
 		if (/^next::/) {
 			my @values = split '::';
 			if (@values > 5) {
@@ -6978,7 +6980,7 @@ sub teachin_list {
 						"1\n");
 
 	my %re;
-	while ($in) {
+	foreach (split('\R',$in)) {
 		if (/^next::/) {
 			my (@values) = split '::';
 			shift @values;	# "next"

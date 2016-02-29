@@ -7,7 +7,7 @@ use Digest::MD5;
 use Digest::SHA;
 use MIME::Base64;
 use Net::LDAP;
-use Schulkonsole::Error;
+use Schulkonsole::Error::Error;
 use Schulkonsole::Config;
 use Sophomorix::SophomorixPgLdap;
 
@@ -126,10 +126,10 @@ sub get_userdata {
 	utf8::encode($uid);
 
 	my $sth = $_dbh->prepare($_select_userdata . $_where_userdata_uid)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$_select_userdata . $_where_userdata_uid);
 	$sth->execute($uid)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$_select_userdata . $_where_userdata_uid, "[uid = $uid]");
 
 	my $re = $sth->fetchrow_hashref;
@@ -154,7 +154,7 @@ sub get_usermail {
                         filter => "(&(objectclass=posixAccount)(uid=$uid))",
                         sizelimit => 1,
                         attrs => 'mail');
-        $data->code and die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+        $data->code and die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
                         "ldapsearch (&(objectclass=posixAccount)(uid=$uid))", $data->error);
         my $re;
         if ($data->entries) {
@@ -178,10 +178,10 @@ sub set_user_mymail {
 	my $userdata = get_userdata($uid);
 	
 	my $sth = $_dbh->prepare($_update_mymail . $_where_userdata_id)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$_update_mymail . $_where_userdata_id);
 	$sth->execute($mymail, $$userdata{id})
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$_update_mymail . $_where_userdata_id, "[uid = $uid, id = $$userdata{id}, mymail = $mymail]");
 	$sth->finish;
 	my $ldap = &Sophomorix::SophomorixPgLdap::auth_connect();
@@ -196,10 +196,10 @@ sub get_userdata_by_id {
 	my $id = shift;
 
 	my $sth = $_dbh->prepare($_select_userdata . $_where_userdata_id)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$_select_userdata . $_where_userdata_id);
 	$sth->execute($id)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$_select_userdata . $_where_userdata_id, "[id = $id]");
 
 	my $re = $sth->fetchrow_hashref;
@@ -260,8 +260,8 @@ sub verify_password_by_userdata {
 			}
 			last SWITCH;
 		};
-		my $error = new Schulkonsole::Error(
-			Schulkonsole::Error::UNKNOWN_PASSWORD_ENCRYPTION,
+		my $error = new Schulkonsole::Error::Error(
+			Schulkonsole::Error::Error::UNKNOWN_PASSWORD_ENCRYPTION,
 			$$userdata{uid});
 			print STDERR "$error\n";
 		}
@@ -404,10 +404,10 @@ sub user_groups {
 		              ON groups_users.gidnumber = groups.gidnumber
 		WHERE    groups_users.memberuidnumber = ?';
 	my $sth = $_dbh->prepare($prepare_user_groups)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_user_groups);
 	$sth->execute($memberuidnumber)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_user_groups, "[memberuidnumber = $memberuidnumber]");
 
 	while (my ($group, $gidnumber) = $sth->fetchrow_array) {
@@ -455,10 +455,10 @@ sub groups_projects {
 	my $prepare_projectdata =
 		'SELECT * FROM projectdata WHERE ' . $gidnumber_where;
 	my $sth = $_dbh->prepare($prepare_projectdata)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_projectdata);
 	$sth->execute
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_projectdata);
 
 	while (my $row = $sth->fetchrow_hashref) {
@@ -509,10 +509,10 @@ sub groups_classes {
 		'SELECT * FROM classdata WHERE type = \'adminclass\' AND ('
 			. $gidnumber_where . ')';
 	my $sth = $_dbh->prepare($prepare_classdata)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_classdata);
 	$sth->execute
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_classdata);
 
 	while (my $row = $sth->fetchrow_hashref) {
@@ -546,10 +546,10 @@ sub classes {
 	my $prepare_classdata
 		= 'SELECT * FROM classdata WHERE type = \'adminclass\'';
 	my $sth = $_dbh->prepare($prepare_classdata)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_classdata);
 	$sth->execute
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_classdata);
 
 	while (my $row = $sth->fetchrow_hashref) {
@@ -584,10 +584,10 @@ sub all_classes {
 		=   'SELECT * FROM classdata '
 		  . 'WHERE type = \'adminclass\' OR type = \'hiddenclass\'';
 	my $sth = $_dbh->prepare($prepare_classdata)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_classdata);
 	$sth->execute
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_classdata);
 
 	while (my $row = $sth->fetchrow_hashref) {
@@ -631,10 +631,10 @@ sub get_classdata {
 		. 'WHERE     gid = ?'
 		.      ' AND type = \'adminclass\'';
 	my $sth = $_dbh->prepare($prepare_classdata)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_classdata);
 	$sth->execute($class)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_classdata, "[gid = $class]");
 
 	my $row = $sth->fetchrow_hashref;
@@ -680,10 +680,10 @@ sub get_class_userdatas {
 	my $gid = shift;
 
 	my $sth = $_dbh->prepare($_select_userdata . $_where_userdata_gid)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$_select_userdata . $_where_userdata_gid);
 	$sth->execute($gid)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$_select_userdata . $_where_userdata_gid, "[gid = $gid]");
 
 	my %re;
@@ -716,10 +716,10 @@ sub projects {
 	my $prepare_projectdata
 		= 'SELECT * FROM projectdata';
 	my $sth = $_dbh->prepare($prepare_projectdata)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_projectdata);
 	$sth->execute
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_projectdata);
 
 	while (my $row = $sth->fetchrow_hashref) {
@@ -762,10 +762,10 @@ sub get_projectdata {
 
 	my $prepare_projectdata = 'SELECT * FROM projectdata WHERE gid = ?';
 	my $sth = $_dbh->prepare($prepare_projectdata)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_projectdata);
 	$sth->execute($project)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_projectdata, "[gid = $project]");
 
 	my $row = $sth->fetchrow_hashref;
@@ -820,10 +820,10 @@ sub get_project_userdatas {
 			    ON groups_users.gidnumber = projectdata.gidnumber 
 		WHERE userdata.gid != \'teachers\' AND projectdata.gid = ?';
 	my $sth = $_dbh->prepare($prepare_groups_users)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_groups_users);
 	$sth->execute($projectgid)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_groups_users,
 			"[gid = $projectgid]");
 
@@ -880,10 +880,10 @@ sub is_project_admin {
 	my $prepare_projects_admins
 		= 'SELECT uidnumber FROM projects_admins WHERE projectid = ?';
 	my $sth = $_dbh->prepare($prepare_projects_admins)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_projects_admins);
 	$sth->execute($projectid)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_projects_admins,
 			"[projectid = $projectid]");
 
@@ -947,10 +947,10 @@ sub project_admins {
 	my $prepare_projects_admins
 		= 'SELECT uidnumber FROM projects_admins WHERE projectid = ?';
 	my $sth = $_dbh->prepare($prepare_projects_admins)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_projects_admins);
 	$sth->execute($projectid)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_projects_admins,
 			"[projectid = $projectid]");
 
@@ -1000,10 +1000,10 @@ sub project_user_members {
 		     ON userdata.uidnumber = groups_users.memberuidnumber
 		WHERE groups_users.gidnumber = ?';
 	my $sth = $_dbh->prepare($prepare_groups_users)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_groups_users);
 	$sth->execute($projectgid)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_groups_users,
 			"[gidnumber = $projectgid]");
 
@@ -1054,10 +1054,10 @@ sub project_class_members {
 		. '  ON classdata.gidnumber = project_groups.membergid '
 		. 'WHERE project_groups.projectid = ?';
 	my $sth = $_dbh->prepare($prepare_classdata)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_classdata);
 	$sth->execute($projectid)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_classdata,
 			"[projectid = $projectid]");
 
@@ -1116,10 +1116,10 @@ sub project_project_members {
 		     ON projectdata.id = projects_memberprojects.memberprojectid
 		   WHERE projects_memberprojects.projectid = ?';
 	my $sth = $_dbh->prepare($prepare_projectdata)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_projectdata);
 	$sth->execute($projectid)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_projectdata,
 			"[projectid = $projectid]");
 
@@ -1157,10 +1157,10 @@ sub get_teachers {
 	my $prepare_userdata = $_select_userdata
 		. 'WHERE gid = \'teachers\'';
 	my $sth = $_dbh->prepare($prepare_userdata)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_userdata);
 	$sth->execute
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_userdata);
 
 
@@ -1266,16 +1266,16 @@ sub find_teachers {
                 . ' AND LOWER(surname) LIKE ?';
         }
 	my $sth = $_dbh->prepare($prepare_userdata)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_userdata);
 	if ($mode =~ 'indifferent') {
             $sth->execute($uid, $firstname, $lastname)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_userdata,
 			"[uid LIKE $uid, firstname LIKE $firstname, surname LIKE $lastname]");
         } else {
             $sth->execute($firstname, $lastname)
-                or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+                or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
                         $prepare_userdata,
                         "[firstname LIKE $firstname, surname LIKE $lastname]");
         }
@@ -1304,16 +1304,16 @@ sub find_teachers {
                 . ' AND LOWER(userdata.surname) LIKE ?';
         }
 	$sth = $_dbh->prepare($prepare_userdata)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_userdata);
         if ($mode =~ 'indifferent') {
             $sth->execute($uid, $firstname, $lastname)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_userdata,
 			"[uid LIKE $uid, firstname LIKE $firstname, surname LIKE $lastname]");
         } else {
             $sth->execute($firstname, $lastname)
-                or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+                or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
                         $prepare_userdata,
                         "[firstname LIKE $firstname, surname LIKE $lastname]");
         }
@@ -1374,16 +1374,16 @@ sub find_students {
                 . ' AND LOWER(userdata.surname) LIKE ?';
         }
 	my $sth = $_dbh->prepare($prepare_userdata)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_userdata);
         if ($mode =~ 'indifferent') {
 	$sth->execute($uid, $firstname, $lastname)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_userdata,
 			"[uid LIKE $uid, firstname LIKE $firstname, surname LIKE $lastname]");
         } else {
             $sth->execute($firstname, $lastname)
-                or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+                or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
                         $prepare_userdata,
                         "[firstname LIKE $firstname, surname LIKE $lastname]");
         }
@@ -1437,10 +1437,10 @@ sub find_classes {
 		. 'WHERE     type = \'adminclass\''
 		. '      AND (gid LIKE ? OR LOWER(displayname) LIKE ?)';
 	my $sth = $_dbh->prepare($prepare_classdata)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_classdata);
 	$sth->execute($pattern, $pattern)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_classdata,
 			"[gid LIKE $pattern, displayname LIKE $pattern]");
 
@@ -1494,10 +1494,10 @@ sub find_projects {
 		    . ' OR LOWER(displayname) LIKE ?'
 		    . ' OR LOWER(longname) LIKE ?';
 	my $sth = $_dbh->prepare($prepare_projectdata)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_PREPARE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_PREPARE_FAILED,
 			$prepare_projectdata);
 	$sth->execute($pattern, $pattern, $pattern)
-		or die new Schulkonsole::Error(Schulkonsole::Error::DB_EXECUTE_FAILED,
+		or die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::DB_EXECUTE_FAILED,
 			$prepare_projectdata,
 			"[gid LIKE $pattern, displayname LIKE $pattern, longname LIKE $pattern]");
 

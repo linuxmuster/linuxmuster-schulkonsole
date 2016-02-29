@@ -17,10 +17,10 @@ pkglibexec_SCRIPTS = example start logout \
 	user_check user_teachin user_commit user_reports \
 	rooms rooms_classrooms \
 	printers printers_edit hosts \
-	quotas \
 	quotas_teachers quotas_classes quotas_projects quotas_others \
 	linbo_edit linbo_new linbo_regpatchedit \
 	linbo_images linbo_grubedit linbo_postsyncedit linbo_remote \
+	linbo_menuedit linbo_pxeedit \
 	myclass myclass_handedout myclass_handedoutcopy myclass_tocollect \
 	myprojects myprojects_handedout myprojects_handedoutcopy myprojects_tocollect \
 	myroom myroom_handedoutcopy myroom_tocollect \

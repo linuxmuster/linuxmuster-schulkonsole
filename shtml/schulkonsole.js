@@ -94,7 +94,7 @@ function check_uncheck(command_button)
 
     for (var i = 0; i < form.length; i++) {
         if (   form[i].type == 'checkbox'
-            && command_name(form[i].name) == command) {
+            && command_name(form[i].name) == command && !form[i].disabled) {
             form[i].checked = checked;
         }
     }

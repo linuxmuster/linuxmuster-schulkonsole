@@ -4,7 +4,9 @@ use IPC::Open3;
 use POSIX 'sys_wait_h';
 use Schulkonsole::Config;
 use Schulkonsole::Encode;
-use Schulkonsole::Error;
+use Schulkonsole::Wrapper;
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::LinboError;
 use File::Basename;
 
 
@@ -45,7 +47,9 @@ $VERSION = 0.0917;
 @EXPORT_OK = qw(
 	regpatches
 	example_regpatches
-	grubstarts
+	grubcfgs
+	pxestarts
+	menulsts
 	images
 
 	update_linbofs
@@ -63,6 +67,7 @@ $VERSION = 0.0917;
 	handle_start_conf_errors
 	write_file
 	write_grub_cfg_file
+	write_pxe_file
 	delete_file
 	delete_image
 	move_image
@@ -82,7 +87,8 @@ $VERSION = 0.0917;
 );
 use vars qw(%_allowed_keys);
 
-
+my $wrapcmd = $Schulkonsole::Config::_wrapper_linbo;
+my $errorclass = "Schulkonsole::Error::LinboError";
 
 %_allowed_keys = (
 	1 => {	# [Partition]
@@ -131,107 +137,6 @@ use vars qw(%_allowed_keys);
 	},
 );
 
-
-
-
-
-
-my $input_buffer;
-sub buffer_input {
-	my $in = shift;
-
-	while (<$in>) {
-		$input_buffer .= $_;
-	}
-}
-
-
-
-
-sub start_wrapper {
-	my $app_id = shift;
-	my $id = shift;
-	my $password = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-
-	my $pid = IPC::Open3::open3 $out, $in, $err,
-		$Schulkonsole::Config::_wrapper_linbo
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-			$Schulkonsole::Config::_wrapper_linbo, $!);
-
-	binmode $out, ':utf8';
-	binmode $in, ':utf8';
-	binmode $err, ':utf8';
-
-
-	my $re = waitpid $pid, POSIX::WNOHANG;
-	if (   $re == $pid
-	    or $re == -1) {
-		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_EXEC_FAILED,
-				$Schulkonsole::Config::_wrapper_linbo, $!);
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_linbo);
-		}
-	}
-
-	print $out "$id\n$password\n$app_id\n";
-
-
-
-
-
-	return $pid;
-}
-
-
-
-
-sub stop_wrapper {
-	my $pid = shift;
-	my $out = shift;
-	my $in = shift;
-	my $err = shift;
-
-	my $re = waitpid $pid, 0;
-	if (    ($re == $pid or $re == -1)
-	    and $?) {
-		my $error = ($? >> 8) - 256;
-		if ($error < -127) {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-				$Schulkonsole::Config::_wrapper_linbo, $!,
-				($input_buffer ? "Output: $input_buffer" : 'No Output'));
-		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::Linbo::WRAPPER_ERROR_BASE + $error,
-				$Schulkonsole::Config::_wrapper_linbo);
-		}
-	}
-
-	if ($out) {
-		close $out
-			or die new Schulkonsole::Error(
-				Schulkonsole::Error::WRAPPER_BROKEN_PIPE_OUT,
-				$Schulkonsole::Config::_wrapper_linbo, $!,
-				($input_buffer ? "Output: $input_buffer" : 'No Output'));
-	}
-
-	close $in
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::WRAPPER_BROKEN_PIPE_IN,
-			$Schulkonsole::Config::_wrapper_linbo, $!,
-			($input_buffer ? "Output: $input_buffer" : 'No Output'));
-
-	undef $input_buffer;
-}
 
 
 
@@ -376,7 +281,7 @@ sub postsyncs {
 
 
 
-=head2 grubstarts()
+=head2 grubcfgs()
 
 Get all grub cfg start files
 
@@ -391,7 +296,7 @@ and returns them in a hash.
 
 =cut
 
-sub grubstarts {
+sub grubcfgs {
 	my %re;
 
 	foreach my $file ((
@@ -404,6 +309,70 @@ sub grubstarts {
 	}
 
 	return \%re;
+}
+
+
+
+
+=head2 pxestarts()
+
+Get all PXE start files
+
+=head3 Return value
+
+A reference to a hash with the filenames as keys
+
+=head3 Description
+
+Gets the PXE start files in /var/linbo/
+and returns them in a hash.
+
+=cut
+
+sub pxestarts {
+	my %re;
+
+	foreach my $file ((
+			glob("$Schulkonsole::Config::_pxe_config_dir/*")
+		)) {
+		next if -l$file or -d$file;
+		my ($filename) = File::Basename::fileparse($file);
+		$re{ Schulkonsole::Encode::from_fs($filename) } = $file;
+	}
+
+	return \%re;
+}
+
+
+
+
+=head2 menulsts()
+
+Get all menu.lst files
+
+=head3 Return value
+
+A reference to a hash with the filenames as keys
+
+=head3 Description
+
+Gets the menu.lst files in /var/linbo/
+and returns them in a hash.
+
+=cut
+
+sub menulsts {
+        my %re;
+
+        foreach my $file ((
+                        glob("$Schulkonsole::Config::_linbo_dir/menu.lst.*")
+                )) {
+                next if -l$file or -d$file;
+                my ($filename) = File::Basename::fileparse($file);
+                $re{ Schulkonsole::Encode::from_fs($filename) } = $file;
+        }
+
+        return \%re;
 }
 
 
@@ -441,22 +410,14 @@ sub remote_status {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LINBOREMOTESTATUSAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	my @in;
-	while(<SCRIPTIN>){
-		#local $/ = undef;
-		chomp;
-		push @in, $_;
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::LINBOREMOTESTATUSAPP,
+		$id, $password, "", Schulkonsole::Wrapper::MODE_LINES);
+		
+	my @ret;
+	foreach(split('\R',$in)){
+		push @ret, $_;
 	}
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	#my $compartment = new Safe;
-
-	return \@in; #$compartment->reval($in);
+	return \@ret;
 }
 
 
@@ -498,24 +459,10 @@ sub remote_window {
 	my $password = shift;
 	my $session = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LINBOREMOTEWINDOWAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	my @in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::LINBOREMOTEWINDOWAPP,
+		$id, $password, "$session\n", Schulkonsole::Wrapper::MODE_LINES);
 
-	print SCRIPTOUT "$session\n";
-	
-	my @in;
-	while(<SCRIPTIN>){
-		#local $/ = undef;
-		chomp;
-		push @in, $_;
-	}
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	#my $compartment = new Safe;
-
-	return \@in; #$compartment->reval($in);
+	return \@in;
 }
 
 
@@ -573,18 +520,10 @@ sub remote {
 	my $nr1 = shift;
 	my $nr2 = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LINBOREMOTEAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$target\n$now\n$commands\n$nr1\n$nr2\n";
-	
-	buffer_input(\*SCRIPTIN);
-	
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOREMOTEAPP,
+		$id, $password, "$target\n$now\n$commands\n$nr1\n$nr2\n");
 
 	return;
-
 }
 
 
@@ -621,13 +560,9 @@ sub update_linbofs {
 	my $id = shift;
 	my $password = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::UPDATELINBOFSAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::UPDATELINBOFSAPP,
+		$id, $password,);
 
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 }
 
 
@@ -666,8 +601,8 @@ sub read_start_conf {
 
 	my $filename = $Schulkonsole::Config::_linbo_start_conf_prefix . $group;
 
-	open CONF, "<$filename" or die new Schulkonsole::Error(
-			Schulkonsole::Error::CANNOT_OPEN_FILE, $filename, $!);
+	open CONF, "<$filename" or die new Schulkonsole::Error::LinboError(
+			Schulkonsole::Error::Error::CANNOT_OPEN_FILE, $filename, $!);
 	flock CONF, 1;
 	seek CONF, 0, 0;
 
@@ -734,12 +669,12 @@ sub read_start_conf {
 					$linbo{$key} = $value;
 				}
 			} else {
-				die new Schulkonsole::Error(
-					Schulkonsole::Error::FILE_FORMAT_ERROR, $filename, $.);
+				die new Schulkonsole::Error::LinboError(
+					Schulkonsole::Error::Error::FILE_FORMAT_ERROR, $filename, $.);
 			}
 		} else {
-			die new Schulkonsole::Error(
-				Schulkonsole::Error::FILE_FORMAT_ERROR, $filename, $.);
+			die new Schulkonsole::Error::LinboError(
+				Schulkonsole::Error::Error::FILE_FORMAT_ERROR, $filename, $.);
 		}
 	}
 	close CONF;
@@ -1075,7 +1010,7 @@ sub check_and_prepare_start_conf {
 		}
 	}
 
-	die new Schulkonsole::Error(Schulkonsole::Error::Linbo::START_CONF_ERROR,
+	die new Schulkonsole::Error::LinboError(Schulkonsole::Error::LinboError::START_CONF_ERROR,
 	                            \%errors)
 		if %errors;
 
@@ -1304,8 +1239,8 @@ sub write_start_conf {
 
 	my $filename = $Schulkonsole::Config::_linbo_start_conf_prefix . $group;
 
-	open CONF, "<$filename" or die new Schulkonsole::Error(
-			Schulkonsole::Error::CANNOT_OPEN_FILE, $filename, $!);
+	open CONF, "<$filename" or die new Schulkonsole::Error::LinboError(
+			Schulkonsole::Error::Error::CANNOT_OPEN_FILE, $filename, $!);
 
 
 	my $initial_comments;
@@ -1587,16 +1522,8 @@ sub write_start_conf {
 
 	# write file
 
-	my $pid = start_wrapper(Schulkonsole::Config::LINBOWRITESTARTCONFAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "$group\n$lines";
-	close SCRIPTOUT;
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, undef, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOWRITESTARTCONFAPP,
+		$id, $password, "$group\n$lines");
 
 }
 
@@ -1847,15 +1774,9 @@ sub copy_start_conf {
 	my $dest = shift;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::LINBOCOPYSTARTCONFAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOCOPYSTARTCONFAPP,
+		$id, $password, "$src\n$dest\n");
 
-	print SCRIPTOUT "$src\n$dest\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 }
 
 
@@ -1907,15 +1828,9 @@ sub copy_regpatch {
 	my $image = shift;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::LINBOCOPYREGPATCHAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOCOPYREGPATCHAPP,
+		$id, $password, "$regpatch\n" . ($is_example ? 1 : 0) . "\n$image\n");
 
-	print SCRIPTOUT "$regpatch\n", ($is_example ? 1 : 0), "\n$image\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 }
 
 
@@ -2041,8 +1956,8 @@ sub create_start_conf_from_template {
 	my @lines;
 
 	open PART, "<$Schulkonsole::Config::_linbo_template_partition"
-		or die new Schulkonsole::Error(
-			Schulkonsole::Error::CANNOT_OPEN_FILE,
+		or die new Schulkonsole::Error::LinboError(
+			Schulkonsole::Error::Error::CANNOT_OPEN_FILE,
 			$Schulkonsole::Config::_linbo_template_partition, $!);
 
 	while (<PART>) {
@@ -2079,8 +1994,8 @@ sub create_start_conf_from_template {
 		my $template_file
 			= "$Schulkonsole::Config::_linbo_templates_os_dir/$template";
 		open TEMPLATE, "<$template_file"
-			or die new Schulkonsole::Error(
-				Schulkonsole::Error::CANNOT_OPEN_FILE, $template_file, $!);
+			or die new Schulkonsole::Error::LinboError(
+				Schulkonsole::Error::Error::CANNOT_OPEN_FILE, $template_file, $!);
 
 		while (<TEMPLATE>) {
 			s/\$PART/$part/g;
@@ -2097,16 +2012,9 @@ sub create_start_conf_from_template {
 
 	# write file
 
-	my $pid = start_wrapper(Schulkonsole::Config::LINBOWRITESTARTCONFAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOWRITESTARTCONFAPP,
+		$id, $password, "$group\n" . join('', @lines));
 
-	print SCRIPTOUT "$group\n", join('', @lines);
-	close SCRIPTOUT;
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, undef, \*SCRIPTIN, \*SCRIPTIN);
 }
 
 
@@ -2251,6 +2159,47 @@ foreach my $param ($q->param) {
 
 
 
+=head2 write_pxe_file($id, $password, $filename, $lines)
+
+Writes a LINBO file
+
+=head3 Parameters
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$filename>
+
+The basename of the file
+
+=item C<$lines>
+
+The lines to be written
+
+=head3 Description
+
+Writes C<$lines> into C<$filename> in C<Schulkonsole::Config::_pxe_config_dir>.
+
+=cut
+
+sub write_pxe_file {
+	my $id = shift;
+	my $password = shift;
+	my $filename = shift;
+	my $lines = shift;
+
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOWRITEPXEAPP,
+		$id, $password, "$filename\n$lines";
+}
+
+
+
+
 =head2 delete_file($id, $password, $filename)
 
 Deletes a LINBO file
@@ -2272,7 +2221,8 @@ The basename of the file
 =head3 Description
 
 Deletes C<$filename> in C<Config::_linbo_dir> rsp. C<Config::_grub_config_dir>. Filename has to match C<*.cloop.reg>,
-C<*.rsync.reg>, C<*.cloop.postsync>, C<*.rsync.postsync>, 
+C<*.rsync.reg>, C<*.cloop.postsync>, C<*.rsync.postsync>,
+C<menu\.lst\.(?:[a-z\d_]+)>, C<pxelinux\.lst\.(?:[a-z\d_]+)>,
 C<boot/grub/(?:[a-z\d_]+)\.cfg>, C<start.conf.(?:[a-z\d_]+)>.
 
 =cut
@@ -2283,15 +2233,9 @@ sub delete_file {
 	my $filename = shift;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::LINBODELETEAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBODELETEAPP,
+		$id, $password, "$filename\n");
 
-	print SCRIPTOUT "$filename\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
 }
 
 
@@ -2335,16 +2279,9 @@ sub write_file {
 	my $lines = shift;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::LINBOWRITEAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOWRITEAPP,
+		$id, $password, "$filename\n$lines");
 
-	print SCRIPTOUT "$filename\n$lines";
-	close \*SCRIPTOUT;
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, undef, \*SCRIPTIN, \*SCRIPTIN);
 }
 
 
@@ -2384,16 +2321,9 @@ sub write_grub_cfg_file {
 	my $filename = shift;
 	my $lines = shift;
 
-	my $pid = start_wrapper(Schulkonsole::Config::LINBOWRITEGRUBCFGAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOWRITEGRUBCFGAPP,
+		$id, $password, "$filename\n$lines");
 
-	print SCRIPTOUT "$filename\n$lines";
-	close \*SCRIPTOUT;
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, undef, \*SCRIPTIN, \*SCRIPTIN);
 }
 
 
@@ -2430,15 +2360,8 @@ sub delete_image {
 	my $image = shift;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::LINBOIMAGEAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "0\n$image\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOIMAGEAPP,
+		$id, $password, "0\n$image\n");
 
 }
 
@@ -2484,15 +2407,8 @@ sub move_image {
 	my $new_image = shift;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::LINBOIMAGEAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "1\n$image\n$new_image\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOIMAGEAPP,
+		$id, $password, "1\n$image\n$new_image\n");
 
 }
 
@@ -2537,15 +2453,8 @@ sub copy_image {
 	my $new_image = shift;
 
 
-	my $pid = start_wrapper(Schulkonsole::Config::LINBOIMAGEAPP,
-		$id, $password,
-		\*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
-
-	print SCRIPTOUT "2\n$image\n$new_image\n";
-
-	buffer_input(\*SCRIPTIN);
-
-	stop_wrapper($pid, \*SCRIPTOUT, \*SCRIPTIN, \*SCRIPTIN);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOIMAGEAPP,
+		$id, $password, "2\n$image\n$new_image\n");
 
 }
 

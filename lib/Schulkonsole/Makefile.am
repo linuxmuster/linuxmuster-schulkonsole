@@ -5,18 +5,17 @@ nobase_dist_perllib_DATA = \
 	DB.pm \
 	Debconf.pm \
 	Encode.pm \
-	Error.pm \
 	Error/Error.pm \
-	Error/Cyrus.pm \
-	Error/Files.pm \
-	Error/Firewall.pm \
-	Error/Linbo.pm \
-	Error/OVPN.pm \
-	Error/Printer.pm \
-	Error/Radius.pm \
+	Error/CyrusError.pm \
+	Error/FilesError.pm \
+	Error/FirewallError.pm \
+	Error/LinboError.pm \
+	Error/OVPNError.pm \
+	Error/PrinterError.pm \
+	Error/RadiusError.pm \
 	Error/SophomorixError.pm \
-	Error/User.pm \
-	Error/Horde.pm \
+	Error/UserError.pm \
+	Error/HordeError.pm \
 	Error/DebconfError.pm \
 	Files.pm \
 	Firewall.pm \

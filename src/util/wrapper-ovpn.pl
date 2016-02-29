@@ -32,8 +32,8 @@ use open ':std';
 use Schulkonsole::Config;
 use Schulkonsole::DB;
 use Schulkonsole::Encode;
-use Schulkonsole::Error::OVPN;
-
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::OVPNError;
 
 
 my $id = <>;
@@ -42,19 +42,19 @@ my $password = <>;
 chomp $password;
 
 my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
-exit (  Schulkonsole::Error::OVPN::WRAPPER_UNAUTHENTICATED_ID
-      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID
+      )
 	unless $userdata;
 
 my $app_id = <>;
 ($app_id) = $app_id =~ /^(\d+)$/;
-exit (  Schulkonsole::Error::OVPN::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST
+      )
 	unless defined $app_id;
 
 my $app_name = $Schulkonsole::Config::_id_root_app_names{$app_id};
-exit (  Schulkonsole::Error::OVPN::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST
+      )
 	unless defined $app_name;
 
 
@@ -70,13 +70,28 @@ foreach my $group (('ALL', keys %$groups)) {
         last;
     }
 }
-exit (  Schulkonsole::Error::OVPN::WRAPPER_UNAUTHORIZED_ID
-      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHORIZED_ID
+      )
     unless $is_permission_found;
 
 
 my $opts;
 SWITCH: {
+	$app_id == Schulkonsole::Config::OVPNCHECKAPP and do {
+		check();
+		last SWITCH;
+	};
+	 $app_id == Schulkonsole::Config::OVPNDOWNLOADAPP and do {
+	 	download();
+	 	last SWITCH;
+	 };
+	 $app_id == Schulkonsole::Config::OVPNCREATEAPP and do {
+	 	create();
+	 	last SWITCH;
+	 };
+};
+	 
+exit -2;	# program error
 
 =head3 check
 
@@ -88,10 +103,66 @@ invokes C<<
 ovpn-client-cert.sh --check --username=<username>
 >>
 
+=head4 Parameters from standard input
+
+none
+
+=cut
+
+sub check(){
+	# set ruid, so that ssh searches for .ssh/ in /root
+	$< = $>;
+	umask(022);
+
+	my $opts = "--username=\Q$$userdata{uid}\E ";
+	$opts .= '--check';
+
+	my $ret = system(Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_ovpn_client_cert $opts >/dev/null 2>/dev/null"));
+	print ($ret? "0\n" : "1\n");
+
+	exit(0);
+}
+
+=head3 create
+
+numeric constant: C<Schulkonsole::Config::OVPNCREATEAPP>
+
+=head4 Description
+
+invokes C<<
+ovpn-client-cert.sh --create --username=<username> --password=<password>
+>>
+
 
 =head4 Parameters from standard input
 
 none
+
+=cut
+
+sub create(){
+	# set ruid, so that ssh searches for .ssh/ in /root
+	$< = $>;
+	umask(022);
+
+	my $opts = "--username=\Q$$userdata{uid}\E ";
+	my $ovpn_password = <>;
+	($ovpn_password) = $ovpn_password =~ /^(.{6,})$/;
+	exit (  Schulkonsole::Error::OVPNError::WRAPPER_INVALID_PASSWORD )
+		unless $ovpn_password;
+
+	# give password on cmdline because read does not handle pipes
+	$opts .= "--create --password=$ovpn_password";
+
+	my $ret = system(Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_ovpn_client_cert $opts >/dev/null 2>/dev/null"));
+	exit ( Schulkonsole::Error::OVPNError::WRAPPER_INVALID_PASSWORD )
+		if $ret == 2;
+	print ($ret? "0\n" : "1\n");
+
+	exit 0;
+}
 
 =head3 download
 
@@ -110,51 +181,19 @@ none
 
 =cut
 
-(   $app_id == Schulkonsole::Config::OVPNCHECKAPP
- or $app_id == Schulkonsole::Config::OVPNDOWNLOADAPP
- or $app_id == Schulkonsole::Config::OVPNCREATEAPP) and do {
+sub download(){
 	# set ruid, so that ssh searches for .ssh/ in /root
 	$< = $>;
+	umask(022);
 
 	my $opts = "--username=\Q$$userdata{uid}\E ";
-	if ($app_id == Schulkonsole::Config::OVPNCREATEAPP) {
-		my $ovpn_password = <>;
-		($ovpn_password) = $ovpn_password =~ /^(.{6,})$/;
-		exit (  Schulkonsole::Error::OVPN::WRAPPER_INVALID_PASSWORD
-		      - Schulkonsole::Error::OVPN::WRAPPER_ERROR_BASE)
-			unless $ovpn_password;
+	$opts .= '--download';
 
-		# give password on cmdline because read does not handle pipes
-		$opts .= "--create --password=$ovpn_password";
-#		$opts .= '--create';
+	my $ret = system(Schulkonsole::Encode::to_cli(
+	     	"$Schulkonsole::Config::_cmd_ovpn_client_cert $opts >/dev/null 2>/dev/null"));
+	print ($ret? "0\n" : "1\n");
 
-#		open PIPE, '|-', Schulkonsole::Encode::to_fs(
-#		     	"$Schulkonsole::Config::_cmd_ovpn_client_cert $opts")
-#			or last SWITCH;
-#		print PIPE "$ovpn_password\n";
-#		close PIPE;
-
-#		last SWITCH if $?;
-
-#		exit 0;
-
-	} elsif ($app_id == Schulkonsole::Config::OVPNDOWNLOADAPP) {
-		$opts .= '--download';
-	} else {
-		$opts .= '--check';
-	}
-
-
-	exec Schulkonsole::Encode::to_cli(
-	     	"$Schulkonsole::Config::_cmd_ovpn_client_cert $opts")
-		or last SWITCH;
-};
-
+	exit( 0 );
 }
-
-
-
-exit -2;	# program error
-
 
 

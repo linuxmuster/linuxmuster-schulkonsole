@@ -40,7 +40,8 @@ use DBI;
 use Schulkonsole::Config;
 use Schulkonsole::DB;
 use Schulkonsole::Encode;
-use Schulkonsole::Error::Radius;
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::RadiusError;
 use Schulkonsole::Radius;
 use Schulkonsole::LessonSession;
 use Data::Dumper;
@@ -51,20 +52,17 @@ my $password = <>;
 chomp $password;
 
 my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
-exit (  Schulkonsole::Error::Radius::WRAPPER_UNAUTHENTICATED_ID
-      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID  )
 	unless $userdata;
 
 
 my $app_id = <>;
 ($app_id) = $app_id =~ /^(\d+)$/;
-exit (  Schulkonsole::Error::Radius::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST  )
 	unless defined $app_id;
 
 my $app_name = $Schulkonsole::Config::_id_root_app_names{$app_id};
-exit (  Schulkonsole::Error::Radius::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST  )
 	unless defined $app_name;
 
 
@@ -80,8 +78,7 @@ foreach my $group (('ALL', keys %$groups)) {
 		last;
 	}
 }
-exit (  Schulkonsole::Error::Radius::WRAPPER_UNAUTHORIZED_ID
-      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHORIZED_ID  )
 	unless $is_permission_found;
 
 
@@ -106,7 +103,7 @@ SWITCH: {
 		last SWITCH;
 	};
 
-}
+};
 
 exit -2;	# program error
 		
@@ -200,8 +197,7 @@ sub wlan_on_off {
 	@lessonusers = grep { $_ =~ /^[a-z0-9]+$/ } @lessonusers;
 	$userlist = join(",", @lessonusers);
 	
-	exit (  Schulkonsole::Error::Radius::WRAPPER_NO_GROUPS
-	      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::RadiusError::WRAPPER_NO_GROUPS )
 		unless $userlist or $grouplist;
 
 
@@ -211,6 +207,7 @@ sub wlan_on_off {
 	$opts = "--trigger=$trigger";
 	$opts .= " --grouplist=$grouplist" if $grouplist;
 	$opts .= " --userlist=$userlist" if $userlist;
+	$opts .= " --caller administrator";
 
 	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;
@@ -255,8 +252,7 @@ The names of the users C<user1,user2,...,usern>
 sub wlan_reset {
 	my $all = <>;
 	($all) = $all =~ /^[0|1]$/;
-	exit (  Schulkonsole::Error::Radius::WRAPPER_INVALID_GROUP
-		  - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::RadiusError::WRAPPER_INVALID_GROUP )
 		unless $all;
 	my $grouplist = <>;
 	($grouplist) = $grouplist =~ /^([a-z0-9\_,]+)$/;
@@ -270,8 +266,7 @@ sub wlan_reset {
 	@lessonusers = grep { $_ =~ /^[a-z0-9]+$/ } @lessonusers;
 	$userlist = join(",", @lessonusers);
 	
-	exit (  Schulkonsole::Error::Radius::WRAPPER_NO_GROUPS
-	      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::RadiusError::WRAPPER_NO_GROUPS )
 		unless $userlist or $grouplist;
 
     _wlan_reset($all,$grouplist,$userlist);
@@ -321,20 +316,17 @@ sub wlan_reset_at {
 	@lessonusers = grep { $_ =~ /^[a-z0-9]+$/ } @lessonusers;
 	$userlist = join(",", @lessonusers);
 	
-	exit (  Schulkonsole::Error::Radius::WRAPPER_NO_GROUPS
-	      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::RadiusError::WRAPPER_NO_GROUPS )
 		unless $userlist or $grouplist;
 
 	my $time = <>;
 	($time) = $time =~ /^(\d+)$/;
-	exit (  Schulkonsole::Error::Radius::WRAPPER_INVALID_LESSONTIME
-	      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::RadiusError::WRAPPER_INVALID_LESSONTIME )
 		unless $time;
 
 	my $lessongroup;
 	$lessongroup = $lessongroups[0] if $#lessongroups >= 0;
-	exit (  Schulkonsole::Error::Radius::WRAPPER_NO_GROUPS
-	      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::RadiusError::WRAPPER_NO_GROUPS )
 		unless $lessongroup;
 	
 	{ # write values and close session
@@ -343,8 +335,7 @@ sub wlan_reset_at {
 	}
 
 	my $pid = fork;
-	exit (  Schulkonsole::Error::Radius::WRAPPER_CANNOT_FORK
-	      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK )
 		unless defined $pid;
 
 	if (not $pid) {
@@ -359,16 +350,13 @@ sub wlan_reset_at {
 		my $group_session = group_session($lessongroup);
 
 		my $stored_group = $group_session->param('name');
-		exit (  Schulkonsole::Error::Radius::WRAPPER_CANNOT_READ_GROUPFILE
-		      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::RadiusError::WRAPPER_CANNOT_READ_GROUPFILE  )
 			unless $stored_group;
 		my $stored_id = $group_session->param('user_id');
-		exit (  Schulkonsole::Error::Radius::WRAPPER_CANNOT_READ_GROUPFILE
-		      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::RadiusError::WRAPPER_CANNOT_READ_GROUPFILE  )
 			unless $stored_id;
 		my $stored_time = $group_session->param('end_time');
-		exit (  Schulkonsole::Error::Radius::WRAPPER_CANNOT_READ_GROUPFILE
-		      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+		exit (  Schulkonsole::Error::RadiusError::WRAPPER_CANNOT_READ_GROUPFILE  )
 			unless $stored_time;
 
 		if (    $stored_time == $time
@@ -390,8 +378,7 @@ sub group_session {
 
 	my $session = new Schulkonsole::LessonSession($lessongroup);
 
-	exit (  Schulkonsole::Error::Radius::WRAPPER_GENERAL_ERROR
-	      - Schulkonsole::Error::Radius::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::Error::WRAPPER_INVALID_SESSION_ID  )
 		unless $session;
 
 	# 'unprivileged' is set in the main CGI-script

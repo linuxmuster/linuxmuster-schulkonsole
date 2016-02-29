@@ -32,7 +32,8 @@ use open ':std';
 use Schulkonsole::Config;
 use Schulkonsole::DB;
 use Schulkonsole::Encode;
-use Schulkonsole::Error::Files;
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::FilesError;
 
 
 
@@ -42,19 +43,16 @@ my $password = <>;
 chomp $password;
 
 my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
-exit (  Schulkonsole::Error::Files::WRAPPER_UNAUTHENTICATED_ID
-      - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID)
 	unless $userdata;
 
 my $app_id = <>;
 ($app_id) = $app_id =~ /^(\d+)$/;
-exit (  Schulkonsole::Error::Files::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST)
 	unless defined $app_id;
 
 my $app_name = $Schulkonsole::Config::_id_root_app_names{$app_id};
-exit (  Schulkonsole::Error::Files::WRAPPER_APP_ID_DOES_NOT_EXIST
-      - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST)
 	unless defined $app_name;
 
 
@@ -70,8 +68,7 @@ foreach my $group (('ALL', keys %$groups)) {
 		last;
 	}
 }
-exit (  Schulkonsole::Error::Files::WRAPPER_UNAUTHORIZED_ID
-      - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE)
+exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHORIZED_ID)
 	unless $is_permission_found;
 
 
@@ -115,8 +112,7 @@ numeric constant: C<Schulkonsole::Config::WRITEFILEAPP>
 sub write_file {
 	my $file = <>;
 	($file) = $file =~ /^(\d+)$/;
-	exit (  Schulkonsole::Error::Files::WRAPPER_INVALID_FILENUMBER
-	      - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::FilesError::WRAPPER_INVALID_FILENUMBER  )
 		unless defined $file;
 
 	my $filename;
@@ -162,8 +158,7 @@ sub write_file {
 	umask(022);
 
 	open FILE, '>', $filename
-		or exit(  Schulkonsole::Error::Files::WRAPPER_ERROR_BASE
-		        - Schulkonsole::Error::Files::WRAPPER_CANNOT_OPEN_FILE);
+		or exit(  Schulkonsole::Error::FilesError::WRAPPER_CANNOT_OPEN_FILE );
 	flock FILE, 2;
 	seek FILE, 0, 0;
 
@@ -189,13 +184,11 @@ numeric constant: C<Schulkonsole::Config::IMPORTWORKSTATIONSAPP>
 sub import_workstations {
 	my $sid = <>;
 	($sid) = $sid =~ /^(.+)$/;
-	exit (  Schulkonsole::Error::Files::WRAPPER_INVALID_SESSION_ID
-	      - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::FilesError::WRAPPER_INVALID_SESSION_ID)
 		unless defined $sid;
 
 	my $pid = fork;
-	exit (  Schulkonsole::Error::Files::WRAPPER_CANNOT_FORK
-	      - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE)
+	exit (  Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK)
 		unless defined $pid;
 
 	if (not $pid) {
@@ -209,8 +202,7 @@ sub import_workstations {
 		umask(027);
 		my $lockfile = Schulkonsole::Config::lockfile('import_workstations');
 		open LOCK, '>>', Schulkonsole::Encode::to_fs($lockfile)
-			or exit(  Schulkonsole::Error::Files::WRAPPER_ERROR_BASE
-			        - Schulkonsole::Error::Files::WRAPPER_CANNOT_OPEN_FILE);
+			or exit(  Schulkonsole::Error::FilesError::WRAPPER_CANNOT_OPEN_FILE);
 		flock LOCK, 2;
 		seek LOCK, 0, 0;
 		truncate LOCK, 0;
@@ -236,8 +228,7 @@ sub import_workstations {
 			my $session_lockfile
 				= Schulkonsole::Config::lockfile("cgisession_$sid");
 			open SESSIONLOCK, '>>', $session_lockfile
-				or exit (  Schulkonsole::Error::Files::WRAPPER_CANNOT_OPEN_FILE
-				         - Schulkonsole::Error::Files::WRAPPER_ERROR_BASE);
+				or exit (  Schulkonsole::Error::FilesError::WRAPPER_CANNOT_OPEN_FILE);
 			flock SESSIONLOCK, 2;
 
 			my $session = new CGI::Session("driver:File", $sid,

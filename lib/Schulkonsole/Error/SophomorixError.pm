@@ -56,6 +56,7 @@ $VERSION = 0.16;
 	WRAPPER_INVALID_PAGING
 	WRAPPER_INVALID_MAILADDRESS
 	WRAPPER_ERROR_SETMYMAIL
+	QUOTA_NOT_ALL_MOUNTPOINTS
 );
 
 # package constants
@@ -105,6 +106,7 @@ use constant {
 	WRAPPER_INVALID_PAGING => Schulkonsole::Error::Error::NEXT_ERROR - 42,
 	WRAPPER_INVALID_MAILADDRESS => Schulkonsole::Error::Error::NEXT_ERROR -43,
 	WRAPPER_ERROR_SETMYMAIL => Schulkonsole::Error::Error::NEXT_ERROR -44,
+	QUOTA_NOT_ALL_MOUNTPOINTS => Schulkonsole::Error::Error::NEXT_ERROR - 45,
 };
 
 sub new {
@@ -198,6 +200,8 @@ sub what {
 		and return $this->{d}->get('Die angegebene Mailadresse ist ungültig');
 	$this->{code} == WRAPPER_ERROR_SETMYMAIL
 		and return $this->{d}->get('Die Mailadresse konnte nicht gespeichert werden.');
+	$this->{code} == QUOTA_NOT_ALL_MOUNTPOINTS
+		and return $this->{d}->get('Nicht alle Einhängepunkte(mount points) gefunden');
 	};
 	
 	return $this->SUPER::what();

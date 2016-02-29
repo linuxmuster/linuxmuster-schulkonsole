@@ -17,7 +17,7 @@
 <h3>[% loc('Linbo') %] - [% loc('Fernsteuerung') %] - [% loc('Status') %]</h3>
 
 <p><input type="submit" name="task_refresh" value="[% loc('Aktualisieren') %]"></p>
-[% IF linbo_remote_status.size > 0 %]
+[% IF linbo_remote_status and linbo_remote_status.size > 0 %]
 	<table>
 	[% FOREACH line IN linbo_remote_status %]
 		<tr>

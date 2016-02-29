@@ -25,7 +25,7 @@
  <li><a [% dohref("user") %]>[% loc('Benutzer') %]</a><ul>[% INCLUDE "submenu-user.inc.tt" %]</ul></li>
 [% END %]
 [% IF link_quotas %]
- <li><a [% dohref("quotas") %]>[% loc('Quota') %]</a><ul>[% INCLUDE "submenu-quotas.inc.tt" %]</ul></li>
+ <li><a>[% loc('Quota') %]</a><ul>[% INCLUDE "submenu-quotas.inc.tt" %]</ul></li>
 [% END %]
 [% IF link_rooms %]
  <li><a [% dohref("rooms") %]>[% loc('Räume') %]</a><ul>[% INCLUDE "submenu-rooms.inc.tt" %]</ul></li>

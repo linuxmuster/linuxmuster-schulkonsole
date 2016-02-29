@@ -212,7 +212,7 @@ foreach my $host (keys %$workstations) {
 			$id, $password, @unblock_hosts_intranet) if @unblock_hosts_intranet;
 		Schulkonsole::Firewall::intranet_off(
 			$id, $password, @block_hosts_intranet) if @block_hosts_intranet;
-	
+
 		Schulkonsole::Firewall::urlfilter_on($id, $password, @filter_hosts)
 			if @filter_hosts;
 		Schulkonsole::Firewall::urlfilter_off($id, $password, @unfilter_hosts)
@@ -404,10 +404,10 @@ my @array_overview_workstations;
 foreach my $workstation (sort keys %$workstations) {
 	$hostip = $$workstations{$workstation}{ip};
 	my $first_login = 1;
+	my $is_editing_host
+		= ($workstation eq $sk_session->{template_vars}{remote_workstation});
 	if (    $$workstation_users{$workstation}
 		and @{ $$workstation_users{$workstation} }) {
-		my $is_editing_host
-			= ($workstation eq $sk_session->{template_vars}{remote_workstation});
 
 		foreach my $userdata (sort { $$a{uid} cmp $$b{uid} }
 						@{ $$workstation_users{$workstation} }) {
@@ -438,6 +438,7 @@ foreach my $workstation (sort keys %$workstations) {
 	} else {
 		my $overview_workstation = {
 			name => $workstation,
+			editinghost => $is_editing_host,
 			first => 1,
 			internet => ($$allowed_hosts_internet{$hostip} ? 1 : 0),
 			intranet => ($$blocked_hosts_intranet{$hostip} ? 0 : 1),
@@ -517,7 +518,6 @@ True if the user cannot access the printer
 	
 $sk_session->set_var('overview_workstations', \@array_overview_workstations);
 
-
 my @array_overview_devices;
 foreach my $printer (@$printers) {
 	push @array_overview_devices, {
@@ -591,7 +591,7 @@ $sk_session->set_var('intranetactive', $Schulkonsole::Config::_lml_start);
 True if URL-filter is active
 	
 =cut
-	
+
 $sk_session->set_var('urlfilteractive', $is_urlfilter_active);
 
 

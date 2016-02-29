@@ -179,6 +179,7 @@ A comma separated list of the user's classes
 =cut
 
 use strict;
+use CGI::Inspect;
 use utf8;
 use lib '/usr/share/schulkonsole';
 use Sys::Hostname;
@@ -219,7 +220,6 @@ $has_ovpn = Schulkonsole::OVPN::check($id, $password);
 if ($@) {
 	$sk_session->standard_error_handling($this_file, $@);
 }
-
 
 
 sub password_cb {
@@ -417,8 +417,9 @@ defined $q->param('printjobs') and do {
 	my $ovpn_password = $q->param('ovpnpassword');
 	if (not $ovpn_password) {
 		$sk_session->set_status(
-			$sk_session->d()->get('OpenVPN-Passwort eingegeben'), 1);
+			$sk_session->d()->get('OpenVPN-Passwort eingeben'), 1);
 		$sk_session->mark_input_error('ovpnpassword');
+		$sk_session->mark_input_error('ovpnpasswordagain');
 
 		last COMMANDS;
 	}
@@ -674,9 +675,10 @@ if (my $var_mailquotas = $sk_session->temp_param('var_mailquotas')) {
 
 
 
-if ( -e $Schulkonsole::Config::_cmd_linuxmuster_pk ) {
+if (defined $sk_session->{template_vars}{'link_start_druckquotas'}) {
+	eval require "Schulkonsole::Druckquotas";
 	eval {
-		my ($usage, $limit) = Schulkonsole::Printer::own_quota($id, $password);
+		my ($usage, $limit) = Schulkonsole::Druckquotas::own_quota($id, $password);
 
 		my $usage_percent = $usage ?
 			sprintf('%.1f', 100 * $usage / $limit)

@@ -2,12 +2,14 @@ wlan
 ====
  x Daten im LDAP-Baum in einer Gruppe speichern ( -> sophomorix )
  x wlan freischalten / sperren über die Schulkonsole
+ x wlan_ldap_group als Auswahlfeld über alle Projekte
 
 linbo
 =====
  x Partitionsnamen
  x EFI-Partitionen
  o GPT
+ x detect and use linbo 2.2/2.3 (Einstellungen->UEFI verwenden)
 
 uefi
 ====
@@ -33,7 +35,44 @@ Optik
 =====
  x Dynamisch aufklappende Menüs
  x Dateien hochladen / herunterladen
+ o graues Fenster für Status beschäftigt
+ o Bestätigungsdialog
+ o Rückmeldung über beim Klicken verschwindenden Dialog
 
 Printquota
 =====
  x Printquota integrieren
+
+Menü
+====
+ x altes Quotas-Hauptmenü entfernen
+
+Quota
+=====
+ o Quota Klassen wird verspätet angezeigt
+ o Quota-Einträge löschen
+
+Fehler
+======
+ x Sonderquota: Systembenutzer leere Tabelle 2x
+ x aktueller Raum: checkbox disabled darf sich durch quick button nicht verändern
+ o aktueller Raum - Austeilen: Datei mit Umlaut kann weder heruntergeladen noch gelöscht werden
+ o Klasse - Tauschen global ausschalten funktioniert nicht
+ x Gruppe p_wifi muss bei der Installation angelegt werden!
+ x Printer.pm enthält Quota-Funktionen, die in das Plugin gehören. Erledigt
+
+Plugins anpassen
+================
+ o Dokumentation
+ x Backup (feature/wrapper)
+ x Print-Quota (feature/wrapper)
+
+Wrapper
+=======
+ x wrapper-printer -> subroutines
+ o Umgang mit übrig gebliebenen lock-Dateien (stehlen nach einer Stunde)
+
+Vereinfachung
+=============
+ o build Umgebung ohne configure
+ o Fehler abfangen ohne eval, sondern mit $SIG{__DIE__}-Routine
