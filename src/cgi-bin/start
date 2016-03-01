@@ -676,8 +676,8 @@ if (my $var_mailquotas = $sk_session->temp_param('var_mailquotas')) {
 
 
 if (defined $sk_session->{template_vars}{'link_start_druckquotas'}) {
-	eval require "Schulkonsole::Druckquotas";
 	eval {
+		require Schulkonsole::Druckquotas;
 		my ($usage, $limit) = Schulkonsole::Druckquotas::own_quota($id, $password);
 
 		my $usage_percent = $usage ?
