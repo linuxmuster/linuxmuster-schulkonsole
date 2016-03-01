@@ -153,7 +153,7 @@ sub create(){
 		unless $ovpn_password;
 
 	# give password on cmdline because read does not handle pipes
-	$opts .= "--create --password=$ovpn_password";
+	$opts .= "--create --password=\Q${ovpn_password}\E";
 
 	my $ret = system(Schulkonsole::Encode::to_cli(
 	     	"$Schulkonsole::Config::_cmd_ovpn_client_cert $opts >/dev/null 2>/dev/null"));
