@@ -40,7 +40,6 @@ use Schulkonsole::Printer;
 use Schulkonsole::Sophomorix;
 
 my $this_file = 'room';
-my $lml_majorversion = "$Schulkonsole::Config::_lml_majorversion";
 
 my $sk_session = new Schulkonsole::Session($this_file);
 if (not $sk_session->get_password()) {

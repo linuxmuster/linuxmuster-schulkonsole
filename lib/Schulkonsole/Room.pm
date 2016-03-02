@@ -159,7 +159,6 @@ sub start_lesson {
 		= Schulkonsole::Firewall::blocked_hosts_intranet();
 	my $unfiltered_hosts_all = Schulkonsole::Firewall::unfiltered_hosts();
 
-	my $lml_majorversion = "$Schulkonsole::Config::_lml_majorversion";
 	my %allowed_hosts_internet;
 	my %blocked_hosts_intranet;
 	my %unfiltered_hosts;

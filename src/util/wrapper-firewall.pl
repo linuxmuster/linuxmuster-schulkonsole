@@ -44,8 +44,6 @@ use Schulkonsole::Firewall;
 use Schulkonsole::RoomSession;
 use Schulkonsole::Sophomorix;
 
-my $lml_majorversion = "$Schulkonsole::Config::_lml_majorversion";
-
 my $id = <>;
 $id = int($id);
 my $password = <>;

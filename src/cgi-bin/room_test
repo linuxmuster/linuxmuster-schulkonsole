@@ -60,8 +60,6 @@ if ($q->param('starttest')) {
 			my $id = $sk_session->userdata('id');
 			my $users = $room_session->workstation_users();
 			
-			my $lml_majorversion = "$Schulkonsole::Config::_lml_majorversion";
-
 			my $workstations = Schulkonsole::Config::workstations_room(
 				$room_session->info('name'));
 
