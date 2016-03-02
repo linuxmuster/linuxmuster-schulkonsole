@@ -561,7 +561,7 @@ C<cyrusquota>
 =cut
 
 use constant {
-	CYRUSQUOTAAPP => 0,
+	CYRUSQUOTAAPP => 9001,
 };
 
 
@@ -1432,6 +1432,7 @@ $_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
 	LINBOREMOTEAPP() => 'linbo_remote',
 	DEBCONFREADAPP() => 'debconf_read',
 	DEBCONFREADSMTPRELAYAPP() => 'read_smtprelay',
+	CYRUSQUOTAAPP() => 'cyrus_quota',
 );
 
 

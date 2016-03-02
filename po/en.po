@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2016-03-02 17:08+0100\n"
+"POT-Creation-Date: 2016-03-02 20:48+0100\n"
 "PO-Revision-Date: 2015-11-10 12:50+0100\n"
 "Last-Translator: Frank Schütte <fschuett@gymhim.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -66,23 +66,23 @@ msgstr "not existing as collected file."
 msgid " nicht als einzusammelnde Datei vorhanden."
 msgstr " not existing as collected file."
 
-#: ../src/cgi-bin/class_list:142 ../src/cgi-bin/class_list:161
+#: ../src/cgi-bin/class_list:144 ../src/cgi-bin/class_list:163
 #: ../src/cgi-bin/project_members:370 ../src/cgi-bin/project_members:389
-#: ../src/cgi-bin/start:564 ../src/cgi-bin/start:583
+#: ../src/cgi-bin/start:563 ../src/cgi-bin/start:582
 #, perl-format
 msgid "%d Minuten"
 msgstr "%d minutes"
 
-#: ../src/cgi-bin/class_list:139 ../src/cgi-bin/class_list:158
+#: ../src/cgi-bin/class_list:141 ../src/cgi-bin/class_list:160
 #: ../src/cgi-bin/project_members:367 ../src/cgi-bin/project_members:386
-#: ../src/cgi-bin/start:561 ../src/cgi-bin/start:580
+#: ../src/cgi-bin/start:560 ../src/cgi-bin/start:579
 #, perl-format
 msgid "%d Stunden"
 msgstr "%d hours"
 
-#: ../src/cgi-bin/class_list:136 ../src/cgi-bin/class_list:155
+#: ../src/cgi-bin/class_list:138 ../src/cgi-bin/class_list:157
 #: ../src/cgi-bin/project_members:364 ../src/cgi-bin/project_members:383
-#: ../src/cgi-bin/start:558 ../src/cgi-bin/start:577
+#: ../src/cgi-bin/start:557 ../src/cgi-bin/start:576
 #, perl-format
 msgid "%d Tage"
 msgstr "%d days"
@@ -1178,11 +1178,11 @@ msgstr "No Error"
 msgid "Altes Passwort"
 msgstr "Old password"
 
-#: ../src/cgi-bin/start:257
+#: ../src/cgi-bin/start:256
 msgid "Altes Passwort eingeben"
 msgstr "Enter the old password"
 
-#: ../src/cgi-bin/start:262
+#: ../src/cgi-bin/start:261
 msgid "Altes Passwort stimmt nicht"
 msgstr "Old password is not correct"
 
@@ -1887,7 +1887,7 @@ msgstr "File system"
 msgid "Daten"
 msgstr "Data"
 
-#: ../src/cgi-bin/start:282
+#: ../src/cgi-bin/start:281
 msgid "Daten zur Passwortänderung unvollständig"
 msgstr "Data for password change incomplete"
 
@@ -2017,7 +2017,7 @@ msgstr "The timeout after each host wakeup is invalid."
 msgid "Die angegebene Mailadresse ist ungültig"
 msgstr "At least one of the supplied mail addresses contains errors."
 
-#: ../src/cgi-bin/start:328
+#: ../src/cgi-bin/start:327
 #, fuzzy
 msgid "Die eingegebene Mail-Adresse ist ungültig."
 msgstr "At least one of the supplied mail addresses contains errors."
@@ -2060,7 +2060,7 @@ msgstr "Temporary file could not be closed."
 msgid "Die temporäre Datei konnte nicht geöffnet werden."
 msgstr "Failed to open temporary file."
 
-#: ../src/cgi-bin/room_lesson:236
+#: ../src/cgi-bin/room_lesson:235
 msgid ""
 "Diese Funktion ist momentan durch einen anderen Benutzer gesperrt. Versuchen "
 "Sie es bitte in Kürze noch einmal."
@@ -2105,7 +2105,7 @@ msgstr "printer data"
 
 #: ../shtml/printers.tt:1 ../shtml/printers.tt:23 ../shtml/printers.tt:9
 #: ../shtml/printers_edit.tt:1 ../shtml/printers_edit.tt:8
-#: ../shtml/room_lesson.tt:101 ../src/cgi-bin/room_lesson:524
+#: ../shtml/room_lesson.tt:101 ../src/cgi-bin/room_lesson:523
 msgid "Drucker"
 msgstr "Printer"
 
@@ -2176,7 +2176,7 @@ msgstr "One entry per page"
 msgid "Ein OpenVPN-Zertifikat wurde für Sie erstellt."
 msgstr "An open VPN certificate was created for you."
 
-#: ../src/cgi-bin/start:345
+#: ../src/cgi-bin/start:344
 msgid "Eine oder mehrere Mail-Adressen sind ungültig."
 msgstr "At least one of the supplied mail addresses contains errors."
 
@@ -2401,7 +2401,7 @@ msgstr "There are no postsync files available."
 msgid "Es sind noch nicht alle Verknüpfungen eindeutig festgelegt"
 msgstr "Not all connections are clearly defined."
 
-#: ../src/cgi-bin/start:411
+#: ../src/cgi-bin/start:410
 msgid "Es wurde bereits ein OpenVPN-Zertifikat erstellt"
 msgstr "An open VPN certificate was already created"
 
@@ -2417,7 +2417,7 @@ msgstr "Es creation time stamp is invalid."
 msgid "Es wurde eine ungültige Kategorie für die Rechnerauswahl angegeben."
 msgstr "The hosts selected category is invalid."
 
-#: ../src/cgi-bin/start:465
+#: ../src/cgi-bin/start:464
 msgid "Es wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> abgelegt"
 msgstr "It was filed away in your home directory in the folder <q>OpenVPN</q>"
 
@@ -2481,7 +2481,7 @@ msgstr "Unexpected program output"
 msgid "Fehler bei der Erzeugung des Dokuments"
 msgstr "Error in the production of the document"
 
-#: ../src/cgi-bin/start:471
+#: ../src/cgi-bin/start:470
 msgid "Fehler bei der Zertifikatserstellung."
 msgstr "Error during the creation of the certificate."
 
@@ -2725,7 +2725,7 @@ msgstr "IP of the TFTP Server, that provides images"
 msgid "IP:"
 msgstr "IP:"
 
-#: ../src/cgi-bin/start:489
+#: ../src/cgi-bin/start:488
 msgid ""
 "Ihr Zertifikat wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> "
 "abgelegt"
@@ -2798,16 +2798,16 @@ msgstr "No lesson is active in this project."
 msgid "In diesem Projekt wird bereits unterrichtet."
 msgstr "In this project a lesson is already active."
 
-#: ../shtml/room_end_lesson_verify.tt:30 ../src/cgi-bin/room_lesson:353
+#: ../shtml/room_end_lesson_verify.tt:30 ../src/cgi-bin/room_lesson:352
 msgid "In diesem Raum findet eine Klassenarbeit statt."
 msgstr "An exam is taking place in this room."
 
-#: ../src/cgi-bin/room_lesson:103 ../src/cgi-bin/room_lesson:249
-#: ../src/cgi-bin/room_lesson:307 ../src/cgi-bin/room_lesson:339
+#: ../src/cgi-bin/room_lesson:102 ../src/cgi-bin/room_lesson:248
+#: ../src/cgi-bin/room_lesson:306 ../src/cgi-bin/room_lesson:338
 msgid "In diesem Raum findet kein Unterricht statt."
 msgstr "Lessons are not taking place in this room."
 
-#: ../src/cgi-bin/room_lesson:286
+#: ../src/cgi-bin/room_lesson:285
 msgid "In diesem Raum wird bereits unterrichtet."
 msgstr "Lessons are already being given in this room."
 
@@ -3041,7 +3041,7 @@ msgstr "Start exam"
 msgid "Klassenarbeitsmodus"
 msgstr "Exam mode"
 
-#: ../src/cgi-bin/room_lesson:319
+#: ../src/cgi-bin/room_lesson:318
 msgid "Klassenarbeitsmodus aktiv"
 msgstr "Exam mode active"
 
@@ -3349,7 +3349,7 @@ msgstr "mail quota warnings"
 msgid "Mailquota-Überschreitung an root melden"
 msgstr "report mail over quota to root"
 
-#: ../src/cgi-bin/start:358
+#: ../src/cgi-bin/start:357
 msgid "Mailweiterleitung erfolgreich geändert"
 msgstr "mail forward(s) successful changed"
 
@@ -3542,19 +3542,19 @@ msgstr "New Search:"
 msgid "Neues Passwort"
 msgstr "New password"
 
-#: ../src/cgi-bin/start:269
+#: ../src/cgi-bin/start:268
 msgid "Neues Passwort eingeben"
 msgstr "Enter the new password"
 
-#: ../src/cgi-bin/start:297
+#: ../src/cgi-bin/start:296
 msgid "Neues Passwort ist zu schwach: "
 msgstr "New password is too weak:"
 
-#: ../src/cgi-bin/start:288
+#: ../src/cgi-bin/start:287
 msgid "Neues Passwort nicht richtig wiederholt"
 msgstr "New password not properly repeated"
 
-#: ../src/cgi-bin/start:276
+#: ../src/cgi-bin/start:275
 msgid "Neues Passwort zur Kontrolle zweimal eingeben"
 msgstr "Enter the new password twice to verify"
 
@@ -3635,20 +3635,20 @@ msgstr "Application:"
 msgid "Offenes Projekt"
 msgstr "Open project"
 
-#: ../src/cgi-bin/start:441
+#: ../src/cgi-bin/start:440
 msgid "OpenVPN-Passwort bestätigen"
 msgstr "Confirm open VPN password"
 
-#: ../src/cgi-bin/start:420
+#: ../src/cgi-bin/start:419
 #, fuzzy
 msgid "OpenVPN-Passwort eingeben"
 msgstr "Open VPN password entered"
 
-#: ../src/cgi-bin/start:432
+#: ../src/cgi-bin/start:431
 msgid "OpenVPN-Passwort muss mindestens sechs Zeichen haben"
 msgstr "Open VPN password must have at least six characters"
 
-#: ../src/cgi-bin/start:452
+#: ../src/cgi-bin/start:451
 msgid "OpenVPN-Passwort nicht richtig wiederholt"
 msgstr "Open VPN password not properly repeated"
 
@@ -3772,7 +3772,7 @@ msgstr "password lists"
 msgid "Passwortänderung"
 msgstr "Password change"
 
-#: ../src/cgi-bin/start:307
+#: ../src/cgi-bin/start:306
 msgid "Passwortänderung erfolgreich"
 msgstr "password successfully changed"
 
@@ -4153,7 +4153,7 @@ msgstr "Activate shell"
 msgid "Sie dürfen den Unterricht in diesem Projekt nicht beenden."
 msgstr "You are not allowed to end the lesson in this project."
 
-#: ../src/cgi-bin/room_lesson:312 ../src/cgi-bin/room_lesson:344
+#: ../src/cgi-bin/room_lesson:311 ../src/cgi-bin/room_lesson:343
 msgid "Sie dürfen den Unterricht in diesem Raum nicht beenden."
 msgstr "You are not allowed to end the lesson in this room."
 
@@ -4170,7 +4170,7 @@ msgstr "You are not allowed to change the user list of %s"
 msgid "Sie halten keinen Unterricht in diesem Projekt."
 msgstr "You are not giving lessons in this project."
 
-#: ../src/cgi-bin/room_lesson:108 ../src/cgi-bin/room_lesson:254
+#: ../src/cgi-bin/room_lesson:107 ../src/cgi-bin/room_lesson:253
 msgid "Sie halten keinen Unterricht in diesem Raum."
 msgstr "You are not giving lessons in this room."
 
@@ -4248,7 +4248,7 @@ msgstr "Should lessons really end?"
 msgid "Sonderquota"
 msgstr "Special quota"
 
-#: ../src/cgi-bin/start:631
+#: ../src/cgi-bin/start:630
 msgid "Speicherplatz"
 msgstr "Storage space"
 
@@ -4668,7 +4668,7 @@ msgid "Unterricht beenden:"
 msgstr "End lesson:"
 
 #: ../src/cgi-bin/class_lesson:187 ../src/cgi-bin/project_lesson:191
-#: ../src/cgi-bin/room_lesson:331
+#: ../src/cgi-bin/room_lesson:330
 msgid "Unterricht beendet."
 msgstr "Lesson completed."
 
@@ -4678,12 +4678,12 @@ msgid "Unterricht beginnen"
 msgstr "Start lessons"
 
 #: ../src/cgi-bin/class_lesson:163 ../src/cgi-bin/project_lesson:167
-#: ../src/cgi-bin/room_lesson:297
+#: ../src/cgi-bin/room_lesson:296
 msgid "Unterricht begonnen."
 msgstr "Lesson started."
 
 #: ../src/cgi-bin/class_lesson:215 ../src/cgi-bin/project_lesson:219
-#: ../src/cgi-bin/room_lesson:367
+#: ../src/cgi-bin/room_lesson:366
 msgid "Unterrichtsende liegt in der Vergangenheit"
 msgstr "Lessons end is in the past"
 
@@ -4698,7 +4698,7 @@ msgstr "Lessons end at"
 
 #: ../src/cgi-bin/class_lesson:165 ../src/cgi-bin/class_lesson:223
 #: ../src/cgi-bin/project_lesson:169 ../src/cgi-bin/project_lesson:227
-#: ../src/cgi-bin/room_lesson:299 ../src/cgi-bin/room_lesson:375
+#: ../src/cgi-bin/room_lesson:298 ../src/cgi-bin/room_lesson:374
 msgid "Unterrichtsende um %H:%M"
 msgstr "Lesson ends at %H:%M"
 
@@ -4724,7 +4724,7 @@ msgstr "Transfer was already started"
 msgid "Version"
 msgstr "Version"
 
-#: ../src/cgi-bin/start:474 ../src/cgi-bin/start:496
+#: ../src/cgi-bin/start:473 ../src/cgi-bin/start:495
 msgid "Verständigen Sie den Netzwerkadministrator"
 msgstr "Inform the network administrator"
 
@@ -4849,7 +4849,7 @@ msgstr "Work station:"
 msgid "Workstationaccounts"
 msgstr "Workstation accounts"
 
-#: ../src/cgi-bin/room_test:101 ../src/cgi-bin/room_test_password:62
+#: ../src/cgi-bin/room_test:99 ../src/cgi-bin/room_test_password:62
 msgid "Workstationpasswort geändert."
 msgstr "Work station password changed."
 
@@ -4881,11 +4881,11 @@ msgstr "time"
 msgid "Zertifikat erstellen und herunterladen"
 msgstr "Create and download certificate"
 
-#: ../src/cgi-bin/start:493
+#: ../src/cgi-bin/start:492
 msgid "Zertifikat konnte nicht heruntergeladen werden."
 msgstr "The certificate could not be downloaded."
 
-#: ../src/cgi-bin/start:462
+#: ../src/cgi-bin/start:461
 msgid "Zertifikat wurde erstellt."
 msgstr "Certificate was created."
 
@@ -4926,13 +4926,13 @@ msgstr "Additional quota"
 msgid "[LINBO] - globale Konfiguration"
 msgstr "[LINBO] - global configuration"
 
-#: ../src/cgi-bin/start:397
+#: ../src/cgi-bin/start:396
 msgid "abgebrochen"
 msgstr "cancelled"
 
-#: ../src/cgi-bin/class_list:145 ../src/cgi-bin/class_list:164
+#: ../src/cgi-bin/class_list:147 ../src/cgi-bin/class_list:166
 #: ../src/cgi-bin/project_members:373 ../src/cgi-bin/project_members:392
-#: ../src/cgi-bin/start:567 ../src/cgi-bin/start:586
+#: ../src/cgi-bin/start:566 ../src/cgi-bin/start:585
 msgid "abgelaufen"
 msgstr "expired"
 
@@ -5353,7 +5353,7 @@ msgstr "changes implemented"
 #: ../src/cgi-bin/project_shares:126 ../src/cgi-bin/quotas_classes:152
 #: ../src/cgi-bin/quotas_others:194 ../src/cgi-bin/quotas_projects:154
 #: ../src/cgi-bin/quotas_projects:280 ../src/cgi-bin/quotas_teachers:123
-#: ../src/cgi-bin/room_lesson:242 ../src/cgi-bin/room_lesson:281
+#: ../src/cgi-bin/room_lesson:241 ../src/cgi-bin/room_lesson:280
 #: ../src/cgi-bin/room_shares:104 ../src/cgi-bin/settings_classs:147
 #: ../src/cgi-bin/settings_projects:126
 msgid "Änderungen übernommen."
