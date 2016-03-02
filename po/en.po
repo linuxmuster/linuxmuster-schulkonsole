@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2016-02-29 13:53+0100\n"
+"POT-Creation-Date: 2016-03-02 17:08+0100\n"
 "PO-Revision-Date: 2015-11-10 12:50+0100\n"
 "Last-Translator: Frank Schütte <fschuett@gymhim.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -1186,15 +1186,15 @@ msgstr "Enter the old password"
 msgid "Altes Passwort stimmt nicht"
 msgstr "Old password is not correct"
 
-#: ../shtml/class_lesson.tt:117 ../shtml/class_passwords.tt:78
-#: ../shtml/project_lesson.tt:117 ../shtml/project_passwords.tt:77
+#: ../shtml/class_lesson.tt:117 ../shtml/class_passwords.tt:79
+#: ../shtml/project_lesson.tt:117 ../shtml/project_passwords.tt:78
 #: ../shtml/room_lesson.tt:168 ../shtml/room_lesson.tt:171
 #: ../shtml/room_lesson.tt:174 ../shtml/room_lesson.tt:182
 #: ../shtml/room_lesson.tt:227 ../shtml/rooms.tt:120 ../shtml/rooms.tt:127
 #: ../shtml/rooms.tt:134 ../shtml/rooms.tt:33 ../shtml/rooms.tt:40
 #: ../shtml/rooms.tt:47 ../shtml/rooms.tt:83 ../shtml/rooms.tt:90
 #: ../shtml/rooms.tt:97 ../shtml/settings_classs.tt:49
-#: ../shtml/settings_projects.tt:43 ../shtml/user_teacherpasswords.tt:52
+#: ../shtml/settings_projects.tt:43 ../shtml/user_teacherpasswords.tt:53
 msgid "An"
 msgstr "On"
 
@@ -1355,7 +1355,7 @@ msgstr "Selected class"
 
 #: ../shtml/class_collect.tt:29 ../shtml/class_handout.tt:28
 #: ../shtml/class_handoutcopy.tt:29 ../shtml/class_list.tt:29
-#: ../shtml/class_passwords.tt:29 ../shtml/class_shares.tt:29
+#: ../shtml/class_passwords.tt:30 ../shtml/class_shares.tt:29
 msgid "Ausgewählte Klasse:"
 msgstr "Selected class:"
 
@@ -1366,7 +1366,7 @@ msgstr "selected project"
 #: ../shtml/project_addmembers.tt:11 ../shtml/project_collect.tt:28
 #: ../shtml/project_drop_verify.tt:11 ../shtml/project_handout.tt:28
 #: ../shtml/project_handoutcopy.tt:28 ../shtml/project_members.tt:27
-#: ../shtml/project_passwords.tt:29 ../shtml/project_shares.tt:28
+#: ../shtml/project_passwords.tt:30 ../shtml/project_shares.tt:28
 msgid "Ausgewähltes Projekt:"
 msgstr "Selected project:"
 
@@ -1557,7 +1557,7 @@ msgstr "User per page:"
 msgid "Benutzer versetzen"
 msgstr "Move user"
 
-#: ../shtml/page.tt:70 ../shtml/status.inc.tt:11
+#: ../shtml/page.tt:82 ../shtml/status.inc.tt:11
 msgid "Benutzer:"
 msgstr "User:"
 
@@ -1578,7 +1578,7 @@ msgstr "Username"
 #: ../shtml/user.tt:9 ../shtml/user_check.tt:9 ../shtml/user_commit.tt:10
 #: ../shtml/user_extra.tt:9 ../shtml/user_print.tt:8
 #: ../shtml/user_reports.tt:9 ../shtml/user_students.tt:9
-#: ../shtml/user_teacherpasswords.tt:9 ../shtml/user_teachers.tt:9
+#: ../shtml/user_teacherpasswords.tt:10 ../shtml/user_teachers.tt:9
 #: ../shtml/user_teachin.tt:9
 msgid "Benutzerverwaltung"
 msgstr "User administration"
@@ -2244,8 +2244,8 @@ msgstr "files to be collected"
 msgid "Erstpasswort"
 msgstr "First password"
 
-#: ../shtml/class_passwords.tt:66 ../shtml/project_passwords.tt:66
-#: ../shtml/user_teacherpasswords.tt:46
+#: ../shtml/class_passwords.tt:67 ../shtml/project_passwords.tt:67
+#: ../shtml/user_teacherpasswords.tt:47
 msgid "Erstpasswort anzeigen"
 msgstr "Show first password"
 
@@ -2721,7 +2721,7 @@ msgstr "IP"
 msgid "IP des TFTP-Servers, der Images vorhält"
 msgstr "IP of the TFTP Server, that provides images"
 
-#: ../shtml/page.tt:80 ../shtml/status.inc.tt:21
+#: ../shtml/page.tt:92 ../shtml/status.inc.tt:21
 msgid "IP:"
 msgstr "IP:"
 
@@ -2823,7 +2823,7 @@ msgstr "No lesson is active in this class."
 msgid "In dieser Klasse wird bereits unterrichtet."
 msgstr "In this class a lesson is already active."
 
-#: ../shtml/page.tt:90 ../shtml/start.tt:95
+#: ../shtml/page.tt:102 ../shtml/start.tt:95
 msgid "Info"
 msgstr "Info"
 
@@ -3022,7 +3022,7 @@ msgstr "Class unknown"
 #: ../shtml/class_handoutcopy.tt:27 ../shtml/class_lesson.tt:1
 #: ../shtml/class_lesson.tt:25 ../shtml/class_list.tt:1
 #: ../shtml/class_list.tt:27 ../shtml/class_passwords.tt:1
-#: ../shtml/class_passwords.tt:27 ../shtml/class_shares.tt:1
+#: ../shtml/class_passwords.tt:28 ../shtml/class_shares.tt:1
 #: ../shtml/class_shares.tt:27 ../shtml/myclass_handedoutcopy.tt:1
 #: ../shtml/quotas_classes.tt:1 ../shtml/quotas_classes.tt:9
 #: ../shtml/settings_classs.tt:1 ../shtml/settings_classs.tt:9
@@ -3208,7 +3208,7 @@ msgstr "Teachers file"
 msgid "Lehrerliste pflegen"
 msgstr "Maintain teacher list"
 
-#: ../shtml/user_teacherpasswords.tt:1 ../shtml/user_teacherpasswords.tt:9
+#: ../shtml/user_teacherpasswords.tt:1 ../shtml/user_teacherpasswords.tt:10
 msgid "Lehrerpasswörter"
 msgstr "Teacher passwords"
 
@@ -3235,15 +3235,15 @@ msgstr "log messages"
 
 #: ../shtml/class_collect.tt:82 ../shtml/class_handoutcopy.tt:69
 #: ../shtml/class_lesson.tt:94 ../shtml/class_list.tt:115
-#: ../shtml/class_list.tt:33 ../shtml/class_passwords.tt:54
-#: ../shtml/class_passwords.tt:83 ../shtml/class_shares.tt:35
+#: ../shtml/class_list.tt:33 ../shtml/class_passwords.tt:55
+#: ../shtml/class_passwords.tt:84 ../shtml/class_shares.tt:35
 #: ../shtml/login.tt:1 ../shtml/project_addmembers.tt:19
 #: ../shtml/project_addmembers.tt:34 ../shtml/project_addmembers.tt:49
 #: ../shtml/project_addmembers.tt:64 ../shtml/project_collect.tt:77
 #: ../shtml/project_handoutcopy.tt:67 ../shtml/project_lesson.tt:94
 #: ../shtml/project_members.tt:138 ../shtml/project_members.tt:160
 #: ../shtml/project_members.tt:178 ../shtml/project_members.tt:248
-#: ../shtml/project_passwords.tt:54 ../shtml/project_passwords.tt:82
+#: ../shtml/project_passwords.tt:55 ../shtml/project_passwords.tt:83
 #: ../shtml/project_shares.tt:34 ../shtml/quotas_others.tt:109
 #: ../shtml/quotas_others.tt:160 ../shtml/quotas_others.tt:18
 #: ../shtml/quotas_others.tt:212 ../shtml/quotas_others.tt:261
@@ -3252,7 +3252,7 @@ msgstr "log messages"
 #: ../shtml/room_lesson.tt:96 ../shtml/room_shares.tt:36
 #: ../shtml/room_test_collect.tt:65 ../shtml/room_test_handout.tt:39
 #: ../shtml/settings_users.tt:169 ../shtml/settings_users.tt:195
-#: ../shtml/user_teacherpasswords.tt:35 ../shtml/user_teacherpasswords.tt:56
+#: ../shtml/user_teacherpasswords.tt:36 ../shtml/user_teacherpasswords.tt:57
 #: ../shtml/user_teachers.tt:20 ../shtml/user_teachers.tt:61
 #: ../shtml/user_teachers.tt:94
 msgid "Login"
@@ -3483,8 +3483,8 @@ msgstr "Last name is empty"
 
 #: ../shtml/class_collect.tt:83 ../shtml/class_handoutcopy.tt:70
 #: ../shtml/class_lesson.tt:95 ../shtml/class_list.tt:116
-#: ../shtml/class_list.tt:34 ../shtml/class_passwords.tt:55
-#: ../shtml/class_passwords.tt:84 ../shtml/class_shares.tt:36
+#: ../shtml/class_list.tt:34 ../shtml/class_passwords.tt:56
+#: ../shtml/class_passwords.tt:85 ../shtml/class_shares.tt:36
 #: ../shtml/project_addmembers.tt:105 ../shtml/project_addmembers.tt:116
 #: ../shtml/project_addmembers.tt:20 ../shtml/project_addmembers.tt:35
 #: ../shtml/project_addmembers.tt:50 ../shtml/project_addmembers.tt:65
@@ -3492,12 +3492,12 @@ msgstr "Last name is empty"
 #: ../shtml/project_collect.tt:78 ../shtml/project_handoutcopy.tt:68
 #: ../shtml/project_lesson.tt:95 ../shtml/project_members.tt:139
 #: ../shtml/project_members.tt:161 ../shtml/project_members.tt:179
-#: ../shtml/project_members.tt:249 ../shtml/project_passwords.tt:55
-#: ../shtml/project_passwords.tt:83 ../shtml/project_shares.tt:35
+#: ../shtml/project_members.tt:249 ../shtml/project_passwords.tt:56
+#: ../shtml/project_passwords.tt:84 ../shtml/project_shares.tt:35
 #: ../shtml/quotas_others.tt:110 ../shtml/quotas_others.tt:161
 #: ../shtml/quotas_teachers.tt:19 ../shtml/room_collect.tt:80
-#: ../shtml/room_lesson.tt:201 ../shtml/user_teacherpasswords.tt:36
-#: ../shtml/user_teacherpasswords.tt:57
+#: ../shtml/room_lesson.tt:201 ../shtml/user_teacherpasswords.tt:37
+#: ../shtml/user_teacherpasswords.tt:58
 msgid "Name"
 msgstr "Name"
 
@@ -3591,9 +3591,9 @@ msgstr "Nothing selected"
 msgid "Nichts gefunden"
 msgstr "Nothing found"
 
-#: ../shtml/class_passwords.tt:53 ../shtml/class_passwords.tt:82
-#: ../shtml/project_passwords.tt:53 ../shtml/project_passwords.tt:81
-#: ../shtml/user_teacherpasswords.tt:34 ../shtml/user_teacherpasswords.tt:55
+#: ../shtml/class_passwords.tt:54 ../shtml/class_passwords.tt:83
+#: ../shtml/project_passwords.tt:54 ../shtml/project_passwords.tt:82
+#: ../shtml/user_teacherpasswords.tt:35 ../shtml/user_teacherpasswords.tt:56
 msgid "Nr"
 msgstr "no."
 
@@ -3730,21 +3730,21 @@ msgstr "Size of partition in MB"
 msgid "Passwort"
 msgstr "Password"
 
-#: ../shtml/class_passwords.tt:91 ../shtml/project_passwords.tt:90
-#: ../shtml/user_teacherpasswords.tt:64
+#: ../shtml/class_passwords.tt:92 ../shtml/project_passwords.tt:91
+#: ../shtml/user_teacherpasswords.tt:65
 msgid "Passwort auf Erstpasswort setzen"
 msgstr "Set password to first password"
 
-#: ../shtml/class_passwords.tt:93 ../shtml/project_passwords.tt:92
+#: ../shtml/class_passwords.tt:94 ../shtml/project_passwords.tt:93
 msgid "Passwort und Erstpasswort setzen (Eingabewert)"
 msgstr "Set password and first password (input value)"
 
-#: ../shtml/class_passwords.tt:92 ../shtml/project_passwords.tt:91
-#: ../shtml/user_teacherpasswords.tt:65
+#: ../shtml/class_passwords.tt:93 ../shtml/project_passwords.tt:92
+#: ../shtml/user_teacherpasswords.tt:66
 msgid "Passwort und Erstpasswort setzen (Zufallswert)"
 msgstr "Set password and first password (random value)"
 
-#: ../shtml/user_teacherpasswords.tt:66
+#: ../shtml/user_teacherpasswords.tt:67
 msgid "Passwort und Ertspasswort setzen (Eingabewert)"
 msgstr "Set password and first password (input value)"
 
@@ -3752,15 +3752,15 @@ msgstr "Set password and first password (input value)"
 msgid "Passwort ändern"
 msgstr "Change your password"
 
-#: ../shtml/class_passwords.tt:39 ../shtml/project_passwords.tt:39
+#: ../shtml/class_passwords.tt:40 ../shtml/project_passwords.tt:40
 #: ../shtml/user_print.tt:101 ../shtml/user_print.tt:21
-#: ../shtml/user_print.tt:56 ../shtml/user_teacherpasswords.tt:22
+#: ../shtml/user_print.tt:56 ../shtml/user_teacherpasswords.tt:23
 msgid "Passwortliste als CSV"
 msgstr "Password list as CSV"
 
-#: ../shtml/class_passwords.tt:33 ../shtml/project_passwords.tt:33
+#: ../shtml/class_passwords.tt:34 ../shtml/project_passwords.tt:34
 #: ../shtml/user_print.tt:16 ../shtml/user_print.tt:51
-#: ../shtml/user_print.tt:97 ../shtml/user_teacherpasswords.tt:16
+#: ../shtml/user_print.tt:97 ../shtml/user_teacherpasswords.tt:17
 msgid "Passwortliste als PDF"
 msgstr "Password list as PDF"
 
@@ -3776,8 +3776,8 @@ msgstr "Password change"
 msgid "Passwortänderung erfolgreich"
 msgstr "password successfully changed"
 
-#: ../shtml/class_passwords.tt:0 ../shtml/class_passwords.tt:27
-#: ../shtml/project_passwords.tt:0 ../shtml/project_passwords.tt:27
+#: ../shtml/class_passwords.tt:0 ../shtml/class_passwords.tt:28
+#: ../shtml/project_passwords.tt:0 ../shtml/project_passwords.tt:28
 msgid "Passwörter"
 msgstr "Passwords"
 
@@ -3887,7 +3887,7 @@ msgstr "Project Teacher File"
 #: ../shtml/project_handoutcopy.tt:26 ../shtml/project_lesson.tt:1
 #: ../shtml/project_lesson.tt:25 ../shtml/project_members.tt:1
 #: ../shtml/project_members.tt:25 ../shtml/project_passwords.tt:1
-#: ../shtml/project_passwords.tt:27 ../shtml/project_shares.tt:1
+#: ../shtml/project_passwords.tt:28 ../shtml/project_shares.tt:1
 #: ../shtml/project_shares.tt:26 ../shtml/quotas_projects.tt:1
 #: ../shtml/settings_projects.tt:1 ../shtml/settings_projects.tt:9
 #: ../shtml/start.tt:232
@@ -3941,7 +3941,7 @@ msgstr "Room"
 msgid "Raum nicht gefunden"
 msgstr "Nothing found"
 
-#: ../shtml/page.tt:72 ../shtml/status.inc.tt:13
+#: ../shtml/page.tt:84 ../shtml/status.inc.tt:13
 msgid "Raum:"
 msgstr "Room:"
 
@@ -4047,13 +4047,13 @@ msgid "Schließen"
 msgstr "Close"
 
 #: ../shtml/class_collect.tt:106 ../shtml/class_handoutcopy.tt:88
-#: ../shtml/class_lesson.tt:115 ../shtml/class_passwords.tt:77
+#: ../shtml/class_lesson.tt:115 ../shtml/class_passwords.tt:78
 #: ../shtml/class_shares.tt:59 ../shtml/project_collect.tt:101
 #: ../shtml/project_handoutcopy.tt:86 ../shtml/project_lesson.tt:115
-#: ../shtml/project_passwords.tt:76 ../shtml/project_shares.tt:58
+#: ../shtml/project_passwords.tt:77 ../shtml/project_shares.tt:58
 #: ../shtml/room_collect.tt:125 ../shtml/room_handout.tt:102
 #: ../shtml/room_lesson.tt:166 ../shtml/room_lesson.tt:224
-#: ../shtml/room_shares.tt:61 ../shtml/user_teacherpasswords.tt:51
+#: ../shtml/room_shares.tt:61 ../shtml/user_teacherpasswords.tt:52
 msgid "Schnellauswahl"
 msgstr "Quick selection"
 
@@ -4075,7 +4075,7 @@ msgstr "Student"
 #: ../shtml/myprojects.tt:1 ../shtml/myprojects_handedout.tt:1
 #: ../shtml/myprojects_handedoutcopy.tt:1 ../shtml/myprojects_tocollect.tt:1
 #: ../shtml/myroom.tt:1 ../shtml/myroom_handedoutcopy.tt:1
-#: ../shtml/myroom_tocollect.tt:1 ../shtml/page.tt:30 ../shtml/printers.tt:1
+#: ../shtml/myroom_tocollect.tt:1 ../shtml/page.tt:42 ../shtml/printers.tt:1
 #: ../shtml/printers_edit.tt:1 ../shtml/project.tt:1
 #: ../shtml/project_addmembers.tt:1 ../shtml/project_collect.tt:1
 #: ../shtml/project_drop_verify.tt:1 ../shtml/project_handout.tt:1
@@ -4100,15 +4100,15 @@ msgstr "Student"
 msgid "Schulkonsole"
 msgstr "School console"
 
-#: ../shtml/header.inc.tt:6 ../shtml/page.tt:26
+#: ../shtml/header.inc.tt:6 ../shtml/page.tt:38
 msgid "Schulkonsole für Lehrer/innen"
 msgstr "School console for teachers"
 
-#: ../shtml/header.inc.tt:4 ../shtml/page.tt:24
+#: ../shtml/header.inc.tt:4 ../shtml/page.tt:36
 msgid "Schulkonsole für Netzwerkberater/innen"
 msgstr "School console for network consultants"
 
-#: ../shtml/header.inc.tt:8 ../shtml/page.tt:28
+#: ../shtml/header.inc.tt:8 ../shtml/page.tt:40
 msgid "Schulkonsole für Schüler/innen"
 msgstr "School console for students"
 
@@ -4228,7 +4228,7 @@ msgstr "You are not the project leader of %s"
 msgid "Sitzungsdauer"
 msgstr "Duration of session"
 
-#: ../shtml/page.tt:68 ../shtml/status.inc.tt:9
+#: ../shtml/page.tt:80 ../shtml/status.inc.tt:9
 msgid "Sitzungsdauer:"
 msgstr "Duration of session:"
 
@@ -4720,7 +4720,7 @@ msgstr "Move is running."
 msgid "Versetzen wurde gestartet"
 msgstr "Transfer was already started"
 
-#: ../shtml/header.inc.tt:12 ../shtml/page.tt:32
+#: ../shtml/header.inc.tt:12 ../shtml/page.tt:44
 msgid "Version"
 msgstr "Version"
 
@@ -4823,11 +4823,11 @@ msgstr "Changes to this user not possible"
 #: ../shtml/class.tt:21 ../shtml/class_collect.tt:21
 #: ../shtml/class_handout.tt:20 ../shtml/class_handoutcopy.tt:21
 #: ../shtml/class_lesson.tt:20 ../shtml/class_list.tt:21
-#: ../shtml/class_passwords.tt:21 ../shtml/class_shares.tt:21
+#: ../shtml/class_passwords.tt:22 ../shtml/class_shares.tt:21
 #: ../shtml/myroom.tt:21 ../shtml/project.tt:22 ../shtml/project_collect.tt:20
 #: ../shtml/project_handout.tt:20 ../shtml/project_handoutcopy.tt:20
 #: ../shtml/project_lesson.tt:20 ../shtml/project_members.tt:19
-#: ../shtml/project_passwords.tt:21 ../shtml/project_shares.tt:20
+#: ../shtml/project_passwords.tt:22 ../shtml/project_shares.tt:20
 #: ../shtml/room.tt:22 ../shtml/room_lesson.tt:22
 msgid "Wechseln"
 msgstr "Switch"
@@ -4841,7 +4841,7 @@ msgstr "mail forward(s)"
 msgid "Weiterleitung(en) ändern"
 msgstr "mail forward(s)"
 
-#: ../shtml/page.tt:78 ../shtml/status.inc.tt:19
+#: ../shtml/page.tt:90 ../shtml/status.inc.tt:19
 msgid "Workstation:"
 msgstr "Work station:"
 
@@ -4944,11 +4944,11 @@ msgstr "Deselected"
 msgid "action muss 0, 1 oder 2 sein"
 msgstr "action must be 0, 1 or 2"
 
-#: ../shtml/page.tt:82 ../shtml/status.inc.tt:23
+#: ../shtml/page.tt:94 ../shtml/status.inc.tt:23
 msgid "aktive Klasse:"
 msgstr "active class:"
 
-#: ../shtml/page.tt:85
+#: ../shtml/page.tt:97
 msgid "aktives Projekt:"
 msgstr "current project:"
 
@@ -5068,7 +5068,7 @@ msgstr "No Lessons."
 msgid "keine Cachepartition"
 msgstr "no cache partition"
 
-#: ../shtml/user_teacherpasswords.tt:72
+#: ../shtml/user_teacherpasswords.tt:73
 msgid "keine Lehrer"
 msgstr "No teacher"
 
@@ -5200,7 +5200,7 @@ msgstr "at"
 
 #: ../shtml/myroom.tt:1 ../shtml/myroom.tt:26
 #: ../shtml/myroom_handedoutcopy.tt:8 ../shtml/myroom_tocollect.tt:8
-#: ../shtml/page.tt:76 ../shtml/room.tt:27 ../shtml/room_lesson.tt:27
+#: ../shtml/page.tt:88 ../shtml/room.tt:27 ../shtml/room_lesson.tt:27
 #: ../shtml/status.inc.tt:17
 msgid "unbekannt"
 msgstr "unknown"
@@ -5258,7 +5258,7 @@ msgstr "teaches in project"
 msgid "unterrichtet in der Klasse"
 msgstr "teaches in class"
 
-#: ../shtml/page.tt:69 ../shtml/status.inc.tt:10
+#: ../shtml/page.tt:81 ../shtml/status.inc.tt:10
 msgid "verbleibend:"
 msgstr "remaining:"
 

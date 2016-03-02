@@ -2194,7 +2194,7 @@ sub write_pxe_file {
 	my $lines = shift;
 
 	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOWRITEPXEAPP,
-		$id, $password, "$filename\n$lines";
+		$id, $password, "$filename\n$lines");
 }
 
 

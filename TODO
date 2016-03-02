@@ -76,3 +76,11 @@ Vereinfachung
 =============
  o build Umgebung ohne configure
  o Fehler abfangen ohne eval, sondern mit $SIG{__DIE__}-Routine
+
+Kompatibilität zu 6.1
+=====================
+ o utf8-Schüler: Fehler in Template.pm
+ o class_list wrapper-cyrus schlägt fehl
+ o project_passwords download schlägt fehl
+ o my_project - Verzeichnis für ausgeteilte Dateien nicht gefunden
+ o my_room*.tt - Dateien fehlen

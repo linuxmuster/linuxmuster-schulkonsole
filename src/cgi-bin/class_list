@@ -85,9 +85,11 @@ my $user_quotaroots = Schulkonsole::Cyrus::quota($id, $password, keys %$class_us
 
 my $user_printquotas;
 if ($sk_session->{template_vars}{'link_start_druckquotas'}) {
-    use Schulkonsole::Druckquotas;
-    $user_printquotas = Schulkonsole::Druckquotas::quota($id, $password, keys %$class_userdatas);
-    $sk_session->set_var('printquotas',1);
+    eval {
+    	require Schulkonsole::Druckquotas;
+    	$user_printquotas = Schulkonsole::Druckquotas::quota($id, $password, keys %$class_userdatas);
+    	$sk_session->set_var('printquotas',1);
+    };
 }
 
 my @students;

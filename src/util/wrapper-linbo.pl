@@ -641,7 +641,7 @@ Writes a LINBO PXE start file
 sub linbo_write_pxe {
 	my $filename = <>;
 	($filename) = $filename =~ /^([a-z\d_]+)$/;
-	exit (  Schulkonsole::Error::Linbo::WRAPPER_INVALID_FILENAME   )
+	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_FILENAME   )
 		unless defined $filename;
 
 	my $file = Schulkonsole::Encode::to_fs(

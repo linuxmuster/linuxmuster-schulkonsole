@@ -31,5 +31,5 @@ dist_shtml_DATA = example.tt login.tt logout.tt start.tt \
 	linbo_menuedit.tt linbo_pxeedit.tt \
 	myclass.tt myclass_handedout.tt myclass_handedoutcopy.tt myclass_tocollect.tt \
 	myprojects.tt myprojects_handedout.tt myprojects_handedoutcopy.tt myprojects_tocollect.tt \
-	myroom.tt \
+	myroom.tt myroom_handedoutcopy.tt myroom_tocollect.tt \
 	schulkonsole.js
