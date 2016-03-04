@@ -2047,7 +2047,7 @@ sub readsophomorixfileapp(){
 		         - Schulkonsole::Error::Sophomorix::WRAPPER_ERROR_BASE);
 
 	while (<FILE>) {
-		print get_decoded($_);
+		print $_;
 	}
 	close FILE;
 
