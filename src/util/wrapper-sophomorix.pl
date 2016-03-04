@@ -2220,7 +2220,7 @@ sub readsophomorixfileapp(){
 		or exit (  Schulkonsole::Error::SophomorixError::WRAPPER_CANNOT_OPEN_FILE );
 
 	while (<FILE>) {
-		print get_decoded($_);
+		print $_;
 	}
 	close FILE;
 
