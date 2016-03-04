@@ -64,15 +64,7 @@ if ($q->param('accept')) {
 	my @errors;
 
 	foreach my $key (keys %preferences_conf) {
-		if ($key eq 'conf_uefi_on') {
-			if (defined $q->param($key)) {
-				$preferences_conf_new{$key}=1;
-			}
-			else {
-				$preferences_conf_new{$key}=0;
-			}
-		} 
-		elsif (my $value = $q->param($key)) {	# will ignore $value == 0
+		if (my $value = $q->param($key)) {	# will ignore $value == 0
 			$value =~ s/^\s*(.+)\s*$/$1/;
 
 			if ($preferences_conf{$key} ne $value) {
@@ -190,10 +182,6 @@ corresponds to max_password_len in F<preferences.conf>
 
 corresponds to wlan_ldap_group in F<preferences.conf>
 
-=item C<conf_uefi_on>
-
-corresponds to uefi_on in F<preferences.conf>
-
 =cut
 
 	return (
@@ -202,7 +190,6 @@ corresponds to uefi_on in F<preferences.conf>
 		conf_min_password_len => int($Schulkonsole::Config::_min_password_len),
 		conf_max_password_len => int($Schulkonsole::Config::_max_password_len),
 		conf_wlan_ldap_group => $Schulkonsole::Config::_wlan_ldap_group,
-		conf_uefi_on => $Schulkonsole::Config::_uefi_on,
 	);
 }
 
@@ -221,7 +208,6 @@ sub new_preferences_lines {
 		conf_min_password_len => 'min_password_len',
 		conf_max_password_len => 'max_password_len',
 		conf_wlan_ldap_group => 'wlan_ldap_group',
-		conf_uefi_on => 'uefi_on',
 	);
 	my %key_map_rev = reverse %key_map;
 

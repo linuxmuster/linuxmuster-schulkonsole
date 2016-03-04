@@ -74,7 +74,6 @@ $VERSION = 0.06;
 	$_cups_printers_conf_file
 	$_wlan_defaults_file
 	$_wlan_ldap_group
-	$_uefi_on
 
 	$_login_template
 
@@ -866,10 +865,6 @@ This file defines the default wlan settings
 
 This variable holds the ldap group name, that wlan access is granted to.
 
-=item C<$_uefi_on>
-
-This variable controls Schulkonsole uefi functions usage
-
 =back
 
 =cut
@@ -886,7 +881,6 @@ use vars qw($_workstations_file $_workstations_log_file
             $_linbo_templates_dir $_linbo_templates_os_dir
             $_linbo_template_partition
             $_dhcpd_conf_file
-            $_uefi_on
             $_wlan_defaults_file $_wlan_ldap_group);
 
 
@@ -1316,7 +1310,6 @@ $_linbo_templates_os_dir = "$_linbo_templates_dir/os";
 $_linbo_template_partition = "$_linbo_templates_dir/part/start.conf.partition";
 $_wlan_defaults_file = '/etc/linuxmuster/wlan_defaults';
 $_wlan_ldap_group = 'p_wifi';
-$_uefi_on = 0;
 
 $_linbo_start_conf_prefix = $_linbo_dir . '/start.conf.';
 
@@ -1598,10 +1591,18 @@ sub permissions {
 	#FIXME: compatibility for linuxmuster-base 6.1
 	# o project_passwords erst ab 2.4.50 (disable page project_passwords)
 	# o sophomorix-print --back-in-time ab 2.4.51 (disable user_print)
+	# o linbo-grub2 / uefi ab 2.3 (disable linbo_grubedit, enable linbo_pxeedit, linbo_menuedit)
 	if($_lml_majorversion eq "6.1"){
 		foreach my $group (keys %permissions_pages){
 			delete $permissions_pages{$group}{"project_passwords"} if defined $permissions_pages{$group}{"project_passwords"};
-			delete $permissions_pages{$group}{"user_print"} if defined $permissions_pages{$group}{"user_print"};					
+			delete $permissions_pages{$group}{"user_print"} if defined $permissions_pages{$group}{"user_print"};
+			delete $permissions_pages{$group}{"linbo_grubedit"} if defined $permissions_pages{$group}{"linbo_grubedit"};
+		}
+	}
+	if($_lml_majorversion eq "6.2"){
+		foreach my $group (keys %permissions_pages){
+			delete $permissions_pages{$group}{"linbo_menuedit"} if defined $permissions_pages{$group}{"linbo_menuedit"};
+			delete $permissions_pages{$group}{"linbo_pxeedit"} if defined $permissions_pages{$group}{"linbo_pxeedit"};
 		}
 	}
 }
@@ -2361,8 +2362,6 @@ $_max_password_len = $preferences{max_password_len}
     if (exists $preferences{max_password_len});
 $_wlan_ldap_group = $preferences{wlan_ldap_group}
 	if (exists $preferences{wlan_ldap_group});
-$_uefi_on = $preferences{uefi_on}
-	if (exists $preferences{uefi_on});
 };
 
 

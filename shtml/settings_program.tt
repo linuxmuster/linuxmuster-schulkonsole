@@ -31,10 +31,6 @@
 <td><label [% labelfor("conf_wlan_ldap_group") %] accesskey="w">[% loc('WLAN-LDAP-Gruppe') %]</label></td>
 <td><input type="text" size="10" maxlength="10" name="conf_wlan_ldap_group" id="conf_wlan_ldap_group" value="[% conf_wlan_ldap_group %]"></td>
 </tr>
-<tr class="even">
-<td><label [% labelfor("conf_uefi_on") %] accesskey="u">[% loc('UEFI verwenden') %]</label></td>
-<td><input type="checkbox" name="conf_uefi_on" id="conf_uefi_on" [% IF conf_uefi_on == 1 %] checked[% END %]></td>
-</tr>
 </table>
 
 <p>

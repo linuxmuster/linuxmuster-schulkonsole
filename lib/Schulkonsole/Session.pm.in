@@ -1274,25 +1274,6 @@ sub get_back_session
 }
 
 
-=head3 C<is_uefi_on()>
-
-true if uefi is on false otherwise
-
-=head4 Description
-
-Reads $Schulkonsole::Config::uefi_on value and
-saves the vaule in the session.
-
-=cut
-
-sub is_uefi_on
-{
-	my $this = shift;
-	return (defined $this->param('uefi_on') ? 1 : 0 );
-}
-	
-	
-
 #=head2 Private methods
 
 sub init {
@@ -1402,14 +1383,6 @@ sub init {
 	
 	# set menu access variables
 	$this->set_var('quotaactivated',$Conf::use_quota eq $Schulkonsole::Config::_sophomorix_conf_true);
-	# uefi
-	if(defined $Schulkonsole::Config::_uefi_on and $Schulkonsole::Config::_uefi_on){
-		$this->set_var('uefi_on',1);
-	}
-	else {
-		$this->clear('uefi_on');
-	}
-	
 }
 
 
