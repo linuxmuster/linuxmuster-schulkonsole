@@ -58,6 +58,7 @@
 [% FOREACH m IN mountpoints %]
 <td><input size="6" maxlength="5" name="[% m %]_quotateacher" id="[% m %]_quotateacher" [% dovalue("${m}_quotateacher") %]> MB</td>
 [% END %]
+<td><input size="6" maxlength="5" name="mailquotateacher" id="mailquotateacher" [% dovalue("mailquotateacher") %]> MB</td>
 [% lfdnr = lfdnr + 1 %]</tr>
 </table>
 
@@ -77,6 +78,7 @@
 [% FOREACH m IN mountpoints %]
 <td><input size="6" maxlength="5" name="[% m %]_quotastudent" id="[% m %]_quotastudent" [% dovalue("${m}_quotastudent") %]> MB</td>
 [% END %]
+<td><input size="6" maxlength="5" name="mailquotastudent" id="mailquotastudent" [% dovalue("mailquotastudent") %]> MB</td>
 [% lfdnr = lfdnr + 1 %]</tr>
 </table>
 

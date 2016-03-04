@@ -1597,9 +1597,12 @@ sub permissions {
 	close PERMISSIONS;
 	#FIXME: compatibility for linuxmuster-base 6.1
 	# o project_passwords erst ab 2.4.50 (disable page project_passwords)
-	# o mymail erst ab sophomorix2-2.4.56-1 (disable start_mymail?)
-	# o sophomorix-print --back-in-time ab 2.4.51 (disable user_?)
+	# o sophomorix-print --back-in-time ab 2.4.51 (disable user_print)
 	if($_lml_majorversion eq "6.1"){
+		foreach my $group (keys %permissions_pages){
+			delete $permissions_pages{$group}{"project_passwords"} if defined $permissions_pages{$group}{"project_passwords"};
+			delete $permissions_pages{$group}{"user_print"} if defined $permissions_pages{$group}{"user_print"};					
+		}
 	}
 }
 

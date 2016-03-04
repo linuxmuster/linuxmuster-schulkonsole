@@ -111,11 +111,12 @@ my %latex_string = (
 
 my %sophomorix_conf = read_sophomorix_conf();
 my %quota_conf = read_quota_conf();
+my %mailquota_conf = read_mailquota_conf();
 my %filesystem_conf = read_filesystem_conf();
 my %sophomorix_conf_new;
 my %quota_conf_new;
+my %mailquota_conf_new;
 my %filesystem_conf_new;
-
 
 if ($q->param('accept')) {
 	eval {
@@ -177,6 +178,16 @@ if ($q->param('accept')) {
 				}
 				$quota_conf_new{$param} = $value;
 			}
+		} elsif (exists $mailquota_conf{$param}) {
+			my $value = $q->param($param);
+			$value =~ s/\s+//g;
+			if ($mailquota_conf{$param} ne $value) {
+				if ($value !~ /^\d+$/) {
+					$sk_session->mark_input_error($param);
+					push @errors, $sk_session->d()->get('Mailquota muss eine Zahl sein');
+				}
+				$mailquota_conf_new{$param} = $value;
+			}
 		} elsif (exists $filesystem_conf{$param}) {
 			if (not $filesystem_conf{$param}) {
 				$filesystem_conf_new{$param} = 1;
@@ -222,6 +233,21 @@ if ($q->param('accept')) {
 				$id, $password, $lines);
 
 			foreach my $key (keys %quota_conf_new) {
+				if ($key =~ /student$/) {
+					$do_quota_student = 1;
+				} else {
+					$do_quota_teacher = 1;
+				}
+			}
+
+			$is_changed = 1;
+		}
+		if (%mailquota_conf_new) {
+			my $lines = new_mailquota_lines(\%mailquota_conf_new, \%mailquota_conf);
+			Schulkonsole::Sophomorix::write_mailquota_conf(
+				$id, $password, $lines);
+
+			foreach my $key (keys %mailquota_conf_new) {
 				if ($key =~ /student$/) {
 					$do_quota_student = 1;
 				} else {
@@ -281,6 +307,14 @@ foreach my $key (keys %quota_conf) {
 		$q->param($key, $quota_conf_new{$key});
 	} else {
 		$q->param($key, $quota_conf{$key});
+	}
+}
+
+foreach my $key (keys %mailquota_conf) {
+	if (defined $mailquota_conf_new{$key}) {
+		$q->param($key, $mailquota_conf_new{$key});
+	} else {
+		$q->param($key, $mailquota_conf{$key});
 	}
 }
 
@@ -459,6 +493,58 @@ standard-schueler in F<quota.txt>
 	return %re;
 }
 
+sub read_mailquota_conf {
+	my %re;
+
+=item C<mailquotateacher>
+
+The value correspond to the value of
+standard-lehrer in F<mailquota.txt>
+
+=item C<mailquotastudent>
+
+The value correspond to the value of
+standard-schueler in F<mailquota.txt>
+
+=cut
+
+	my %key_map = (
+		mailquotateacher => 'standard-lehrer',
+		mailquotastudent => 'standard-schueler',
+#		mailquotaworkstation => 'standard-workstations',
+	);
+
+
+	if (open MAILQUOTACONF, '<',
+	         Schulkonsole::Encode::to_fs("$DevelConf::config_pfad/mailquota.txt")) {
+		flock MAILQUOTACONF, 1;
+
+		my %quotas;
+		while (<MAILQUOTACONF>) {
+			chomp;
+			s/\s+//g;
+			next if (not $_ or /^#/);
+
+			my ($key, $quota) = /^(\S+):(\d.+)$/;
+
+			$quotas{$key} = $quota;
+		}
+
+		close MAILQUOTACONF;
+
+		foreach my $quota (keys %key_map) {
+			$re{"$quota"} = (defined $quotas{$key_map{"$quota"}} ? $quotas{$key_map{"$quota"}} : -1);
+		}
+
+	} else {
+		print STDERR "Cannot open $DevelConf::config_pfad/mailquota.txt\n";
+
+		foreach my $quota (keys %key_map) {
+			$re{"$quota"} = -1;
+		}
+	}
+	return %re;
+}
 
 
 
@@ -612,6 +698,47 @@ sub new_quota_lines {
 		}
 	}
 
+
+	return \@lines;
+}
+
+sub new_mailquota_lines {
+	my $new = shift;
+	my $old = shift;
+	my %newquota = %$new;
+	
+	my %key_map = (
+		mailquotateacher => 'standard-lehrer',
+		mailquotastudent => 'standard-schueler',
+#		mailquotaworkstation => 'standard-workstations',
+	);
+
+	my @lines;
+	if (open MAILQUOTACONF, '<',
+	         Schulkonsole::Encode::to_fs("$DevelConf::config_pfad/mailquota.txt")) {
+
+		while (my $line = <MAILQUOTACONF>) {
+			foreach my $new_key (keys %newquota) {
+				my $key = $key_map{$new_key};
+				if ($line =~ /^\s*$key\s*:/) {
+					$line = "$key: $newquota{$new_key}\n";
+					delete $newquota{$new_key};
+
+					last;
+				}
+			}
+			push @lines, $line;
+		}
+	}
+
+	if (%newquota) {
+		push @lines, "# schulkonsole\n";
+
+		my $line;
+		foreach my $new_key (keys %newquota) {
+			push @lines, "$key_map{$new_key}: $newquota{$new_key}\n";
+		}
+	}
 
 	return \@lines;
 }
