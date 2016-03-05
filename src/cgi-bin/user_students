@@ -21,10 +21,12 @@ Schulkonsole::Session.
 =cut
 
 use strict;
+use CGI::Inspect;
 use utf8;
 use lib '/usr/share/schulkonsole';
 use Schulkonsole::Session;
 use Schulkonsole::Sophomorix;
+use Sophomorix::SophomorixConfig;
 
 my $this_file = 'user_students';
 
@@ -54,10 +56,17 @@ $q->param('studentsupload') and do {
 	my $filename = $q->param('studentsfilename');
 	if ($filename) {
 		my @lines;
-		while (<$filename>) {
-			push @lines, $_;
+		my $encoding = 'utf8';
+		if (defined $Conf::encoding_students) {
+			$encoding = $Conf::encoding_students;
+		} elsif (defined $DevelConf::encoding_students) {
+			$encoding = $DevelConf::encoding_students;
 		}
-
+		binmode $filename, ":encoding($encoding)";
+		while(<$filename>){
+			push @lines,$_;
+		}
+		
 		Schulkonsole::Sophomorix::write_students_file($id, $password, \@lines);
 
 		$sk_session->set_status($sk_session->d()->get(
