@@ -27,6 +27,14 @@ use lib '/usr/share/schulkonsole';
 use Schulkonsole::Session;
 use Schulkonsole::Sophomorix;
 use Sophomorix::SophomorixConfig;
+# --encoding-*-*
+my %supported_encodings = qw(
+    ascii    ascii
+    8859-1   iso-8859-1
+    8859-15  iso-8859-15
+    win1252  cp1252
+    utf8     utf8
+);
 
 my $this_file = 'user_students';
 
@@ -62,6 +70,13 @@ $q->param('studentsupload') and do {
 		} elsif (defined $DevelConf::encoding_students) {
 			$encoding = $DevelConf::encoding_students;
 		}
+		if (not exists $supported_encodings{$encoding}){
+			$encoding = "utf8";
+		}
+		else {
+			$encoding = $supported_encodings{$encoding};
+		}
+		
 		binmode $filename, ":encoding($encoding)";
 		while(<$filename>){
 			push @lines,$_;
