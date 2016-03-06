@@ -60,6 +60,10 @@ $('html').bind('keypress', function(e)
 </script>
     [% END %]
 
+	[% IF is_error == 0 %]
+	<div class="messageok"><p>[% status %]</p></div>
+	[% END %]
+	<div></div>
     <div id="content" class="content[% IF action %] [% action %][% END %][% IF page.classes %] [% page.classes %][% END %]">
         [% INCLUDE dialog.inc.tt %]
 
@@ -70,11 +74,8 @@ $('html').bind('keypress', function(e)
 
     <div id="info" style="display: block;">
     <a class="hideinfo" [% dohref("#") %] onclick="toggle_visibility('info');">^</a>
-        <div id="status"[% IF is_error == 0 %] class="ok"[% END %]>
+        <div id="status">
             <div></div>
-            [% IF status %]
-                <p>[% status %]</p>
-            [% END %]
             [% IF REMOTE_ADDR %]
                 <p class="info">
                 [% loc('Sitzungsdauer:') %] [% session_time %]<br>
