@@ -124,7 +124,6 @@ body {
 }
 
 .content, .widecontent {
-    position: absolute;
     margin: 0;
     padding: 0;
     width: 780px;
@@ -195,7 +194,7 @@ table#classesoverview input {
 
 #info {
     position: absolute;
-    top: 120px;
+    top: 140px;
     right: 20px;
     padding: 3px;
     width: 240px;
@@ -576,9 +575,8 @@ div.upload {
 div.messageok {
     color: white;
     background-color: #a9d400;
-    width: 50%;
+    width: 100%;
     padding-left: 10px;
-    height: 40px;
     font-size: 12px;
     font-weight: bold;
     overflow: hidden;
