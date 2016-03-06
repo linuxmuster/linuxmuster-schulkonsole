@@ -30,6 +30,7 @@ use utf8;
 use lib '/usr/share/schulkonsole';
 use open ':utf8';
 use open ':std';
+use Schulkonsole::Wrapper;
 use Schulkonsole::Config;
 use Schulkonsole::DB;
 use Schulkonsole::Encode;
@@ -39,44 +40,10 @@ use POSIX;
 
 
 
-my $id = <>;
-$id = int($id);
-my $password = <>;
-chomp $password;
+my $userdata=Schulkonsole::Wrapper::wrapper_authenticate();
+my $id = $$userdata{id};
 
-my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
-exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID
-      )
-	unless $userdata;
-
-my $app_id = <>;
-($app_id) = $app_id =~ /^(\d+)$/;
-exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST
-      )
-	unless defined $app_id;
-
-my $app_name = $Schulkonsole::Config::_id_root_app_names{$app_id};
-exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST
-      )
-	unless defined $app_name;
-
-
-
-my $permissions = Schulkonsole::Config::permissions_apps();
-my $groups = Schulkonsole::DB::user_groups(
-	$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
-
-my $is_permission_found = 0;
-foreach my $group (('ALL', keys %$groups)) {
-	if ($$permissions{$group}{$app_name}) {
-		$is_permission_found = 1;
-		last;
-	}
-}
-exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHORIZED_ID
-      )
-	unless $is_permission_found;
-
+my $app_id = Schulkonsole::Wrapper::wrapper_authorize($userdata);
 
 my $opts;
 SWITCH: {

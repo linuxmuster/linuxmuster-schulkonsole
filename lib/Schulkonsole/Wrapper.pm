@@ -1,6 +1,8 @@
 use strict;
 use utf8;
 use Schulkonsole::Error::Error;
+use Schulkonsole::Config;
+use Schulkonsole::DB;
 
 package Schulkonsole::Wrapper;
 
@@ -45,6 +47,11 @@ use vars qw(@ISA @EXPORT @EXPORT_OK);
 	MODE_LINES
 	MODE_FILE
 	MODE_RAW
+	
+	wrapcommand
+	wrap
+	wrapper_authenticate
+	wrapper_authorize
 );
 
 =head2 stream modes
@@ -171,6 +178,7 @@ or as a raw stream.
 Execute a function with root access and return it's result value.
 
 =cut
+
 sub wrap {
 	my $wrapcmd = shift;
 	my $errorclass = shift;
@@ -188,6 +196,121 @@ sub wrap {
 	return $in;
 	
 }
+
+=head3 wrapper_authenticate()
+
+used in wrapper
+
+Reads $id and $password from *STDIN and return userdata
+
+=over
+
+=Input parameters from *STDIN
+
+command from Schulkonsole::Config::_cmd...
+
+=<$id> number
+
+id number of invoking user
+
+=<$password>
+
+<password> of invoking user
+
+=output
+
+return hash containing userdata
+
+=back
+
+=cut
+
+sub wrapper_authenticate {
+	my $id = <>;
+	$id = int($id);
+	
+	my $password = <>;
+	chomp $password;
+	
+	my $userdata = Schulkonsole::DB::verify_password_by_id($id, $password);
+	exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID  )
+		unless $userdata;
+
+	return $userdata;
+	
+}
+
+=head3 wrapper_authorize($userdata,$appnames)
+
+used in wrapper
+
+Reads <app_id> from *STDIN and authorizes wrapper use otherwise extis with error condition
+
+=over
+
+=parameters
+
+=<$userdata>
+
+userdata of invoking user as returned from <wrapper_authenticate>
+
+=<$appnames>
+
+Hash that maps the numerical ID of an application in the permissions 
+configuration file to its name
+
+=Input parameters from *STDIN
+
+=<$app_id>
+
+number of invoked app
+
+=output
+
+=<$app_id>
+
+number of invoked app
+
+=back
+
+=cut
+
+sub wrapper_authorize {
+	my $userdata = shift;
+	my $appnames = shift;
+	$appnames = \%Schulkonsole::Config::_id_root_app_names
+					unless $appnames;
+	
+	my $app_id = <>;
+	($app_id) = $app_id =~ /^(\d+)$/;
+	exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST )
+		unless defined $app_id;
+	
+	my $app_name = $$appnames{$app_id};
+	exit (  Schulkonsole::Error::Error::WRAPPER_APP_ID_DOES_NOT_EXIST )
+		unless defined $app_name;
+	
+	my $permissions = Schulkonsole::Config::permissions_apps();
+	my $groups = Schulkonsole::DB::user_groups(
+		$$userdata{uidnumber}, $$userdata{gidnumber}, $$userdata{gid});
+	# FIXME: workaround for non existing students group!
+	if(! (defined $$groups{teachers} or defined $$groups{domadmins})) {
+		$$groups{'students'} = 1;
+	}
+	
+	my $is_permission_found = 0;
+	foreach my $group (('ALL', keys %$groups)) {
+		if ($$permissions{$group}{$app_name}) {
+			$is_permission_found = 1;
+			last;
+		}
+	}
+	exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHORIZED_ID  )
+		unless $is_permission_found;
+
+	return $app_id;
+}
+
 
 sub new {
 	my $class = shift;

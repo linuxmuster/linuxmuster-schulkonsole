@@ -4,6 +4,7 @@
 use strict;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
+use Schulkonsole::Wrapper;
 use Schulkonsole::Error::Error;
 use Schulkonsole::Error::FirewallError;
 use Schulkonsole::Config;
