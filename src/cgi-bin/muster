@@ -1,0 +1,104 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+muster - Beispieldatei
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/muster
+
+=head1 DESCRIPTION
+
+C<muster> <<kurze Erläuterung der Aufgabe>>
+
+=head2 Template variables
+
+<<Zusätzliche Variablen>>
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use open ':utf8';
+use Schulkonsole::Encode;
+use Schulkonsole::Linbo;
+use Schulkonsole::Session;
+use Schulkonsole::Muster;
+
+
+my $this_file = 'muster';
+
+
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+eval {
+
+SWITCHCOMMAND: {
+	$q->param('send') and do {
+	        my $eingabe = $q->param('eingabe');
+	
+	        if ($eingabe !~ /^test$/) {
+	                $sk_session->set_status(sprintf($sk_session->d()->get(
+	                        'Die Eingabe muss test lauten, lautet aber: %s'), $eingabe), 1);
+	                last SWITCHCOMMAND;
+	        }
+	        
+	        Schulkonsole::Muster::funktion1($id,$password);
+	
+	        $sk_session->set_status(sprintf($sk_session->d()->get(
+	                'Änderungen ausgeführt: %s'), $eingabe), 0);
+	        last SWITCHCOMMAND;
+	};
+
+};
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+=item C<eingabe>
+
+<<Beschreibung des Wertes>>
+
+=cut
+
+$sk_session->set_var('eingabe', 'hallo');
+
+=item C<muster>
+
+<<Beschreibung von Muster>>
+
+=cut
+
+$sk_session->set_var('muster', 1);
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<eingabe>
+
+=back
+
