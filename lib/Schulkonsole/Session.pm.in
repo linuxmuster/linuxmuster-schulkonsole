@@ -1,4 +1,5 @@
 use strict;
+use CGI::Inspect;
 use Socket;
 use POSIX;
 eval {
@@ -1180,28 +1181,29 @@ sub standard_error_handling {
 	my $error = shift;
 	my $do_redirect = shift;
 
+	my $error_str;
 	if (ref $error) {
-		my $error_str;
+		# password changed -> re-authenticate
+		if (   $error->{code} == Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID) {
+			$this->exit_with_login_page($page);
+		}
+
 		if ($error->{internal}) {
 			$error_str = $this->d()->get('Interner Fehler');
 			print STDERR $error;
 		} else {
 			$error_str = $error->what();
 		}
-
-		if ($do_redirect) {
-			$this->set_status_redirect($error_str, 1);
-		} else {
-			$this->set_status($error_str, 1);
-		}
-
-		# password changed -> re-authenticate
-		if (   $error->{code} == Schulkonsole::Error::Error::WRAPPER_UNAUTHENTICATED_ID) {
-			$this->exit_with_login_page($page);
-		}
 	} else {
-		die $error;
+		$error_str = $error;
 	}
+	if ($do_redirect) {
+		$this->set_status_redirect($error_str, 1);
+	} else {
+		$this->set_status($error_str, 1);
+	}
+	
+	$this->print_page("$page.tt",$page);
 }
 
 

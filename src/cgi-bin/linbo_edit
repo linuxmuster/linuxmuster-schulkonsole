@@ -51,7 +51,6 @@ if (not $sk_session->get_password()) {
 my $q = $sk_session->query();
 
 
-eval {
 my $groups = Schulkonsole::Config::linbogroups();
 
 my $group = $q->param('group');
@@ -411,7 +410,7 @@ Name of the selected group
                                                 ${ $@->{info} }[0],
                                                 $sk_session);
                                 } else {
-                                        $sk_session->standard_error_handling($@);
+                                        $sk_session->standard_error_handling($this_file, $@);
                                 }
                         }
                         last SWITCHCOMMAND;
@@ -473,10 +472,6 @@ Array of hashes describing the devices with the keys
 =cut
 
         $sk_session->set_var('devs', \@devs);
-}
-};
-if ($@) {
-        $sk_session->standard_error_handling($this_file, $@);
 }
 
 
