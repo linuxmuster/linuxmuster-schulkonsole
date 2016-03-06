@@ -328,7 +328,7 @@ defined $q->param('set_mymail') and do {
         last COMMANDS;
     }
     Schulkonsole::Sophomorix::set_user_mymail($id,$password,$mymail);
-    
+    $sk_session->set_status($sk_session->d()->get('Die Mailadresse wurde geändert.'),0);
     last COMMANDS;
 };
 

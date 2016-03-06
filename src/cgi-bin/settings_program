@@ -60,7 +60,6 @@ my %preferences_conf = read_preferences_conf();
 my %preferences_conf_new;
 
 if ($q->param('accept')) {
-	eval {
 	my @errors;
 
 	foreach my $key (keys %preferences_conf) {
@@ -126,10 +125,6 @@ if ($q->param('accept')) {
 
 		$sk_session->set_status(
 			$sk_session->d()->get('Änderungen übernommen'), 0);
-	}
-	};
-	if ($@) {
-		$sk_session->standard_error_handling($this_file, $@);
 	}
 } # if(accept...)
 
