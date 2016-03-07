@@ -17,7 +17,7 @@ $VERSION = 0.16;
 
 # package constants
 use constant {
-  <<Hier mit absteigenden Nummern die Fehlernummern zu den Fehlern hinzufügen: >>
+  ''<<Hier mit absteigenden Nummern die Fehlernummern zu den Fehlern hinzufügen: >>''
 	MEIN_ERSTER_FEHLER => Schulkonsole::Error::Error::NEXT_ERROR - 1,
 };
 

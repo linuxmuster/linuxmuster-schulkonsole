@@ -35,10 +35,9 @@ CFLAGS += -DMINUID=500	# uid of nwberater
 config.status: configure
 	dh_testdir
 	# Add here commands to configure the package.
-	./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --libexecdir=\$${prefix}/lib --sysconfdir=/etc/linuxmuster CFLAGS="$(CFLAGS)"
 
 configure:
-	autoreconf -i
+	# autoreconf -i
 
 build: build-stamp
 
@@ -46,8 +45,6 @@ build-stamp:  config.status
 	dh_testdir
 
 	# Add here commands to compile the package.
-	$(MAKE)
-	#docbook-to-man debian/schulkonsole.sgml > schulkonsole.1
 
 	touch build-stamp
 
@@ -57,14 +54,6 @@ clean:
 	rm -f build-stamp 
 
 	# Add here commands to clean up after the build process.
-	[ ! -f Makefile ] || $(MAKE) distclean
-ifneq "$(wildcard /usr/share/misc/config.sub)" ""
-	cp -f /usr/share/misc/config.sub config/config.sub
-endif
-ifneq "$(wildcard /usr/share/misc/config.guess)" ""
-	cp -f /usr/share/misc/config.guess config/config.guess
-endif
-
 
 	dh_clean 
 
@@ -74,17 +63,8 @@ install: build
 	dh_clean -k 
 	dh_installdirs -a var/run
 
-	# Add here commands to install the package into debian/tmp
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
-	install -d -o root -g root -m 755 $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole
-	install -d -o root -g root -m 755 $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/menus.d
-	install -d -o root -g root -m 755 $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/permissions.d
-	install -d -o root -g root -m 755 $(CURDIR)/debian/tmp/etc/apache2/sites-available
-	install -p -o root -g root -m 644 $(CURDIR)/doc/etc/apache2/sites-available/schulkonsole $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/apache2.conf
-	install -p -o root -g root -m 644 $(CURDIR)/doc/etc/schulkonsole/permissions.conf $(CURDIR)/debian/tmp/etc/linuxmuster/schulkonsole/permissions.conf
-
-	install -D -p -o root -g root -m 0644 debian/linuxmuster-schulkonsole.lintian debian/tmp/usr/share/lintian/overrides/linuxmuster-schulkonsole
-	install -D -p -o root -g root -m 0644 debian/linuxmuster-schulkonsole-wrapper.lintian debian/tmp/usr/share/lintian/overrides/linuxmuster-schulkonsole-wrapper
+	# Add here commands to install the package into DESTDIR
+	# $(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
 
 # Build architecture-independent files here.
 binary-indep: build install

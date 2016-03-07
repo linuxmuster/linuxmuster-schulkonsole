@@ -1,30 +1,16 @@
-debian/tmp/etc/linuxmuster/schulkonsole/menus.d/
-debian/tmp/etc/linuxmuster/schulkonsole/permissions.d/
-debian/tmp/etc/linuxmuster/schulkonsole/permissions.conf
-debian/tmp/etc/linuxmuster/schulkonsole/apache2.conf
-debian/tmp/var/lib/schulkonsole
-debian/tmp/usr/lib/schulkonsole/cgi-bin
-debian/tmp/usr/lib/schulkonsole/bin/wrapper-cyrus.pl
-debian/tmp/usr/lib/schulkonsole/bin/wrapper-user.pl
-debian/tmp/usr/lib/schulkonsole/bin/wrapper-debconf.pl
-debian/tmp/usr/lib/schulkonsole/bin/wrapper-files.pl
-debian/tmp/usr/lib/schulkonsole/bin/wrapper-firewall.pl
-debian/tmp/usr/lib/schulkonsole/bin/wrapper-linbo.pl
-debian/tmp/usr/lib/schulkonsole/bin/wrapper-ovpn.pl
-debian/tmp/usr/lib/schulkonsole/bin/wrapper-printer.pl
-debian/tmp/usr/lib/schulkonsole/bin/wrapper-sophomorix.pl
-debian/tmp/usr/lib/schulkonsole/bin/wrapper-radius.pl
-debian/tmp/usr/share/schulkonsole/Schulkonsole
-debian/tmp/usr/share/schulkonsole/linbo
-debian/tmp/usr/share/lintian/overrides/linuxmuster-schulkonsole
-debian/tmp/usr/share/schulkonsole/shtml/*.tt
-debian/tmp/usr/share/schulkonsole/shtml/*.js
-debian/tmp/usr/share/locale/*
+etc/linuxmuster/schulkonsole/menus.d/
+etc/linuxmuster/schulkonsole/permissions.d/
+etc/linuxmuster/schulkonsole/permissions.conf
+etc/linuxmuster/schulkonsole/apache2.conf
+var/lib/schulkonsole
+src/cgi-bin/* usr/lib/schulkonsole/cgi-bin
 
-doc/etc/schulkonsole/*	usr/share/doc/linuxmuster-schulkonsole/examples
-doc/lib/menus.d/*	usr/lib/schulkonsole/menus.d
-doc/lib/permissions.d/*	usr/lib/schulkonsole/permissions.d
-doc/scripts/*	usr/share/schulkonsole/scripts
+tt/*.tt usr/share/schulkonsole/tt
+tt/*.js usr/share/schulkonsole/shtml/*.js
+etc/schulkonsole/*	usr/share/doc/linuxmuster-schulkonsole/examples
+menus.d/*	usr/lib/schulkonsole/menus.d
+permissions.d/*	usr/lib/schulkonsole/permissions.d
+scripts/*	usr/share/schulkonsole/scripts
 jquery/*	usr/share/schulkonsole/jquery/
 css/*	usr/share/schulkonsole/css/
 sbin/*	usr/sbin/

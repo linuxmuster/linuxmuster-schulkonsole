@@ -1,23 +1,5 @@
 #!/bin/bash
 
-
-DEB_VERSION=$(head -n 1 debian/changelog  | sed -e "s/.*(\(.*\)).*/\1/")
-BUILD_VERSION=$(grep AC_INIT configure.ac  | sed -e "s/.*\[\(.*\)\].*/\1/")
-
-echo "Debian Version (aus debian/changelog): $DEB_VERSION"
-echo "Build-Version  (aus configure.ac)    : $BUILD_VERSION"
-
-
-# sicherstellen, dass in configure.ac die debian version steht
-sed  "s/$BUILD_VERSION/$DEB_VERSION/" < configure.ac > configure.ac.tmp
-mv configure.ac.tmp configure.ac
-
-
-# make messages
-automake
-[ -x ./configure ] || autoreconf --install
-./configure
-
 cd po
 make messages
 cd ..

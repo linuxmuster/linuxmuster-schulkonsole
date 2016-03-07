@@ -1,9 +1,11 @@
-AUTOMAKE_OPTIONS = foreign
-
 SUFFIXES = .po .pot .mo
+PACKAGE = schulkonsole
 
 # use xgettext.pl for tt files
 XGETTEXTTT = xgettext.pl
+XGETTEXT   = xgettext
+MSGMERGE   = msgmerge
+MSGFMT     = msgfmt
 
 # these are the supported languages, 
 ALL_LINGUAS = de en
@@ -12,23 +14,20 @@ MSGFILES = $(ALL_LINGUAS:=.mo)
 
 TEMPLATE = $(PACKAGE).pot
 
-libpdpodir = $(datarootdir)/locale
+libpdpodir = /usr/share/locale
 
 EXTRA_DIST = $(POFILES)
 
+INSTALL=install
+
 # install
-install-data-hook:
+install: $(MSGFILES)
 	for l in $(ALL_LINGUAS); do \
 	    $(INSTALL) -m 644 -D $(addsuffix .mo,$$l) $(DESTDIR)$(libpdpodir)/$$l/LC_MESSAGES/$(PACKAGE).mo; \
 	done
 
-# generate .mo files from the .po files
-all-local: $(MSGFILES)
-
-
-
 # refresh .po files from the template
-clean-local:
+clean:
 	-rm -f -- $(MSGFILES)
 	-rm -f -- $(POFILES:=~)
 	-rm -f -- $(TEMPLATE)
@@ -42,7 +41,7 @@ template: $(TEMPLATE)
 
 POTFILES.tt.in:
 	find ../doc/lib/menus.d -type f |sort >POTFILES.tt.in
-	find ../shtml -type f -name '*.tt' |sort >>POTFILES.tt.in
+	find ../tt -type f -name '*.tt' |sort >>POTFILES.tt.in
 
 POTFILES.perl.in:
 	find ../lib/Schulkonsole -type f -name '*.pm*' |sort >POTFILES.perl.in
