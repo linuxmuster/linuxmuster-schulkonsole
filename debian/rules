@@ -52,6 +52,8 @@ install:
 	(cd src/util; make install)
 	(cd Schulkonsole; make install)
 	(cd po; make install)
+	install -d -o root -g root -m 755 $(DESTDIR)/etc/linuxmuster/schulkonsole/menus.d
+	install -d -o root -g root -m 755 $(DESTDIR)/etc/linuxmuster/schulkonsole/permissions.d
 
 # Build architecture-independent files here.
 binary-indep:
