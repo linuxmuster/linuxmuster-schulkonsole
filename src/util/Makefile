@@ -23,6 +23,7 @@ build: setup $(BINARIES) build_script
 
 $(BUILDDIR)/%: $(BUILDDIR)/%.o
 	$(CC) $(CFLAGS) -I$(SOURCEDIR) $< -o $@
+	chmod -f 4755 $@
 
 $(BUILDDIR)/%.o: $(SOURCEDIR)/%.c setup
 	$(CC) $(CFLAGS) -c $< -o $@
