@@ -1,23 +1,14 @@
 #! /usr/bin/perl
 
 =head1 NAME
-
 muster - Beispieldatei
-
 =head1 SYNOPSIS
-
  https://server/schulkonsole/muster
-
 =head1 DESCRIPTION
-
 C<muster> <<kurze Erläuterung der Aufgabe>>
-
 =head2 Template variables
-
 <<Zusätzliche Variablen>>
-
 =over
-
 =cut
 
 use strict;
@@ -28,13 +19,13 @@ use Schulkonsole::Encode;
 use Schulkonsole::Linbo;
 use Schulkonsole::Session;
 use Schulkonsole::Muster;
-
+use Schulkonsole::Wrapper;
 
 my $this_file = 'muster';
+my $textdomain = 'muster';
 
 
-
-my $sk_session = new Schulkonsole::Session($this_file);
+my $sk_session = new Schulkonsole::Session($this_file,$textdomain);
 if (not $sk_session->get_password()) {
 	my $q = new CGI;
 	my $url = $q->url( -full => 1 );
@@ -56,14 +47,19 @@ SWITCHCOMMAND: {
 	        my $eingabe = $q->param('eingabe');
 	
 	        if ($eingabe !~ /^test$/) {
-	                $sk_session->set_status(sprintf($sk_session->d()->get(
+	                $sk_session->set_status(sprintf($sk_session->d($tetdomain)->get(
 	                        'Die Eingabe muss test lauten, lautet aber: %s'), $eingabe), 1);
 	                last SWITCHCOMMAND;
 	        }
-	        
+	        # Aufruf einer Systemfunktion über die Bibliothek Muster.
 	        Schulkonsole::Muster::funktion1($id,$password);
 	
-	        $sk_session->set_status(sprintf($sk_session->d()->get(
+		# Aufruf einer Systemfunktion direkt über die Wrapper-Klasse.
+		Schulkonsole::Wrapper::wrap($id,$password,
+				'/usr/lib/schulkonsole/bin/wrapper-muster',
+				'Schulkonsole::Error::MusterError');
+		
+	        $sk_session->set_status(sprintf($sk_session->d($textdomain)->get(
 	                'Änderungen ausgeführt: %s'), $eingabe), 0);
 	        last SWITCHCOMMAND;
 	};
@@ -89,7 +85,7 @@ $sk_session->set_var('eingabe', 'hallo');
 
 $sk_session->set_var('muster', 1);
 
-$sk_session->print_page("$this_file.tt", $this_file);
+$sk_session->print_page("$this_file.tt", $this_file, $textdomain);
 
 
 =back
