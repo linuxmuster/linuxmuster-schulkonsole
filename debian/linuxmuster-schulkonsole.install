@@ -1,17 +1,12 @@
-etc/linuxmuster/schulkonsole/menus.d/
-etc/linuxmuster/schulkonsole/permissions.d/
-etc/linuxmuster/schulkonsole/permissions.conf
-etc/linuxmuster/schulkonsole/apache2.conf
-var/lib/schulkonsole
 src/cgi-bin/* usr/lib/schulkonsole/cgi-bin
-
-tt/*.tt usr/share/schulkonsole/tt
-tt/*.js usr/share/schulkonsole/shtml/*.js
-etc/schulkonsole/*	usr/share/doc/linuxmuster-schulkonsole/examples
+src/util/*.pl usr/lib/schulkonsole/bin
+tt/* usr/share/schulkonsole/tt
+linuxmuster/schulkonsole/*	usr/share/doc/linuxmuster-schulkonsole/examples
 menus.d/*	usr/lib/schulkonsole/menus.d
 permissions.d/*	usr/lib/schulkonsole/permissions.d
 scripts/*	usr/share/schulkonsole/scripts
 jquery/*	usr/share/schulkonsole/jquery/
 css/*	usr/share/schulkonsole/css/
 sbin/*	usr/sbin/
-etc/linuxmuster/*	etc/linuxmuster/
+linuxmuster/*	etc/linuxmuster/
+apache2/*	etc/apache2/

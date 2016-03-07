@@ -20,8 +20,10 @@ EXTRA_DIST = $(POFILES)
 
 INSTALL=install
 
+build: $(MSGFILES)
+
 # install
-install: $(MSGFILES)
+install: build
 	for l in $(ALL_LINGUAS); do \
 	    $(INSTALL) -m 644 -D $(addsuffix .mo,$$l) $(DESTDIR)$(libpdpodir)/$$l/LC_MESSAGES/$(PACKAGE).mo; \
 	done
@@ -40,11 +42,11 @@ messages: $(POFILES)
 template: $(TEMPLATE)
 
 POTFILES.tt.in:
-	find ../doc/lib/menus.d -type f |sort >POTFILES.tt.in
+	find ..//menus.d -type f |sort >POTFILES.tt.in
 	find ../tt -type f -name '*.tt' |sort >>POTFILES.tt.in
 
 POTFILES.perl.in:
-	find ../lib/Schulkonsole -type f -name '*.pm*' |sort >POTFILES.perl.in
+	find ../Schulkonsole -type f -name '*.pm*' |sort >POTFILES.perl.in
 	find ../src/cgi-bin -type f -not -name 'Makefile.*' |sort >>POTFILES.perl.in
 
 $(TEMPLATE): POTFILES.tt.in POTFILES.perl.in

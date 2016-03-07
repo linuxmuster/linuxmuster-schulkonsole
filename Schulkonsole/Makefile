@@ -15,11 +15,9 @@ RM = rm -f
 MAKE = make
 INSTALL = install
 
-clean:
-	$(RM) $(GENERATED)
+build: $(GENERATED)
 
-
-install: $(PERLFILES)
+install: build
 	for datei in $(PERLFILES) ; do \
 	    $(INSTALL) -m 755 -o 0 -g 0 $$datei $(DESTDIR)$(perllibdir)/$$datei ; \
 	done
@@ -39,3 +37,8 @@ do_subst = sed \
 
 %.pm: %.pm.in
 	$(do_subst) $(srcdir)/$@.in > $@
+
+clean:
+	$(RM) $(GENERATED)
+
+

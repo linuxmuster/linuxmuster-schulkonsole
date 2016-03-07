@@ -2,7 +2,6 @@ OS = Linux
 
 VERSION = 0.31.0
 CC      = /usr/bin/gcc
-CFLAGS  = -Wall -g -D_REENTRANT -DVERSION=\"$(VERSION)\"
 
 BUILDDIR = build
 SOURCEDIR = .
@@ -18,9 +17,8 @@ RM = rm -rf
 MKDIR = mkdir
 INSTALL = install
 
-.PHONY: all clean setup 
 
-all: setup install clean
+build: setup $(BINARIES)
 
 $(BUILDDIR)/%: $(BUILDDIR)/%.o
 	$(CC) $(CFLAGS) -I$(SOURCEDIR) $< -o $@
@@ -32,7 +30,7 @@ setup:
 	$(MKDIR) -p $(BUILDDIR)
 	$(MKDIR) -p $(DESTDIR)$(EXECDIR)
 
-install_bin: $(BINARIES)
+install_bin: build
 	for datei in $(patsubst $(BUILDDIR)/%,%,$(BINARIES)) ; do \
 	    $(INSTALL) -m 4755 -o 0 -g 0 $(BUILDDIR)/$$datei $(DESTDIR)$(EXECDIR)/$$datei ; \
 	done

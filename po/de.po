@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the schulkonsole package.
 # root <root@linuxmuster.lokal>, 2014.
 #
-#: ../lib/Schulkonsole/Session.pm.in:1540
+#: ../Schulkonsole/Session.pm:1540 ../Schulkonsole/Session.pm.in:1540
 msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2016-03-07 22:02+0100\n"
+"POT-Creation-Date: 2016-03-07 22:47+0100\n"
 "PO-Revision-Date: 2014-04-06 14:22+0200\n"
 "Last-Translator: root <root@linuxmuster.lokal>\n"
 "Language-Team: German\n"
@@ -155,7 +155,7 @@ msgstr ""
 msgid "%s ist kein Registrypatch"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1141
+#: ../Schulkonsole/Linbo.pm:1141
 #, perl-format
 msgid "%s ist kein gültiger Devicename"
 msgstr ""
@@ -227,7 +227,7 @@ msgstr ""
 msgid "%s nach %s umbenannt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1147
+#: ../Schulkonsole/Linbo.pm:1147
 #, perl-format
 msgid "%s wird mehrmals verwendet"
 msgstr ""
@@ -929,7 +929,7 @@ msgstr ""
 msgid "Allen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:156
+#: ../Schulkonsole/Error/Error.pm:156
 msgid "Allgemeiner Fehler"
 msgstr ""
 
@@ -960,7 +960,7 @@ msgstr ""
 msgid "Angelegte Benutzer"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1447
+#: ../Schulkonsole/Session.pm:1447 ../Schulkonsole/Session.pm.in:1447
 msgid "Angemeldet"
 msgstr ""
 
@@ -1021,7 +1021,7 @@ msgstr ""
 msgid "Assistent zur Erstellung einer neuen Rechnergruppe"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1163
+#: ../Schulkonsole/Linbo.pm:1163
 #, perl-format
 msgid "Auf der Cachepartition %s darf kein Betriebssystem installiert sein"
 msgstr ""
@@ -1078,7 +1078,7 @@ msgstr ""
 msgid "Ausführung"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1331
+#: ../Schulkonsole/Session.pm:1331 ../Schulkonsole/Session.pm.in:1331
 msgid "Ausgabe des Hintergrundprozess: "
 msgstr ""
 
@@ -1159,11 +1159,11 @@ msgstr ""
 msgid "Auszuteilende Dateien"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:192
+#: ../Schulkonsole/Error/Error.pm:192
 msgid "Authentifizierung fehlgeschlagen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:180
+#: ../Schulkonsole/Error/Error.pm:180
 msgid "Authentifizierung fehlgeschlagen nach ID"
 msgstr ""
 
@@ -1210,7 +1210,7 @@ msgstr ""
 msgid "Beenden"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:78
+#: ../Schulkonsole/Error/LinboError.pm:78
 msgid "Befehl konnte nicht ausgeführt werden"
 msgstr ""
 
@@ -1218,7 +1218,7 @@ msgstr ""
 msgid "Befehle"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1160
+#: ../Schulkonsole/Linbo.pm:1160
 #, perl-format
 msgid "Bei %s muss eine Größe angegeben werden"
 msgstr ""
@@ -1244,7 +1244,7 @@ msgstr ""
 msgid "Benutzer"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/CyrusError.pm:36
+#: ../Schulkonsole/Error/CyrusError.pm:36
 msgid "Benutzer \"cyrus\" gibt es nicht"
 msgstr ""
 
@@ -1286,7 +1286,7 @@ msgstr ""
 msgid "Benutzer anlegen/versetzen/löschen läuft..."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:148
+#: ../Schulkonsole/Error/Error.pm:148
 msgid "Benutzer existiert nicht"
 msgstr ""
 
@@ -1545,7 +1545,7 @@ msgstr ""
 msgid "Datei gelöscht."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:154
+#: ../Schulkonsole/Error/Error.pm:154
 msgid "Datei hat falsches Format"
 msgstr ""
 
@@ -1605,7 +1605,7 @@ msgstr ""
 msgid "Dateiname"
 msgstr ""
 
-#: ../tt/linbo_edit_oss.inc.tt:78 ../lib/Schulkonsole/Linbo.pm:1088
+#: ../tt/linbo_edit_oss.inc.tt:78 ../Schulkonsole/Linbo.pm:1088
 msgid "Dateiname des Basis-Image"
 msgstr ""
 
@@ -1630,11 +1630,11 @@ msgstr ""
 msgid "Daten zur Passwortänderung unvollständig"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:162
+#: ../Schulkonsole/Error/Error.pm:162
 msgid "Datenuebertragung (lesen) unterbrochen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:160
+#: ../Schulkonsole/Error/Error.pm:160
 msgid "Datenuebertragung (schreiben) unterbrochen"
 msgstr ""
 
@@ -1681,7 +1681,7 @@ msgstr ""
 msgid "Die Benutzerdaten müssen noch in das System übernommen werden."
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1166
+#: ../Schulkonsole/Linbo.pm:1166
 #, perl-format
 msgid "Die Cachepartition %s benötigt ein GNU/Linux-Dateisystem"
 msgstr ""
@@ -1742,7 +1742,7 @@ msgid ""
 "href=\"hosts\">Hosts-Liste</a>."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:202
+#: ../Schulkonsole/Error/SophomorixError.pm:202
 msgid "Die Mailadresse konnte nicht gespeichert werden."
 msgstr ""
 
@@ -1766,7 +1766,7 @@ msgstr ""
 msgid "Die Wartezeit nach jedem Rechner ist ungültig."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:200
+#: ../Schulkonsole/Error/SophomorixError.pm:200
 msgid "Die angegebene Mailadresse ist ungültig"
 msgstr ""
 
@@ -1774,7 +1774,7 @@ msgstr ""
 msgid "Die eingegebene Mail-Adresse ist ungültig."
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1157
+#: ../Schulkonsole/Linbo.pm:1157
 #, perl-format
 msgid "Die erweiterte Partition %s ist nicht erlaubt"
 msgstr ""
@@ -1818,7 +1818,7 @@ msgid ""
 "Sie es bitte in Kürze noch einmal."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/DebconfError.pm:43
+#: ../Schulkonsole/Error/DebconfError.pm:43
 msgid "Dieser Bereich/Name darf nicht abgefragt werden"
 msgstr ""
 
@@ -1997,75 +1997,75 @@ msgstr ""
 msgid "Erstpasswort anzeigen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:154
+#: ../Schulkonsole/Error/SophomorixError.pm:154
 msgid "Erwarte 0 (PDF) oder 1 (CSV) fuer filetype"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:156
+#: ../Schulkonsole/Error/SophomorixError.pm:156
 msgid "Erwarte 0 (reset), 1 (passwd) oder 3 (random) fuer type"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/FirewallError.pm:66
+#: ../Schulkonsole/Error/FirewallError.pm:66
 msgid "Erwarte 0 oder 1 für scope"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:178
+#: ../Schulkonsole/Error/SophomorixError.pm:178
 msgid "Erwarte 0, 1 oder 2 fuer mode"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:168
+#: ../Schulkonsole/Error/SophomorixError.pm:168
 msgid "Erwarte 0, 1, 2 oder 3 fuer scope"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:182
+#: ../Schulkonsole/Error/SophomorixError.pm:182
 msgid "Erwarte 1 bis 7 fuer flags"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:152
+#: ../Schulkonsole/Error/SophomorixError.pm:152
 msgid "Erwarte 1 oder 0 fuer do_add"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:138
+#: ../Schulkonsole/Error/SophomorixError.pm:138
 msgid "Erwarte 1 oder 0 fuer do_copy"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:170
+#: ../Schulkonsole/Error/SophomorixError.pm:170
 msgid "Erwarte 1 oder 0 fuer do_create"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:160
+#: ../Schulkonsole/Error/SophomorixError.pm:160
 msgid "Erwarte 1 oder 0 fuer is_groups"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:188
+#: ../Schulkonsole/Error/SophomorixError.pm:188
 msgid "Erwarte 1 oder 0 fuer is_open"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:162
+#: ../Schulkonsole/Error/SophomorixError.pm:162
 msgid "Erwarte 1 oder 0 fuer is_public"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:164
+#: ../Schulkonsole/Error/SophomorixError.pm:164
 msgid "Erwarte 1 oder 0 fuer is_upload"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:72
+#: ../Schulkonsole/Error/LinboError.pm:72
 msgid "Erwarte 1 oder 0 für is_example"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:196
+#: ../Schulkonsole/Error/SophomorixError.pm:196
 msgid "Erwarte 1,2 oder 3 fuer action"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:198
+#: ../Schulkonsole/Error/SophomorixError.pm:198
 msgid "Erwarte Verzeichnis, fand Datei (oder umgekehrt)"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:140
+#: ../Schulkonsole/Error/SophomorixError.pm:140
 msgid "Erwarte numerische Angabe fuer \"from\""
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:142
+#: ../Schulkonsole/Error/SophomorixError.pm:142
 msgid "Erwarte numerische Angabe fuer \"type\""
 msgstr ""
 
@@ -2191,7 +2191,7 @@ msgid ""
 "Bitte überprüfen Sie die <a href=\"hosts\">Hosts-Liste</a>."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:142
+#: ../Schulkonsole/Error/Error.pm:142
 msgid "Execute fehlgeschlagen"
 msgstr ""
 
@@ -2211,7 +2211,7 @@ msgstr ""
 msgid "Extraschüler editieren"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:164
+#: ../Schulkonsole/Error/Error.pm:164
 msgid "Falscher Programmaufruf"
 msgstr ""
 
@@ -2226,15 +2226,15 @@ msgstr ""
 msgid "Fehler bei der Zertifikatserstellung."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:138
+#: ../Schulkonsole/Error/Error.pm:138
 msgid "Fehler im Hintergrundprozess"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:136
+#: ../Schulkonsole/Error/Error.pm:136
 msgid "Fehler im Hintergrundprozess: "
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:66
+#: ../Schulkonsole/Error/LinboError.pm:66
 msgid "Fehler in der Konfiguration"
 msgstr ""
 
@@ -2272,7 +2272,7 @@ msgstr ""
 msgid "Festplattenquota:"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:144
+#: ../Schulkonsole/Error/Error.pm:144
 msgid "Fetch fehlgeschlagen"
 msgstr ""
 
@@ -2280,7 +2280,7 @@ msgstr ""
 msgid "Folgende Benutzer werden automatisch entfernt:"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:188
+#: ../Schulkonsole/Error/Error.pm:188
 msgid "Fork nicht moeglich"
 msgstr ""
 
@@ -2288,7 +2288,7 @@ msgstr ""
 msgid "Für"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1154
+#: ../Schulkonsole/Linbo.pm:1154
 #, perl-format
 msgid "Für %s existieren mehrere erweiterte Partitionen"
 msgstr ""
@@ -2298,7 +2298,7 @@ msgstr ""
 msgid "Für Benutzer %s gibt es bereits einen Eintrag"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1150
+#: ../Schulkonsole/Linbo.pm:1150
 #, perl-format
 msgid "Für die Partition %s existiert keine erweiterte Partition"
 msgstr ""
@@ -2343,7 +2343,7 @@ msgstr ""
 msgid "Gruppe %s existiert nicht"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:86
+#: ../Schulkonsole/Error/LinboError.pm:86
 msgid "Gruppe nicht gefunden"
 msgstr ""
 
@@ -2351,11 +2351,11 @@ msgstr ""
 msgid "Gruppen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/RadiusError.pm:54
+#: ../Schulkonsole/Error/RadiusError.pm:54
 msgid "Gruppendatei konnte nicht gelesen werden"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/RadiusError.pm:52
+#: ../Schulkonsole/Error/RadiusError.pm:52
 msgid "Gruppendatei konnte nicht geschrieben werden"
 msgstr ""
 
@@ -2553,7 +2553,7 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1186
+#: ../Schulkonsole/Session.pm:1186 ../Schulkonsole/Session.pm.in:1186
 msgid "Interner Fehler"
 msgstr ""
 
@@ -2590,12 +2590,11 @@ msgstr ""
 msgid "Kann Datei %s nicht öffnen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:152
-#: ../lib/Schulkonsole/Error/Error.pm:190
+#: ../Schulkonsole/Error/Error.pm:152 ../Schulkonsole/Error/Error.pm:190
 msgid "Kann Datei nicht oeffnen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/FilesError.pm:37
+#: ../Schulkonsole/Error/FilesError.pm:37
 msgid "Kann Datei nicht öffnen"
 msgstr ""
 
@@ -2604,8 +2603,8 @@ msgstr ""
 msgid "Kann Logdatei nicht öffnen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/FirewallError.pm:68
-#: ../lib/Schulkonsole/Error/PrinterError.pm:48
+#: ../Schulkonsole/Error/FirewallError.pm:68
+#: ../Schulkonsole/Error/PrinterError.pm:48
 msgid "Kann printers.conf nicht öffnen"
 msgstr ""
 
@@ -2618,8 +2617,8 @@ msgstr ""
 msgid "Kein Workstationpasswort angegeben."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/PrinterError.pm:56
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:128
+#: ../Schulkonsole/Error/PrinterError.pm:56
+#: ../Schulkonsole/Error/SophomorixError.pm:128
 msgid "Keine Benutzer"
 msgstr ""
 
@@ -2633,7 +2632,7 @@ msgstr ""
 msgid "Keine Benutzer ausgewählt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:132
+#: ../Schulkonsole/Error/SophomorixError.pm:132
 msgid "Keine Benutzer-IDs"
 msgstr ""
 
@@ -2645,7 +2644,7 @@ msgstr ""
 msgid "Keine Druckaufträge"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/PrinterError.pm:52
+#: ../Schulkonsole/Error/PrinterError.pm:52
 msgid "Keine Drucker"
 msgstr ""
 
@@ -2657,11 +2656,11 @@ msgstr ""
 msgid "Keine Gruppe ausgewählt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/RadiusError.pm:46
+#: ../Schulkonsole/Error/RadiusError.pm:46
 msgid "Keine Gruppen angegeben"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/FirewallError.pm:54
+#: ../Schulkonsole/Error/FirewallError.pm:54
 msgid "Keine Hosts"
 msgstr ""
 
@@ -2677,7 +2676,7 @@ msgstr ""
 msgid "Keine Templates vorhanden."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:150
+#: ../Schulkonsole/Error/Error.pm:150
 msgid "Keine Workstationbenutzer"
 msgstr ""
 
@@ -2840,11 +2839,11 @@ msgstr ""
 msgid "Konfigurationsdateien editieren"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:180
+#: ../Schulkonsole/Error/SophomorixError.pm:180
 msgid "Konnte Berechtigung nicht aendern"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:194
+#: ../Schulkonsole/Error/SophomorixError.pm:194
 msgid "Konnte Datei nicht finden"
 msgstr ""
 
@@ -2892,7 +2891,7 @@ msgstr ""
 msgid "LINBO-Kerneloptionen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1107
+#: ../Schulkonsole/Linbo.pm:1107
 #, perl-format
 msgid "Leerer Wert für \"%s\" bei %s auf %s"
 msgstr ""
@@ -2980,7 +2979,7 @@ msgstr ""
 msgid "Login %s schon vorhanden"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1450
+#: ../Schulkonsole/Session.pm:1450 ../Schulkonsole/Session.pm.in:1450
 msgid "Login fehlgeschlagen"
 msgstr ""
 
@@ -3229,7 +3228,7 @@ msgstr ""
 msgid "Name des Betriebssystems"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1113
+#: ../Schulkonsole/Linbo.pm:1113
 #, perl-format
 msgid "Name mit Version (\"%s\") muss bei Betriebssystemen eindeutig sein."
 msgstr ""
@@ -3286,7 +3285,7 @@ msgstr ""
 msgid "Neues System hinzufügen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:204
+#: ../Schulkonsole/Error/SophomorixError.pm:204
 msgid "Nicht alle Einhängepunkte(mount points) gefunden"
 msgstr ""
 
@@ -3294,11 +3293,11 @@ msgstr ""
 msgid "Nicht alle angegebenen Befehle sind gültig."
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:170
+#: ../Schulkonsole/Error/Error.pm:170
 msgid "Nicht autorisierter Aufrufer"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:184
+#: ../Schulkonsole/Error/Error.pm:184
 msgid "Nicht autorisierter Aufrufer nach ID"
 msgstr ""
 
@@ -3427,7 +3426,7 @@ msgstr ""
 msgid "Partition bootbar:"
 msgstr ""
 
-#: ../tt/linbo_edit_oss.inc.tt:83 ../lib/Schulkonsole/Linbo.pm:1089
+#: ../tt/linbo_edit_oss.inc.tt:83 ../Schulkonsole/Linbo.pm:1089
 msgid "Partition, die Kernel und initrd enthält"
 msgstr ""
 
@@ -3508,11 +3507,11 @@ msgstr ""
 msgid "Passwörter zurückgesetzt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:134
+#: ../Schulkonsole/Error/Error.pm:134
 msgid "Perl Kompilierungsfehler"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1090
+#: ../Schulkonsole/Linbo.pm:1090
 msgid "Pfad zum Kernel"
 msgstr ""
 
@@ -3524,7 +3523,7 @@ msgstr ""
 msgid "Platz"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:140
+#: ../Schulkonsole/Error/Error.pm:140
 msgid "Prepare fehlgeschlagen"
 msgstr ""
 
@@ -3532,11 +3531,11 @@ msgstr ""
 msgid "Private Mail-Adresse"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:182
+#: ../Schulkonsole/Error/Error.pm:182
 msgid "Programm-ID unbekannt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:168
+#: ../Schulkonsole/Error/Error.pm:168
 msgid "Programmaufruf fehlgeschlagen"
 msgstr ""
 
@@ -3628,7 +3627,7 @@ msgstr ""
 msgid "Projektname"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:176
+#: ../Schulkonsole/Error/SophomorixError.pm:176
 msgid "Prozess laeuft schon"
 msgstr ""
 
@@ -3651,7 +3650,7 @@ msgstr ""
 msgid "Raum"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:88
+#: ../Schulkonsole/Error/LinboError.pm:88
 msgid "Raum nicht gefunden"
 msgstr ""
 
@@ -3663,11 +3662,11 @@ msgstr ""
 msgid "Raumbezeichnung"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/FirewallError.pm:64
+#: ../Schulkonsole/Error/FirewallError.pm:64
 msgid "Raumdatei kann nicht gelesen werden"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/FirewallError.pm:62
+#: ../Schulkonsole/Error/FirewallError.pm:62
 msgid "Raumdatei kann nicht geschrieben werden"
 msgstr ""
 
@@ -3683,7 +3682,7 @@ msgstr ""
 msgid "Rechner bearbeiten"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:84
+#: ../Schulkonsole/Error/LinboError.pm:84
 msgid "Rechner nicht gefunden"
 msgstr ""
 
@@ -3770,7 +3769,7 @@ msgstr ""
 msgid "Schnellauswahl"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1486
+#: ../Schulkonsole/Session.pm:1486 ../Schulkonsole/Session.pm.in:1486
 msgid "Schueler"
 msgstr ""
 
@@ -3942,11 +3941,11 @@ msgstr ""
 msgid "Sitzungsdauer:"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:176
+#: ../Schulkonsole/Error/Error.pm:176
 msgid "Skript nicht vorhanden"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:178
+#: ../Schulkonsole/Error/Error.pm:178
 msgid "Skriptaufruf fehlgeschlagen"
 msgstr ""
 
@@ -4103,24 +4102,24 @@ msgstr ""
 msgid "Uhr"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:194
+#: ../Schulkonsole/Error/Error.pm:194
 msgid "Unbekannte Gruppe"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:146
+#: ../Schulkonsole/Error/Error.pm:146
 msgid "Unbekannte Passwortverschluesselung"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:200
+#: ../Schulkonsole/Error/Error.pm:200
 msgid "Unbekannter Fehler "
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1169
+#: ../Schulkonsole/Linbo.pm:1169
 #, perl-format
 msgid "Unbekannter Fehler bei %s/%s"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1116
+#: ../Schulkonsole/Linbo.pm:1116
 #, perl-format
 msgid "Unbekannter Fehler für %s bei %s auf %s"
 msgstr ""
@@ -4129,11 +4128,11 @@ msgstr ""
 msgid "Unbekannter Festplattencontroller"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:166
+#: ../Schulkonsole/Error/Error.pm:166
 msgid "Unbekannter Programmaufruf"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/FirewallError.pm:70
+#: ../Schulkonsole/Error/FirewallError.pm:70
 msgid "Unbekannter Raum"
 msgstr ""
 
@@ -4141,161 +4140,161 @@ msgstr ""
 msgid "Unbekannter Systemtyp"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:208
+#: ../Schulkonsole/Error/Error.pm:208
 msgid "Unbekannter externer Fehler "
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/PrinterError.pm:62
+#: ../Schulkonsole/Error/PrinterError.pm:62
 msgid "Unerwartete Programmausgabe"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:130
+#: ../Schulkonsole/Error/SophomorixError.pm:130
 msgid "Ungueltige Benutzer-ID"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:148
+#: ../Schulkonsole/Error/SophomorixError.pm:148
 msgid "Ungueltige Klassen-GID"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:186
+#: ../Schulkonsole/Error/Error.pm:186
 msgid "Ungueltige Session-ID"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:150
+#: ../Schulkonsole/Error/SophomorixError.pm:150
 msgid "Ungueltige Subklasse"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:126
+#: ../Schulkonsole/Error/SophomorixError.pm:126
 msgid "Ungueltiger Benutzer"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:144
+#: ../Schulkonsole/Error/SophomorixError.pm:144
 msgid "Ungueltiger Raum"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:136
+#: ../Schulkonsole/Error/SophomorixError.pm:136
 msgid "Ungueltiger Raumbezeichner"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:192
+#: ../Schulkonsole/Error/SophomorixError.pm:192
 msgid "Ungueltiger Wert fuer Dateiname"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:184
+#: ../Schulkonsole/Error/SophomorixError.pm:184
 msgid "Ungueltiger Wert fuer diskquota"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:172
+#: ../Schulkonsole/Error/SophomorixError.pm:172
 msgid "Ungueltiger Wert fuer longname"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:186
+#: ../Schulkonsole/Error/SophomorixError.pm:186
 msgid "Ungueltiger Wert fuer mailquota"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:174
+#: ../Schulkonsole/Error/SophomorixError.pm:174
 msgid "Ungueltiger Wert fuer number"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:158
+#: ../Schulkonsole/Error/SophomorixError.pm:158
 msgid "Ungueltiger Wert fuer password"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:166
+#: ../Schulkonsole/Error/SophomorixError.pm:166
 msgid "Ungueltiger Wert fuer projectgid"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:190
+#: ../Schulkonsole/Error/SophomorixError.pm:190
 msgid "Ungueltiger Wert, action sollte eine Zahl sein"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:146
+#: ../Schulkonsole/Error/SophomorixError.pm:146
 msgid "Ungueltiges Projekt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:92
+#: ../Schulkonsole/Error/LinboError.pm:92
 msgid "Ungültige Befehle"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/PrinterError.pm:60
+#: ../Schulkonsole/Error/PrinterError.pm:60
 msgid "Ungültige Daten fuer Druckquota"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/PrinterError.pm:58
+#: ../Schulkonsole/Error/PrinterError.pm:58
 msgid "Ungültige Daten für genutzte Druckquota"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/RadiusError.pm:44
+#: ../Schulkonsole/Error/RadiusError.pm:44
 msgid "Ungültige Gruppe"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/FirewallError.pm:56
+#: ../Schulkonsole/Error/FirewallError.pm:56
 msgid "Ungültige Raumbezeichnung"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/FirewallError.pm:72
+#: ../Schulkonsole/Error/FirewallError.pm:72
 msgid "Ungültige Session"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/FilesError.pm:39
+#: ../Schulkonsole/Error/FilesError.pm:39
 msgid "Ungültige Session-ID"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/RadiusError.pm:50
+#: ../Schulkonsole/Error/RadiusError.pm:50
 msgid "Ungültige Unterrichtszeit"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1110
+#: ../Schulkonsole/Linbo.pm:1110
 #, perl-format
 msgid "Ungültige Zeichen für \"%s\" bei %s auf %s"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/FirewallError.pm:60
+#: ../Schulkonsole/Error/FirewallError.pm:60
 msgid "Ungültige Zeitangabe für Unterrichtsende"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:70
+#: ../Schulkonsole/Error/LinboError.pm:70
 msgid "Ungültiger Dateiname"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/DebconfError.pm:39
+#: ../Schulkonsole/Error/DebconfError.pm:39
 msgid "Ungültiger Debconf-Bereich"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/DebconfError.pm:41
+#: ../Schulkonsole/Error/DebconfError.pm:41
 msgid "Ungültiger Debconf-Name"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/PrinterError.pm:50
+#: ../Schulkonsole/Error/PrinterError.pm:50
 msgid "Ungültiger Druckername"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/PrinterError.pm:54
+#: ../Schulkonsole/Error/PrinterError.pm:54
 msgid "Ungültiger Druckernutzer"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:68 ../src/cgi-bin/linbo_new:127
+#: ../Schulkonsole/Error/LinboError.pm:68 ../src/cgi-bin/linbo_new:127
 msgid "Ungültiger Gruppenname"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/FirewallError.pm:52
+#: ../Schulkonsole/Error/FirewallError.pm:52
 msgid "Ungültiger Host"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:74
+#: ../Schulkonsole/Error/LinboError.pm:74
 msgid "Ungültiger Image-Dateiname"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/FirewallError.pm:58
-#: ../lib/Schulkonsole/Error/RadiusError.pm:48
+#: ../Schulkonsole/Error/FirewallError.pm:58
+#: ../Schulkonsole/Error/RadiusError.pm:48
 msgid "Ungültiger Modus für Unterricht"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:90
+#: ../Schulkonsole/Error/LinboError.pm:90
 msgid "Ungültiger Programmablauf"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:96
+#: ../Schulkonsole/Error/LinboError.pm:96
 msgid "Ungültiger Session-Name"
 msgstr ""
 
@@ -4303,11 +4302,11 @@ msgstr ""
 msgid "Ungültiger Systemtyp"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:80
+#: ../Schulkonsole/Error/LinboError.pm:80
 msgid "Ungültiger Typ"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/FilesError.pm:35
+#: ../Schulkonsole/Error/FilesError.pm:35
 msgid "Ungültiger Wert für number"
 msgstr ""
 
@@ -4315,15 +4314,15 @@ msgstr ""
 msgid "Ungültiger Zielgruppenname"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:94
+#: ../Schulkonsole/Error/LinboError.pm:94
 msgid "Ungültiges Argument"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/OVPNError.pm:34
+#: ../Schulkonsole/Error/OVPNError.pm:34
 msgid "Ungültiges Passwort"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:82
+#: ../Schulkonsole/Error/LinboError.pm:82
 msgid "Ungültiges Ziel"
 msgstr ""
 
@@ -4405,7 +4404,7 @@ msgstr ""
 msgid "Verzeichnis für bereitgestellte Dateien nicht gefunden"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:134
+#: ../Schulkonsole/Error/SophomorixError.pm:134
 msgid "Verzeichnis nicht gefunden"
 msgstr ""
 
@@ -4473,16 +4472,16 @@ msgstr ""
 msgid "Webspace"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:172
+#: ../Schulkonsole/Error/Error.pm:172
 msgid "Wechsel zu diesem Benutzer nicht erlaubt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:174
+#: ../Schulkonsole/Error/Error.pm:174
 msgid "Wechsel zu diesem Benutzer nicht moeglich"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/HordeError.pm:34
-#: ../lib/Schulkonsole/Error/UserError.pm:34
+#: ../Schulkonsole/Error/HordeError.pm:34
+#: ../Schulkonsole/Error/UserError.pm:34
 msgid "Wechsel zu diesem Benutzer nicht möglich"
 msgstr ""
 
@@ -4521,7 +4520,7 @@ msgstr ""
 msgid "Workstations werden importiert"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:158
+#: ../Schulkonsole/Error/Error.pm:158
 msgid "Wrapperaufruf fehlgeschlagen"
 msgstr ""
 
@@ -4574,7 +4573,7 @@ msgstr ""
 msgid "Zufallspasswörter gesetzt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Session.pm.in:1480
+#: ../Schulkonsole/Session.pm:1480 ../Schulkonsole/Session.pm.in:1480
 msgid "Zugriff verweigert"
 msgstr ""
 
@@ -4604,7 +4603,7 @@ msgstr ""
 msgid "abgewählt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/LinboError.pm:76
+#: ../Schulkonsole/Error/LinboError.pm:76
 msgid "action muss 0, 1 oder 2 sein"
 msgstr ""
 
@@ -4714,7 +4713,7 @@ msgstr ""
 msgid "kein Betriebssystem automatisch starten"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/Error.pm:132
+#: ../Schulkonsole/Error/Error.pm:132
 msgid "kein Fehler"
 msgstr ""
 
@@ -4722,7 +4721,7 @@ msgstr ""
 msgid "kein Unterricht."
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1182
+#: ../Schulkonsole/Linbo.pm:1182
 msgid "keine Cachepartition"
 msgstr ""
 
@@ -4738,11 +4737,11 @@ msgstr ""
 msgid "kopieren nach"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1134
+#: ../Schulkonsole/Linbo.pm:1134
 msgid "leerer Devicename"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1136 ../lib/Schulkonsole/Linbo.pm:1178
+#: ../Schulkonsole/Linbo.pm:1136 ../Schulkonsole/Linbo.pm:1178
 msgid "leerer Wert"
 msgstr ""
 
@@ -4781,7 +4780,7 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/SophomorixError.pm:124
+#: ../Schulkonsole/Error/SophomorixError.pm:124
 msgid "on muss 1 oder 0 sein"
 msgstr ""
 
@@ -4863,7 +4862,7 @@ msgstr ""
 msgid "unbekannt"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1126
+#: ../Schulkonsole/Linbo.pm:1126
 msgid "unbenannt"
 msgstr ""
 
@@ -4883,7 +4882,7 @@ msgstr ""
 msgid "ungültige Optionen"
 msgstr ""
 
-#: ../lib/Schulkonsole/Linbo.pm:1143 ../lib/Schulkonsole/Linbo.pm:1180
+#: ../Schulkonsole/Linbo.pm:1143 ../Schulkonsole/Linbo.pm:1180
 msgid "ungültige Zeichen"
 msgstr ""
 
@@ -4952,7 +4951,7 @@ msgstr ""
 msgid "wirklich löschen?"
 msgstr ""
 
-#: ../lib/Schulkonsole/Error/CyrusError.pm:38
+#: ../Schulkonsole/Error/CyrusError.pm:38
 msgid "wrapper-cyrus gehoert nicht Benutzer \"cyrus\" oder SUID nicht gesetzt"
 msgstr ""
 
