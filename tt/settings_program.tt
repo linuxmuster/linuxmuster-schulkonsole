@@ -20,7 +20,7 @@
 <td><input type="text" size="5" maxlength="4" name="conf_max_idle_time" id="conf_max_idle_time" value="[% conf_max_idle_time %]"> [% loc('Minuten') %]</td>
 </tr>
 <tr class="odd">
-<td><label [% labelfor("conf_check_passwords") %] accesskey="m">[% loc('Minimale Passwortlänge') %]</label></td>
+<td><label [% labelfor("conf_check_passwords") %] accesskey="m">[% loc('Überprüfe die Passwortgüte') %]</label></td>
 <td><input type="checkbox" name="conf_check_passwords" id="conf_check_passwords"
 [% IF conf_check_passwords && conf_check_passwords == 1 %] checked[% END %]></td>
 </tr>
