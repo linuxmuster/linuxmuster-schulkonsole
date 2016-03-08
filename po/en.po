@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2016-03-08 15:05+0100\n"
+"POT-Creation-Date: 2016-03-08 20:35+0100\n"
 "PO-Revision-Date: 2015-11-10 12:50+0100\n"
 "Last-Translator: Frank Schütte <fschuett@gymhim.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -68,21 +68,21 @@ msgstr " not existing as collected file."
 
 #: ../src/cgi-bin/class_list:144 ../src/cgi-bin/class_list:163
 #: ../src/cgi-bin/project_members:370 ../src/cgi-bin/project_members:389
-#: ../src/cgi-bin/start:563 ../src/cgi-bin/start:582
+#: ../src/cgi-bin/start:564 ../src/cgi-bin/start:583
 #, perl-format
 msgid "%d Minuten"
 msgstr "%d minutes"
 
 #: ../src/cgi-bin/class_list:141 ../src/cgi-bin/class_list:160
 #: ../src/cgi-bin/project_members:367 ../src/cgi-bin/project_members:386
-#: ../src/cgi-bin/start:560 ../src/cgi-bin/start:579
+#: ../src/cgi-bin/start:561 ../src/cgi-bin/start:580
 #, perl-format
 msgid "%d Stunden"
 msgstr "%d hours"
 
 #: ../src/cgi-bin/class_list:138 ../src/cgi-bin/class_list:157
 #: ../src/cgi-bin/project_members:364 ../src/cgi-bin/project_members:383
-#: ../src/cgi-bin/start:557 ../src/cgi-bin/start:576
+#: ../src/cgi-bin/start:558 ../src/cgi-bin/start:577
 #, perl-format
 msgid "%d Tage"
 msgstr "%d days"
@@ -1547,7 +1547,7 @@ msgstr "User per page:"
 msgid "Benutzer versetzen"
 msgstr "Move user"
 
-#: ../tt/page.tt:68 ../tt/status.inc.tt:11
+#: ../tt/page.tt:51 ../tt/status.inc.tt:11
 msgid "Benutzer:"
 msgstr "User:"
 
@@ -1731,6 +1731,16 @@ msgstr "Cache partition on the workspace computer"
 msgid "Computerraum"
 msgstr "Computer room"
 
+#: ../src/cgi-bin/start:899
+#, fuzzy
+msgid "Das Passwort enthält ungültige Zeichen."
+msgstr "invalid characters"
+
+#: ../src/cgi-bin/start:914
+#, fuzzy
+msgid "Das Passwort ist ungültig."
+msgstr "The maximal password length value is invalid"
+
 #: ../src/cgi-bin/project_members:116
 msgid "Das Projekt ist bereits geschlossen"
 msgstr "Project is already closed"
@@ -1900,7 +1910,7 @@ msgid "Der Loginname muss aus 2 bis 16 Kleinbuchstaben (ohne Umlaute) bestehen"
 msgstr ""
 "The login name must consist of 2 to 16 lower-case letters (without umlauts)"
 
-#: ../src/cgi-bin/settings_program:106
+#: ../src/cgi-bin/settings_program:116
 msgid "Der Name der WLAN-LDAP-Gruppe ist ungültig."
 msgstr "The wlan ldap group name is invalid."
 
@@ -1913,11 +1923,11 @@ msgstr ""
 "The project name may only consist of lower case letters (without umlauts), "
 "numbers, dashes and underscores and must be between 3 and 14 characters long."
 
-#: ../src/cgi-bin/settings_program:96
+#: ../src/cgi-bin/settings_program:106
 msgid "Der Wert für die maximale Passwortlänge ist ungültig"
 msgstr "The maximal password length value is invalid"
 
-#: ../src/cgi-bin/settings_program:86
+#: ../src/cgi-bin/settings_program:96
 msgid "Der Wert für die minimale Passwortlänge ist ungültig"
 msgstr "The minimal password length value is invalid"
 
@@ -2004,7 +2014,7 @@ msgstr ""
 msgid "Die Mailadresse konnte nicht gespeichert werden."
 msgstr "%s could not be deleted"
 
-#: ../src/cgi-bin/start:331
+#: ../src/cgi-bin/start:332
 #, fuzzy
 msgid "Die Mailadresse wurde geändert."
 msgstr "change forward(s)"
@@ -2013,7 +2023,7 @@ msgstr "change forward(s)"
 msgid "Die Passwortlänge muss eine Zahl > 0 sein"
 msgstr "The password length must be a number > 0"
 
-#: ../src/cgi-bin/settings_program:75
+#: ../src/cgi-bin/settings_program:85
 msgid "Die Sitzungsdauer muss in Minuten angegeben werden"
 msgstr "Duration of session must be entered in minutes"
 
@@ -2030,7 +2040,7 @@ msgstr "The timeout after each host wakeup is invalid."
 msgid "Die angegebene Mailadresse ist ungültig"
 msgstr "At least one of the supplied mail addresses contains errors."
 
-#: ../src/cgi-bin/start:327
+#: ../src/cgi-bin/start:328
 #, fuzzy
 msgid "Die eingegebene Mail-Adresse ist ungültig."
 msgstr "At least one of the supplied mail addresses contains errors."
@@ -2186,7 +2196,7 @@ msgstr "One entry per page"
 msgid "Ein OpenVPN-Zertifikat wurde für Sie erstellt."
 msgstr "An open VPN certificate was created for you."
 
-#: ../src/cgi-bin/start:344
+#: ../src/cgi-bin/start:345
 msgid "Eine oder mehrere Mail-Adressen sind ungültig."
 msgstr "At least one of the supplied mail addresses contains errors."
 
@@ -2411,7 +2421,7 @@ msgstr "There are no postsync files available."
 msgid "Es sind noch nicht alle Verknüpfungen eindeutig festgelegt"
 msgstr "Not all connections are clearly defined."
 
-#: ../src/cgi-bin/start:410
+#: ../src/cgi-bin/start:411
 msgid "Es wurde bereits ein OpenVPN-Zertifikat erstellt"
 msgstr "An open VPN certificate was already created"
 
@@ -2427,7 +2437,7 @@ msgstr "Es creation time stamp is invalid."
 msgid "Es wurde eine ungültige Kategorie für die Rechnerauswahl angegeben."
 msgstr "The hosts selected category is invalid."
 
-#: ../src/cgi-bin/start:464
+#: ../src/cgi-bin/start:465
 msgid "Es wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> abgelegt"
 msgstr "It was filed away in your home directory in the folder <q>OpenVPN</q>"
 
@@ -2491,7 +2501,7 @@ msgstr "Unexpected program output"
 msgid "Fehler bei der Erzeugung des Dokuments"
 msgstr "Error in the production of the document"
 
-#: ../src/cgi-bin/start:470
+#: ../src/cgi-bin/start:471
 msgid "Fehler bei der Zertifikatserstellung."
 msgstr "Error during the creation of the certificate."
 
@@ -2728,11 +2738,11 @@ msgstr "IP"
 msgid "IP des TFTP-Servers, der Images vorhält"
 msgstr "IP of the TFTP Server, that provides images"
 
-#: ../tt/page.tt:75 ../tt/status.inc.tt:21
+#: ../tt/page.tt:58 ../tt/status.inc.tt:21
 msgid "IP:"
 msgstr "IP:"
 
-#: ../src/cgi-bin/start:488
+#: ../src/cgi-bin/start:489
 msgid ""
 "Ihr Zertifikat wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> "
 "abgelegt"
@@ -2830,7 +2840,7 @@ msgstr "No lesson is active in this class."
 msgid "In dieser Klasse wird bereits unterrichtet."
 msgstr "In this class a lesson is already active."
 
-#: ../tt/page.tt:97 ../tt/start.tt:95
+#: ../tt/page.tt:96 ../tt/start.tt:95
 msgid "Info"
 msgstr "Info"
 
@@ -3353,7 +3363,7 @@ msgstr "mail quota warnings"
 msgid "Mailquota-Überschreitung an root melden"
 msgstr "report mail over quota to root"
 
-#: ../src/cgi-bin/start:357
+#: ../src/cgi-bin/start:358
 msgid "Mailweiterleitung erfolgreich geändert"
 msgstr "mail forward(s) successful changed"
 
@@ -3557,7 +3567,7 @@ msgstr "New password"
 msgid "Neues Passwort eingeben"
 msgstr "Enter the new password"
 
-#: ../src/cgi-bin/start:296
+#: ../src/cgi-bin/start:297
 msgid "Neues Passwort ist zu schwach: "
 msgstr "New password is too weak:"
 
@@ -3645,20 +3655,20 @@ msgstr "Application:"
 msgid "Offenes Projekt"
 msgstr "Open project"
 
-#: ../src/cgi-bin/start:440
+#: ../src/cgi-bin/start:441
 msgid "OpenVPN-Passwort bestätigen"
 msgstr "Confirm open VPN password"
 
-#: ../src/cgi-bin/start:419
+#: ../src/cgi-bin/start:420
 #, fuzzy
 msgid "OpenVPN-Passwort eingeben"
 msgstr "Open VPN password entered"
 
-#: ../src/cgi-bin/start:431
+#: ../src/cgi-bin/start:432
 msgid "OpenVPN-Passwort muss mindestens sechs Zeichen haben"
 msgstr "Open VPN password must have at least six characters"
 
-#: ../src/cgi-bin/start:451
+#: ../src/cgi-bin/start:452
 msgid "OpenVPN-Passwort nicht richtig wiederholt"
 msgstr "Open VPN password not properly repeated"
 
@@ -3782,7 +3792,7 @@ msgstr "password lists"
 msgid "Passwortänderung"
 msgstr "Password change"
 
-#: ../src/cgi-bin/start:306
+#: ../src/cgi-bin/start:307
 msgid "Passwortänderung erfolgreich"
 msgstr "password successfully changed"
 
@@ -3950,7 +3960,7 @@ msgstr "Room"
 msgid "Raum nicht gefunden"
 msgstr "Nothing found"
 
-#: ../tt/page.tt:69 ../tt/status.inc.tt:13
+#: ../tt/page.tt:52 ../tt/status.inc.tt:13
 msgid "Raum:"
 msgstr "Room:"
 
@@ -4234,7 +4244,7 @@ msgstr "You are not the project leader of %s"
 msgid "Sitzungsdauer"
 msgstr "Duration of session"
 
-#: ../tt/page.tt:66 ../tt/status.inc.tt:9
+#: ../tt/page.tt:49 ../tt/status.inc.tt:9
 msgid "Sitzungsdauer:"
 msgstr "Duration of session:"
 
@@ -4254,7 +4264,7 @@ msgstr "Should lessons really end?"
 msgid "Sonderquota"
 msgstr "Special quota"
 
-#: ../src/cgi-bin/start:630
+#: ../src/cgi-bin/start:631
 msgid "Speicherplatz"
 msgstr "Storage space"
 
@@ -4719,7 +4729,7 @@ msgstr "Transfer was already started"
 msgid "Version"
 msgstr "Version"
 
-#: ../src/cgi-bin/start:473 ../src/cgi-bin/start:495
+#: ../src/cgi-bin/start:474 ../src/cgi-bin/start:496
 msgid "Verständigen Sie den Netzwerkadministrator"
 msgstr "Inform the network administrator"
 
@@ -4835,7 +4845,7 @@ msgstr "mail forward(s)"
 msgid "Weiterleitung(en) ändern"
 msgstr "mail forward(s)"
 
-#: ../tt/page.tt:74 ../tt/status.inc.tt:19
+#: ../tt/page.tt:57 ../tt/status.inc.tt:19
 msgid "Workstation:"
 msgstr "Work station:"
 
@@ -4875,11 +4885,11 @@ msgstr "time"
 msgid "Zertifikat erstellen und herunterladen"
 msgstr "Create and download certificate"
 
-#: ../src/cgi-bin/start:492
+#: ../src/cgi-bin/start:493
 msgid "Zertifikat konnte nicht heruntergeladen werden."
 msgstr "The certificate could not be downloaded."
 
-#: ../src/cgi-bin/start:461
+#: ../src/cgi-bin/start:462
 msgid "Zertifikat wurde erstellt."
 msgstr "Certificate was created."
 
@@ -4920,13 +4930,13 @@ msgstr "Additional quota"
 msgid "[LINBO] - globale Konfiguration"
 msgstr "[LINBO] - global configuration"
 
-#: ../src/cgi-bin/start:396
+#: ../src/cgi-bin/start:397
 msgid "abgebrochen"
 msgstr "cancelled"
 
 #: ../src/cgi-bin/class_list:147 ../src/cgi-bin/class_list:166
 #: ../src/cgi-bin/project_members:373 ../src/cgi-bin/project_members:392
-#: ../src/cgi-bin/start:566 ../src/cgi-bin/start:585
+#: ../src/cgi-bin/start:567 ../src/cgi-bin/start:586
 msgid "abgelaufen"
 msgstr "expired"
 
@@ -4938,11 +4948,11 @@ msgstr "Deselected"
 msgid "action muss 0, 1 oder 2 sein"
 msgstr "action must be 0, 1 or 2"
 
-#: ../tt/page.tt:77 ../tt/status.inc.tt:23
+#: ../tt/page.tt:60 ../tt/status.inc.tt:23
 msgid "aktive Klasse:"
 msgstr "active class:"
 
-#: ../tt/page.tt:79
+#: ../tt/page.tt:62
 msgid "aktives Projekt:"
 msgstr "current project:"
 
@@ -5193,7 +5203,7 @@ msgid "um"
 msgstr "at"
 
 #: ../tt/myroom.tt:1 ../tt/myroom.tt:26 ../tt/myroom_handedoutcopy.tt:8
-#: ../tt/myroom_tocollect.tt:8 ../tt/page.tt:72 ../tt/room.tt:27
+#: ../tt/myroom_tocollect.tt:8 ../tt/page.tt:55 ../tt/room.tt:27
 #: ../tt/room_lesson.tt:27 ../tt/status.inc.tt:17
 msgid "unbekannt"
 msgstr "unknown"
@@ -5251,7 +5261,7 @@ msgstr "teaches in project"
 msgid "unterrichtet in der Klasse"
 msgstr "teaches in class"
 
-#: ../tt/page.tt:67 ../tt/status.inc.tt:10
+#: ../tt/page.tt:50 ../tt/status.inc.tt:10
 msgid "verbleibend:"
 msgstr "remaining:"
 
@@ -5336,7 +5346,7 @@ msgstr "uImplement changes"
 
 #: ../src/cgi-bin/printers_edit:240 ../src/cgi-bin/printers_edit:272
 #: ../src/cgi-bin/rooms:174 ../src/cgi-bin/rooms_classrooms:91
-#: ../src/cgi-bin/settings_program:127 ../src/cgi-bin/settings_users:278
+#: ../src/cgi-bin/settings_program:137 ../src/cgi-bin/settings_users:278
 #: ../src/cgi-bin/user_teachers:225
 msgid "Änderungen übernommen"
 msgstr "changes implemented"

@@ -82,6 +82,7 @@ $VERSION = 0.06;
 	$_login_expire_time
 	$_tmp_valid_time
 
+	$_check_passwords
 	$_min_password_len
 	$_max_password_len
 	$_http_root
@@ -968,6 +969,10 @@ Time after which to delete the session if the user did not log in
 
 Time after which to invalidate temporarily stored data
 
+=item C<$_check_passwords>
+
+Ensure password quality.
+
 =item C<$_min_password_len>
 
 Minimal password length enforced.
@@ -981,7 +986,8 @@ Maximal password length enforced.
 =cut
 
 use vars qw($_max_idle_time $_session_expire_time $_login_expire_time
-            $_tmp_valid_time $_min_password_len $_max_password_len);
+            $_tmp_valid_time 
+            $_check_passwords $_min_password_len $_max_password_len);
 
 
 =head3 Web server settings
@@ -1336,6 +1342,7 @@ $_login_expire_time = '+1h';	# invalidate session unless logged in within an
 
 $_tmp_valid_time = '+1m';	# invalidate temporarily stored data after 1 minute
 
+$_check_passwords = 1;        # enforce password quality
 $_min_password_len = 8;       # enforce password length requirement
 $_max_password_len = 15;
 
@@ -2362,6 +2369,13 @@ $_max_password_len = $preferences{max_password_len}
     if (exists $preferences{max_password_len});
 $_wlan_ldap_group = $preferences{wlan_ldap_group}
 	if (exists $preferences{wlan_ldap_group});
+if($preferences{check_passwords}) {
+	if($preferences{check_passwords} eq 'yes'){
+		$_check_passwords = 1;
+	} else {
+		$_check_passwords = 0;
+	}
+}
 };
 
 

@@ -55,6 +55,8 @@ my $q = $sk_session->query();
 my $id = $sk_session->userdata('id');
 my $password = $sk_session->get_password();
 
+my $true = 'yes';
+my $false= 'no';
 
 my %preferences_conf = read_preferences_conf();
 my %preferences_conf_new;
@@ -63,7 +65,15 @@ if ($q->param('accept')) {
 	my @errors;
 
 	foreach my $key (keys %preferences_conf) {
-		if (my $value = $q->param($key)) {	# will ignore $value == 0
+		if ($key eq 'conf_check_passwords') {
+			if ($q->param($key)){
+				$preferences_conf_new{$key} = 1;
+			}
+			else {
+				$preferences_conf_new{$key} = 0;
+			}
+		}
+		elsif (my $value = $q->param($key)) {	# will ignore $value == 0
 			$value =~ s/^\s*(.+)\s*$/$1/;
 
 			if ($preferences_conf{$key} ne $value) {
@@ -161,6 +171,10 @@ Write the changes
 
 sub read_preferences_conf {
 
+=item C<conf_check_passwords>
+
+corresponds to check_passwords in F<preferences.conf>
+
 =item C<conf_max_idle_time>
 
 corresponds to max_idle_time in F<preferences.conf>
@@ -185,6 +199,7 @@ corresponds to wlan_ldap_group in F<preferences.conf>
 		conf_min_password_len => int($Schulkonsole::Config::_min_password_len),
 		conf_max_password_len => int($Schulkonsole::Config::_max_password_len),
 		conf_wlan_ldap_group => $Schulkonsole::Config::_wlan_ldap_group,
+		conf_check_passwords => $schulkonsole::Config::_check_passwords,
 	);
 }
 
@@ -203,6 +218,7 @@ sub new_preferences_lines {
 		conf_min_password_len => 'min_password_len',
 		conf_max_password_len => 'max_password_len',
 		conf_wlan_ldap_group => 'wlan_ldap_group',
+		conf_check_passwords => 'check_passwords',
 	);
 	my %key_map_rev = reverse %key_map;
 
@@ -218,6 +234,8 @@ sub new_preferences_lines {
 					$value = $new{$key};
 					if ($key eq 'conf_max_idle_time') {
 						$value = "+${value}m";
+					} elsif ($key eq 'conf_check_passwords') {
+						$value = (defined $value and $value ? $true : $false );
 					}
 					push @lines, "$conf_key=$value\n";
 
@@ -236,6 +254,8 @@ sub new_preferences_lines {
 		my $value = $new{$key};
 		if ($key eq 'conf_max_idle_time') {
 			$value = "+${value}m";
+		} elsif  ($key eq 'conf_check_passwords') {
+			$value = (defined $value and $value ? $true : $false);
 		}
 		push @lines, "$key_map{$key}=$value\n";
 	}

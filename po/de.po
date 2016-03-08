@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2016-03-08 15:05+0100\n"
+"POT-Creation-Date: 2016-03-08 20:35+0100\n"
 "PO-Revision-Date: 2014-04-06 14:22+0200\n"
 "Last-Translator: root <root@linuxmuster.lokal>\n"
 "Language-Team: German\n"
@@ -66,21 +66,21 @@ msgstr ""
 
 #: ../src/cgi-bin/class_list:144 ../src/cgi-bin/class_list:163
 #: ../src/cgi-bin/project_members:370 ../src/cgi-bin/project_members:389
-#: ../src/cgi-bin/start:563 ../src/cgi-bin/start:582
+#: ../src/cgi-bin/start:564 ../src/cgi-bin/start:583
 #, perl-format
 msgid "%d Minuten"
 msgstr ""
 
 #: ../src/cgi-bin/class_list:141 ../src/cgi-bin/class_list:160
 #: ../src/cgi-bin/project_members:367 ../src/cgi-bin/project_members:386
-#: ../src/cgi-bin/start:560 ../src/cgi-bin/start:579
+#: ../src/cgi-bin/start:561 ../src/cgi-bin/start:580
 #, perl-format
 msgid "%d Stunden"
 msgstr ""
 
 #: ../src/cgi-bin/class_list:138 ../src/cgi-bin/class_list:157
 #: ../src/cgi-bin/project_members:364 ../src/cgi-bin/project_members:383
-#: ../src/cgi-bin/start:557 ../src/cgi-bin/start:576
+#: ../src/cgi-bin/start:558 ../src/cgi-bin/start:577
 #, perl-format
 msgid "%d Tage"
 msgstr ""
@@ -1302,7 +1302,7 @@ msgstr ""
 msgid "Benutzer versetzen"
 msgstr ""
 
-#: ../tt/page.tt:68 ../tt/status.inc.tt:11
+#: ../tt/page.tt:51 ../tt/status.inc.tt:11
 msgid "Benutzer:"
 msgstr ""
 
@@ -1486,6 +1486,14 @@ msgstr ""
 msgid "Computerraum"
 msgstr ""
 
+#: ../src/cgi-bin/start:899
+msgid "Das Passwort enthält ungültige Zeichen."
+msgstr ""
+
+#: ../src/cgi-bin/start:914
+msgid "Das Passwort ist ungültig."
+msgstr ""
+
 #: ../src/cgi-bin/project_members:116
 msgid "Das Projekt ist bereits geschlossen"
 msgstr ""
@@ -1654,7 +1662,7 @@ msgstr ""
 msgid "Der Loginname muss aus 2 bis 16 Kleinbuchstaben (ohne Umlaute) bestehen"
 msgstr ""
 
-#: ../src/cgi-bin/settings_program:106
+#: ../src/cgi-bin/settings_program:116
 msgid "Der Name der WLAN-LDAP-Gruppe ist ungültig."
 msgstr ""
 
@@ -1665,11 +1673,11 @@ msgid ""
 "sein."
 msgstr ""
 
-#: ../src/cgi-bin/settings_program:96
+#: ../src/cgi-bin/settings_program:106
 msgid "Der Wert für die maximale Passwortlänge ist ungültig"
 msgstr ""
 
-#: ../src/cgi-bin/settings_program:86
+#: ../src/cgi-bin/settings_program:96
 msgid "Der Wert für die minimale Passwortlänge ist ungültig"
 msgstr ""
 
@@ -1746,7 +1754,7 @@ msgstr ""
 msgid "Die Mailadresse konnte nicht gespeichert werden."
 msgstr ""
 
-#: ../src/cgi-bin/start:331
+#: ../src/cgi-bin/start:332
 msgid "Die Mailadresse wurde geändert."
 msgstr ""
 
@@ -1754,7 +1762,7 @@ msgstr ""
 msgid "Die Passwortlänge muss eine Zahl > 0 sein"
 msgstr ""
 
-#: ../src/cgi-bin/settings_program:75
+#: ../src/cgi-bin/settings_program:85
 msgid "Die Sitzungsdauer muss in Minuten angegeben werden"
 msgstr ""
 
@@ -1770,7 +1778,7 @@ msgstr ""
 msgid "Die angegebene Mailadresse ist ungültig"
 msgstr ""
 
-#: ../src/cgi-bin/start:327
+#: ../src/cgi-bin/start:328
 msgid "Die eingegebene Mail-Adresse ist ungültig."
 msgstr ""
 
@@ -1924,7 +1932,7 @@ msgstr ""
 msgid "Ein OpenVPN-Zertifikat wurde für Sie erstellt."
 msgstr ""
 
-#: ../src/cgi-bin/start:344
+#: ../src/cgi-bin/start:345
 msgid "Eine oder mehrere Mail-Adressen sind ungültig."
 msgstr ""
 
@@ -2145,7 +2153,7 @@ msgstr ""
 msgid "Es sind noch nicht alle Verknüpfungen eindeutig festgelegt"
 msgstr ""
 
-#: ../src/cgi-bin/start:410
+#: ../src/cgi-bin/start:411
 msgid "Es wurde bereits ein OpenVPN-Zertifikat erstellt"
 msgstr ""
 
@@ -2161,7 +2169,7 @@ msgstr ""
 msgid "Es wurde eine ungültige Kategorie für die Rechnerauswahl angegeben."
 msgstr ""
 
-#: ../src/cgi-bin/start:464
+#: ../src/cgi-bin/start:465
 msgid "Es wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> abgelegt"
 msgstr ""
 
@@ -2222,7 +2230,7 @@ msgstr ""
 msgid "Fehler bei der Erzeugung des Dokuments"
 msgstr ""
 
-#: ../src/cgi-bin/start:470
+#: ../src/cgi-bin/start:471
 msgid "Fehler bei der Zertifikatserstellung."
 msgstr ""
 
@@ -2450,11 +2458,11 @@ msgstr ""
 msgid "IP des TFTP-Servers, der Images vorhält"
 msgstr ""
 
-#: ../tt/page.tt:75 ../tt/status.inc.tt:21
+#: ../tt/page.tt:58 ../tt/status.inc.tt:21
 msgid "IP:"
 msgstr ""
 
-#: ../src/cgi-bin/start:488
+#: ../src/cgi-bin/start:489
 msgid ""
 "Ihr Zertifikat wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> "
 "abgelegt"
@@ -2549,7 +2557,7 @@ msgstr ""
 msgid "In dieser Klasse wird bereits unterrichtet."
 msgstr ""
 
-#: ../tt/page.tt:97 ../tt/start.tt:95
+#: ../tt/page.tt:96 ../tt/start.tt:95
 msgid "Info"
 msgstr ""
 
@@ -3065,7 +3073,7 @@ msgstr ""
 msgid "Mailquota-Überschreitung an root melden"
 msgstr ""
 
-#: ../src/cgi-bin/start:357
+#: ../src/cgi-bin/start:358
 msgid "Mailweiterleitung erfolgreich geändert"
 msgstr ""
 
@@ -3265,7 +3273,7 @@ msgstr ""
 msgid "Neues Passwort eingeben"
 msgstr ""
 
-#: ../src/cgi-bin/start:296
+#: ../src/cgi-bin/start:297
 msgid "Neues Passwort ist zu schwach: "
 msgstr ""
 
@@ -3353,19 +3361,19 @@ msgstr ""
 msgid "Offenes Projekt"
 msgstr ""
 
-#: ../src/cgi-bin/start:440
+#: ../src/cgi-bin/start:441
 msgid "OpenVPN-Passwort bestätigen"
 msgstr ""
 
-#: ../src/cgi-bin/start:419
+#: ../src/cgi-bin/start:420
 msgid "OpenVPN-Passwort eingeben"
 msgstr ""
 
-#: ../src/cgi-bin/start:431
+#: ../src/cgi-bin/start:432
 msgid "OpenVPN-Passwort muss mindestens sechs Zeichen haben"
 msgstr ""
 
-#: ../src/cgi-bin/start:451
+#: ../src/cgi-bin/start:452
 msgid "OpenVPN-Passwort nicht richtig wiederholt"
 msgstr ""
 
@@ -3488,7 +3496,7 @@ msgstr ""
 msgid "Passwortänderung"
 msgstr ""
 
-#: ../src/cgi-bin/start:306
+#: ../src/cgi-bin/start:307
 msgid "Passwortänderung erfolgreich"
 msgstr ""
 
@@ -3654,7 +3662,7 @@ msgstr ""
 msgid "Raum nicht gefunden"
 msgstr ""
 
-#: ../tt/page.tt:69 ../tt/status.inc.tt:13
+#: ../tt/page.tt:52 ../tt/status.inc.tt:13
 msgid "Raum:"
 msgstr ""
 
@@ -3937,7 +3945,7 @@ msgstr ""
 msgid "Sitzungsdauer"
 msgstr ""
 
-#: ../tt/page.tt:66 ../tt/status.inc.tt:9
+#: ../tt/page.tt:49 ../tt/status.inc.tt:9
 msgid "Sitzungsdauer:"
 msgstr ""
 
@@ -3957,7 +3965,7 @@ msgstr ""
 msgid "Sonderquota"
 msgstr ""
 
-#: ../src/cgi-bin/start:630
+#: ../src/cgi-bin/start:631
 msgid "Speicherplatz"
 msgstr ""
 
@@ -4390,7 +4398,7 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: ../src/cgi-bin/start:473 ../src/cgi-bin/start:495
+#: ../src/cgi-bin/start:474 ../src/cgi-bin/start:496
 msgid "Verständigen Sie den Netzwerkadministrator"
 msgstr ""
 
@@ -4504,7 +4512,7 @@ msgstr ""
 msgid "Weiterleitung(en) ändern"
 msgstr ""
 
-#: ../tt/page.tt:74 ../tt/status.inc.tt:19
+#: ../tt/page.tt:57 ../tt/status.inc.tt:19
 msgid "Workstation:"
 msgstr ""
 
@@ -4544,11 +4552,11 @@ msgstr ""
 msgid "Zertifikat erstellen und herunterladen"
 msgstr ""
 
-#: ../src/cgi-bin/start:492
+#: ../src/cgi-bin/start:493
 msgid "Zertifikat konnte nicht heruntergeladen werden."
 msgstr ""
 
-#: ../src/cgi-bin/start:461
+#: ../src/cgi-bin/start:462
 msgid "Zertifikat wurde erstellt."
 msgstr ""
 
@@ -4589,13 +4597,13 @@ msgstr ""
 msgid "[LINBO] - globale Konfiguration"
 msgstr ""
 
-#: ../src/cgi-bin/start:396
+#: ../src/cgi-bin/start:397
 msgid "abgebrochen"
 msgstr ""
 
 #: ../src/cgi-bin/class_list:147 ../src/cgi-bin/class_list:166
 #: ../src/cgi-bin/project_members:373 ../src/cgi-bin/project_members:392
-#: ../src/cgi-bin/start:566 ../src/cgi-bin/start:585
+#: ../src/cgi-bin/start:567 ../src/cgi-bin/start:586
 msgid "abgelaufen"
 msgstr ""
 
@@ -4607,11 +4615,11 @@ msgstr ""
 msgid "action muss 0, 1 oder 2 sein"
 msgstr ""
 
-#: ../tt/page.tt:77 ../tt/status.inc.tt:23
+#: ../tt/page.tt:60 ../tt/status.inc.tt:23
 msgid "aktive Klasse:"
 msgstr ""
 
-#: ../tt/page.tt:79
+#: ../tt/page.tt:62
 msgid "aktives Projekt:"
 msgstr ""
 
@@ -4857,7 +4865,7 @@ msgid "um"
 msgstr ""
 
 #: ../tt/myroom.tt:1 ../tt/myroom.tt:26 ../tt/myroom_handedoutcopy.tt:8
-#: ../tt/myroom_tocollect.tt:8 ../tt/page.tt:72 ../tt/room.tt:27
+#: ../tt/myroom_tocollect.tt:8 ../tt/page.tt:55 ../tt/room.tt:27
 #: ../tt/room_lesson.tt:27 ../tt/status.inc.tt:17
 msgid "unbekannt"
 msgstr ""
@@ -4915,7 +4923,7 @@ msgstr ""
 msgid "unterrichtet in der Klasse"
 msgstr ""
 
-#: ../tt/page.tt:67 ../tt/status.inc.tt:10
+#: ../tt/page.tt:50 ../tt/status.inc.tt:10
 msgid "verbleibend:"
 msgstr ""
 
@@ -5000,7 +5008,7 @@ msgstr ""
 
 #: ../src/cgi-bin/printers_edit:240 ../src/cgi-bin/printers_edit:272
 #: ../src/cgi-bin/rooms:174 ../src/cgi-bin/rooms_classrooms:91
-#: ../src/cgi-bin/settings_program:127 ../src/cgi-bin/settings_users:278
+#: ../src/cgi-bin/settings_program:137 ../src/cgi-bin/settings_users:278
 #: ../src/cgi-bin/user_teachers:225
 msgid "Änderungen übernommen"
 msgstr ""

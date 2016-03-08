@@ -289,7 +289,8 @@ COMMANDS: {
 		$MINLEN = $Schulkonsole::Config::_min_password_len;
 		$MAXLEN = $Schulkonsole::Config::_max_password_len;
 		my $badpassword_error = Data::Password::IsBadPassword($newpassword);
-		if ($badpassword_error) {
+		if ($Schulkonsole::Config::_check_passwords and $badpassword_error) {
+			$badpassword_error = translate_passworderror($sk_session, $badpassword_error, $MINLEN, $MAXLEN);
 			$sk_session->mark_input_error('newpassword');
 			$sk_session->mark_input_error('newpasswordagain');
 			$sk_session->set_status($sk_session->d()->get(
@@ -865,3 +866,50 @@ The id of a user's print job to delete. May be used more than once, i.e.Z<>
 you can use C<< <select name="printjobs" multiple> >>.
 
 =back
+
+=cut
+
+=head3 translate_passworderror($text, $min, $max)
+
+Translates password error from Data::Password::IsBadPassword module
+from english.
+
+Is based on error messages in file /usr/share/perl5/Data/Password.pm
+in sub IsBadPassword.
+
+=cut
+
+sub translate_passworderror {
+	my $sk_session = shift;
+	my $text = shift;
+	my $min = shift;
+	my $max = shift;
+	
+	SWITCH: {
+		$text =~ /^Not between \d+ and \d+ characters$/ and do {
+			return $sk_session->d()->get(sprintf("Das Passwort ist nicht zwischen %d und %d Zeichen lang.", $min, $max));
+		};
+	    $text =~ /^Not \d+ characters or greater$/ and do {
+	    	return $sk_session->d()->get(sprintf("Das Passwort muss mindestens %d Zeichen lang sein.",$min));
+	    };
+	    $text =~ /^Not less than or equal to \d+ characters$/ and do {
+	    	return $sk_session->d()->get(sprintf("Das Passwort darf höchstens %d Zeichen lang sein.", $max));
+	    };
+	    $text =~ /^contains bad characters$/ and do {
+	    	return $sk_session->d()->get("Das Passwort enthält ungültige Zeichen.");
+	    };
+	    my $groups;
+	    ($groups) = $text =~ /^contains less than (\d+) character groups$/ and do {
+	    	return $sk_session->d()->get(sprintf("Das Passwort enthält weniger als %d unterschiedliche Zeichenklassen.", $groups));
+	    };
+	    my $following;
+	    ($following) = $text =~ /^contains over (\d+) leading characters in sequence$/ and do {
+	    	return $sk_session->d()->get(sprintf("Das Passwort enthält mehr als %d führende Buchstaben in alphabetischer Folge.", $following));
+	    };
+		my $word;
+		($word) = $text =~ /^contains the dictionary word '(.+)'$/ and do {
+			return $sk_session->d()->get(sprintf("Das Passwort enthält das Wörterbuchwort %s.", $word));
+		};
+	};
+	return $sk_session->d()->get("Das Passwort ist ungültig.");
+}
