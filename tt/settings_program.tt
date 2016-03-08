@@ -20,14 +20,19 @@
 <td><input type="text" size="5" maxlength="4" name="conf_max_idle_time" id="conf_max_idle_time" value="[% conf_max_idle_time %]"> [% loc('Minuten') %]</td>
 </tr>
 <tr class="odd">
+<td><label [% labelfor("conf_check_passwords") %] accesskey="m">[% loc('Minimale Passwortlänge') %]</label></td>
+<td><input type="checkbox" name="conf_check_passwords" id="conf_check_passwords"
+[% IF conf_check_passwords && conf_check_passwords == 1 %] checked[% END %]></td>
+</tr>
+<tr class="even">
 <td><label [% labelfor("conf_min_password_len") %] accesskey="m">[% loc('Minimale Passwortlänge') %]</label></td>
 <td><input type="text" size="5" maxlength="4" name="conf_min_password_len" id="conf_min_password_len" value="[% conf_min_password_len %]"> [% loc('Zeichen') %]</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><label [% labelfor("conf_max_password_len") %] accesskey="a">[% loc('Maximale Passwortlänge') %]</label></td>
 <td><input type="text" size="5" maxlength="4" name="conf_max_password_len" id="conf_max_password_len" value="[% conf_max_password_len %]"> [% loc('Zeichen') %]</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><label [% labelfor("conf_wlan_ldap_group") %] accesskey="w">[% loc('WLAN-LDAP-Gruppe') %]</label></td>
 <td><input type="text" size="10" maxlength="10" name="conf_wlan_ldap_group" id="conf_wlan_ldap_group" value="[% conf_wlan_ldap_group %]"></td>
 </tr>
