@@ -95,6 +95,16 @@ case "$1" in
 
 }' -i $conf
  	fi
+	# fixes for /shtml/ -> /tt/
+	if grep -q '/shtml/' $conf; then
+    	if [ -z "$backed_up" ]; then
+        	echo "Backing up $conf to $conf.dpkg-bak."
+        	backed_up=yes
+        	cp $conf $conf.dpkg-bak
+    	fi
+    	echo "schulkonsole.js has moved from /shtml/ to /tt/."
+    	sed 's@/shtml/@/tt/@g' -i $conf
+ 	fi
 	apache2ctl graceful 2> /dev/null || true
 
 	# create wifi project
