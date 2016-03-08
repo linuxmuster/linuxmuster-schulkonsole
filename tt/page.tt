@@ -43,23 +43,6 @@ $('html').bind('keypress', function(e)
             [% END %]
             [% loc('Version') %] [% version %] [% action %]
         </div>
-    </div>
-
-    [% IF page.special %]
-        <div id="special"> </div>
-    [% END %]
-    [% IF page.menu %]
-        <div id="menu">
-            [% INCLUDE menu.inc.tt %]
-        </div>
-<script type="text/javascript">
-  $(document).ready(function(){
-    // simple jMenu plugin called
-    $("#jMenu").jMenu({absoluteTop:24});
-  });
-</script>
-    [% END %]
-
     <div id="status">
         [% IF REMOTE_ADDR %]
             <p class="info">
@@ -76,14 +59,30 @@ $('html').bind('keypress', function(e)
             [% IF class_name %]
                 [% loc('aktive Klasse:') %]&nbsp;<strong>[% class_name %]</strong> 
             [% ELSIF project %]
-                [% loc('aktives Projekt:') %]&nbsp;<strong>[% project %]</strong>                 
+                [% loc('aktives Projekt:') %]&nbsp;<strong>[% project %]</strong>
             [% END %]
         [% END %]
     </div>
-	[% IF is_error == 0 %]
+    </div>
+
+    [% IF page.special %]
+        <div id="special"> </div>
+    [% END %]
+    [% IF page.menu %]
+        <div id="menu">
+            [% INCLUDE menu.inc.tt %]
+        </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    // simple jMenu plugin called
+    $("#jMenu").jMenu({absoluteTop:24});
+  });
+</script>
+    [% END %]
+    [% IF is_error == 0 %]
 	<div class="messageok"><p>[% status %]</p></div>
-	[% END %]
-	<div></div>
+    [% END %]
+
     <div id="content" class="content[% IF action %] [% action %][% END %][% IF page.classes %] [% page.classes %][% END %]">
         [% INCLUDE dialog.inc.tt %]
 

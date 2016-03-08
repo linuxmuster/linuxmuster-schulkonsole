@@ -48,7 +48,7 @@ body {
 .jMenu {
     display: table;
     border: none;
-    height: 20px;
+    height: 23px;
     margin: 0;
     margin-bottom: 1px;
     margin-right: 1px;
@@ -245,29 +245,12 @@ table#classesoverview input {
   margin :0;
   }
 
-#status {
-    background-color: #dbdbe3;
-    min-height: 150px;
-}
-
-#status.ok {
-    color: white;
-    background-color: #a9d400;
-    margin: 0;
-    padding: 3px;
-    font-size: 12px;
-    font-weight: bold;
-    min-height: 150px;
-    overflow: hidden;
-}
-
 #status p {
+    color: #686868;
     margin: 0;
-    padding: 0;
-}
-
-#status.ok p.info {
-    display: none;
+    margin-bottom: 3px;
+    font-size: 10px;
+    padding: 3px;
 }
 
 label.error {
@@ -597,7 +580,6 @@ div.quantity {
 }
 
 div.messageok {
-    position: absolute;
     color: white;
     background-color: #a9d400;
     width: 100%;
