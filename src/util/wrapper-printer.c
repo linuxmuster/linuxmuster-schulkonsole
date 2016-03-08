@@ -12,7 +12,7 @@
 #endif
 
 #ifndef WRAPPERPRINTERPERLAPP
-# define WRAPPERPRINTERPERLAPP "/usr/libexec/schulkonsole/bin/wrapper-printer.pl"
+# define WRAPPERPRINTERPERLAPP "/usr/lib/schulkonsole/bin/wrapper-printer.pl"
 #endif
 
 

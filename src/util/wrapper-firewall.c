@@ -12,7 +12,7 @@
 #endif
 
 #ifndef WRAPPERFIREWALLPERLAPP
-# define WRAPPERFIREWALLPERLAPP "/usr/libexec/schulkonsole/bin/wrapper-firewall.pl"
+# define WRAPPERFIREWALLPERLAPP "/usr/lib/schulkonsole/bin/wrapper-firewall.pl"
 #endif
 
 

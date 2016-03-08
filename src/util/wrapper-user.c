@@ -15,7 +15,7 @@
 #endif
 
 #ifndef WRAPPERUSERAPP
-# define WRAPPERUSERAPP "/usr/libexec/schulkonsole/bin/wrapper-user.pl"
+# define WRAPPERUSERAPP "/usr/lib/schulkonsole/bin/wrapper-user.pl"
 #endif
 
 

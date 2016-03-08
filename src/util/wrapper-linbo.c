@@ -12,7 +12,7 @@
 #endif
 
 #ifndef WRAPPERLINBOPERLAPP
-# define WRAPPERLINBOPERLAPP "/usr/libexec/schulkonsole/bin/wrapper-linbo.pl"
+# define WRAPPERLINBOPERLAPP "/usr/lib/schulkonsole/bin/wrapper-linbo.pl"
 #endif
 
 
