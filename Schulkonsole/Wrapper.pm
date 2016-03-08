@@ -1,5 +1,6 @@
 use strict;
 use utf8;
+use IPC::Open3;
 use Schulkonsole::Error::Error;
 use Schulkonsole::Config;
 use Schulkonsole::DB;
