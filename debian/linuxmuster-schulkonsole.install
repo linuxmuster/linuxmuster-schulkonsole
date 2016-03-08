@@ -1,5 +1,4 @@
 src/cgi-bin/* usr/lib/schulkonsole/cgi-bin
-src/util/*.pl usr/lib/schulkonsole/bin
 tt/* usr/share/schulkonsole/tt
 linuxmuster/schulkonsole/*	usr/share/doc/linuxmuster-schulkonsole/examples
 menus.d/*	usr/lib/schulkonsole/menus.d
@@ -10,5 +9,5 @@ css/*	usr/share/schulkonsole/css/
 sbin/*	usr/sbin/
 linuxmuster/*	etc/linuxmuster/
 apache2/*	etc/apache2/
-debian/linuxmuster-schulkonsole.lintian	usr/share/lintian/overrides/linuxmuster-schulkonsole
-src/util/script/*	usr/lib/schulkonsole/bin
+debian/tmp/usr/share/schulkonsole/Schulkonsole/* usr/share/schulkonsole/Schulkonsole
+debian/tmp/usr/lib/schulkonsole/bin/*.pl usr/lib/schulkonsole/bin

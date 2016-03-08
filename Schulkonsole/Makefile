@@ -1,38 +1,31 @@
-PACKAGE = schulkonsole
-VERSION = 0.31.0
+include ../common.mk
+
 srcdir = .
-sysconfdir = /etc/linuxmuster
-datadir = /usr/share
-pkglibexecdir = /usr/lib/schulkonsole
-pkgruntimedir = /var/lib/schulkonsole
 
-perllibdir = /usr/share/schulkonsole/Schulkonsole
-PERLFILES = $(wildcard *.pm) $(wildcard Error/*.pm) Session.pm Config.pm
+GENERATED = $(patsubst %.pm.in,%.pm,$(wildcard *.pm.in))
 
-GENERATED = Session.pm Config.pm
+PERLFILES = $(wildcard *.pm) $(wildcard Error/*.pm) $(GENERATED)
 
-RM = rm -f
-MAKE = make
-INSTALL = install
+PHPFILES  = $(wildcard *.php)
 
 build: $(GENERATED)
 
 install: build
-	for datei in $(PERLFILES) ; do \
-	    $(INSTALL) -m 755 -o 0 -g 0 $$datei $(DESTDIR)$(perllibdir)/$$datei ; \
+	for datei in $(PERLFILES) $(PHPFILES); do \
+	    $(INSTALL) -D -m 755 -o 0 -g 0 $$datei $(DESTDIR)$(PERLLIBDIR)/$$datei ; \
 	done
-	install -d -o www-data -g root -m 700 $(DESTDIR)$(pkgruntimedir)
-	chmod -f 755 $(DESTDIR)$(perllibdir)/horde-mail.php
+	install -d -o www-data -g root -m 700 $(DESTDIR)$(RUNTIMEDIR)
+	chmod -f 755 $(DESTDIR)$(PERLLIBDIR)/horde-mail.php
 
 
 
 do_subst = sed \
   -e 's,\@PACKAGE\@,$(PACKAGE),g' \
   -e 's,\@VERSION\@,$(VERSION),g' \
-  -e 's,\@sysconfdir\@,$(sysconfdir),g' \
-  -e 's,\@datadir\@,$(datadir),g' \
-  -e 's,\@pkgruntimedir\@,$(pkgruntimedir),g' \
-  -e 's,\@pkglibexecdir\@,$(pkglibexecdir),g'
+  -e 's,\@sysconfdir\@,$(SYSCONFDIR),g' \
+  -e 's,\@datadir\@,$(DATADIR),g' \
+  -e 's,\@pkgruntimedir\@,$(RUNTIMEDIR),g' \
+  -e 's,\@pkglibexecdir\@,$(LIBDIR),g'
 
 
 %.pm: %.pm.in

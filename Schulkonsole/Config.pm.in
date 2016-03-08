@@ -1273,7 +1273,7 @@ use vars qw($_sophomorix_conf_true $_sophomorix_conf_false);
 
 $_version = '@VERSION@';
 $_sysconfdir = '@sysconfdir@/@PACKAGE@';
-$_templatedir = '@datadir@/@PACKAGE@/shtml';
+$_templatedir = '@datadir@/@PACKAGE@/tt';
 $_runtimedir = '@pkgruntimedir@';
 $_lockdir = '/var/lock';
 

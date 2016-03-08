@@ -1,25 +1,15 @@
-OS = Linux
-
-VERSION = 0.31.0
-CC      = /usr/bin/gcc
+include ../../common.mk
 
 BUILDDIR = build
 SOURCEDIR = .
-EXECDIR = /usr/lib/schulkonsole/bin
-SCRIPTEXEC = script
+EXECDIR = $(LIBDIR)/bin
 
 SCRIPTS = $(wildcard $(SOURCEDIR)/*.pl)
 SOURCES = $(wildcard $(SOURCEDIR)/*.c)
 OBJECTS = $(patsubst $(SOURCEDIR)/%.c, $(BUILDDIR)/%.o, $(SOURCES))
 BINARIES= $(patsubst $(SOURCEDIR)/%.c, $(BUILDDIR)/%, $(SOURCES))
 
-ECHO = echo
-RM = rm -rf
-MKDIR = mkdir
-INSTALL = install
-
-
-build: setup $(BINARIES) build_script
+build: setup $(BINARIES)
 
 $(BUILDDIR)/%: $(BUILDDIR)/%.o
 	$(CC) $(CFLAGS) -I$(SOURCEDIR) $< -o $@
@@ -31,16 +21,10 @@ $(BUILDDIR)/%.o: $(SOURCEDIR)/%.c setup
 setup:
 	$(MKDIR) -p $(BUILDDIR)
 	$(MKDIR) -p $(DESTDIR)$(EXECDIR)
-	$(MKDIR) -p $(SCRIPTEXEC)
 
 install_bin: build
 	for datei in $(patsubst $(BUILDDIR)/%,%,$(BINARIES)) ; do \
 	    $(INSTALL) -m 4755 -o 0 -g 0 $(BUILDDIR)/$$datei $(DESTDIR)$(EXECDIR)/$$datei ; \
-	done
-
-build_script: $(SCRIPTS)
-	for datei in $(SCRIPTS) ; do \
-	    $(INSTALL) -m 755 -o 0 -g 0 $$datei $(SCRIPTEXEC)/$$datei ; \
 	done
 
 install_script: $(SCRIPTS)
@@ -52,7 +36,7 @@ install: install_bin install_script
 
 clean:
 	$(RM) $(BINARIES) $(OBJECTS)
-	$(RM) -r $(BUILDDIR) $(SCRIPTEXEC)
+	$(RM) -r $(BUILDDIR)
 
 distclean: clean
 

@@ -27,11 +27,12 @@ endif
 CFLAGS += -DWWWUID=33	# uid of www-data
 CFLAGS += -DMINUID=500	# uid of nwberater
 
+WRAPPER_SOURCES = $(wildcard src/util/*.c)
+WRAPPER_BINARIES= $(patsubst src/util/%.c, debian/tmp/usr/lib/schulkonsole/bin/%, $(WRAPPER_SOURCES))
+WRAPPER_PERMS   = $(patsubst src/util/%.c, -X/usr/lib/schulkonsole/bin/%, $(WRAPPER_SOURCES))
 
 build:
-	(cd src/util; make)
-	(cd Schulkonsole; make)
-	(cd po; make)
+	make
 
 clean:
 	dh_testdir
@@ -45,18 +46,16 @@ clean:
 install:
 	dh_testdir
 	dh_testroot
-	dh_clean -k 
+	dh_clean -k
+	dh_installdirs -i etc/linuxmuster/schulkonsole/menus.d etc/linuxmuster/schulkonsole/permissions.d
 	dh_installdirs -a var/run
 
 	# Add here commands to install the package into DESTDIR
-	(cd src/util; make install)
-	(cd Schulkonsole; make install)
-	(cd po; make install)
-	install -d -o root -g root -m 755 $(DESTDIR)/etc/linuxmuster/schulkonsole/menus.d
-	install -d -o root -g root -m 755 $(DESTDIR)/etc/linuxmuster/schulkonsole/permissions.d
+	mkdir -p $(CURDIR)/debian/tmp
+	make install DESTDIR=$(CURDIR)/debian/tmp
 
 # Build architecture-independent files here.
-binary-indep:
+binary-indep: install
 	dh_testdir -i
 	dh_testroot -i
 	dh_installchangelogs -i
@@ -64,6 +63,7 @@ binary-indep:
 	dh_installcron -i
 #	dh_installman
 	dh_install -i
+	dh_lintian -i
 	dh_link -i
 	dh_compress -i
 	dh_fixperms -i
@@ -74,17 +74,20 @@ binary-indep:
 	dh_builddeb -i
 
 # Build architecture-dependent files here.
-binary-arch:
+binary-arch: install
 	dh_testdir -a
 	dh_testroot -a
 	dh_installchangelogs -a
 	dh_installdocs -a
 #	dh_installman -a
-	dh_install -a
+	dh_install --autodest -a $(WRAPPER_BINARIES)
+	dh_lintian -a
 	dh_link -a
 	dh_strip -a
 	dh_compress -a
-	dh_fixperms -a -X/var/lib/schulkonsole -X/usr/lib/schulkonsole/bin/wrapper-cyrus -X/usr/lib/schulkonsole/bin/wrapper-user -X/usr/lib/schulkonsole/bin/wrapper-firewall -X/usr/lib/schulkonsole/bin/wrapper-printer -X/usr/lib/schulkonsole/bin/wrapper-sophomorix -X/usr/lib/schulkonsole/bin/wrapper-files -X/usr/lib/schulkonsole/bin/wrapper-ovpn -X/usr/lib/schulkonsole/bin/wrapper-linbo -X/usr/lib/schulkonsole/bin/wrapper-radius -X/usr/lib/schulkonsole/bin/wrapper-debconf
+	dh_fixperms -a -X/var/lib/schulkonsole -X/usr/lib
+	dh_compress -a
+	dh_fixperms -a -X/var/lib/schulkonsole $(WRAPPER_PERMS)
 	dh_installdeb -a
 	dh_shlibdeps -a
 	dh_gencontrol -a

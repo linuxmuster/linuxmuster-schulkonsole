@@ -1,6 +1,6 @@
 #!/bin/bash
 # /usr/share/schulkonsole/scripts/make-menus.sh
-# erzeugt shtml.inc-Dateien aus menu*, submenu-xxx-*-Dateien
+# erzeugt .inc.tt-Dateien aus menu*, submenu-xxx-*-Dateien
 # durch sortierte Verkettung.
 # Dateien in $MENUUSERDIR überstimmen Dateien aus $MENUDIR.
 #
@@ -8,7 +8,7 @@
 #
 MENUDIR=/usr/lib/schulkonsole/menus.d
 MENUUSERDIR=/etc/linuxmuster/schulkonsole/menus.d
-SHTMLDIR=/usr/share/schulkonsole/shtml
+TTDIR=/usr/share/schulkonsole/tt
 EXT=.inc.tt
 MENU=menu
 SUBMENU=submenu
@@ -16,7 +16,7 @@ SUBSUBMENU=subsubmenu
 
 # create menu
 FILES=$(find $MENUDIR $MENUUSERDIR -name "$MENU-*" -printf '%f\n'|sort -u)
-TARGET=$SHTMLDIR/$MENU$EXT
+TARGET=$TTDIR/$MENU$EXT
 rm -f $TARGET
 touch $TARGET
 echo "Kopiere [$FILES] in $TARGET"|tr '\n' ' '
@@ -33,7 +33,7 @@ echo "Submenus: [$MENUS]"|tr '\n' ' '
 echo
 for s in $MENUS; do
   FILES=$(find $MENUDIR $MENUUSERDIR -name "$SUBMENU-$s-*" -printf '%f\n'|sort -u)
-  TARGET=$SHTMLDIR/$SUBMENU-$s$EXT
+  TARGET=$TTDIR/$SUBMENU-$s$EXT
   rm -f $TARGET
   touch $TARGET
   echo "Kopiere [$FILES] in $TARGET"|tr '\n' ' '
@@ -51,7 +51,7 @@ echo "Subsubmenus: [$MENUS]"|tr '\n' ' '
 echo
 for s in $MENUS; do
   FILES=$(find $MENUDIR $MENUUSERDIR -name "$SUBSUBMENU-$s-*" -printf '%f\n'|sort)
-  TARGET=$SHTMLDIR/$SUBSUBMENU-$s$EXT
+  TARGET=$TTDIR/$SUBSUBMENU-$s$EXT
   rm -f $TARGET
   touch $TARGET
   echo "Kopiere [$FILES] in $TARGET"|tr '\n' ' '
