@@ -30,6 +30,7 @@ $('html').bind('keypress', function(e)
 </head>
 <body[% IF action %] class="[% action %]"[% END %]>
 
+<!-- Kopf -->
     <div id="container">
         <div id="header">
             [% IF link_settings %]
@@ -68,6 +69,8 @@ $('html').bind('keypress', function(e)
     [% IF page.special %]
         <div id="special"> </div>
     [% END %]
+
+<!-- Menue -->
     [% IF page.menu %]
         <div id="menu">
             [% INCLUDE menu.inc.tt %]
@@ -83,6 +86,24 @@ $('html').bind('keypress', function(e)
 	<div class="messageok"><p>[% status %]</p></div>
     [% END %]
 
+[% IF ! page.noinfo %]
+<!-- Info -->
+<div id="block-info-link">
+  <span class="info-button">
+    <a id="info-einblenden"><img class="info-icon" src="css/img/info-einblenden.png" alt="Informationen anzeigen" title="Informationen anzeigen" onclick="info_on();"></a>
+    <a id="info-ausblenden"><img class="info-icon" src="css/img/info-ausblenden.png" alt="Informationen ausblenden" title="Informationen ausblenden" onclick="info_off();"></a>
+  </span>
+</div>
+<div id="info" style="display: block;">
+    <h2>[% loc('Info') %]</h2>
+    [% page.default = '' %]
+    [% page.info %]
+    [% page.default = '1' %]
+    [% INCLUDE "footer_info.inc.tt" %]
+</div>
+[% END %]
+
+<!-- Inhalt -->
     <div id="content" class="content[% IF action %] [% action %][% END %][% IF page.classes %] [% page.classes %][% END %]">
         [% INCLUDE dialog.inc.tt %]
 
@@ -91,14 +112,6 @@ $('html').bind('keypress', function(e)
         [% page.default = '1' %]
     </div>
 
-    <div id="info" style="display: block;">
-    <a class="hideinfo" [% dohref("#") %] onclick="toggle_visibility('info');">^</a>
-        <h2>[% loc('Info') %]</h2>
-        [% page.default = '' %]
-        [% page.info %]
-        [% page.default = '1' %]
-        [% INCLUDE "footer_info.inc.tt" %]
-    </div>
     <div id="authors">
     </div>
 </body>

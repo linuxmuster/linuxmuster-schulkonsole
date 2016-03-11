@@ -192,59 +192,6 @@ table#classesoverview input {
     width: 100px;
 }
 
-#info {
-    position: absolute;
-    top: 140px;
-    right: 20px;
-    padding: 3px;
-    width: 240px;
-    background-color: #FBFAF9;
-    border: 1px solid #dbdbe3;
-    z-index:4;
-    display: block;
-}
-
-#info a.hideinfo {
-    display: block;
-    text-align: right;
-    font-size: 8px;
-    text-decoration: none;
-    color: #bbb;
-}
-
-#info p {
-    padding: 3px;
-    margin: 0;
-}
-
-#info p.info {
-    padding: 3px;
-    font-size: 10px;
-    margin: 0;
-}
-
-#info a {
-    color: #0000aa;
-    font-weight: bold;
-    text-decoration: underline;
-}
-
-#info a:hover {
-    color: #cc3333;
-}
-
-#info h2 {
-  font-size: 12px;
-  font-weight: bold;
-  padding: 0;
-  margin: 4px 0 0 4px;
-  }
-
-#info ul {
-  padding: 16px;
-  margin :0;
-  }
-
 #status p {
     color: #686868;
     margin: 0;
@@ -589,3 +536,93 @@ div.messageok {
     overflow: hidden;
 }
 
+/* info-button */
+#block-info-link {
+    position: absolute;
+    right: 246px;
+    top: 156px;
+    width: 20px;
+    height: 59px;
+    background-color: #bbff99;
+    border-radius: 6px 0px 0px 6px;
+    box-shadow: 0px 0px 5px #969696;
+    padding: 11px 11px 16px;
+    z-index: 15;
+}
+
+div#block-info-link span {
+  display: block;
+  vertical-align: middle;
+}
+
+.info-button {
+  vertical-align: middle;
+}
+
+img.info-icon {
+    padding: 13px 0px 13px 0px;
+    vertical-align: middle;
+}
+
+#info-einblenden {
+    display: none;
+}
+
+#info-ausblenden {
+    display: block;
+}
+
+/* info-window */
+#info {
+    position: absolute;
+    top: 150px;
+    right: 0px;
+    padding: 3px;
+    width: 240px;
+    background-color: #bbff99;
+    border-radius: 6px 0px 0px 6px;
+    box-shadow: 0px 0px 5px #969696;
+    z-index:16;
+    display: block;
+}
+
+#info a.hideinfo {
+    display: block;
+    text-align: right;
+    font-size: 8px;
+    text-decoration: none;
+    color: #bbb;
+}
+
+#info p {
+    padding: 3px;
+    margin: 0;
+}
+
+#info p.info {
+    padding: 3px;
+    font-size: 10px;
+    margin: 0;
+}
+
+#info a {
+    color: #0000aa;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+#info a:hover {
+    color: #cc3333;
+}
+
+#info h2 {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0;
+  margin: 4px 0 0 4px;
+}
+
+#info ul {
+  padding: 16px;
+  margin :0;
+}

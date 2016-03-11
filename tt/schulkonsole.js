@@ -9,6 +9,8 @@ window.onload = function()
         timer = max_idle_time(element.firstChild.nodeValue);
     }
 
+    window.setTimeout(info_off, 2000);
+    
     timer_step();
 
     if (! window.location.hash) {
@@ -109,3 +111,26 @@ function toggle_visibility(id)
           e.style.display = 'block';
 }
 
+function info_on()
+{
+    var e = document.getElementById('info');
+    var b = document.getElementById('block-info-link');
+    var ein = document.getElementById('info-einblenden');
+    var aus = document.getElementById('info-ausblenden');
+    e.style.display = 'block';
+    b.style.right = '248px';
+    ein.style.display = 'none';
+    aus.style.display = 'block';
+}
+
+function info_off()
+{
+    var e = document.getElementById('info');
+    var b = document.getElementById('block-info-link');
+    var ein = document.getElementById('info-einblenden');
+    var aus = document.getElementById('info-ausblenden');
+    e.style.display = 'none';
+    b.style.right = '0px';
+    ein.style.display = 'block';
+    aus.style.display = 'none';
+}

@@ -1,6 +1,6 @@
 [% page = {
       title   => loc('Schulkonsole') _ " - " _ loc('Login'),
-      info    => loc('<p>Bitte melden Sie sich mit Benutzername und Passwort an.</p>'),
+      info    => loc('<p>Die Schulkonsole kann erst nach erfolgter Anmeldung genutzt werden.</p><p>Bitte melden Sie sich daher mit Benutzername und Passwort an.</p>'),
       special => 1,
    }
 %]
