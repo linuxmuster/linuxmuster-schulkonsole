@@ -1,14 +1,14 @@
 use strict;
-use IPC::Open3;
-use POSIX 'sys_wait_h';
-
-use Sophomorix::SophomorixConfig;
-use Sophomorix::SophomorixAPI;
+use utf8;
 
 use Schulkonsole::Wrapper;
 use Schulkonsole::Error::Error;
 use Schulkonsole::Error::SophomorixError;
 use Schulkonsole::Config;
+
+use Sophomorix::SophomorixConfig;
+use Sophomorix::SophomorixAPI;
+
 use Safe;
 
 
@@ -150,9 +150,6 @@ $VERSION = 0.05;
 	write_students_file
 	write_extra_user_file
 	write_extra_course_file
-	write_sophomorix_conf
-	write_quota_conf
-	write_mailquota_conf
 	list_add
 	list_move
 	list_kill
@@ -165,10 +162,6 @@ $VERSION = 0.05;
 	teachin_check
 	teachin_list
 	teachin_set
-
-	process_quota
-	class_set_quota
-	project_set_quota
 
 	read_add_file
 	read_kill_file
@@ -6397,78 +6390,6 @@ sub write_extra_course_file {
 
 
 
-=head3 C<write_quota_conf($id, $password, $lines)>
-
-Write new quota.txt
-
-=head4 Parameters
-
-=over
-
-=item C<$id>
-
-The ID (not UID) of the teacher invoking the command
-
-=item C<$password>
-
-The password of the teacher invoking the command
-
-=item C<$lines>
-
-The lines of the new file
-
-=back
-
-=head4 Description
-
-Writes the file /etc/sophomorix/user/quota.txt and backups the old
-file
-
-=cut
-
-sub write_quota_conf {
-	write_file(@_, 3);
-}
-
-
-
-
-=head3 C<write_mailquota_conf($id, $password, $lines)>
-
-Write new mailquota.txt
-
-=head4 Parameters
-
-=over
-
-=item C<$id>
-
-The ID (not UID) of the teacher invoking the command
-
-=item C<$password>
-
-The password of the teacher invoking the command
-
-=item C<$lines>
-
-The lines of the new file
-
-=back
-
-=head4 Description
-
-Writes the file /etc/sophomorix/user/mailquota.txt and backups the old
-file
-
-=cut
-
-sub write_mailquota_conf {
-	write_file(@_, 4);
-}
-
-
-
-
 =head3 C<list_add($id, $password)>
 
 Get the list of users to be added
@@ -7020,166 +6941,6 @@ sub teachin_set {
 	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::TEACHINAPP,
 						$id, $password,
 						"2\n$output");
-}
-
-
-
-
-=head3 C<process_quota($id, $password, $scope)>
-
-Processes the changes in quota
-
-=head4 Parameters
-
-=over
-
-=item C<$id>
-
-The ID (not UID) of the teacher invoking the command
-
-=item C<$password>
-
-The password of the teacher invoking the command
-
-=item C<$scope>
-
-bitwise or: 1 = set quota,
-2 = set quota for teachers,
-4 = set quota for students
-
-=back
-
-=head4 Description
-
-This wraps the command
-C<sophomorix-quota [--set] [--teachers] [--students]> and uses the options
-corresponding to C<$scope>
-
-=cut
-
-sub process_quota {
-	my $id = shift;
-	my $password = shift;
-	my $scope = shift;
-
-	return unless $scope;
-
-
-	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SETQUOTAAPP,
-		$id, $password,
-		"$scope\n");
-}
-
-
-
-
-=head3 C<class_set_quota($id, $password, $gid, $diskquota, $mailquota)>
-
-Set quotas for class
-
-=head4 Parameters
-
-=over
-
-=item C<$id>
-
-The ID (not UID) of the teacher invoking the command
-
-=item C<$password>
-
-The password of the teacher invoking the command
-
-=item C<$class>
-
-name of the class
-
-=item C<diskquota>
-
-diskquotas separated with '+' or undef
-
-=item C<mailquota>
-
-mailquota or undef
-
-=back
-
-=head4 Description
-
-This wraps the commands
-C<sophomorix-class --class name --quota diskquota --mailquota mailquota>,
-where name is C<$class>, diskquota is C<$diskquota> and mailquota is
-C<mailquota>.
-
-=cut
-
-sub class_set_quota {
-	my $id = shift;
-	my $password = shift;
-	my $class = shift;
-	my $diskquota = shift;
-	my $mailquota = shift;
-
-
-	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SETQUOTAAPP,
-		$id, $password,
-		"16\n$class\n$diskquota\n$mailquota\n");
-}
-
-
-
-
-=head3 C<project_set_quota($id, $password, $gid, $diskquota, $mailquota)>
-
-Set quotas for project
-
-=head4 Parameters
-
-=over
-
-=item C<$id>
-
-The ID (not UID) of the teacher invoking the command
-
-=item C<$password>
-
-The password of the teacher invoking the command
-
-=item C<$project>
-
-name of the project
-
-=item C<diskquota>
-
-diskquotas separated with '+' or undef
-
-=item C<mailquota>
-
-mailquota or undef
-
-=back
-
-=head4 Description
-
-This wraps the commands
-C<sophomorix-project --caller caller --project name --quota diskquota --mailquota mailquota>,
-where
-caller is the UID of the user with the ID C<$id>,
-name is C<$project>, diskquota is C<$diskquota> and mailquota is
-C<mailquota>.
-
-=cut
-
-sub project_set_quota {
-	my $id = shift;
-	my $password = shift;
-	my $project = shift;
-	my $diskquota = shift;
-	my $mailquota = shift;
-
-
-	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SETQUOTAAPP,
-		$id, $password,
-		"17\n$project\n$diskquota\n$mailquota\n");
 }
 
 

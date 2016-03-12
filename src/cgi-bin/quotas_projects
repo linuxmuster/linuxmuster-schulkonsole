@@ -26,12 +26,11 @@ use strict;
 use utf8;
 use lib '/usr/share/schulkonsole';
 use Schulkonsole::Session;
-use Schulkonsole::Sophomorix;
+use Schulkonsole::SophomorixConfig;
 use Schulkonsole::SophomorixQuotas;
-use Sophomorix::SophomorixAPI;
-use Sophomorix::SophomorixConfig;
 use Schulkonsole::Error::SophomorixError;
 
+use Proc::ProcessTable;
 
 my $this_file = 'quotas_projects';
 
@@ -51,7 +50,7 @@ if (not $sk_session->get_password()) {
 	}
 }
 
-if ($Conf::use_quota ne $Schulkonsole::Config::_sophomorix_conf_true) {
+if (not $Schulkonsole::SophomorixConfig::quotaactivated) {
 	my $q = new CGI;
 	my $url = $q->url( -full => 1 );
 
@@ -68,6 +67,15 @@ my $password = $sk_session->get_password();
 
 my @mountpoints = Schulkonsole::SophomorixQuotas::mountpoints();
 
+my $process_table = new Proc::ProcessTable;
+my $app_quota = $Schulkonsole::Config::_cmd_sophomorix_project;
+$app_quota =~ s:.*/::;
+my %running;
+foreach my $process (@{ $process_table->table }) {
+	if ($process->fname =~ /^soph/ and $process->cmndline =~ /$app_quota/) {
+			$running{quota} = $process->pid;
+	}
+}
 
 
 eval {
@@ -145,10 +153,10 @@ $q->param('acceptprojects') and do {
 		}
 
 		foreach my $quota_info (@queue) {
-			Schulkonsole::Sophomorix::project_set_quota(
+			Schulkonsole::SophomorixQuotas::project_set_quota(
 				$id, $password, @$quota_info);
 		}
-
+		$running{quota} = 1;
 
 		$sk_session->set_status($sk_session->d()->get(
 			'Änderungen übernommen.'), 0);
@@ -270,11 +278,13 @@ $q->param('acceptusers') and do {
 		my $quota_lines = new_quota_lines(\%new_users);
 		my $mailquota_lines = new_mailquota_lines(\%new_users);
 
-		Schulkonsole::Sophomorix::write_quota_conf($id, $password, $quota_lines);
-		Schulkonsole::Sophomorix::write_mailquota_conf($id, $password, $mailquota_lines);
+		Schulkonsole::SophomorixQuotas::write_quota_conf($id, $password, $quota_lines);
+		Schulkonsole::SophomorixQuotas::write_mailquota_conf($id, $password, $mailquota_lines);
 
 
-		Schulkonsole::Sophomorix::process_quota($id, $password, 8);
+		Schulkonsole::SophomorixQuotas::process_quota($id, $password, 8);
+
+		$running{quota} = 1;
 
 		$sk_session->set_status($sk_session->d()->get(
 			'Änderungen übernommen.'), 0);
@@ -288,6 +298,26 @@ $q->param('acceptusers') and do {
 	last COMMANDS;
 };	# end acceptusers
 
+($q->param('logquota') or $running{quota}) and do {
+	eval {
+		my $logquota =
+			Schulkonsole::SophomorixQuotas::read_quota_log_file($id, $password);
+
+=item C<logquota>
+
+Output of C<sophomorix-quota --set>
+
+=cut
+
+		splice @$logquota, 0, -30;
+		$sk_session->set_var('logquota', join("", @$logquota));
+	};
+	if ($@) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Kann Logdatei nicht öffnen'), 1);
+	}
+	last COMMANDS;
+};
 } # end COMMANDS
 };
 if ($@) {
@@ -390,6 +420,14 @@ The number of mountpoints
 =cut
 
 $sk_session->set_var('mountpoints_cnt', scalar(@mountpoints));
+
+=item C<isbusy>
+
+True if C<sophomorix-quota> is running
+
+=cut
+
+$sk_session->set_var('isbusy', ($running{quota}? 1 : 0));
 
 
 $sk_session->print_page("$this_file.tt", $this_file);

@@ -1,5 +1,6 @@
 [% page = {
       title    => loc('Schulkonsole') _ " - " _ loc('Quota') _ " - " _ loc('Lehrer'),
+      autorefresh => isbusy,
       menu     => 1,
       submenu  => "quotas",
       info     => loc('<p>Hier können Sie die Disk- und Mailquota für Lehrer/innen individuell anpassen. Die Darstellung der Diskquota hängt von Ihrer Partitionierung ab.</p><p>Leere Felder bedeuten, dass in dem Fall die Standardeinstellungen gelten.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),
@@ -8,46 +9,56 @@
 
 <h2>[% loc('Quota') %] :: [% loc('Lehrer') %]</h2>
 
+[% IF isbusy %]
 
-[% IF teachers %]
+	[% busy.msg=loc('Quota aktivieren läuft...') %]
+	[% busy.log=logquota %]
 
-<form method="post" accept-charset="UTF-8">
-
-<table id="quotasteachers" class="liste">
-<tr>
-<th>[% loc('Login') %]</th>
-<th>[% loc('Name') %]</th>
-[% IF mountpoints %]
-<th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
-[% END %]
-<th>[% loc('Mailquota') %]</th>
-</tr>
-[% IF mountpoints %]
-<tr>
-<th colspan="2"></th>
-[% FOREACH m IN mountpoints %]
-<th>[% m %]</th>
-[% END %]
-<th></th>
-</tr>
-[% END %]
-[% FOREACH t IN teachers %]
-[% IF odd %][% odd=0 %]<tr class="odd">
-[% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td>[% t.login %]</td>
-<td>[% t.firstname %] [% t.surname %]</td>
-[% FOREACH tq IN t.diskquotas %]
-<td><input size="6" maxlength="5" name="[% t.login %]_teacher[% tq.mountpoint %]-diskquota" value="[% tq.quota %]"></td>
-[% END %]
-<td><input size="6" maxlength="5" name="[% t.login %]_teachermailquota" value="[% t.mailquota %]"></td>
-</tr>
-[% END %]
-</table>
-
-<p><input type="submit" name="acceptteachers" value="[% loc('Änderungen übernehmen') %]"></p>
-
-</form>
+	[% INCLUDE busy.inc.tt %]
 
 [% ELSE %]
-<p>[% loc('Es gibt keine Lehrer.') %]</p>
+
+	[% IF teachers %]
+	
+	<form method="post" accept-charset="UTF-8">
+	
+	<table id="quotasteachers" class="liste">
+	<tr>
+	<th>[% loc('Login') %]</th>
+	<th>[% loc('Name') %]</th>
+	[% IF mountpoints %]
+	<th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
+	[% END %]
+	<th>[% loc('Mailquota') %]</th>
+	</tr>
+	[% IF mountpoints %]
+	<tr>
+	<th colspan="2"></th>
+	[% FOREACH m IN mountpoints %]
+	<th>[% m %]</th>
+	[% END %]
+	<th></th>
+	</tr>
+	[% END %]
+	[% FOREACH t IN teachers %]
+	[% IF odd %][% odd=0 %]<tr class="odd">
+	[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+	<td>[% t.login %]</td>
+	<td>[% t.firstname %] [% t.surname %]</td>
+	[% FOREACH tq IN t.diskquotas %]
+	<td><input size="6" maxlength="5" name="[% t.login %]_teacher[% tq.mountpoint %]-diskquota" value="[% tq.quota %]"></td>
+	[% END %]
+	<td><input size="6" maxlength="5" name="[% t.login %]_teachermailquota" value="[% t.mailquota %]"></td>
+	</tr>
+	[% END %]
+	</table>
+	
+	<p><input type="submit" name="acceptteachers" value="[% loc('Änderungen übernehmen') %]"></p>
+	
+	</form>
+	
+	[% ELSE %]
+	<p>[% loc('Es gibt keine Lehrer.') %]</p>
+	[% END %]
+
 [% END %]

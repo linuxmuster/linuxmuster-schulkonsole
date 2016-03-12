@@ -2073,8 +2073,10 @@ numeric constant: C<Schulkonsole::Config::READSOPHOMORIXFILEAPP>
 
 number of the file to read (0 = lehrer.txt, 1 = schueler.txt,
 2 = sophomorix.add, 3 = sophomorix.move, 4 = sophomorix.kill,
-5 = report.admin, 6 = report.office, 7 = last of sophomorix.add.txt.*,
-8 = last of sophomorix.move.txt.*, 9 = last of sophomorix.kill.txt.*)
+5 = report.admin, 6 = report.office, 10 = extraschueler.txt,
+11 = extrakurse.txt, 7 = last of sophomorix-add.txt.*,
+8 = last of sophomorix-move.txt.*, 9 = last of sophomorix-kill.txt.*,
+12 = last of sophomorix-quota.txt.*)
 
 =back
 
@@ -2082,7 +2084,7 @@ number of the file to read (0 = lehrer.txt, 1 = schueler.txt,
 
 sub readsophomorixfileapp(){
 	my $number = <>;
-	($number) = $number =~ /^([0-9]|1[01])$/;
+	($number) = $number =~ /^([0-9]|1[0-2])$/;
 	exit (  Schulkonsole::Error::SophomorixError::WRAPPER_INVALID_FILENUMBER )
 		unless defined $number;
 
@@ -2171,6 +2173,11 @@ sub readsophomorixfileapp(){
 			                 	"$DevelConf::log_files/sophomorix-kill.txt.");
 			last BASENAME;
 		};
+		$number == 12 and do {
+			$filename_base = Schulkonsole::Encode::to_fs(
+			                 	"$DevelConf::log_files/sophomorix-quota.txt.");
+			last BASENAME;
+		};
 	}
 	my @filenames = sort glob "$filename_base*";
 	($filename) = $filenames[-1] =~ /^(.*)$/;
@@ -2183,7 +2190,6 @@ sub readsophomorixfileapp(){
 	else {
 		$encoding = $supported_encodings{$encoding};
 	}
-
 	open FILE, "<:encoding($encoding)", $filename
 		or exit (  Schulkonsole::Error::SophomorixError::WRAPPER_CANNOT_OPEN_FILE );
 

@@ -26,14 +26,13 @@ provides the following variables:
 use strict;
 use utf8;
 use lib '/usr/share/schulkonsole';
-use open ':utf8';
 use Schulkonsole::Encode;
 use Schulkonsole::Session;
-use Schulkonsole::Sophomorix;
+use Schulkonsole::SophomorixConfig;
 use Schulkonsole::SophomorixQuotas;
-use Sophomorix::SophomorixAPI;
-use Sophomorix::SophomorixConfig;
 use Schulkonsole::Error::SophomorixError;
+
+use Proc::ProcessTable;
 
 
 
@@ -54,7 +53,7 @@ if (not $sk_session->get_password()) {
 		$sk_session->exit_with_login_page($this_file);
 	}
 }
-if ($Conf::use_quota ne $Schulkonsole::Config::_sophomorix_conf_true) {
+if (not $Schulkonsole::SophomorixConfig::quotaactivated) {
 	my $q = new CGI;
 	my $url = $q->url( -full => 1 );
 
@@ -71,12 +70,20 @@ my $password = $sk_session->get_password();
 
 my @mountpoints = Schulkonsole::SophomorixQuotas::mountpoints();
 
-
+my $process_table = new Proc::ProcessTable;
+my $app_quota = $Schulkonsole::Config::_cmd_sophomorix_quota;
+$app_quota =~ s:.*/::;
+my %running;
+foreach my $process (@{ $process_table->table }) {
+	if ($process->fname =~ /^soph/ and $process->cmndline =~ /$app_quota/) {
+			$running{quota} = $process->pid;
+	}
+}
 
 eval {
 COMMANDS: {
 $q->param('acceptusers') and do {
-	my $users = read_quota_conf();
+	my $users = Schulkonsole::SophomorixQuotas::read_quota_conf();
 	my %new_users;
 
 	my $is_changed = 0;
@@ -91,7 +98,7 @@ $q->param('acceptusers') and do {
 					'%s ist ein Lehrer'), $login), 1);
 				last COMMANDS;
 			}
-		} elsif (   not is_passwd_user($login)
+		} elsif (   not Schulkonsole::SophomorixQuotas::is_passwd_user($login)
 		         or $login eq 'root') {
 			$sk_session->set_status(sprintf($sk_session->d()->get(
 				'Benutzer %s unbekannt'), $login), 1);
@@ -181,14 +188,16 @@ $q->param('acceptusers') and do {
 	if (@errors) {
 		$sk_session->set_status(join(', ', @errors), 1);
 	} elsif ($is_changed) {
-		my $quota_lines = new_quota_lines(\%new_users);
-		my $mailquota_lines = new_mailquota_lines(\%new_users);
+		my $quota_lines = Schulkonsole::SophomorixQuotas::new_quota_lines(\%new_users);
+		my $mailquota_lines =Schulkonsole::SophomorixQuotas::new_mailquota_lines(\%new_users);
 
-		Schulkonsole::Sophomorix::write_quota_conf($id, $password, $quota_lines);
-		Schulkonsole::Sophomorix::write_mailquota_conf($id, $password, $mailquota_lines);
+		Schulkonsole::SophomorixQuotas::write_quota_conf($id, $password, $quota_lines);
+		Schulkonsole::SophomorixQuotas::write_mailquota_conf($id, $password, $mailquota_lines);
 
 
-		Schulkonsole::Sophomorix::process_quota($id, $password, 8);
+		Schulkonsole::SophomorixQuotas::process_quota($id, $password, 8);
+		
+		$running{quota} = 1;
 
 		$sk_session->set_status($sk_session->d()->get(
 			'Änderungen übernommen.'), 0);
@@ -202,6 +211,28 @@ $q->param('acceptusers') and do {
 	last COMMANDS;
 };	# end acceptusers
 
+($q->param('logquota') or $running{quota}) and do {
+	eval {
+		my $logquota =
+			Schulkonsole::SophomorixQuotas::read_quota_log_file($id, $password);
+
+=item C<logquota>
+
+Output of C<sophomorix-quota --set>
+
+=cut
+
+		splice @$logquota, 0, -30;
+		$sk_session->set_var('logquota', join("", @$logquota));
+	};
+	if ($@) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Kann Logdatei nicht öffnen'), 1);
+	}
+	last COMMANDS;
+};
+
+
 } # end COMMANDS
 };
 if ($@) {
@@ -213,7 +244,7 @@ if ($@) {
 
 
 
-my $userquotas = read_quota_conf();
+my $userquotas = Schulkonsole::SophomorixQuotas::read_quota_conf();
 my $hosts = Schulkonsole::Config::hosts();
 my @userquotas_array;
 my @workstationquotas_array;
@@ -406,184 +437,15 @@ The number of mountpoints
 
 $sk_session->set_var('mountpoints_cnt', scalar(@mountpoints));
 
+=item C<isbusy>
+
+True if C<sophomorix-quota> is running
+
+=cut
+
+$sk_session->set_var('isbusy', ($running{quota}? 1 : 0));
 
 $sk_session->print_page("$this_file.tt", $this_file);
-
-
-
-
-sub read_quota_conf {
-	my %re;
-
-
-	if (open QUOTACONF, '<',
-	         Schulkonsole::Encode::to_fs("$DevelConf::config_pfad/quota.txt")) {
-		flock QUOTACONF, 1;
-
-		while (<QUOTACONF>) {
-			chomp;
-			s/\s+//g;
-			next if (not $_ or /^#/);
-
-			my ($user, $quota) = /^(\S+)\s*:\s*(\d.*)$/;
-
-			next if (not $user or $user =~ /^standard-/);
-
-
-			$re{$user}{diskquotas} =
-				Schulkonsole::SophomorixQuotas::split_diskquotas_to_hash(
-					$quota);
-		}
-
-		close QUOTACONF;
-
-
-	} else {
-		print STDERR "Cannot open $DevelConf::config_pfad/quota.txt\n";
-	}
-
-
-	if (open MAILQUOTACONF, '<',
-	         Schulkonsole::Encode::to_fs(
-	         	"$DevelConf::config_pfad/mailquota.txt")) {
-		flock MAILQUOTACONF, 1;
-
-		while (<MAILQUOTACONF>) {
-			chomp;
-			s/\s+//g;
-			next if (not $_ or /^#/);
-
-			my ($user, $mailquota) = /^(\S+)\s*:\s*(\d.*)$/;
-
-			next if (not $user or $user =~ /^standard-/);
-
-
-			$re{$user}{mailquota} = $mailquota;
-		}
-
-		close QUOTACONF;
-
-	} else {
-		print STDERR "Cannot open $DevelConf::config_pfad/mailquota.txt\n";
-	}
-
-
-	return \%re;
-}
-
-
-
-
-sub new_quota_lines {
-	my $new = shift;
-
-
-	my %new;
-	foreach my $key (keys %$new) {
-		$new{$key} = Schulkonsole::SophomorixQuotas::hash_to_quotastring(
-				$$new{$key}{diskquotas})
-			if $$new{$key}{diskquotas};
-	}
-
-	my @lines;
-	if (open QUOTACONF, '<',
-	         Schulkonsole::Encode::to_fs("$DevelConf::config_pfad/quota.txt")) {
-
-		while (my $line = <QUOTACONF>) {
-			foreach my $key (keys %new) {
-				if ($line =~ /^\s*#?\s*$key\s*:/) {
-					if ($new{$key} eq $Schulkonsole::SophomorixQuotas::diskquota_undefined) {
-						$line = "#$line";
-					} else {
-						$line = "$key: $new{$key}\n";
-					}
-					delete $new{$key};
-
-					last;
-				}
-			}
-			push @lines, $line;
-		}
-	}
-
-	if (%new) {
-		#push @lines, "# schulkonsole\n";
-
-		my $line;
-		foreach my $key (keys %new) {
-			push @lines, "$key: $new{$key}\n";
-		}
-	}
-
-
-	return \@lines;
-}
-
-
-
-
-sub new_mailquota_lines {
-	my $new = shift;
-
-
-	my %new;
-	foreach my $key (keys %$new) {
-		$new{$key} = $$new{$key}{mailquota}
-			if $$new{$key}{mailquota};
-	}
-
-	my @lines;
-	if (open QUOTACONF, '<',
-	         Schulkonsole::Encode::to_fs(
-	         	"$DevelConf::config_pfad/mailquota.txt")) {
-
-		while (my $line = <QUOTACONF>) {
-			foreach my $key (keys %new) {
-				if ($line =~ /^\s*#?\s*$key\s*:/) {
-					if (   $new{$key} == -1
-					    or $new{$key} eq $Schulkonsole::SophomorixQuotas::mailquota_undefined) {
-						$line = "#$line";
-					} else {
-						$line = "$key: $new{$key}\n";
-					}
-					delete $new{$key};
-
-					last;
-				}
-			}
-			push @lines, $line;
-		}
-	}
-
-	if (%new) {
-		my $line;
-		foreach my $key (keys %new) {
-			push @lines, "$key: $new{$key}\n" unless $new{$key} == -1
-		}
-	}
-
-
-	return \@lines;
-}
-
-
-
-
-sub is_passwd_user {
-	my $login = shift;
-
-	open PASSWD, '<', '/etc/passwd' or return 0;
-	while (<PASSWD>) {
-		my ($name) = split ':';
-
-		return 1 if $name eq $login;
-	}
-	close PASSWD;
-
-
-	return 0;
-}
-
 
 
 

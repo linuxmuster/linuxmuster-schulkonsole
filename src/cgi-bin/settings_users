@@ -25,7 +25,6 @@ provides the following variables:
 use strict;
 use utf8;
 use lib '/usr/share/schulkonsole';
-use open ':utf8';
 use Env::Bash;
 use Schulkonsole::Encode;
 use Schulkonsole::Files;
@@ -33,8 +32,11 @@ use Schulkonsole::Session;
 use Schulkonsole::Error::Error;
 use Schulkonsole::Sophomorix;
 use Schulkonsole::SophomorixConfig;
+use Schulkonsole::SophomorixQuotas qw(process_quota);
 
 use Sophomorix::SophomorixConfig;
+
+use Proc::ProcessTable;
 
 my $this_file = 'settings_users';
 
@@ -92,12 +94,22 @@ my %quota_conf_new;
 my %mailquota_conf_new;
 my %filesystem_conf_new;
 
+my $process_table = new Proc::ProcessTable;
+my $app_quota = $Schulkonsole::Config::_cmd_sophomorix_quota;
+$app_quota =~ s:.*/::;
+my %running;
+foreach my $process (@{ $process_table->table }) {
+	if ($process->fname =~ /^soph/ and $process->cmndline =~ /$app_quota/) {
+			$running{quota} = $process->pid;
+	}
+}
+
 if ($q->param('accept')) {
 	eval {
 	my @errors;
 	foreach my $param ($q->param) {
 		if (exists $sophomorix_conf{$param}) {
-			if (Schulkonsole::SophomorixConfig::is_boolean{$param}) {
+			if (Schulkonsole::SophomorixConfig::is_boolean($param)) {
 				if (not $sophomorix_conf{$param}) {
 					$sophomorix_conf_new{$param} = 1;
 				}
@@ -241,11 +253,11 @@ if ($q->param('accept')) {
 		}
 
 		if ($is_changed) {
-			Schulkonsole::Sophomorix::process_quota($id, $password,
+			Schulkonsole::SophomorixQuotas::process_quota($id, $password,
 				  ($do_quota_set)
 				| ($do_quota_teacher << 1)
 				| ($do_quota_student << 2));
-
+			$running{quota} = 1;
 			$sk_session->set_status(
 				$sk_session->d()->get('Änderungen übernommen'), 0);
 		}
@@ -256,19 +268,40 @@ if ($q->param('accept')) {
 	}
 }
 
+if($q->param('logquota') or $running{quota}) {
+	eval {
+		my $logquota =
+			Schulkonsole::SophomorixQuotas::read_quota_log_file($id, $password);
 
+=item C<logquota>
+
+Output of C<sophomorix-quota --set>
+
+=cut
+
+		splice @$logquota, 0, -30;
+		$sk_session->set_var('logquota', join("", @$logquota));
+	};
+	if ($@) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Kann Logdatei nicht öffnen'), 1);
+	}
+	
+}
 
 # pre-set values for <form>
 foreach my $key (keys %sophomorix_conf) {
 	if (defined $sophomorix_conf_new{$key}) {
 		if (Schulkonsole::SophomorixConfig::is_boolean($key)) {
-			$sk_session->set_var($key, $sophomorix_conf_new{$key});
+			#$sk_session->set_var($key, $sophomorix_conf_new{$key});
+			$q->param($key, $sophomorix_conf_new{$key});
 		} else {
 			$q->param($key, $sophomorix_conf_new{$key});
 		}
 	} else {
 		if (Schulkonsole::SophomorixConfig::is_boolean($key)) {
-			$sk_session->set_var($key, $sophomorix_conf{$key});
+			#$sk_session->set_var($key, $sophomorix_conf{$key});
+			$q->param($key, $sophomorix_conf{$key});
 		} else {
 			$q->param($key, $sophomorix_conf{$key});
 		}
@@ -312,6 +345,15 @@ An array with the supported encodings
 =cut
 
 $sk_session->set_var('encodings', ['ascii','8859-1','8859-15','win1252','utf8']);
+
+=item C<isbusy>
+
+True if C<sophomorix-quota> is running
+
+=cut
+
+$sk_session->set_var('isbusy', ($running{quota}? 1 : 0));
+
 
 $sk_session->print_page("$this_file.tt", $this_file);
 

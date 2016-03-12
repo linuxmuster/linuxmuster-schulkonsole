@@ -11,8 +11,6 @@
 
 <hr>
 
-<form method="post" accept-charset="UTF-8">
-
 [% IF isbusy %]
 	[% IF isalling %]
 		[% busy.msg=loc('Benutzer anlegen/versetzen/löschen läuft...') %]
@@ -34,6 +32,8 @@
 	[% INCLUDE busy.inc.tt %]
 
 [% ELSE %]
+
+	<form method="post" accept-charset="UTF-8">
 
 	<p>
 	[% IF !(addlist && addlist.size > 0 || movelist && movelist.size > 0 || killlist && killlist.size > 0) %][% loc('Es sind keine Vormerkungen vorhanden.') %][% END %]
@@ -124,5 +124,6 @@
 	[% IF !(killlist && killlist.size > 0) %] disabled[% END %]>
 	</p>
 
+	</form>
+
 [% END %]
-</form>

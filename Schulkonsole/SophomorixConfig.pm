@@ -66,6 +66,7 @@ $VERSION = 0.05;
 @EXPORT_OK = qw(
 	true
 	false
+	quotaactivated
 	
 	read
 	write
@@ -98,6 +99,7 @@ use vars qw($true $false);
 
 $true = 'yes';
 $false= 'no';
+our $quotaactivated = (Schulkonsole::SophomorixConfig::read('use_quota') ? 1 : 0);
 
 my %standardkeys = (
 		schul_name => { type => 'Latex' },
@@ -269,7 +271,8 @@ sub is_boolean {
 	if(not defined $key){
 		return 0;
 	}
-	if(defined ref($key)){
+	my $ref = ref($key);
+	if(ref($key)){
 		return 0;
 	}
 	if(defined $standardkeys{$key} and $standardkeys{$key}{type} eq 'Boolean'){
@@ -309,7 +312,7 @@ sub is_latex {
 	if(not defined $key){
 		return 0;
 	}
-	if(defined ref($key)){
+	if(ref($key)){
 		return 0;
 	}
 	if(defined $standardkeys{$key} and $standardkeys{$key}{type} eq 'Latex'){
@@ -349,7 +352,7 @@ sub is_string {
 	if(not defined $key){
 		return 0;
 	}
-	if(defined ref($key)){
+	if(ref($key)){
 		return 0;
 	}
 	if(defined $standardkeys{$key} and $standardkeys{$key}{type} eq 'String'){
@@ -461,7 +464,7 @@ sub _create_line {
 	$value =_to_latex($value) if is_latex($key);
 	if (is_boolean($key)) {
 		$line =
-			"\$$key = '" . ($value ? $true : $false) . "';\n";
+			"\$$key = \"" . ($value ? $true : $false) . "\";\n";
 	} 
 	elsif ($value =~ /^\d+$/) {
 		$line = "\$$key = $value;\n";
@@ -503,7 +506,8 @@ sub _read_key {
 	}
 	if(defined $standardkeys{$key}){
 		if($standardkeys{$key}{type} eq 'Boolean'){
-			$value = ($value eq $true ? 1 : 0);
+			#FIXME compatibility:
+			$value = ($value eq $true || $value eq 'on' ? 1 : 0);
 		} elsif($standardkeys{$key}{type} eq 'Latex'){
 			$value = _from_latex($value);
 		}

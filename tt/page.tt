@@ -86,7 +86,7 @@ $('html').bind('keypress', function(e)
 	<div class="messageok"><p>[% status %]</p></div>
     [% END %]
 
-[% IF ! page.noinfo %]
+[% IF ! page.noinfo && ! page.autorefresh %]
 <!-- Info -->
 <div id="block-info-link">
   <span class="info-button">

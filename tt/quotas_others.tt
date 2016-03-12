@@ -1,5 +1,6 @@
 [% page = {
       title    => loc('Schulkonsole') _ " - " _ loc('Quota') _ " - " _ loc('Sonderquota'),
+      autorefresh => isbusy,
       menu     => 1,
       submenu  => "quotas",
       info     => loc('<p>Hier ändern Sie die Quotawerte spezieller Benutzer und einzelner Schüler/innen.</p><p>Unter &bdquo;Neu anlegen&ldquo; können Sie einem bisher hier nicht aufgeführten Benutzer Sonderquota zuweisen. Geben Sie dazu den Login ein und passen Sie die Quotawerte entsprechend an.</p><p>Unter &bdquo;Webspace&ldquo; legen Sie fest, wieviel Platz alle veröffentlichten Webseiten insgesamt belegen dürfen. Ändern Sie hierzu den Quotawert für &bdquo;www-data&ldquo; auf &bdquo;/var&ldquo;.</p><p>Alle Werte sind in Megabyte (MB) einzugeben.</p>'),
@@ -8,285 +9,296 @@
 
 <h2>[% loc('Quota') %] :: [% loc('Sonderquota') %]</h2>
 
+[% IF isbusy %]
 
-<h3>[% loc('Neu anlegen') %]</h3>
+	[% busy.msg=loc('Quota aktivieren läuft...') %]
+	[% busy.log=logquota %]
 
-<form method="post" accept-charset="UTF-8">
+	[% INCLUDE busy.inc.tt %]
 
-<table id="quotasothersnew" class="liste">
-<tr>
-<th><label [% labelfor("newlogin") %]>[% loc('Login') %]</label></th>
-[% IF mountpoints %]
-  <th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
+[% ELSE %]
+
+	<h3>[% loc('Neu anlegen') %]</h3>
+	
+	<form method="post" accept-charset="UTF-8">
+
+	<table id="quotasothersnew" class="liste">
+	<tr>
+	<th><label [% labelfor("newlogin") %]>[% loc('Login') %]</label></th>
+	[% IF mountpoints %]
+	  <th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
+	[% END %]
+	<th>[% loc('Mailquota') %]</th>
+	</tr>
+	[% IF mountpoints %]
+	  <tr>
+	  <th></th>
+	  [% FOREACH m IN mountpoints %]
+	    <th>[% m %]</th>
+	  [% END %]
+	  <th></th>
+	  </tr>
+	[% END %]
+	<tr class="even">
+	<td><input id="newlogin" name="newlogin"></td>
+	[% FOREACH sdq IN standarddiskquotas %]
+	  <td><input size="6" maxlength="5" name="[% sdq.mountpoint %]-newdiskquota" value="[% sdq.diskquota %]"></td>
+	[% END %]
+	<td><input size="6" maxlength="5" name="newmailquota" value="[% standardmailquota %]"></td>
+	</tr>
+	</table>
+	
+	<p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
+
+	</form>
+
+
+
+	[% IF www and www.size > 0 %]
+	
+	  <h3>[% loc('Webspace') %]</h3>
+	
+	  <form method="post" accept-charset="UTF-8">
+	
+	  [% odd=0 %]
+	  <table id="quotaswww" class="liste">
+	  <colgroup span="1" width="70%"></colgroup>
+	  <colgroup>
+	  [% IF mountpoints %]<col span="[% mountpoints_cnt %]">[% END %]
+	  <col>
+	  </colgroup>
+	  <tr>
+	  <th>[% loc('Login') %]</th>
+	  [% IF mountpoints %]
+	    <th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
+	  [% END %]
+	  <th>[% loc('Mailquota') %]</th>
+	  </tr>
+	  [% IF mountpoints %]
+	    <tr>
+	    <th></th>
+	    [% FOREACH m IN mountpoints %]
+	      <th>[% m %]</th>
+	    [% END %]
+	    <th></th>
+	    </tr>
+	  [% END %]
+	  <tr class="even">
+	  <td>[% www.login %]</td>
+	  [% FOREACH wdq IN www.diskquotas %]
+	    <td><input size="6" maxlength="5" name="[% www.login %]_user[% wdq.mountpoint %]-diskquota" value="[% wdq.quota %]"></td>
+	  [% END %]
+	  <td><input size="6" maxlength="5" name="[% www.login %]_usermailquota" value="[% www.mailquota %]"></td>
+	  </tr>
+	  </table>
+	
+	  <p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
+	
+	  </form>
+	
+	[% END %]
+	
+	
+	
+	
+	[% IF admins and admins.size > 0 %]
+	
+	  <h3>[% loc('Administratoren') %]</h3>
+	
+	  <form method="post" accept-charset="UTF-8">
+	
+	  [% odd=0 %]
+	  <table id="quotasadmins" class="liste">
+	  <colgroup span="2" width="35%"></colgroup>
+	  <colgroup>
+	  [% IF mountpoints %]<col span="[% mountpoints_cnt %]">[% END %]
+	  <col>
+	  </colgroup>
+	  <tr>
+	  <th>[% loc('Login') %]</th>
+	  <th>[% loc('Name') %]</th>
+	  [% IF mountpoints %]
+	    <th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
+	  [% END %]
+	  <th>[% loc('Mailquota') %]</th>
+	  </tr>
+	  [% IF mountpoints %]
+	    <tr>
+	    <th colspan="2"></th>
+	    [% FOREACH m IN mountpoints %]
+	      <th>[% m %]</th>
+	    [% END %]
+	    <th></th>
+	    </tr>
+	  [% END %]
+	  [% FOREACH a IN admins %]
+	    [% IF odd %][% odd=0 %]<tr class="odd">
+	    [% ELSE %][% odd=1 %]<tr class="even">[% END %]
+	    <td>[% a.login %]</td>
+	    <td>[% a.firstname %] [% a.surname %]</td>
+	    [% FOREACH aq IN a.diskquotas %]
+	      <td><input size="6" maxlength="5" name="[% a.login %]_user[% aq.mountpoint %]-diskquota" value="[% aq.quota %]"></td>
+	    [% END %]
+	    <td><input size="6" maxlength="5" name="[% a.login %]_usermailquota" value="[% a.mailquota %]"></td>
+	    </tr>
+	  [% END %]
+	  </table>
+	
+	  <p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
+	
+	  </form>
+	
+	[% END %]
+	
+	
+	
+	[% IF users and users.size > 0 %]
+	
+	  <h3>[% loc('Schüler') %]</h3>
+	
+	  <form method="post" accept-charset="UTF-8">
+	
+	  [% odd=0 %]
+	  <table id="quotasstudents" class="liste">
+	  <colgroup span="2" width="35%"></colgroup>
+	  <colgroup>
+	  [% IF mountpoints %]<col span="[% mountpoints_cnt %]">[% END %]
+	  <col>
+	  </colgroup>
+	  <tr>
+	  <th>[% loc('Login') %]</th>
+	  <th>[% loc('Name') %]</th>
+	  [% IF mountpoints %]
+	    <th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
+	  [% END %]
+	  <th>[% loc('Mailquota') %]</th>
+	  </tr>
+	  [% IF mountpoints %]
+	    <tr>
+	    <th colspan="2"></th>
+	    [% FOREACH m IN mountpoints %]
+	      <th>[% m %]</th>
+	    [% END %]
+	    <th></th>
+	    </tr>
+	  [% END %]
+	  [% FOREACH u IN users %]
+	    [% IF odd %][% odd=0 %]<tr class="odd">
+	    [% ELSE %][% odd=1 %]<tr class="even">[% END %]
+	    <td>[% u.login %]</td>
+	    <td>[% u.firstname %] [% u.surname %]</td>
+	    [% FOREACH uq IN u.diskquotas %]
+	      <td><input size="6" maxlength="5" name="[% u.login %]_user[% uq.mountpoint %]-diskquota" value="[% uq.quota %]"></td>
+	    [% END %]
+	    <td><input size="6" maxlength="5" name="[% u.login %]_usermailquota" value="[% u.mailquota %]"></td>
+	    </tr>
+	  [% END %]
+	  </table>
+	
+	  <p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
+	
+	  </form>
+	
+	[% END %]
+	
+	
+	
+	
+	[% IF workstations and workstations.size > 0 %]
+	
+	  <h3>[% loc('Workstationaccounts') %]</h3>
+	
+	  <form method="post" accept-charset="UTF-8">
+	
+	  [% odd=0 %]
+	  <table id="quotasworkstations" class="liste">
+	  <colgroup span="1" width="70%"></colgroup>
+	  <colgroup>
+	  [% IF mountpoints %]<col span="[% mountpoints_cnt %]">[% END %]
+	  <col>
+	  </colgroup>
+	  <tr>
+	  <th>[% loc('Login') %]</th>
+	  [% IF mountpoints %]
+	    <th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
+	  [% END %]
+	  <th>[% loc('Mailquota') %]</th>
+	  </tr>
+	  [% IF mountpoints %]
+	    <tr>
+	    <th></th>
+	    [% FOREACH m IN mountpoints %]
+	      <th>[% m %]</th>
+	    [% END %]
+	    <th></th>
+	    </tr>
+	  [% END %]
+	  [% FOREACH w IN workstations %]
+	    [% IF odd %][% odd=0 %]<tr class="odd">
+	    [% ELSE %][% odd=1 %]<tr class="even">[% END %]
+	    <td>[% w.login %]</td>
+	    [% FOREACH wq IN w.diskquotas %]
+	      <td><input size="6" maxlength="5" name="[% w.login %]_userstation[% wq.mountpoint %]-diskquota" value="[% wq.quota %]"></td>
+	    [% END %]
+	    <td><input size="6" maxlength="5" name="[% w.login %]_usermailquota" value="[% w.mailquota %]"></td>
+	    </tr>
+	  [% END %]
+	  </table>
+	
+	  <p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
+	
+	  </form>
+	
+	[% END %]
+	
+	
+	
+	[% IF systems and systems.size > 0 %]
+	
+	  <h3>[% loc('Systembenutzer') %]</h3>
+	
+	  <form method="post" accept-charset="UTF-8">
+	
+	  [% odd=0 %]
+	  <table id="quotassystem" class="liste">
+	  <colgroup span="1" width="70%"></colgroup>
+	  <colgroup>
+	  [% IF mountpoints %]<col span="[% mountpoints_cnt %]">[% END %]
+	  <col>
+	  </colgroup>
+	  <tr>
+	  <th>[% loc('Login') %]</th>
+	  [% IF mountpoints %]
+	    <th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
+	  [% END %]
+	  <th>[% loc('Mailquota') %]</th>
+	  </tr>
+	  [% IF mountpoints %]
+	    <tr>
+	    <th colspan="2"></th>
+	    [% FOREACH m IN mountpoints %]
+	      <th>[% m %]</th>
+	    [% END %]
+	    <th></th>
+	    </tr>
+	  [% END %]
+	  [% FOREACH s IN systems %]
+	    [% IF odd %][% odd=0 %]<tr class="odd">
+	    [% ELSE %][% odd=1 %]<tr class="even">[% END %]
+	    <td>[% s.login %]</td>
+	    [% FOREACH sq IN s.diskquotas %]
+	      <td><input size="6" maxlength="5" name="[% s.login %]_user[% sq.mountpoint %]-diskquota" value="[% sq.quota %]"></td>
+	    [% END %]
+	    <td><input size="6" maxlength="5" name="[% s.login %]_usermailquota" value="[% s.mailquota %]"></td>
+	    </tr>
+	  [% END %]
+	  </table>
+	
+	  <p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
+	
+	  </form>
+	
+	[% END %]
+
 [% END %]
-<th>[% loc('Mailquota') %]</th>
-</tr>
-[% IF mountpoints %]
-  <tr>
-  <th></th>
-  [% FOREACH m IN mountpoints %]
-    <th>[% m %]</th>
-  [% END %]
-  <th></th>
-  </tr>
-[% END %]
-<tr class="even">
-<td><input id="newlogin" name="newlogin"></td>
-[% FOREACH sdq IN standarddiskquotas %]
-  <td><input size="6" maxlength="5" name="[% sdq.mountpoint %]-newdiskquota" value="[% sdq.diskquota %]"></td>
-[% END %]
-<td><input size="6" maxlength="5" name="newmailquota" value="[% standardmailquota %]"></td>
-</tr>
-</table>
 
-<p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
-
-</form>
-
-
-
-[% IF www and www.size > 0 %]
-
-  <h3>[% loc('Webspace') %]</h3>
-
-  <form method="post" accept-charset="UTF-8">
-
-  [% odd=0 %]
-  <table id="quotaswww" class="liste">
-  <colgroup span="1" width="70%"></colgroup>
-  <colgroup>
-  [% IF mountpoints %]<col span="[% mountpoints_cnt %]">[% END %]
-  <col>
-  </colgroup>
-  <tr>
-  <th>[% loc('Login') %]</th>
-  [% IF mountpoints %]
-    <th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
-  [% END %]
-  <th>[% loc('Mailquota') %]</th>
-  </tr>
-  [% IF mountpoints %]
-    <tr>
-    <th></th>
-    [% FOREACH m IN mountpoints %]
-      <th>[% m %]</th>
-    [% END %]
-    <th></th>
-    </tr>
-  [% END %]
-  <tr class="even">
-  <td>[% www.login %]</td>
-  [% FOREACH wdq IN www.diskquotas %]
-    <td><input size="6" maxlength="5" name="[% www.login %]_user[% wdq.mountpoint %]-diskquota" value="[% wdq.quota %]"></td>
-  [% END %]
-  <td><input size="6" maxlength="5" name="[% www.login %]_usermailquota" value="[% www.mailquota %]"></td>
-  </tr>
-  </table>
-
-  <p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
-
-  </form>
-
-[% END %]
-
-
-
-
-[% IF admins and admins.size > 0 %]
-
-  <h3>[% loc('Administratoren') %]</h3>
-
-  <form method="post" accept-charset="UTF-8">
-
-  [% odd=0 %]
-  <table id="quotasadmins" class="liste">
-  <colgroup span="2" width="35%"></colgroup>
-  <colgroup>
-  [% IF mountpoints %]<col span="[% mountpoints_cnt %]">[% END %]
-  <col>
-  </colgroup>
-  <tr>
-  <th>[% loc('Login') %]</th>
-  <th>[% loc('Name') %]</th>
-  [% IF mountpoints %]
-    <th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
-  [% END %]
-  <th>[% loc('Mailquota') %]</th>
-  </tr>
-  [% IF mountpoints %]
-    <tr>
-    <th colspan="2"></th>
-    [% FOREACH m IN mountpoints %]
-      <th>[% m %]</th>
-    [% END %]
-    <th></th>
-    </tr>
-  [% END %]
-  [% FOREACH a IN admins %]
-    [% IF odd %][% odd=0 %]<tr class="odd">
-    [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-    <td>[% a.login %]</td>
-    <td>[% a.firstname %] [% a.surname %]</td>
-    [% FOREACH aq IN a.diskquotas %]
-      <td><input size="6" maxlength="5" name="[% a.login %]_user[% aq.mountpoint %]-diskquota" value="[% aq.quota %]"></td>
-    [% END %]
-    <td><input size="6" maxlength="5" name="[% a.login %]_usermailquota" value="[% a.mailquota %]"></td>
-    </tr>
-  [% END %]
-  </table>
-
-  <p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
-
-  </form>
-
-[% END %]
-
-
-
-[% IF users and users.size > 0 %]
-
-  <h3>[% loc('Schüler') %]</h3>
-
-  <form method="post" accept-charset="UTF-8">
-
-  [% odd=0 %]
-  <table id="quotasstudents" class="liste">
-  <colgroup span="2" width="35%"></colgroup>
-  <colgroup>
-  [% IF mountpoints %]<col span="[% mountpoints_cnt %]">[% END %]
-  <col>
-  </colgroup>
-  <tr>
-  <th>[% loc('Login') %]</th>
-  <th>[% loc('Name') %]</th>
-  [% IF mountpoints %]
-    <th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
-  [% END %]
-  <th>[% loc('Mailquota') %]</th>
-  </tr>
-  [% IF mountpoints %]
-    <tr>
-    <th colspan="2"></th>
-    [% FOREACH m IN mountpoints %]
-      <th>[% m %]</th>
-    [% END %]
-    <th></th>
-    </tr>
-  [% END %]
-  [% FOREACH u IN users %]
-    [% IF odd %][% odd=0 %]<tr class="odd">
-    [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-    <td>[% u.login %]</td>
-    <td>[% u.firstname %] [% u.surname %]</td>
-    [% FOREACH uq IN u.diskquotas %]
-      <td><input size="6" maxlength="5" name="[% u.login %]_user[% uq.mountpoint %]-diskquota" value="[% uq.quota %]"></td>
-    [% END %]
-    <td><input size="6" maxlength="5" name="[% u.login %]_usermailquota" value="[% u.mailquota %]"></td>
-    </tr>
-  [% END %]
-  </table>
-
-  <p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
-
-  </form>
-
-[% END %]
-
-
-
-
-[% IF workstations and workstations.size > 0 %]
-
-  <h3>[% loc('Workstationaccounts') %]</h3>
-
-  <form method="post" accept-charset="UTF-8">
-
-  [% odd=0 %]
-  <table id="quotasworkstations" class="liste">
-  <colgroup span="1" width="70%"></colgroup>
-  <colgroup>
-  [% IF mountpoints %]<col span="[% mountpoints_cnt %]">[% END %]
-  <col>
-  </colgroup>
-  <tr>
-  <th>[% loc('Login') %]</th>
-  [% IF mountpoints %]
-    <th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
-  [% END %]
-  <th>[% loc('Mailquota') %]</th>
-  </tr>
-  [% IF mountpoints %]
-    <tr>
-    <th></th>
-    [% FOREACH m IN mountpoints %]
-      <th>[% m %]</th>
-    [% END %]
-    <th></th>
-    </tr>
-  [% END %]
-  [% FOREACH w IN workstations %]
-    [% IF odd %][% odd=0 %]<tr class="odd">
-    [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-    <td>[% w.login %]</td>
-    [% FOREACH wq IN w.diskquotas %]
-      <td><input size="6" maxlength="5" name="[% w.login %]_userstation[% wq.mountpoint %]-diskquota" value="[% wq.quota %]"></td>
-    [% END %]
-    <td><input size="6" maxlength="5" name="[% w.login %]_usermailquota" value="[% w.mailquota %]"></td>
-    </tr>
-  [% END %]
-  </table>
-
-  <p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
-
-  </form>
-
-[% END %]
-
-
-
-[% IF systems and systems.size > 0 %]
-
-  <h3>[% loc('Systembenutzer') %]</h3>
-
-  <form method="post" accept-charset="UTF-8">
-
-  [% odd=0 %]
-  <table id="quotassystem" class="liste">
-  <colgroup span="1" width="70%"></colgroup>
-  <colgroup>
-  [% IF mountpoints %]<col span="[% mountpoints_cnt %]">[% END %]
-  <col>
-  </colgroup>
-  <tr>
-  <th>[% loc('Login') %]</th>
-  [% IF mountpoints %]
-    <th colspan="[% mountpoints_cnt %]">[% loc('Diskquota') %]</th>
-  [% END %]
-  <th>[% loc('Mailquota') %]</th>
-  </tr>
-  [% IF mountpoints %]
-    <tr>
-    <th colspan="2"></th>
-    [% FOREACH m IN mountpoints %]
-      <th>[% m %]</th>
-    [% END %]
-    <th></th>
-    </tr>
-  [% END %]
-  [% FOREACH s IN systems %]
-    [% IF odd %][% odd=0 %]<tr class="odd">
-    [% ELSE %][% odd=1 %]<tr class="even">[% END %]
-    <td>[% s.login %]</td>
-    [% FOREACH sq IN s.diskquotas %]
-      <td><input size="6" maxlength="5" name="[% s.login %]_user[% sq.mountpoint %]-diskquota" value="[% sq.quota %]"></td>
-    [% END %]
-    <td><input size="6" maxlength="5" name="[% s.login %]_usermailquota" value="[% s.mailquota %]"></td>
-    </tr>
-  [% END %]
-  </table>
-
-  <p><input type="submit" name="acceptusers" value="[% loc('Änderungen übernehmen') %]"></p>
-
-  </form>
-
-[% END %]
