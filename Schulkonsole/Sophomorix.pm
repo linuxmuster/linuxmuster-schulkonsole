@@ -6397,42 +6397,6 @@ sub write_extra_course_file {
 
 
 
-=head3 C<write_sophomorix_conf($id, $password, $lines)>
-
-Write new sophomorix.conf
-
-=head4 Parameters
-
-=over
-
-=item C<$id>
-
-The ID (not UID) of the teacher invoking the command
-
-=item C<$password>
-
-The password of the teacher invoking the command
-
-=item C<$lines>
-
-The lines of the new file
-
-=back
-
-=head4 Description
-
-Writes the file /etc/sophomorix/user/sophomorix.conf and backups the old
-file
-
-=cut
-
-sub write_sophomorix_conf {
-	write_file(@_, 2);
-}
-
-
-
-
 =head3 C<write_quota_conf($id, $password, $lines)>
 
 Write new quota.txt

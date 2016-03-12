@@ -57,6 +57,8 @@ $VERSION = 0.16;
 	WRAPPER_INVALID_MAILADDRESS
 	WRAPPER_ERROR_SETMYMAIL
 	QUOTA_NOT_ALL_MOUNTPOINTS
+	INVALID_SOPHOMORIX_CONF_KEY
+	INVALID_SOPHOMORIX_CONF_VALUE
 );
 
 # package constants
@@ -107,6 +109,8 @@ use constant {
 	WRAPPER_INVALID_MAILADDRESS => Schulkonsole::Error::Error::NEXT_ERROR -43,
 	WRAPPER_ERROR_SETMYMAIL => Schulkonsole::Error::Error::NEXT_ERROR -44,
 	QUOTA_NOT_ALL_MOUNTPOINTS => Schulkonsole::Error::Error::NEXT_ERROR - 45,
+	INVALID_SOPHOMORIX_CONF_KEY => Schulkonsole::Error::Error::NEXT_ERROR - 46,
+	INVALID_SOPHOMORIX_CONF_VALUE => Schulkonsole::Error::Error::NEXT_ERROR - 47,
 };
 
 sub new {
@@ -202,6 +206,10 @@ sub what {
 		and return $this->{d}->get('Die Mailadresse konnte nicht gespeichert werden.');
 	$this->{code} == QUOTA_NOT_ALL_MOUNTPOINTS
 		and return $this->{d}->get('Nicht alle Einhängepunkte(mount points) gefunden');
+	$this->{code} = INVALID_SOPHOMORIX_CONF_KEY
+		and return $this->{d}->get('Der Name ist ungültig für die Datei sophomorix.conf.');
+	$this->{code} = INVALID_SOPHOMORIX_CONF_VALUE
+		and return $this->{d}->get('Der Wert für diese Einstellung ungültig für die Datei sophomorix.conf.');
 	};
 	
 	return $this->SUPER::what();
