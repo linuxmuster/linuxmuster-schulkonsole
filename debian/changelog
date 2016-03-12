@@ -1,8 +1,13 @@
+linuxmuster-schulkonsole (0.31.1-2) babo-testing; urgency=low
+
+  * fix for writing wrong file encodings to sophomorix.conf
+  * created SophomorixConfig module for better type handling
+
+ -- Frank Schütte <fschuett@gymhim.de>  Sat, 12 Mar 2016 08:43:44 +0100
+
 linuxmuster-schulkonsole (0.31.1-1) babo-testing; urgency=low
 
   * make info green and self hiding (#531)
-  * fix for writing wrong file encodings to sophomorix.conf
-  * created SophomorixConfig module for better type handling
 
  -- Frank Schütte <fschuett@gymhim.de>  Sat, 12 Mar 2016 08:40:31 +0100
 
