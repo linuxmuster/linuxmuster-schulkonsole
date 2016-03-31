@@ -138,9 +138,9 @@ $VERSION = 0.06;
 
 	$_shell
 
-	$_sophomorix_conf_true
-	$_sophomorix_conf_false
-
+	$true
+	$false
+	
 	QUOTAAPP
 	CYRQUOTAAPP
 
@@ -1289,11 +1289,11 @@ use vars qw(%_id_root_app_names
 
 =over
 
-=item C<$_sophomorix_conf_true>
+=item C<$true>
 
 Value used for 'true' in Sophomorix configuration files
 
-=item C<$_sophomorix_conf_false>
+=item C<$false>
 
 Value used for 'false' in Sophomorix configuration files
 
@@ -1301,9 +1301,10 @@ Value used for 'false' in Sophomorix configuration files
 
 =cut
 
-use vars qw($_sophomorix_conf_true $_sophomorix_conf_false);
+use vars qw($true $false);
 
-
+$true = 'yes';
+$false= 'no';
 
 $_version = '@VERSION@';
 $_sysconfdir = '@sysconfdir@/@PACKAGE@';
@@ -1505,11 +1506,6 @@ $_cmd_wlan_on_off = '/usr/sbin/wlan_on_off';
 $_cmd_linuxmuster_wlan_reset = '/usr/sbin/linuxmuster-wlan-reset';
 $_cmd_horde_mail = '/usr/share/schulkonsole/Schulkonsole/horde-mail.php';
 $_cmd_linbo_remote = '/usr/sbin/linbo-remote';
-$_sophomorix_conf_true = 'yes';
-$_sophomorix_conf_false = 'no';
-
-
-
 
 
 =head2 Functions
@@ -1528,7 +1524,7 @@ A hash with the configuration parameter's name as key and the value as value
 
 sub db {
 	my %preferences = read_conf($_db_conf_file);
-	return $preferences{$DBPREFS};
+	return %{$preferences{$DBPREFS}};
 }
 
 
@@ -2324,16 +2320,19 @@ sub read_conf {
 	my $section = '';
 	while (<CONF>) {
 		next if /^#/ or /^\s*$/;
-		($section) = $_ =~ /^\[(.*)+\]/;
-		$section = '' unless $_preferences_conf_section{$section};
-		
+		if (/^\[/){
+			($section) = $_ =~ /^\[(.+)\]$/;
+			$section = '' unless $_preferences_conf_section{$section};
+			next;
+		}
 		my ($key, $value) = /^(.+?)=(.*)/;
 
-		die "$0: Syntax error in $filename, line $.\n" unless $key;
+		die "$0: Syntax error empty key in $filename, line $\n" unless $key;
 
-		$conf{$section}{$key} = $value if $section;
+		die "$0: Syntax error empty section in $filename, line $\n" unless $section;
+		
+		$conf{$section}{$key} = $value;
 	}
-
 	close CONF;
 
 	return %conf;
@@ -2417,13 +2416,7 @@ eval {
 	}
 	
 	foreach my $program (keys $preferences{$PATHPREFS}) {
-		foreach my $path (split(',',$preferences{$PATHPREFS}{$program})) {
-			my $name = $path;
-			$name =~ s/\//_/g;
-			$name =~ s/\\/_/g;
-			$name =~ s/[^a-zA-Z0-9_]//g;
-			push @$_repair_path{$program},( $name => $path );
-		}
+		@{$_repair_path{$program}} = split(',', $preferences{$PATHPREFS}{$program});
 	}
 	
 };
@@ -2519,11 +2512,11 @@ corresponds to wlan_ldap_group in F<preferences.conf>
 =cut
 
 	return (
-		conf_max_idle_time => int(expire_seconds(_max_idle_time) / 60),
-		conf_min_password_len => int(_min_password_len),
-		conf_max_password_len => int(_max_password_len),
-		conf_wlan_ldap_group => _wlan_ldap_group,
-		conf_check_passwords => _check_passwords,
+		conf_max_idle_time => int(expire_seconds($_max_idle_time) / 60),
+		conf_min_password_len => int($_min_password_len),
+		conf_max_password_len => int($_max_password_len),
+		conf_wlan_ldap_group => $_wlan_ldap_group,
+		conf_check_passwords => $_check_passwords,
 	);
 }
 

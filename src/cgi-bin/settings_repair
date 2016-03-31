@@ -55,7 +55,32 @@ my $password = $sk_session->get_password();
 COMMANDS: { 
 	eval {
 		if ($q->param('accept')) {
-			
+			my %new_programs
+			my %params = $q->Vars;
+			foreach (keys %params) {
+				my ($key,$mark) = $_ =~ /^(.+)(_name)$/;
+				next unless $key && $mark;
+				$new_programs{$key} = (
+					name => $params{$_}
+					paths => ());
+			}
+			foreach (keys %params) {
+				my ($key,$nr) = $_ =~ /^(.+);(.+)$/;
+				next unless $key %% $nr;
+				next unless $new_programs{$key};
+				push @{$programs{$key}{paths}}, $params{$_};
+			}
+			foreach (keys %new_programs) {
+				delete $new_programs{$_} unless $new_programs{$_}{paths};
+			}
+			my %repair;
+			foreach (keys %new_programs) {
+				$repair{$new_programs{$_}{name}} = $new_programs{$_}{paths};
+			}
+			$Schulkonsole::Config::_repair_path = %repair;
+			my @lines = Schulkonsole::Config::new_preferences_lines(%repair);
+			Schulkonsole::Files::write_preferences_conf_file($id, $password, @lines);
+			$sk_session->set_status($sk_session->d()->get('Änderungen übernommen'), 0);
 		}
 	};
 } # COMMANDS
@@ -70,13 +95,13 @@ A hash of arrays of hashes of program paths.
 
 $program {
 	program1 => (
-		{ name1 => path1 },
-		{ name2 => path2 },
-		{ name3 => path3 },
+		path1,
+		path2,
+		path3,
 		...
 	),
 	program2 => (
-		{ name1 => path1 },
+		path1,
 		...
 	),
 	...
@@ -93,14 +118,6 @@ $sk_session->print_page("$this_file.tt", $this_file);
 =head2 Form fields
 
 =over
-
-=item C<program1;delete>
-
-Delete program1 from hash
-
-=item C<program1;path1;delete>
-
-Delete array element hash path1 from program1
 
 =item C<accept>
 

@@ -2,36 +2,127 @@
       title    => loc('Schulkonsole') _ " - " _ loc('Einstellungen') _ " - " _ loc('Reparatur'),
       menu     => 1,
       submenu  => "settings",
-      info     => loc('<p></p>'),
+      info     => loc('<p>Hier können Programm spezifische Reparatureinstellungen für den Persönlichen Ordner eines Benutzers festgelegt werden. Der Benutzer kann dann durch Auswahl der Option Reparatur das angegebene Verzeichnis aus seinem Persönlichen Ordner entfernen, um wieder mit Standardeinstellungen beginnen zu können.</p>'),
    }
 %]
 
 <h2>[% loc('Einstellungen') %] :: [% loc('Reparatur') %]</h2>
 
-<form method="post" accept-charset="UTF-8">
 
 <h3>[% loc('Programme') %]</h3>
 
-<table class="settings">
-<tr><th>[% loc('Programm') %]</th>
-<th>[% loc('lfd. Nr.') %]</th>
-<th>[% loc('Pfad') %]</th>
-<th>[% loc('Entf') %]</th>
+<form method="post" accept-charset="UTF-8">
+
+<script type="text/javascript">
+function addProgram() {
+    var name = prompt("[% loc('Bitte geben Sie den Programmnamen ein.') %]");
+    
+    if (name != null) {
+        var programs = document.getElementById("programs");
+        var row = programs.insertRow();
+        var cell1 = row.insertCell(0);
+        var input = document.createElement("input");
+        input.name=name + "_name";
+        input.value=name;
+        cell1.appendChild(input);
+        var cell2 = row.insertCell(1);
+        var addbtn = document.createElement("input");
+        addbtn.type = "button";
+        addbtn.name = name;
+        addbtn.onclick = addPath;
+        addbtn.value = "[% loc('+ Pfad') %]";
+        cell2.appendChild(addbtn);
+        row.insertCell(2);
+        var cell3 = row.insertCell(2);
+        var delbtn = document.createElement("input");
+        delbtn.type = "button";
+        delbtn.name = name;
+        delbtn.value = "[% loc('- Programm') %]";
+        delbtn.onclick = deleteProgram;
+        cell3.appendChild(delbtn);
+        row.insertCell(3);
+    }
+}
+
+function deleteProgram() {
+	var programs = document.getElementById("programs");
+	var name = this.name;
+	
+	for (var i=programs.rows.length-1,row;row=programs.rows[i];i--) {
+		var cell = row.cells[2];
+		var input = cell.childNodes[0];
+		if( input != null && input.name == name) {
+			programs.deleteRow(i);
+		}
+		cell = row.cells[1];
+		input = cell.childNodes[0];
+		if( input != null && input.name == name) {
+			programs.deleteRow(i);
+		}
+	}
+}
+
+function addPath() {
+	var programs = document.getElementById("programs");
+	var row = this.closest('tr');
+	row = programs.insertRow(row.rowIndex+1);
+	row.insertCell(0);
+	var cell1 = row.insertCell(1);
+	var input = document.createElement("input");
+	input.type = "text";
+	input.name = this.name+";"+row.rowIndex;
+	input.value = "";
+	cell1.appendChild(input);
+	var cell2 = row.insertCell(2);
+	var delbtn = document.createElement("input");
+	var chbtn = document.createElement("input");
+	chbtn.type = "button";
+	chbtn.name = this.name;
+	chbtn.onclick = changePath;
+	chbtn.value = "..."
+	cell2.appendChild(chbtn);
+	var cell3 = row.insertCell(3);
+	delbtn.type = "button";
+	delbtn.value= "[% loc('- Pfad') %]";
+	delbtn.onclick=deletePath;
+	cell3.appendChild(delbtn);
+}
+
+function changePath() {
+	var pfad = prompt("Ändern Sie den Pfad.");
+}
+
+function deletePath() {
+	this.closest('tr').remove();
+}
+
+</script>
+
+<input type="button" onclick="addProgram()" value="[% loc('+ Programm') %]"/>
+
+<table class="settings" id="programs">
+<col style="width:40%">
+<col style="width:30%">
+<col style="width:30%">
+<tr><th align="left">[% loc('Programm') %]</th>
+<th align="left">[% loc('Pfad') %]</th>
+<th></th>
 <th></th>
 </tr>
 [% FOREACH p IN program %]
 	<tr class="even">
 		<td><input name="[% p %]_name" value="[% p %]"></td>
-		<td></td><td></td><td><input type="submit" name="[% p %];delete" id="[% p %];delete" value="[% p%];delete"></td>
-		<td>
+		<td><input type="button" name="[% p %]" onclick="addPath()" value="[% loc('+ Pfad') %]"/></td>
+		<td><input type="button" name="[% p %]" onclick="deleteProgram()" value="[% loc('- Programm') %]"></td>
+		<td></td>
 	</tr>
 	[% lfdnr = 1 %]
 	[% FOREACH pf IN program.pfad %]
-		<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]>
-			<td></td><td class="lfdnr">[% lfdnr %].</td>
-			<td><input type="text" name="[% p %];[% pf.name %]" value="[% pf.value %]"></td>
-			<td><input type="submit" name="[% p %];[% pf.name %];delete" value="[% p %];[% pf.name %];delete"></td>
-			<td><input type="button" name="..."></td>
+		<tr class="odd">
+			<td></td>
+			<td><input name="[% p %];[% pf.name %]" value="[% pf.value %]"></td>
+			<td><input type="button" name="[% p %]" value="..." onclick="changePath()"></td>
+			<td><input type="button" value="[% loc('- Pfad') %]" onclick="deletePath()"></td>
 		[% lfdnr = lfdnr + 1 %]</tr>
 	[% END %]
 [% END %]
