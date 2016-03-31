@@ -44,6 +44,8 @@ $VERSION = 0.06;
 	workstations
 	linbogroups
 
+	_repair_path
+
 	printers_room
 	printers
 	classrooms
@@ -213,6 +215,10 @@ $VERSION = 0.06;
 
 use Env::Bash;
 use Schulkonsole::Encode;
+
+my $SKPREFS = 'Schulkonsole Preferences';
+my $DBPREFS = 'Schulkonsole DB';
+my $PATHPREFS = 'Program Paths';
 
 =head1 DESCRIPTION
 
@@ -949,7 +955,7 @@ The template to display the login form
 use vars qw($_login_template);
 
 
-=head3 Time limits
+=head3 Time and other limits
 
 =over
 
@@ -989,6 +995,28 @@ use vars qw($_max_idle_time $_session_expire_time $_login_expire_time
             $_tmp_valid_time 
             $_check_passwords $_min_password_len $_max_password_len);
 
+=head3 Program repair paths
+
+=item C<%_repair_path>
+
+Program repair paths as has of array of hashes, f.e.
+
+%_repair_path = (
+	program1 => (
+		name1 => path1,
+		name2 => path2,
+	),
+	program2 => (
+		name3 => path3,
+	),
+);
+
+These paths are used to clean users settings for
+specific programs
+
+=cut
+
+use vars qw(%_repair_path);
 
 =head3 Web server settings
 
@@ -1346,6 +1374,8 @@ $_check_passwords = 1;        # enforce password quality
 $_min_password_len = 8;       # enforce password length requirement
 $_max_password_len = 15;
 
+%_repair_path = ();
+
 $_http_root = '/schulkonsole';
 $_htaccess_filename = '.htaccess';
 $_imap_host = 'localhost';
@@ -1497,7 +1527,8 @@ A hash with the configuration parameter's name as key and the value as value
 =cut
 
 sub db {
-	return read_conf($_db_conf_file);
+	my %preferences = read_conf($_db_conf_file);
+	return $preferences{$DBPREFS};
 }
 
 
@@ -2277,6 +2308,11 @@ sub is_linbo_enabled {
 
 
 
+my %_preferences_conf_section = (
+	$SKPREFS => 1,
+	$PATHPREFS => 1,
+	$DBPREFS => 1,
+);
 
 sub read_conf {
 	my $filename = shift;
@@ -2285,14 +2321,17 @@ sub read_conf {
 	open CONF, '<', Schulkonsole::Encode::to_fs($filename)
 		or die "$0: Cannot open $filename: $!\n";
 
+	my $section = '';
 	while (<CONF>) {
-		next if /^#/ or /^\[/ or /^\s*$/;
-
+		next if /^#/ or /^\s*$/;
+		($section) = $_ =~ /^\[(.*)+\]/;
+		$section = '' unless $_preferences_conf_section{$section};
+		
 		my ($key, $value) = /^(.+?)=(.*)/;
 
 		die "$0: Syntax error in $filename, line $.\n" unless $key;
 
-		$conf{$key} = $value;
+		$conf{$section}{$key} = $value if $section;
 	}
 
 	close CONF;
@@ -2353,32 +2392,140 @@ sub expire_seconds {
 
 
 
-# read preferences from file
+# read preferences from file into config variables
 
 eval {
-my %preferences = read_conf($_preferences_conf_file);
-
-$_max_idle_time = $preferences{max_idle_time}
-	if (exists $preferences{max_idle_time});
-$_templatedir = $preferences{templatedir}
-	if (    exists $preferences{templatedir}
-	    and -d $preferences{templatedir});
-$_min_password_len = $preferences{min_password_len}
-	if (exists $preferences{min_password_len});
-$_max_password_len = $preferences{max_password_len}
-    if (exists $preferences{max_password_len});
-$_wlan_ldap_group = $preferences{wlan_ldap_group}
-	if (exists $preferences{wlan_ldap_group});
-if($preferences{check_passwords}) {
-	if($preferences{check_passwords} eq 'yes'){
-		$_check_passwords = 1;
-	} else {
-		$_check_passwords = 0;
+	my %preferences = read_conf($_preferences_conf_file);
+	
+	$_max_idle_time = $preferences{$SKPREFS}{max_idle_time}
+		if (exists $preferences{$SKPREFS}{max_idle_time});
+	$_templatedir = $preferences{$SKPREFS}{templatedir}
+		if (    exists $preferences{$SKPREFS}{templatedir}
+		    and -d $preferences{$SKPREFS}{templatedir});
+	$_min_password_len = $preferences{$SKPREFS}{min_password_len}
+		if (exists $preferences{$SKPREFS}{min_password_len});
+	$_max_password_len = $preferences{$SKPREFS}{max_password_len}
+	    if (exists $preferences{$SKPREFS}{max_password_len});
+	$_wlan_ldap_group = $preferences{$SKPREFS}{wlan_ldap_group}
+		if (exists $preferences{$SKPREFS}{wlan_ldap_group});
+	if($preferences{$SKPREFS}{check_passwords}) {
+		if($preferences{$SKPREFS}{check_passwords} eq 'yes'){
+			$_check_passwords = 1;
+		} else {
+			$_check_passwords = 0;
+		}
 	}
-}
+	
+	foreach my $program (keys $preferences{$PATHPREFS}) {
+		foreach my $path (split(',',$preferences{$PATHPREFS}{$program})) {
+			my $name = $path;
+			$name =~ s/\//_/g;
+			$name =~ s/\\/_/g;
+			$name =~ s/[^a-zA-Z0-9_]//g;
+			push @$_repair_path{$program},( $name => $path );
+		}
+	}
+	
 };
 
+# compare new values to values from conf file and create new file lines to
+# write to config file
+sub new_preferences_lines {
+	my $new = shift;
+	my %new = %$new;
 
+	my @lines;
+
+	
+	my %key_map = (
+		conf_max_idle_time => 'max_idle_time',
+		conf_min_password_len => 'min_password_len',
+		conf_max_password_len => 'max_password_len',
+		conf_wlan_ldap_group => 'wlan_ldap_group',
+		conf_check_passwords => 'check_passwords',
+	);
+	my %key_map_rev = reverse %key_map;
+
+	my $section = '';
+	my $last_skpref = 0;
+	
+	if (open CONF, '<',
+	         Schulkonsole::Encode::to_fs(
+	         	$Schulkonsole::Config::_preferences_conf_file)) {
+		while (<CONF>) {
+			if (($section) = /^\[(.+)\]/) {
+				push @lines, $_;
+				$section = '' unless $section eq $SKPREFS;
+			} elsif (/^#/ or /^\s*$/ or not $section) {
+				push @lines, $_;
+			} elsif (my ($conf_key, $value) = /^(.+?)=(.*)/) {
+				my $key = $key_map_rev{$conf_key};
+				if (defined $new{$key}) {
+					$value = $new{$key};
+					if ($key eq 'conf_max_idle_time') {
+						$value = "+${value}m";
+					} elsif ($key eq 'conf_check_passwords') {
+						$value = (defined $value and $value ? $true : $false );
+					}
+					push @lines, "$conf_key=$value\n";
+
+					delete $new{$key};
+				} else {
+					push @lines, $_;
+				}
+				$last_skpref = @lines;
+			}
+		}
+		close CONF;
+	} else {
+		push @lines, "[$SKPREFS]\n";
+	}
+
+	foreach my $key (sort keys %new) {
+		my $value = $new{$key};
+		if ($key eq 'conf_max_idle_time') {
+			$value = "+${value}m";
+		} elsif  ($key eq 'conf_check_passwords') {
+			$value = (defined $value and $value ? $true : $false);
+		}
+		splice @lines, $last_skpref, 0, "$key_map{$key}=$value\n";
+	}
+
+	return \@lines;
+}
+
+sub read_preferences_conf {
+
+=item C<conf_check_passwords>
+
+corresponds to check_passwords in F<preferences.conf>
+
+=item C<conf_max_idle_time>
+
+corresponds to max_idle_time in F<preferences.conf>
+
+=item C<conf_min_password_len>
+
+corresponds to min_password_len in F<preferences.conf>
+
+=item C<conf_max_password_len>
+
+corresponds to max_password_len in F<preferences.conf>
+
+=item C<conf_wlan_ldap_group>
+
+corresponds to wlan_ldap_group in F<preferences.conf>
+
+=cut
+
+	return (
+		conf_max_idle_time => int(expire_seconds(_max_idle_time) / 60),
+		conf_min_password_len => int(_min_password_len),
+		conf_max_password_len => int(_max_password_len),
+		conf_wlan_ldap_group => _wlan_ldap_group,
+		conf_check_passwords => _check_passwords,
+	);
+}
 
 
 1;

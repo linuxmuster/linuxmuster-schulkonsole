@@ -27,6 +27,7 @@ use utf8;
 use lib '/usr/share/schulkonsole';
 use Env::Bash;
 use Schulkonsole::Encode;
+use Schulkonsole::Config;
 use Schulkonsole::Files;
 use Schulkonsole::Session;
 use Sophomorix::SophomorixAPI;
@@ -58,7 +59,7 @@ my $password = $sk_session->get_password();
 my $true = 'yes';
 my $false= 'no';
 
-my %preferences_conf = read_preferences_conf();
+my %preferences_conf = Schulkonsole::Config::read_preferences_conf();
 my %preferences_conf_new;
 
 if ($q->param('accept')) {
@@ -129,7 +130,7 @@ if ($q->param('accept')) {
 	if (@errors) {
 		$sk_session->set_status(join(', ', @errors), 1);
 	} elsif (%preferences_conf_new) {
-		my $lines = new_preferences_lines(\%preferences_conf_new);
+		my $lines = Schulkonsole::Config::new_preferences_lines(\%preferences_conf_new);
 		Schulkonsole::Files::write_preferences_conf_file(
 			$id, $password, $lines);
 
@@ -169,98 +170,5 @@ Write the changes
 
 
 
-sub read_preferences_conf {
-
-=item C<conf_check_passwords>
-
-corresponds to check_passwords in F<preferences.conf>
-
-=item C<conf_max_idle_time>
-
-corresponds to max_idle_time in F<preferences.conf>
-
-=item C<conf_min_password_len>
-
-corresponds to min_password_len in F<preferences.conf>
-
-=item C<conf_max_password_len>
-
-corresponds to max_password_len in F<preferences.conf>
-
-=item C<conf_wlan_ldap_group>
-
-corresponds to wlan_ldap_group in F<preferences.conf>
-
-=cut
-
-	return (
-		conf_max_idle_time => int(Schulkonsole::Config::expire_seconds(
-			$Schulkonsole::Config::_max_idle_time) / 60),
-		conf_min_password_len => int($Schulkonsole::Config::_min_password_len),
-		conf_max_password_len => int($Schulkonsole::Config::_max_password_len),
-		conf_wlan_ldap_group => $Schulkonsole::Config::_wlan_ldap_group,
-		conf_check_passwords => $schulkonsole::Config::_check_passwords,
-	);
-}
-
-
-
-
-sub new_preferences_lines {
-	my $new = shift;
-	my %new = %$new;
-
-	my @lines;
-
-	
-	my %key_map = (
-		conf_max_idle_time => 'max_idle_time',
-		conf_min_password_len => 'min_password_len',
-		conf_max_password_len => 'max_password_len',
-		conf_wlan_ldap_group => 'wlan_ldap_group',
-		conf_check_passwords => 'check_passwords',
-	);
-	my %key_map_rev = reverse %key_map;
-
-	if (open CONF, '<',
-	         Schulkonsole::Encode::to_fs(
-	         	$Schulkonsole::Config::_preferences_conf_file)) {
-		while (<CONF>) {
-			if (/^#/ or /^\[/ or /^\s*$/) {
-				push @lines, $_;
-			} elsif (my ($conf_key, $value) = /^(.+?)=(.*)/) {
-				my $key = $key_map_rev{$conf_key};
-				if (defined $new{$key}) {
-					$value = $new{$key};
-					if ($key eq 'conf_max_idle_time') {
-						$value = "+${value}m";
-					} elsif ($key eq 'conf_check_passwords') {
-						$value = (defined $value and $value ? $true : $false );
-					}
-					push @lines, "$conf_key=$value\n";
-
-					delete $new{$key};
-				} else {
-					push @lines, $_;
-				}
-			}
-		}
-		close CONF;
-	} else {
-		push @lines, "[Schulkonsole Preferences]\n";
-	}
-
-	foreach my $key (sort keys %new) {
-		my $value = $new{$key};
-		if ($key eq 'conf_max_idle_time') {
-			$value = "+${value}m";
-		} elsif  ($key eq 'conf_check_passwords') {
-			$value = (defined $value and $value ? $true : $false);
-		}
-		push @lines, "$key_map{$key}=$value\n";
-	}
-
-	return \@lines;
-}
 
 =back

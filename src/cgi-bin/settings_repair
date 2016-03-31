@@ -1,0 +1,109 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+settings repair - produces page for repair settings
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/settings_repair
+
+=head1 DESCRIPTION
+
+C<settings_repair> produces the page of repair settings.
+The HTML template is settings_repair.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<settings_repair>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Config;
+use Schulkonsole::Session;
+
+
+my $this_file = 'settings_repair';
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+
+
+COMMANDS: { 
+	eval {
+		if ($q->param('accept')) {
+			
+		}
+	};
+} # COMMANDS
+if ($@) {
+	$sk_session->standard_error_handling($this_file, $@);
+}
+
+
+=item C<cprogram>
+
+A hash of arrays of hashes of program paths.
+
+$program {
+	program1 => (
+		{ name1 => path1 },
+		{ name2 => path2 },
+		{ name3 => path3 },
+		...
+	),
+	program2 => (
+		{ name1 => path1 },
+		...
+	),
+	...
+}
+
+=cut
+
+$sk_session->set_var('program', \%$Schulkonsole::Config::_repair_path);
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<program1;delete>
+
+Delete program1 from hash
+
+=item C<program1;path1;delete>
+
+Delete array element hash path1 from program1
+
+=item C<accept>
+
+Write the changes
+
+=cut

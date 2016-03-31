@@ -10,3 +10,6 @@
 [% IF link_settings_projects %]
         <li><a [% dohref("settings_projects") %]>[% loc('Projekte') %]</a></li>
 [% END %]
+[% IF link_settings_repair %]
+        <li><a [% dohref("settings_repair") %]>[% loc('Reparaturen') %]</a></li>
+[% END %]
