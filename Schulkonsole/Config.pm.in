@@ -32,6 +32,9 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 $VERSION = 0.06;
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(
+	SKPREFS
+	PATHPREFS
+	
 	db
 	ldap
 	permissions_pages
@@ -216,9 +219,6 @@ $VERSION = 0.06;
 use Env::Bash;
 use Schulkonsole::Encode;
 
-my $SKPREFS = 'Schulkonsole Preferences';
-my $DBPREFS = 'Schulkonsole DB';
-my $PATHPREFS = 'Program Paths';
 
 =head1 DESCRIPTION
 
@@ -229,6 +229,26 @@ application to invoke. A user can only use these applications if the
 corresponding string is listed for his group in the section
 C<[External Programs]> in C<$_permissions_conf_file>.
 
+=head3 Constants for preferences file
+
+=over
+
+=item C<SKREFS>
+
+Section name for Schulkonsole preferences
+
+=item C<PATHPREFS>
+
+Section name for program repair paths
+
+=item C<DBPREFS>
+
+Section name for DB preferences to access in db.conf (used only internal)
+
+=cut
+
+use vars qw($SKPREFS $PATHPREFS);
+	
 =head3 Constants for wrapper-user
 
 =over
@@ -999,16 +1019,16 @@ use vars qw($_max_idle_time $_session_expire_time $_login_expire_time
 
 =item C<%_repair_path>
 
-Program repair paths as has of array of hashes, f.e.
+Program repair paths as hash of arrays, f.e.
 
 %_repair_path = (
-	program1 => (
-		name1 => path1,
-		name2 => path2,
-	),
-	program2 => (
-		name3 => path3,
-	),
+	program1 => [
+		path1,
+		path2,
+	],
+	program2 => [
+		path3,
+	],
 );
 
 These paths are used to clean users settings for
@@ -1313,9 +1333,13 @@ $_runtimedir = '@pkgruntimedir@';
 $_lockdir = '/var/lock';
 
 $_preferences_conf_file = "$_sysconfdir/preferences.conf";
-$_permissions_conf_file = "$_sysconfdir/permissions.conf";
-$_db_conf_file = "$_sysconfdir/db.conf";
+$SKPREFS = 'Schulkonsole Preferences';
+$PATHPREFS = 'Program Paths';
 
+$_permissions_conf_file = "$_sysconfdir/permissions.conf";
+
+$_db_conf_file = "$_sysconfdir/db.conf";
+my $DBPREFS = 'Schulkonsole DB';
 
 # read environment variables of linuxmuster scripts
 my $lml_config_file = '/usr/share/linuxmuster/config/dist.conf';
@@ -1344,7 +1368,6 @@ $_linbo_log_dir = $lml_env{LINBOLOGDIR};
 $_linbo_templates_os_dir = "$_linbo_templates_dir/os";
 $_linbo_template_partition = "$_linbo_templates_dir/part/start.conf.partition";
 $_wlan_defaults_file = '/etc/linuxmuster/wlan_defaults';
-$_wlan_ldap_group = 'p_wifi';
 
 $_linbo_start_conf_prefix = $_linbo_dir . '/start.conf.';
 
@@ -1364,18 +1387,11 @@ $_workstation_file = "$_lml_cache_dir/logins/%s";
 $_login_template = 'login.tt';
 
 
-$_max_idle_time = '+30m';	# ask for password after 30 minutes idle time
 $_session_expire_time = '+1h';	# delete session after 1 hour idle time
 $_login_expire_time = '+1h';	# invalidate session unless logged in within an
                              	# hour
 
 $_tmp_valid_time = '+1m';	# invalidate temporarily stored data after 1 minute
-
-$_check_passwords = 1;        # enforce password quality
-$_min_password_len = 8;       # enforce password length requirement
-$_max_password_len = 15;
-
-%_repair_path = ();
 
 $_http_root = '/schulkonsole';
 $_htaccess_filename = '.htaccess';
@@ -2393,7 +2409,7 @@ sub expire_seconds {
 
 # read preferences from file into config variables
 
-eval {
+sub init_preferences {
 	my %preferences = read_conf($_preferences_conf_file);
 	
 	$_max_idle_time = $preferences{$SKPREFS}{max_idle_time}
@@ -2415,21 +2431,20 @@ eval {
 		}
 	}
 	
+	%_repair_path = ();
 	foreach my $program (keys $preferences{$PATHPREFS}) {
 		@{$_repair_path{$program}} = split(',', $preferences{$PATHPREFS}{$program});
 	}
-	
-};
+}
 
 # compare new values to values from conf file and create new file lines to
-# write to config file
+# write to config file into section $section
 sub new_preferences_lines {
+	my $section = shift;
 	my $new = shift;
-	my %new = %$new;
-
+	
 	my @lines;
 
-	
 	my %key_map = (
 		conf_max_idle_time => 'max_idle_time',
 		conf_min_password_len => 'min_password_len',
@@ -2439,22 +2454,24 @@ sub new_preferences_lines {
 	);
 	my %key_map_rev = reverse %key_map;
 
-	my $section = '';
-	my $last_skpref = 0;
+	my $current = '';
+	my $last_pref = 0;
 	
 	if (open CONF, '<',
 	         Schulkonsole::Encode::to_fs(
 	         	$Schulkonsole::Config::_preferences_conf_file)) {
 		while (<CONF>) {
-			if (($section) = /^\[(.+)\]/) {
+			if (/^\[.+\]/) {
+				($current) = $_ =~ /^\[(.+)\]/; 
 				push @lines, $_;
-				$section = '' unless $section eq $SKPREFS;
-			} elsif (/^#/ or /^\s*$/ or not $section) {
+				$current = '' unless $section eq $current;
+				$last_pref = @lines if $current;
+			} elsif (/^#/ or /^\s*$/ or not $current) {
 				push @lines, $_;
 			} elsif (my ($conf_key, $value) = /^(.+?)=(.*)/) {
 				my $key = $key_map_rev{$conf_key};
-				if (defined $new{$key}) {
-					$value = $new{$key};
+				if (defined $$new{$key}) {
+					$value = $$new{$key};
 					if ($key eq 'conf_max_idle_time') {
 						$value = "+${value}m";
 					} elsif ($key eq 'conf_check_passwords') {
@@ -2462,26 +2479,46 @@ sub new_preferences_lines {
 					}
 					push @lines, "$conf_key=$value\n";
 
-					delete $new{$key};
+					delete $$new{$key};
+				} elsif ($current eq $PATHPREFS) {
+					if (defined $$new{$conf_key}) {
+						push @lines, "$conf_key=$$new{$conf_key}\n";
+						
+						delete $$new{$conf_key};
+					}
 				} else {
 					push @lines, $_;
 				}
-				$last_skpref = @lines;
+				$last_pref = @lines;
 			}
 		}
 		close CONF;
-	} else {
-		push @lines, "[$SKPREFS]\n";
+	}
+	if (not $last_pref) {
+		push @lines, "[$section]\n";
+		$last_pref = @lines;
 	}
 
-	foreach my $key (sort keys %new) {
-		my $value = $new{$key};
+	foreach my $key (sort keys %$new) {
+		my $value = $$new{$key};
 		if ($key eq 'conf_max_idle_time') {
 			$value = "+${value}m";
 		} elsif  ($key eq 'conf_check_passwords') {
 			$value = (defined $value and $value ? $true : $false);
 		}
-		splice @lines, $last_skpref, 0, "$key_map{$key}=$value\n";
+		if ($section eq $SKPREFS) {
+			if ($last_pref) {
+				splice @lines, $last_pref, 0, "$key_map{$key}=$value\n";
+			} else {
+				push @lines, "$key_map{$key}=$value\n";
+			}
+		} else {
+			if ($last_pref) {
+				splice @lines, $last_pref, 0, "$key=$value\n";
+			} else {
+				push @lines, "$key=$value\n";
+			}
+		}
 	}
 
 	return \@lines;
@@ -2520,5 +2557,14 @@ corresponds to wlan_ldap_group in F<preferences.conf>
 	);
 }
 
+INIT {
+	$_max_idle_time = '+30m';	# ask for password after 30 minutes idle time
+	$_check_passwords = 1;        # enforce password quality
+	$_min_password_len = 8;       # enforce password length requirement
+	$_max_password_len = 15;
+	$_wlan_ldap_group = 'p_wifi';
+	
+	init_preferences();
+}
 
 1;

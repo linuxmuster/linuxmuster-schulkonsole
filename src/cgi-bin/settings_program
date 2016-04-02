@@ -56,9 +56,6 @@ my $q = $sk_session->query();
 my $id = $sk_session->userdata('id');
 my $password = $sk_session->get_password();
 
-my $true = 'yes';
-my $false= 'no';
-
 my %preferences_conf = Schulkonsole::Config::read_preferences_conf();
 my %preferences_conf_new;
 
@@ -130,7 +127,7 @@ if ($q->param('accept')) {
 	if (@errors) {
 		$sk_session->set_status(join(', ', @errors), 1);
 	} elsif (%preferences_conf_new) {
-		my $lines = Schulkonsole::Config::new_preferences_lines(\%preferences_conf_new);
+		my $lines = Schulkonsole::Config::new_preferences_lines($Schulkonsole::Config::SKPREFS, \%preferences_conf_new);
 		Schulkonsole::Files::write_preferences_conf_file(
 			$id, $password, $lines);
 

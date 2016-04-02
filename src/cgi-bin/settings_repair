@@ -27,6 +27,7 @@ use utf8;
 use lib '/usr/share/schulkonsole';
 use Schulkonsole::Config;
 use Schulkonsole::Session;
+use Schulkonsole::Files;
 
 
 my $this_file = 'settings_repair';
@@ -50,36 +51,31 @@ my $q = $sk_session->query();
 my $id = $sk_session->userdata('id');
 my $password = $sk_session->get_password();
 
-
-
 COMMANDS: { 
 	eval {
 		if ($q->param('accept')) {
-			my %new_programs
+			my %new_programs;
 			my %params = $q->Vars;
 			foreach (keys %params) {
 				my ($key,$mark) = $_ =~ /^(.+)(_name)$/;
 				next unless $key && $mark;
-				$new_programs{$key} = (
-					name => $params{$_}
-					paths => ());
+				$new_programs{$key}{'name'} = $q->param($_);
 			}
-			foreach (keys %params) {
-				my ($key,$nr) = $_ =~ /^(.+);(.+)$/;
-				next unless $key %% $nr;
-				next unless $new_programs{$key};
-				push @{$programs{$key}{paths}}, $params{$_};
+			foreach (keys %new_programs) {
+				my @values = $q->param($_ . '_value');
+				next unless scalar @values;
+				push @{$new_programs{$_}{'paths'}}, @values;
 			}
 			foreach (keys %new_programs) {
 				delete $new_programs{$_} unless $new_programs{$_}{paths};
 			}
 			my %repair;
 			foreach (keys %new_programs) {
-				$repair{$new_programs{$_}{name}} = $new_programs{$_}{paths};
+				$repair{$new_programs{$_}{name}} = join(',', @{$new_programs{$_}{paths}});
 			}
-			$Schulkonsole::Config::_repair_path = %repair;
-			my @lines = Schulkonsole::Config::new_preferences_lines(%repair);
-			Schulkonsole::Files::write_preferences_conf_file($id, $password, @lines);
+			my $lines = Schulkonsole::Config::new_preferences_lines($Schulkonsole::Config::PATHPREFS, \%repair);
+			Schulkonsole::Files::write_preferences_conf_file($id, $password, $lines);
+			
 			$sk_session->set_status($sk_session->d()->get('Änderungen übernommen'), 0);
 		}
 	};
@@ -91,25 +87,25 @@ if ($@) {
 
 =item C<cprogram>
 
-A hash of arrays of hashes of program paths.
+A hash of arrays of program paths.
 
 $program {
-	program1 => (
+	program1 => [
 		path1,
 		path2,
 		path3,
 		...
-	),
-	program2 => (
+	],
+	program2 => [
 		path1,
 		...
-	),
+	],
 	...
 }
 
 =cut
 
-$sk_session->set_var('program', \%$Schulkonsole::Config::_repair_path);
+$sk_session->set_var('program', \%Schulkonsole::Config::_repair_path);
 
 $sk_session->print_page("$this_file.tt", $this_file);
 

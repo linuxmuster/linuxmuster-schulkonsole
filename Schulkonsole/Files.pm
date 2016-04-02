@@ -270,6 +270,7 @@ Writes the file /etc/linuxmuster/schulkonsole/preferences.conf
 
 sub write_preferences_conf_file {
 	write_file(@_, 5);
+	Schulkonsole::Config::init_preferences();
 }
 
 

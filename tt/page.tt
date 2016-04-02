@@ -14,6 +14,15 @@
     </style>
     <![endif]-->
     <script type="text/javascript" src="schulkonsole.js"></script>
+[% IF page.script %]
+    [% IF page.debug %]
+        <script type="text/javascript" src="/jquery/[% page.script %]"></script>
+    [% ELSE %]
+        <script type="text/javascript">
+	[% INCLUDE $page.script %]
+	</script>
+    [% END %]
+[% END %]
 [% IF page.disable_enter %]
 <script type="text/javascript">
 $('html').bind('keypress', function(e)
