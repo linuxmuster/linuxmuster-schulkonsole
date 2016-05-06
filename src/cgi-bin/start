@@ -287,7 +287,8 @@ COMMANDS: {
 			'Neues Passwort nicht richtig wiederholt'), 1);
 	} else {
 		$MINLEN = $Schulkonsole::Config::_min_password_len;
-		$MAXLEN = $Schulkonsole::Config::_max_password_len;
+		$MAXLEN = 0;
+		$DICTIONARY = 0;
 		my $badpassword_error = Data::Password::IsBadPassword($newpassword);
 		if ($Schulkonsole::Config::_check_passwords and $badpassword_error) {
 			$badpassword_error = translate_passworderror($sk_session, $badpassword_error, $MINLEN, $MAXLEN);

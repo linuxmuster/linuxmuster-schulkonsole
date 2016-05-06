@@ -89,7 +89,6 @@ $VERSION = 0.06;
 
 	$_check_passwords
 	$_min_password_len
-	$_max_password_len
 	$_http_root
 	$_htaccess_filename
 
@@ -1003,17 +1002,13 @@ Ensure password quality.
 
 Minimal password length enforced.
 
-=item C<$_max_password_len>
-
-Maximal password length enforced.
-
 =back
 
 =cut
 
 use vars qw($_max_idle_time $_session_expire_time $_login_expire_time
             $_tmp_valid_time 
-            $_check_passwords $_min_password_len $_max_password_len);
+            $_check_passwords $_min_password_len);
 
 =head3 Program repair paths
 
@@ -2419,8 +2414,6 @@ sub init_preferences {
 		    and -d $preferences{$SKPREFS}{templatedir});
 	$_min_password_len = $preferences{$SKPREFS}{min_password_len}
 		if (exists $preferences{$SKPREFS}{min_password_len});
-	$_max_password_len = $preferences{$SKPREFS}{max_password_len}
-	    if (exists $preferences{$SKPREFS}{max_password_len});
 	$_wlan_ldap_group = $preferences{$SKPREFS}{wlan_ldap_group}
 		if (exists $preferences{$SKPREFS}{wlan_ldap_group});
 	if($preferences{$SKPREFS}{check_passwords}) {
@@ -2448,7 +2441,6 @@ sub new_preferences_lines {
 	my %key_map = (
 		conf_max_idle_time => 'max_idle_time',
 		conf_min_password_len => 'min_password_len',
-		conf_max_password_len => 'max_password_len',
 		conf_wlan_ldap_group => 'wlan_ldap_group',
 		conf_check_passwords => 'check_passwords',
 	);
@@ -2538,10 +2530,6 @@ corresponds to max_idle_time in F<preferences.conf>
 
 corresponds to min_password_len in F<preferences.conf>
 
-=item C<conf_max_password_len>
-
-corresponds to max_password_len in F<preferences.conf>
-
 =item C<conf_wlan_ldap_group>
 
 corresponds to wlan_ldap_group in F<preferences.conf>
@@ -2551,7 +2539,6 @@ corresponds to wlan_ldap_group in F<preferences.conf>
 	return (
 		conf_max_idle_time => int(expire_seconds($_max_idle_time) / 60),
 		conf_min_password_len => int($_min_password_len),
-		conf_max_password_len => int($_max_password_len),
 		conf_wlan_ldap_group => $_wlan_ldap_group,
 		conf_check_passwords => $_check_passwords,
 	);
@@ -2561,7 +2548,6 @@ INIT {
 	$_max_idle_time = '+30m';	# ask for password after 30 minutes idle time
 	$_check_passwords = 1;        # enforce password quality
 	$_min_password_len = 8;       # enforce password length requirement
-	$_max_password_len = 15;
 	$_wlan_ldap_group = 'p_wifi';
 	
 	init_preferences();

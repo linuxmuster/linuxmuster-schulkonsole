@@ -97,16 +97,6 @@ if ($q->param('accept')) {
 					}
 					last CHECKVALUE;
 				};
-				$key eq 'conf_max_password_len' and do {
-					my $new_value = int($value);
-					if (not $new_value) {
-						push @errors, $sk_session->d()->get(
-							'Der Wert für die maximale Passwortlänge ist ungültig');
-					}  else {
-						$value = $new_value;
-					}
-					last CHECKVALUE;
-				};
 				$key eq 'conf_wlan_ldap_group' and do {
 					my ($new_value) = $value =~ /^([a-z0-9p\_]+)$/;
 					if (not $new_value) {
