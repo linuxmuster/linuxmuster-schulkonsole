@@ -1,3 +1,5 @@
+CURDIR=$(shell pwd)
+
 include common.mk
 
 SUBDIRS = po src/util Schulkonsole

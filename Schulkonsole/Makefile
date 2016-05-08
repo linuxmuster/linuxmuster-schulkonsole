@@ -1,5 +1,6 @@
-include ../common.mk
+CURDIR=$(shell pwd)/..
 
+include ../common.mk
 srcdir = .
 
 GENERATED = $(patsubst %.pm.in,%.pm,$(wildcard *.pm.in))
@@ -8,7 +9,10 @@ PERLFILES = $(wildcard *.pm) $(wildcard Error/*.pm) $(GENERATED)
 
 PHPFILES  = $(wildcard *.php)
 
-build: $(GENERATED)
+generate:
+	$(RM) $(GENERATED)
+
+build: generate $(GENERATED)
 
 install: build
 	for datei in $(PERLFILES) $(PHPFILES); do \
