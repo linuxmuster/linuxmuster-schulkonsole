@@ -11,7 +11,7 @@
 <h3>[% loc('Ausgewähltes Projekt:') %] [% project %]</h3>
 
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 [% IF students %]
 <table id="searchstudents" class="liste">
@@ -129,7 +129,7 @@
 
 
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <p>
 <label [% labelfor("query") %]>[% loc('Neue Suche:') %]</label>
 <input id="query" name="query">

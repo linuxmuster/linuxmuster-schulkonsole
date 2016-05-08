@@ -8,7 +8,7 @@
 <h2>[% loc('Meine Projekte') %] :: [% loc('Bereitgestellt') %]</h2>
 
 [% IF students_files %]
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<h4>[% loc('Bereitgestellte Datei(en) für ') %][% firstname %] [% surname %]</h4>
     <table class="liste">
     [% lfdnr = 1 %]

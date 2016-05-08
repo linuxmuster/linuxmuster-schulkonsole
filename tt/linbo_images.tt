@@ -12,7 +12,7 @@
 
     <h3>[% loc('Bitte bestätigen') %]</h3>
 
-    <form method="post" accept-charset="UTF-8">
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
     <p>[% deleteimage %] [% loc('wirklich löschen?') %]</p>
 
     <p><input type="hidden" name="image" value="[% deleteimage %]"><input type="submit" name="delete" value="[% loc('Bestätigen') %]">
@@ -25,7 +25,7 @@
 
     <h3>[% loc('Bitte bestätigen') %]</h3>
 
-    <form method="post" accept-charset="UTF-8">
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
     <p>[% moveimage %] [% loc('überschreiben?') %]</p>
 
     <p><input type="hidden" name="src" value="[% src %]"><input type="hidden" name="dst" value="[% moveimage %]"><input type="submit" name="move" value="[% loc('Überschreiben') %]">
@@ -38,7 +38,7 @@
 
     <h3>[% loc('Bitte bestätigen') %]</h3>
 
-    <form method="post" accept-charset="UTF-8">
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
     <p>[% copyimage %] [% loc('überschreiben?') %]</p>
 
     <p><input type="hidden" name="src" value="[% src %]"><input type="hidden" name="dst" value="[% copyimage %]"><input type="submit" name="copy" value="[% loc('Überschreiben') %]">
@@ -50,7 +50,7 @@
 
     <h2>[% image %]: [% loc('Imagebeschreibung editieren') %]</h2>
 
-    <form method="post" accept-charset="UTF-8">
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
     <p><textarea wrap="off" name="imagedesc" rows="20" cols="70"></textarea></p>
     <p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% loc('Änderungen speichern') %]">
     <input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
@@ -61,7 +61,7 @@
 
     <h2>[% image %]: [% loc('Image-Informationen') %]</h2>
 
-    <form method="post" accept-charset="UTF-8">
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
     <pre id="imageinfo">[% imageinfo %]</pre>
     <p><input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
 
@@ -70,7 +70,7 @@
 
     <h2>[% image %]: [% loc('Image-Liste') %]</h2>
 
-    <form method="post" accept-charset="UTF-8">
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
     <pre id="imagelist">[% imagelist %]</pre>
     <p><input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
 
@@ -79,7 +79,7 @@
 
     <h2>[% loc('Basisimages') %]</h2>
 
-    <form method="post" accept-charset="UTF-8">
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
     [% lfdnr=1 %]
     <table id="linbobaseimages" class="liste">
 
@@ -118,7 +118,7 @@
 
     <h2>Differenzielle Images</h2>
 
-    <form method="post" accept-charset="UTF-8">
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
     [% lfdnr=1 %]
     <table id="linboimages" class="liste">
     

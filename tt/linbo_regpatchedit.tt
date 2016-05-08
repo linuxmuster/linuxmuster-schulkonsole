@@ -13,7 +13,7 @@
 
 	<h3>[% loc('Bitte bestätigen') %]</h3>
 
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<p>[% deletefilename %] [% loc('wirklich löschen?') %]</p>
 
 	<p><input type="hidden" name="filename" value="[% deletefilename %]"><input type="submit" name="delete" value="[% loc('Bestätigen') %]">
@@ -25,7 +25,7 @@
 
 	<h2>[% loc('Registrypatch-Dateien der Rechnergruppen editieren') %]: [% editfilename %]</h2>
 
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<p><textarea wrap="off" name="regpatch" class="texteditor">[% regpatch %]</textarea></p>
 	<p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% loc('Änderungen speichern') %]">
 	<input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
@@ -37,7 +37,7 @@
 	<h2>[% loc('Registrypatch-Dateien der Rechnergruppen editieren') %]</h2>
 
 	[% IF regpatches %]
-		<form method="post" accept-charset="UTF-8">
+		<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 		<table id="linboregpatchoverview" class="liste">
 		[% FOREACH rp IN regpatches %]
 			[% IF odd %][% odd=0 %]<tr class="odd">
@@ -57,7 +57,7 @@
 
 	[% IF images %]
 		[% IF hastemplates %]
-			<form method="post" accept-charset="UTF-8">
+			<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 			<p>[% loc('Für') %]
 			<select name="image">

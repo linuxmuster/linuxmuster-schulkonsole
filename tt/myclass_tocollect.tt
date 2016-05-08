@@ -9,7 +9,7 @@
 [% IF myclass %] [% myclass.displayname %][% ELSE %][% loc('Klasse unbekannt') %][% END %]
  :: [% loc('Einsammeln') %]</h2>
 
-<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return showBusy()">
 
 <h3>[% loc('Einzusammelnde Dateien') %]</h3>
 

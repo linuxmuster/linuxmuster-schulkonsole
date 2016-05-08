@@ -8,7 +8,7 @@
 
 <h2>[% loc('Benutzerverwaltung') %] :: [% loc('Berichte') %]</h2>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <input type="submit" name="showadmin" value="[% loc('Administrator-Report') %]">
 <input type="submit" name="showoffice" value="[% loc('Report für das Sekretariat') %]">
 </form>

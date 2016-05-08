@@ -10,7 +10,7 @@
 <h3>[% loc('Meine Klasse:') %] [% myclass.displayname %]</h3>
 
 
-<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return showBusy()">
 
 
 <h3>[% loc('Vorlagen') %]</h3>

@@ -9,7 +9,7 @@
 
 <h1>[% loc('Hosts') %]</h1>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 [% IF isimporting %]
     [% busy.msg=loc('Importieren läuft') %]
@@ -19,12 +19,12 @@
 
 [% ELSE %]
     [% IF unconfigured %]
-        <form method="post" accept-charset="UTF-8">
+        <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
         <p class="important">[% loc('Die Liste der konfigurierten Hosts stimmt nicht mit den tatsächlich im System vorhandenen Hosts überein.') %]</p>
         <p><input type="submit" name="import" value="[% loc('Hosts jetzt übernehmen') %]"></p>
         </form>
     [% ELSIF unimported %]
-        <form method="post" accept-charset="UTF-8">
+        <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
         <p class="important">[% loc('Es wurden noch nicht alle Hosts in das System übernommen.') %]</p>
         <p><input type="submit" name="import" value="[% loc('Hosts jetzt übernehmen') %]"></p>
         </form>

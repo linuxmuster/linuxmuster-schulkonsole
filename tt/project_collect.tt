@@ -7,7 +7,7 @@
 %]
 
 [% IF projects %]
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <p class="selectdomain"> <select name="projects">
 <optgroup label="Projekte">
 [% FOREACH p IN projects %] <option value="[% p.gid %]">[% p.name %]</option>
@@ -30,7 +30,7 @@
 
 <h3>[% loc('Bisher eingesammelte Dateien') %]</h3>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 [% IF admin_collected_files %]
     <table id="projectcollectedfiles" class="liste">
     [% lfdnr = 1 %]

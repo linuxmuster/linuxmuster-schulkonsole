@@ -33,7 +33,7 @@
 
 [% ELSE %]
 
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 	<p>
 	[% IF !(addlist && addlist.size > 0 || movelist && movelist.size > 0 || killlist && killlist.size > 0) %][% loc('Es sind keine Vormerkungen vorhanden.') %][% END %]

@@ -8,7 +8,7 @@
 <h2>[% loc('Mein Raum') %]: [% IF myroom %][% myroom %][% ELSE %][% loc('unbekannt') %][% END %] :: [% loc('Einzusammeln') %]</h2>
 
 [% IF myroom %]
-	<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+	<form method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return showBusy()">
 	
 	<h3>[% loc('Einzusammelnde Dateien') %]</h3>
 	

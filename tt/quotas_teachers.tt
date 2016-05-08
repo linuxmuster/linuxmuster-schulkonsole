@@ -20,7 +20,7 @@
 
 	[% IF teachers %]
 	
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	
 	<table id="quotasteachers" class="liste">
 	<tr>

@@ -7,7 +7,7 @@
 %]
 
 [% IF groups %]
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<p class="selectdomain">
 	<select name="group">
 	[% FOREACH g IN groups %] <option value="[% g %]">[% g %]</option>[% END %]
@@ -20,7 +20,7 @@
 <h2>[% loc('Konfigurationsdateien editieren') %]</h2>
 
 [% IF group %]
-	<form method="post" accept-charset="UTF-8" action="#edit">
+	<form method="post" accept-charset="UTF-8" action="#edit" onsubmit="return showBusy()">
 
 	<h3>[% loc('[LINBO] - globale Konfiguration') %]</h3>
 
@@ -108,7 +108,7 @@
 	<h3>[% loc('Bitte Rechnergruppe auswählen') %]</h3>
 	
 	
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	
 	<h4>[% loc('Übersicht der Rechnergruppen') %]</h4>
 	

@@ -8,7 +8,7 @@
 <h2>[% loc('Mein Raum') %]: [% IF myroom %][% myroom %][% ELSE %][% loc('unbekannt') %][% END %] :: [% loc('Ausgeteilt') %]</h2>
 
 [% IF myroom %]
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<h3>[% loc('Ausgeteilte Datei(en) für ') %][% firstname %] [% surname %]</h3>
 	
 	[% IF teacher_share_files %]

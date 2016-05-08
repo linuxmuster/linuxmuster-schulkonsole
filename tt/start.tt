@@ -21,7 +21,7 @@
 <h3>[% loc('Druckaufträge') %]</h3>
 
 [% IF printjobs %]
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <p>
 <select name="printjobs" multiple>
 [% FOREACH printjob IN printjobs %]
@@ -40,7 +40,7 @@
 <hr>
 
 <h3>[% loc('Passwortänderung') %]</h3>
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <table>
 <tr>
 <td><label [% labelfor("oldpassword") %]>[% loc('Altes Passwort') %]</label>: </td>
@@ -59,7 +59,7 @@
 
 [% IF link_start_mymail %]
 	<h3>[% loc('Private Mail-Adresse') %]</h3>
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<table>
 	<tr>
 	<td><label [% labelfor("mymail") %]>[% loc('Mailadresse') %]</label>: </td>
@@ -73,7 +73,7 @@
 
 [% IF has_smtprelay %]
     <h3>[% loc('Mail-Weiterleitung') %]</h3>
-    <form meth="post" accept-charset="UTF-8">
+    <form meth="post" accept-charset="UTF-8" onsubmit="return showBusy()">
     <table id="mailforward">
     <col width="30%">
     <col width="70%">
@@ -242,7 +242,7 @@
 <hr>
 
 [% IF link_start_openvpn %]
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<h3>[% loc('OpenVPN-Zertifikat') %]</h3>
 	[% IF has_ovpn %]
 		<p>[% loc('Ein OpenVPN-Zertifikat wurde für Sie erstellt.') %]</p>

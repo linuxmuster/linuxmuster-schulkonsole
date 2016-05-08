@@ -21,7 +21,7 @@
 	
 	[% IF projects %]
 	
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	
 	[% odd=0 %]
 	<table id="quotasprojects" class="liste">

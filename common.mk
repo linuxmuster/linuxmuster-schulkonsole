@@ -1,5 +1,5 @@
 PACKAGE = schulkonsole
-VERSION = 0.31.0
+VERSION=$(shell head -n 1 $(CURDIR)/debian/changelog | awk -F\( '{ print $$2 }' | awk -F\) '{ print $$1 }' | awk -F\- '{ pring $$1 }' )
 DATADIR = /usr/share
 LIBDIR  = /usr/lib/$(PACKAGE)
 LOCALEDIR = $(DATADIR)/locale

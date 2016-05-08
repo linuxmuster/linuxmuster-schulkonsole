@@ -9,7 +9,7 @@
 <h2>[% loc('Linbo') %] :: [% loc('Fernsteuerung')%]</h2>
 
 [% IF ! linbo_remote_new %]
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <p>
 <input type="submit" name="task_new" value="[% loc('Aufgabe hinzufügen')%]">
 </p>
@@ -67,7 +67,7 @@
 [% IF linbo_remote_new %]
 
 <h3>[% loc('Linbo') %] - [% loc('Fernsteuerung') %] - [% loc('Neue Aufgabe') %]</h3>
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 <h4>[% loc('Rechnerauswahl') %]</h4>
 <table class="liste">

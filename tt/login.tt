@@ -7,7 +7,7 @@
 
 <h2>[% loc('Anmeldung') %]</h2>
 <p>
-<form method="post" accept-charset="UTF-8" action="">
+<form method="post" accept-charset="UTF-8" action="" onsubmit="return showBusy()">
 <table>
 <tr>
 <td><label [% labelfor("username") %]>[% loc('Benutzername') %]</label>: </td>

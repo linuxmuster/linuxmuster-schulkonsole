@@ -8,7 +8,7 @@
 
 <h2>[% loc('Benutzerverwaltung') %] :: [% loc('Benutzerlisten prüfen') %]</h2>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <p>
 <input type="submit" name="check" value="[% loc('Benutzerlisten überprüfen') %]">
 </p>

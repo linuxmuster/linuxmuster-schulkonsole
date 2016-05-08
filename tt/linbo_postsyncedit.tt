@@ -12,7 +12,7 @@
 	
 	<h3>[% loc('Bitte bestätigen') %]</h3>
 	
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<p>[% deletefilename %] [% loc('wirklich löschen?') %]</p>
 	
 	<p><input type="hidden" name="filename" value="[% deletefilename %]"><input type="submit" name="delete" value="[% loc('Bestätigen') %]">
@@ -24,7 +24,7 @@
 
 	<h2>[% loc('postsync-Dateien der Images editieren') %]: [% editfilename %]</h2>
 	
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<p><textarea wrap="off" name="postsync" class="texteditor">[% postsync %]</textarea></p>
 	<p><input type="hidden" name="filename" value="[% editfilename %]">
 	<input type="submit" name="edit" value="[% loc('Änderungen speichern') %]">
@@ -37,7 +37,7 @@
 	<h2>[% loc('postsync-Dateien der Images editieren') %]</h2>
 	
 	[% IF nopostsyncs %]
-		<form method="post" accept-charset="UTF-8">
+		<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 		<p>
 		<select name="filename">
 		[% FOREACH ncfg IN nopostsyncs %] <option value="[% ncfg %]">[% ncfg %]</option>
@@ -52,7 +52,7 @@
 	[% END %]
 	
 	[% IF postsyncs %]
-		<form method="post" accept-charset="UTF-8">
+		<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 		<table id="linbopostsyncsoverview" class="liste">
 		[% FOREACH cfg IN postsyncs %]
 			[% IF odd %][% odd=0 %]<tr class="odd">

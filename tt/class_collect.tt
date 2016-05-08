@@ -7,7 +7,7 @@
 %]
 
 [% IF classes %]
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <p class="selectdomain">
 <select name="classes">
 <optgroup label="Klassen">
@@ -29,7 +29,7 @@
 <h3>[% loc('Ausgewählte Klasse:') %] [% class_name %]</h3>
 
 
-<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return showBusy()">
 
 
 <h3>[% loc('Bisher eingesammelte Dateien') %]</h3>
@@ -58,7 +58,7 @@
 
 <h3>[% loc('Einsammeln') %]</h3>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 <p><input type="submit" value="[% loc('Ansicht aktualisieren') %]"></p>
 

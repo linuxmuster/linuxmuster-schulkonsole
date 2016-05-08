@@ -28,7 +28,7 @@
 
 <hr>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 
 <table id="roomhandout" class="liste">
@@ -83,7 +83,7 @@
 
 </form>
 
-<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return showBusy()">
 <h4>[% loc('Datei hochladen') %]</h4>
 <p>
     <input id="fileupload" type="file" name="upload_test_handout">

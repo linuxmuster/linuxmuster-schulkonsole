@@ -7,7 +7,7 @@
 %]
 
 [% IF projects.size > 0 %]
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<p class="selectdomain">
 	<select name="projects">
 	<optgroup label="Projekte">
@@ -35,7 +35,7 @@
 
 
 [% IF projects.size > 0 %]
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<h4>[% loc('Übersicht der Projekte') %]</h4>
 	<table id="projectsoverview" class="liste">
 	<tr>
@@ -73,7 +73,7 @@
 
 
 [% IF other_projects.size > 0 %]
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<h4>[% loc('Eintragen in Projekte') %]</h4>
 	<p>
 	<select name="project_add">
@@ -89,7 +89,7 @@
 
 <hr>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 <h4>[% loc('Neues Projekt anlegen') %]</h4>
 

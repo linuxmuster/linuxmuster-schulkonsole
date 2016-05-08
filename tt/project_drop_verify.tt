@@ -10,7 +10,7 @@
 
 <h3>[% loc('Ausgewähltes Projekt:') %] [% project %]</h3>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 <h3>[% loc('Bitte bestätigen') %]</h3>
 

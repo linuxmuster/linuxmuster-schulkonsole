@@ -9,7 +9,7 @@
 <h2>[% loc('Benutzerverwaltung') %] :: [% loc('Lehrerliste pflegen') %]</h2>
 
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <h3>[% loc('Lehrer hinzufügen') %]</h3>
 
 <table id="teachersadd" class="liste">
@@ -36,7 +36,7 @@
 
 [% IF teachersuploadallowed %]
 
-<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return showBusy()">
 <h3><label [% labelfor("teachersfilename") %]>[% loc('Datei importieren') %]</label></h3>
 <p>
 <input type="file" id="teachersfilename" name="teachersfilename">
@@ -48,7 +48,7 @@
 
 [% IF error_teachers %]
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 
 <h3>[% loc('Fehler korrigieren') %]</h3>
@@ -81,7 +81,7 @@
 
 [% IF teachers %]
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 <h3>[% loc('Editieren') %]</h3>
 
@@ -115,7 +115,7 @@
 <hr>
 
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <h3>[% loc('Lehrer entfernen') %]</h3>
 
 <table id="teachersdelete" class="liste">

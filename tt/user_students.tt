@@ -8,7 +8,7 @@
 
 <h2>[% loc('Benutzerverwaltung') %] :: [% loc('Schülerliste pflegen') %]</h2>
 
-<form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return showBusy()">
 <h3><label [% labelfor("studentsfilename") %]>[% loc('Datei importieren') %]</label></h3>
 <p>
 <input type="file" id="studentsfilename" name="studentsfilename">
@@ -18,7 +18,7 @@
 
 <hr>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <h3><label [% labelfor("students") %]>[% loc('Editieren') %]</label></h3>
 
 <p>

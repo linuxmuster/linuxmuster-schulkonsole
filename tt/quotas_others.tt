@@ -20,7 +20,7 @@
 
 	<h3>[% loc('Neu anlegen') %]</h3>
 	
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 	<table id="quotasothersnew" class="liste">
 	<tr>
@@ -58,7 +58,7 @@
 	
 	  <h3>[% loc('Webspace') %]</h3>
 	
-	  <form method="post" accept-charset="UTF-8">
+	  <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	
 	  [% odd=0 %]
 	  <table id="quotaswww" class="liste">
@@ -105,7 +105,7 @@
 	
 	  <h3>[% loc('Administratoren') %]</h3>
 	
-	  <form method="post" accept-charset="UTF-8">
+	  <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	
 	  [% odd=0 %]
 	  <table id="quotasadmins" class="liste">
@@ -156,7 +156,7 @@
 	
 	  <h3>[% loc('Schüler') %]</h3>
 	
-	  <form method="post" accept-charset="UTF-8">
+	  <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	
 	  [% odd=0 %]
 	  <table id="quotasstudents" class="liste">
@@ -208,7 +208,7 @@
 	
 	  <h3>[% loc('Workstationaccounts') %]</h3>
 	
-	  <form method="post" accept-charset="UTF-8">
+	  <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	
 	  [% odd=0 %]
 	  <table id="quotasworkstations" class="liste">
@@ -257,7 +257,7 @@
 	
 	  <h3>[% loc('Systembenutzer') %]</h3>
 	
-	  <form method="post" accept-charset="UTF-8">
+	  <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	
 	  [% odd=0 %]
 	  <table id="quotassystem" class="liste">

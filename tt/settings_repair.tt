@@ -12,7 +12,7 @@
 
 <h3>[% loc('Programme') %]</h3>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 <input type="button" onclick="addProgram()" value="[% loc('+ Programm') %]"/>
 

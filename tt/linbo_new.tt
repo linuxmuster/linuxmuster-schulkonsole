@@ -9,7 +9,7 @@
 [% IF groups %]
 <h2>[% loc('Bestehende Gruppenkonfiguration einer Rechnergruppe kopieren') %]</h2>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <p>
 <select name="src">
 [% FOREACH g IN groups %]
@@ -27,7 +27,7 @@
 <h2>[% loc('Assistent zur Erstellung einer neuen Rechnergruppe') %]</h2>
 
 [% IF hastemplates %]
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <table>
 [% lfdnr = 1 %]
 <tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">

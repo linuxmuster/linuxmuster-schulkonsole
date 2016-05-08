@@ -9,7 +9,7 @@
 <h2>[% loc('Benutzerverwaltung') %] :: [% loc('Extralisten pflegen') %]</h2>
 
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <h3><label [% labelfor("extrauser") %]>[% loc('Extraschüler editieren') %]</label></h3>
 
 <p>
@@ -22,7 +22,7 @@
 
 <hr>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <h3><label [% labelfor("extracourse") %]>[% loc('Extrakurse editieren') %]</label></h3>
 
 <p>

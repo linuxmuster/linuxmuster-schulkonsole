@@ -13,7 +13,7 @@
 
 <h3>[% loc('Bitte bestätigen') %]</h3>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <p>[% deletefilename %] [% loc('wirklich löschen?') %]</p>
 
 <p><input type="hidden" name="filename" value="[% deletefilename %]"><input type="submit" name="delete" value="[% loc('Bestätigen') %]">
@@ -26,7 +26,7 @@
 
 <h2>[% loc('menu.lst-Dateien der Rechnergruppen editieren') %]: [% editfilename %]</h2>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <p><textarea wrap="off" name="menulst" rows="20" cols="70"></textarea></p>
 <p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% loc('Änderungen speichern') %]">
 <input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
@@ -38,7 +38,7 @@
 <h2>[% loc('menu.lst-Dateien der Rechnergruppen editieren') %]</h2>
 
 [% IF nomenulsts %]
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <p>
 <select name="filename">
 [% FOREACH nm IN nomenulsts %] <option value="[% nm %]">[% nm %]</option>
@@ -53,7 +53,7 @@
 [% END %]
 
 [% IF menulsts %]
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <table id="linbomenulstsoverview" class="liste">
 [% FOREACH ml IN menulsts %]
 [% IF odd %][% odd=0 %]<tr class="odd">

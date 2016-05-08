@@ -7,7 +7,7 @@
 %]
 
 [% IF classes %]
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<p class="selectdomain">
 	<select name="classes">
 	<optgroup label="Klassen">
@@ -26,7 +26,7 @@
 
 <h3>[% loc('Ausgewählte Klasse') %]: [% class_name %]</h3>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <p>
 [% loc('Nutzung:') %]
 
@@ -87,7 +87,7 @@
 
 <h3>[% loc('Übersicht') %]</h3>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <table id="lessonoverview" class="liste">
 <tr>
 <th>[% loc('Nr.') %]</th>

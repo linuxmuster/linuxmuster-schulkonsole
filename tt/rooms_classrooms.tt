@@ -18,7 +18,7 @@
 
 <h2>[% loc('Räume') %]</h2>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 
 <table id="rooms" class="liste">

@@ -28,7 +28,7 @@
 
 <hr>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 <h3>[% loc('Bisher eingesammelte Dateien') %]</h3>
 

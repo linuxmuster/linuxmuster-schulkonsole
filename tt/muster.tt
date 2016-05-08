@@ -15,7 +15,7 @@
 
 <<Übersetzungen werden durch die Funktion loc('Text') ausgelöst.>>
 
-<form method="POST" accept-charset=UTF-8">
+<form method="POST" accept-charset=UTF-8" onsubmit="return showBusy()">
 <h2>[% loc('Muster-Überschrift') %]</h2>
 
 <p>Musterabsatz</p>

@@ -7,7 +7,7 @@
 %]
 
 [% IF projects %]
-    <form method="post" accept-charset="UTF-8">
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
     <p class="selectdomain"> <select name="projects">
     <optgroup label="Projekte">
     [% FOREACH p IN projects %] <option value="[% p.gid %]">[% p.name %]</option>[% END %]
@@ -27,7 +27,7 @@
 <h3>[% loc('Ausgewähltes Projekt:') %] [% project %]</h3>
 
 [% IF isadmin %]
-    <form method="post" accept-charset="UTF-8">
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
     <p><label [% labelfor("projectisopen") %]>Offenes Projekt</label>
     [% IF isopen %]
         <input type="checkbox" id="projectisopen" name="projectisopen" checked><br>
@@ -40,7 +40,7 @@
 
     <h3>[% loc('Mitglieder hinzufügen') %]</h3>
 
-    <form method="post" accept-charset="UTF-8" action="project_addmembers">
+    <form method="post" accept-charset="UTF-8" action="project_addmembers" onsubmit="return showBusy()">
     <p>
     <label [% labelfor("query") %]>[% loc('Suche:') %]</label>
     <input id="query" name="query">
@@ -57,7 +57,7 @@
 [% END %]
 
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 <h3>[% loc('Mitglieder im Projekt') %]</h3>
 

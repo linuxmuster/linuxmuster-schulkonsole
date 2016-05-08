@@ -7,7 +7,7 @@
 %]
 
 [% IF classes %]
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 <p class="selectdomain">
 <select name="classes">
 <optgroup label="Klassen">
@@ -34,7 +34,7 @@
 
 
 [% IF classes %]
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 <h4>[% loc('Übersicht der Klassen') %]</h4>
 
@@ -57,7 +57,7 @@
 
 
 [% IF other_classes %]
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 <h4>[% loc('Eintragen in Klassen') %]</h4>
 

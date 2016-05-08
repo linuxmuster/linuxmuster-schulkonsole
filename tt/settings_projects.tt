@@ -8,7 +8,7 @@
 
 <h2>[% loc('Einstellungen') %] :: [% loc('Projekte') %]</h2>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 <h3>[% loc('Global') %]</h3>
 

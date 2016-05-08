@@ -8,7 +8,7 @@
 
 <h2>[% loc('Standardeinstellungen für Räume') %]</h2>
 
-<form method="post" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 
 
 <table id="roomsdefaults" class="liste">

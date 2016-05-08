@@ -11,7 +11,7 @@
 [% IF myclass %][% myclass.displayname %][% ELSE %][% loc('Klasse unbekannt') %][% END %]</h3>
 
 [% IF myclass %]
-	<form method="post" accept-charset="UTF-8">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
 	<h3>[% loc('Ausgeteilte Datei(en) für ') %][% firstname %] [% surname %]</h3>
 	
 	[% IF teacher_share_files %]
