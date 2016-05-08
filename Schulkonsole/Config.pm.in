@@ -104,6 +104,7 @@ $VERSION = 0.06;
 	$_wrapper_linbo
 	$_wrapper_radius
 	$_wrapper_debconf
+	$_wrapper_repair
 
 	%_id_root_app_names
 	$_cmd_internet_on_off
@@ -130,6 +131,7 @@ $VERSION = 0.06;
 	$_cmd_sophomorix_quota
 	$_cmd_sophomorix_class
 	$_cmd_sophomorix_mail
+	$_cmd_sophomorix_repair
 	$_cmd_import_workstations
 	$_cmd_import_printers
 	$_cmd_ovpn_client_cert
@@ -213,6 +215,12 @@ $VERSION = 0.06;
 	TEST_HANDOUT
 	TEST_PASSWORD
 	TEST_COLLECT
+
+	REPAIRPERMISSIONSAPP
+	REPAIRMYHOMEAPP
+	REPAIRCLASSHOMESAPP
+	REPAIRPROJECTHOMESAPP
+	REPAIRHOMESAPP
 );
 
 use Env::Bash;
@@ -755,6 +763,33 @@ use constant {
 
 
 
+=head3 Constants for wrapper-repair
+
+=over
+
+=item C<REPAIRPERMISSIONSAPP>
+
+=item C<REPAIRMYHOMEAPP>
+
+=item C<REPAIRCLASSHOMESAPP>
+
+=item C<REPAIRPROJECTHOMESAPP>
+
+=item C<REPAIRHOMESAPP>
+
+=back
+
+=cut
+
+use constant {
+	REPAIRPERMISSIONSAPP => 16001,
+	REPAIRMYHOMEAPP => 16002,
+	REPAIRCLASSHOMESAPP => 16003,
+	REPAIRPROJECTHOMESAPP => 16004,
+	REPAIRHOMESAPP => 16005,
+};
+
+
 =head2 Predefined variables
 
 =over
@@ -1121,12 +1156,18 @@ Path to wrapper to write radius configuration files
 
 =back
 
+=item C<$_wrapper_repair>
+
+Path to wrapper to repair directories / permissions
+
+=back
+
 =cut
 
 use vars qw($_wrapper_user $_wrapper_firewall $_wrapper_ovpn $_wrapper_printer
             $_wrapper_sophomorix $_wrapper_cyrus $_wrapper_collab
             $_wrapper_files $_wrapper_linbo $_wrapper_radius
-	    $_wrapper_debconf);
+	    $_wrapper_debconf $_wrapper_repair);
 
 
 =head3 Variables used by wrappers
@@ -1234,6 +1275,10 @@ Path to Sophomorix command C<sophomorix-class>
 
 Path to Sophomorix command C<sophomorix-mail>
 
+=item C$_cmd_sophomorix_repair>
+
+Path to Sophomorix command C<sophomorix-repair>
+
 =item C<$_cmd_import_workstations>
 
 Path to command to import workstations into room C<import_workstations>
@@ -1291,6 +1336,7 @@ use vars qw(%_id_root_app_names
             $_cmd_sophomorix_quota
             $_cmd_sophomorix_class
             $_cmd_sophomorix_mail
+            $_cmd_sophomorix_repair
             $_cmd_import_workstations
             $_cmd_import_printers
             $_cmd_ovpn_client_cert
@@ -1402,6 +1448,7 @@ $_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
 $_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
 $_wrapper_radius = '@pkglibexecdir@/bin/wrapper-radius';
 $_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
+$_wrapper_repair = '@pkglibexecdir@/bin/wrapper-repair';
 
 
 
@@ -1482,6 +1529,11 @@ $_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
 	DEBCONFREADAPP() => 'debconf_read',
 	DEBCONFREADSMTPRELAYAPP() => 'read_smtprelay',
 	CYRUSQUOTAAPP() => 'cyrus_quota',
+	REPAIRPERMISSIONSAPP() => 'repair_permissions',
+	REPAIRMYHOMEAPP() => 'repair_myhome',
+	REPAIRCLASSHOMESAPP() => 'repair_classhomes',
+	REPAIRPROJECTHOMESAPP() => 'repair_projecthomes',
+	REPAIRHOMESAPP() => 'repair_homes',
 );
 
 
@@ -1500,6 +1552,7 @@ $_cmd_sophomorix_add = '/usr/sbin/sophomorix-add';
 $_cmd_sophomorix_check = '/usr/sbin/sophomorix-check';
 $_cmd_sophomorix_class = '/usr/sbin/sophomorix-class';
 $_cmd_sophomorix_mail = '/usr/sbin/sophomorix-mail';
+$_cmd_sophomorix_repair = '/usr/sbin/sophomorix-repair';
 $_cmd_sophomorix_kill = '/usr/sbin/sophomorix-kill';
 $_cmd_sophomorix_move = '/usr/sbin/sophomorix-move';
 $_cmd_sophomorix_passwd = '/usr/sbin/sophomorix-passwd';

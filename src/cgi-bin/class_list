@@ -24,6 +24,7 @@ use Schulkonsole::DB;
 use Schulkonsole::Info;
 use Schulkonsole::Printer;
 use Schulkonsole::Session;
+use Schulkonsole::Repair;
 
 my $this_file = 'class_list';
 
@@ -76,6 +77,10 @@ provides the following variables:
 
 my $id = $sk_session->userdata('id');
 my $password = $sk_session->get_password();
+
+if( $sk_session->param('repair_classhomes;'.$class) ){
+    Schulkonsole::Repair::repair_classhomes($id, $password, $class);
+}
 
 my $all_classs = Schulkonsole::DB::classes();
 delete $$all_classs{'attic'};
