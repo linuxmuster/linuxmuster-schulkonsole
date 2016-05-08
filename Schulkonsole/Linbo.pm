@@ -2349,8 +2349,8 @@ The filename of the image
 
 =head3 Description
 
-Deletes C<$image> in C</var/linbo/> and corresponding C<*.desc>, C<*.info>,
-C<*.list>, and C<*.reg> files.
+Deletes C<$image> in C</var/linbo/> and corresponding C<*.desc>, C<*.info>, C<*.macct>, C<*.torrent>,
+C<*.opsi>, C<*.postsync> and C<*.reg> files.
 
 =cut
 
@@ -2394,8 +2394,8 @@ The filename of the image without C<*.cloop> or C<*.rsync> suffix
 
 =head3 Description
 
-Renames C<$image> in C</var/linbo/> and corresponding C<*.desc>, C<*.info>,
-C<*.list>, and C<*.reg> files, using C<$new_image> as the new image name,
+Renames C<$image> in C</var/linbo/> and corresponding C<*.desc>, C<*.info>, C<*.macct>, C<*.torrent>,
+C<*.opsi>, C<*.postsync> and C<*.reg> files, using C<$new_image> as the new image name,
 but keeping the suffix of the original name.
 
 =cut
@@ -2418,7 +2418,7 @@ sub move_image {
 
 =head2 copy_image($id, $password, $image, $new_image)
 
-Rename a LINBO image
+Copy a LINBO image
 
 =head3 Parameters
 
@@ -2440,8 +2440,8 @@ The filename of the image without C<*.cloop> or C<*.rsync> suffix
 
 =head3 Description
 
-Copies C<$image> in C</var/linbo/> and corresponding C<*.desc>, C<*.info>,
-C<*.list>, and C<*.reg> files, using C<$new_image> as the new image name,
+Copies C<$image> in C</var/linbo/> and corresponding C<*.desc>, C<*.info>, C<*.macct>, C<*.torrent>,
+C<*.opsi>, C<*.postsync> and C<*.reg> files, using C<$new_image> as the new image name,
 but keeping the suffix of the original name.
 
 =cut
