@@ -4,12 +4,12 @@
 #
 # root <root@linuxmuster.lokal>, 2014.
 # Frank Schütte <fschuett@gymnasium-himmelsthuer.de>, 2015.
-#: ../Schulkonsole/Session.pm.in:1540
+#: ../Schulkonsole/Session.pm.in:1542
 msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2016-03-08 20:35+0100\n"
+"POT-Creation-Date: 2016-05-10 17:20+0200\n"
 "PO-Revision-Date: 2015-11-10 12:50+0100\n"
 "Last-Translator: Frank Schütte <fschuett@gymhim.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -66,29 +66,29 @@ msgstr "not existing as collected file."
 msgid " nicht als einzusammelnde Datei vorhanden."
 msgstr " not existing as collected file."
 
-#: ../src/cgi-bin/class_list:144 ../src/cgi-bin/class_list:163
-#: ../src/cgi-bin/project_members:370 ../src/cgi-bin/project_members:389
-#: ../src/cgi-bin/start:564 ../src/cgi-bin/start:583
+#: ../src/cgi-bin/class_list:151 ../src/cgi-bin/class_list:170
+#: ../src/cgi-bin/project_members:385 ../src/cgi-bin/project_members:404
+#: ../src/cgi-bin/start:565 ../src/cgi-bin/start:584
 #, perl-format
 msgid "%d Minuten"
 msgstr "%d minutes"
 
-#: ../src/cgi-bin/class_list:141 ../src/cgi-bin/class_list:160
-#: ../src/cgi-bin/project_members:367 ../src/cgi-bin/project_members:386
-#: ../src/cgi-bin/start:561 ../src/cgi-bin/start:580
+#: ../src/cgi-bin/class_list:148 ../src/cgi-bin/class_list:167
+#: ../src/cgi-bin/project_members:382 ../src/cgi-bin/project_members:401
+#: ../src/cgi-bin/start:562 ../src/cgi-bin/start:581
 #, perl-format
 msgid "%d Stunden"
 msgstr "%d hours"
 
-#: ../src/cgi-bin/class_list:138 ../src/cgi-bin/class_list:157
-#: ../src/cgi-bin/project_members:364 ../src/cgi-bin/project_members:383
-#: ../src/cgi-bin/start:558 ../src/cgi-bin/start:577
+#: ../src/cgi-bin/class_list:145 ../src/cgi-bin/class_list:164
+#: ../src/cgi-bin/project_members:379 ../src/cgi-bin/project_members:398
+#: ../src/cgi-bin/start:559 ../src/cgi-bin/start:578
 #, perl-format
 msgid "%d Tage"
 msgstr "%d days"
 
-#: ../src/cgi-bin/project_members:197 ../src/cgi-bin/project_members:208
-#: ../src/cgi-bin/project_members:223 ../src/cgi-bin/project_members:238
+#: ../src/cgi-bin/project_members:212 ../src/cgi-bin/project_members:223
+#: ../src/cgi-bin/project_members:238 ../src/cgi-bin/project_members:253
 #, perl-format
 msgid "%s aus Projekt %s ausgetragen"
 msgstr "%s removed from project %s"
@@ -137,7 +137,7 @@ msgstr "%s written"
 msgid "%s hinzugefügt"
 msgstr "%s added"
 
-#: ../src/cgi-bin/quotas_others:91 ../src/cgi-bin/quotas_projects:177
+#: ../src/cgi-bin/quotas_others:98 ../src/cgi-bin/quotas_projects:185
 #, perl-format
 msgid "%s ist ein Lehrer"
 msgstr "%s is a teacher"
@@ -249,9 +249,9 @@ msgstr "%s.reg already exists"
 msgid "%s.reg konnte nicht erstellt werden"
 msgstr "%s.reg could not be created"
 
-#: ../src/cgi-bin/quotas_classes:87 ../src/cgi-bin/quotas_others:146
-#: ../src/cgi-bin/quotas_projects:88 ../src/cgi-bin/quotas_projects:232
-#: ../src/cgi-bin/quotas_teachers:85
+#: ../src/cgi-bin/quotas_classes:95 ../src/cgi-bin/quotas_others:153
+#: ../src/cgi-bin/quotas_projects:96 ../src/cgi-bin/quotas_projects:240
+#: ../src/cgi-bin/quotas_teachers:94
 #, perl-format
 msgid "%s: Quota muss eine Zahl sein"
 msgstr "%s: Quota must be a number"
@@ -264,13 +264,31 @@ msgstr "&gt;&gt;"
 msgid "&lt;&lt;"
 msgstr "&lt;&lt;"
 
-#: ../tt/settings_users.tt:171 ../tt/settings_users.tt:223
+#: ../tt/repair_homes.tt:181 ../tt/repair_homes.tt:233
+#: ../tt/settings_users.tt:181 ../tt/settings_users.tt:233
 msgid "(Lehrer)"
 msgstr "(Teacher)"
 
-#: ../tt/settings_users.tt:197 ../tt/settings_users.tt:241
+#: ../tt/repair_homes.tt:207 ../tt/repair_homes.tt:251
+#: ../tt/settings_users.tt:207 ../tt/settings_users.tt:251
 msgid "(Schüler)"
 msgstr "(Student)"
+
+#: ../tt/settings_repair.tt:30
+msgid "+ Pfad"
+msgstr ""
+
+#: ../tt/settings_repair.tt:17
+msgid "+ Programm"
+msgstr ""
+
+#: ../tt/settings_repair.tt:38
+msgid "- Pfad"
+msgstr ""
+
+#: ../tt/settings_repair.tt:31
+msgid "- Programm"
+msgstr ""
 
 #: ../tt/class_lesson.tt:47 ../tt/project_lesson.tt:47 ../tt/room_lesson.tt:49
 msgid "- oder -"
@@ -388,7 +406,7 @@ msgstr ""
 "<p>Modify default settings for projects.</p><p>For a detailed description of "
 "individual points, pleaseconsult the documentation.</p>"
 
-#: ../tt/settings_users.tt:1
+#: ../tt/repair_homes.tt:1 ../tt/settings_users.tt:1
 msgid ""
 "<p>Bearbeiten Sie hier die globalen Einstellungen für die Benutzerverwaltung."
 "</p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren "
@@ -439,7 +457,10 @@ msgstr ""
 "back to the previous page by clicking on &ldquo;Collect&rdquo;.</p>"
 
 #: ../tt/login.tt:1
-msgid "<p>Bitte melden Sie sich mit Benutzername und Passwort an.</p>"
+#, fuzzy
+msgid ""
+"<p>Die Schulkonsole kann erst nach erfolgter Anmeldung genutzt werden.</"
+"p><p>Bitte melden Sie sich daher mit Benutzername und Passwort an.</p>"
 msgstr "<p>Please login with your username and password</p>"
 
 #: ../tt/room_test_collect.tt:0
@@ -531,6 +552,15 @@ msgstr ""
 "files, you can click the link &ldquo;Supply&rdquo;</p><p> By pressing the "
 "&ldquo;Supply&rdquo; button you proceed to the next step. The files to "
 "supply will be served to the examined students.</p>"
+
+#: ../tt/settings_repair.tt:1
+msgid ""
+"<p>Hier können Programm spezifische Reparatureinstellungen für den "
+"Persönlichen Ordner eines Benutzers festgelegt werden. Der Benutzer kann "
+"dann durch Auswahl der Option Reparatur das angegebene Verzeichnis aus "
+"seinem Persönlichen Ordner entfernen, um wieder mit Standardeinstellungen "
+"beginnen zu können.</p>"
+msgstr ""
 
 #: ../tt/quotas_projects.tt:1
 msgid ""
@@ -652,6 +682,13 @@ msgstr ""
 "<p>You can determine whether the project students have access to the "
 "exchange folders in their home folderhere.</p>"
 
+#: ../tt/repair_permissions.tt:1
+msgid ""
+"<p>Hier können Sie verschiedene Verzeichnisse auswählen und deren "
+"Rechteeinstellungen wieder auf die Grundeinstellungen zurücksetzen lassen.</"
+"p>"
+msgstr ""
+
 #: ../tt/user.tt:1
 msgid ""
 "<p>Hier legen Sie Benutzer an und pflegen die Schüler- und Lehrerlisten.</"
@@ -695,9 +732,11 @@ msgstr ""
 
 #. ({ 'class' => class_name })
 #: ../tt/class_list.tt:0
+#, fuzzy
 msgid ""
 "<p>Hier sehen Sie Informationen zu den Schüler/innen der aktuell "
-"ausgewählten Klasse {class}</p>"
+"ausgewählten Klasse {class} und können die Persönlichen Ordner der Schüler/"
+"innen reparieren lassen.</p>"
 msgstr ""
 "<p>Here you can see information on the students of the current selected "
 "class {class}.</p>"
@@ -1136,7 +1175,8 @@ msgstr "Logged out"
 msgid "Administrator-Report"
 msgstr "Administrator report"
 
-#: ../tt/quotas_others.tt:97 ../tt/settings_users.tt:282
+#: ../tt/quotas_others.tt:106 ../tt/repair_homes.tt:292
+#: ../tt/settings_users.tt:292
 msgid "Administratoren"
 msgstr "Administrators"
 
@@ -1197,7 +1237,7 @@ msgstr "On"
 msgid "Angelegte Benutzer"
 msgstr "added users"
 
-#: ../Schulkonsole/Session.pm.in:1447
+#: ../Schulkonsole/Session.pm.in:1449
 msgid "Angemeldet"
 msgstr "Signed in"
 
@@ -1213,7 +1253,7 @@ msgstr "Create"
 msgid "Anlegen läuft schon"
 msgstr "Creation is already running"
 
-#: ../tt/user_commit.tt:20
+#: ../tt/user_commit.tt:18
 #, fuzzy
 msgid "Anlegen läuft..."
 msgstr "Create is running."
@@ -1247,7 +1287,7 @@ msgstr "Update view"
 msgid "Anstoß"
 msgstr "kick off"
 
-#: ../tt/settings_users.tt:29
+#: ../tt/repair_homes.tt:39 ../tt/settings_users.tt:39
 msgid "Anzahl der Schüler pro Klasse"
 msgstr "number of students per class"
 
@@ -1319,7 +1359,7 @@ msgstr "Prints"
 msgid "Ausführung"
 msgstr "run"
 
-#: ../Schulkonsole/Session.pm.in:1331
+#: ../Schulkonsole/Session.pm.in:1333
 msgid "Ausgabe des Hintergrundprozess: "
 msgstr "Output of background process: "
 
@@ -1383,7 +1423,8 @@ msgstr "Remove"
 
 #: ../tt/class_collect.tt:84 ../tt/class_handoutcopy.tt:71
 #: ../tt/project_collect.tt:79 ../tt/project_handoutcopy.tt:69
-#: ../tt/room_collect.tt:81 ../tt/room_handout.tt:70
+#: ../tt/repair_permissions.tt:31 ../tt/room_collect.tt:81
+#: ../tt/room_handout.tt:70
 msgid "Auswahl"
 msgstr "Selection"
 
@@ -1480,11 +1521,12 @@ msgstr "Example page"
 msgid "Beispieltemplate %s nicht vorhanden"
 msgstr "Sample template %s is not available"
 
-#: ../tt/user.tt:1 ../tt/user_check.tt:1 ../tt/user_commit.tt:1
-#: ../tt/user_commit.tt:108 ../tt/user_commit.tt:79 ../tt/user_extra.tt:1
-#: ../tt/user_print.tt:1 ../tt/user_print.tt:35 ../tt/user_reports.tt:1
-#: ../tt/user_students.tt:1 ../tt/user_teacherpasswords.tt:1
-#: ../tt/user_teachers.tt:1 ../tt/user_teachin.tt:1
+#: ../tt/repair_permissions.tt:28 ../tt/user.tt:1 ../tt/user_check.tt:1
+#: ../tt/user_commit.tt:1 ../tt/user_commit.tt:108 ../tt/user_commit.tt:79
+#: ../tt/user_extra.tt:1 ../tt/user_print.tt:1 ../tt/user_print.tt:35
+#: ../tt/user_reports.tt:1 ../tt/user_students.tt:1
+#: ../tt/user_teacherpasswords.tt:1 ../tt/user_teachers.tt:1
+#: ../tt/user_teachin.tt:1
 msgid "Benutzer"
 msgstr "User"
 
@@ -1493,12 +1535,12 @@ msgid "Benutzer \"cyrus\" gibt es nicht"
 msgstr "User \"cyrus\" does not exist"
 
 #: ../src/cgi-bin/project_addmembers:98 ../src/cgi-bin/project_addmembers:145
-#: ../src/cgi-bin/project_members:164
+#: ../src/cgi-bin/project_members:179
 #, perl-format
 msgid "Benutzer %s gibt es nicht."
 msgstr "User %s does not exist."
 
-#: ../src/cgi-bin/quotas_others:176 ../src/cgi-bin/quotas_projects:262
+#: ../src/cgi-bin/quotas_others:183 ../src/cgi-bin/quotas_projects:270
 #, perl-format
 msgid "Benutzer %s hat keine Sonderquota"
 msgstr "The user %s does not have a special quota"
@@ -1513,7 +1555,7 @@ msgstr "User %s is already a project member."
 msgid "Benutzer %s ist kein Lehrer."
 msgstr "User %s is not a teacher."
 
-#: ../src/cgi-bin/quotas_others:97 ../src/cgi-bin/quotas_projects:183
+#: ../src/cgi-bin/quotas_others:104 ../src/cgi-bin/quotas_projects:191
 #, perl-format
 msgid "Benutzer %s unbekannt"
 msgstr "User %s unknown"
@@ -1526,7 +1568,7 @@ msgstr "Create user"
 msgid "Benutzer anlegen/versetzen/löschen"
 msgstr "Create/move/delete user is running."
 
-#: ../tt/user_commit.tt:18
+#: ../tt/user_commit.tt:16
 #, fuzzy
 msgid "Benutzer anlegen/versetzen/löschen läuft..."
 msgstr "Create/move/delete user is running."
@@ -1547,7 +1589,7 @@ msgstr "User per page:"
 msgid "Benutzer versetzen"
 msgstr "Move user"
 
-#: ../tt/page.tt:51 ../tt/status.inc.tt:11
+#: ../tt/page.tt:61 ../tt/status.inc.tt:11
 msgid "Benutzer:"
 msgstr "User:"
 
@@ -1564,13 +1606,19 @@ msgstr "Check user lists"
 msgid "Benutzername"
 msgstr "Username"
 
-#: ../tt/settings_users.tt:1 ../tt/settings_users.tt:9 ../tt/user.tt:9
-#: ../tt/user_check.tt:9 ../tt/user_commit.tt:10 ../tt/user_extra.tt:9
-#: ../tt/user_print.tt:8 ../tt/user_reports.tt:9 ../tt/user_students.tt:9
+#: ../tt/repair_homes.tt:1 ../tt/repair_homes.tt:10 ../tt/settings_users.tt:1
+#: ../tt/settings_users.tt:10 ../tt/user.tt:9 ../tt/user_check.tt:9
+#: ../tt/user_commit.tt:10 ../tt/user_extra.tt:9 ../tt/user_print.tt:8
+#: ../tt/user_reports.tt:9 ../tt/user_students.tt:9
 #: ../tt/user_teacherpasswords.tt:10 ../tt/user_teachers.tt:9
 #: ../tt/user_teachin.tt:9
 msgid "Benutzerverwaltung"
 msgstr "User administration"
+
+#: ../tt/repair_permissions.tt:23
+#, fuzzy
+msgid "Bereiche"
+msgstr "Identifier"
 
 #: ../tt/myclass_handedout.tt:1 ../tt/myclass_handedout.tt:8
 #: ../tt/myprojects_handedout.tt:1 ../tt/myprojects_handedout.tt:8
@@ -1731,29 +1779,29 @@ msgstr "Cache partition on the workspace computer"
 msgid "Computerraum"
 msgstr "Computer room"
 
-#: ../src/cgi-bin/start:899
+#: ../src/cgi-bin/start:900
 #, fuzzy
 msgid "Das Passwort enthält ungültige Zeichen."
 msgstr "invalid characters"
 
-#: ../src/cgi-bin/start:914
+#: ../src/cgi-bin/start:915
 #, fuzzy
 msgid "Das Passwort ist ungültig."
 msgstr "The maximal password length value is invalid"
 
-#: ../src/cgi-bin/project_members:116
+#: ../src/cgi-bin/project_members:131
 msgid "Das Projekt ist bereits geschlossen"
 msgstr "Project is already closed"
 
-#: ../src/cgi-bin/project_members:100
+#: ../src/cgi-bin/project_members:115
 msgid "Das Projekt ist bereits geöffnet"
 msgstr "Project is already open"
 
-#: ../src/cgi-bin/project_members:112
+#: ../src/cgi-bin/project_members:127
 msgid "Das Projekt wurde geschlossen"
 msgstr "Project was closed"
 
-#: ../src/cgi-bin/project_members:95
+#: ../src/cgi-bin/project_members:110
 msgid "Das Projekt wurde geöffnet"
 msgstr "Project was opened"
 
@@ -1893,15 +1941,18 @@ msgstr "Data transfer (reading) interrupted"
 msgid "Datenuebertragung (schreiben) unterbrochen"
 msgstr "Data transfer (writing) interrupted"
 
-#: ../tt/settings_users.tt:234 ../tt/settings_users.tt:252
+#: ../tt/repair_homes.tt:244 ../tt/repair_homes.tt:262
+#: ../tt/settings_users.tt:244 ../tt/settings_users.tt:262
 msgid "Deaktivierungszeitraum"
 msgstr "Period of deactivation"
 
-#: ../src/cgi-bin/settings_users:163
+#: ../src/cgi-bin/repair_homes:149 ../src/cgi-bin/repair_permissions:149
+#: ../src/cgi-bin/settings_users:149
 msgid "Der Deaktivierungszeitraum muss eine Zahl sein"
 msgstr "The duration of deactivation must be a number"
 
-#: ../src/cgi-bin/settings_users:155
+#: ../src/cgi-bin/repair_homes:141 ../src/cgi-bin/repair_permissions:141
+#: ../src/cgi-bin/settings_users:141
 msgid "Der Duldungszeitraum muss eine Zahl sein"
 msgstr "The duration of tolerance must be a number"
 
@@ -1910,9 +1961,13 @@ msgid "Der Loginname muss aus 2 bis 16 Kleinbuchstaben (ohne Umlaute) bestehen"
 msgstr ""
 "The login name must consist of 2 to 16 lower-case letters (without umlauts)"
 
-#: ../src/cgi-bin/settings_program:116
+#: ../src/cgi-bin/settings_program:104
 msgid "Der Name der WLAN-LDAP-Gruppe ist ungültig."
 msgstr "The wlan ldap group name is invalid."
+
+#: ../Schulkonsole/Error/SophomorixError.pm:210
+msgid "Der Name ist ungültig für die Datei sophomorix.conf."
+msgstr ""
 
 #: ../src/cgi-bin/project:112
 msgid ""
@@ -1923,13 +1978,13 @@ msgstr ""
 "The project name may only consist of lower case letters (without umlauts), "
 "numbers, dashes and underscores and must be between 3 and 14 characters long."
 
-#: ../src/cgi-bin/settings_program:106
-msgid "Der Wert für die maximale Passwortlänge ist ungültig"
-msgstr "The maximal password length value is invalid"
-
-#: ../src/cgi-bin/settings_program:96
+#: ../src/cgi-bin/settings_program:94
 msgid "Der Wert für die minimale Passwortlänge ist ungültig"
 msgstr "The minimal password length value is invalid"
+
+#: ../Schulkonsole/Error/SophomorixError.pm:212
+msgid "Der Wert für diese Einstellung ungültig für die Datei sophomorix.conf."
+msgstr ""
 
 #: ../tt/linbo_edit_data.inc.tt:32 ../tt/linbo_edit_oss.inc.tt:23
 msgid "Devicename der Partition"
@@ -2009,21 +2064,27 @@ msgstr ""
 "The list of the configured hosts does not match the available hosts actually "
 "in the system."
 
-#: ../Schulkonsole/Error/SophomorixError.pm:202
+#: ../Schulkonsole/Error/SophomorixError.pm:206
 #, fuzzy
 msgid "Die Mailadresse konnte nicht gespeichert werden."
 msgstr "%s could not be deleted"
 
-#: ../src/cgi-bin/start:332
+#: ../src/cgi-bin/start:333
 #, fuzzy
 msgid "Die Mailadresse wurde geändert."
 msgstr "change forward(s)"
 
-#: ../src/cgi-bin/settings_users:147
+#: ../src/cgi-bin/repair_homes:133 ../src/cgi-bin/repair_permissions:133
+#: ../src/cgi-bin/settings_users:133
 msgid "Die Passwortlänge muss eine Zahl > 0 sein"
 msgstr "The password length must be a number > 0"
 
-#: ../src/cgi-bin/settings_program:85
+#: ../src/cgi-bin/class_list:84 ../src/cgi-bin/project_members:90
+#, fuzzy
+msgid "Die Persönlichen Ordner wurden repariert."
+msgstr "The data of some users were changed."
+
+#: ../src/cgi-bin/settings_program:83
 msgid "Die Sitzungsdauer muss in Minuten angegeben werden"
 msgstr "Duration of session must be entered in minutes"
 
@@ -2035,12 +2096,12 @@ msgstr "The timeout after wakeup is invalid."
 msgid "Die Wartezeit nach jedem Rechner ist ungültig."
 msgstr "The timeout after each host wakeup is invalid."
 
-#: ../Schulkonsole/Error/SophomorixError.pm:200
+#: ../Schulkonsole/Error/SophomorixError.pm:204
 #, fuzzy
 msgid "Die angegebene Mailadresse ist ungültig"
 msgstr "At least one of the supplied mail addresses contains errors."
 
-#: ../src/cgi-bin/start:328
+#: ../src/cgi-bin/start:329
 #, fuzzy
 msgid "Die eingegebene Mail-Adresse ist ungültig."
 msgstr "At least one of the supplied mail addresses contains errors."
@@ -2102,11 +2163,11 @@ msgstr "create diff image"
 msgid "Diff. Image hochladen"
 msgstr "upload diff image"
 
-#: ../tt/quotas_classes.tt:21 ../tt/quotas_others.tt:112
-#: ../tt/quotas_others.tt:163 ../tt/quotas_others.tt:20
-#: ../tt/quotas_others.tt:214 ../tt/quotas_others.tt:263
-#: ../tt/quotas_others.tt:64 ../tt/quotas_projects.tt:21
-#: ../tt/quotas_teachers.tt:21
+#: ../tt/quotas_classes.tt:31 ../tt/quotas_others.tt:121
+#: ../tt/quotas_others.tt:172 ../tt/quotas_others.tt:223
+#: ../tt/quotas_others.tt:272 ../tt/quotas_others.tt:29
+#: ../tt/quotas_others.tt:73 ../tt/quotas_projects.tt:31
+#: ../tt/quotas_teachers.tt:30
 msgid "Diskquota"
 msgstr "Disk quota"
 
@@ -2122,7 +2183,7 @@ msgstr "Print jobs"
 msgid "Druckaufträge löschen"
 msgstr "Delete print jobs"
 
-#: ../tt/settings_users.tt:257
+#: ../tt/repair_homes.tt:267 ../tt/settings_users.tt:267
 msgid "Druckdaten"
 msgstr "printer data"
 
@@ -2136,7 +2197,8 @@ msgstr "Printer"
 msgid "Druckquota:"
 msgstr "print quota:"
 
-#: ../tt/settings_users.tt:230 ../tt/settings_users.tt:248
+#: ../tt/repair_homes.tt:240 ../tt/repair_homes.tt:258
+#: ../tt/settings_users.tt:240 ../tt/settings_users.tt:258
 msgid "Duldungszeitraum"
 msgstr "Duration of tolerance"
 
@@ -2144,7 +2206,7 @@ msgstr "Duration of tolerance"
 msgid "E"
 msgstr "E"
 
-#: ../tt/settings_users.tt:140 ../tt/start.tt:179
+#: ../tt/repair_homes.tt:150 ../tt/settings_users.tt:150 ../tt/start.tt:179
 msgid "E-Mail"
 msgstr "E-mail"
 
@@ -2196,7 +2258,7 @@ msgstr "One entry per page"
 msgid "Ein OpenVPN-Zertifikat wurde für Sie erstellt."
 msgstr "An open VPN certificate was created for you."
 
-#: ../src/cgi-bin/start:345
+#: ../src/cgi-bin/start:346
 msgid "Eine oder mehrere Mail-Adressen sind ungültig."
 msgstr "At least one of the supplied mail addresses contains errors."
 
@@ -2226,10 +2288,12 @@ msgstr "Collect"
 msgid "Einsammeln und beenden"
 msgstr "Collect and end"
 
-#: ../tt/settings_classs.tt:1 ../tt/settings_classs.tt:9
-#: ../tt/settings_program.tt:1 ../tt/settings_program.tt:9
-#: ../tt/settings_projects.tt:1 ../tt/settings_projects.tt:9
-#: ../tt/settings_users.tt:1 ../tt/settings_users.tt:9
+#: ../tt/repair_homes.tt:1 ../tt/repair_homes.tt:10 ../tt/settings_classs.tt:1
+#: ../tt/settings_classs.tt:9 ../tt/settings_program.tt:1
+#: ../tt/settings_program.tt:9 ../tt/settings_projects.tt:1
+#: ../tt/settings_projects.tt:9 ../tt/settings_repair.tt:1
+#: ../tt/settings_repair.tt:10 ../tt/settings_users.tt:1
+#: ../tt/settings_users.tt:10
 msgid "Einstellungen"
 msgstr "Settings"
 
@@ -2269,11 +2333,11 @@ msgstr "First password"
 msgid "Erstpasswort anzeigen"
 msgstr "Show first password"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:154
+#: ../Schulkonsole/Error/SophomorixError.pm:158
 msgid "Erwarte 0 (PDF) oder 1 (CSV) fuer filetype"
 msgstr "Expect 0 (PDF) or 1 (CSV) for filetype"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:156
+#: ../Schulkonsole/Error/SophomorixError.pm:160
 msgid "Erwarte 0 (reset), 1 (passwd) oder 3 (random) fuer type"
 msgstr "Expect 0 (reset), 1 (passwd) or 3 (random) for type"
 
@@ -2282,43 +2346,43 @@ msgstr "Expect 0 (reset), 1 (passwd) or 3 (random) for type"
 msgid "Erwarte 0 oder 1 für scope"
 msgstr "Expect 0 or 1 for scope"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:178
+#: ../Schulkonsole/Error/SophomorixError.pm:182
 msgid "Erwarte 0, 1 oder 2 fuer mode"
 msgstr "Expect 0, 1 or 2 for mode"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:168
+#: ../Schulkonsole/Error/SophomorixError.pm:172
 msgid "Erwarte 0, 1, 2 oder 3 fuer scope"
 msgstr "Expect 0, 1, 2 or 3 for scope"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:182
+#: ../Schulkonsole/Error/SophomorixError.pm:186
 msgid "Erwarte 1 bis 7 fuer flags"
 msgstr "Expect 1 to 7 for flags"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:152
+#: ../Schulkonsole/Error/SophomorixError.pm:156
 msgid "Erwarte 1 oder 0 fuer do_add"
 msgstr "Expect 1 or 0 for do_add"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:138
+#: ../Schulkonsole/Error/SophomorixError.pm:142
 msgid "Erwarte 1 oder 0 fuer do_copy"
 msgstr "Expect 1 or 0 for do_copy"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:170
+#: ../Schulkonsole/Error/SophomorixError.pm:174
 msgid "Erwarte 1 oder 0 fuer do_create"
 msgstr "Expect 1 or 0 for do_create"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:160
+#: ../Schulkonsole/Error/SophomorixError.pm:164
 msgid "Erwarte 1 oder 0 fuer is_groups"
 msgstr "Expect 1 or 0 for is_groups"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:188
+#: ../Schulkonsole/Error/SophomorixError.pm:192
 msgid "Erwarte 1 oder 0 fuer is_open"
 msgstr "Expect 1 or 0 for is_open"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:162
+#: ../Schulkonsole/Error/SophomorixError.pm:166
 msgid "Erwarte 1 oder 0 fuer is_public"
 msgstr "Expect 1 or 0 for is_public"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:164
+#: ../Schulkonsole/Error/SophomorixError.pm:168
 msgid "Erwarte 1 oder 0 fuer is_upload"
 msgstr "Expect 1 or 0 for is_upload"
 
@@ -2327,19 +2391,19 @@ msgstr "Expect 1 or 0 for is_upload"
 msgid "Erwarte 1 oder 0 für is_example"
 msgstr "Expect 1 or 0 for is_example"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:196
+#: ../Schulkonsole/Error/SophomorixError.pm:200
 msgid "Erwarte 1,2 oder 3 fuer action"
 msgstr "Expect  1, 2 or 3 for scope"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:198
+#: ../Schulkonsole/Error/SophomorixError.pm:202
 msgid "Erwarte Verzeichnis, fand Datei (oder umgekehrt)"
 msgstr "Expected directory, found file (or the other way round)"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:140
+#: ../Schulkonsole/Error/SophomorixError.pm:144
 msgid "Erwarte numerische Angabe fuer \"from\""
 msgstr "Expect numeric designation for \"from\""
 
-#: ../Schulkonsole/Error/SophomorixError.pm:142
+#: ../Schulkonsole/Error/SophomorixError.pm:146
 msgid "Erwarte numerische Angabe fuer \"type\""
 msgstr "Expect numeric designation for \"type\""
 
@@ -2355,15 +2419,15 @@ msgstr "There are not any image files without a registry patch."
 msgid "Es gibt keine Imagedateien."
 msgstr "There are not any image files."
 
-#: ../tt/quotas_classes.tt:51
+#: ../tt/quotas_classes.tt:61
 msgid "Es gibt keine Klassen."
 msgstr "There are not any classes."
 
-#: ../tt/quotas_teachers.tt:52
+#: ../tt/quotas_teachers.tt:61
 msgid "Es gibt keine Lehrer."
 msgstr "There is no teacher."
 
-#: ../tt/quotas_projects.tt:51
+#: ../tt/quotas_projects.tt:61
 msgid "Es gibt keine Projekte."
 msgstr "There are not any projects."
 
@@ -2421,7 +2485,7 @@ msgstr "There are no postsync files available."
 msgid "Es sind noch nicht alle Verknüpfungen eindeutig festgelegt"
 msgstr "Not all connections are clearly defined."
 
-#: ../src/cgi-bin/start:411
+#: ../src/cgi-bin/start:412
 msgid "Es wurde bereits ein OpenVPN-Zertifikat erstellt"
 msgstr "An open VPN certificate was already created"
 
@@ -2437,7 +2501,7 @@ msgstr "Es creation time stamp is invalid."
 msgid "Es wurde eine ungültige Kategorie für die Rechnerauswahl angegeben."
 msgstr "The hosts selected category is invalid."
 
-#: ../src/cgi-bin/start:465
+#: ../src/cgi-bin/start:466
 msgid "Es wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> abgelegt"
 msgstr "It was filed away in your home directory in the folder <q>OpenVPN</q>"
 
@@ -2473,7 +2537,7 @@ msgstr ""
 msgid "Execute fehlgeschlagen"
 msgstr "Execute failed"
 
-#: ../tt/settings_users.tt:270
+#: ../tt/repair_homes.tt:280 ../tt/settings_users.tt:280
 msgid "Externer Servername"
 msgstr "extern server name"
 
@@ -2501,7 +2565,7 @@ msgstr "Unexpected program output"
 msgid "Fehler bei der Erzeugung des Dokuments"
 msgstr "Error in the production of the document"
 
-#: ../src/cgi-bin/start:471
+#: ../src/cgi-bin/start:472
 msgid "Fehler bei der Zertifikatserstellung."
 msgstr "Error during the creation of the certificate."
 
@@ -2574,7 +2638,7 @@ msgstr "for"
 msgid "Für %s existieren mehrere erweiterte Partitionen"
 msgstr "for %s multiple extended partitions do exist"
 
-#: ../src/cgi-bin/quotas_others:101 ../src/cgi-bin/quotas_projects:187
+#: ../src/cgi-bin/quotas_others:108 ../src/cgi-bin/quotas_projects:195
 #, perl-format
 msgid "Für Benutzer %s gibt es bereits einen Eintrag"
 msgstr "There is already an entry for user %s"
@@ -2589,7 +2653,8 @@ msgstr "for partition %s there is no extended partition"
 msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
-#: ../src/cgi-bin/settings_users:139
+#: ../src/cgi-bin/repair_homes:125 ../src/cgi-bin/repair_permissions:125
+#: ../src/cgi-bin/settings_users:125
 msgid "Geben Sie eine gültige 4-stellige Jahreszahl ein"
 msgstr "Enter a valid 4 digit year"
 
@@ -2602,7 +2667,7 @@ msgstr "Give the new image a name"
 msgid "Geburtsdatum"
 msgstr "Date of birth"
 
-#: ../tt/settings_users.tt:34
+#: ../tt/repair_homes.tt:44 ../tt/settings_users.tt:44
 msgid "Geburtsjahreszahl für Schüler"
 msgstr "Students birth year"
 
@@ -2610,12 +2675,14 @@ msgstr "Students birth year"
 msgid "Gesamtliste"
 msgstr "complete user list"
 
-#: ../tt/settings_classs.tt:13 ../tt/settings_program.tt:13
-#: ../tt/settings_projects.tt:13 ../tt/settings_users.tt:13
+#: ../tt/repair_homes.tt:23 ../tt/settings_classs.tt:13
+#: ../tt/settings_program.tt:13 ../tt/settings_projects.tt:13
+#: ../tt/settings_users.tt:23
 msgid "Global"
 msgstr "Global"
 
-#: ../tt/linbo_edit.tt:118 ../tt/linbo_remote.tt:76 ../tt/user_commit.tt:56
+#: ../tt/linbo_edit.tt:118 ../tt/linbo_remote.tt:76
+#: ../tt/repair_permissions.tt:29 ../tt/user_commit.tt:56
 msgid "Gruppe"
 msgstr "Group"
 
@@ -2738,11 +2805,11 @@ msgstr "IP"
 msgid "IP des TFTP-Servers, der Images vorhält"
 msgstr "IP of the TFTP Server, that provides images"
 
-#: ../tt/page.tt:58 ../tt/status.inc.tt:21
+#: ../tt/page.tt:68 ../tt/status.inc.tt:21
 msgid "IP:"
 msgstr "IP:"
 
-#: ../src/cgi-bin/start:489
+#: ../src/cgi-bin/start:490
 msgid ""
 "Ihr Zertifikat wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> "
 "abgelegt"
@@ -2840,15 +2907,15 @@ msgstr "No lesson is active in this class."
 msgid "In dieser Klasse wird bereits unterrichtet."
 msgstr "In this class a lesson is already active."
 
-#: ../tt/page.tt:96 ../tt/start.tt:95
+#: ../tt/page.tt:107 ../tt/start.tt:95
 msgid "Info"
 msgstr "Info"
 
-#: ../Schulkonsole/Session.pm.in:1186
+#: ../Schulkonsole/Session.pm.in:1188
 msgid "Interner Fehler"
 msgstr "Internal error"
 
-#: ../tt/settings_users.tt:266
+#: ../tt/repair_homes.tt:276 ../tt/settings_users.tt:276
 msgid "Interner Servername"
 msgstr "intern server name"
 
@@ -2890,8 +2957,12 @@ msgstr "can not open file"
 msgid "Kann Datei nicht öffnen"
 msgstr "can not open file %s"
 
-#: ../src/cgi-bin/hosts:306 ../src/cgi-bin/user_commit:132
-#: ../src/cgi-bin/user_commit:168 ../src/cgi-bin/user_commit:204
+#: ../src/cgi-bin/hosts:306 ../src/cgi-bin/quotas_classes:186
+#: ../src/cgi-bin/quotas_others:230 ../src/cgi-bin/quotas_projects:317
+#: ../src/cgi-bin/quotas_teachers:161 ../src/cgi-bin/repair_homes:287
+#: ../src/cgi-bin/repair_permissions:287 ../src/cgi-bin/settings_users:287
+#: ../src/cgi-bin/user_commit:132 ../src/cgi-bin/user_commit:168
+#: ../src/cgi-bin/user_commit:204
 msgid "Kann Logdatei nicht öffnen"
 msgstr "Can not open log file"
 
@@ -2911,7 +2982,7 @@ msgid "Kein Workstationpasswort angegeben."
 msgstr "No work station password entered."
 
 #: ../Schulkonsole/Error/PrinterError.pm:56
-#: ../Schulkonsole/Error/SophomorixError.pm:128
+#: ../Schulkonsole/Error/SophomorixError.pm:132
 msgid "Keine Benutzer"
 msgstr "No users"
 
@@ -2925,7 +2996,7 @@ msgstr "No users"
 msgid "Keine Benutzer ausgewählt"
 msgstr "No users selected"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:132
+#: ../Schulkonsole/Error/SophomorixError.pm:136
 msgid "Keine Benutzer-IDs"
 msgstr "No User IDs"
 
@@ -2991,9 +3062,9 @@ msgid "Keine neuen Mitglieder ausgewählt"
 msgstr "No new member selected"
 
 #: ../src/cgi-bin/class_shares:107 ../src/cgi-bin/hosts:238
-#: ../src/cgi-bin/project_shares:129 ../src/cgi-bin/quotas_classes:155
-#: ../src/cgi-bin/quotas_others:198 ../src/cgi-bin/quotas_projects:157
-#: ../src/cgi-bin/quotas_projects:284 ../src/cgi-bin/quotas_teachers:127
+#: ../src/cgi-bin/project_shares:129 ../src/cgi-bin/quotas_classes:163
+#: ../src/cgi-bin/quotas_others:207 ../src/cgi-bin/quotas_projects:165
+#: ../src/cgi-bin/quotas_projects:294 ../src/cgi-bin/quotas_teachers:138
 #: ../src/cgi-bin/room_shares:107 ../src/cgi-bin/settings_classs:150
 #: ../src/cgi-bin/settings_projects:129
 msgid "Keine Änderungen."
@@ -3002,7 +3073,7 @@ msgstr "No changes."
 #: ../tt/project_addmembers.tt:142 ../tt/project_addmembers.tt:21
 #: ../tt/project_addmembers.tt:36 ../tt/project_members.tt:182
 #: ../tt/project_members.tt:252 ../tt/project_members.tt:53
-#: ../tt/quotas_classes.tt:19 ../tt/user_check.tt:28 ../tt/user_teachin.tt:55
+#: ../tt/quotas_classes.tt:29 ../tt/user_check.tt:28 ../tt/user_teachin.tt:55
 msgid "Klasse"
 msgstr "Class"
 
@@ -3021,7 +3092,7 @@ msgstr "Class %s does not exist."
 msgid "Klasse %s ist bereits Projektmitglied."
 msgstr "Class %s is already a project member."
 
-#: ../src/cgi-bin/quotas_classes:122
+#: ../src/cgi-bin/quotas_classes:130
 #, perl-format
 msgid "Klasse %s unbekannt"
 msgstr "Class %s unknown"
@@ -3039,7 +3110,7 @@ msgstr "Class unknown"
 #: ../tt/class_passwords.tt:1 ../tt/class_passwords.tt:28
 #: ../tt/class_shares.tt:1 ../tt/class_shares.tt:27
 #: ../tt/myclass_handedoutcopy.tt:1 ../tt/quotas_classes.tt:1
-#: ../tt/quotas_classes.tt:9 ../tt/settings_classs.tt:1
+#: ../tt/quotas_classes.tt:10 ../tt/settings_classs.tt:1
 #: ../tt/settings_classs.tt:9
 msgid "Klassen"
 msgstr "Classes"
@@ -3089,23 +3160,23 @@ msgstr "Class name"
 msgid "Knöpfe deaktivieren"
 msgstr "deactivate buttons"
 
-#: ../tt/settings_users.tt:129
+#: ../tt/repair_homes.tt:139 ../tt/settings_users.tt:139
 msgid "Kodierung der Datei extrakurse.txt"
 msgstr "encoding of extrakurse.txt"
 
-#: ../tt/settings_users.tt:121
+#: ../tt/repair_homes.tt:131 ../tt/settings_users.tt:131
 msgid "Kodierung der Datei extraschueler.txt"
 msgstr "encoding of extraschueler.txt"
 
-#: ../tt/settings_users.tt:113
+#: ../tt/repair_homes.tt:123 ../tt/settings_users.tt:123
 msgid "Kodierung der Datei lehrer.txt"
 msgstr "encoding of lehrer.txt"
 
-#: ../tt/settings_users.tt:105
+#: ../tt/repair_homes.tt:115 ../tt/settings_users.tt:115
 msgid "Kodierung der Datei schueler.txt"
 msgstr "encoding of schueler.txt"
 
-#: ../tt/settings_users.tt:99
+#: ../tt/repair_homes.tt:109 ../tt/settings_users.tt:109
 msgid "Kodierungen"
 msgstr "encodings"
 
@@ -3133,11 +3204,11 @@ msgstr "Configuration file copied"
 msgid "Konfigurationsdateien editieren"
 msgstr "Edit configuration files"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:180
+#: ../Schulkonsole/Error/SophomorixError.pm:184
 msgid "Konnte Berechtigung nicht aendern"
 msgstr "Could not change authorization"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:194
+#: ../Schulkonsole/Error/SophomorixError.pm:198
 msgid "Konnte Datei nicht finden"
 msgstr "can not open file"
 
@@ -3192,11 +3263,11 @@ msgstr "empty value for \"%s\" for %s on %s"
 
 #: ../tt/myclass_handedout.tt:23 ../tt/myprojects_handedout.tt:18
 #: ../tt/project_addmembers.tt:140 ../tt/project_members.tt:51
-#: ../tt/quotas_teachers.tt:1 ../tt/quotas_teachers.tt:9
+#: ../tt/quotas_teachers.tt:1 ../tt/quotas_teachers.tt:10
 msgid "Lehrer"
 msgstr "Teacher"
 
-#: ../src/cgi-bin/quotas_teachers:110 ../src/cgi-bin/user_teachers:212
+#: ../src/cgi-bin/quotas_teachers:119 ../src/cgi-bin/user_teachers:212
 #, perl-format
 msgid "Lehrer %s unbekannt"
 msgstr "Teacher %s unknown"
@@ -3241,7 +3312,7 @@ msgstr "Image list"
 msgid "Listen"
 msgstr "lists"
 
-#: ../tt/settings_users.tt:19
+#: ../tt/repair_homes.tt:29 ../tt/settings_users.tt:29
 msgid "Log-Meldungen"
 msgstr "log messages"
 
@@ -3255,14 +3326,15 @@ msgstr "log messages"
 #: ../tt/project_members.tt:138 ../tt/project_members.tt:160
 #: ../tt/project_members.tt:178 ../tt/project_members.tt:248
 #: ../tt/project_passwords.tt:55 ../tt/project_passwords.tt:83
-#: ../tt/project_shares.tt:34 ../tt/quotas_others.tt:109
-#: ../tt/quotas_others.tt:160 ../tt/quotas_others.tt:18
-#: ../tt/quotas_others.tt:212 ../tt/quotas_others.tt:261
-#: ../tt/quotas_others.tt:62 ../tt/quotas_teachers.tt:18
+#: ../tt/project_shares.tt:34 ../tt/quotas_others.tt:118
+#: ../tt/quotas_others.tt:169 ../tt/quotas_others.tt:221
+#: ../tt/quotas_others.tt:27 ../tt/quotas_others.tt:270
+#: ../tt/quotas_others.tt:71 ../tt/quotas_teachers.tt:27
+#: ../tt/repair_homes.tt:181 ../tt/repair_homes.tt:207
 #: ../tt/room_collect.tt:79 ../tt/room_handout.tt:69 ../tt/room_lesson.tt:96
 #: ../tt/room_shares.tt:36 ../tt/room_test_collect.tt:65
-#: ../tt/room_test_handout.tt:39 ../tt/settings_users.tt:171
-#: ../tt/settings_users.tt:197 ../tt/user_teacherpasswords.tt:36
+#: ../tt/room_test_handout.tt:39 ../tt/settings_users.tt:181
+#: ../tt/settings_users.tt:207 ../tt/user_teacherpasswords.tt:36
 #: ../tt/user_teacherpasswords.tt:57 ../tt/user_teachers.tt:20
 #: ../tt/user_teachers.tt:61 ../tt/user_teachers.tt:94
 msgid "Login"
@@ -3273,7 +3345,7 @@ msgstr "Login"
 msgid "Login %s schon vorhanden"
 msgstr "Login %s already available"
 
-#: ../Schulkonsole/Session.pm.in:1450
+#: ../Schulkonsole/Session.pm.in:1452
 msgid "Login fehlgeschlagen"
 msgstr "Login failed"
 
@@ -3292,9 +3364,10 @@ msgstr "Logout"
 #: ../tt/myroom_tocollect.tt:28 ../tt/project.tt:63
 #: ../tt/project_collect.tt:48 ../tt/project_drop_verify.tt:9
 #: ../tt/project_handout.tt:50 ../tt/project_handoutcopy.tt:50
+#: ../tt/repair_homes.tt:233 ../tt/repair_homes.tt:251
 #: ../tt/room_collect.tt:49 ../tt/room_handout.tt:47
 #: ../tt/room_test_collect.tt:49 ../tt/room_test_handout.tt:70
-#: ../tt/settings_users.tt:223 ../tt/settings_users.tt:241
+#: ../tt/settings_users.tt:233 ../tt/settings_users.tt:251
 msgid "Löschen"
 msgstr "Delete"
 
@@ -3302,7 +3375,7 @@ msgstr "Delete"
 msgid "Löschen läuft schon"
 msgstr "deletion currently running"
 
-#: ../tt/user_commit.tt:24
+#: ../tt/user_commit.tt:22
 #, fuzzy
 msgid "Löschen läuft..."
 msgstr "Delete is running."
@@ -3334,19 +3407,20 @@ msgstr "change forward(s)"
 msgid "Mailadresse ändern"
 msgstr "change forward(s)"
 
-#: ../tt/settings_users.tt:146
+#: ../tt/repair_homes.tt:156 ../tt/settings_users.tt:156
 msgid "Mailalias-Struktur"
 msgstr "mailalias format"
 
-#: ../tt/quotas_classes.tt:23 ../tt/quotas_others.tt:114
-#: ../tt/quotas_others.tt:165 ../tt/quotas_others.tt:216
-#: ../tt/quotas_others.tt:22 ../tt/quotas_others.tt:265
-#: ../tt/quotas_others.tt:66 ../tt/quotas_projects.tt:23
-#: ../tt/quotas_teachers.tt:23
+#: ../tt/quotas_classes.tt:33 ../tt/quotas_others.tt:123
+#: ../tt/quotas_others.tt:174 ../tt/quotas_others.tt:225
+#: ../tt/quotas_others.tt:274 ../tt/quotas_others.tt:31
+#: ../tt/quotas_others.tt:75 ../tt/quotas_projects.tt:33
+#: ../tt/quotas_teachers.tt:32
 msgid "Mailquota"
 msgstr "Mail quota"
 
-#: ../src/cgi-bin/settings_users:187
+#: ../src/cgi-bin/repair_homes:173 ../src/cgi-bin/repair_permissions:173
+#: ../src/cgi-bin/settings_users:173
 #, fuzzy
 msgid "Mailquota muss eine Zahl sein"
 msgstr "Quota must be a number"
@@ -3355,25 +3429,21 @@ msgstr "Quota must be a number"
 msgid "Mailquota von"
 msgstr "Mail quota of"
 
-#: ../tt/settings_users.tt:153
+#: ../tt/repair_homes.tt:163 ../tt/settings_users.tt:163
 msgid "Mailquota-Warnungen"
 msgstr "mail quota warnings"
 
-#: ../tt/settings_users.tt:165
+#: ../tt/repair_homes.tt:175 ../tt/settings_users.tt:175
 msgid "Mailquota-Überschreitung an root melden"
 msgstr "report mail over quota to root"
 
-#: ../src/cgi-bin/start:358
+#: ../src/cgi-bin/start:359
 msgid "Mailweiterleitung erfolgreich geändert"
 msgstr "mail forward(s) successful changed"
 
-#: ../tt/settings_users.tt:24
+#: ../tt/repair_homes.tt:34 ../tt/settings_users.tt:34
 msgid "Maximale Ausgabe"
 msgstr "maximal verbosity"
-
-#: ../tt/settings_program.tt:27
-msgid "Maximale Passwortlänge"
-msgstr "maximal password length"
 
 #: ../tt/myclass.tt:8
 msgid "Mein Klasse"
@@ -3412,11 +3482,11 @@ msgid ""
 "Gruppenverzeichnisse zugreifen können."
 msgstr "Log on to Windows again in order to access the group directory."
 
-#: ../tt/settings_users.tt:22
+#: ../tt/repair_homes.tt:32 ../tt/settings_users.tt:32
 msgid "Minimale Augabe"
 msgstr "minimal verbosity"
 
-#: ../tt/settings_program.tt:23
+#: ../tt/settings_program.tt:27
 msgid "Minimale Passwortlänge"
 msgstr "minimal password length"
 
@@ -3465,11 +3535,11 @@ msgstr "Membership"
 msgid "Mitgliedschaft beenden"
 msgstr "End membership"
 
-#: ../tt/settings_users.tt:23
+#: ../tt/repair_homes.tt:33 ../tt/settings_users.tt:33
 msgid "Mittlere Ausgabe"
 msgstr "normal verbosity"
 
-#: ../tt/settings_users.tt:278
+#: ../tt/repair_homes.tt:288 ../tt/settings_users.tt:288
 msgid "Moodle-URL"
 msgstr "moodle url"
 
@@ -3515,8 +3585,8 @@ msgstr "Last name is empty"
 #: ../tt/project_members.tt:139 ../tt/project_members.tt:161
 #: ../tt/project_members.tt:179 ../tt/project_members.tt:249
 #: ../tt/project_passwords.tt:56 ../tt/project_passwords.tt:84
-#: ../tt/project_shares.tt:35 ../tt/quotas_others.tt:110
-#: ../tt/quotas_others.tt:161 ../tt/quotas_teachers.tt:19
+#: ../tt/project_shares.tt:35 ../tt/quotas_others.tt:119
+#: ../tt/quotas_others.tt:170 ../tt/quotas_teachers.tt:28
 #: ../tt/room_collect.tt:80 ../tt/room_lesson.tt:201
 #: ../tt/user_teacherpasswords.tt:37 ../tt/user_teacherpasswords.tt:58
 msgid "Name"
@@ -3539,7 +3609,7 @@ msgstr "operating system name and version (\"%s\") needs to be unique."
 msgid "Nein"
 msgstr "No"
 
-#: ../tt/quotas_others.tt:12
+#: ../tt/quotas_others.tt:21
 msgid "Neu anlegen"
 msgstr "Create new"
 
@@ -3567,7 +3637,7 @@ msgstr "New password"
 msgid "Neues Passwort eingeben"
 msgstr "Enter the new password"
 
-#: ../src/cgi-bin/start:297
+#: ../src/cgi-bin/start:298
 msgid "Neues Passwort ist zu schwach: "
 msgstr "New password is too weak:"
 
@@ -3587,7 +3657,7 @@ msgstr "Create new project"
 msgid "Neues System hinzufügen"
 msgstr "Add new system"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:204
+#: ../Schulkonsole/Error/SophomorixError.pm:208
 msgid "Nicht alle Einhängepunkte(mount points) gefunden"
 msgstr ""
 
@@ -3631,13 +3701,13 @@ msgstr "no."
 #: ../tt/project_members.tt:122 ../tt/project_members.tt:137
 #: ../tt/project_members.tt:159 ../tt/project_members.tt:177
 #: ../tt/project_members.tt:247 ../tt/project_members.tt:69
-#: ../tt/project_members.tt:87 ../tt/room_collect.tt:39
-#: ../tt/room_handout.tt:37 ../tt/room_handout.tt:67 ../tt/room_lesson.tt:94
-#: ../tt/room_shares.tt:34 ../tt/room_test_collect.tt:39
-#: ../tt/room_test_handout.tt:37 ../tt/room_test_handout.tt:60
-#: ../tt/rooms_classrooms.tt:29 ../tt/user_commit.tt:107
-#: ../tt/user_commit.tt:54 ../tt/user_commit.tt:78 ../tt/user_print.tt:35
-#: ../tt/user_print.tt:81
+#: ../tt/project_members.tt:87 ../tt/repair_permissions.tt:26
+#: ../tt/room_collect.tt:39 ../tt/room_handout.tt:37 ../tt/room_handout.tt:67
+#: ../tt/room_lesson.tt:94 ../tt/room_shares.tt:34
+#: ../tt/room_test_collect.tt:39 ../tt/room_test_handout.tt:37
+#: ../tt/room_test_handout.tt:60 ../tt/rooms_classrooms.tt:29
+#: ../tt/user_commit.tt:107 ../tt/user_commit.tt:54 ../tt/user_commit.tt:78
+#: ../tt/user_print.tt:35 ../tt/user_print.tt:81
 msgid "Nr."
 msgstr "no."
 
@@ -3655,20 +3725,20 @@ msgstr "Application:"
 msgid "Offenes Projekt"
 msgstr "Open project"
 
-#: ../src/cgi-bin/start:441
+#: ../src/cgi-bin/start:442
 msgid "OpenVPN-Passwort bestätigen"
 msgstr "Confirm open VPN password"
 
-#: ../src/cgi-bin/start:420
+#: ../src/cgi-bin/start:421
 #, fuzzy
 msgid "OpenVPN-Passwort eingeben"
 msgstr "Open VPN password entered"
 
-#: ../src/cgi-bin/start:432
+#: ../src/cgi-bin/start:433
 msgid "OpenVPN-Passwort muss mindestens sechs Zeichen haben"
 msgstr "Open VPN password must have at least six characters"
 
-#: ../src/cgi-bin/start:452
+#: ../src/cgi-bin/start:453
 msgid "OpenVPN-Passwort nicht richtig wiederholt"
 msgstr "Open VPN password not properly repeated"
 
@@ -3792,7 +3862,7 @@ msgstr "password lists"
 msgid "Passwortänderung"
 msgstr "Password change"
 
-#: ../src/cgi-bin/start:307
+#: ../src/cgi-bin/start:308
 msgid "Passwortänderung erfolgreich"
 msgstr "password successfully changed"
 
@@ -3815,6 +3885,18 @@ msgstr "passwords reset"
 msgid "Perl Kompilierungsfehler"
 msgstr ""
 
+#: ../tt/project_members.tt:260
+msgid "Persönliche Ordner der Mitglieder"
+msgstr ""
+
+#: ../tt/class_list.tt:126
+msgid "Persönliche Ordner der Schüler"
+msgstr ""
+
+#: ../tt/settings_repair.tt:23
+msgid "Pfad"
+msgstr ""
+
 #: ../Schulkonsole/Linbo.pm:1090
 msgid "Pfad zum Kernel"
 msgstr "kernel path"
@@ -3823,7 +3905,8 @@ msgstr "kernel path"
 msgid "Pfad zum kernel"
 msgstr "Path to kernel"
 
-#: ../tt/settings_users.tt:158 ../tt/settings_users.tt:162
+#: ../tt/repair_homes.tt:168 ../tt/repair_homes.tt:172
+#: ../tt/settings_users.tt:168 ../tt/settings_users.tt:172
 msgid "Platz"
 msgstr "room"
 
@@ -3836,6 +3919,10 @@ msgstr "Prepare failed"
 msgid "Private Mail-Adresse"
 msgstr "No MAC address"
 
+#: ../tt/settings_repair.tt:22
+msgid "Programm"
+msgstr ""
+
 #: ../Schulkonsole/Error/Error.pm:182
 msgid "Programm-ID unbekannt"
 msgstr "Program ID unknown"
@@ -3844,9 +3931,14 @@ msgstr "Program ID unknown"
 msgid "Programmaufruf fehlgeschlagen"
 msgstr "Program call failed"
 
+#: ../tt/settings_repair.tt:13
+#, fuzzy
+msgid "Programme"
+msgstr "Program ID unknown"
+
 #: ../tt/myprojects_handedout.tt:17 ../tt/myprojects_handedoutcopy.tt:17
 #: ../tt/project_addmembers.tt:144 ../tt/project_members.tt:55
-#: ../tt/quotas_projects.tt:19
+#: ../tt/quotas_projects.tt:29
 msgid "Projekt"
 msgstr "Project"
 
@@ -3880,7 +3972,7 @@ msgstr "Project %s is already a project member."
 msgid "Projekt %s konnte nicht gelöscht werden"
 msgstr "project %s could not be deleted"
 
-#: ../src/cgi-bin/quotas_projects:124
+#: ../src/cgi-bin/quotas_projects:132
 #, perl-format
 msgid "Projekt %s unbekannt"
 msgstr "Project %s unknown"
@@ -3914,7 +4006,7 @@ msgstr "Project Teacher File"
 msgid "Projekte"
 msgstr "Projects"
 
-#: ../tt/quotas_projects.tt:9
+#: ../tt/quotas_projects.tt:10
 msgid "Projekte (Zusatzquota)"
 msgstr "Project (Additional Quota)"
 
@@ -3932,22 +4024,30 @@ msgstr "Project management"
 msgid "Projektname"
 msgstr "Project name"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:176
+#: ../Schulkonsole/Error/SophomorixError.pm:180
 msgid "Prozess laeuft schon"
 msgstr "Process is running already"
 
-#: ../tt/quotas_classes.tt:1 ../tt/quotas_classes.tt:9
-#: ../tt/quotas_others.tt:1 ../tt/quotas_others.tt:9
-#: ../tt/quotas_projects.tt:1 ../tt/quotas_projects.tt:9
-#: ../tt/quotas_teachers.tt:1 ../tt/quotas_teachers.tt:9 ../tt/start.tt:97
+#: ../tt/quotas_classes.tt:1 ../tt/quotas_classes.tt:10
+#: ../tt/quotas_others.tt:1 ../tt/quotas_others.tt:10
+#: ../tt/quotas_projects.tt:1 ../tt/quotas_projects.tt:10
+#: ../tt/quotas_teachers.tt:1 ../tt/quotas_teachers.tt:10 ../tt/start.tt:97
 msgid "Quota"
 msgstr "Quota"
 
-#: ../tt/settings_users.tt:43
+#: ../tt/repair_homes.tt:53 ../tt/settings_users.tt:53
 msgid "Quota aktivieren"
 msgstr "Activate quota"
 
-#: ../src/cgi-bin/settings_users:177
+#: ../tt/quotas_classes.tt:14 ../tt/quotas_others.tt:14
+#: ../tt/quotas_projects.tt:14 ../tt/quotas_teachers.tt:14
+#: ../tt/repair_homes.tt:14 ../tt/settings_users.tt:14
+#, fuzzy
+msgid "Quota aktivieren läuft..."
+msgstr "Activate quota"
+
+#: ../src/cgi-bin/repair_homes:163 ../src/cgi-bin/repair_permissions:163
+#: ../src/cgi-bin/settings_users:163
 msgid "Quota muss eine Zahl sein"
 msgstr "Quota must be a number"
 
@@ -3960,7 +4060,7 @@ msgstr "Room"
 msgid "Raum nicht gefunden"
 msgstr "Nothing found"
 
-#: ../tt/page.tt:52 ../tt/status.inc.tt:13
+#: ../tt/page.tt:62 ../tt/status.inc.tt:13
 msgid "Raum:"
 msgstr "Room:"
 
@@ -4009,6 +4109,17 @@ msgstr "Computer group name"
 msgid "Rechnergruppenname schon vergeben"
 msgstr "Computer group name already assigned"
 
+#: ../tt/repair_permissions.tt:1 ../tt/repair_permissions.tt:10
+#: ../tt/repair_permissions.tt:30
+#, fuzzy
+msgid "Rechte"
+msgstr "Computer"
+
+#: ../tt/repair_permissions.tt:14
+#, fuzzy
+msgid "Rechte zurücksetzen läuft..."
+msgstr "Move is running."
+
 #: ../src/cgi-bin/linbo_regpatchedit:88
 #, perl-format
 msgid "Registrypatch %s nicht vorhanden"
@@ -4036,6 +4147,15 @@ msgstr "ReiserFS"
 msgid "Relativer Pfad zur initrd"
 msgstr "Relative path to initrd"
 
+#: ../tt/repair_permissions.tt:1 ../tt/repair_permissions.tt:10
+#: ../tt/settings_repair.tt:1 ../tt/settings_repair.tt:10
+msgid "Reparatur"
+msgstr ""
+
+#: ../tt/class_list.tt:128 ../tt/project_members.tt:262
+msgid "Reparieren"
+msgstr ""
+
 #: ../tt/user_reports.tt:13
 msgid "Report für das Sekretariat"
 msgstr "Report for the secretary's office"
@@ -4049,11 +4169,12 @@ msgstr "EDV rooms"
 msgid "SATA"
 msgstr "SATA"
 
-#: ../tt/settings_users.tt:274
+#: ../tt/repair_homes.tt:284 ../tt/settings_users.tt:284
 msgid "Samba-Domäne"
 msgstr "samba domain"
 
-#: ../tt/settings_users.tt:190 ../tt/settings_users.tt:216
+#: ../tt/repair_homes.tt:200 ../tt/repair_homes.tt:226
+#: ../tt/settings_users.tt:200 ../tt/settings_users.tt:226
 msgid "Sambapasswort bei Erstanmeldung ändern"
 msgstr "Change samba password during initial log in"
 
@@ -4076,7 +4197,7 @@ msgstr "Close"
 msgid "Schnellauswahl"
 msgstr "Quick selection"
 
-#: ../Schulkonsole/Session.pm.in:1486
+#: ../Schulkonsole/Session.pm.in:1488
 msgid "Schueler"
 msgstr "Student"
 
@@ -4093,51 +4214,52 @@ msgstr "Student"
 #: ../tt/myprojects_handedout.tt:1 ../tt/myprojects_handedoutcopy.tt:1
 #: ../tt/myprojects_tocollect.tt:1 ../tt/myroom.tt:1
 #: ../tt/myroom_handedoutcopy.tt:1 ../tt/myroom_tocollect.tt:1
-#: ../tt/page.tt:42 ../tt/printers.tt:1 ../tt/printers_edit.tt:1
+#: ../tt/page.tt:52 ../tt/printers.tt:1 ../tt/printers_edit.tt:1
 #: ../tt/project.tt:1 ../tt/project_addmembers.tt:1 ../tt/project_collect.tt:1
 #: ../tt/project_drop_verify.tt:1 ../tt/project_handout.tt:1
 #: ../tt/project_handoutcopy.tt:1 ../tt/project_lesson.tt:1
 #: ../tt/project_members.tt:1 ../tt/project_passwords.tt:1
 #: ../tt/project_shares.tt:1 ../tt/quotas_classes.tt:1
 #: ../tt/quotas_others.tt:1 ../tt/quotas_projects.tt:1
-#: ../tt/quotas_teachers.tt:1 ../tt/room.tt:1 ../tt/room_collect.tt:1
+#: ../tt/quotas_teachers.tt:1 ../tt/repair_homes.tt:1
+#: ../tt/repair_permissions.tt:1 ../tt/room.tt:1 ../tt/room_collect.tt:1
 #: ../tt/room_end_lesson_verify.tt:1 ../tt/room_handout.tt:1
 #: ../tt/room_lesson.tt:1 ../tt/room_shares.tt:1 ../tt/room_test.tt:1
 #: ../tt/room_test_collect.tt:1 ../tt/room_test_end.tt:1
 #: ../tt/room_test_handout.tt:1 ../tt/room_test_password.tt:1 ../tt/rooms.tt:1
 #: ../tt/rooms_classrooms.tt:1 ../tt/settings_classs.tt:1
 #: ../tt/settings_program.tt:1 ../tt/settings_program.tt:9
-#: ../tt/settings_projects.tt:1 ../tt/settings_users.tt:1
-#: ../tt/showpassword.tt:1 ../tt/start.tt:1 ../tt/user.tt:1
-#: ../tt/user_check.tt:1 ../tt/user_commit.tt:1 ../tt/user_extra.tt:1
-#: ../tt/user_print.tt:1 ../tt/user_reports.tt:1 ../tt/user_students.tt:1
-#: ../tt/user_teacherpasswords.tt:1 ../tt/user_teachers.tt:1
-#: ../tt/user_teachin.tt:1
+#: ../tt/settings_projects.tt:1 ../tt/settings_repair.tt:1
+#: ../tt/settings_users.tt:1 ../tt/showpassword.tt:1 ../tt/start.tt:1
+#: ../tt/user.tt:1 ../tt/user_check.tt:1 ../tt/user_commit.tt:1
+#: ../tt/user_extra.tt:1 ../tt/user_print.tt:1 ../tt/user_reports.tt:1
+#: ../tt/user_students.tt:1 ../tt/user_teacherpasswords.tt:1
+#: ../tt/user_teachers.tt:1 ../tt/user_teachin.tt:1
 msgid "Schulkonsole"
 msgstr "School console"
 
-#: ../tt/header.inc.tt:6 ../tt/page.tt:38
+#: ../tt/header.inc.tt:6 ../tt/page.tt:48
 msgid "Schulkonsole für Lehrer/innen"
 msgstr "School console for teachers"
 
-#: ../tt/header.inc.tt:4 ../tt/page.tt:36
+#: ../tt/header.inc.tt:4 ../tt/page.tt:46
 msgid "Schulkonsole für Netzwerkberater/innen"
 msgstr "School console for network consultants"
 
-#: ../tt/header.inc.tt:8 ../tt/page.tt:40
+#: ../tt/header.inc.tt:8 ../tt/page.tt:50
 msgid "Schulkonsole für Schüler/innen"
 msgstr "School console for students"
 
-#: ../tt/settings_users.tt:262
+#: ../tt/repair_homes.tt:272 ../tt/settings_users.tt:272
 msgid "Schulname"
 msgstr "school name"
 
-#: ../tt/settings_users.tt:89
+#: ../tt/repair_homes.tt:99 ../tt/settings_users.tt:99
 msgid "Schulweites Tauschen aktivieren"
 msgstr "Activate school-wide exchange"
 
 #: ../tt/project_addmembers.tt:138 ../tt/project_members.tt:49
-#: ../tt/quotas_others.tt:148
+#: ../tt/quotas_others.tt:157
 msgid "Schüler"
 msgstr "Student"
 
@@ -4161,7 +4283,8 @@ msgstr "Pages:"
 msgid "Sekunden"
 msgstr "seconds"
 
-#: ../tt/settings_users.tt:186 ../tt/settings_users.tt:212
+#: ../tt/repair_homes.tt:196 ../tt/repair_homes.tt:222
+#: ../tt/settings_users.tt:196 ../tt/settings_users.tt:222
 msgid "Shell aktivieren"
 msgstr "Activate shell"
 
@@ -4212,20 +4335,20 @@ msgstr "You must enter a project name."
 msgid "Sie sind bereits in Klasse %s"
 msgstr "You are already in class %s"
 
-#: ../src/cgi-bin/project:200 ../src/cgi-bin/project_members:176
+#: ../src/cgi-bin/project:200 ../src/cgi-bin/project_members:191
 #, perl-format
 msgid "Sie sind der letzte Projektleiter von %s"
 msgstr "You are the last project leader of %s"
 
-#: ../src/cgi-bin/project_members:82
+#: ../src/cgi-bin/project_members:97
 msgid "Sie sind kein Administrator dieser Klasse"
 msgstr "You are not an administrator for this class"
 
-#: ../src/cgi-bin/project_members:138
+#: ../src/cgi-bin/project_members:153
 msgid "Sie sind kein Mitglied dieser Klasse"
 msgstr "You are not a member of this class"
 
-#: ../src/cgi-bin/project_members:147
+#: ../src/cgi-bin/project_members:162
 msgid "Sie sind kein Mitglied dieses Projekts"
 msgstr "You are not a member of this project"
 
@@ -4235,7 +4358,7 @@ msgstr "You are not a member of this project"
 msgid "Sie sind kein Projektleiter"
 msgstr "You are not a project leader"
 
-#: ../src/cgi-bin/project:245 ../src/cgi-bin/project_members:249
+#: ../src/cgi-bin/project:245 ../src/cgi-bin/project_members:264
 #, perl-format
 msgid "Sie sind kein Projektleiter von %s"
 msgstr "You are not the project leader of %s"
@@ -4244,7 +4367,7 @@ msgstr "You are not the project leader of %s"
 msgid "Sitzungsdauer"
 msgstr "Duration of session"
 
-#: ../tt/page.tt:49 ../tt/status.inc.tt:9
+#: ../tt/page.tt:59 ../tt/status.inc.tt:9
 msgid "Sitzungsdauer:"
 msgstr "Duration of session:"
 
@@ -4260,11 +4383,11 @@ msgstr "Script call failed"
 msgid "Soll der Unterricht wirklich beendet werden?"
 msgstr "Should lessons really end?"
 
-#: ../tt/quotas_others.tt:1 ../tt/quotas_others.tt:9
+#: ../tt/quotas_others.tt:1 ../tt/quotas_others.tt:10
 msgid "Sonderquota"
 msgstr "Special quota"
 
-#: ../src/cgi-bin/start:631
+#: ../src/cgi-bin/start:632
 msgid "Speicherplatz"
 msgstr "Storage space"
 
@@ -4284,11 +4407,11 @@ msgstr "Standard settings"
 msgid "Standardeinstellungen für Räume"
 msgstr "Default settings for rooms"
 
-#: ../tt/settings_users.tt:48
+#: ../tt/repair_homes.tt:58 ../tt/settings_users.tt:58
 msgid "Standardquota Lehrer"
 msgstr "Standard quota teacher"
 
-#: ../tt/settings_users.tt:68
+#: ../tt/repair_homes.tt:78 ../tt/settings_users.tt:78
 msgid "Standardquota Schüler"
 msgstr "Default quota for students"
 
@@ -4308,7 +4431,7 @@ msgstr "Start page"
 msgid "Status"
 msgstr "Status"
 
-#: ../tt/settings_users.tt:39
+#: ../tt/repair_homes.tt:49 ../tt/settings_users.tt:49
 msgid "Sternchenklassen filtern"
 msgstr "Filter asterik classes"
 
@@ -4357,7 +4480,7 @@ msgstr "Change system"
 msgid "System-Typ"
 msgstr "System type"
 
-#: ../tt/quotas_others.tt:249
+#: ../tt/quotas_others.tt:258
 msgid "Systembenutzer"
 msgstr "System user"
 
@@ -4397,7 +4520,7 @@ msgstr "Teach-in is necessary"
 msgid "Template %s nicht vorhanden"
 msgstr "Template %s is not available"
 
-#: ../src/cgi-bin/quotas_others:129 ../src/cgi-bin/quotas_projects:215
+#: ../src/cgi-bin/quotas_others:136 ../src/cgi-bin/quotas_projects:223
 msgid "Tragen Sie mindestens Disk- oder Mailquota ein"
 msgstr "Enter in at least the disk or mail quota"
 
@@ -4461,11 +4584,11 @@ msgstr "Unknown Error"
 msgid "Unerwartete Programmausgabe"
 msgstr "Unexpected program output"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:130
+#: ../Schulkonsole/Error/SophomorixError.pm:134
 msgid "Ungueltige Benutzer-ID"
 msgstr "Invalid user ID"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:148
+#: ../Schulkonsole/Error/SophomorixError.pm:152
 msgid "Ungueltige Klassen-GID"
 msgstr "Invalid class GID"
 
@@ -4473,55 +4596,55 @@ msgstr "Invalid class GID"
 msgid "Ungueltige Session-ID"
 msgstr "Invalid session ID"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:150
+#: ../Schulkonsole/Error/SophomorixError.pm:154
 msgid "Ungueltige Subklasse"
 msgstr "Invalid subclass"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:126
+#: ../Schulkonsole/Error/SophomorixError.pm:130
 msgid "Ungueltiger Benutzer"
 msgstr "Invalid user"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:144
+#: ../Schulkonsole/Error/SophomorixError.pm:148
 msgid "Ungueltiger Raum"
 msgstr "Invalid room"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:136
+#: ../Schulkonsole/Error/SophomorixError.pm:140
 msgid "Ungueltiger Raumbezeichner"
 msgstr "Invalid room designation"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:192
+#: ../Schulkonsole/Error/SophomorixError.pm:196
 msgid "Ungueltiger Wert fuer Dateiname"
 msgstr "Invalid file name"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:184
+#: ../Schulkonsole/Error/SophomorixError.pm:188
 msgid "Ungueltiger Wert fuer diskquota"
 msgstr "Invalid value for disk quota"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:172
+#: ../Schulkonsole/Error/SophomorixError.pm:176
 msgid "Ungueltiger Wert fuer longname"
 msgstr "Invalid value for longname"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:186
+#: ../Schulkonsole/Error/SophomorixError.pm:190
 msgid "Ungueltiger Wert fuer mailquota"
 msgstr "Invalid value for mail quota"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:174
+#: ../Schulkonsole/Error/SophomorixError.pm:178
 msgid "Ungueltiger Wert fuer number"
 msgstr "Invalid value for number"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:158
+#: ../Schulkonsole/Error/SophomorixError.pm:162
 msgid "Ungueltiger Wert fuer password"
 msgstr "Invalid value for password"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:166
+#: ../Schulkonsole/Error/SophomorixError.pm:170
 msgid "Ungueltiger Wert fuer projectgid"
 msgstr "Invalid value for projectgid"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:190
+#: ../Schulkonsole/Error/SophomorixError.pm:194
 msgid "Ungueltiger Wert, action sollte eine Zahl sein"
 msgstr "invalid value, action needs to be a number"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:146
+#: ../Schulkonsole/Error/SophomorixError.pm:150
 msgid "Ungueltiges Projekt"
 msgstr "Invalid project"
 
@@ -4716,7 +4839,7 @@ msgstr "VFAT"
 msgid "Versetzen läuft schon"
 msgstr "Transfer currently running"
 
-#: ../tt/user_commit.tt:22
+#: ../tt/user_commit.tt:20
 #, fuzzy
 msgid "Versetzen läuft..."
 msgstr "Move is running."
@@ -4725,13 +4848,18 @@ msgstr "Move is running."
 msgid "Versetzen wurde gestartet"
 msgstr "Transfer was already started"
 
-#: ../tt/header.inc.tt:12 ../tt/page.tt:44
+#: ../tt/header.inc.tt:12 ../tt/page.tt:54
 msgid "Version"
 msgstr "Version"
 
-#: ../src/cgi-bin/start:474 ../src/cgi-bin/start:496
+#: ../src/cgi-bin/start:475 ../src/cgi-bin/start:497
 msgid "Verständigen Sie den Netzwerkadministrator"
 msgstr "Inform the network administrator"
+
+#: ../tt/repair_permissions.tt:27
+#, fuzzy
+msgid "Verzeichnis"
+msgstr "Identifier"
 
 #: ../src/cgi-bin/myclass_handedoutcopy:171
 #: ../src/cgi-bin/myprojects_handedoutcopy:173
@@ -4743,7 +4871,7 @@ msgstr "Directory for distributed files not found"
 msgid "Verzeichnis für bereitgestellte Dateien nicht gefunden"
 msgstr "Directory for distributed templates not found"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:134
+#: ../Schulkonsole/Error/SophomorixError.pm:138
 msgid "Verzeichnis nicht gefunden"
 msgstr "Directory not found"
 
@@ -4791,7 +4919,8 @@ msgstr "wlan"
 msgid "WLAN-LDAP-Gruppe"
 msgstr "wlan ldap group"
 
-#: ../tt/settings_users.tt:157 ../tt/settings_users.tt:161
+#: ../tt/repair_homes.tt:167 ../tt/repair_homes.tt:171
+#: ../tt/settings_users.tt:167 ../tt/settings_users.tt:171
 msgid "Warnung bei weniger als"
 msgstr "warn for less than"
 
@@ -4807,7 +4936,7 @@ msgstr "waiting time before processing commands"
 msgid "Webfilter"
 msgstr "Web filter"
 
-#: ../tt/quotas_others.tt:50
+#: ../tt/quotas_others.tt:59
 msgid "Webspace"
 msgstr "Web space"
 
@@ -4845,11 +4974,11 @@ msgstr "mail forward(s)"
 msgid "Weiterleitung(en) ändern"
 msgstr "mail forward(s)"
 
-#: ../tt/page.tt:57 ../tt/status.inc.tt:19
+#: ../tt/page.tt:67 ../tt/status.inc.tt:19
 msgid "Workstation:"
 msgstr "Work station:"
 
-#: ../tt/quotas_others.tt:200
+#: ../tt/quotas_others.tt:209
 msgid "Workstationaccounts"
 msgstr "Workstation accounts"
 
@@ -4869,7 +4998,7 @@ msgstr "Wrapper call failed"
 msgid "X"
 msgstr "X"
 
-#: ../tt/settings_program.tt:24 ../tt/settings_program.tt:28
+#: ../tt/settings_program.tt:28
 msgid "Zeichen"
 msgstr "characters"
 
@@ -4885,11 +5014,11 @@ msgstr "time"
 msgid "Zertifikat erstellen und herunterladen"
 msgstr "Create and download certificate"
 
-#: ../src/cgi-bin/start:493
+#: ../src/cgi-bin/start:494
 msgid "Zertifikat konnte nicht heruntergeladen werden."
 msgstr "The certificate could not be downloaded."
 
-#: ../src/cgi-bin/start:462
+#: ../src/cgi-bin/start:463
 msgid "Zertifikat wurde erstellt."
 msgstr "Certificate was created."
 
@@ -4901,11 +5030,13 @@ msgstr "Certificate password (at least 6 characters):"
 msgid "Zertifikatspasswort bestätigen:"
 msgstr "Confirm certificate password:"
 
-#: ../tt/settings_users.tt:178 ../tt/settings_users.tt:204
+#: ../tt/repair_homes.tt:188 ../tt/repair_homes.tt:214
+#: ../tt/settings_users.tt:188 ../tt/settings_users.tt:214
 msgid "Zufallspasswort"
 msgstr "Random password"
 
-#: ../tt/settings_users.tt:182 ../tt/settings_users.tt:208
+#: ../tt/repair_homes.tt:192 ../tt/repair_homes.tt:218
+#: ../tt/settings_users.tt:192 ../tt/settings_users.tt:218
 msgid "Zufallspasswortzeichen"
 msgstr "Random password characters"
 
@@ -4914,7 +5045,7 @@ msgstr "Random password characters"
 msgid "Zufallspasswörter gesetzt"
 msgstr "Random password changed"
 
-#: ../Schulkonsole/Session.pm.in:1480
+#: ../Schulkonsole/Session.pm.in:1482
 msgid "Zugriff verweigert"
 msgstr "Access denied"
 
@@ -4930,13 +5061,13 @@ msgstr "Additional quota"
 msgid "[LINBO] - globale Konfiguration"
 msgstr "[LINBO] - global configuration"
 
-#: ../src/cgi-bin/start:397
+#: ../src/cgi-bin/start:398
 msgid "abgebrochen"
 msgstr "cancelled"
 
-#: ../src/cgi-bin/class_list:147 ../src/cgi-bin/class_list:166
-#: ../src/cgi-bin/project_members:373 ../src/cgi-bin/project_members:392
-#: ../src/cgi-bin/start:567 ../src/cgi-bin/start:586
+#: ../src/cgi-bin/class_list:154 ../src/cgi-bin/class_list:173
+#: ../src/cgi-bin/project_members:388 ../src/cgi-bin/project_members:407
+#: ../src/cgi-bin/start:568 ../src/cgi-bin/start:587
 msgid "abgelaufen"
 msgstr "expired"
 
@@ -4948,15 +5079,15 @@ msgstr "Deselected"
 msgid "action muss 0, 1 oder 2 sein"
 msgstr "action must be 0, 1 or 2"
 
-#: ../tt/page.tt:60 ../tt/status.inc.tt:23
+#: ../tt/page.tt:70 ../tt/status.inc.tt:23
 msgid "aktive Klasse:"
 msgstr "active class:"
 
-#: ../tt/page.tt:62
+#: ../tt/page.tt:72
 msgid "aktives Projekt:"
 msgstr "current project:"
 
-#: ../tt/busy.inc.tt:9
+#: ../tt/busy.inc.tt:11
 #, fuzzy
 msgid "aktualisieren"
 msgstr "Update"
@@ -4993,7 +5124,7 @@ msgstr "on next boot"
 msgid "bereitstellen"
 msgstr "supply"
 
-#: ../tt/busy.inc.tt:4
+#: ../tt/busy.inc.tt:6
 #, fuzzy
 msgid "beschäftigt..."
 msgstr "Delete is running."
@@ -5125,7 +5256,7 @@ msgstr "again"
 msgid "none"
 msgstr "none"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:124
+#: ../Schulkonsole/Error/SophomorixError.pm:128
 msgid "on muss 1 oder 0 sein"
 msgstr "on must be 1 or 0"
 
@@ -5203,7 +5334,7 @@ msgid "um"
 msgstr "at"
 
 #: ../tt/myroom.tt:1 ../tt/myroom.tt:26 ../tt/myroom_handedoutcopy.tt:8
-#: ../tt/myroom_tocollect.tt:8 ../tt/page.tt:55 ../tt/room.tt:27
+#: ../tt/myroom_tocollect.tt:8 ../tt/page.tt:65 ../tt/room.tt:27
 #: ../tt/room_lesson.tt:27 ../tt/status.inc.tt:17
 msgid "unbekannt"
 msgstr "unknown"
@@ -5261,7 +5392,7 @@ msgstr "teaches in project"
 msgid "unterrichtet in der Klasse"
 msgstr "teaches in class"
 
-#: ../tt/page.tt:50 ../tt/status.inc.tt:10
+#: ../tt/page.tt:60 ../tt/status.inc.tt:10
 msgid "verbleibend:"
 msgstr "remaining:"
 
@@ -5332,35 +5463,42 @@ msgstr "Save changes"
 #: ../tt/class_lesson.tt:122 ../tt/class_shares.tt:63 ../tt/hosts.tt:117
 #: ../tt/hosts.tt:37 ../tt/printers_edit.tt:46 ../tt/printers_edit.tt:85
 #: ../tt/project_lesson.tt:122 ../tt/project_shares.tt:62
-#: ../tt/quotas_classes.tt:46 ../tt/quotas_others.tt:138
-#: ../tt/quotas_others.tt:189 ../tt/quotas_others.tt:239
-#: ../tt/quotas_others.tt:288 ../tt/quotas_others.tt:42
-#: ../tt/quotas_others.tt:86 ../tt/quotas_projects.tt:46
-#: ../tt/quotas_teachers.tt:47 ../tt/room_lesson.tt:188
+#: ../tt/quotas_classes.tt:56 ../tt/quotas_others.tt:147
+#: ../tt/quotas_others.tt:198 ../tt/quotas_others.tt:248
+#: ../tt/quotas_others.tt:297 ../tt/quotas_others.tt:51
+#: ../tt/quotas_others.tt:95 ../tt/quotas_projects.tt:56
+#: ../tt/quotas_teachers.tt:56 ../tt/repair_homes.tt:297
+#: ../tt/repair_permissions.tt:47 ../tt/room_lesson.tt:188
 #: ../tt/room_lesson.tt:234 ../tt/room_shares.tt:65 ../tt/rooms.tt:153
 #: ../tt/rooms_classrooms.tt:48 ../tt/settings_classs.tt:58
 #: ../tt/settings_program.tt:37 ../tt/settings_projects.tt:52
-#: ../tt/settings_users.tt:287 ../tt/user_teachin.tt:99
+#: ../tt/settings_repair.tt:45 ../tt/settings_users.tt:297
+#: ../tt/user_teachin.tt:99
 msgid "Änderungen übernehmen"
 msgstr "uImplement changes"
 
 #: ../src/cgi-bin/printers_edit:240 ../src/cgi-bin/printers_edit:272
+#: ../src/cgi-bin/repair_homes:262 ../src/cgi-bin/repair_permissions:262
 #: ../src/cgi-bin/rooms:174 ../src/cgi-bin/rooms_classrooms:91
-#: ../src/cgi-bin/settings_program:137 ../src/cgi-bin/settings_users:278
-#: ../src/cgi-bin/user_teachers:225
+#: ../src/cgi-bin/settings_program:125 ../src/cgi-bin/settings_repair:79
+#: ../src/cgi-bin/settings_users:262 ../src/cgi-bin/user_teachers:225
 msgid "Änderungen übernommen"
 msgstr "changes implemented"
 
 #: ../src/cgi-bin/class_lesson:147 ../src/cgi-bin/class_shares:104
 #: ../src/cgi-bin/hosts:233 ../src/cgi-bin/project_lesson:151
-#: ../src/cgi-bin/project_shares:126 ../src/cgi-bin/quotas_classes:152
-#: ../src/cgi-bin/quotas_others:194 ../src/cgi-bin/quotas_projects:154
-#: ../src/cgi-bin/quotas_projects:280 ../src/cgi-bin/quotas_teachers:123
+#: ../src/cgi-bin/project_shares:126 ../src/cgi-bin/quotas_classes:160
+#: ../src/cgi-bin/quotas_others:203 ../src/cgi-bin/quotas_projects:162
+#: ../src/cgi-bin/quotas_projects:290 ../src/cgi-bin/quotas_teachers:134
 #: ../src/cgi-bin/room_lesson:241 ../src/cgi-bin/room_lesson:280
 #: ../src/cgi-bin/room_shares:104 ../src/cgi-bin/settings_classs:147
 #: ../src/cgi-bin/settings_projects:126
 msgid "Änderungen übernommen."
 msgstr "changes implemented."
+
+#: ../tt/settings_program.tt:23
+msgid "Überprüfe die Passwortgüte"
+msgstr ""
 
 #: ../tt/linbo_images.tt:31 ../tt/linbo_images.tt:44
 msgid "Überschreiben"
@@ -5669,8 +5807,8 @@ msgstr "overwrite?"
 #~ msgid "Bitte best&auml;tigen"
 #~ msgstr "Please confirm"
 
-#~ msgid "Die Daten mancher Benutzer wurden ge&auml;ndert."
-#~ msgstr "The data of some users were changed."
+#~ msgid "Der Wert für die maximale Passwortlänge ist ungültig"
+#~ msgstr "The maximal password length value is invalid"
 
 #, fuzzy
 #~ msgid "Die Liste der konfigurierten Hosts und ihrer R&auml;me stimmt nicht"
@@ -5997,6 +6135,9 @@ msgstr "overwrite?"
 
 #~ msgid "Letzte Logdatei ansehen"
 #~ msgstr "View last log file"
+
+#~ msgid "Maximale Passwortlänge"
+#~ msgstr "maximal password length"
 
 #~ msgid "Mehrfachauswahl mit gedr&uuml;ckter Strg-Taste ist m&ouml;glich."
 #~ msgstr ""
