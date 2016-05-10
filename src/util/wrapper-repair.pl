@@ -68,41 +68,41 @@ SWITCH: {
 
 exit -2;	# program error
 
-=head3 funktion1
+=head3 repair_permissions
 
-numeric constant: C<1>
+numeric constant: C<REPAIRPERMISSIONSAPP>
 
 =head4 Description
 
-<<Beschreibung der ersten Funktion>>
+Repair selected permissions.
 
 =cut
 
-sub funktion1 {
+sub repair_permissions {
 
 	$< = $>;
 	$) = 0;
 	$( = $);
 	umask(022);
 
-	system("/usr/sbin/muster-script1") == 0
+	system($Schulkonsole::Config::_cmd_sophomorix_repair) == 0
 		or exit (Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED);
 
 	exit 0;
 
 }
 
-=head3 funktion2
+=head3 repair_myhome
 
-numeric constant: C<2>
+numeric constant: C<REPAIRMYHOMEAPP>
 
 =head4 Description
 
-<<Beschreibung der zweiten Funktion>>
+Repair invoking users home folder
 
 =cut
 
-sub funktion1 {
+sub repair_myhome {
 
 	$< = $>;
 	$) = 0;

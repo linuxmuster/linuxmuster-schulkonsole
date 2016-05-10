@@ -80,6 +80,8 @@ my $password = $sk_session->get_password();
 
 if( $sk_session->param('repair_classhomes;'.$class) ){
     Schulkonsole::Repair::repair_classhomes($id, $password, $class);
+  $sk_session->set_status($sk_session->d()->get(
+			'Die Persönlichen Ordner wurden repariert.'), 0);
 }
 
 my $all_classs = Schulkonsole::DB::classes();

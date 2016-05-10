@@ -30,6 +30,7 @@ use Schulkonsole::Session;
 use Schulkonsole::Info;
 use Schulkonsole::Sophomorix;
 use Schulkonsole::Cyrus;
+use Schulkonsole::Repair;
 
 my $this_file = 'project_members';
 
@@ -75,6 +76,20 @@ my $is_joinable = $$projects{$project}{joinable};
 
 eval {
 COMMANDS: {
+
+$q->param('repair_projecthomes;'.$project) and do {
+	if (not $is_admin) {
+		$sk_session->set_status($sk_session->d()-get(
+				'Sie sind kein Administrator dieses Projekts'), 1);
+		last COMMANDS;
+	}
+	my $id = $sk_session->userdata('id');
+	my $password = $sk_session->get_password();
+	Schulkonsole::Repair::repair_projecthomes($id, $password, $project);
+	$sk_session->set_status($sk_session->d()->get(
+				'Die Persönlichen Ordner wurden repariert.'), 0);
+	last COMMANDS;
+};
 
 $q->param('projectisopenaccept') and do {
 	if (not $is_admin) {

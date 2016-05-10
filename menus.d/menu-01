@@ -39,3 +39,6 @@
 [% IF link_linbo %]
  <li><a>[% loc('LINBO') %]</a><ul>[% INCLUDE "submenu-linbo.inc.tt" %]</ul></li>
 [% END %]
+[% IF link_repair %]
+ <li><a>[% loc('Reparatur') %]</a><ul>[% INCLUDE "submenu-repair.inc.tt" %]</ul></li>
+[% END %]

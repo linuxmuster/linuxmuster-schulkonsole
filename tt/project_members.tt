@@ -256,4 +256,11 @@
 	
 [% END %]
 
+[% IF isadmin && project %]
+<h4>[% loc('Persönliche Ordner der Mitglieder') %]</h4>
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+<input type="submit" name="repair_projecthomes;[% project %]" value="[% loc('Reparieren') %]">
+</form>
+[% END %]
+
 </form>
