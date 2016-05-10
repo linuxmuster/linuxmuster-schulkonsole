@@ -2478,8 +2478,10 @@ sub init_preferences {
 	}
 	
 	%_repair_path = ();
-	foreach my $program (keys $preferences{$PATHPREFS}) {
-		@{$_repair_path{$program}} = split(',', $preferences{$PATHPREFS}{$program});
+	if (exists $preferences{$PATHPREFS}) {
+		foreach my $program (keys $preferences{$PATHPREFS}) {
+			@{$_repair_path{$program}} = split(',', $preferences{$PATHPREFS}{$program});
+		}
 	}
 }
 
