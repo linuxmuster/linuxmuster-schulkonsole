@@ -2,20 +2,20 @@
 
 =head1 NAME
 
-settings_users - settings for user administration
+repair_permissions - repair permissions of selected directories
 
 =head1 SYNOPSIS
 
- https://server/schulkonsole/settings_users
+ https://server/schulkonsole/repair_permissions
 
 =head1 DESCRIPTION
 
-C<settings> lets you change the settings of the user administration.
-The HTML template is settings_users.tt.
+C<repair_permissions> lets you repair selected directory rights.
+The HTML template is repair_permissions.tt.
 
 =head2 Template variables
 
-Additionally to the variables of Schulkonsole::Session C<settings_users>
+Additionally to the variables of Schulkonsole::Session C<repair_permissions>
 provides the following variables:
 
 =over
@@ -25,20 +25,12 @@ provides the following variables:
 use strict;
 use utf8;
 use lib '/usr/share/schulkonsole';
-use Env::Bash;
-use Schulkonsole::Encode;
-use Schulkonsole::Files;
-use Schulkonsole::Session;
-use Schulkonsole::Error::Error;
-use Schulkonsole::Sophomorix;
-use Schulkonsole::SophomorixConfig;
-use Schulkonsole::SophomorixQuotas qw(process_quota);
-
-use Sophomorix::SophomorixConfig;
+use Schulkonsole::Config;
+use Schulkonsole::Repair;
 
 use Proc::ProcessTable;
 
-my $this_file = 'settings_users';
+my $this_file = 'repair_permissions';
 
 my $sk_session = new Schulkonsole::Session($this_file);
 if (not $sk_session->get_password()) {
@@ -61,226 +53,45 @@ my $password = $sk_session->get_password();
 
 
 
-
-my @mountpoints;
-my %mountpoints_seen;
-if (    @Conf::quota_filesystems
-    and $Conf::quota_filesystems[0] ne 'auto') {
-	@mountpoints = @Conf::quota_filesystems;
-} else {
-	use Quota;
-
-	Quota::setmntent();
-	while (my ($dev, $path, $type, $opts) = Quota::getmntent()) {
-		if ($opts =~ /usrquota/) {
-		    if (not exists $mountpoints_seen{$dev}){
-			push @mountpoints, $path;
-			$mountpoints_seen{$dev}="$path";
-		    }
-		}
-	}
-	Quota::endmntent();
-}
-
-
-
-
-my %sophomorix_conf = Schulkonsole::SophomorixConfig::read_sophomorix_conf();
-my %quota_conf = read_quota_conf();
-my %mailquota_conf = read_mailquota_conf();
-my %filesystem_conf = read_filesystem_conf();
-my %sophomorix_conf_new;
-my %quota_conf_new;
-my %mailquota_conf_new;
-my %filesystem_conf_new;
-
 my $process_table = new Proc::ProcessTable;
-my $app_quota = $Schulkonsole::Config::_cmd_sophomorix_quota;
-$app_quota =~ s:.*/::;
+my $app_repair = $Schulkonsole::Config::_cmd_sophomorix_repair;
+$app_repair =~ s:.*/::;
 my %running;
 foreach my $process (@{ $process_table->table }) {
-	if ($process->fname =~ /^soph/ and $process->cmndline =~ /$app_quota/) {
-			$running{quota} = $process->pid;
+	if ($process->fname =~ /^soph/ and $process->cmndline =~ /$app_repair/) {
+			$running{repair} = $process->pid;
 	}
 }
 
 if ($q->param('accept')) {
-	eval {
-	my @errors;
+	my @nums;
 	foreach my $param ($q->param) {
-		if (exists $sophomorix_conf{$param}) {
-			if (Schulkonsole::SophomorixConfig::is_boolean($param)) {
-				if (not $sophomorix_conf{$param}) {
-					$sophomorix_conf_new{$param} = 1;
-				}
-			} else {
-				my $value = $q->param($param);
-				if ($sophomorix_conf{$param} ne $value) {
-					CHECKVALUE: {
-					$param =~ /^geburts_jahreszahl/ and do {
-						if (   $value < 1900
-						    or $value > 3000) {
-							$sk_session->mark_input_error($param);
-							push @errors, $sk_session->d()->get(
-								'Geben Sie eine gültige 4-stellige Jahreszahl ein');
-						}
-						last CHECKVALUE;
-					};
-					$param =~ /^zufall_passwort_anzahl/ and do {
-						if ($value < 1) {
-							$sk_session->mark_input_error($param);
-							push @errors, $sk_session->d()->get(
-								'Die Passwortlänge muss eine Zahl > 0 sein');
-						}
-						last CHECKVALUE;
-					};
-					$param =~ /^(schueler|lehrer)_duldung_tage/ and do {
-						if ($value !~ /^\d+$/) {
-							$sk_session->mark_input_error($param);
-							push @errors, $sk_session->d()->get(
-								'Der Duldungszeitraum muss eine Zahl sein');
-						}
-						last CHECKVALUE;
-					};
-					$param =~ /^(schueler|lehrer)_deaktivierung_tage/ and do {
-						if ($value !~ /^\d+$/) {
-							$sk_session->mark_input_error($param);
-							push @errors, $sk_session->d()->get(
-								'Der Deaktivierungszeitraum muss eine Zahl sein');
-						}
-						last CHECKVALUE;
-					};
-					}
-					$sophomorix_conf_new{$param} = $q->param($param);
-				}
-			}
-		} elsif (exists $quota_conf{$param}) {
-			my $value = $q->param($param);
-			$value =~ s/\s+//g;
-			if ($quota_conf{$param} ne $value) {
-				if ($value !~ /^\d+$/) {
-					$sk_session->mark_input_error($param);
-					push @errors, $sk_session->d()->get('Quota muss eine Zahl sein');
-				}
-				$quota_conf_new{$param} = $value;
-			}
-		} elsif (exists $mailquota_conf{$param}) {
-			my $value = $q->param($param);
-			$value =~ s/\s+//g;
-			if ($mailquota_conf{$param} ne $value) {
-				if ($value !~ /^\d+$/) {
-					$sk_session->mark_input_error($param);
-					push @errors, $sk_session->d()->get('Mailquota muss eine Zahl sein');
-				}
-				$mailquota_conf_new{$param} = $value;
-			}
-		} elsif (exists $filesystem_conf{$param}) {
-			if (not $filesystem_conf{$param}) {
-				$filesystem_conf_new{$param} = 1;
-			}
-		}
+		my ($num) =~ /^(\d+);repair$/;
+		continue unless $num;
+		push @nums, $num;
 	}
-
-	# set undefined boolean values to false
-	foreach my $param (keys %sophomorix_conf) {
-		if (not defined $q->param($param) and Schulkonsole::SophomorixConfig::is_boolean($param)) {
-			$sophomorix_conf_new{$param} = 0;
-		}
-	}
-	foreach my $param (keys %filesystem_conf) {
-		if (    not defined $q->param($param)
-		    and $filesystem_conf{$param}) {
-			$filesystem_conf_new{$param} = 0;
-		}
-	}
-
-
-	# commit changes
-	if (@errors) {
-		$sk_session->set_status(join(', ', @errors), 1);
-	} else {
-		my $is_changed = 0;
-		my $do_quota_set = 0;
-		my $do_quota_student = 0;
-		my $do_quota_teacher = 0;
-		if (%sophomorix_conf_new) {
-			my $lines = Schulkonsole::SophomorixConfig::new_sophomorix_lines(\%sophomorix_conf_new);
-			Schulkonsole::SophomorixConfig::write_sophomorix_conf($id, $password, $lines);
-
-			$do_quota_set = 1 if exists $sophomorix_conf_new{use_quota};
-
-			$is_changed = 1;
-		}
-		if (%quota_conf_new) {
-			my $lines = new_quota_lines(\%quota_conf_new, \%quota_conf);
-			Schulkonsole::Sophomorix::write_quota_conf(
-				$id, $password, $lines);
-
-			foreach my $key (keys %quota_conf_new) {
-				if ($key =~ /student$/) {
-					$do_quota_student = 1;
-				} else {
-					$do_quota_teacher = 1;
-				}
-			}
-
-			$is_changed = 1;
-		}
-		if (%mailquota_conf_new) {
-			my $lines = new_mailquota_lines(\%mailquota_conf_new, \%mailquota_conf);
-			Schulkonsole::Sophomorix::write_mailquota_conf(
-				$id, $password, $lines);
-
-			foreach my $key (keys %mailquota_conf_new) {
-				if ($key =~ /student$/) {
-					$do_quota_student = 1;
-				} else {
-					$do_quota_teacher = 1;
-				}
-			}
-
-			$is_changed = 1;
-		}
-		if (%filesystem_conf_new) {
-			if (defined $filesystem_conf_new{activateglobalshares}) {
-				if ($filesystem_conf_new{activateglobalshares}) {
-					Schulkonsole::Sophomorix::global_shares_on($id, $password);
-				} else {
-					Schulkonsole::Sophomorix::global_shares_off($id, $password);
-				}
-			}
-			$is_changed = 1;
-		}
-
-		if ($is_changed) {
-			Schulkonsole::SophomorixQuotas::process_quota($id, $password,
-				  ($do_quota_set)
-				| ($do_quota_teacher << 1)
-				| ($do_quota_student << 2));
-			$running{quota} = 1;
-			$sk_session->set_status(
-				$sk_session->d()->get('Änderungen übernommen'), 0);
-		}
-	}
-	};
-	if ($@) {
-		$sk_session->standard_error_handling($this_file, $@);
-	}
+	$sk_session->set_status( $sk_session->d()->get('Es wurden keine Einträge zur Reparatur gewählt.'), 1) unless @nums;
+	
+	Schulkonsole::Repair::repair_permissions($id, $password, @nums);
+	
+	$sk_ession->set_status( $sk_session->d()->get('Reparatur gestartet.'), 0);
+	
+	$running{repair} = 1;
 }
 
-if($q->param('logquota') or $running{quota}) {
+if($q->param('logrepair') or $running{repair}) {
 	eval {
-		my $logquota =
-			Schulkonsole::SophomorixQuotas::read_quota_log_file($id, $password);
+		my $logrepair =
+			Schulkonsole::Repair::read_repair_log_file($id, $password);
 
-=item C<logquota>
+=item C<logrepair>
 
-Output of C<sophomorix-quota --set>
+Output of C<sophomorix-repair ...>
 
 =cut
 
-		splice @$logquota, 0, -30;
-		$sk_session->set_var('logquota', join("", @$logquota));
+		splice @$logrepair, 0, -30;
+		$sk_session->set_var('logrepair', join("", @$logrepair));
 	};
 	if ($@) {
 		$sk_session->set_status(
@@ -290,69 +101,31 @@ Output of C<sophomorix-quota --set>
 }
 
 # pre-set values for <form>
-foreach my $key (keys %sophomorix_conf) {
-	if (defined $sophomorix_conf_new{$key}) {
-		if (Schulkonsole::SophomorixConfig::is_boolean($key)) {
-			#$sk_session->set_var($key, $sophomorix_conf_new{$key});
-			$q->param($key, $sophomorix_conf_new{$key});
-		} else {
-			$q->param($key, $sophomorix_conf_new{$key});
-		}
-	} else {
-		if (Schulkonsole::SophomorixConfig::is_boolean($key)) {
-			#$sk_session->set_var($key, $sophomorix_conf{$key});
-			$q->param($key, $sophomorix_conf{$key});
-		} else {
-			$q->param($key, $sophomorix_conf{$key});
-		}
-	}
-}
-foreach my $key (keys %quota_conf) {
-	if (defined $quota_conf_new{$key}) {
-		$q->param($key, $quota_conf_new{$key});
-	} else {
-		$q->param($key, $quota_conf{$key});
-	}
+my $lines = Schulkonsole::Repair::repair_get_info($id, $password);
+my @directories;
+
+foreach my $line (split('\n', $lines)) {
+  my ($nr, $dir, $user, $group, $rights) = $line =~ /^\sNr\.\s(\d+)\:\s(^\:+)\:\:(^\:+)\:\:(^\:+)\:\:(\d+)$/;
+  continue unless $nr and $dir and $user and $group and $rights;
+  my %dir = (nr => $nr, dir => $dir, user => $user, group => $group, permissions => $rights, repair => (exists $q->param($nr.';repair')? 1 : 0);
+  push @directories, %dir;
 }
 
-foreach my $key (keys %mailquota_conf) {
-	if (defined $mailquota_conf_new{$key}) {
-		$q->param($key, $mailquota_conf_new{$key});
-	} else {
-		$q->param($key, $mailquota_conf{$key});
-	}
-}
+=item C<directories>
 
-=item C<mountpoints>
-
-An array with the mountpoints
+An array with the directories
 
 =cut
 
-$sk_session->set_var('mountpoints', \@mountpoints);
-foreach my $key (keys %filesystem_conf) {
-	if (defined $filesystem_conf_new{$key}) {
-		$sk_session->set_var($key, $filesystem_conf_new{$key});
-	} else {
-		$sk_session->set_var($key, $filesystem_conf{$key});
-	}
-}
-
-=item C<encodings>
-
-An array with the supported encodings
-
-=cut
-
-$sk_session->set_var('encodings', ['ascii','8859-1','8859-15','win1252','utf8']);
+$sk_session->set_var('directories', \@directories);
 
 =item C<isbusy>
 
-True if C<sophomorix-quota> is running
+True if C<sophomorix-repair> is running
 
 =cut
 
-$sk_session->set_var('isbusy', ($running{quota}? 1 : 0));
+$sk_session->set_var('isbusy', ($running{repair}? 1 : 0));
 
 
 $sk_session->print_page("$this_file.tt", $this_file);
@@ -368,262 +141,9 @@ $sk_session->print_page("$this_file.tt", $this_file);
 
 =item C<accept>
 
-Write the changes
+Execute the selected commands
 
 =cut
-
-
-
-sub read_quota_conf {
-	my %re;
-
-=item C<${mountpoints}_quotateacher>
-
-Created in loop over template variable C<mountpoints>.
-The values as a plus sign separated list correspond to the value of
-standard-lehrer in F<quota.txt>
-
-=item C<${mountpoints}_quotastudent>
-
-Created in loop over template variable C<mountpoints>.
-The values as a plus sign separated list correspond to the value of
-standard-schueler in F<quota.txt>
-
-=cut
-
-	my %key_map = (
-		quotateacher => 'standard-lehrer',
-		quotastudent => 'standard-schueler',
-#		quotaworkstation => 'standard-workstations',
-	);
-
-
-	if (open QUOTACONF, '<',
-	         Schulkonsole::Encode::to_fs("$DevelConf::config_pfad/quota.txt")) {
-		flock QUOTACONF, 1;
-
-		my %quotas;
-		while (<QUOTACONF>) {
-			chomp;
-			s/\s+//g;
-			next if (not $_ or /^#/);
-
-			my ($key, $quota) = /^(\S+):(\d.+)$/;
-
-			$quotas{$key} = $quota;
-		}
-
-		close QUOTACONF;
-
-
-		my $insert_value = sub {
-			my $quota = shift;
-
-			my @quotas = split '\+', $quotas{$key_map{$quota}};
-			if ($#quotas != $#mountpoints) {
-				foreach my $mountpoint (@mountpoints) {
-					$re{"${mountpoint}_$quota"} = 0;
-				}
-			} else {
-				foreach my $mountpoint (@mountpoints) {
-					$re{"${mountpoint}_$quota"} = shift @quotas;
-				}
-			}
-		};
-
-		foreach my $key (keys %key_map) {
-			&$insert_value($key);
-		}
-
-
-	} else {
-		print STDERR "Cannot open $DevelConf::config_pfad/quota.txt\n";
-
-		foreach my $quota (keys %key_map) {
-			foreach my $mountpoint (@mountpoints) {
-				$re{"${mountpoint}_$quota"} = -1;
-			}
-		}
-	}
-
-	return %re;
-}
-
-sub read_mailquota_conf {
-	my %re;
-
-=item C<mailquotateacher>
-
-The value correspond to the value of
-standard-lehrer in F<mailquota.txt>
-
-=item C<mailquotastudent>
-
-The value correspond to the value of
-standard-schueler in F<mailquota.txt>
-
-=cut
-
-	my %key_map = (
-		mailquotateacher => 'standard-lehrer',
-		mailquotastudent => 'standard-schueler',
-#		mailquotaworkstation => 'standard-workstations',
-	);
-
-
-	if (open MAILQUOTACONF, '<',
-	         Schulkonsole::Encode::to_fs("$DevelConf::config_pfad/mailquota.txt")) {
-		flock MAILQUOTACONF, 1;
-
-		my %quotas;
-		while (<MAILQUOTACONF>) {
-			chomp;
-			s/\s+//g;
-			next if (not $_ or /^#/);
-
-			my ($key, $quota) = /^(\S+):(\d.+)$/;
-
-			$quotas{$key} = $quota;
-		}
-
-		close MAILQUOTACONF;
-
-		foreach my $quota (keys %key_map) {
-			$re{"$quota"} = (defined $quotas{$key_map{"$quota"}} ? $quotas{$key_map{"$quota"}} : -1);
-		}
-
-	} else {
-		print STDERR "Cannot open $DevelConf::config_pfad/mailquota.txt\n";
-
-		foreach my $quota (keys %key_map) {
-			$re{"$quota"} = -1;
-		}
-	}
-	return %re;
-}
-
-
-
-sub read_filesystem_conf {
-	my @stat = stat $DevelConf::share_school;
-	my $perm_share_school = $stat[2];
-
-=item C<activateglobalshares>
-
-True if shares are accessible
-
-=cut
-
-	return (
-		activateglobalshares => $perm_share_school & 077,
-	);
-}
-
-
-
-
-sub new_quota_lines {
-	my $new = shift;
-	my $old = shift;
-
-	my %key_map = (
-		quotateacher => 'standard-lehrer',
-		quotastudent => 'standard-schueler',
-#		quotaworkstation => 'standard-workstations',
-	);
-
-
-
-	my %new;
-	foreach my $key (keys %key_map) {
-		my $is_new = 0;
-		my @values;
-		foreach my $mountpoint (@mountpoints) {
-			my $new_value = $$new{"${mountpoint}_$key"};
-			if (length $new_value) {
-				push @values, $new_value;
-				$is_new = 1;
-			} else {
-				push @values, $$old{"${mountpoint}_$key"}
-			}
-		}
-
-		$new{$key} = join '+', @values if $is_new;
-	}
-
-	my @lines;
-	if (open QUOTACONF, '<',
-	         Schulkonsole::Encode::to_fs("$DevelConf::config_pfad/quota.txt")) {
-
-		while (my $line = <QUOTACONF>) {
-			foreach my $new_key (keys %new) {
-				my $key = $key_map{$new_key};
-				if ($line =~ /^\s*$key\s*:/) {
-					$line = "$key: $new{$new_key}\n";
-					delete $new{$new_key};
-
-					last;
-				}
-			}
-			push @lines, $line;
-		}
-	}
-
-	if (%new) {
-		push @lines, "# schulkonsole\n";
-
-		my $line;
-		foreach my $new_key (keys %new) {
-			push @lines, "$key_map{$new_key}: $new{$new_key}\n";
-		}
-	}
-
-
-	return \@lines;
-}
-
-sub new_mailquota_lines {
-	my $new = shift;
-	my $old = shift;
-	my %newquota = %$new;
-	
-	my %key_map = (
-		mailquotateacher => 'standard-lehrer',
-		mailquotastudent => 'standard-schueler',
-#		mailquotaworkstation => 'standard-workstations',
-	);
-
-	my @lines;
-	if (open MAILQUOTACONF, '<',
-	         Schulkonsole::Encode::to_fs("$DevelConf::config_pfad/mailquota.txt")) {
-
-		while (my $line = <MAILQUOTACONF>) {
-			foreach my $new_key (keys %newquota) {
-				my $key = $key_map{$new_key};
-				if ($line =~ /^\s*$key\s*:/) {
-					$line = "$key: $newquota{$new_key}\n";
-					delete $newquota{$new_key};
-
-					last;
-				}
-			}
-			push @lines, $line;
-		}
-	}
-
-	if (%newquota) {
-		push @lines, "# schulkonsole\n";
-
-		my $line;
-		foreach my $new_key (keys %newquota) {
-			push @lines, "$key_map{$new_key}: $newquota{$new_key}\n";
-		}
-	}
-
-	return \@lines;
-}
-
-
 
 
 

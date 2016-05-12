@@ -12,7 +12,7 @@
 [% IF isbusy %]
 
 	[% busy.msg=loc('Rechte zurücksetzen läuft...') %]
-	[% busy.log=logquota %]
+	[% busy.log=logrepair %]
 
 	[% INCLUDE busy.inc.tt %]
 
@@ -32,19 +32,31 @@
 	[% lfdnr = 1 %]
 	[% FOREACH d IN directories %]
 		<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
-		<td class="lfdnr">[% lfdnr %].</td>
+		<td class="lfdnr">[% d.nr %].</td>
 		<td>[% d.dir %]</td>
 		<td>[% d.user %]</td>
 		<td>[% d.group %]</td>
 		<td>[% d.permissions %]</td>
-		<td><input type="checkbox" name="[% lfdnr %];repair" [% IF d.repair %][% quickrepairoff=1 %] checked[% END %]></td>
+		<td><input type="checkbox" name="[% d.nr %];repair" [% IF d.repair %][% quickrepairoff=1 %] checked[% END %]></td>
 		</tr>
 		[% lfdnr = lfdnr + 1 %]
 	[% END %]
+	<tr>
+	<td colspan=2></td>
+	<td>|</td>
+	</tr>
+	<tr class="quickselection">
+	<td>[% loc('Schnellauswahl') %]</td>
+	<td></td>
+	<td><input type="button" 
+		value="[% IF quickrepairoff %][% loc('Aus') %][% ELSE %][% loc('An') %][% END %]" 
+		name="repair" checked onClick="check_uncheck(this)">
+	</td>
+	</tr>
 	</table>
 
 	<p>
-	<input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
+	<input type="submit" name="accept" value="[% loc('Reparatur durchführen') %]">
 	</p>
 	
 	</form>

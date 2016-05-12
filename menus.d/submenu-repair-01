@@ -1,4 +1,4 @@
-[% IF link_repair_directories %]
+[% IF link_repair_permissions %]
 	<li><a [% dohref("repair_permissions") %]>[% loc('Rechte') %]</a></li>
 [% END %]
 [% IF link_repair_homes %]

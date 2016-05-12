@@ -221,6 +221,7 @@ $VERSION = 0.06;
 	REPAIRCLASSHOMESAPP
 	REPAIRPROJECTHOMESAPP
 	REPAIRHOMESAPP
+	REPAIRGETINFOAPP
 );
 
 use Env::Bash;
@@ -777,6 +778,8 @@ use constant {
 
 =item C<REPAIRHOMESAPP>
 
+=item C<REPAIRGETINFOAPP>
+
 =back
 
 =cut
@@ -787,6 +790,7 @@ use constant {
 	REPAIRCLASSHOMESAPP => 16003,
 	REPAIRPROJECTHOMESAPP => 16004,
 	REPAIRHOMESAPP => 16005,
+	REPAIRGETINFOAPP => 16006,
 };
 
 
@@ -1534,6 +1538,7 @@ $_wrapper_repair = '@pkglibexecdir@/bin/wrapper-repair';
 	REPAIRCLASSHOMESAPP() => 'repair_classhomes',
 	REPAIRPROJECTHOMESAPP() => 'repair_projecthomes',
 	REPAIRHOMESAPP() => 'repair_homes',
+	REPAIRGETINFOAPP() => 'repair_get_info',
 );
 
 

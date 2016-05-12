@@ -43,7 +43,10 @@ $VERSION = 0.03;
     repair_classhomes
     repair_projecthomes
     repair_homes
+    read_repair_log_file
+    repair_get_info
     
+    LOGFILE
     STUDENTS
     TEACHERS
     WORKSTATIONS
@@ -75,6 +78,7 @@ constant {
   TEACHERS => 2,
   WORKSTATIONS => 4,
   ALL => 7,
+  LOGFILE => '/var/tmp/sophomorix-repair.log'
 }
 
 my $wrapcmd = '/usr/lib/schulkonsole/bin/wrapper-repair';
@@ -259,6 +263,98 @@ sub repair_homes {
 	my $usergroup = shift;
 	
 	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::REPAIRHOMESAPP,$id, $password, $usergroup);
+}
+
+
+=head3 C<repair_get_info($id, $password)>
+
+do call sophomorix-repair --permissions --info
+to get a numbered command list.
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=back
+
+=head3 Return Value
+
+Returns the output of the command in the form
+
+...
+
+Nr. 1: /var/lib/sophomorix::root::root::0700
+Nr. 2: /var/log/sophomorix::root::root::0700
+...
+Nr. 33: /home/samba/progs::administrator::domadmins::0775
+...
+
+=head3 Description
+
+return output displaying the lines of sophomorix-repair --permissions --info
+
+=cut
+
+sub repair_get_info {
+	my $id = shift;
+	my $password = shift;
+	
+	$in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::REPAIRGETINFOAPP,$id, $password);
+	return $in;
+}
+
+=head3 C<read_repair_log_file($id, $password)>
+
+Read sophomorix-repair log file, if existing
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the admin invoking the command
+
+=item C<$password>
+
+The password of the admin invoking the command
+
+=back
+
+=head4 Return value
+
+A reference to an array of the lines in the log file
+
+=head4 Description
+
+Reads the sorted list of
+/var/tmp/sophomorix-repair.log if existing.
+
+=cut
+
+sub read_repair_log_file {
+        my @re;
+
+        if (open REPAIRLOG, '<', Schulkonsole::Encode::to_fs(LOGFILE)) {
+            while (<REPAIRLOG>) {
+                    push @re, $_;
+            }
+            close REPAIRLOG;
+        } else {
+                warn "$0: Cannot open "
+                    . LOGFILE
+                    . ": $!\n";
+        }
+        
+        return \@re;
 }
 
 
