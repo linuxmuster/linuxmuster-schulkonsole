@@ -15,6 +15,10 @@ $VERSION = 0.16;
 	WRAPPER_NO_PROJECT
 	WRAPPER_PROCESS_RUNNING
 	WRAPPER_CANNOT_DELETE_LOG
+	WRAPPER_NO_GROUP
+	WRAPPER_INVALID_GROUP
+	WRAPPER_INVALID_COMMAND
+	WRAPPER_NO_USER
 );
 
 # package constants
@@ -24,6 +28,10 @@ use constant {
 	WRAPPER_NO_PROJECT => Schulkonsole::Error::Error::NEXT_ERROR - 2,
 	WRAPPER_PROCESS_RUNNING => Schulkonsole::Error::Error::NEXT_ERROR - 3,
 	WRAPPER_CANNOT_DELETE_LOG => Schulkonsole::Error::Error::NEXT_ERROR - 4,
+	WRAPPER_NO_GROUP => Schulkonsole::Error::Error::NEXT_ERROR - 5,
+	WRAPPER_INVALID_GROUP => Schulkonsole::Error::Error::NEXT_ERROR - 6,
+	WRAPPER_INVALID_COMMAND => Schulkonsole::Error::Error::NEXT_ERROR - 7,
+	WRAPPER_NO_USER => Schulkonsole::Error::Error::NEXT_ERROR - 8,
 };
 
 sub new {
@@ -45,6 +53,14 @@ sub what {
 		and return $this->{d}->get('Es läuft bereits eine Reparatur.');
 	$this->{code} == WRAPPER_CANNOT_DELETE_LOG
 		and return $this->{d}->get('Die Log-Datei kann nicht zurückgesetzt werden.');
+	$this->{code} == WRAPPER_NO_GROUP
+		and return $this->{d}->get('Es wurde keine Gruppe angegeben.');
+	$this->{code} == WRAPPER_INVALID_GROUP
+		and return $this->{d}->get('Die angegebene Gruppe existiert nicht.');
+	$this->{code} == WRAPPER_INVALID_COMMAND
+		and return $this->{d}->get('Die angegebene Befehlsnummer existiert nicht.');
+	$this->{code} == WRAPPER_NO_USER
+		and return $this->{d}->get('Es wurde kein Benutzer angegeben.');
 	};
 	return $this->SUPER::what();
 }

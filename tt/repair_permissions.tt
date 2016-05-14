@@ -42,12 +42,12 @@
 		[% lfdnr = lfdnr + 1 %]
 	[% END %]
 	<tr>
-	<td colspan=2></td>
+	<td colspan=5></td>
 	<td>|</td>
 	</tr>
 	<tr class="quickselection">
 	<td>[% loc('Schnellauswahl') %]</td>
-	<td></td>
+	<td colspan=4></td>
 	<td><input type="button" 
 		value="[% IF quickrepairoff %][% loc('Aus') %][% ELSE %][% loc('An') %][% END %]" 
 		name="repair" checked onClick="check_uncheck(this)">

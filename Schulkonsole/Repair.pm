@@ -1,3 +1,4 @@
+use CGI::Inspect;
 use strict;
 use IPC::Open3;
 use POSIX 'sys_wait_h';
@@ -73,13 +74,13 @@ Select all users homes for repair
 
 =cut
 
-constant {
+use constant {
   STUDENTS => 1,
   TEACHERS => 2,
   WORKSTATIONS => 4,
   ALL => 7,
   LOGFILE => '/var/tmp/sophomorix-repair.log'
-}
+};
 
 my $wrapcmd = '/usr/lib/schulkonsole/bin/wrapper-repair';
 my $errorclass = "Schulkonsole::Error::RepairError";
@@ -119,7 +120,7 @@ sub repair_permissions {
 	my $id = shift;
 	my $password = shift;
 
-	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::REPAIRPERMISSIONSAPP,$id, $password, @_);
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::REPAIRPERMISSIONSAPP,$id, $password, join(',', @_));
 }
 
 
@@ -287,15 +288,8 @@ The password of the user invoking the command
 
 =head3 Return Value
 
-Returns the output of the command in the form
+Returns the commands as array reference.
 
-...
-
-Nr. 1: /var/lib/sophomorix::root::root::0700
-Nr. 2: /var/log/sophomorix::root::root::0700
-...
-Nr. 33: /home/samba/progs::administrator::domadmins::0775
-...
 
 =head3 Description
 
@@ -307,8 +301,20 @@ sub repair_get_info {
 	my $id = shift;
 	my $password = shift;
 	
-	$in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::REPAIRGETINFOAPP,$id, $password);
-	return $in;
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::REPAIRGETINFOAPP,$id, $password);
+	
+	my @directories;
+	foreach my $line (split('\n', $in)) {
+	  next unless $line =~ /Nr\./;
+	  my ($nr, $dir, $user, $group, $rights) = $line =~ /^Nr\.\s*(\d+):\s*(\S+?)::(\w+?)::(\w+?)::(\d+?)$/;
+	  next unless $nr and $dir and $user and $group and $rights;
+	  my %dir = (nr => $nr, dir => $dir, user => $user, group => $group, permissions => $rights, repair => 0,
+		    );
+	  push @directories, \%dir;
+	}
+
+
+	return \@directories;
 }
 
 =head3 C<read_repair_log_file($id, $password)>

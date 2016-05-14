@@ -1,3 +1,4 @@
+use CGI::Inspect;
 =head1 NAME
 
 wrapper-repair.pl - wrapper für root Funktionen
@@ -85,8 +86,35 @@ Repair selected permissions.
 =cut
 
 sub repair_permissions {
+	my @nums;
+	my $list = <>;
+	@nums = split(/,/, $list);
+	foreach my $num (@nums) {
+		($num) = $num =~ /^(\d+)$/;
+		exit (  Schulkonsole::Error::RepairError::WRAPPER_INVALID_COMMAND )
+			unless $num;
+		exit ( Schulkonsole::Error::RepairError::WRAPPER_INVALID_COMMAND )
+			if $num <= 0;
+	}
 
-
+	prepare_start();
+	
+	my $pid = fork;
+	exit ( Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK ) unless $pid;
+	if (not $pid) {
+		if( @nums ){
+			foreach my $num (@nums) {
+				my $opts = " --permissions --command-number $num ";
+				do_repair( $opts );
+			}
+		}
+		else {
+			my $opts = " --permissions ";
+			do_repair( $opts );
+		}
+	}
+	
+	exit 0;
 }
 
 =head3 repair_myhome
@@ -100,21 +128,22 @@ Repair invoking users home folder
 =cut
 
 sub repair_myhome {
-
-	$< = $>;
-	$) = 0;
-	$( = $);
-	umask(022);
-
-	open(CMDIN, "/usr/sbin/muster-script2 |")
-		or exit (Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED);
-	while(<CMDIN>){
-		print $_;
+	my $user = <>;
+	($user) = $user =~ /^(\w+)$/;
+	exit ( Schulkonsole::Error::RepairError::WRAPPER_NO_USER ) unless $user;
+	
+	my $opts = " --repairhomes --user $user ";
+	
+	prepare_start();
+	
+	my $pid = fork;
+	exit ( Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK ) unless $pid;
+	
+	if (not $pid) {
+		do_repair( $opts );
 	}
-	close(CMDIN) or exit (Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED);
 	
 	exit 0;
-
 }
 
 =head3 repair_classhomes
@@ -177,50 +206,79 @@ sub repair_projecthomes {
 
 }
 
-=head3 repair_permissions
+=head3 repair_homes
 
-numeric constant: C<REPAIRPERMISSIONSAPP>
+numeric constant: C<REPAIRHOMESAPP>
 
 =head4 Description
 
-Repair selected permissions.
+Repair selected user groups home directories.
 
 =cut
 
-sub repair_permissions {
+sub repair_homes {
 
-	$< = $>;
-	$) = 0;
-	$( = $);
-	umask(022);
-
-	system($Schulkonsole::Config::_cmd_sophomorix_repair) == 0
-		or exit (Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED);
+	my $group = <>;
+	($group) = $group =~ /^(\d+)$/;
+	exit ( Schulkonsole::Error::RepairError::WRAPPER_NO_GROUP ) unless $group;
+	
+	my $opts;
+	if ( $group == Schulkonsole::Repair::STUDENTS ) {
+	  $opts = " --repairhome --students ";
+	}
+	elsif ( $group == Schulkonsole::Repair::TEACHERS ) {
+	  $opts = " --repairhome --teachers ";
+	}
+	elsif ( $group == Schulkonsole::Repair::WORKSTATIONS ) {
+	  $opts = " --repairhome --workstations ";
+	}
+	elsif ( $group == Schulkonsole::Repair::ALL ) {
+	  $opts = " --repairhome ";
+	}
+	exit ( Schulkonsole::Error::RepairError::WRAPPER_INVALID_GROUP ) unless $group;
+	
+	prepare_start();
+	
+	my $pid = fork;
+	exit ( Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK ) unless $pid;
+	
+	if (not $pid) {
+		do_repair( $opts );		
+	}
 
 	exit 0;
 
 }
 
-=head3 repair_permissions
+=head3 repair_get_info
 
-numeric constant: C<REPAIRPERMISSIONSAPP>
+numeric constant: C<REPAIRGETINFOAPP>
 
 =head4 Description
 
-Repair selected permissions.
+Write possible permission repair options to stdout.
 
 =cut
 
-sub repair_permissions {
-
+sub repair_get_info {
+	
+	my $opts = " --permissions --info ";
+	
+	my $command = $Schulkonsole::Config::_cmd_sophomorix_repair . $opts . " |";
 	$< = $>;
-	$) = 0;
 	$( = $);
-	umask(022);
+	$ENV{HOME}="/root" if not defined $ENV{HOME};	
+	open(SCRIPTIN, $command) or
+	exit (  Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED);
 
-	system($Schulkonsole::Config::_cmd_sophomorix_repair) == 0
-		or exit (Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED);
-
+	my $line;
+	while(<SCRIPTIN>) {
+	    ($line) = $_ =~ /^(.*?)$/;
+	    print "$line\n" if defined $line;
+	}
+	close(SCRIPTIN) or 
+	exit (  Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED);
+	
 	exit 0;
 
 }
@@ -238,7 +296,7 @@ sub prepare_start {
 			exit (  Schulkonsole::Error::RepairError::WRAPPER_PROCESS_RUNNING );
 		}
 	}
-	system("rm -f $Schulkonsole::Repair::LOGFILE") or exit ( Schulkonsole::Error::RepairError::WRAPPER_CANNOT_DELETE_LOG );
+	system("rm -f " . Schulkonsole::Repair::LOGFILE);
 }
 
 sub do_repair {
@@ -249,7 +307,7 @@ sub do_repair {
 	$) = 0;
 	$( = $);
 	umask(022);
-	open STDOUT, '>>', Schulkonsole::Encode::to_fs($Schulkonsole::Repair::LOGFILE);	# ignore errors
+	open STDOUT, '>>', Schulkonsole::Encode::to_fs(Schulkonsole::Repair::LOGFILE);	# ignore errors
 	open STDERR, '>>&', *STDOUT;
 
 	$ENV{PATH} = '/bin:/sbin:/usr/sbin:/usr/bin';
