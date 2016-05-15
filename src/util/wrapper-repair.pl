@@ -39,6 +39,8 @@ my $id = $$userdata{id};
 
 my $app_id = Schulkonsole::Wrapper::wrapper_authorize($userdata);
 
+my $child_initialized = 0;
+
 SWITCH: {
 
 	$app_id == Schulkonsole::Config::REPAIRPERMISSIONSAPP and do {
@@ -96,11 +98,10 @@ sub repair_permissions {
 		exit ( Schulkonsole::Error::RepairError::WRAPPER_INVALID_COMMAND )
 			if $num <= 0;
 	}
-
 	prepare_start();
 	
 	my $pid = fork;
-	exit ( Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK ) unless $pid;
+	exit ( Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK ) unless defined $pid;
 	if (not $pid) {
 		if( @nums ){
 			foreach my $num (@nums) {
@@ -112,6 +113,7 @@ sub repair_permissions {
 			my $opts = " --permissions ";
 			do_repair( $opts );
 		}
+	#	system("rm -f " . Schulkonsole::Repair::LOGFILE);
 	}
 	
 	exit 0;
@@ -299,18 +301,25 @@ sub prepare_start {
 	system("rm -f " . Schulkonsole::Repair::LOGFILE);
 }
 
-sub do_repair {
-	my $opts = shift;
-	
+sub init_child {
 	close STDIN;
 	$< = $>;
 	$) = 0;
 	$( = $);
 	umask(022);
-	open STDOUT, '>>', Schulkonsole::Encode::to_fs(Schulkonsole::Repair::LOGFILE);	# ignore errors
-	open STDERR, '>>&', *STDOUT;
+	open my $log_fh, '>>', Schulkonsole::Encode::to_fs(Schulkonsole::Repair::LOGFILE);	# ignore errors
+	*STDOUT = $log_fh;
+	*STDERR = $log_fh;
 
 	$ENV{PATH} = '/bin:/sbin:/usr/sbin:/usr/bin';
 	$ENV{DEBIAN_FRONTEND} = 'teletype';
-	exec $Schulkonsole::Config::_cmd_sophomorix_repair . $opts or return;
+	$child_initialized = 1;
+}
+
+sub do_repair {
+	my $opts = shift;
+	if(not $child_initialized){
+		init_child();
+	}
+	system($Schulkonsole::Config::_cmd_sophomorix_repair . $opts . ' >>'.Schulkonsole::Repair::LOGFILE . ' 2>&1') ;
 }

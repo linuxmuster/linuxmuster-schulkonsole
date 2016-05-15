@@ -120,7 +120,13 @@ sub repair_permissions {
 	my $id = shift;
 	my $password = shift;
 
-	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::REPAIRPERMISSIONSAPP,$id, $password, join(',', @_));
+	my $num = repair_get_info($id, $password);
+	if( scalar @$num == scalar @_ ){
+		Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::REPAIRPERMISSIONSAPP,$id, $password,'');
+	}
+	else {
+		Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::REPAIRPERMISSIONSAPP,$id, $password, join(',', @_));
+	}
 }
 
 
