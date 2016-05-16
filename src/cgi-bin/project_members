@@ -98,7 +98,7 @@ $q->param('repair_projecthomes;'.$project) and do {
 	}
 	Schulkonsole::Repair::repair_projecthomes($id, $password, $project);
 	$sk_session->set_status($sk_session->d()->get(
-				'Die Persönlichen Ordner wurden repariert.'), 0);
+				'Reparatur gestartet...'), 0);
 	$running{repair} = 1;
 	last COMMANDS;
 };

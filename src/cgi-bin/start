@@ -251,7 +251,7 @@ defined $q->param('repair_myhome') and not $running{repair} and do {
 	if($@){
 		$sk_session->standard_error_handling($this_file, $@);
 	}
-	$sk_session->set_status($sk_session->d()->get('Reparatur gestartet...'). 0);
+	$sk_session->set_status($sk_session->d()->get('Reparatur gestartet...'), 0);
 	$running{repair} = 1;
 	last COMMANDS;
 };
@@ -819,6 +819,35 @@ True if the user has an OpenVPN certificate
 
 $sk_session->set_var('has_ovpn', $has_ovpn);
 
+
+if($q->param('logrepair') or $running{repair}) {
+	eval {
+		my $logrepair =
+			Schulkonsole::Repair::read_repair_log_file($id, $password);
+
+=item C<logrepair>
+
+Output of C<sophomorix-repair ...>
+
+=cut
+
+		splice @$logrepair, 0, -30;
+		$sk_session->set_var('logrepair', join("", @$logrepair));
+	};
+	if ($@) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Kann Logdatei nicht öffnen'), 1);
+	}
+	
+}
+
+=item C<isbusy>
+
+True if C<sophomorix-repair> is running
+
+=cut
+
+$sk_session->set_var('isbusy', ($running{repair}? 1 : 0));
 
 $sk_session->print_page("$this_file.tt", $this_file);
 

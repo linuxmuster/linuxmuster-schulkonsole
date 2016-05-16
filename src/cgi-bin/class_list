@@ -80,7 +80,7 @@ if ($q->param('repair_classhomes;' . $class) and $class) {
 	if($@){
 		$sk_session->standard_error_handling($this_file, $@);
 	}
-	$sk_session->set_status($sk_session->d()->get('Reparatur gestartet.'),0);
+	$sk_session->set_status($sk_session->d()->get('Reparatur gestartet...'),0);
 	$running{repair} = 1;
 }
 
