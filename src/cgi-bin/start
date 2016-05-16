@@ -193,6 +193,8 @@ use Schulkonsole::Info;
 use Schulkonsole::OVPN;
 use Schulkonsole::Printer;
 use Schulkonsole::Sophomorix;
+use Schulkonsole::Repair;
+use Proc::ProcessTable;
 use Sophomorix::SophomorixConfig;
 use Template;
 use Template::Constants qw ( :debug );
@@ -229,10 +231,30 @@ my $cups = new Net::CUPS;
 $cups->setUsername($uid);
 $cups->setPasswordCB(\&password_cb);
 
-
+my $process_table = new Proc::ProcessTable;
+my $app_repair = $Schulkonsole::Config::_cmd_sophomorix_repair;
+$app_repair =~ s:.*/::;
+my %running;
+foreach my $process (@{ $process_table->table }) {
+	if ($process->fname =~ /^soph/ and $process->cmndline =~ /$app_repair/) {
+			$running{repair} = $process->pid;
+	}
+}
 
 COMMANDS: {
 
+# repair my home
+defined $q->param('repair_myhome') and not $running{repair} and do {
+	eval {
+		Schulkonsole::Repair::repair_myhome($id, $password);
+	};
+	if($@){
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+	$sk_session->set_status($sk_session->d()->get('Reparatur gestartet...'). 0);
+	$running{repair} = 1;
+	last COMMANDS;
+};
 # password change
 (   defined $q->param('oldpassword')
  or defined $q->param('newpassword')

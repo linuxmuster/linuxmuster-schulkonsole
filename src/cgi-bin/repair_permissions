@@ -78,7 +78,6 @@ if ($q->param('accept')) {
 		}
 		
 		Schulkonsole::Repair::repair_permissions($id, $password, @nums);
-		sleep 1;
 		$sk_session->set_status( $sk_session->d()->get('Reparatur gestartet.'), 0);
 		
 		$running{repair} = 1;

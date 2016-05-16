@@ -104,13 +104,15 @@ sub repair_permissions {
 	exit ( Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK ) unless defined $pid;
 	if (not $pid) {
 		if( @nums ){
+			my @opts;
 			foreach my $num (@nums) {
-				my $opts = " --permissions --command-number $num ";
-				do_repair( $opts );
+				my $opts = " --permissions --command-number $num";
+				push @opts, $opts;
 			}
+			do_repair( @opts );
 		}
 		else {
-			my $opts = " --permissions ";
+			my $opts = " --permissions";
 			do_repair( $opts );
 		}
 	#	system("rm -f " . Schulkonsole::Repair::LOGFILE);
@@ -130,16 +132,15 @@ Repair invoking users home folder
 =cut
 
 sub repair_myhome {
-	my $user = <>;
-	($user) = $user =~ /^(\w+)$/;
+	my $user = $$userdata{uid};
 	exit ( Schulkonsole::Error::RepairError::WRAPPER_NO_USER ) unless $user;
 	
-	my $opts = " --repairhomes --user $user ";
+	my $opts = " --repairhome --user $user ";
 	
 	prepare_start();
 	
 	my $pid = fork;
-	exit ( Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK ) unless $pid;
+	exit ( Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK ) unless defined $pid;
 	
 	if (not $pid) {
 		do_repair( $opts );
@@ -163,12 +164,12 @@ sub repair_classhomes {
 	($class) = $class =~ /^(\w+)$/;
 	exit ( Schulkonsole::Error::RepairError::WRAPPER_NO_CLASS ) unless $class;
 	
-	my $opts = " --repairhomes --class $class";
+	my $opts = " --repairhome --class $class";
 	
 	prepare_start();
 	
 	my $pid = fork;
-	exit ( Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK ) unless $pid;
+	exit ( Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK ) unless defined $pid;
 	
 	if (not $pid) {
 		do_repair( $opts );		
@@ -193,12 +194,12 @@ sub repair_projecthomes {
 	($project) = $project =~ /^(p_[[:alnum:]]+)$/;
 	exit ( Schulkonsole::Error::RepairError::WRAPPER_NO_PROJECT ) unless $project;
 	
-	my $opts = " --repairhomes --project $project";
+	my $opts = " --repairhome --project $project";
 	
 	prepare_start();
 	
 	my $pid = fork;
-	exit ( Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK ) unless $pid;
+	exit ( Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK ) unless defined $pid;
 	
 	if (not $pid) {
 		do_repair( $opts );		
@@ -224,32 +225,32 @@ sub repair_homes {
 	($group) = $group =~ /^(\d+)$/;
 	exit ( Schulkonsole::Error::RepairError::WRAPPER_NO_GROUP ) unless $group;
 	
-	my $opts;
-	if ( $group == Schulkonsole::Repair::STUDENTS ) {
-	  $opts = " --repairhome --students ";
+	my $opts = " --repairhome";
+	if ( $group & Schulkonsole::Repair::STUDENTS ) {
+	  $opts .= " --students";
 	}
-	elsif ( $group == Schulkonsole::Repair::TEACHERS ) {
-	  $opts = " --repairhome --teachers ";
+	elsif ( $group & Schulkonsole::Repair::TEACHERS ) {
+	  $opts .= " --class teachers";
 	}
-	elsif ( $group == Schulkonsole::Repair::WORKSTATIONS ) {
-	  $opts = " --repairhome --workstations ";
+	elsif ( $group & Schulkonsole::Repair::WORKSTATIONS ) {
+	  $opts .= " --workstations";
 	}
-	elsif ( $group == Schulkonsole::Repair::ALL ) {
-	  $opts = " --repairhome ";
+	elsif ( $group & Schulkonsole::Repair::ALL ) {
+	  $opts = " --repairhome";
 	}
 	exit ( Schulkonsole::Error::RepairError::WRAPPER_INVALID_GROUP ) unless $group;
 	
 	prepare_start();
 	
 	my $pid = fork;
-	exit ( Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK ) unless $pid;
+	exit ( Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK ) unless defined $pid;
 	
 	if (not $pid) {
-		do_repair( $opts );		
+		do_repair( $opts );
+		# system("rm -f ".Schulkonsole::Repair::LOGFILE);
 	}
 
 	exit 0;
-
 }
 
 =head3 repair_get_info
@@ -307,10 +308,8 @@ sub init_child {
 	$) = 0;
 	$( = $);
 	umask(022);
-	open my $log_fh, '>>', Schulkonsole::Encode::to_fs(Schulkonsole::Repair::LOGFILE);	# ignore errors
-	*STDOUT = $log_fh;
-	*STDERR = $log_fh;
-
+	open STDOUT, ">>", Schulkonsole::Encode::to_fs(Schulkonsole::Repair::LOGFILE);
+	open STDERR, ">>&", *STDOUT;
 	$ENV{PATH} = '/bin:/sbin:/usr/sbin:/usr/bin';
 	$ENV{DEBIAN_FRONTEND} = 'teletype';
 	$child_initialized = 1;
@@ -318,8 +317,10 @@ sub init_child {
 
 sub do_repair {
 	my $opts = shift;
-	if(not $child_initialized){
-		init_child();
+	my $cmd = $Schulkonsole::Config::_cmd_sophomorix_repair . $opts;
+	foreach my $opts (@_) {
+		$cmd .= "; " . $Schulkonsole::Config::_cmd_sophomorix_repair . $opts;
 	}
-	system($Schulkonsole::Config::_cmd_sophomorix_repair . $opts . ' >>'.Schulkonsole::Repair::LOGFILE . ' 2>&1') ;
+	init_child();
+	exec $cmd or return;
 }

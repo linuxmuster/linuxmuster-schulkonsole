@@ -43,10 +43,16 @@ $(document).ready(function() {
 	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
 	<td>[% loc('Alle Lehrer') %]</td><td><input type="checkbox" name="teachers_group"
 		[% IF teachers_group %] checked[% END %][% IF allusers_group %] disabled[% END %]></td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
 	<td>[% loc('Alle Schüler') %]</td><td><input type="checkbox" name="students_group"
 		[% IF students_group %] checked[% END %][% IF allusers_group %] disabled[% END %]></td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
 	<td>[% loc('Alle Rechner') %]</td><td><input type="checkbox" name="workstations_group"
 		[% IF workstations_group %] checked[% END %][% IF allusers_group %] disabled[% END %]></td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
 	<td>[% loc('Alle Benutzer') %]</td><td><input type="checkbox" name="allusers_group" [% IF allusers_group %] checked[% END %]></td>
 	[% lfdnr = lfdnr + 1 %]</tr>
 	</table>

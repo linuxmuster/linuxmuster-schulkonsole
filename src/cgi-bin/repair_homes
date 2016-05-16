@@ -25,6 +25,7 @@ provides the following variables:
 use strict;
 use utf8;
 use lib '/usr/share/schulkonsole';
+use Schulkonsole::Session;
 use Schulkonsole::Repair;
 use Proc::ProcessTable;
 
@@ -60,10 +61,25 @@ foreach my $process (@{ $process_table->table }) {
 }
 
 if ($q->param('accept')) {
-	eval {
-	};
-	if ($@) {
-		$sk_session->standard_error_handling($this_file, $@);
+	my $argusers = 0;
+	if($q->param('teachers_group')) {
+		$argusers |= Schulkonsole::Repair::TEACHERS;
+	}
+	if($q->param('students_group')) {
+		$argusers |= Schulkonsole::Repair::STUDENTS;	
+	}
+	if($q->param('workstations_group')) {
+		$argusers |= Schulkonsole::Repair::WORKSTATIONS;
+	}
+	if($q->param('allusers_group')) {
+		$argusers |= Schulkonsole::Repair::ALL;
+	}
+	if(not $argusers){
+		$sk_session->set_status($sk_session->d()->get('Es wurden keine Einträge zur Reparatur gewählt.'),1);
+	} else {
+		Schulkonsole::Repair::repair_homes($id, $password, $argusers);
+		$sk_session->set_status($sk_session->d()->get('Reparatur gestartet.'),0);
+		$running{repair} = 1;
 	}
 }
 

@@ -354,7 +354,9 @@ Reads the sorted list of
 
 sub read_repair_log_file {
         my @re;
-
+	if (not -e Schulkonsole::Encode::to_fs(LOGFILE)){
+		sleep 1;
+	}
         if (open REPAIRLOG, '<', Schulkonsole::Encode::to_fs(LOGFILE)) {
             while (<REPAIRLOG>) {
                     push @re, $_;
