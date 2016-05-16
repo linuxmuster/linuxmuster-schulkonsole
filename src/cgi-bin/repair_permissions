@@ -75,8 +75,12 @@ if ($q->param('accept')) {
 			$sk_session->set_status( $sk_session->d()->get('Es wurden keine Einträge zur Reparatur gewählt.'), 1);
 			last COMMAND;
 		}
-		
-		Schulkonsole::Repair::repair_permissions($id, $password, @nums);
+		eval {
+			Schulkonsole::Repair::repair_permissions($id, $password, @nums);
+		};
+		if($@){
+			$sk_session->standard_error_handling($this_file, $@);
+		}
 		$sk_session->set_status( $sk_session->d()->get('Reparatur gestartet.'), 0);
 		
 		$running{repair} = 1;
