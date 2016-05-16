@@ -78,7 +78,8 @@
 			</tr>
 		[% END %]
 		</table>
-		<p><input type="submit" name="task_refresh" value="[% loc('Aktualisieren') %]"></p>
+		<p><input type="submit" name="task_refresh" value="[% loc('Aktualisieren') %]">
+		<input type="submit" name="accept" value="[% loc('Übernehmen') %]></p>
 	[% ELSE %]
 		<p>[% loc('Keine geplanten Aufgaben.') %]</p>
 	[% END %]

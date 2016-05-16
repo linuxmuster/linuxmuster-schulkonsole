@@ -76,7 +76,20 @@ eval {
 			last SWITCHCOMMAND;
 		};
 
-		$q->param('planned_remove') and do {
+		$q->param('accept') and do {
+			my @hosts;
+			foreach my $param ($q->param){
+				my ($host) = $param =~/^delete;(\d+\.\d+\.\d+\.\d+)$/;
+				next unless $host;
+				push @hosts, $host;
+			}
+			if(not @hosts){
+				$sk_session->set_status($sk_session->d()->get('Kein Rechner ausgewählt.'),1);
+				last SWITCHCOMMAND;
+			}
+			Schulkonsole::Linbo::linbo_remote_remove($id, $password, @hosts);
+			$sk_session->set_status($sk_session->d()->get('Rechner entfernt.'),0);
+			
 			last SWITCHCOMMAND;
 		};
 		
