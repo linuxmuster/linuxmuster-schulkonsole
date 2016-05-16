@@ -87,14 +87,15 @@ eval {
 				$sk_session->set_status($sk_session->d()->get('Kein Rechner ausgewählt.'),1);
 				last SWITCHCOMMAND;
 			}
-			Schulkonsole::Linbo::linbo_remote_remove($id, $password, @hosts);
+			Schulkonsole::Linbo::remote_remove($id, $password, @hosts);
 			$sk_session->set_status($sk_session->d()->get('Rechner entfernt.'),0);
+			$linbo_remote_planned = Schulkonsole::Linbo::remote_planned($id, $password);
 			
 			last SWITCHCOMMAND;
 		};
 		
 		$linbo_remote_status = task_refresh();
-		$linbo_remote_planned = $Schulkonsole::Linbo::linbo_remote_planned();
+		$linbo_remote_planned = Schulkonsole::Linbo::remote_planned($id, $password);
 		$linbo_remote_new = 0;
 	} #SWITCHCOMMAND
 }; #eval

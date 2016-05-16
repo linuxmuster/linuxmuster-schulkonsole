@@ -30,6 +30,7 @@ $VERSION = 0.16;
 	WRAPPER_INVALID_SESSION_NAME
 	WRAPPER_CANNOT_OPEN_LINBOCMD
 	WRAPPER_CANNOT_CLOSE_LINBOCMD
+	WRAPPER_INVALID_IP
 );
 
 # package constants
@@ -40,6 +41,7 @@ use constant {
 	WRAPPER_INVALID_IS_EXAMPLE   => Schulkonsole::Error::Error::NEXT_ERROR -3,
 	WRAPPER_INVALID_IMAGE        => Schulkonsole::Error::Error::NEXT_ERROR -4,
 	WRAPPER_INVALID_ACTION       => Schulkonsole::Error::Error::NEXT_ERROR -5,
+	WRAPPER_CANNOT_OPEN_FILE     => Schulkonsole::Error::Error::NEXT_ERROR -6,
 	WRAPPER_CANNOT_RUN_COMMAND   => Schulkonsole::Error::Error::NEXT_ERROR -7,
 	WRAPPER_INVALID_TYPE         => Schulkonsole::Error::Error::NEXT_ERROR -8,
 	WRAPPER_INVALID_TARGET       => Schulkonsole::Error::Error::NEXT_ERROR -9,
@@ -52,6 +54,7 @@ use constant {
 	WRAPPER_INVALID_SESSION_NAME => Schulkonsole::Error::Error::NEXT_ERROR -16,
 	WRAPPER_CANNOT_OPEN_LINBOCMD => Schulkonsole::Error::Error::NEXT_ERROR -17,
 	WRAPPER_CANNOT_CLOSE_LINBOCMD => Schulkonsole::Error::Error::NEXT_ERROR -18,
+	WRAPPER_INVALID_IP           => Schulkonsole::Error::Error::NEXT_ERROR -19,
 };
 
 
@@ -102,6 +105,8 @@ sub what {
 		and return $this->{d}->get('Kann linbocmd Datei nicht öffnen');
 	$this->{code} == WRAPPER_CANNOT_CLOSE_LINBOCMD
 		and return $this->{d}->get('Kann linbocmd Datei nicht schließen');
+	$this->{code} == WRAPPER_INVALID_IP
+		and return $this->{d}->get('Ungültige IP');
 	};
 	return $this->SUPER::what();
 }

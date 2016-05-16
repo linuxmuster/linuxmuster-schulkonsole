@@ -36,6 +36,7 @@ use Schulkonsole::DB;
 use Schulkonsole::Encode;
 use Schulkonsole::Error::Error;
 use Schulkonsole::Error::LinboError;
+use Schulkonsole::Linbo;
 use Data::Dumper;
 use POSIX;
 
@@ -65,7 +66,7 @@ SWITCH: {
 	};
 
 	$app_id == Schulkonsole::Config::LINBOREMOTEPLANNEDAPP and do {
-		linbo_planned();
+		linbo_remote_planned();
 		last SWITCH;
 	};
 	
@@ -867,7 +868,7 @@ sub linbo_remote_planned() {
 	my @files = glob(Schulkonsole::Linbo::LINBOCMDDIR ."/*.cmd");
 	my %planned;
 	foreach my $file (@files) {
-		my $host = $file =~ /^.*\/(.+?)\.cmd$/;
+		my ($host) = $file =~ /^.*\/(.+?)\.cmd$/;
 		exit ( Schulkonsole::Error::LinboError::WRAPPER_INVALID_FILENAME) unless $host;
 		open(INFILE,'<', $file) || 
 			exit ( Schulkonsole::Error::LinboError::WRAPPER_CANNOT_OPEN_FILE );
@@ -877,7 +878,7 @@ sub linbo_remote_planned() {
 	my $data = Data::Dumper->new( [ \%planned ]);
 	$data->Terse(1);
 	$data->Indent(0);
-	print $data-Dump();
+	print $data->Dump();
 	
 	exit 0;
 }

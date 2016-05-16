@@ -151,7 +151,7 @@ C<LINBOCMDDIR>
 
 use constant {
 	LINBOCMDDIR => $Schulkonsole::Config::_linbo_dir . '/linbocmd',
-}
+};
 
 =head2 Functions
 

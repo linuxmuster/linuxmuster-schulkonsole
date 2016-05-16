@@ -68,7 +68,7 @@
 		<tr>
 		<th>Rechner</th>
 		<th>Befehle</th>
-		<th>Entfernen</th>
+		<th>Auswahl</th>
 		</tr>
 		[% FOREACH key IN linbo_remote_planned.keys %]
 			<tr>
@@ -79,7 +79,7 @@
 		[% END %]
 		</table>
 		<p><input type="submit" name="task_refresh" value="[% loc('Aktualisieren') %]">
-		<input type="submit" name="accept" value="[% loc('Übernehmen') %]></p>
+		<input type="submit" name="accept" value="[% loc('Ausgewählte entfernen') %]"></p>
 	[% ELSE %]
 		<p>[% loc('Keine geplanten Aufgaben.') %]</p>
 	[% END %]
