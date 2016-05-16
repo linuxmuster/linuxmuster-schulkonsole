@@ -210,6 +210,8 @@ $VERSION = 0.06;
 	LINBOREMOTESTATUSAPP
 	LINBOREMOTEWINDOWAPP
 	LINBOREMOTEAPP
+	LINBOREMOTEPLANNEDAPP
+	LINBOREMOTEREMOVEAPP
 
 	TEST_NONE
 	TEST_HANDOUT
@@ -698,6 +700,13 @@ C<linbo_remote_window>
 
 C<linbo_remote>
 
+=item C<LINBOREMOTEAPLANNEDAPP>
+
+C<linbo_remote_planned>
+
+=item C<LINBOREMOTEREMOVEAPP>
+C<linbo_remote_remove>
+
 =item C<LINBOWRITEPXEAPP>
 
 C<linbo_write_pxe>
@@ -717,7 +726,9 @@ use constant {
 	LINBOREMOTESTATUSAPP => 13008,
 	LINBOREMOTEWINDOWAPP => 13009,
 	LINBOREMOTEAPP => 13010,
-	LINBOWRITEPXEAPP => 13011,
+	LINBOREMOTEAPLANNEDAPP => 13011,
+	LINBOREMOTEREMOVEAPP => 13012,
+	LINBOWRITEPXEAPP => 13013,
 };
 
 
@@ -1530,6 +1541,8 @@ $_wrapper_repair = '@pkglibexecdir@/bin/wrapper-repair';
 	LINBOREMOTESTATUSAPP() => 'linbo_remote_status',
 	LINBOREMOTEWINDOWAPP() => 'linbo_remote_window',
 	LINBOREMOTEAPP() => 'linbo_remote',
+	LINBOREMOTEPLANNEDAPP() => 'linbo_remote_planned',
+	LINBOREMOTEREMOVEAPP() => 'linbo_remote_remove',
 	DEBCONFREADAPP() => 'debconf_read',
 	DEBCONFREADSMTPRELAYAPP() => 'read_smtprelay',
 	CYRUSQUOTAAPP() => 'cyrus_quota',

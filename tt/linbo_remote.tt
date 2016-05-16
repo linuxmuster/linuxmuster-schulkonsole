@@ -9,59 +9,80 @@
 <h2>[% loc('Linbo') %] :: [% loc('Fernsteuerung')%]</h2>
 
 [% IF ! linbo_remote_new %]
-<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
-<p>
-<input type="submit" name="task_new" value="[% loc('Aufgabe hinzufügen')%]">
-</p>
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+	<p>
+	<input type="submit" name="task_new" value="[% loc('Aufgabe hinzufügen')%]">
+	</p>
 
-<h3>[% loc('Linbo') %] - [% loc('Fernsteuerung') %] - [% loc('Status') %]</h3>
+	<h3>[% loc('Linbo') %] - [% loc('Fernsteuerung') %] - [% loc('Status') %]</h3>
 
-<p><input type="submit" name="task_refresh" value="[% loc('Aktualisieren') %]"></p>
-[% IF linbo_remote_status and linbo_remote_status.size > 0 %]
-	<table>
-	[% FOREACH line IN linbo_remote_status %]
-		<tr>
-		<th>[% line.host %]</th>
-		<td valign="top"><input type="button" id="[% line.host %]_toggle" name="[% line.host %]_toggle" value="[% IF line.show %]-[% ELSE %]+[% END %]"></td>
-		<td>
-			<input type="hidden" id="[% line.host %]_showlong" name="[% line.host %]_showlong" value="[% line.show %]">
-			<div id="[% line.host %]_long"[% IF ! line.show %] hidden[% END %]>
-			<fieldset>
-			[% FOREACH wline IN line.long %]
-				[% wline %]<br>
-			[% END %]
-			</fieldset>
-			</div>
-			<div id="[% line.host %]_short"[% IF line.show %] hidden[% END %]>
-			[% line.short %]
-			</div>
-		</td></tr>
-	[% END %]
-	</table>
-	<script>
-	$(document).ready(function () {
-	[% FOREACH line IN linbo_remote_status %]
-		$("#[% line.host %]_toggle").click( function () {
-			if(this.value == "+") {
-				this.value = '-';
-				$("#[% line.host %]_long").show();
-				$("#[% line.host %]_short").hide();
-				$("#[% line.host %]_showlong").val(1);
-			} else {
-				this.value = '+';
-				$("#[% line.host %]_long").hide();
-				$("#[% line.host %]_short").show();
-				$("#[% line.host %]_showlong").val(0);
-			}
-		});
-	[% END %]
-	});
-	</script>
 	<p><input type="submit" name="task_refresh" value="[% loc('Aktualisieren') %]"></p>
-[% ELSE %]
-	<p>[% loc('Keine laufenden Aufgaben.') %]</p>
-[% END %]
-</form>
+	[% IF linbo_remote_status and linbo_remote_status.size > 0 %]
+		<table>
+		[% FOREACH line IN linbo_remote_status %]
+			<tr>
+			<th>[% line.host %]</th>
+			<td valign="top"><input type="button" id="[% line.host %]_toggle" name="[% line.host %]_toggle" value="[% IF line.show %]-[% ELSE %]+[% END %]"></td>
+			<td>
+				<input type="hidden" id="[% line.host %]_showlong" name="[% line.host %]_showlong" value="[% line.show %]">
+				<div id="[% line.host %]_long"[% IF ! line.show %] hidden[% END %]>
+				<fieldset>
+				[% FOREACH wline IN line.long %]
+					[% wline %]<br>
+				[% END %]
+				</fieldset>
+				</div>
+				<div id="[% line.host %]_short"[% IF line.show %] hidden[% END %]>
+				[% line.short %]
+				</div>
+			</td></tr>
+		[% END %]
+		</table>
+		<script>
+		$(document).ready(function () {
+		[% FOREACH line IN linbo_remote_status %]
+			$("#[% line.host %]_toggle").click( function () {
+				if(this.value == "+") {
+					this.value = '-';
+					$("#[% line.host %]_long").show();
+					$("#[% line.host %]_short").hide();
+					$("#[% line.host %]_showlong").val(1);
+				} else {
+					this.value = '+';
+					$("#[% line.host %]_long").hide();
+					$("#[% line.host %]_short").show();
+					$("#[% line.host %]_showlong").val(0);
+				}
+			});
+		[% END %]
+		});
+		</script>
+		<p><input type="submit" name="task_refresh" value="[% loc('Aktualisieren') %]"></p>
+	[% ELSE %]
+		<p>[% loc('Keine laufenden Aufgaben.') %]</p>
+	[% END %]
+
+	<h3>[% loc('Linbo') %] - [% loc('Fernsteuerung') %] - [% loc('Geplante Aufgaben') %]</h3>
+	[% IF linbo_remote_planned and linbo_remote_planned.size > 0 %]
+		<table>
+		<tr>
+		<th>Rechner</th>
+		<th>Befehle</th>
+		<th>Entfernen</th>
+		</tr>
+		[% FOREACH key IN linbo_remote_planned.keys %]
+			<tr>
+			<th>[% key %]</th>
+			<td>[% linbo_remote_planned.$key %]</td>
+			<td><input type="checkbox" name="delete;[% key %]"></td>
+			</tr>
+		[% END %]
+		</table>
+		<p><input type="submit" name="task_refresh" value="[% loc('Aktualisieren') %]"></p>
+	[% ELSE %]
+		<p>[% loc('Keine geplanten Aufgaben.') %]</p>
+	[% END %]
+	</form>
 [% END %]
 
 [% IF linbo_remote_new %]

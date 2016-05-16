@@ -28,6 +28,8 @@ $VERSION = 0.16;
 	WRAPPER_INVALID_COMMANDS
 	WRAPPER_INVALID_ARG
 	WRAPPER_INVALID_SESSION_NAME
+	WRAPPER_CANNOT_OPEN_LINBOCMD
+	WRAPPER_CANNOT_CLOSE_LINBOCMD
 );
 
 # package constants
@@ -48,6 +50,8 @@ use constant {
 	WRAPPER_INVALID_COMMANDS     => Schulkonsole::Error::Error::NEXT_ERROR -14,
 	WRAPPER_INVALID_ARG          => Schulkonsole::Error::Error::NEXT_ERROR -15,
 	WRAPPER_INVALID_SESSION_NAME => Schulkonsole::Error::Error::NEXT_ERROR -16,
+	WRAPPER_CANNOT_OPEN_LINBOCMD => Schulkonsole::Error::Error::NEXT_ERROR -17,
+	WRAPPER_CANNOT_CLOSE_LINBOCMD => Schulkonsole::Error::Error::NEXT_ERROR -18,
 };
 
 
@@ -94,6 +98,10 @@ sub what {
 		and return $this->{d}->get('Ungültiges Argument');
 	$this->{code} == WRAPPER_INVALID_SESSION_NAME
 		and return $this->{d}->get('Ungültiger Session-Name');
+	$this->{code} == WRAPPER_CANNOT_OPEN_LINBOCMD
+		and return $this->{d}->get('Kann linbocmd Datei nicht öffnen');
+	$this->{code} == WRAPPER_CANNOT_CLOSE_LINBOCMD
+		and return $this->{d}->get('Kann linbocmd Datei nicht schließen');
 	};
 	return $this->SUPER::what();
 }

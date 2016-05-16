@@ -82,6 +82,8 @@ $VERSION = 0.0917;
 	remote_status
 	remote_window
 	remote
+	remote_planned
+	LINBOCMDDIR
 	
 	%_allowed_keys
 );
@@ -139,15 +141,21 @@ my $errorclass = "Schulkonsole::Error::LinboError";
 
 
 
+=head2 Constants
 
+=item C<LINBOCMDDIR>
+
+C<LINBOCMDDIR>
+
+=cut
+
+use constant {
+	LINBOCMDDIR => $Schulkonsole::Config::_linbo_dir . '/linbocmd',
+}
 
 =head2 Functions
 
 =cut
-
-
-
-
 
 =head2 regpatches()
 
@@ -524,6 +532,87 @@ sub remote {
 		$id, $password, "$target\n$now\n$commands\n$nr1\n$nr2\n");
 
 	return;
+}
+
+
+
+=head2 remote_planned($id, $password)
+
+Get current content of the linbocmd directory.
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=back
+
+=head4 Return value
+
+Hash of the linbocmd files with contents addressed by HostIPs.
+
+=head3 Description
+
+Reads the linbocmd directory on the server and returns it's contents
+as hash of host IPs.
+
+=cut
+
+sub remote_planned {
+	my $id = shift;
+	my $password = shift;
+	
+	my $in = Schulkonsole::Wrapper::wrap($wrapcmd, $errorclass, Schulkonsole::Config::LINBOREMOTEPLANNEDAPP,
+		$id, $password, "\n\n", Schulkonsole::Wrapper::MODE_FILE);
+
+	my $compartment = new Safe;
+
+	return $compartment->reval($in);
+}
+
+
+
+=head2 remote_remove($id, $password, @hosts)
+
+Remove planned linbo-remote commands from server.
+
+=head3 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the user invoking the command
+
+=item C<$password>
+
+The password of the user invoking the command
+
+=item C<@hosts>
+
+Array of host IPs to remove planned linbo-remote tasks.
+
+=back
+
+=head3 Description
+
+Remove hosts files from linbocmd directory on server.
+
+=cut
+
+sub remote_remove {
+	my $id = shift;
+	my $password = shift;
+	
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOREMOTEREMOVEAPP,
+		$id, $password, join(',',@_));
 }
 
 
