@@ -1,4 +1,3 @@
-use CGI::Inspect;
 use strict;
 use IPC::Open3;
 use POSIX 'sys_wait_h';

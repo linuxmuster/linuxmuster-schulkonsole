@@ -1,4 +1,3 @@
-use CGI::Inspect;
 =head1 NAME
 
 wrapper-repair.pl - wrapper für root Funktionen

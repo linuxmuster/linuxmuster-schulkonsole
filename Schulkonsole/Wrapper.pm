@@ -1,4 +1,3 @@
-use CGI::Inspect;
 use strict;
 use utf8;
 use IPC::Open3;
