@@ -34,6 +34,7 @@ $VERSION = 0.06;
 @EXPORT_OK = qw(
 	SKPREFS
 	PATHPREFS
+	PROJECTPREFS
 	
 	db
 	ldap
@@ -63,6 +64,10 @@ $VERSION = 0.06;
 	$_runtimedir
 	$_lockdir
 
+	$_project_mailalias
+	$_project_maillist
+	$_project_wlan
+	
 	$_preferences_conf_file
 	$_permissions_conf_file
 	$_db_conf_file
@@ -144,6 +149,8 @@ $VERSION = 0.06;
 
 	$true
 	$false
+	$on
+	$off
 	
 	QUOTAAPP
 	CYRQUOTAAPP
@@ -185,6 +192,7 @@ $VERSION = 0.06;
 	PROJECTMEMBERSAPP
 	PROJECTCREATEDROPAPP
 	PROJECTJOINNOJOINAPP
+	PROJECTWLANDEFAULTSAPP
 	READSOPHOMORIXFILEAPP
 	WRITESOPHOMORIXFILEAPP
 	USERSCHECKAPP
@@ -255,9 +263,13 @@ Section name for program repair paths
 
 Section name for DB preferences to access in db.conf (used only internal)
 
+=item C<PROJECTPREFS>
+
+Section name for project creating preferences
+
 =cut
 
-use vars qw($SKPREFS $PATHPREFS);
+use vars qw($SKPREFS $PATHPREFS $PROJECTPREFS);
 	
 =head3 Constants for wrapper-user
 
@@ -469,6 +481,10 @@ C<project_create_drop>
 
 C<project_join_no_join>
 
+=item C<PROJECTWLANDEFAULTSAPP>
+
+C<project_wlan_defaults>
+
 =item C<READSOPHOMORIXFILEAPP>
 
 C<read_sophomorix_file>
@@ -559,30 +575,31 @@ use constant {
 	PROJECTMEMBERSAPP => 8014,
 	PROJECTCREATEDROPAPP => 8015,
 	PROJECTJOINNOJOINAPP => 8016,
-	READSOPHOMORIXFILEAPP => 8017,
-	WRITESOPHOMORIXFILEAPP => 8018,
-	USERSCHECKAPP => 8019,
-	USERSADDAPP => 8020,
-	USERSMOVEAPP => 8021,
-	USERSKILLAPP => 8022,
-	USERSADDMOVEKILLAPP => 8023,
-	TEACHINAPP => 8024,
-	CHMODAPP => 8025,
-	SETQUOTAAPP => 8026,
-	SETOWNPASSWORDAPP => 8027,
-	HIDEUNHIDECLASSAPP => 8028,
-	CHANGEMAILALIASCLASSAPP => 8029,
-	CHANGEMAILLISTCLASSAPP => 8030,
-	CHANGEMAILALIASPROJECTAPP => 8031,
-	CHANGEMAILLISTPROJECTAPP => 8032,
-	FILEMANAPP => 8033,
-	STUDENTSFILEMANAPP => 8034,
-	LSHANDEDOUTAPP =>8035,
-	LSCOMMITSAPP => 8036,
-	LSCOMMITAPP => 8037,
-	PRINTALLUSERSAPP => 8038,
-	PRINTCOMMITAPP => 8039,
-	SETMYMAILAPP => 8040,
+	PROJECTWLANDEFAULTSAPP => 8017,
+	READSOPHOMORIXFILEAPP => 8018,
+	WRITESOPHOMORIXFILEAPP => 8019,
+	USERSCHECKAPP => 8020,
+	USERSADDAPP => 8021,
+	USERSMOVEAPP => 8022,
+	USERSKILLAPP => 8023,
+	USERSADDMOVEKILLAPP => 8024,
+	TEACHINAPP => 8025,
+	CHMODAPP => 8026,
+	SETQUOTAAPP => 8027,
+	SETOWNPASSWORDAPP => 8028,
+	HIDEUNHIDECLASSAPP => 8029,
+	CHANGEMAILALIASCLASSAPP => 8030,
+	CHANGEMAILLISTCLASSAPP => 8031,
+	CHANGEMAILALIASPROJECTAPP => 8032,
+	CHANGEMAILLISTPROJECTAPP => 8033,
+	FILEMANAPP => 8034,
+	STUDENTSFILEMANAPP => 8035,
+	LSHANDEDOUTAPP =>8036,
+	LSCOMMITSAPP => 8037,
+	LSCOMMITAPP => 8038,
+	PRINTALLUSERSAPP => 8039,
+	PRINTCOMMITAPP => 8040,
+	SETMYMAILAPP => 8041,
 };
 
 =head3 Constants for wrapper-cyrus
@@ -1083,6 +1100,24 @@ specific programs
 
 use vars qw(%_repair_path);
 
+=head3 Project preferences
+
+=item C<$_project_mailalias>
+
+Create project with mailalias (on,off)
+
+=item C<$_project_maillist>
+
+Create project with maillist (on,off)
+
+=item C<$_project_wlan>
+
+Create project with wlan enabled (on,off)
+
+=cut
+
+use vars qw($_project_mailalias $_project_maillist $_project_wlan);
+
 =head3 Web server settings
 
 =over
@@ -1373,14 +1408,24 @@ Value used for 'true' in Sophomorix configuration files
 
 Value used for 'false' in Sophomorix configuration files
 
+=item C<$on>
+
+Value used for 'true' in preferences.conf
+
+=item C<$off>
+
+Value used for 'false' in preferences.conf
+
 =back
 
 =cut
 
-use vars qw($true $false);
+use vars qw($true $false $on $off);
 
 $true = 'yes';
 $false= 'no';
+$on = 'on';
+$off = 'off';
 
 $_version = '@VERSION@';
 $_sysconfdir = '@sysconfdir@/@PACKAGE@';
@@ -1391,6 +1436,7 @@ $_lockdir = '/var/lock';
 $_preferences_conf_file = "$_sysconfdir/preferences.conf";
 $SKPREFS = 'Schulkonsole Preferences';
 $PATHPREFS = 'Program Paths';
+$PROJECTPREFS = 'Project';
 
 $_permissions_conf_file = "$_sysconfdir/permissions.conf";
 
@@ -1507,6 +1553,7 @@ $_wrapper_repair = '@pkglibexecdir@/bin/wrapper-repair';
 	PROJECTMEMBERSAPP() => 'project_members',
 	PROJECTCREATEDROPAPP() => 'project_create_drop',
 	PROJECTJOINNOJOINAPP() => 'project_join_no_join',
+	PROJECTWLANDEFAULTSAPP() => 'project_wlan_defaults',
 	READSOPHOMORIXFILEAPP() => 'read_sophomorix_file',
 	WRITESOPHOMORIXFILEAPP() => 'write_sophomorix_file',
 	USERSCHECKAPP() => 'check_users',
@@ -2390,6 +2437,7 @@ my %_preferences_conf_section = (
 	$SKPREFS => 1,
 	$PATHPREFS => 1,
 	$DBPREFS => 1,
+	$PROJECTPREFS => 1,
 );
 
 sub read_conf {
@@ -2477,7 +2525,7 @@ sub expire_seconds {
 
 sub init_preferences {
 	my %preferences = read_conf($_preferences_conf_file);
-	
+	# sk prefs
 	$_max_idle_time = $preferences{$SKPREFS}{max_idle_time}
 		if (exists $preferences{$SKPREFS}{max_idle_time});
 	$_templatedir = $preferences{$SKPREFS}{templatedir}
@@ -2495,12 +2543,20 @@ sub init_preferences {
 		}
 	}
 	
+	# repair paths
 	%_repair_path = ();
 	if (exists $preferences{$PATHPREFS}) {
 		foreach my $program (keys $preferences{$PATHPREFS}) {
 			@{$_repair_path{$program}} = split(',', $preferences{$PATHPREFS}{$program});
 		}
 	}
+	#project prefs
+	$_project_mailalias = $preferences{$PROJECTPREFS}{mailalias}
+		if exists $preferences{$PROJECTPREFS}{mailalias};
+	$_project_maillist = $preferences{$PROJECTPREFS}{maillist}
+		if exists $preferences{$PROJECTPREFS}{maillist};
+	$_project_wlan = $preferences{$PROJECTPREFS}{wlan}
+		if exists $preferences{$PROJECTPREFS}{wlan};
 }
 
 # compare new values to values from conf file and create new file lines to
@@ -2545,11 +2601,13 @@ sub new_preferences_lines {
 					push @lines, "$conf_key=$value\n";
 
 					delete $$new{$key};
-				} elsif ($current eq $PATHPREFS) {
+				} elsif ($current eq $PATHPREFS || $current eq $PROJECTPREFS) {
 					if (defined $$new{$conf_key}) {
 						push @lines, "$conf_key=$$new{$conf_key}\n";
 						
 						delete $$new{$conf_key};
+					} else {
+						push @lines, $_;
 					}
 				} else {
 					push @lines, $_;
@@ -2622,6 +2680,9 @@ INIT {
 	$_check_passwords = 1;        # enforce password quality
 	$_min_password_len = 8;       # enforce password length requirement
 	$_wlan_ldap_group = 'p_wifi';
+	$_project_mailalias = 'off';
+	$_project_maillist = 'off';
+	$_project_wlan = 'off';
 	
 	init_preferences();
 }

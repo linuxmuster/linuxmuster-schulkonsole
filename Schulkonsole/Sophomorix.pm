@@ -8,6 +8,7 @@ use Schulkonsole::Config;
 
 use Sophomorix::SophomorixConfig;
 use Sophomorix::SophomorixAPI;
+use Schulkonsole::Radius;
 
 use Safe;
 
@@ -136,6 +137,7 @@ $VERSION = 0.05;
 	add_project_to_project
 	remove_admin_from_project
 	set_project_joinable
+	project_wlan_defaults
 
 	read_teachers_file
 	read_students_file
@@ -5475,6 +5477,51 @@ sub set_project_joinable {
 	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::PROJECTJOINNOJOINAPP,
 		$id, $password,
 		($is_join ? "$project_gid\n\n\n" : "\n$project_gid\n\n"));
+}
+
+
+
+
+=head3 C<project_wlan_defaults($id, $password, $project_gid, $add)>
+
+Adds or removes $project_gid from wlan defaults file
+
+=head4 Parameters
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$project_gid>
+
+The GID of the project
+
+=item C<$add>
+
+True if the project is to be added
+
+=back
+
+=head4 Description
+
+This writes directly to the C<wlan_defaults> file.
+
+=cut
+
+sub project_wlan_defaults {
+	my $id = shift;
+	my $password = shift;
+	my $project_gid = shift;
+	my $add = shift;
+
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::PROJECTWLANDEFAULTSAPP,
+		$id, $password,	($add ? "$project_gid\n1\n\n" : "$project_gid\n0\n\n"));
 }
 
 

@@ -116,6 +116,11 @@ $app_id == Schulkonsole::Config::PROJECTCREATEDROPAPP and do {
 	last SWITCH;
 };
 
+$app_id == Schulkonsole::Config::PROJECTWLANDEFAULTSAPP and do {
+	project_wlan_defaults();
+	last SWITCH;
+};
+
 $app_id == Schulkonsole::Config::PRINTCLASSAPP and do {
 	printclassapp();
 	last SWITCH;
@@ -1443,18 +1448,20 @@ sub projectcreatedropapp() {
 		unless defined $do_create;
 
 
-	my $opts = "--caller \Q$$userdata{uid}\E --project \Q$project_gid\E ";
+	my $opts = " --caller \Q$$userdata{uid}\E --project \Q$project_gid\E ";
 	if ($do_create) {
 		my $is_open = <>;
 		($is_open) = $is_open =~ /^([01])$/;
 		exit (  Schulkonsole::Error::SophomorixError::WRAPPER_INVALID_IS_JOIN )
 			unless defined $is_open;
 
-		$opts .= '--create '
-		         . ($is_open ? '--join' : '--nojoin')
+		$opts .= ' --create'
+		         . ($is_open ? ' --join' : ' --nojoin')
+		         . ($Schulkonsole::Config::_project_mailalias eq $Schulkonsole::Config::on? ' --mailalias' : ' --nomailalias')
+		         . ($Schulkonsole::Config::_project_maillist eq $Schulkonsole::Config::on? ' --maillist' : ' --nomaillist' )
 		         . " --admins \Q$$userdata{uid}";
 	} else {
-		$opts .= '--kill';
+		$opts .= ' --kill';
 	}
 
 	# sophomorix-project cannot be invoked with taint checks enabled
@@ -1465,6 +1472,50 @@ sub projectcreatedropapp() {
 	exec Schulkonsole::Encode::to_cli(
 	     	"$Schulkonsole::Config::_cmd_sophomorix_project $opts")
 		or return;
+}
+
+=head3 project_wlan_defaults
+
+numeric constant: C<Schulkonsole::Config::PROJECTWLANDEFAULTSAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item project_gid
+
+=item add = 1, remove = 0
+
+=back
+
+=cut
+
+sub project_wlan_defaults() {
+	my $project_gid = <>;
+	($project_gid) = $project_gid =~ /^((?:p_)?[a-z0-9_-]{3,14})$/;
+	exit (  Schulkonsole::Error::SophomorixError::WRAPPER_INVALID_PROJECTGID )
+		unless defined $project_gid;
+
+	my $do_add = <>;
+	($do_add) = $do_add =~ /^([01])$/;
+	exit (  Schulkonsole::Error::SophomorixError::WRAPPER_INVALID_ACTION )
+		unless defined $do_add;
+
+
+	# sophomorix-project cannot be invoked with taint checks enabled
+	$< = $>;
+	$) = 0;	# sophomorix-project will re-create /etc/aliases
+	$( = $);
+	umask(022);
+	if($do_add){
+		exec Schulkonsole::Encode::to_cli("echo 'g:" . $project_gid) . "\t\t" 
+				. Schulkonsole::Encode::to_cli($Schulkonsole::Config::_project_wlan 
+				. "' >>$Schulkonsole::Config::_wlan_defaults_file")
+			or return;
+	} else {
+		exec Schulkonsole::Encode::to_cli("sed -i '/^g:" . $project_gid . "[[:space:]]/d' " . $Schulkonsole::Config::_wlan_defaults_file)
+			or return;
+	}
 }
 
 =head3 print_class

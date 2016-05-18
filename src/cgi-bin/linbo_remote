@@ -89,8 +89,6 @@ eval {
 			}
 			Schulkonsole::Linbo::remote_remove($id, $password, @hosts);
 			$sk_session->set_status($sk_session->d()->get('Rechner entfernt.'),0);
-			$linbo_remote_planned = Schulkonsole::Linbo::remote_planned($id, $password);
-			
 			last SWITCHCOMMAND;
 		};
 		
@@ -216,6 +214,8 @@ A list of current status output.
 A hash of planned linbo-remote tasks.
 
 =cut
+
+	$linbo_remote_planned = Schulkonsole::Linbo::remote_planned($id, $password);
 
 	$sk_session->set_var('linbo_remote_planned',$linbo_remote_planned);
 

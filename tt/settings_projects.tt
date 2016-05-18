@@ -19,32 +19,33 @@
 <th>[% loc('Liste') %]</th>
 <th>[% loc('Aliase') %]</th>
 <th>[% loc('WLAN') %]</th></tr>
+[% lfdnr = 1 %]
 [% FOREACH p IN projects %]
-[% IF odd %][% odd=0 %]<tr class="odd">
-[% ELSE %][% odd=1 %]<tr class="even">[% END %]
-<td><label>[% p.name %]</label></td>
-<td>
-[% IF p.maillist %]
-<input type="checkbox" name="[% p.gid %]_maillist" id="[% p.gid %]_maillist" checked>
-[% ELSE %]
-<input type="checkbox" name="[% p.gid %]_maillist" id="[% p.gid %]_maillist">
-[% END %]
-</td>
-<td>
-[% IF p.mailalias %]
-<input type="checkbox" name="[% p.gid %]_mailalias" id="[% p.gid %]_mailalias" checked>
-[% ELSE %]
-<input type="checkbox" name="[% p.gid %]_mailalias" id="[% p.gid %]_mailalias">
-[% END %]
-</td>
-<td>
-<select name="[% p.gid %]_wlan">
-<option value="-1"[% IF valueof("${p.gid}_wlan") == "-1" %] selected[% END %]>-</option>
-<option value="1"[% IF valueof("${p.gid}_wlan") == "1" %] selected[% END %]>[% loc('An') %]</option>
-<option value="0"[% IF valueof("${p.gid}_wlan") == "0" %] selected[% END %]>[% loc('Aus') %]</option>
-</select>
-</td>
-</tr>
+	<tr class="[% IF lfdnr % 2 == 0 %]even[% ELSE %]odd[% END %]">
+	<td><label>[% p.name %]</label></td>
+	<td>
+	[% IF p.maillist %]
+	<input type="checkbox" name="[% p.gid %]_maillist" id="[% p.gid %]_maillist" checked>
+	[% ELSE %]
+	<input type="checkbox" name="[% p.gid %]_maillist" id="[% p.gid %]_maillist">
+	[% END %]
+	</td>
+	<td>
+	[% IF p.mailalias %]
+	<input type="checkbox" name="[% p.gid %]_mailalias" id="[% p.gid %]_mailalias" checked>
+	[% ELSE %]
+	<input type="checkbox" name="[% p.gid %]_mailalias" id="[% p.gid %]_mailalias">
+	[% END %]
+	</td>
+	<td>
+	<select name="[% p.gid %]_wlan">
+	[% IF p.name != 'default' %]<option value="-1"[% IF p.wlan == "-1" %] selected[% END %]>-</option>[% END %]
+	<option value="1"[% IF p.wlan == "1" %] selected[% END %]>[% loc('An') %]</option>
+	<option value="0"[% IF p.wlan == "0" %] selected[% END %]>[% loc('Aus') %]</option>
+	</select>
+	</td>
+	</tr>
+	[% lfdnr = lfdnr + 1 %]
 [% END %]
 </table>
 

@@ -127,77 +127,77 @@ sub what {
 	$this->{code} == WRAPPER_ON_UNDEFINED
 		and return $this->{d}->get('on muss 1 oder 0 sein');
 	$this->{code} == WRAPPER_INVALID_USER
-		and return $this->{d}->get('Ungueltiger Benutzer');
+		and return $this->{d}->get('Ungültiger Benutzer');
 	$this->{code} == WRAPPER_NO_USERS
 		and return $this->{d}->get('Keine Benutzer');
 	$this->{code} == WRAPPER_INVALID_USERID
-		and return $this->{d}->get('Ungueltige Benutzer-ID');
+		and return $this->{d}->get('Ungültige Benutzer-ID');
 	$this->{code} == WRAPPER_NO_USERIDS
 		and return $this->{d}->get('Keine Benutzer-IDs');
 	$this->{code} == WRAPPER_NO_SUCH_DIRECTORY
 		and return $this->{d}->get('Verzeichnis nicht gefunden');
 	$this->{code} == WRAPPER_INVALID_ROOM
-		and return $this->{d}->get('Ungueltiger Raumbezeichner');
+		and return $this->{d}->get('Ungültiger Raumbezeichner');
 	$this->{code} == WRAPPER_INVALID_DO_COPY
-		and return $this->{d}->get('Erwarte 1 oder 0 fuer do_copy');
+		and return $this->{d}->get('Erwarte 1 oder 0 für do_copy');
 	$this->{code} == WRAPPER_INVALID_FROM
-		and return $this->{d}->get('Erwarte numerische Angabe fuer "from"');
+		and return $this->{d}->get('Erwarte numerische Angabe für "from"');
 	$this->{code} == WRAPPER_INVALID_TYPE
-		and return $this->{d}->get('Erwarte numerische Angabe fuer "type"');
+		and return $this->{d}->get('Erwarte numerische Angabe für "type"');
 	$this->{code} == WRAPPER_INVALID_ROOM
-		and return $this->{d}->get('Ungueltiger Raum');
+		and return $this->{d}->get('Ungültiger Raum');
 	$this->{code} == WRAPPER_INVALID_PROJECT
-		and return $this->{d}->get('Ungueltiges Projekt');
+		and return $this->{d}->get('Ungültiges Projekt');
 	$this->{code} == WRAPPER_INVALID_CLASS
-		and return $this->{d}->get('Ungueltige Klassen-GID');
+		and return $this->{d}->get('Ungültige Klassen-GID');
 	$this->{code} == WRAPPER_INVALID_SUBCLASS
-		and return $this->{d}->get('Ungueltige Subklasse');
+		and return $this->{d}->get('Ungültige Subklasse');
 	$this->{code} == WRAPPER_INVALID_DO_ADD
 		and return $this->{d}->get('Erwarte 1 oder 0 fuer do_add');
 	$this->{code} == WRAPPER_INVALID_FILE_TYPE
-		and return $this->{d}->get('Erwarte 0 (PDF) oder 1 (CSV) fuer filetype');
+		and return $this->{d}->get('Erwarte 0 (PDF) oder 1 (CSV) für filetype');
 	$this->{code} == WRAPPER_INVALID_SET_PASSWORD_TYPE
-		and return $this->{d}->get('Erwarte 0 (reset), 1 (passwd) oder 3 (random) fuer type');
+		and return $this->{d}->get('Erwarte 0 (reset), 1 (passwd) oder 3 (random) für type');
 	$this->{code} == WRAPPER_INVALID_PASSWORD
-		and return $this->{d}->get('Ungueltiger Wert fuer password');
+		and return $this->{d}->get('Ungültiger Wert für password');
 	$this->{code} == WRAPPER_INVALID_IS_GROUPS
-		and return $this->{d}->get('Erwarte 1 oder 0 fuer is_groups');
+		and return $this->{d}->get('Erwarte 1 oder 0 für is_groups');
 	$this->{code} == WRAPPER_INVALID_IS_PUBLIC
-		and return $this->{d}->get('Erwarte 1 oder 0 fuer is_public');
+		and return $this->{d}->get('Erwarte 1 oder 0 für is_public');
 	$this->{code} == WRAPPER_INVALID_IS_UPLOAD
-		and return $this->{d}->get('Erwarte 1 oder 0 fuer is_upload');
+		and return $this->{d}->get('Erwarte 1 oder 0 für is_upload');
 	$this->{code} == WRAPPER_INVALID_PROJECTGID
-		and return $this->{d}->get('Ungueltiger Wert fuer projectgid');
+		and return $this->{d}->get('Ungültiger Wert für projectgid');
 	$this->{code} == WRAPPER_INVALID_MEMBERSCOPE
-		and return $this->{d}->get('Erwarte 0, 1, 2 oder 3 fuer scope');
+		and return $this->{d}->get('Erwarte 0, 1, 2 oder 3 für scope');
 	$this->{code} == WRAPPER_INVALID_DO_CREATE
 		and return $this->{d}->get('Erwarte 1 oder 0 fuer do_create');
 	$this->{code} == WRAPPER_INVALID_LONGNAME
-		and return $this->{d}->get('Ungueltiger Wert fuer longname');
+		and return $this->{d}->get('Ungültiger Wert für longname');
 	$this->{code} == WRAPPER_INVALID_FILENUMBER
-		and return $this->{d}->get('Ungueltiger Wert fuer number');
+		and return $this->{d}->get('Ungültiger Wert für number');
 	$this->{code} == WRAPPER_PROCESS_RUNNING
-		and return $this->{d}->get('Prozess laeuft schon');
+		and return $this->{d}->get('Prozess läuft schon');
 	$this->{code} == WRAPPER_INVALID_MODE
-		and return $this->{d}->get('Erwarte 0, 1 oder 2 fuer mode');
+		and return $this->{d}->get('Erwarte 0, 1 oder 2 für mode');
 	$this->{code} == WRAPPER_CHMOD_FAILED
-		and return $this->{d}->get('Konnte Berechtigung nicht aendern');
+		and return $this->{d}->get('Konnte Berechtigung nicht ändern');
 	$this->{code} == WRAPPER_INVALID_FLAGS
-		and return $this->{d}->get('Erwarte 1 bis 7 fuer flags');
+		and return $this->{d}->get('Erwarte 1 bis 7 für flags');
 	$this->{code} == WRAPPER_INVALID_DISKQUOTA
-		and return $this->{d}->get('Ungueltiger Wert fuer diskquota');
+		and return $this->{d}->get('Ungültiger Wert für diskquota');
 	$this->{code} == WRAPPER_INVALID_MAILQUOTA
-		and return $this->{d}->get('Ungueltiger Wert fuer mailquota');
+		and return $this->{d}->get('Ungültiger Wert für mailquota');
 	$this->{code} == WRAPPER_INVALID_IS_JOIN
-		and return $this->{d}->get('Erwarte 1 oder 0 fuer is_open');
+		and return $this->{d}->get('Erwarte 1 oder 0 für is_open');
 	$this->{code} == WRAPPER_INVALID_ACTION
-		and return $this->{d}->get('Ungueltiger Wert, action sollte eine Zahl sein');
+		and return $this->{d}->get('Ungültiger Wert, action sollte eine Zahl sein');
 	$this->{code} == WRAPPER_INVALID_FILENAME
-		and return $this->{d}->get('Ungueltiger Wert fuer Dateiname');
+		and return $this->{d}->get('Ungültiger Wert für Dateiname');
 	$this->{code} == WRAPPER_NO_SUCH_FILE
 		and return $this->{d}->get('Konnte Datei nicht finden');
 	$this->{code} == WRAPPER_ACTION_NOT_SUPPORTED
-		and return $this->{d}->get('Erwarte 1,2 oder 3 fuer action');
+		and return $this->{d}->get('Erwarte 1,2 oder 3 für action');
 	$this->{code} == WRAPPER_INVALID_FILETYPE
 		and return $this->{d}->get('Erwarte Verzeichnis, fand Datei (oder umgekehrt)');
 	$this->{code} == WRAPPER_INVALID_MAILADDRESS
