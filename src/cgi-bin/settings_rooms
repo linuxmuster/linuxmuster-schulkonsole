@@ -2,21 +2,21 @@
 
 =head1 NAME
 
-rooms - edit default configuration for hosts in rooms
+settings_rooms - edit default configuration for hosts in rooms
 
 =head1 SYNOPSIS
 
- https://server/schulkonsole/rooms
+ https://server/schulkonsole/settings_rooms
 
 =head1 DESCRIPTION
 
-C<rooms> lets you edit the default configuration for
+C<settings_rooms> lets you edit the default configuration for
 workstations in rooms.
-The HTML template is rooms.tt.
+The HTML template is settings_rooms.tt.
 
 =head2 Template variables
 
-Additionally to the variables of Schulkonsole::Session C<rooms>
+Additionally to the variables of Schulkonsole::Session C<settings_rooms>
 provides the following variables:
 
 =over
@@ -33,7 +33,7 @@ use Schulkonsole::Firewall;
 use Schulkonsole::Session;
 
 
-my $this_file = 'rooms';
+my $this_file = 'settings_rooms';
 
 
 my $sk_session = new Schulkonsole::Session($this_file);
@@ -62,10 +62,19 @@ foreach my $host (keys %$host_rooms) {
 
 my $defaults = read_room_defaults(\%room_hosts, $host_rooms);
 
+my $classrooms = eval { Schulkonsole::Config::classrooms(); };
+$classrooms = [] if $@;
+my $rooms = Schulkonsole::Config::rooms();
+
+my %classrooms;
+foreach my $classroom (@$classrooms) {
+	$classrooms{$classroom} = 1;
+}
+
 
 COMMANDS: {
 eval {
-$q->param('accept') and do {
+$q->param('accept_nondefaults') and do {
 	my $default_internet = $q->param('default_internet');
 	my $default_intranet = $q->param('default_intranet');
 	my $default_webfilter = $q->param('default_webfilter');
@@ -187,7 +196,7 @@ $q->param('add_room') and do {
 	last COMMANDS;
 };
 
-$q->param('reset') and do {
+$q->param('reset_nondefaults') and do {
 
 	my $is_reset_all = 0;
 	if ($is_reset_all = $q->param('reset_all')) {
@@ -266,6 +275,35 @@ foreach my $room (keys %room_hosts) {
 		last COMMANDS;
 	}
 }
+
+$q->param('accept_edv')) and do {
+	my %classrooms_new;
+
+	foreach my $room (keys %$rooms) {
+		if ($q->param("${room}_classroom")) {
+			if (not $classrooms{$room}) {
+				$classrooms_new{$room} = 1;
+				$classrooms{$room} = 1;
+			}
+		} elsif ($classrooms{$room}) {
+			$classrooms_new{$room} = 0;
+			delete $classrooms{$room};
+		}
+	}
+	if (%classrooms_new) {
+		my $lines = new_classrooms_lines(\%classrooms_new);
+
+		Schulkonsole::Files::write_classrooms_file(
+			$sk_session->userdata('id'),
+			$sk_session->get_password(),
+			$lines);
+
+		$sk_session->set_status($sk_session->d()->get(
+			'Änderungen übernommen'), 0);
+	}
+	last COMMANDS;
+};
+
 
 
 };
@@ -390,7 +428,52 @@ and there are entries for hosts in this room.
 $sk_session->set_var('nondefaults', \@non_default_array);
 
 
+my @rooms_array;
+foreach my $room (sort keys %$rooms) {
+	push @rooms_array, {
+			name => $room,
+			selected => (exists $classrooms{$room}),
+		};
+}
 
+=item C<rooms>
+
+An array with all rooms as an array of hashes with the keys
+
+=over
+
+=item C<name>
+
+Name of the room
+
+=item C<selected>
+
+True if the room is available
+
+=back
+
+=cut
+
+$sk_session->set_var('rooms', \@rooms_array);
+
+my ($unimported, $unconfigured) =
+	Schulkonsole::Config::count_unimported_unconfigured_workstations();
+
+=item C<unimported>
+
+True if not all configured workstations were imported into the system
+
+=cut
+
+$sk_session->set_var('unimported', $unimported);
+
+=item C<unconfigured>
+
+True if not all imported workstations are configured, too
+
+=cut
+
+$sk_session->set_var('unconfigured', $unconfigured);
 
 
 
@@ -622,6 +705,40 @@ sub new_room_default_lines {
 }
 
 
+sub new_classrooms_lines {
+	my $new = shift;
+
+
+	my @lines;
+	my %new = %$new;
+	if (open CLASSROOMS, '<',
+	         Schulkonsole::Encode::to_fs(
+	         	$Schulkonsole::Config::_classrooms_file)) {
+		while (<CLASSROOMS>) {
+			my ($room) = /^([^#]+?)\s*$/;
+
+			if (    $room
+			    and defined $new{$room}
+				and not $new{$room}) {
+				delete $new{$room};
+			} else {
+				push @lines, $_;
+			}
+		}
+
+		close CLASSROOMS;
+	}
+
+
+	if (%new) {
+		foreach my $room (sort keys %new) {
+			push @lines, "$room\n" if $new{$room};
+		}
+	}
+
+
+	return \@lines;
+}
 
 
 =back
@@ -633,9 +750,9 @@ are -1 (= '-'), 0 (= 'off') and 1 (= 'on').
 
 =over
 
-=item C<accept>
+=item C<accept_nondefaults>
 
-Accept the changes
+Accept the changes in room defaults
 
 =item C<default_internet>
 
@@ -701,5 +818,14 @@ Default webfilter settings for the workstation C<${nondefaults{name}}>.
 =item C<${nondefaults{name}}_delete>
 
 If true, the default entry for the host ${nondefaults{name}} will be deleted.
+
+
+=item C<accept_edv>
+
+Accept the changes in edv settings
+
+=item C<${rooms{name}}_classroom>
+
+True if the room shall be available
 
 =back

@@ -4,6 +4,9 @@
 [% IF link_settings_users %]
 	<li><a [% dohref("settings_users") %]>[% loc('Benutzerverwaltung') %]</a></li>
 [% END %]
+[% IF link_settings_rooms %]
+	<li><a class="separator" [% dohref("settings_rooms") %]>[% loc('Räume') %]</a></li>
+[% END %]
 [% IF link_settings_classs %]
 	<li><a [% dohref("settings_classs") %]>[% loc('Klassen') %]</a></li>
 [% END %]
