@@ -6,11 +6,11 @@
    }
 %]
 
-<h2>[% loc('Standardeinstellungen für Räume') %]</h2>
+<h2>[% loc('Einstellungen') %] :: [% loc('Räume') %]</h2>
+
+<h3>[% loc('Standardeinstellungen') %]</h3>
 
 <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
-
-
 <table id="roomsdefaults" class="liste">
 <colgroup width="20%"></colgroup>
 <colgroup span="3" width="11%"></colgroup>
@@ -150,10 +150,10 @@
 [% ELSE %]
 <input type="submit" name="reset_nondefaults" value="[% loc('Auswahl zurücksetzen') %]" disabled>
 [% END %]
-<input type="submit" name="accept_nondefaults" value="[% loc('Änderungen übernehmen') %]">
+<input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
 </p>
 
-</form>
+<hr>
 
 [% IF unconfigured %]
 <p class="important">
@@ -165,10 +165,7 @@
 </p>
 [% END %]
 
-<h2>[% loc('EDV-Räume') %]</h2>
-
-<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
-
+<h3>[% loc('EDV-Räume') %]</h3>
 
 <table id="rooms" class="liste">
 <col width="10%">
@@ -194,7 +191,7 @@
 
 
 <p>
-<input type="submit" name="accept_edv" value="[% loc('Änderungen übernehmen') %]">
+<input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
 </p>
 
 </form>

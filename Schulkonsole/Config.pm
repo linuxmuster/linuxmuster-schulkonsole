@@ -942,6 +942,10 @@ LINBO log directory
 
 Prefix of start.conf.* files
 
+=item C<$_linbo_examples_dir>
+
+Directory holding LINBO examples for start.conf files
+
 =item C<$_linbo_templates_os_dir>
 
 Directory holding LINBO templates for section [OS]
@@ -971,6 +975,7 @@ use vars qw($_workstations_file $_workstations_log_file
             $_pxe_config_dir
             $_grub_templates_dir
             $_linbo_log_dir $_linbo_start_conf_prefix
+            $_linbo_examples_dir
             $_linbo_templates_dir $_linbo_templates_os_dir
             $_linbo_template_partition
             $_dhcpd_conf_file
@@ -1427,10 +1432,10 @@ $false= 'no';
 $on = 'on';
 $off = 'off';
 
-$_version = '@VERSION@';
-$_sysconfdir = '@sysconfdir@/@PACKAGE@';
-$_templatedir = '@datadir@/@PACKAGE@/tt';
-$_runtimedir = '@pkgruntimedir@';
+$_version = '0.35.1';
+$_sysconfdir = '/etc/linuxmuster/schulkonsole';
+$_templatedir = '/usr/share/schulkonsole/tt';
+$_runtimedir = '/var/lib/schulkonsole';
 $_lockdir = '/var/lock';
 
 $_preferences_conf_file = "$_sysconfdir/preferences.conf";
@@ -1465,7 +1470,8 @@ $_linbo_dir = $lml_env{LINBODIR};
 $_grub_templates_dir = '/usr/share/linuxmuster-linbo/templates';
 $_grub_config_dir = $lml_env{LINBODIR} . '/boot/grub';
 $_pxe_config_dir = $lml_env{PXECFGDIR};
-$_linbo_templates_dir = '@datadir@/@PACKAGE@/linbo/templates';
+$_linbo_examples_dir = $lml_env{LINBODIR} . '/examples';
+$_linbo_templates_dir = '/usr/share/schulkonsole/linbo/templates';
 $_linbo_log_dir = $lml_env{LINBOLOGDIR};
 $_linbo_templates_os_dir = "$_linbo_templates_dir/os";
 $_linbo_template_partition = "$_linbo_templates_dir/part/start.conf.partition";
@@ -1498,18 +1504,18 @@ $_tmp_valid_time = '+1m';	# invalidate temporarily stored data after 1 minute
 $_http_root = '/schulkonsole';
 $_htaccess_filename = '.htaccess';
 $_imap_host = 'localhost';
-$_wrapper_user = '@pkglibexecdir@/bin/wrapper-user';
-$_wrapper_firewall = '@pkglibexecdir@/bin/wrapper-firewall';
-$_wrapper_ovpn = '@pkglibexecdir@/bin/wrapper-ovpn';
-$_wrapper_printer = '@pkglibexecdir@/bin/wrapper-printer';
-$_wrapper_sophomorix = '@pkglibexecdir@/bin/wrapper-sophomorix';
-$_wrapper_cyrus = '@pkglibexecdir@/bin/wrapper-cyrus';
-$_wrapper_collab = '@pkglibexecdir@/bin/wrapper-collab';
-$_wrapper_files = '@pkglibexecdir@/bin/wrapper-files';
-$_wrapper_linbo = '@pkglibexecdir@/bin/wrapper-linbo';
-$_wrapper_radius = '@pkglibexecdir@/bin/wrapper-radius';
-$_wrapper_debconf = '@pkglibexecdir@/bin/wrapper-debconf';
-$_wrapper_repair = '@pkglibexecdir@/bin/wrapper-repair';
+$_wrapper_user = '/usr/lib/schulkonsole/bin/wrapper-user';
+$_wrapper_firewall = '/usr/lib/schulkonsole/bin/wrapper-firewall';
+$_wrapper_ovpn = '/usr/lib/schulkonsole/bin/wrapper-ovpn';
+$_wrapper_printer = '/usr/lib/schulkonsole/bin/wrapper-printer';
+$_wrapper_sophomorix = '/usr/lib/schulkonsole/bin/wrapper-sophomorix';
+$_wrapper_cyrus = '/usr/lib/schulkonsole/bin/wrapper-cyrus';
+$_wrapper_collab = '/usr/lib/schulkonsole/bin/wrapper-collab';
+$_wrapper_files = '/usr/lib/schulkonsole/bin/wrapper-files';
+$_wrapper_linbo = '/usr/lib/schulkonsole/bin/wrapper-linbo';
+$_wrapper_radius = '/usr/lib/schulkonsole/bin/wrapper-radius';
+$_wrapper_debconf = '/usr/lib/schulkonsole/bin/wrapper-debconf';
+$_wrapper_repair = '/usr/lib/schulkonsole/bin/wrapper-repair';
 
 
 

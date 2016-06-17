@@ -154,6 +154,7 @@
 	[% IF ds.type != 'cache' && ! iscached %]<option value="cache">[% loc('Cache') %]</option>[% END %]
 	[% IF ds.type != 'ext' %]<option value="ext">[% loc('erweitert') %]</option>[% END %]
 	[% IF ds.type != 'efi' %]<option value="efi">[% loc('EFI') %]</option>[% END %]
+	[% IF ds.type != 'msr' %]<option value="msr">[% loc('MSR') %]</option>[% END %]
 	</select>&nbsp;<input type="submit" name="[% ds_nr %]_modify" value="[% loc('System ändern') %]"></p>
 [% END %]
 

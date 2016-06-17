@@ -294,6 +294,17 @@ Name of the selected group
 
                                 last SWITCHNEWSYSTEM;
                         };
+                        $new_system eq 'msr' and do {
+                                undef $$conf{linbo}{cache}
+                                        if $$conf{linbo}{cache} eq $$partition{dev};
+                                delete $$partition{oss} if $$partition{oss};
+                                $$partition{type} = 'msr';
+                                $$partition{id} = 0x0c01;
+                                $$partition{fstype} = '';
+                                $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
+
+                                last SWITCHNEWSYSTEM;
+                        };
                         }
 
                         last SWITCHCOMMAND;
@@ -376,6 +387,13 @@ Name of the selected group
                                 $partition{id} = 0xef;
                                 $partition{fstype} = 'vfat';
                                 $partition{bootable} = 1;
+
+                                last SWITCHNEWDEV;
+                        };
+                        $new_system eq 'msr' and do {
+                                $partition{type} = 'msr';
+                                $partition{id} = 0x0c01;
+                                $partition{fstype} = '';
 
                                 last SWITCHNEWDEV;
                         };
@@ -582,7 +600,8 @@ C<data> for a data partition,
 C<swap> for a swap partition,
 C<cache> for the cache partition,
 C<ext> for an extended parition,
-C<efi> for an EFI partition.
+C<efi> for an EFI partition,
+C<msr> for an MSR partition.
 
 =item C<${devs{n}}_label>
 
@@ -610,7 +629,7 @@ Value of key C<FSType>.
 
 If a Windows OS is installed on this partition, possible values are
 C<vfat> and C<ntfs>.
-For a GNU/Linux OS and Cache C<ext2>, C<ext3> and C<reiserfs>.
+For a GNU/Linux OS and Cache C<ext2>, C<ext3>, C<ext4> and C<reiserfs>.
 If no OS is installed all five types are possible.
 For extended permissions the value is empty.
 
@@ -725,7 +744,8 @@ C<data> for a data partition,
 C<swap> for a swap partition,
 C<cache> for the cache partition,
 C<ext> for an extended parition,
-C<efi> for an EFI partition.
+C<efi> for an EFI partition,
+C<msr> for an MSR partition.
 
 =item C<${devs{os}{n}}_deleteos>
 
@@ -751,7 +771,8 @@ C<data> for a data partition,
 C<swap> for a swap partition,
 C<cache> for the cache partition,
 C<ext> for an extended parition,
-C<efi> for an EFI partition.
+C<efi> for an EFI partition,
+C<msr> for an MSR partition.
 
 =item C<accept>
 

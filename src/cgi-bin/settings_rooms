@@ -74,7 +74,8 @@ foreach my $classroom (@$classrooms) {
 
 COMMANDS: {
 eval {
-$q->param('accept_nondefaults') and do {
+$q->param('accept') and do {
+# process default settings for rooms
 	my $default_internet = $q->param('default_internet');
 	my $default_intranet = $q->param('default_intranet');
 	my $default_webfilter = $q->param('default_webfilter');
@@ -177,11 +178,35 @@ $q->param('accept_nondefaults') and do {
 		$lines);
 
 	$defaults = read_room_defaults(\%room_hosts, $host_rooms);
+
+# process edv room settings
+	my %classrooms_new;
+
+	foreach my $room (keys %$rooms) {
+		if ($q->param("${room}_classroom")) {
+			if (not $classrooms{$room}) {
+				$classrooms_new{$room} = 1;
+				$classrooms{$room} = 1;
+			}
+		} elsif ($classrooms{$room}) {
+			$classrooms_new{$room} = 0;
+			delete $classrooms{$room};
+		}
+	}
+	if (%classrooms_new) {
+		my $lines = new_classrooms_lines(\%classrooms_new);
+
+		Schulkonsole::Files::write_classrooms_file(
+			$sk_session->userdata('id'),
+			$sk_session->get_password(),
+			$lines);
+
+	}
+
 	$q->delete_all();
 
 	$sk_session->set_status($sk_session->d()->get(
 		'Änderungen übernommen'), 0);
-
 
 	last COMMANDS;
 };
@@ -275,36 +300,6 @@ foreach my $room (keys %room_hosts) {
 		last COMMANDS;
 	}
 }
-
-$q->param('accept_edv')) and do {
-	my %classrooms_new;
-
-	foreach my $room (keys %$rooms) {
-		if ($q->param("${room}_classroom")) {
-			if (not $classrooms{$room}) {
-				$classrooms_new{$room} = 1;
-				$classrooms{$room} = 1;
-			}
-		} elsif ($classrooms{$room}) {
-			$classrooms_new{$room} = 0;
-			delete $classrooms{$room};
-		}
-	}
-	if (%classrooms_new) {
-		my $lines = new_classrooms_lines(\%classrooms_new);
-
-		Schulkonsole::Files::write_classrooms_file(
-			$sk_session->userdata('id'),
-			$sk_session->get_password(),
-			$lines);
-
-		$sk_session->set_status($sk_session->d()->get(
-			'Änderungen übernommen'), 0);
-	}
-	last COMMANDS;
-};
-
-
 
 };
 if ($@) {

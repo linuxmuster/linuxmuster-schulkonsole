@@ -54,6 +54,8 @@ my $q = $sk_session->query();
 my $groups = Schulkonsole::Config::linbogroups();
 my $templates_os = Schulkonsole::Linbo::get_templates_os();
 
+my $example = Schulkonsole::Linbo::example_start_confs();
+
 eval {
 SWITCHCOMMAND: {
 
@@ -110,7 +112,9 @@ $q->param('create') and do {
 	my ($group) = $q->param('group') =~ /^\s*(.+?)\s*$/;
 	$group = lc $group;
 	my ($systemtype) = $q->param('systemtype') =~ /^\s*(.+?)\s*$/;
-	my ($disk_size) = $q->param('disksize') =~ /^\s*(.+?)\s*$/;
+	my ($disksize_value) = $q->param('disksize_value') =~ /^\s*(.+?)\s*$/;
+	my ($disksize_unit) = $q->param('disksize_unit') =~ /^\s*(.+?)\s*$/;
+	my $disk_size = $disksize_value . $disksize_unit;
 	my ($device) = $q->param('device') =~ /^\s*(.+?)\s*$/;
 	my ($os_template_1) = $q->param('os1') =~ /^\s*(.+?)\s*$/;
 	my ($os_size_1) = $q->param('size1') =~ /^\s*(.+?)\s*$/;
@@ -150,7 +154,7 @@ $q->param('create') and do {
 		$sk_session->mark_input_error('disksize');
 	}
 
-	if ($device !~ /^(sda|hda)$/) {
+	if ($device !~ /^(sda|mmcblk0)$/) {
 		push @errors, $sk_session->d()->get(
 		              	'Unbekannter Festplattencontroller');
 		$sk_session->mark_input_error('device');
@@ -173,7 +177,7 @@ $q->param('create') and do {
 
 		if (not $os_size_1) {
 			$os_size_1 = '10M';
-		} elsif ($os_size_1 !~ /^\d+(kB|M|G|T)?$/) {
+		} elsif ($os_size_1 !~ /^\d+(k|M|G|T)?$/) {
 			push @errors, sprintf($sk_session->d()->get(
 			                      	'Größe für Betriebssystem 1 muss eine Zahl (wahlweise mit Einheit) sein'),
 			                      $os_template_1);
@@ -201,7 +205,7 @@ $q->param('create') and do {
 
 		if (not $os_size_2) {
 			$os_size_2 = '10M';
-		} elsif ($os_size_2 !~ /^\d+(kB|M|G|T)?$/) {
+		} elsif ($os_size_2 !~ /^\d+(k|M|G|T)?$/) {
 			push @errors, sprintf($sk_session->d()->get(
 			                      	'Größe für Betriebssystem 2 muss eine Zahl (wahlweise mit Einheit) sein'),
 			                      $os_template_2);
@@ -228,7 +232,7 @@ $q->param('create') and do {
 
 		if (not $os_size_3) {
 			$os_size_3 = '10M';
-		} elsif ($os_size_3 !~ /^\d+(kB|M|G|T)?$/) {
+		} elsif ($os_size_3 !~ /^\d+(k|M|G|T)?$/) {
 			push @errors, sprintf($sk_session->d()->get(
 			                      	'Größe für Betriebssystem 3 muss eine Zahl (wahlweise mit Einheit) sein'),
 			                      $os_template_3);
@@ -255,7 +259,7 @@ $q->param('create') and do {
 
 		if (not $os_size_4) {
 			$os_size_4 = '10M';
-		} elsif ($os_size_4 !~ /^\d+(kB|M|G|T)?$/) {
+		} elsif ($os_size_4 !~ /^\d+(k|M|G|T)?$/) {
 			push @errors, sprintf($sk_session->d()->get(
 			                      	'Größe für Betriebssystem 4 muss eine Zahl (wahlweise mit Einheit) sein'),
 			                      $os_template_4);
@@ -296,6 +300,64 @@ $q->param('create') and do {
 	last SWITCHCOMMAND;
 };
 
+$q->param('create_from_example') and do {
+
+	my ($selection) = $q->param('selected_example');
+	my ($group) = $q->param('group') =~ /^\s*(.+?)\s*$/;
+	$group = lc $group;
+	my ($disksize_value) = $q->param('disksize_value') =~ /^\s*(.+?)\s*$/;
+	my ($disksize_unit) = $q->param('disksize_unit') =~ /^\s*(.+?)\s*$/;
+	my $disk_size = $disksize_value . $disksize_unit;
+	my ($device) = $q->param('device') =~ /^\s*(.+?)\s*$/;
+
+	my @errors;
+	if (not exists $$example{$selection}) {
+		push @errors, $sk_session->d()->get('Ungültiges Beispiel');
+	}
+	
+	if ($group !~ /^[a-z\d_]+$/) {
+		push @errors, $sk_session->d()->get('Ungültiger Gruppenname');
+		$sk_session->mark_input_error('group');
+	} elsif ($$groups{$group}) {
+		push @errors, $sk_session->d()->get(
+		              	'Rechnergruppenname schon vergeben');
+		$sk_session->mark_input_error('group');
+	}
+
+	if (not $disk_size) {
+		push @errors, $sk_session->d()->get(
+		              	'Keine Festplattengröße angegeben');
+		$sk_session->mark_input_error('disksize');
+	} elsif ($disk_size !~ /^\d+(k|M|G|T)?$/) {
+		push @errors, $sk_session->d()->get(
+		              	'Festplattengröße muss eine Zahl (wahlweise mit Einheit) sein');
+		$sk_session->mark_input_error('disksize');
+	}
+
+	if ($device !~ /^(sda|mmcblk0)$/) {
+		push @errors, $sk_session->d()->get(
+		              	'Unbekannter Festplattencontroller');
+		$sk_session->mark_input_error('device');
+	}
+
+
+	if (@errors) {
+		$sk_session->set_status(join(', ', @errors), 1);
+	} else {
+		Schulkonsole::Linbo::create_start_conf_from_example(
+			$sk_session->userdata('id'),
+			$sk_session->get_password(),
+			$selection,
+			$group,
+			$ENV{SERVER_ADDR},
+			$device,
+			$disk_size);
+		$sk_session->set_status(
+			$sk_session->d()->get('Konfigurationsdatei erstellt'), 0);
+	}
+
+	last SWITCHCOMMAND;
+};
 
 }
 };
@@ -371,6 +433,21 @@ if(not defined $sk_session->param('systemtype')) {
 	$sk_session->set_var('systemtype','bios');
 }
 
+=item C<hasexamples>
+
+True if there are any examples
+
+=cut
+
+$sk_session->set_var('hasexamples', %$example );
+
+=item C<example>
+
+Hash of all examples with explanations
+
+=cut
+
+$sk_session->set_var('example', $example );
 
 
 $sk_session->print_page("$this_file.tt", $this_file);
@@ -392,7 +469,7 @@ If C<copy> is selected start.conf.C<src> is copied to start.conf.C<dest>.
 =back
 
 
-=head3 Parameters to create new start.conf.*
+=head3 Parameters to create new start.conf.* from templates
 
 =over
 
@@ -443,5 +520,23 @@ Size of partition on which the third OS is to be installed.
 =item C<create>
 
 Submit button to create new start.conf.* file
+
+=back
+
+=head3 Parameters to create new start.conf.* from examples
+
+=over
+
+=item C<group>
+
+=item C<disksize>
+
+=item C<device>
+
+One of C<sda> or C<hda>.
+
+=item C<create_from_example>
+
+Submit button to create new start.conf.* file from example
 
 =back

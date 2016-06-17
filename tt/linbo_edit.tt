@@ -36,6 +36,7 @@
 	[% IF ! iscached %]<option value="cache">[% loc('Cache') %]</option>[% END %]
 	<option value="ext">[% loc('erweitert') %]</option>
 	<option value="efi">[% loc('EFI') %]</option>
+	<option value="msr">[% loc('MSR') %]</option>
 	</select>
 	</p>
 
@@ -69,6 +70,7 @@
 			[% IF ds.type != 'cache' && ! iscached %]<option value="cache">[% loc('Cache') %]</option>[% END %]
 			[% IF ds.type != 'ext' %]<option value="ext">[% loc('erweitert') %]</option>[% END %]
 			[% IF ds.type != 'efi' %]<option value="efi">[% loc('EFI') %]</option>[% END %]
+			[% IF ds.type != 'msr' %]<option value="msr">[% loc('MSR') %]</option>[% END %]
 			</select>&nbsp;<input type="submit" name="[% ds_nr %]_modify" value="[% loc('System ändern') %]">
 			
 			<hr>
@@ -98,6 +100,7 @@
 	[% IF ! iscached %]<option value="cache">[% loc('Cache') %]</option>[% END %]
 	<option value="ext">[% loc('erweitert') %]</option>
 	<option value="efi">[% loc('EFI') %]</option>
+	<option value="msr">[% loc('MSR') %]</option>
 	</select>
 	</p>
 	<p><input type="submit" name="accept" value="[% loc('Änderungen speichern') %]"></p>

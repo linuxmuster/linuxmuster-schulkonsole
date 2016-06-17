@@ -47,6 +47,7 @@ $VERSION = 0.0917;
 @EXPORT_OK = qw(
 	regpatches
 	example_regpatches
+	example_start_confs
 	grubcfgs
 	pxestarts
 	menulsts
@@ -54,6 +55,7 @@ $VERSION = 0.0917;
 
 	update_linbofs
 	read_start_conf
+	parse_start_conf
 	set_partition_id
 	set_partition_type
 	find_free_dev
@@ -63,6 +65,7 @@ $VERSION = 0.0917;
 	copy_start_conf
 	copy_regpatch
 	create_start_conf_from_template
+	create_start_conf_from_example
 	check_and_prepare_start_conf
 	handle_start_conf_errors
 	write_file
@@ -386,6 +389,47 @@ sub menulsts {
 
 
 
+=head2 example_start_confs()
+
+Get all example start.conf files
+
+=head3 Return value
+
+A reference to a hash with the start.conf extensions as keys and comments as multi lined string
+
+=head3 Description
+
+Gets the start.confs in /var/linbo/examples/
+and returns them in a hash.
+
+=cut
+
+sub example_start_confs {
+	my %re;
+
+	foreach my $file ((
+			glob("$Schulkonsole::Config::_linbo_dir/examples/start.conf.*"),
+		)) {
+		my ($type) = File::Basename::fileparse($file);
+		($type) = $type =~ /^.*\.(.+?)$/;
+		my $content;
+	
+		open CONF, "<$file" or die new Schulkonsole::Error::LinboError(
+			Schulkonsole::Error::Error::CANNOT_OPEN_FILE, $file, $!);
+		while (<CONF>) {
+			last unless /^\s*#/;
+			$content .= $_;
+		}
+		close CONF;
+			
+		$re{ Schulkonsole::Encode::from_fs($type) } = $content;
+	}
+
+	return \%re;
+}
+
+
+
 =head2 remote_status($id, $password)
 
 Get current status of linbo_remote commands.
@@ -690,6 +734,43 @@ sub read_start_conf {
 
 	my $filename = $Schulkonsole::Config::_linbo_start_conf_prefix . $group;
 
+	return parse_start_conf($filename);
+}
+
+=head2 parse_start_conf($filename)
+
+Parses a start.conf.* file
+
+=head3 Parameteres
+
+=over
+
+=item C<$filename>
+
+The name of a start.conf file including path
+
+=back
+
+=head3 Return value
+
+A reference to a hash with the following keys and values:
+linbo hash with linbo section
+partitions hash indexed by number with partition sections
+    sorted by device
+    
+=head3 Description
+
+Reads <$filename> and returns the contents in a hash.
+
+=cut
+
+sub parse_start_conf {
+	my $filename = shift;
+	
+	my ($group) = $filename =~ /^.*\.(.+?)$/;
+	die new Schulkonsole::Error::LinboError(Schulkonsole::Error::LinboError::INVALID_GROUP)
+		unless $group;
+	
 	open CONF, "<$filename" or die new Schulkonsole::Error::LinboError(
 			Schulkonsole::Error::Error::CANNOT_OPEN_FILE, $filename, $!);
 	flock CONF, 1;
@@ -1386,7 +1467,6 @@ sub write_start_conf {
 
 					} elsif ($$section{Name} =~ /^Pa/i) {
 						my $dev = $$section{Keys}{dev}{Value};
-
 						if (    $dev
 						    and exists $$start_conf{partitions}{$dev}) {
 							$partitions{$dev} = $section;
@@ -1527,7 +1607,6 @@ sub write_start_conf {
 		$lines .= $$key_data{Post} if $$key_data{Post};
 	}
 
-
 	# [Partition]s
 	foreach my $dev (sort {
 			my ($name_a, $number_a) = $a =~ /^(.*?)(\d*)$/;
@@ -1645,7 +1724,8 @@ C<data> for a data partition,
 C<swap> for a swap partition,
 C<cache> for the cache partition,
 C<ext> for an extended parition,
-C<efi> for an EFI partition.
+C<efi> for an EFI partition,
+C<msr> for an MSR partition.
 
 =cut
 
@@ -1668,6 +1748,8 @@ sub set_partition_type {
             $$partition{type} = 'cache';
     } elsif ($$partition{id} == 0xef) {
             $$partition{type} = 'efi';
+    } elsif ($$partition{id} == 0x0c01) {
+	    $$partition{type} = 'msr';
     } else {
             $$partition{type} = 'data';
     }
@@ -1704,9 +1786,11 @@ sub set_partition_id {
     
         ((   $fstype eq 'ext2'
             or $fstype eq 'ext3'
+            or $fstype eq 'ext4'
             or $fstype eq 'reiserfs') and $id = 0x83)
     or ($fstype eq 'swap' and $id = 0x82)
     or ($type eq 'efi' and $fstype eq 'vfat' and $id = 0xef)
+    or ($type eq 'msr' and not $fstype and $id = 0x0c01)
     or ($fstype eq 'vfat' and $id = 0x0c)
     or ($fstype eq 'ntfs' and $id = 0x07)
     or (not $fstype and $id = 0x05)
@@ -2104,6 +2188,111 @@ sub create_start_conf_from_template {
 	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOWRITESTARTCONFAPP,
 		$id, $password, "$group\n" . join('', @lines));
 
+}
+
+
+
+
+=head2 create_start_conf_from_example($id, $password, $example, $group, $server, $device, $disksize)
+
+Create start.conf.* from example
+
+=head3 Parameteres
+
+=over
+
+=item C<$id>
+
+The ID (not UID) of the teacher invoking the command
+
+=item C<$password>
+
+The password of the teacher invoking the command
+
+=item C<$example>
+
+The name of the example (start.conf.example)
+
+=item C<$group>
+
+The name of the workstation group
+
+=item C<$server>
+
+The server IP address
+
+=item C<$device>
+
+The disk device
+
+=item C<$disksize>
+
+Size of disk in k(M,G,T)
+
+=back
+
+=head3 Description
+
+Creates /var/linbo/start.conf.C<$group> from example in
+C</var/linbo/examples/start.conf.group>.
+
+=cut
+
+sub create_start_conf_from_example {
+	my $id = shift;
+	my $password = shift;
+
+	my $example = shift;
+	my $group = shift;
+	my $server = shift;
+	my $device = shift;
+	my $disksize = shift;
+
+	my $filename = $Schulkonsole::Config::_linbo_dir . '/examples/start.conf.' . $example;
+	my @lines;
+
+	open CONF, "<$filename" or die new Schulkonsole::Error::LinboError(
+		Schulkonsole::Error::Error::CANNOT_OPEN_FILE, $filename, $!);
+	while (<CONF>) {
+		chomp;
+		push @lines, $_ . "\n";
+	}
+	close CONF;
+	# write file
+	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::LINBOWRITESTARTCONFAPP,
+		$id, $password, "$group\n" . join('', @lines));
+
+	# include new values in copied start.conf
+	my $conf = read_start_conf($group);
+	$$conf{linbo}{group} = $group;
+	$$conf{linbo}{server} = $server;
+	set_device_name($$conf{linbo}{cache},$device) if exists $$conf{linbo}{cache};
+	foreach my $partno (keys $$conf{partitions}) {
+		set_device_name($$conf{partitions}{$partno}{dev}, $device) if exists $$conf{partitions}{$partno}{dev};
+		next unless $$conf{partitions}{$partno}{oss};
+		foreach my $os (@{$$conf{partitions}{$partno}{oss}}){
+			set_device_name($$os{boot},$device) if exists $$os{boot};
+			set_device_name($$os{root},$device) if exists $$os{root};
+		}
+	}
+	
+	# calculate new partition os_sizes
+	my $oldsize_k = 0;
+	my $faktor = 1.0;
+	# old size (doubled because of cache)
+	foreach my $partno (keys $$conf{partitions}) {
+		$oldsize_k += partsize_to_kB($$conf{partitions}{$partno}{size});
+	}
+	$oldsize_k = 2.0 * $oldsize_k;
+	if( $oldsize_k > 0){
+		$faktor = partsize_to_kB($disksize)/$oldsize_k;
+		foreach my $partno (keys $$conf{partitions}) {
+			my ($unit) = $$conf{partitions}{$partno}{size} =~ /^\d+(k|M|G|T)?$/;
+			$unit = 'k' unless $unit;
+			$$conf{partitions}{$partno}{size} = partsize_from_kB(partsize_to_kB($$conf{partitions}{$partno}{size}) * $faktor, $unit);
+		}
+	}
+	write_start_conf($id, $password, $group, $conf);
 }
 
 
@@ -2691,6 +2880,31 @@ sub partsize_to_kB {
         }
 }
 
+sub partsize_from_kB {
+	my $value = shift;
+	my $unit = shift;
+	if(not defined $value or not $value) {
+	    return '';
+	} elsif($unit =~ /^M$/ ) {
+	    return int($value/1024.0) . $unit;
+	} elsif($unit =~ /^G$/ ) {
+	    return int($value/(1024.0*1024.0)) . $unit;
+	} elsif($unit =~ /^T$/ ) {
+	    return int($value/(1024.0*1024.0*1024.0)) . $unit;
+	} else {
+	    return $value . $unit;
+	}
+}
+
+sub set_device_name {
+	my $device = @_[1];
+	my ($nr) = $_[0] =~ /^.*?(\d+)$/;
+	if($device =~ /^\/dev\/\w$/){
+		$_[0] = $device . $nr;
+	} else {
+		$_[0] = '/dev/'.$device.$nr;
+	}
+}
 
 1;
 

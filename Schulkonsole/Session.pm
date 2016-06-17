@@ -1503,11 +1503,11 @@ sub init_l10n
 	my $session = $this->{session};
 	my $plugin  = $this->{plugin};
 
-	$this->{d}{default} = Locale::gettext->domain('@PACKAGE@');
-	$this->{d}{default}->dir('@datadir@/locale');
+	$this->{d}{default} = Locale::gettext->domain('schulkonsole');
+	$this->{d}{default}->dir('/usr/share/locale');
         if(defined $plugin) {
             $this->{d}{$plugin} = Locale::gettext->domain($plugin);
-            $this->{d}{$plugin}->dir('@datadir@/locale');
+            $this->{d}{$plugin}->dir('/usr/share/locale');
         }
 
 	my $lang = 'C';
