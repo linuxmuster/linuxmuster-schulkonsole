@@ -63,9 +63,9 @@
   <h4>[% loc('Neue Gruppe aus Templates') %]</h4>
   <table class="settings">
     <tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
-	    <td><label [% labelfor("linbo_systemtype") %]>[% loc('System-Typ') %]:</label></td>
+	    <td><label [% labelfor("systemtype") %]>[% loc('System-Typ') %]:</label></td>
 	    <td>
-	    <select name="linbo_systemtype">
+	    <select name="systemtype">
 	    <option value="bios"[% IF systemtype == 'bios' %] selected[% END %]>[% loc('Bios') %]</option>
 	    <option value="bios64"[% IF systemtype == 'bios64' %] selected[% END %]>[% loc('Bios64') %]</option>
 	    <option value="efi32"[% IF systemtype == 'efi32' %] selected[% END %]>[% loc('EFI32') %]</option>
@@ -78,13 +78,13 @@
     <tr>
     <th>[% loc('Partition') %]</th>
     <th>[% loc('Betriebssystem') %]</th>
-    <th>[% loc('Partitionsgrößen in <b>kB</b> (M,G,T)') %]</td>
+    <th>[% loc('Partitionsgrößen in <b>k</b> (M,G,T)') %]</td>
     </tr>
-    [% IF templatesoswin %]
+    [% IF templatesos %]
     <tr>
     <td><label [% labelfor("os1") %]>[% loc('Betriebssystem 1 (Partition 1)') %]</label></td>
     <td><select id="os1" name="os1">
-    <option value=""></option>[% FOREACH to IN templatesoswin %]
+    <option value=""></option>[% FOREACH to IN templatesos %]
     <option value="[% to %]">[% to %]</option>
     [% END %]</select>
     </td>
@@ -93,18 +93,18 @@
     <tr>
     <td><label [% labelfor("os2") %]>[% loc('Betriebssystem 2 (Partition 2)') %]</label></td>
     <td><select id="os2" name="os2">
-    <option value=""></option>[% FOREACH to IN templatesoswin %]
+    <option value=""></option>[% FOREACH to IN templatesos %]
     <option value="[% to %]">[% to %]</option>
     [% END %]</select>
     </td>
     <td><input name="size2"></td>
     </tr>
     [% END %]
-    [% IF templatesosnonwin %]
+    [% IF templatesos %]
     <tr>
     <td><label [% labelfor("os3") %]>[% loc('Betriebssystem 3 (Partition 5)') %]</label></td>
     <td><select id="os3" name="os3">
-    <option value=""></option>[% FOREACH to IN templatesosnonwin %]
+    <option value=""></option>[% FOREACH to IN templatesos %]
     <option value="[% to %]">[% to %]</option>
     [% END %]</select>
     </td>
@@ -113,7 +113,7 @@
     <tr>
     <td><label [% labelfor("os4") %]>[% loc('Betriebssystem 4 (Partition 6)') %]</label></td>
     <td><select id="os4" name="os4">
-    <option value=""></option>[% FOREACH to IN templatesosnonwin %]
+    <option value=""></option>[% FOREACH to IN templatesos %]
     <option value="[% to %]">[% to %]</option>
     [% END %]</select>
     </td>
@@ -129,7 +129,7 @@
 [% END %]
 
 [% IF hasexamples %]
-  <h3>[% loc('Neue Gruppe aus Beispiel') %]</h3>
+  <h4>[% loc('Neue Gruppe aus Beispielen') %]</h4>
 
   <table class="settings">
     <tr>

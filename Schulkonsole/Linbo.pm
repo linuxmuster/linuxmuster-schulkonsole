@@ -77,6 +77,7 @@ $VERSION = 0.0917;
 	copy_image
 
 	is_boolean
+	is_gpt_disk
 
 	get_templates_os
 
@@ -973,6 +974,7 @@ sub check_and_prepare_start_conf {
 	## [Partition]s
 
 	my %has_extended;
+	my $has_windows;
 	my %max_primary_partition;
 	my %max_logical_partition;
 
@@ -1006,8 +1008,8 @@ sub check_and_prepare_start_conf {
 
 		# check for valid primary/logical structure
 		my ($dev_name, $dev_number) = $dev =~ /^(.*?)(\d*)$/;
-		if ($dev_number > 4) {
-		    if (not $has_extended{$dev_name}) {
+		if ($dev_number > 4 and not is_gpt_disk($conf)) {
+			if (not $has_extended{$dev_name}) {
 				$errors{partitions}{$partition}{partition}
 					= $$conf{partitions}{$partition};
 				$errors{partitions}{$partition}{errors}{dev} = 4;
@@ -1061,7 +1063,11 @@ sub check_and_prepare_start_conf {
 		if ($$conf{partitions}{$partition}{id} == 0x05) { # extended
 			my ($disk, $number)
 				= $$conf{partitions}{$partition}{dev} =~ /^(.*?)(\d*)$/;
-			if ($has_extended{$disk}) {
+			if (is_gpt_disk($conf)) {
+				$errors{partitions}{$partition}{partition}
+					= $$conf{partitions}{$partition};
+				$errors{partitions}{$partition}{errors}{dev} = 10;
+			} elsif ($has_extended{$disk}) {
 				$errors{partitions}{$partition}{partition}
 					= $$conf{partitions}{$partition};
 				$errors{partitions}{$partition}{errors}{dev} = 5;
@@ -1078,7 +1084,9 @@ sub check_and_prepare_start_conf {
 	## [OS]s
 			my $id = $$conf{partitions}{$partition}{id};
 			my $is_windows = ($id != 0x83);
-
+			if($is_windows) {
+				$has_windows = 1;
+			}
 
 			my $dev_n = $$conf{partitions}{$partition}{n};
 			foreach my $os (@{ $$conf{partitions}{$partition}{oss} }) {
@@ -1158,6 +1166,9 @@ sub check_and_prepare_start_conf {
 	}
 
 
+	my %has_efi;
+	my %has_msr;
+	
 	# check if size is set (if it has to be set)
 	foreach my $partition (keys %{ $$conf{partitions} }) {
 		my $dev = $$conf{partitions}{$partition}{dev};
@@ -1165,7 +1176,7 @@ sub check_and_prepare_start_conf {
 		my ($name, $number) = $dev =~ /^(.*?)(\d*)$/;
 		if (    exists $re{partitions}{$dev}{size}
 		    and not $re{partitions}{$dev}{size}) {
-			if ($number > 4) {
+			if ($number > 4 and not is_gpt_disk($conf)) {
 				if ($number < $max_logical_partition{$name}) {
 					$errors{partitions}{$partition}{partition}
 						= $$conf{partitions}{$partition};
@@ -1177,8 +1188,37 @@ sub check_and_prepare_start_conf {
 				$errors{partitions}{$partition}{errors}{size} = 7;
 			}
 		}
+		if ($$conf{partitions}{$partition}{id} == 0xef) {
+			if ($has_efi{$name}) {
+				$errors{partitions}{$partition}{partition}
+					= $$conf{partitions}{$partition};
+				$errors{partitions}{$partition}{errors}{dev} = 13;
+			} else {
+				$has_efi{$name} = 1;
+			}
+		} elsif ($$conf{partitions}{$partition}{id} == 0x0c01) {
+			if ($has_msr{$name}) {
+				$errors{partitions}{$partition}{partition}
+					= $$conf{partitions}{$partition};
+				$errors{partitions}{$partition}{errors}{dev} = 14;
+			} else {
+				$has_msr{$name} = 1;
+			}
+		}
 	}
 
+	# additional gpt checks
+	if (is_gpt_disk($conf)) {
+		if (not keys %has_efi) {
+			$errors{linbo}{partition}
+				= 11;
+		}
+		if ($has_windows and not keys %has_msr) {
+			$errors{linbo}{partition}
+				= 12;
+		}
+	}
+	
 	die new Schulkonsole::Error::LinboError(Schulkonsole::Error::LinboError::START_CONF_ERROR,
 	                            \%errors)
 		if %errors;
@@ -1205,6 +1245,8 @@ Reference to a hash with the errors in the sections
 	<key> => 1	# value empty
 	         2	# value contains invalid characters
  	'cache' => 3	# no cache partition
+ 	'partition' => 11 # gpt disk needs one efi partition
+	               12 # gpt windows disk needs one msr partition
  },
  'partitions' => {
  	<dev> => {
@@ -1217,6 +1259,9 @@ Reference to a hash with the errors in the sections
 			         4	# logical partition without extended partition
 			         5	# disk already has extended partition
 			         6	# extended partition must be <= 4
+			         10	# gpt disk has only primary partitions
+			         13	# gpt disk has already one efi partition
+			         14	# gpt disk has already one msr partition
 			'size' => 7	# empty size on non-last partiton
 			'oss' => 8	# oss defined on cache partition
 			'id' => 9	# invalid partition id for cache
@@ -1333,6 +1378,12 @@ sub handle_start_conf_errors {
 					} elsif ($code == 10) {
 						push @errors, sprintf($session->d()->get(
 						                      'Die Cachepartition %s benötigt ein GNU/Linux-Dateisystem'), $dev);
+					} elsif ($code == 13) {
+						push @errors, sprintf($session->d()->get(
+								      'Es ist bereits eine EFI-Partition außer %s vorhanden'), $dev);
+					} elsif ($code == 14) {
+						push @errors, sprintf($session->d()->get(
+								      'Es ist bereits eine MSR-Partition außer %s vorhanden'), $dev);
 					} else {
 						push @errors, sprintf($session->d()->get(
 						                      'Unbekannter Fehler bei %s/%s'),
@@ -1347,6 +1398,10 @@ sub handle_start_conf_errors {
 					push @errors, $session->d()->get('leerer Wert');
 				} elsif ($$errors{$section}{$key} == 2) {
 					push @errors, $session->d()->get('ungültige Zeichen');
+				} elsif ($$errors{$section}{$key} == 11) {
+					push @errors, $session->d()->get('Das EFI-System benötigt eine EFI-Partition');
+				} elsif ($$errors{$section}{$key} == 12) {
+					push @errors, $session->d()->get('Das EFI-System mit Windows benötigt eine MSR-Partition');
 				} else {	# short cut (error code is 3 => cache)
 					push @errors, $session->d()->get('keine Cachepartition');
 				}
@@ -2051,7 +2106,7 @@ Template for first OS
 
 =item C<$os_size_1>
 
-Size of partition of first OS in kB(,M,G,T)
+Size of partition of first OS in k(,M,G,T)
 
 =item C<$os_template_2>
 
@@ -2059,7 +2114,7 @@ Template for second OS
 
 =item C<$os_size_2>
 
-Size of partition of second OS in kB(,M,G,T)
+Size of partition of second OS in k(,M,G,T)
 
 =item C<$os_template_3>
 
@@ -2067,7 +2122,7 @@ Template for third OS
 
 =item C<$os_size_3>
 
-Size of partition of third OS in kB(,M,G,T)
+Size of partition of third OS in k(,M,G,T)
 
 =item C<$os_template_4>
 
@@ -2075,7 +2130,7 @@ Template for fourth OS
 
 =item C<$os_size_4>
 
-Size of partition of fourth OS in kB(,M,G,T)
+Size of partition of fourth OS in k(,M,G,T)
 
 =back
 
@@ -2835,7 +2890,7 @@ sub string_to_type {
 		last SWITCHTYPE;
 	};
 	$type == 5 and do {    # partition size (unit)
-                return undef if ($value !~ /^\d*(kB|M|G|T)?$/);
+                return undef if ($value !~ /^\d*(k|M|G|T)?$/);
                 last SWITCHTYPE;
 	};
 	}
@@ -2864,7 +2919,7 @@ sub line_with_new_value {
 
 sub partsize_to_kB {
         my $line = shift;
-        my ($value, $unit) = $line =~ /^\s*(\d+)\s*(kB|M|G|T)?\s*$/;
+        my ($value, $unit) = $line =~ /^\s*(\d+)\s*(k|M|G|T)?\s*$/;
 
         if(not defined $value) {
             return 0;
@@ -2875,7 +2930,7 @@ sub partsize_to_kB {
         } elsif($unit =~ /^T$/ ) {
             return ($value*1024*1024*1024);
         } else {
-            return $value; # kB
+            return $value; # k
         }
 }
 
@@ -2904,6 +2959,13 @@ sub set_device_name {
 		$_[0] = '/dev/'.$device.$nr;
 	}
 }
+
+sub is_gpt_disk {
+	my $conf = shift;
+	return 0 if not exists $$conf{linbo} or not exists $$conf{linbo}{systemtype};
+	return ($$conf{linbo}{systemtype} =~ /^efi\d+$/? 1 : 0);
+}
+
 
 1;
 

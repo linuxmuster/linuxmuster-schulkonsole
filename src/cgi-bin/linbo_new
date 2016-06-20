@@ -148,7 +148,7 @@ $q->param('create') and do {
 		push @errors, $sk_session->d()->get(
 		              	'Keine Festplattengröße angegeben');
 		$sk_session->mark_input_error('disksize');
-	} elsif ($disk_size !~ /^\d+(kB|M|G|T)?$/) {
+	} elsif ($disk_size !~ /^\d+(k|M|G|T)?$/) {
 		push @errors, $sk_session->d()->get(
 		              	'Festplattengröße muss eine Zahl (wahlweise mit Einheit) sein');
 		$sk_session->mark_input_error('disksize');
@@ -168,10 +168,6 @@ $q->param('create') and do {
 			push @errors, sprintf($sk_session->d()->get(
 			                      	'Template %s nicht vorhanden'),
 			                      $os_template_1);
-			$sk_session->mark_input_error('os1');
-		} elsif ($os_template_1 !~ /windows/i) {
-			push @errors, $sk_session->d()->get(
-			              	'Betriebssystem 1 muss Windows sein');
 			$sk_session->mark_input_error('os1');
 		}
 
@@ -197,10 +193,6 @@ $q->param('create') and do {
 			                      	'Template %s nicht vorhanden'),
 			                      $os_template_2);
 			$sk_session->mark_input_error('os2');
-		} elsif ($os_template_2 !~ /windows/i) {
-			push @errors, $sk_session->d()->get(
-			              	'Betriebssystem 2 muss Windows sein');
-			$sk_session->mark_input_error('os2');
 		}
 
 		if (not $os_size_2) {
@@ -224,10 +216,6 @@ $q->param('create') and do {
 			                      	'Template %s nicht vorhanden'),
 			                      $os_template_3);
 			$sk_session->mark_input_error('os3');
-		} elsif ($os_template_3 =~ /windows/i) {
-			push @errors, $sk_session->d()->get(
-			              	'Betriebssystem 3 darf nicht Windows sein');
-			$sk_session->mark_input_error('os3');
 		}
 
 		if (not $os_size_3) {
@@ -250,10 +238,6 @@ $q->param('create') and do {
 			push @errors, sprintf($sk_session->d()->get(
 			                      	'Template %s nicht vorhanden'),
 			                      $os_template_4);
-			$sk_session->mark_input_error('os4');
-		} elsif ($os_template_4 =~ /windows/i) {
-			push @errors, $sk_session->d()->get(
-			              	'Betriebssystem 4 darf nicht Windows sein');
 			$sk_session->mark_input_error('os4');
 		}
 
@@ -375,17 +359,10 @@ List of all groups that have a start.conf.*
 $sk_session->set_var('groups', [ sort keys %$groups ]);
 
 
-my @templates_os_win;
-my @templates_os_nonwin;
+my @templates_os;
 foreach my $template_name (sort keys %$templates_os) {
-	if ($template_name =~ /windows/i) {
-		push @templates_os_win, $template_name;
-	} else {
-		push @templates_os_nonwin, $template_name;
-	}
+	push @templates_os, $template_name;
 }
-
-my @templates_os = (@templates_os_nonwin, @templates_os_win);
 
 =item C<hastemplates>
 
@@ -393,35 +370,19 @@ True if there are any tempaltes
 
 =cut
 
-$sk_session->set_var('hastemplates', @templates_os_win || @templates_os_nonwin);
+$sk_session->set_var('hastemplates', @templates_os);
 
 
-
-=item C<templatesoswin>
-
-List of all windows templates
-
-=cut
-
-$sk_session->set_var('templatesoswin', \@templates_os_win);
-
-
-
-=item C<templatesosnonwin>
-
-List of all non-windows templates
-
-=cut
-
-$sk_session->set_var('templatesosnonwin', \@templates_os_nonwin);
 
 =item C<templatesos>
 
-List of all os templates
+List of all templates
 
 =cut
 
 $sk_session->set_var('templatesos', \@templates_os);
+
+
 
 =item C<systemtype>
 

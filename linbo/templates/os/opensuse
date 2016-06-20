@@ -1,0 +1,22 @@
+[OS]                       # Beginn einer Betriebssystemdefinition
+Name = openSUSE Linux$PART # Name des Betriebssystems
+Version =                  # Version (optional, frei waehlbar)
+Description = openSUSE 13.2 Part$PART          # Beschreibung
+IconName = opensuse.png    # Icon für die Startseite, muss unter /var/linbo/icons abgelegt sein
+Image =                                             # Dateiname des differentiellen Images
+                                                    # (Erweiterung .rsync)
+BaseImage = $RECHNERGRUPPE-os13.2-part$PART.cloop   # Dateiname des Basisimages
+                                                    # (Erweiterung .cloop)
+Boot = /dev/$DEVICE$PART   # Partition, die Kernel & Initrd enthaelt
+Root = /dev/$DEVICE$PART   # Partition, in die das BS installiert ist
+Kernel = boot/vmlinuz      # 
+Initrd = boot/initrd       # Relativer Pfad zur Initrd
+Append = splash quiet      # Kernel-Append-Parameter
+StartEnabled = yes         # "Start"-Button anzeigen
+SyncEnabled = yes          # "Sync"-Button anzeigen
+NewEnabled = yes           # "Neu+Start"-Button anzeigen
+Hidden = yes               # blendet den OS-Reiter für dieses System aus
+Autostart = no             # yes: startet dieses System automatisch synchronisiert
+DefaultAction = sync       # Standardaktion bei Autostart: start|sync|new
+AutostartTimeout = 5       # Timeout in Sekunden für Benutzerabbruch bei Autostart
+

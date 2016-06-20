@@ -45,7 +45,7 @@
 	</select></div>
 	[% IF ds.bootable %]<input type="hidden" id="[% ds_nr %]_bootable" name="[% ds_nr %]_bootable" value="1">[% END %]
 	[% IF ds.type == 'swap' %]<input type="hidden" name="[% ds_nr %]_fstype" value="swap">
-	[% ELSIF ds.type == 'ext' %]<input type="hidden" name="[% ds_nr %]_fstype" value="">
+	[% ELSIF ds.type == 'ext' || ds.type == 'msr' %]<input type="hidden" name="[% ds_nr %]_fstype" value="">
 	[% END %]
 	</td>
 [% lfdnr = lfdnr + 1 %]</tr>
