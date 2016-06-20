@@ -4,12 +4,12 @@
 #
 # root <root@linuxmuster.lokal>, 2014.
 # Frank Schütte <fschuett@gymnasium-himmelsthuer.de>, 2015.
-#: ../Schulkonsole/Session.pm.in:1542
+#: ../Schulkonsole/Session.pm:1542
 msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole 0.10.11\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2016-05-10 17:20+0200\n"
+"POT-Creation-Date: 2016-06-18 14:01+0200\n"
 "PO-Revision-Date: 2015-11-10 12:50+0100\n"
 "Last-Translator: Frank Schütte <fschuett@gymhim.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -66,29 +66,29 @@ msgstr "not existing as collected file."
 msgid " nicht als einzusammelnde Datei vorhanden."
 msgstr " not existing as collected file."
 
-#: ../src/cgi-bin/class_list:151 ../src/cgi-bin/class_list:170
-#: ../src/cgi-bin/project_members:385 ../src/cgi-bin/project_members:404
-#: ../src/cgi-bin/start:565 ../src/cgi-bin/start:584
+#: ../src/cgi-bin/class_list:175 ../src/cgi-bin/class_list:194
+#: ../src/cgi-bin/project_members:397 ../src/cgi-bin/project_members:416
+#: ../src/cgi-bin/start:587 ../src/cgi-bin/start:606
 #, perl-format
 msgid "%d Minuten"
 msgstr "%d minutes"
 
-#: ../src/cgi-bin/class_list:148 ../src/cgi-bin/class_list:167
-#: ../src/cgi-bin/project_members:382 ../src/cgi-bin/project_members:401
-#: ../src/cgi-bin/start:562 ../src/cgi-bin/start:581
+#: ../src/cgi-bin/class_list:172 ../src/cgi-bin/class_list:191
+#: ../src/cgi-bin/project_members:394 ../src/cgi-bin/project_members:413
+#: ../src/cgi-bin/start:584 ../src/cgi-bin/start:603
 #, perl-format
 msgid "%d Stunden"
 msgstr "%d hours"
 
-#: ../src/cgi-bin/class_list:145 ../src/cgi-bin/class_list:164
-#: ../src/cgi-bin/project_members:379 ../src/cgi-bin/project_members:398
-#: ../src/cgi-bin/start:559 ../src/cgi-bin/start:578
+#: ../src/cgi-bin/class_list:169 ../src/cgi-bin/class_list:188
+#: ../src/cgi-bin/project_members:391 ../src/cgi-bin/project_members:410
+#: ../src/cgi-bin/start:581 ../src/cgi-bin/start:600
 #, perl-format
 msgid "%d Tage"
 msgstr "%d days"
 
-#: ../src/cgi-bin/project_members:212 ../src/cgi-bin/project_members:223
-#: ../src/cgi-bin/project_members:238 ../src/cgi-bin/project_members:253
+#: ../src/cgi-bin/project_members:224 ../src/cgi-bin/project_members:235
+#: ../src/cgi-bin/project_members:250 ../src/cgi-bin/project_members:265
 #, perl-format
 msgid "%s aus Projekt %s ausgetragen"
 msgstr "%s removed from project %s"
@@ -157,7 +157,7 @@ msgstr "%s is not a teacher"
 msgid "%s ist kein Registrypatch"
 msgstr "%s is not a registry patch"
 
-#: ../Schulkonsole/Linbo.pm:1141
+#: ../Schulkonsole/Linbo.pm:1311
 #, perl-format
 msgid "%s ist kein gültiger Devicename"
 msgstr "invalid device name %s"
@@ -229,7 +229,7 @@ msgstr "%s copied to %s"
 msgid "%s nach %s umbenannt"
 msgstr "%s renamed %s"
 
-#: ../Schulkonsole/Linbo.pm:1147
+#: ../Schulkonsole/Linbo.pm:1317
 #, fuzzy, perl-format
 msgid "%s wird mehrmals verwendet"
 msgstr "% is not unique"
@@ -264,12 +264,10 @@ msgstr "&gt;&gt;"
 msgid "&lt;&lt;"
 msgstr "&lt;&lt;"
 
-#: ../tt/repair_homes.tt:181 ../tt/repair_homes.tt:233
 #: ../tt/settings_users.tt:181 ../tt/settings_users.tt:233
 msgid "(Lehrer)"
 msgstr "(Teacher)"
 
-#: ../tt/repair_homes.tt:207 ../tt/repair_homes.tt:251
 #: ../tt/settings_users.tt:207 ../tt/settings_users.tt:251
 msgid "(Schüler)"
 msgstr "(Student)"
@@ -312,6 +310,7 @@ msgid "<p></p>"
 msgstr "<p></p>"
 
 #: ../tt/project_members.tt:0
+#, fuzzy
 msgid ""
 "<p>Als Projektmitglied sehen Sie hier Informationen zum aktiven Projekt "
 "$project.</p><p>Als Projektleiter können Sie hier Mitglieder zum aktiven "
@@ -319,7 +318,9 @@ msgid ""
 "wählen Sie zunächst, ob Sie einzelne Schüler/innen, Lehrer/innen, alle "
 "Mitglieder einer Klasse oder eines Projekts hinzufügen wollen. Geben Sie "
 "dann einen Suchbegriff ein und betätigen die Schaltfläche &bdquo;"
-"Suche&ldquo;. Ein * im Suchbegriff als Wildcard ist erlaubt.</p>"
+"Suche&ldquo;. Ein * im Suchbegriff als Wildcard ist erlaubt.</"
+"p><p>Schließlich können Sie noch die Persönlichen Ordner aller "
+"Projektmitglieder reparieren lassen.</p>"
 msgstr ""
 "<p>You see infos for the active $project as project member.</p><p>As project "
 "admin you are able to add or remove members for the active project $project."
@@ -355,7 +356,8 @@ msgstr ""
 #: ../tt/start.tt:1
 msgid ""
 "<p>Auf dieser Seite können Sie eigene Druckaufträge löschen und Ihr Passwort "
-"ändern.</p>"
+"ändern.</p><p>Außerdem können Sie Ihren Persönlichen Ordner reparieren "
+"lassen.</p>"
 msgstr ""
 
 #: ../tt/myclass_handedoutcopy.tt:0 ../tt/myprojects_handedoutcopy.tt:1
@@ -406,7 +408,7 @@ msgstr ""
 "<p>Modify default settings for projects.</p><p>For a detailed description of "
 "individual points, pleaseconsult the documentation.</p>"
 
-#: ../tt/repair_homes.tt:1 ../tt/settings_users.tt:1
+#: ../tt/settings_users.tt:1
 msgid ""
 "<p>Bearbeiten Sie hier die globalen Einstellungen für die Benutzerverwaltung."
 "</p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren "
@@ -561,6 +563,15 @@ msgid ""
 "seinem Persönlichen Ordner entfernen, um wieder mit Standardeinstellungen "
 "beginnen zu können.</p>"
 msgstr ""
+
+#: ../tt/repair_homes.tt:1
+#, fuzzy
+msgid ""
+"<p>Hier können Sie Benutzergruppen auswählen und deren Persönliche Ordner "
+"reparieren lassen.</p>"
+msgstr ""
+"<p>Here you can see information on the students of the current selected "
+"class {class}.</p>"
 
 #: ../tt/quotas_projects.tt:1
 msgid ""
@@ -861,14 +872,15 @@ msgstr ""
 "&quot;DEFAULT reboot&quot; is activated and the computer will start with PXE."
 
 #: ../tt/linbo_new.tt:1
+#, fuzzy
 msgid ""
 "<p>Kopieren Sie hier die Konfiguration einer bestehenden Rechnergruppe oder "
 "erstellen Sie eine neue Gruppenkonfiguration.</p><p>Beachten Sie, dass ab "
-"LINBO 1.1.0 IDE-Platten wie SATA-Platten angesprochen werden. Deshalb ist im "
-"Dropdown-Menü keine andere Auswahl möglich.</p><p>Ist die neue "
-"Gruppenkonfiguration erstellt, können Sie im Untermenü &bdquo;"
-"Gruppenkonfiguration editieren&ldquo; gegebenenfalls weitere Anpassungen an "
-"der neuen Konfiguration vornehmen.</p>"
+"LINBO 1.1.0 IDE-Platten wie SATA-Platten angesprochen werden. MMC steht für "
+"eine neue Art von günstigen SSD-Speichern, wie sie bisher nur in Kameras "
+"Verwendung fanden.</p><p>Ist die neue Gruppenkonfiguration erstellt, können "
+"Sie im Untermenü &bdquo;Gruppenkonfiguration editieren&ldquo; gegebenenfalls "
+"weitere Anpassungen an der neuen Konfiguration vornehmen.</p>"
 msgstr ""
 "<p>Copy a current configuration to a new host group.</p> <p>since LINBO "
 "1.1.0 ide hard disks are accessed in the same way sata disks are accessed. "
@@ -909,7 +921,8 @@ msgstr ""
 "button &ldquo;Distribute&rdquo; the project members will find your files in "
 "their home folders below &ldquo;__vorlagen-&gt;vorlagen-{project}&rdquo;.</p>"
 
-#: ../tt/rooms.tt:1
+#: ../tt/settings_rooms.tt:1
+#, fuzzy
 msgid ""
 "<p>Legen Sie hier die Standardeinstellungen für die Workstations in den "
 "Räumen fest.</p><p>Um eine Ausnahme für eine Workstation anzulegen, muss ein "
@@ -918,7 +931,9 @@ msgid ""
 "</p><p>Schliessen Sie die Aktion mit &bdquo;Änderungen übernehmen&ldquo; ab."
 "</p><p>Um die Rechner in einem Raum oder einzelne Rechner zurückzusetzen, "
 "setzen Sie das Häkchen in der entsprechenden Checkbox und wählen die Aktion "
-"&bdquo;Auswahl zurücksetzen&ldquo;.</p>"
+"&bdquo;Auswahl zurücksetzen&ldquo;.</p><p>Legen Sie außerdem fest, welche "
+"Räume von der Schulkonsole als Computerraum unter &bdquo;aktueller "
+"Raum&ldquo; verwaltbar sein sollen.</p>"
 msgstr ""
 "<p>Modify the default values for the hosts in rooms.</p> <p>To add a "
 "modification for a single host, you have to create a modification for the "
@@ -936,14 +951,6 @@ msgid ""
 msgstr ""
 "<p>Here, set which rooms, or which computers, have access to which printers."
 "</p>"
-
-#: ../tt/rooms_classrooms.tt:1
-msgid ""
-"<p>Legen Sie hier fest, welche Räume von der Schulkonsole als Computerraum "
-"unter &bdquo;aktueller Raum&ldquo; verwaltbar sein sollen.</p>"
-msgstr ""
-"<p>Set which rooms should be administrated from the school console "
-"ascomputer rooms under &ldquo;Current room&rdquo;.</p>"
 
 #: ../tt/room_lesson.tt:0
 msgid ""
@@ -1163,7 +1170,7 @@ msgstr ">>"
 #: ../tt/linbo_images.tt:32 ../tt/linbo_images.tt:45
 #: ../tt/linbo_menuedit.tt:20 ../tt/linbo_postsyncedit.tt:19
 #: ../tt/linbo_pxeedit.tt:20 ../tt/linbo_regpatchedit.tt:20
-#: ../tt/linbo_remote.tt:370
+#: ../tt/linbo_remote.tt:392
 msgid "Abbrechen"
 msgstr "Cancel"
 
@@ -1175,13 +1182,13 @@ msgstr "Logged out"
 msgid "Administrator-Report"
 msgstr "Administrator report"
 
-#: ../tt/quotas_others.tt:106 ../tt/repair_homes.tt:292
-#: ../tt/settings_users.tt:292
+#: ../tt/quotas_others.tt:106 ../tt/settings_users.tt:292
 msgid "Administratoren"
 msgstr "Administrators"
 
-#: ../tt/linbo_remote.tt:19 ../tt/linbo_remote.tt:356 ../tt/linbo_remote.tt:60
-#: ../tt/room_test_collect.tt:91 ../tt/room_test_handout.tt:51
+#: ../tt/linbo_remote.tt:19 ../tt/linbo_remote.tt:378 ../tt/linbo_remote.tt:60
+#: ../tt/linbo_remote.tt:81 ../tt/room_test_collect.tt:91
+#: ../tt/room_test_handout.tt:51
 msgid "Aktualisieren"
 msgstr "Update"
 
@@ -1197,7 +1204,27 @@ msgstr "Current Room"
 msgid "Aliase"
 msgstr "aliases"
 
-#: ../tt/linbo_remote.tt:179
+#: ../tt/repair_homes.tt:56
+#, fuzzy
+msgid "Alle Benutzer"
+msgstr "added users"
+
+#: ../tt/repair_homes.tt:44
+#, fuzzy
+msgid "Alle Lehrer"
+msgstr "Teacher"
+
+#: ../tt/repair_homes.tt:52
+#, fuzzy
+msgid "Alle Rechner"
+msgstr "Computer"
+
+#: ../tt/repair_homes.tt:48
+#, fuzzy
+msgid "Alle Schüler"
+msgstr "Student"
+
+#: ../tt/linbo_remote.tt:201
 msgid "Alle formatieren"
 msgstr "format all partitions"
 
@@ -1210,25 +1237,28 @@ msgstr "All"
 msgid "Allgemeiner Fehler"
 msgstr "No Error"
 
-#: ../tt/start.tt:46
+#: ../tt/start.tt:63
 msgid "Altes Passwort"
 msgstr "Old password"
 
-#: ../src/cgi-bin/start:256
+#: ../src/cgi-bin/start:278
 msgid "Altes Passwort eingeben"
 msgstr "Enter the old password"
 
-#: ../src/cgi-bin/start:261
+#: ../src/cgi-bin/start:283
 msgid "Altes Passwort stimmt nicht"
 msgstr "Old password is not correct"
 
 #: ../tt/class_lesson.tt:117 ../tt/class_passwords.tt:79
 #: ../tt/project_lesson.tt:117 ../tt/project_passwords.tt:78
-#: ../tt/room_lesson.tt:168 ../tt/room_lesson.tt:171 ../tt/room_lesson.tt:174
-#: ../tt/room_lesson.tt:182 ../tt/room_lesson.tt:227 ../tt/rooms.tt:120
-#: ../tt/rooms.tt:127 ../tt/rooms.tt:134 ../tt/rooms.tt:33 ../tt/rooms.tt:40
-#: ../tt/rooms.tt:47 ../tt/rooms.tt:83 ../tt/rooms.tt:90 ../tt/rooms.tt:97
-#: ../tt/settings_classs.tt:49 ../tt/settings_projects.tt:43
+#: ../tt/repair_permissions.tt:52 ../tt/room_lesson.tt:168
+#: ../tt/room_lesson.tt:171 ../tt/room_lesson.tt:174 ../tt/room_lesson.tt:182
+#: ../tt/room_lesson.tt:227 ../tt/settings_classs.tt:49
+#: ../tt/settings_projects.tt:43 ../tt/settings_rooms.tt:120
+#: ../tt/settings_rooms.tt:127 ../tt/settings_rooms.tt:134
+#: ../tt/settings_rooms.tt:33 ../tt/settings_rooms.tt:40
+#: ../tt/settings_rooms.tt:47 ../tt/settings_rooms.tt:83
+#: ../tt/settings_rooms.tt:90 ../tt/settings_rooms.tt:97
 #: ../tt/user_teacherpasswords.tt:53
 msgid "An"
 msgstr "On"
@@ -1237,7 +1267,7 @@ msgstr "On"
 msgid "Angelegte Benutzer"
 msgstr "added users"
 
-#: ../Schulkonsole/Session.pm.in:1449
+#: ../Schulkonsole/Session.pm:1449
 msgid "Angemeldet"
 msgstr "Signed in"
 
@@ -1283,11 +1313,11 @@ msgstr "Login"
 msgid "Ansicht aktualisieren"
 msgstr "Update view"
 
-#: ../tt/linbo_remote.tt:137
+#: ../tt/linbo_remote.tt:159
 msgid "Anstoß"
 msgstr "kick off"
 
-#: ../tt/repair_homes.tt:39 ../tt/settings_users.tt:39
+#: ../tt/settings_users.tt:39
 msgid "Anzahl der Schüler pro Klasse"
 msgstr "number of students per class"
 
@@ -1299,7 +1329,7 @@ msgstr "show"
 msgid "Assistent zur Erstellung einer neuen Rechnergruppe"
 msgstr "Assistant for the creation of a new computer group"
 
-#: ../Schulkonsole/Linbo.pm:1163
+#: ../Schulkonsole/Linbo.pm:1333
 #, perl-format
 msgid "Auf der Cachepartition %s darf kein Betriebssystem installiert sein"
 msgstr "no operating system can be installed on the cache partition %s "
@@ -1331,13 +1361,16 @@ msgstr "Incorporate"
 #: ../tt/class_lesson.tt:117 ../tt/class_shares.tt:60 ../tt/hosts.tt:68
 #: ../tt/hosts.tt:92 ../tt/project_collect.tt:102
 #: ../tt/project_handoutcopy.tt:87 ../tt/project_lesson.tt:117
-#: ../tt/project_shares.tt:59 ../tt/room_collect.tt:126
-#: ../tt/room_handout.tt:103 ../tt/room_lesson.tt:168 ../tt/room_lesson.tt:171
-#: ../tt/room_lesson.tt:174 ../tt/room_lesson.tt:178 ../tt/room_lesson.tt:182
-#: ../tt/room_lesson.tt:227 ../tt/room_shares.tt:62 ../tt/rooms.tt:121
-#: ../tt/rooms.tt:128 ../tt/rooms.tt:135 ../tt/rooms.tt:34 ../tt/rooms.tt:41
-#: ../tt/rooms.tt:48 ../tt/rooms.tt:84 ../tt/rooms.tt:91 ../tt/rooms.tt:98
-#: ../tt/settings_classs.tt:50 ../tt/settings_projects.tt:44
+#: ../tt/project_shares.tt:59 ../tt/repair_permissions.tt:52
+#: ../tt/room_collect.tt:126 ../tt/room_handout.tt:103
+#: ../tt/room_lesson.tt:168 ../tt/room_lesson.tt:171 ../tt/room_lesson.tt:174
+#: ../tt/room_lesson.tt:178 ../tt/room_lesson.tt:182 ../tt/room_lesson.tt:227
+#: ../tt/room_shares.tt:62 ../tt/settings_classs.tt:50
+#: ../tt/settings_projects.tt:44 ../tt/settings_rooms.tt:121
+#: ../tt/settings_rooms.tt:128 ../tt/settings_rooms.tt:135
+#: ../tt/settings_rooms.tt:34 ../tt/settings_rooms.tt:41
+#: ../tt/settings_rooms.tt:48 ../tt/settings_rooms.tt:84
+#: ../tt/settings_rooms.tt:91 ../tt/settings_rooms.tt:98
 msgid "Aus"
 msgstr "Off"
 
@@ -1351,15 +1384,15 @@ msgstr "Removed from class %s"
 msgid "Aus Projekt %s ausgetragen"
 msgstr "Removed from project %s"
 
-#: ../tt/class_list.tt:119 ../tt/class_list.tt:37
+#: ../tt/class_list.tt:129 ../tt/class_list.tt:47
 msgid "Ausdrucke"
 msgstr "Prints"
 
-#: ../tt/linbo_remote.tt:104
+#: ../tt/linbo_remote.tt:126
 msgid "Ausführung"
 msgstr "run"
 
-#: ../Schulkonsole/Session.pm.in:1333
+#: ../Schulkonsole/Session.pm:1333
 msgid "Ausgabe des Hintergrundprozess: "
 msgstr "Output of background process: "
 
@@ -1386,10 +1419,15 @@ msgid "Ausgewählte Klasse"
 msgstr "Selected class"
 
 #: ../tt/class_collect.tt:29 ../tt/class_handout.tt:28
-#: ../tt/class_handoutcopy.tt:29 ../tt/class_list.tt:29
+#: ../tt/class_handoutcopy.tt:29 ../tt/class_list.tt:39
 #: ../tt/class_passwords.tt:30 ../tt/class_shares.tt:29
 msgid "Ausgewählte Klasse:"
 msgstr "Selected class:"
+
+#: ../tt/linbo_remote.tt:82
+#, fuzzy
+msgid "Ausgewählte entfernen"
+msgstr "selected project"
 
 #: ../tt/project.tt:31 ../tt/project_lesson.tt:27
 msgid "Ausgewähltes Projekt"
@@ -1397,12 +1435,12 @@ msgstr "selected project"
 
 #: ../tt/project_addmembers.tt:11 ../tt/project_collect.tt:28
 #: ../tt/project_drop_verify.tt:11 ../tt/project_handout.tt:28
-#: ../tt/project_handoutcopy.tt:28 ../tt/project_members.tt:27
+#: ../tt/project_handoutcopy.tt:28 ../tt/project_members.tt:37
 #: ../tt/project_passwords.tt:30 ../tt/project_shares.tt:28
 msgid "Ausgewähltes Projekt:"
 msgstr "Selected project:"
 
-#: ../tt/rooms.tt:107 ../tt/rooms.tt:55
+#: ../tt/settings_rooms.tt:107 ../tt/settings_rooms.tt:55
 msgid "Ausnahme hinzufügen"
 msgstr "add exception"
 
@@ -1428,11 +1466,11 @@ msgstr "Remove"
 msgid "Auswahl"
 msgstr "Selection"
 
-#: ../src/cgi-bin/rooms:236
+#: ../src/cgi-bin/settings_rooms:270
 msgid "Auswahl zurückgesetzt"
 msgstr "selection reset"
 
-#: ../tt/rooms.tt:149 ../tt/rooms.tt:151
+#: ../tt/settings_rooms.tt:149 ../tt/settings_rooms.tt:151
 msgid "Auswahl zurücksetzen"
 msgstr "reset selection"
 
@@ -1449,7 +1487,7 @@ msgstr "Authentication failed"
 msgid "Authentifizierung fehlgeschlagen nach ID"
 msgstr "Authentication failed according to ID"
 
-#: ../tt/linbo_remote.tt:121
+#: ../tt/linbo_remote.tt:143
 msgid "Automatische Auswahl übergehen"
 msgstr "supersede automatic selection"
 
@@ -1494,16 +1532,16 @@ msgstr "First, edit the <a href=\"user_students\">student lists</a>."
 msgid "Beenden"
 msgstr "End"
 
-#: ../Schulkonsole/Error/LinboError.pm:78
+#: ../Schulkonsole/Error/LinboError.pm:87
 #, fuzzy
 msgid "Befehl konnte nicht ausgeführt werden"
 msgstr "%s could not be added"
 
-#: ../tt/linbo_remote.tt:160
+#: ../tt/linbo_remote.tt:182
 msgid "Befehle"
 msgstr "commands"
 
-#: ../Schulkonsole/Linbo.pm:1160
+#: ../Schulkonsole/Linbo.pm:1330
 #, perl-format
 msgid "Bei %s muss eine Größe angegeben werden"
 msgstr "you have to enter a number for %s"
@@ -1535,7 +1573,7 @@ msgid "Benutzer \"cyrus\" gibt es nicht"
 msgstr "User \"cyrus\" does not exist"
 
 #: ../src/cgi-bin/project_addmembers:98 ../src/cgi-bin/project_addmembers:145
-#: ../src/cgi-bin/project_members:179
+#: ../src/cgi-bin/project_members:191
 #, perl-format
 msgid "Benutzer %s gibt es nicht."
 msgstr "User %s does not exist."
@@ -1593,6 +1631,11 @@ msgstr "Move user"
 msgid "Benutzer:"
 msgstr "User:"
 
+#: ../tt/repair_homes.tt:40
+#, fuzzy
+msgid "Benutzergruppen"
+msgstr "Computer group"
+
 #: ../tt/user_check.tt:1 ../tt/user_check.tt:9
 msgid "Benutzerlisten prüfen"
 msgstr "Check user lists"
@@ -1606,10 +1649,9 @@ msgstr "Check user lists"
 msgid "Benutzername"
 msgstr "Username"
 
-#: ../tt/repair_homes.tt:1 ../tt/repair_homes.tt:10 ../tt/settings_users.tt:1
-#: ../tt/settings_users.tt:10 ../tt/user.tt:9 ../tt/user_check.tt:9
-#: ../tt/user_commit.tt:10 ../tt/user_extra.tt:9 ../tt/user_print.tt:8
-#: ../tt/user_reports.tt:9 ../tt/user_students.tt:9
+#: ../tt/settings_users.tt:1 ../tt/settings_users.tt:10 ../tt/user.tt:9
+#: ../tt/user_check.tt:9 ../tt/user_commit.tt:10 ../tt/user_extra.tt:9
+#: ../tt/user_print.tt:8 ../tt/user_reports.tt:9 ../tt/user_students.tt:9
 #: ../tt/user_teacherpasswords.tt:10 ../tt/user_teachers.tt:9
 #: ../tt/user_teachin.tt:9
 msgid "Benutzerverwaltung"
@@ -1643,6 +1685,11 @@ msgstr "Files to be supplied"
 msgid "Berichte"
 msgstr "Reports"
 
+#: ../tt/linbo_new.tt:137
+#, fuzzy
+msgid "Beschreibung"
+msgstr "Overwrite?"
+
 #: ../tt/linbo_edit_oss.inc.tt:66
 msgid "Beschreibung (optional)"
 msgstr "Description (optional)"
@@ -1658,39 +1705,39 @@ msgstr "Copy existing group configuration of a computer group"
 msgid "Bestätigen"
 msgstr "Please confirm"
 
-#: ../tt/linbo_new.tt:64
+#: ../tt/linbo_new.tt:80
 msgid "Betriebssystem"
 msgstr "Name of operating system"
 
-#: ../tt/linbo_new.tt:69
+#: ../tt/linbo_new.tt:85
 msgid "Betriebssystem 1 (Partition 1)"
 msgstr "Operating system 1 (Partition 1)"
 
-#: ../src/cgi-bin/linbo_new:170
+#: ../src/cgi-bin/linbo_new:174
 msgid "Betriebssystem 1 muss Windows sein"
 msgstr "Operating system 1 must be Windows"
 
-#: ../tt/linbo_new.tt:78
+#: ../tt/linbo_new.tt:94
 msgid "Betriebssystem 2 (Partition 2)"
 msgstr "Operating system 2 (Partition 2)"
 
-#: ../src/cgi-bin/linbo_new:198
+#: ../src/cgi-bin/linbo_new:202
 msgid "Betriebssystem 2 muss Windows sein"
 msgstr "Operating system 2 must be Windows"
 
-#: ../tt/linbo_new.tt:89
+#: ../tt/linbo_new.tt:105
 msgid "Betriebssystem 3 (Partition 5)"
 msgstr "Operating system 3 (Partition 5)"
 
-#: ../src/cgi-bin/linbo_new:225
+#: ../src/cgi-bin/linbo_new:229
 msgid "Betriebssystem 3 darf nicht Windows sein"
 msgstr "Operating system 3 must not be Windows"
 
-#: ../tt/linbo_new.tt:98
+#: ../tt/linbo_new.tt:114
 msgid "Betriebssystem 4 (Partition 6)"
 msgstr "Operating system 4 (Partition 6)"
 
-#: ../src/cgi-bin/linbo_new:252
+#: ../src/cgi-bin/linbo_new:256
 msgid "Betriebssystem 4 darf nicht Windows sein"
 msgstr "Operating system 4 must not be Windows"
 
@@ -1698,11 +1745,11 @@ msgstr "Operating system 4 must not be Windows"
 msgid "Betriebssystem automatisch starten"
 msgstr "Start operating system automatically"
 
-#: ../tt/linbo_edit.tt:53
+#: ../tt/linbo_edit.tt:54
 msgid "Betriebssystem hinzufügen"
 msgstr "Add operating system"
 
-#: ../tt/linbo_edit.tt:52
+#: ../tt/linbo_edit.tt:53
 msgid "Betriebssystem löschen"
 msgstr "Delete operating system"
 
@@ -1719,15 +1766,20 @@ msgstr "Version of operating system (optional)"
 msgid "Bezeichner"
 msgstr "Identifier"
 
+#: ../tt/linbo_new.tt:136
+#, fuzzy
+msgid "Bezeichnung"
+msgstr "Room designation"
+
 #: ../tt/linbo_edit_global.inc.tt:63
 msgid "Bildschirmschriftfarbe"
 msgstr "Display font color"
 
-#: ../tt/linbo_edit_global.inc.tt:28 ../tt/linbo_new.tt:41
+#: ../tt/linbo_edit_global.inc.tt:28 ../tt/linbo_new.tt:69
 msgid "Bios"
 msgstr "bios"
 
-#: ../tt/linbo_edit_global.inc.tt:29 ../tt/linbo_new.tt:42
+#: ../tt/linbo_edit_global.inc.tt:29 ../tt/linbo_new.tt:70
 msgid "Bios64"
 msgstr "bios64"
 
@@ -1740,7 +1792,7 @@ msgstr "Collected Files"
 msgid "Bitte Klasse auswählen"
 msgstr "Please select class"
 
-#: ../tt/linbo_edit.tt:108
+#: ../tt/linbo_edit.tt:111
 msgid "Bitte Rechnergruppe auswählen"
 msgstr "Please select computer group"
 
@@ -1762,12 +1814,12 @@ msgstr "Please select a project"
 msgid "Bootoptionen"
 msgstr "Boot options"
 
-#: ../tt/linbo_edit.tt:36 ../tt/linbo_edit.tt:69 ../tt/linbo_edit.tt:98
+#: ../tt/linbo_edit.tt:100 ../tt/linbo_edit.tt:36 ../tt/linbo_edit.tt:70
 #: ../tt/linbo_edit_data.inc.tt:18 ../tt/linbo_edit_oss.inc.tt:154
 msgid "Cache"
 msgstr "Cache"
 
-#: ../tt/linbo_remote.tt:205
+#: ../tt/linbo_remote.tt:227
 msgid "Cache aktualisieren"
 msgstr "update cache"
 
@@ -1775,33 +1827,33 @@ msgstr "update cache"
 msgid "Cache-Partition auf dem Arbeitsplatzrechner"
 msgstr "Cache partition on the workspace computer"
 
-#: ../tt/rooms_classrooms.tt:31
+#: ../tt/settings_rooms.tt:177
 msgid "Computerraum"
 msgstr "Computer room"
 
-#: ../src/cgi-bin/start:900
+#: ../src/cgi-bin/start:951
 #, fuzzy
 msgid "Das Passwort enthält ungültige Zeichen."
 msgstr "invalid characters"
 
-#: ../src/cgi-bin/start:915
+#: ../src/cgi-bin/start:966
 #, fuzzy
 msgid "Das Passwort ist ungültig."
 msgstr "The maximal password length value is invalid"
 
-#: ../src/cgi-bin/project_members:131
+#: ../src/cgi-bin/project_members:143
 msgid "Das Projekt ist bereits geschlossen"
 msgstr "Project is already closed"
 
-#: ../src/cgi-bin/project_members:115
+#: ../src/cgi-bin/project_members:127
 msgid "Das Projekt ist bereits geöffnet"
 msgstr "Project is already open"
 
-#: ../src/cgi-bin/project_members:127
+#: ../src/cgi-bin/project_members:139
 msgid "Das Projekt wurde geschlossen"
 msgstr "Project was closed"
 
-#: ../src/cgi-bin/project_members:110
+#: ../src/cgi-bin/project_members:122
 msgid "Das Projekt wurde geöffnet"
 msgstr "Project was opened"
 
@@ -1892,7 +1944,7 @@ msgstr "Choose file"
 msgid "Dateien"
 msgstr "Files"
 
-#: ../tt/class_list.tt:60 ../tt/project_members.tt:203 ../tt/start.tt:122
+#: ../tt/class_list.tt:70 ../tt/project_members.tt:213 ../tt/start.tt:139
 msgid "Dateien:"
 msgstr "Files:"
 
@@ -1908,7 +1960,7 @@ msgstr "Files:"
 msgid "Dateiname"
 msgstr "Filename"
 
-#: ../tt/linbo_edit_oss.inc.tt:78 ../Schulkonsole/Linbo.pm:1088
+#: ../tt/linbo_edit_oss.inc.tt:78 ../Schulkonsole/Linbo.pm:1258
 msgid "Dateiname des Basis-Image"
 msgstr "File name of basis image"
 
@@ -1920,16 +1972,16 @@ msgstr "File name of icons for start button"
 msgid "Dateiname des differenziellen Image"
 msgstr "File name of differential image"
 
-#: ../tt/linbo_edit_data.inc.tt:52 ../tt/linbo_edit_oss.inc.tt:39
+#: ../tt/linbo_edit_data.inc.tt:54 ../tt/linbo_edit_oss.inc.tt:39
 msgid "Dateisystem"
 msgstr "File system"
 
-#: ../tt/linbo_edit.tt:34 ../tt/linbo_edit.tt:67 ../tt/linbo_edit.tt:96
+#: ../tt/linbo_edit.tt:34 ../tt/linbo_edit.tt:68 ../tt/linbo_edit.tt:98
 #: ../tt/linbo_edit_data.inc.tt:14 ../tt/linbo_edit_oss.inc.tt:152
 msgid "Daten"
 msgstr "Data"
 
-#: ../src/cgi-bin/start:281
+#: ../src/cgi-bin/start:303
 msgid "Daten zur Passwortänderung unvollständig"
 msgstr "Data for password change incomplete"
 
@@ -1941,17 +1993,14 @@ msgstr "Data transfer (reading) interrupted"
 msgid "Datenuebertragung (schreiben) unterbrochen"
 msgstr "Data transfer (writing) interrupted"
 
-#: ../tt/repair_homes.tt:244 ../tt/repair_homes.tt:262
 #: ../tt/settings_users.tt:244 ../tt/settings_users.tt:262
 msgid "Deaktivierungszeitraum"
 msgstr "Period of deactivation"
 
-#: ../src/cgi-bin/repair_homes:149 ../src/cgi-bin/repair_permissions:149
 #: ../src/cgi-bin/settings_users:149
 msgid "Der Deaktivierungszeitraum muss eine Zahl sein"
 msgstr "The duration of deactivation must be a number"
 
-#: ../src/cgi-bin/repair_homes:141 ../src/cgi-bin/repair_permissions:141
 #: ../src/cgi-bin/settings_users:141
 msgid "Der Duldungszeitraum muss eine Zahl sein"
 msgstr "The duration of tolerance must be a number"
@@ -1969,7 +2018,7 @@ msgstr "The wlan ldap group name is invalid."
 msgid "Der Name ist ungültig für die Datei sophomorix.conf."
 msgstr ""
 
-#: ../src/cgi-bin/project:112
+#: ../src/cgi-bin/project:115
 msgid ""
 "Der Projektnamen darf nur aus Kleinbuchstaben (ohne Umlaute), Zahlen, dem "
 "Unterstrich und Bindestrich bestehen und muss zwischen 3 und 14 Zeichen lang "
@@ -1986,7 +2035,7 @@ msgstr "The minimal password length value is invalid"
 msgid "Der Wert für diese Einstellung ungültig für die Datei sophomorix.conf."
 msgstr ""
 
-#: ../tt/linbo_edit_data.inc.tt:32 ../tt/linbo_edit_oss.inc.tt:23
+#: ../tt/linbo_edit_data.inc.tt:34 ../tt/linbo_edit_oss.inc.tt:23
 msgid "Devicename der Partition"
 msgstr "Device name of partition"
 
@@ -1994,7 +2043,7 @@ msgstr "Device name of partition"
 msgid "Die Benutzerdaten müssen noch in das System übernommen werden."
 msgstr "The user data still must be taken over into the system."
 
-#: ../Schulkonsole/Linbo.pm:1166
+#: ../Schulkonsole/Linbo.pm:1336
 #, perl-format
 msgid "Die Cachepartition %s benötigt ein GNU/Linux-Dateisystem"
 msgstr "cache partition %s needs a GNU/Linux file system"
@@ -2055,7 +2104,7 @@ msgstr ""
 "The list of the configured hosts does not match the available hosts actually "
 "in the system."
 
-#: ../tt/rooms_classrooms.tt:11
+#: ../tt/settings_rooms.tt:160
 msgid ""
 "Die Liste der konfigurierten Hosts und ihrer Räme stimmt nicht mit den "
 "tatsächlich im System vorhandenen Hosts überein. Bitte überprüfen Sie die <a "
@@ -2064,22 +2113,26 @@ msgstr ""
 "The list of the configured hosts does not match the available hosts actually "
 "in the system."
 
+#: ../Schulkonsole/Error/RepairError.pm:55
+#, fuzzy
+msgid "Die Log-Datei kann nicht zurückgesetzt werden."
+msgstr "File could not be read"
+
 #: ../Schulkonsole/Error/SophomorixError.pm:206
 #, fuzzy
 msgid "Die Mailadresse konnte nicht gespeichert werden."
 msgstr "%s could not be deleted"
 
-#: ../src/cgi-bin/start:333
+#: ../src/cgi-bin/start:355
 #, fuzzy
 msgid "Die Mailadresse wurde geändert."
 msgstr "change forward(s)"
 
-#: ../src/cgi-bin/repair_homes:133 ../src/cgi-bin/repair_permissions:133
 #: ../src/cgi-bin/settings_users:133
 msgid "Die Passwortlänge muss eine Zahl > 0 sein"
 msgstr "The password length must be a number > 0"
 
-#: ../src/cgi-bin/class_list:84 ../src/cgi-bin/project_members:90
+#: ../src/cgi-bin/class_list:108
 #, fuzzy
 msgid "Die Persönlichen Ordner wurden repariert."
 msgstr "The data of some users were changed."
@@ -2088,30 +2141,40 @@ msgstr "The data of some users were changed."
 msgid "Die Sitzungsdauer muss in Minuten angegeben werden"
 msgstr "Duration of session must be entered in minutes"
 
-#: ../src/cgi-bin/linbo_remote:161
+#: ../src/cgi-bin/linbo_remote:179
 msgid "Die Wartezeit nach dem Aufwecken ist ungültig."
 msgstr "The timeout after wakeup is invalid."
 
-#: ../src/cgi-bin/linbo_remote:166
+#: ../src/cgi-bin/linbo_remote:184
 msgid "Die Wartezeit nach jedem Rechner ist ungültig."
 msgstr "The timeout after each host wakeup is invalid."
+
+#: ../Schulkonsole/Error/RepairError.pm:61
+#, fuzzy
+msgid "Die angegebene Befehlsnummer existiert nicht."
+msgstr "User does not exist"
+
+#: ../Schulkonsole/Error/RepairError.pm:59
+#, fuzzy
+msgid "Die angegebene Gruppe existiert nicht."
+msgstr "Group %s does not exist"
 
 #: ../Schulkonsole/Error/SophomorixError.pm:204
 #, fuzzy
 msgid "Die angegebene Mailadresse ist ungültig"
 msgstr "At least one of the supplied mail addresses contains errors."
 
-#: ../src/cgi-bin/start:329
+#: ../src/cgi-bin/start:351
 #, fuzzy
 msgid "Die eingegebene Mail-Adresse ist ungültig."
 msgstr "At least one of the supplied mail addresses contains errors."
 
-#: ../Schulkonsole/Linbo.pm:1157
+#: ../Schulkonsole/Linbo.pm:1327
 #, perl-format
 msgid "Die erweiterte Partition %s ist nicht erlaubt"
 msgstr "The extended partition %s is invalid"
 
-#: ../src/cgi-bin/linbo_remote:180
+#: ../src/cgi-bin/linbo_remote:198
 msgid "Die neue Aufgabe wurde hinzugefügt."
 msgstr "New task has been added."
 
@@ -2155,11 +2218,11 @@ msgstr ""
 msgid "Dieser Bereich/Name darf nicht abgefragt werden"
 msgstr "This section / name could not be queried."
 
-#: ../tt/linbo_remote.tt:293
+#: ../tt/linbo_remote.tt:315
 msgid "Diff. Image erstellen"
 msgstr "create diff image"
 
-#: ../tt/linbo_remote.tt:336
+#: ../tt/linbo_remote.tt:358
 msgid "Diff. Image hochladen"
 msgstr "upload diff image"
 
@@ -2175,15 +2238,15 @@ msgstr "Disk quota"
 msgid "Downloadtype auswählen"
 msgstr "Select download type"
 
-#: ../tt/start.tt:21
+#: ../tt/start.tt:30
 msgid "Druckaufträge"
 msgstr "Print jobs"
 
-#: ../tt/start.tt:34
+#: ../tt/start.tt:43
 msgid "Druckaufträge löschen"
 msgstr "Delete print jobs"
 
-#: ../tt/repair_homes.tt:267 ../tt/settings_users.tt:267
+#: ../tt/settings_users.tt:267
 msgid "Druckdaten"
 msgstr "printer data"
 
@@ -2193,11 +2256,10 @@ msgstr "printer data"
 msgid "Drucker"
 msgstr "Printer"
 
-#: ../tt/start.tt:194
+#: ../tt/start.tt:211
 msgid "Druckquota:"
 msgstr "print quota:"
 
-#: ../tt/repair_homes.tt:240 ../tt/repair_homes.tt:258
 #: ../tt/settings_users.tt:240 ../tt/settings_users.tt:258
 msgid "Duldungszeitraum"
 msgstr "Duration of tolerance"
@@ -2206,42 +2268,42 @@ msgstr "Duration of tolerance"
 msgid "E"
 msgstr "E"
 
-#: ../tt/repair_homes.tt:150 ../tt/settings_users.tt:150 ../tt/start.tt:179
+#: ../tt/settings_users.tt:150 ../tt/start.tt:196
 msgid "E-Mail"
 msgstr "E-mail"
 
-#: ../tt/class_list.tt:87 ../tt/project_members.tt:225 ../tt/start.tt:167
+#: ../tt/class_list.tt:97 ../tt/project_members.tt:235 ../tt/start.tt:184
 msgid "E-Mail-Speicher/KB:"
 msgstr "Email storage/KB:"
 
-#: ../tt/class_list.tt:118 ../tt/class_list.tt:36 ../tt/project_members.tt:181
-#: ../tt/project_members.tt:251
+#: ../tt/class_list.tt:128 ../tt/class_list.tt:46 ../tt/project_members.tt:191
+#: ../tt/project_members.tt:261
 msgid "E-Mailquota"
 msgstr "Email quota"
 
-#: ../tt/rooms_classrooms.tt:1
+#: ../tt/settings_rooms.tt:168
 msgid "EDV-Räume"
 msgstr "computer labs"
 
-#: ../tt/linbo_edit.tt:100 ../tt/linbo_edit.tt:38 ../tt/linbo_edit.tt:71
+#: ../tt/linbo_edit.tt:102 ../tt/linbo_edit.tt:38 ../tt/linbo_edit.tt:72
 #: ../tt/linbo_edit_data.inc.tt:22 ../tt/linbo_edit_oss.inc.tt:156
 msgid "EFI"
 msgstr "efi"
 
-#: ../tt/linbo_edit_global.inc.tt:30 ../tt/linbo_new.tt:43
+#: ../tt/linbo_edit_global.inc.tt:30 ../tt/linbo_new.tt:71
 msgid "EFI32"
 msgstr "efi32"
 
-#: ../tt/linbo_edit_global.inc.tt:31 ../tt/linbo_new.tt:44
+#: ../tt/linbo_edit_global.inc.tt:31 ../tt/linbo_new.tt:72
 msgid "EFI64"
 msgstr "efi64"
 
-#: ../tt/linbo_edit_data.inc.tt:57 ../tt/linbo_edit_data.inc.tt:67
+#: ../tt/linbo_edit_data.inc.tt:59 ../tt/linbo_edit_data.inc.tt:69
 #: ../tt/linbo_edit_oss.inc.tt:45
 msgid "EXT3"
 msgstr "EXT3"
 
-#: ../tt/linbo_edit_data.inc.tt:58 ../tt/linbo_edit_data.inc.tt:68
+#: ../tt/linbo_edit_data.inc.tt:60 ../tt/linbo_edit_data.inc.tt:70
 #: ../tt/linbo_edit_oss.inc.tt:46
 msgid "EXT4"
 msgstr "EXT4"
@@ -2254,11 +2316,11 @@ msgstr "edit"
 msgid "Ein Eintrag pro Seite"
 msgstr "One entry per page"
 
-#: ../tt/start.tt:248
+#: ../tt/start.tt:265
 msgid "Ein OpenVPN-Zertifikat wurde für Sie erstellt."
 msgstr "An open VPN certificate was created for you."
 
-#: ../src/cgi-bin/start:346
+#: ../src/cgi-bin/start:368
 msgid "Eine oder mehrere Mail-Adressen sind ungültig."
 msgstr "At least one of the supplied mail addresses contains errors."
 
@@ -2288,12 +2350,12 @@ msgstr "Collect"
 msgid "Einsammeln und beenden"
 msgstr "Collect and end"
 
-#: ../tt/repair_homes.tt:1 ../tt/repair_homes.tt:10 ../tt/settings_classs.tt:1
-#: ../tt/settings_classs.tt:9 ../tt/settings_program.tt:1
-#: ../tt/settings_program.tt:9 ../tt/settings_projects.tt:1
-#: ../tt/settings_projects.tt:9 ../tt/settings_repair.tt:1
-#: ../tt/settings_repair.tt:10 ../tt/settings_users.tt:1
-#: ../tt/settings_users.tt:10
+#: ../tt/settings_classs.tt:1 ../tt/settings_classs.tt:9
+#: ../tt/settings_program.tt:1 ../tt/settings_program.tt:9
+#: ../tt/settings_projects.tt:1 ../tt/settings_projects.tt:9
+#: ../tt/settings_repair.tt:1 ../tt/settings_repair.tt:10
+#: ../tt/settings_rooms.tt:1 ../tt/settings_rooms.tt:9
+#: ../tt/settings_users.tt:1 ../tt/settings_users.tt:10
 msgid "Einstellungen"
 msgstr "Settings"
 
@@ -2334,11 +2396,13 @@ msgid "Erstpasswort anzeigen"
 msgstr "Show first password"
 
 #: ../Schulkonsole/Error/SophomorixError.pm:158
-msgid "Erwarte 0 (PDF) oder 1 (CSV) fuer filetype"
+#, fuzzy
+msgid "Erwarte 0 (PDF) oder 1 (CSV) für filetype"
 msgstr "Expect 0 (PDF) or 1 (CSV) for filetype"
 
 #: ../Schulkonsole/Error/SophomorixError.pm:160
-msgid "Erwarte 0 (reset), 1 (passwd) oder 3 (random) fuer type"
+#, fuzzy
+msgid "Erwarte 0 (reset), 1 (passwd) oder 3 (random) für type"
 msgstr "Expect 0 (reset), 1 (passwd) or 3 (random) for type"
 
 #: ../Schulkonsole/Error/FirewallError.pm:66
@@ -2347,52 +2411,61 @@ msgid "Erwarte 0 oder 1 für scope"
 msgstr "Expect 0 or 1 for scope"
 
 #: ../Schulkonsole/Error/SophomorixError.pm:182
-msgid "Erwarte 0, 1 oder 2 fuer mode"
+#, fuzzy
+msgid "Erwarte 0, 1 oder 2 für mode"
 msgstr "Expect 0, 1 or 2 for mode"
 
 #: ../Schulkonsole/Error/SophomorixError.pm:172
-msgid "Erwarte 0, 1, 2 oder 3 fuer scope"
+#, fuzzy
+msgid "Erwarte 0, 1, 2 oder 3 für scope"
 msgstr "Expect 0, 1, 2 or 3 for scope"
 
 #: ../Schulkonsole/Error/SophomorixError.pm:186
-msgid "Erwarte 1 bis 7 fuer flags"
+#, fuzzy
+msgid "Erwarte 1 bis 7 für flags"
 msgstr "Expect 1 to 7 for flags"
 
 #: ../Schulkonsole/Error/SophomorixError.pm:156
 msgid "Erwarte 1 oder 0 fuer do_add"
 msgstr "Expect 1 or 0 for do_add"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:142
-msgid "Erwarte 1 oder 0 fuer do_copy"
-msgstr "Expect 1 or 0 for do_copy"
-
 #: ../Schulkonsole/Error/SophomorixError.pm:174
 msgid "Erwarte 1 oder 0 fuer do_create"
 msgstr "Expect 1 or 0 for do_create"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:164
-msgid "Erwarte 1 oder 0 fuer is_groups"
-msgstr "Expect 1 or 0 for is_groups"
+#: ../Schulkonsole/Error/SophomorixError.pm:142
+#, fuzzy
+msgid "Erwarte 1 oder 0 für do_copy"
+msgstr "Expect 1 or 0 for do_copy"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:192
-msgid "Erwarte 1 oder 0 fuer is_open"
-msgstr "Expect 1 or 0 for is_open"
-
-#: ../Schulkonsole/Error/SophomorixError.pm:166
-msgid "Erwarte 1 oder 0 fuer is_public"
-msgstr "Expect 1 or 0 for is_public"
-
-#: ../Schulkonsole/Error/SophomorixError.pm:168
-msgid "Erwarte 1 oder 0 fuer is_upload"
-msgstr "Expect 1 or 0 for is_upload"
-
-#: ../Schulkonsole/Error/LinboError.pm:72
+#: ../Schulkonsole/Error/LinboError.pm:81
 #, fuzzy
 msgid "Erwarte 1 oder 0 für is_example"
 msgstr "Expect 1 or 0 for is_example"
 
+#: ../Schulkonsole/Error/SophomorixError.pm:164
+#, fuzzy
+msgid "Erwarte 1 oder 0 für is_groups"
+msgstr "Expect 1 or 0 for is_groups"
+
+#: ../Schulkonsole/Error/SophomorixError.pm:192
+#, fuzzy
+msgid "Erwarte 1 oder 0 für is_open"
+msgstr "Expect 1 or 0 for is_open"
+
+#: ../Schulkonsole/Error/SophomorixError.pm:166
+#, fuzzy
+msgid "Erwarte 1 oder 0 für is_public"
+msgstr "Expect 1 or 0 for is_public"
+
+#: ../Schulkonsole/Error/SophomorixError.pm:168
+#, fuzzy
+msgid "Erwarte 1 oder 0 für is_upload"
+msgstr "Expect 1 or 0 for is_upload"
+
 #: ../Schulkonsole/Error/SophomorixError.pm:200
-msgid "Erwarte 1,2 oder 3 fuer action"
+#, fuzzy
+msgid "Erwarte 1,2 oder 3 für action"
 msgstr "Expect  1, 2 or 3 for scope"
 
 #: ../Schulkonsole/Error/SophomorixError.pm:202
@@ -2400,14 +2473,16 @@ msgid "Erwarte Verzeichnis, fand Datei (oder umgekehrt)"
 msgstr "Expected directory, found file (or the other way round)"
 
 #: ../Schulkonsole/Error/SophomorixError.pm:144
-msgid "Erwarte numerische Angabe fuer \"from\""
+#, fuzzy
+msgid "Erwarte numerische Angabe für \"from\""
 msgstr "Expect numeric designation for \"from\""
 
 #: ../Schulkonsole/Error/SophomorixError.pm:146
-msgid "Erwarte numerische Angabe fuer \"type\""
+#, fuzzy
+msgid "Erwarte numerische Angabe für \"type\""
 msgstr "Expect numeric designation for \"type\""
 
-#: ../src/cgi-bin/rooms:196
+#: ../src/cgi-bin/settings_rooms:230
 msgid "Es gibt keine Einträge für Räume oder Rechner"
 msgstr "There are no entries for rooms or computers"
 
@@ -2451,6 +2526,10 @@ msgstr "There are not any projects."
 msgid "Es konnte keine temporäre Datei erzeugt werden."
 msgstr "Failed to create temporary file."
 
+#: ../Schulkonsole/Error/RepairError.pm:53
+msgid "Es läuft bereits eine Reparatur."
+msgstr ""
+
 #: ../tt/linbo_pxeedit.tt:53
 msgid "Es sind keine PXE-Start-Dateien vorhanden."
 msgstr "No PXE start files available."
@@ -2485,11 +2564,11 @@ msgstr "There are no postsync files available."
 msgid "Es sind noch nicht alle Verknüpfungen eindeutig festgelegt"
 msgstr "Not all connections are clearly defined."
 
-#: ../src/cgi-bin/start:412
+#: ../src/cgi-bin/start:434
 msgid "Es wurde bereits ein OpenVPN-Zertifikat erstellt"
 msgstr "An open VPN certificate was already created"
 
-#: ../src/cgi-bin/linbo_remote:131
+#: ../src/cgi-bin/linbo_remote:149
 msgid "Es wurde ein ungültiger Ausführungszeitpunkt angegeben."
 msgstr "The execution time is invalid."
 
@@ -2497,35 +2576,60 @@ msgstr "The execution time is invalid."
 msgid "Es wurde ein ungültiges Anlegedatum ausgewählt."
 msgstr "Es creation time stamp is invalid."
 
-#: ../src/cgi-bin/linbo_remote:115
+#: ../src/cgi-bin/linbo_remote:133
 msgid "Es wurde eine ungültige Kategorie für die Rechnerauswahl angegeben."
 msgstr "The hosts selected category is invalid."
 
-#: ../src/cgi-bin/start:466
+#: ../src/cgi-bin/start:488
 msgid "Es wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> abgelegt"
 msgstr "It was filed away in your home directory in the folder <q>OpenVPN</q>"
 
-#: ../src/cgi-bin/linbo_remote:127
+#: ../src/cgi-bin/linbo_remote:145
 msgid "Es wurde kein Ausführungszeitpunkt angegeben."
 msgstr "The execution time is missing."
 
-#: ../src/cgi-bin/linbo_remote:111
+#: ../Schulkonsole/Error/RepairError.pm:63
+#, fuzzy
+msgid "Es wurde kein Benutzer angegeben."
+msgstr "No command were specified."
+
+#: ../Schulkonsole/Error/RepairError.pm:51
+#, fuzzy
+msgid "Es wurde kein Projekt angegeben."
+msgstr "No command were specified."
+
+#: ../Schulkonsole/Error/RepairError.pm:57
+#, fuzzy
+msgid "Es wurde keine Gruppe angegeben."
+msgstr "No command were specified."
+
+#: ../src/cgi-bin/linbo_remote:129
 msgid "Es wurde keine Kategorie für die Rechnerauswahl angegeben."
 msgstr "The hosts selected category is missing."
 
-#: ../src/cgi-bin/linbo_remote:121
+#: ../Schulkonsole/Error/RepairError.pm:49
+#, fuzzy
+msgid "Es wurde keine Klasse angegeben."
+msgstr "No command were specified."
+
+#: ../src/cgi-bin/linbo_remote:139
 msgid "Es wurde(n) kein(e) Rechner spezifiziert."
 msgstr "No hosts were selected."
 
-#: ../src/cgi-bin/linbo_remote:138
+#: ../src/cgi-bin/linbo_remote:156
 msgid "Es wurden keine Befehle angegeben."
 msgstr "No command were specified."
+
+#: ../src/cgi-bin/repair_homes:78 ../src/cgi-bin/repair_permissions:75
+#, fuzzy
+msgid "Es wurden keine Einträge zur Reparatur gewählt."
+msgstr "Es creation time stamp is invalid."
 
 #: ../tt/hosts.tt:28
 msgid "Es wurden noch nicht alle Hosts in das System übernommen."
 msgstr "Not all host entries were applied into the system."
 
-#: ../tt/rooms_classrooms.tt:15
+#: ../tt/settings_rooms.tt:164
 msgid ""
 "Es wurden noch nicht alle Hosts mit ihren Rämen in das System übernommen. "
 "Bitte überprüfen Sie die <a href=\"hosts\">Hosts-Liste</a>."
@@ -2537,7 +2641,7 @@ msgstr ""
 msgid "Execute fehlgeschlagen"
 msgstr "Execute failed"
 
-#: ../tt/repair_homes.tt:280 ../tt/settings_users.tt:280
+#: ../tt/settings_users.tt:280
 msgid "Externer Servername"
 msgstr "extern server name"
 
@@ -2565,7 +2669,7 @@ msgstr "Unexpected program output"
 msgid "Fehler bei der Erzeugung des Dokuments"
 msgstr "Error in the production of the document"
 
-#: ../src/cgi-bin/start:472
+#: ../src/cgi-bin/start:494
 msgid "Fehler bei der Zertifikatserstellung."
 msgstr "Error during the creation of the certificate."
 
@@ -2577,7 +2681,7 @@ msgstr "Error in background process"
 msgid "Fehler im Hintergrundprozess: "
 msgstr "Error in background process: "
 
-#: ../Schulkonsole/Error/LinboError.pm:66
+#: ../Schulkonsole/Error/LinboError.pm:75
 msgid "Fehler in der Konfiguration"
 msgstr "Error in configuration"
 
@@ -2585,35 +2689,36 @@ msgstr "Error in configuration"
 msgid "Fehler korrigieren"
 msgstr "Correct mistake"
 
-#: ../tt/linbo_remote.tt:1 ../tt/linbo_remote.tt:17 ../tt/linbo_remote.tt:69
-#: ../tt/linbo_remote.tt:9
+#: ../tt/linbo_remote.tt:1 ../tt/linbo_remote.tt:17 ../tt/linbo_remote.tt:65
+#: ../tt/linbo_remote.tt:9 ../tt/linbo_remote.tt:91
 msgid "Fernsteuerung"
 msgstr "linbo remote"
 
-#: ../src/cgi-bin/linbo_new:273
+#: ../src/cgi-bin/linbo_new:277
 msgid "Festplatte für die gewählte Gruppenkonfiguration zu klein"
 msgstr "Hard drive for the chosen group configuration is too small"
 
-#: ../tt/linbo_new.tt:53
-msgid "Festplattencontroller (ab LINBO 1.1.0 immer SATA (sda))"
-msgstr "Hard drive controller (from LINBO 1.1.0 onwards, always SATA (sda))"
+#: ../tt/linbo_new.tt:40
+#, fuzzy
+msgid "Festplattencontroller"
+msgstr "Unknown hard drive controller"
 
 #: ../tt/linbo_new.tt:49
 #, fuzzy
-msgid "Festplattengröße in <b>kB</b>(,M,G,T)"
-msgstr "Size of hard drive in MB"
+msgid "Festplattengröße"
+msgstr "No hard drive size entered"
 
-#: ../src/cgi-bin/linbo_new:149
+#: ../src/cgi-bin/linbo_new:153 ../src/cgi-bin/linbo_new:333
 #, fuzzy
 msgid "Festplattengröße muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr "Hard drive size must be a number"
 
-#: ../tt/class_list.tt:117 ../tt/class_list.tt:35 ../tt/project_members.tt:180
-#: ../tt/project_members.tt:250
+#: ../tt/class_list.tt:127 ../tt/class_list.tt:45 ../tt/project_members.tt:190
+#: ../tt/project_members.tt:260
 msgid "Festplattenquota"
 msgstr "Hard drive quota"
 
-#: ../tt/start.tt:100
+#: ../tt/start.tt:117
 msgid "Festplattenquota:"
 msgstr "Hard drive quota:"
 
@@ -2633,7 +2738,7 @@ msgstr "Fork not possible"
 msgid "Für"
 msgstr "for"
 
-#: ../Schulkonsole/Linbo.pm:1154
+#: ../Schulkonsole/Linbo.pm:1324
 #, perl-format
 msgid "Für %s existieren mehrere erweiterte Partitionen"
 msgstr "for %s multiple extended partitions do exist"
@@ -2643,17 +2748,16 @@ msgstr "for %s multiple extended partitions do exist"
 msgid "Für Benutzer %s gibt es bereits einen Eintrag"
 msgstr "There is already an entry for user %s"
 
-#: ../Schulkonsole/Linbo.pm:1150
+#: ../Schulkonsole/Linbo.pm:1320
 #, perl-format
 msgid "Für die Partition %s existiert keine erweiterte Partition"
 msgstr "for partition %s there is no extended partition"
 
-#: ../tt/linbo_edit.tt:33 ../tt/linbo_edit.tt:66 ../tt/linbo_edit.tt:95
+#: ../tt/linbo_edit.tt:33 ../tt/linbo_edit.tt:67 ../tt/linbo_edit.tt:97
 #: ../tt/linbo_edit_oss.inc.tt:14 ../tt/linbo_edit_oss.inc.tt:151
 msgid "GNU/Linux"
 msgstr "GNU/Linux"
 
-#: ../src/cgi-bin/repair_homes:125 ../src/cgi-bin/repair_permissions:125
 #: ../src/cgi-bin/settings_users:125
 msgid "Geben Sie eine gültige 4-stellige Jahreszahl ein"
 msgstr "Enter a valid 4 digit year"
@@ -2667,31 +2771,35 @@ msgstr "Give the new image a name"
 msgid "Geburtsdatum"
 msgstr "Date of birth"
 
-#: ../tt/repair_homes.tt:44 ../tt/settings_users.tt:44
+#: ../tt/settings_users.tt:44
 msgid "Geburtsjahreszahl für Schüler"
 msgstr "Students birth year"
+
+#: ../tt/linbo_remote.tt:65
+#, fuzzy
+msgid "Geplante Aufgaben"
+msgstr "new task"
 
 #: ../tt/user_print.tt:10
 msgid "Gesamtliste"
 msgstr "complete user list"
 
-#: ../tt/repair_homes.tt:23 ../tt/settings_classs.tt:13
-#: ../tt/settings_program.tt:13 ../tt/settings_projects.tt:13
-#: ../tt/settings_users.tt:23
+#: ../tt/settings_classs.tt:13 ../tt/settings_program.tt:13
+#: ../tt/settings_projects.tt:13 ../tt/settings_users.tt:23
 msgid "Global"
 msgstr "Global"
 
-#: ../tt/linbo_edit.tt:118 ../tt/linbo_remote.tt:76
+#: ../tt/linbo_edit.tt:121 ../tt/linbo_remote.tt:98
 #: ../tt/repair_permissions.tt:29 ../tt/user_commit.tt:56
 msgid "Gruppe"
 msgstr "Group"
 
-#: ../src/cgi-bin/linbo_new:71
+#: ../src/cgi-bin/linbo_new:73
 #, perl-format
 msgid "Gruppe %s existiert nicht"
 msgstr "Group %s does not exist"
 
-#: ../Schulkonsole/Error/LinboError.pm:86
+#: ../Schulkonsole/Error/LinboError.pm:95
 #, fuzzy
 msgid "Gruppe nicht gefunden"
 msgstr "Directory not found"
@@ -2710,26 +2818,26 @@ msgstr "Can not read room file"
 msgid "Gruppendatei konnte nicht geschrieben werden"
 msgstr "Can not write room file"
 
-#: ../tt/linbo_new.tt:109
+#: ../tt/linbo_new.tt:125 ../tt/linbo_new.tt:147
 msgid "Gruppenkonfiguration erstellen"
 msgstr "Create group configuration"
 
-#: ../src/cgi-bin/linbo_new:178
+#: ../src/cgi-bin/linbo_new:182
 #, fuzzy
 msgid "Größe für Betriebssystem 1 muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr "Size for operating system 1 must be a number"
 
-#: ../src/cgi-bin/linbo_new:206
+#: ../src/cgi-bin/linbo_new:210
 #, fuzzy
 msgid "Größe für Betriebssystem 2 muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr "Size for operating System 2 must be a number"
 
-#: ../src/cgi-bin/linbo_new:233
+#: ../src/cgi-bin/linbo_new:237
 #, fuzzy
 msgid "Größe für Betriebssystem 3 muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr "Size for operating system 3 must be a number"
 
-#: ../src/cgi-bin/linbo_new:260
+#: ../src/cgi-bin/linbo_new:264
 #, fuzzy
 msgid "Größe für Betriebssystem 4 muss eine Zahl (wahlweise mit Einheit) sein"
 msgstr "Size for operating system number 4 must be a number"
@@ -2750,7 +2858,7 @@ msgstr "D"
 msgid "Hallo "
 msgstr "Hello "
 
-#: ../tt/linbo_remote.tt:226
+#: ../tt/linbo_remote.tt:248
 msgid "Herunterfahren"
 msgstr "shutdown"
 
@@ -2766,12 +2874,12 @@ msgstr "shutdown"
 msgid "Herunterladen"
 msgstr "Download"
 
-#: ../tt/linbo_remote.tt:283 ../tt/linbo_remote.tt:306
+#: ../tt/linbo_remote.tt:305 ../tt/linbo_remote.tt:328
 msgid "Hinweis"
 msgstr "hint"
 
 #: ../tt/linbo_grubedit.tt:50 ../tt/linbo_menuedit.tt:50
-#: ../tt/linbo_postsyncedit.tt:49 ../tt/linbo_remote.tt:369
+#: ../tt/linbo_postsyncedit.tt:49 ../tt/linbo_remote.tt:391
 msgid "Hinzufügen"
 msgstr "Add"
 
@@ -2809,7 +2917,7 @@ msgstr "IP of the TFTP Server, that provides images"
 msgid "IP:"
 msgstr "IP:"
 
-#: ../src/cgi-bin/start:490
+#: ../src/cgi-bin/start:512
 msgid ""
 "Ihr Zertifikat wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> "
 "abgelegt"
@@ -2822,11 +2930,11 @@ msgstr ""
 msgid "Image %s nicht vorhanden"
 msgstr "The image %s is not available"
 
-#: ../tt/linbo_remote.tt:270
+#: ../tt/linbo_remote.tt:292
 msgid "Image erstellen"
 msgstr "create image"
 
-#: ../tt/linbo_remote.tt:316
+#: ../tt/linbo_remote.tt:338
 msgid "Image hochladen"
 msgstr "upload image"
 
@@ -2907,23 +3015,23 @@ msgstr "No lesson is active in this class."
 msgid "In dieser Klasse wird bereits unterrichtet."
 msgstr "In this class a lesson is already active."
 
-#: ../tt/page.tt:107 ../tt/start.tt:95
+#: ../tt/page.tt:107 ../tt/start.tt:112
 msgid "Info"
 msgstr "Info"
 
-#: ../Schulkonsole/Session.pm.in:1188
+#: ../Schulkonsole/Session.pm:1188
 msgid "Interner Fehler"
 msgstr "Internal error"
 
-#: ../tt/repair_homes.tt:276 ../tt/settings_users.tt:276
+#: ../tt/settings_users.tt:276
 msgid "Interner Servername"
 msgstr "intern server name"
 
-#: ../tt/room_lesson.tt:97 ../tt/rooms.tt:21
+#: ../tt/room_lesson.tt:97 ../tt/settings_rooms.tt:21
 msgid "Internet"
 msgstr "Internet"
 
-#: ../tt/room_lesson.tt:98 ../tt/rooms.tt:22
+#: ../tt/room_lesson.tt:98 ../tt/settings_rooms.tt:22
 msgid "Intranet"
 msgstr "Intranet"
 
@@ -2957,14 +3065,25 @@ msgstr "can not open file"
 msgid "Kann Datei nicht öffnen"
 msgstr "can not open file %s"
 
-#: ../src/cgi-bin/hosts:306 ../src/cgi-bin/quotas_classes:186
+#: ../src/cgi-bin/class_list:534 ../src/cgi-bin/hosts:306
+#: ../src/cgi-bin/project_members:795 ../src/cgi-bin/quotas_classes:186
 #: ../src/cgi-bin/quotas_others:230 ../src/cgi-bin/quotas_projects:317
-#: ../src/cgi-bin/quotas_teachers:161 ../src/cgi-bin/repair_homes:287
-#: ../src/cgi-bin/repair_permissions:287 ../src/cgi-bin/settings_users:287
-#: ../src/cgi-bin/user_commit:132 ../src/cgi-bin/user_commit:168
-#: ../src/cgi-bin/user_commit:204
+#: ../src/cgi-bin/quotas_teachers:161 ../src/cgi-bin/repair_homes:107
+#: ../src/cgi-bin/repair_permissions:106 ../src/cgi-bin/settings_users:287
+#: ../src/cgi-bin/start:839 ../src/cgi-bin/user_commit:132
+#: ../src/cgi-bin/user_commit:168 ../src/cgi-bin/user_commit:204
 msgid "Kann Logdatei nicht öffnen"
 msgstr "Can not open log file"
+
+#: ../Schulkonsole/Error/LinboError.pm:109
+#, fuzzy
+msgid "Kann linbocmd Datei nicht schließen"
+msgstr "can not open file"
+
+#: ../Schulkonsole/Error/LinboError.pm:107
+#, fuzzy
+msgid "Kann linbocmd Datei nicht öffnen"
+msgstr "can not open file %s"
 
 #: ../Schulkonsole/Error/FirewallError.pm:68
 #: ../Schulkonsole/Error/PrinterError.pm:48
@@ -2977,9 +3096,19 @@ msgstr "Can not open printers.conf"
 msgid "Kein Passwort eingegeben"
 msgstr "No password entered"
 
+#: ../src/cgi-bin/linbo_remote:87
+#, fuzzy
+msgid "Kein Rechner ausgewählt."
+msgstr "No users selected"
+
 #: ../src/cgi-bin/room_test:55 ../src/cgi-bin/room_test_password:52
 msgid "Kein Workstationpasswort angegeben."
 msgstr "No work station password entered."
+
+#: ../tt/linbo_new.tt:150
+#, fuzzy
+msgid "Keine Beispiele vorhanden."
+msgstr "No templates are available."
 
 #: ../Schulkonsole/Error/PrinterError.pm:56
 #: ../Schulkonsole/Error/SophomorixError.pm:132
@@ -3004,7 +3133,7 @@ msgstr "No User IDs"
 msgid "Keine Dateien"
 msgstr "No files"
 
-#: ../tt/start.tt:37
+#: ../tt/start.tt:46
 msgid "Keine Druckaufträge"
 msgstr "No print jobs"
 
@@ -3012,11 +3141,11 @@ msgstr "No print jobs"
 msgid "Keine Drucker"
 msgstr "No Printers"
 
-#: ../src/cgi-bin/linbo_new:145
+#: ../src/cgi-bin/linbo_new:149 ../src/cgi-bin/linbo_new:329
 msgid "Keine Festplattengröße angegeben"
 msgstr "No hard drive size entered"
 
-#: ../src/cgi-bin/linbo_new:65
+#: ../src/cgi-bin/linbo_new:67
 msgid "Keine Gruppe ausgewählt"
 msgstr "No group selected"
 
@@ -3033,11 +3162,11 @@ msgstr "No Hosts"
 msgid "Keine Projekte gefunden."
 msgstr "No projects available."
 
-#: ../tt/start.tt:149
+#: ../tt/start.tt:166
 msgid "Keine Quota"
 msgstr "No quota"
 
-#: ../tt/linbo_new.tt:113
+#: ../tt/linbo_new.tt:128
 msgid "Keine Templates vorhanden."
 msgstr "No templates are available."
 
@@ -3049,9 +3178,14 @@ msgstr "No workstation user"
 msgid "Keine Workstations zu importieren"
 msgstr "No work stations to import"
 
-#: ../src/cgi-bin/linbo_new:80
+#: ../src/cgi-bin/linbo_new:82
 msgid "Keine Zielgruppe angegeben"
 msgstr "No target group entered"
+
+#: ../tt/linbo_remote.tt:84
+#, fuzzy
+msgid "Keine geplanten Aufgaben."
+msgstr "No running tasks."
 
 #: ../tt/linbo_remote.tt:62
 msgid "Keine laufenden Aufgaben."
@@ -3066,13 +3200,13 @@ msgstr "No new member selected"
 #: ../src/cgi-bin/quotas_others:207 ../src/cgi-bin/quotas_projects:165
 #: ../src/cgi-bin/quotas_projects:294 ../src/cgi-bin/quotas_teachers:138
 #: ../src/cgi-bin/room_shares:107 ../src/cgi-bin/settings_classs:150
-#: ../src/cgi-bin/settings_projects:129
+#: ../src/cgi-bin/settings_projects:133
 msgid "Keine Änderungen."
 msgstr "No changes."
 
 #: ../tt/project_addmembers.tt:142 ../tt/project_addmembers.tt:21
-#: ../tt/project_addmembers.tt:36 ../tt/project_members.tt:182
-#: ../tt/project_members.tt:252 ../tt/project_members.tt:53
+#: ../tt/project_addmembers.tt:36 ../tt/project_members.tt:192
+#: ../tt/project_members.tt:262 ../tt/project_members.tt:63
 #: ../tt/quotas_classes.tt:29 ../tt/user_check.tt:28 ../tt/user_teachin.tt:55
 msgid "Klasse"
 msgstr "Class"
@@ -3106,7 +3240,7 @@ msgstr "Class unknown"
 #: ../tt/class_collect.tt:27 ../tt/class_handout.tt:1
 #: ../tt/class_handout.tt:26 ../tt/class_handoutcopy.tt:1
 #: ../tt/class_handoutcopy.tt:27 ../tt/class_lesson.tt:1
-#: ../tt/class_lesson.tt:25 ../tt/class_list.tt:1 ../tt/class_list.tt:27
+#: ../tt/class_lesson.tt:25 ../tt/class_list.tt:1 ../tt/class_list.tt:37
 #: ../tt/class_passwords.tt:1 ../tt/class_passwords.tt:28
 #: ../tt/class_shares.tt:1 ../tt/class_shares.tt:27
 #: ../tt/myclass_handedoutcopy.tt:1 ../tt/quotas_classes.tt:1
@@ -3147,36 +3281,36 @@ msgstr "Exam mode is <strong>active</strong>."
 msgid "Klassenarbeitsmodus ist <strong>nicht aktiv</strong>."
 msgstr "Exam mode is <strong>not active</strong>."
 
-#: ../tt/class_list.tt:0 ../tt/class_list.tt:27
+#: ../tt/class_list.tt:0 ../tt/class_list.tt:37
 msgid "Klassenliste"
 msgstr "Class list"
 
-#: ../tt/class.tt:43 ../tt/project_members.tt:70 ../tt/project_members.tt:88
+#: ../tt/class.tt:43 ../tt/project_members.tt:80 ../tt/project_members.tt:98
 #: ../tt/settings_classs.tt:18
 msgid "Klassenname"
 msgstr "Class name"
 
-#: ../tt/linbo_remote.tt:115
+#: ../tt/linbo_remote.tt:137
 msgid "Knöpfe deaktivieren"
 msgstr "deactivate buttons"
 
-#: ../tt/repair_homes.tt:139 ../tt/settings_users.tt:139
+#: ../tt/settings_users.tt:139
 msgid "Kodierung der Datei extrakurse.txt"
 msgstr "encoding of extrakurse.txt"
 
-#: ../tt/repair_homes.tt:131 ../tt/settings_users.tt:131
+#: ../tt/settings_users.tt:131
 msgid "Kodierung der Datei extraschueler.txt"
 msgstr "encoding of extraschueler.txt"
 
-#: ../tt/repair_homes.tt:123 ../tt/settings_users.tt:123
+#: ../tt/settings_users.tt:123
 msgid "Kodierung der Datei lehrer.txt"
 msgstr "encoding of lehrer.txt"
 
-#: ../tt/repair_homes.tt:115 ../tt/settings_users.tt:115
+#: ../tt/settings_users.tt:115
 msgid "Kodierung der Datei schueler.txt"
 msgstr "encoding of schueler.txt"
 
-#: ../tt/repair_homes.tt:109 ../tt/settings_users.tt:109
+#: ../tt/settings_users.tt:109
 msgid "Kodierungen"
 msgstr "encodings"
 
@@ -3184,19 +3318,19 @@ msgstr "encodings"
 msgid "Kommentare bearbeiten"
 msgstr "Edit coment lines"
 
-#: ../src/cgi-bin/linbo_new:293
+#: ../src/cgi-bin/linbo_new:297 ../src/cgi-bin/linbo_new:356
 msgid "Konfigurationsdatei erstellt"
 msgstr "Configuration file created"
 
-#: ../src/cgi-bin/linbo_edit:405
+#: ../src/cgi-bin/linbo_edit:423
 msgid "Konfigurationsdatei geschrieben"
 msgstr "Configuration file written"
 
-#: ../src/cgi-bin/linbo_new:102
+#: ../src/cgi-bin/linbo_new:104
 msgid "Konfigurationsdatei konnte nicht kopiert werden"
 msgstr "Configuration file could not be copied"
 
-#: ../src/cgi-bin/linbo_new:99
+#: ../src/cgi-bin/linbo_new:101
 msgid "Konfigurationsdatei kopiert"
 msgstr "Configuration file copied"
 
@@ -3205,7 +3339,8 @@ msgid "Konfigurationsdateien editieren"
 msgstr "Edit configuration files"
 
 #: ../Schulkonsole/Error/SophomorixError.pm:184
-msgid "Konnte Berechtigung nicht aendern"
+#, fuzzy
+msgid "Konnte Berechtigung nicht ändern"
 msgstr "Could not change authorization"
 
 #: ../Schulkonsole/Error/SophomorixError.pm:198
@@ -3220,11 +3355,11 @@ msgstr "Console font color"
 msgid "Konsolenschriftfarbe für Fehler- und Warnmeldungen"
 msgstr "Console font color for error and warn notifications"
 
-#: ../tt/start.tt:18
+#: ../tt/start.tt:19
 msgid "Konto von"
 msgstr "Account of "
 
-#: ../tt/start.tt:85
+#: ../tt/start.tt:102
 msgid "Kopie behalten"
 msgstr "Collect copies"
 
@@ -3256,13 +3391,13 @@ msgstr "L"
 msgid "LINBO-Kerneloptionen"
 msgstr "LINBO kernel options"
 
-#: ../Schulkonsole/Linbo.pm:1107
+#: ../Schulkonsole/Linbo.pm:1277
 #, perl-format
 msgid "Leerer Wert für \"%s\" bei %s auf %s"
 msgstr "empty value for \"%s\" for %s on %s"
 
 #: ../tt/myclass_handedout.tt:23 ../tt/myprojects_handedout.tt:18
-#: ../tt/project_addmembers.tt:140 ../tt/project_members.tt:51
+#: ../tt/project_addmembers.tt:140 ../tt/project_members.tt:61
 #: ../tt/quotas_teachers.tt:1 ../tt/quotas_teachers.tt:10
 msgid "Lehrer"
 msgstr "Teacher"
@@ -3300,7 +3435,8 @@ msgstr "Teacher passwords"
 #: ../tt/linbo_menuedit.tt:1 ../tt/linbo_new.tt:1
 #: ../tt/linbo_postsyncedit.tt:1 ../tt/linbo_pxeedit.tt:1
 #: ../tt/linbo_regpatchedit.tt:1 ../tt/linbo_remote.tt:1
-#: ../tt/linbo_remote.tt:17 ../tt/linbo_remote.tt:69 ../tt/linbo_remote.tt:9
+#: ../tt/linbo_remote.tt:17 ../tt/linbo_remote.tt:65 ../tt/linbo_remote.tt:9
+#: ../tt/linbo_remote.tt:91
 msgid "Linbo"
 msgstr "linbo"
 
@@ -3312,25 +3448,24 @@ msgstr "Image list"
 msgid "Listen"
 msgstr "lists"
 
-#: ../tt/repair_homes.tt:29 ../tt/settings_users.tt:29
+#: ../tt/settings_users.tt:29
 msgid "Log-Meldungen"
 msgstr "log messages"
 
 #: ../tt/class_collect.tt:82 ../tt/class_handoutcopy.tt:69
-#: ../tt/class_lesson.tt:94 ../tt/class_list.tt:115 ../tt/class_list.tt:33
+#: ../tt/class_lesson.tt:94 ../tt/class_list.tt:125 ../tt/class_list.tt:43
 #: ../tt/class_passwords.tt:55 ../tt/class_passwords.tt:84
 #: ../tt/class_shares.tt:35 ../tt/login.tt:1 ../tt/project_addmembers.tt:19
 #: ../tt/project_addmembers.tt:34 ../tt/project_addmembers.tt:49
 #: ../tt/project_addmembers.tt:64 ../tt/project_collect.tt:77
 #: ../tt/project_handoutcopy.tt:67 ../tt/project_lesson.tt:94
-#: ../tt/project_members.tt:138 ../tt/project_members.tt:160
-#: ../tt/project_members.tt:178 ../tt/project_members.tt:248
+#: ../tt/project_members.tt:148 ../tt/project_members.tt:170
+#: ../tt/project_members.tt:188 ../tt/project_members.tt:258
 #: ../tt/project_passwords.tt:55 ../tt/project_passwords.tt:83
 #: ../tt/project_shares.tt:34 ../tt/quotas_others.tt:118
 #: ../tt/quotas_others.tt:169 ../tt/quotas_others.tt:221
 #: ../tt/quotas_others.tt:27 ../tt/quotas_others.tt:270
 #: ../tt/quotas_others.tt:71 ../tt/quotas_teachers.tt:27
-#: ../tt/repair_homes.tt:181 ../tt/repair_homes.tt:207
 #: ../tt/room_collect.tt:79 ../tt/room_handout.tt:69 ../tt/room_lesson.tt:96
 #: ../tt/room_shares.tt:36 ../tt/room_test_collect.tt:65
 #: ../tt/room_test_handout.tt:39 ../tt/settings_users.tt:181
@@ -3345,7 +3480,7 @@ msgstr "Login"
 msgid "Login %s schon vorhanden"
 msgstr "Login %s already available"
 
-#: ../Schulkonsole/Session.pm.in:1452
+#: ../Schulkonsole/Session.pm:1452
 msgid "Login fehlgeschlagen"
 msgstr "Login failed"
 
@@ -3364,7 +3499,6 @@ msgstr "Logout"
 #: ../tt/myroom_tocollect.tt:28 ../tt/project.tt:63
 #: ../tt/project_collect.tt:48 ../tt/project_drop_verify.tt:9
 #: ../tt/project_handout.tt:50 ../tt/project_handoutcopy.tt:50
-#: ../tt/repair_homes.tt:233 ../tt/repair_homes.tt:251
 #: ../tt/room_collect.tt:49 ../tt/room_handout.tt:47
 #: ../tt/room_test_collect.tt:49 ../tt/room_test_handout.tt:70
 #: ../tt/settings_users.tt:233 ../tt/settings_users.tt:251
@@ -3388,26 +3522,36 @@ msgstr "deletion started"
 msgid "MAC"
 msgstr "MAC"
 
-#: ../tt/linbo_edit.tt:32 ../tt/linbo_edit.tt:65 ../tt/linbo_edit.tt:94
+#: ../tt/linbo_new.tt:44
+#, fuzzy
+msgid "MMC"
+msgstr "MAC"
+
+#: ../tt/linbo_edit.tt:32 ../tt/linbo_edit.tt:66 ../tt/linbo_edit.tt:96
 #: ../tt/linbo_edit_oss.inc.tt:12 ../tt/linbo_edit_oss.inc.tt:150
 msgid "MS Windows"
 msgstr "MS Windows"
 
-#: ../tt/start.tt:75
+#: ../tt/linbo_edit.tt:103 ../tt/linbo_edit.tt:39 ../tt/linbo_edit.tt:73
+#: ../tt/linbo_edit_data.inc.tt:24 ../tt/linbo_edit_oss.inc.tt:157
+msgid "MSR"
+msgstr ""
+
+#: ../tt/start.tt:92
 msgid "Mail-Weiterleitung"
 msgstr "mail forward"
 
-#: ../tt/start.tt:65
+#: ../tt/start.tt:82
 #, fuzzy
 msgid "Mailadresse"
 msgstr "change forward(s)"
 
-#: ../tt/start.tt:70
+#: ../tt/start.tt:87
 #, fuzzy
 msgid "Mailadresse ändern"
 msgstr "change forward(s)"
 
-#: ../tt/repair_homes.tt:156 ../tt/settings_users.tt:156
+#: ../tt/settings_users.tt:156
 msgid "Mailalias-Struktur"
 msgstr "mailalias format"
 
@@ -3419,29 +3563,28 @@ msgstr "mailalias format"
 msgid "Mailquota"
 msgstr "Mail quota"
 
-#: ../src/cgi-bin/repair_homes:173 ../src/cgi-bin/repair_permissions:173
 #: ../src/cgi-bin/settings_users:173
 #, fuzzy
 msgid "Mailquota muss eine Zahl sein"
 msgstr "Quota must be a number"
 
-#: ../tt/start.tt:152
+#: ../tt/start.tt:169
 msgid "Mailquota von"
 msgstr "Mail quota of"
 
-#: ../tt/repair_homes.tt:163 ../tt/settings_users.tt:163
+#: ../tt/settings_users.tt:163
 msgid "Mailquota-Warnungen"
 msgstr "mail quota warnings"
 
-#: ../tt/repair_homes.tt:175 ../tt/settings_users.tt:175
+#: ../tt/settings_users.tt:175
 msgid "Mailquota-Überschreitung an root melden"
 msgstr "report mail over quota to root"
 
-#: ../src/cgi-bin/start:359
+#: ../src/cgi-bin/start:381
 msgid "Mailweiterleitung erfolgreich geändert"
 msgstr "mail forward(s) successful changed"
 
-#: ../tt/repair_homes.tt:34 ../tt/settings_users.tt:34
+#: ../tt/settings_users.tt:34
 msgid "Maximale Ausgabe"
 msgstr "maximal verbosity"
 
@@ -3482,7 +3625,7 @@ msgid ""
 "Gruppenverzeichnisse zugreifen können."
 msgstr "Log on to Windows again in order to access the group directory."
 
-#: ../tt/repair_homes.tt:32 ../tt/settings_users.tt:32
+#: ../tt/settings_users.tt:32
 msgid "Minimale Augabe"
 msgstr "minimal verbosity"
 
@@ -3506,16 +3649,16 @@ msgstr ""
 "With the <a href=\"user_check\">review of user lists</a>, data is processed "
 "for transfer into the system."
 
-#: ../tt/project_members.tt:0 ../tt/project_members.tt:25
+#: ../tt/project_members.tt:0 ../tt/project_members.tt:35
 msgid "Mitglieder"
 msgstr "Members"
 
 #: ../tt/project_addmembers.tt:0 ../tt/project_addmembers.tt:9
-#: ../tt/project_members.tt:41
+#: ../tt/project_members.tt:51
 msgid "Mitglieder hinzufügen"
 msgstr "Add member"
 
-#: ../tt/project_members.tt:62
+#: ../tt/project_members.tt:72
 msgid "Mitglieder im Projekt"
 msgstr "Members in project"
 
@@ -3526,20 +3669,20 @@ msgstr "Members in project"
 msgid "Mitgliedschaft"
 msgstr "Membership"
 
-#: ../tt/project_members.tt:104 ../tt/project_members.tt:116
-#: ../tt/project_members.tt:125 ../tt/project_members.tt:141
-#: ../tt/project_members.tt:154 ../tt/project_members.tt:163
-#: ../tt/project_members.tt:183 ../tt/project_members.tt:242
-#: ../tt/project_members.tt:253 ../tt/project_members.tt:71
-#: ../tt/project_members.tt:82 ../tt/project_members.tt:89
+#: ../tt/project_members.tt:114 ../tt/project_members.tt:126
+#: ../tt/project_members.tt:135 ../tt/project_members.tt:151
+#: ../tt/project_members.tt:164 ../tt/project_members.tt:173
+#: ../tt/project_members.tt:193 ../tt/project_members.tt:252
+#: ../tt/project_members.tt:263 ../tt/project_members.tt:81
+#: ../tt/project_members.tt:92 ../tt/project_members.tt:99
 msgid "Mitgliedschaft beenden"
 msgstr "End membership"
 
-#: ../tt/repair_homes.tt:33 ../tt/settings_users.tt:33
+#: ../tt/settings_users.tt:33
 msgid "Mittlere Ausgabe"
 msgstr "normal verbosity"
 
-#: ../tt/repair_homes.tt:288 ../tt/settings_users.tt:288
+#: ../tt/settings_users.tt:288
 msgid "Moodle-URL"
 msgstr "moodle url"
 
@@ -3560,7 +3703,7 @@ msgstr "Are you sure that you want to delete the project?"
 msgid "NEU"
 msgstr "NEW"
 
-#: ../tt/linbo_edit_data.inc.tt:66 ../tt/linbo_edit_oss.inc.tt:43
+#: ../tt/linbo_edit_data.inc.tt:68 ../tt/linbo_edit_oss.inc.tt:43
 msgid "NTFS"
 msgstr "NTFS"
 
@@ -3574,7 +3717,7 @@ msgid "Nachname ist leer"
 msgstr "Last name is empty"
 
 #: ../tt/class_collect.tt:83 ../tt/class_handoutcopy.tt:70
-#: ../tt/class_lesson.tt:95 ../tt/class_list.tt:116 ../tt/class_list.tt:34
+#: ../tt/class_lesson.tt:95 ../tt/class_list.tt:126 ../tt/class_list.tt:44
 #: ../tt/class_passwords.tt:56 ../tt/class_passwords.tt:85
 #: ../tt/class_shares.tt:36 ../tt/project_addmembers.tt:105
 #: ../tt/project_addmembers.tt:116 ../tt/project_addmembers.tt:20
@@ -3582,8 +3725,8 @@ msgstr "Last name is empty"
 #: ../tt/project_addmembers.tt:65 ../tt/project_addmembers.tt:80
 #: ../tt/project_addmembers.tt:91 ../tt/project_collect.tt:78
 #: ../tt/project_handoutcopy.tt:68 ../tt/project_lesson.tt:95
-#: ../tt/project_members.tt:139 ../tt/project_members.tt:161
-#: ../tt/project_members.tt:179 ../tt/project_members.tt:249
+#: ../tt/project_members.tt:149 ../tt/project_members.tt:171
+#: ../tt/project_members.tt:189 ../tt/project_members.tt:259
 #: ../tt/project_passwords.tt:56 ../tt/project_passwords.tt:84
 #: ../tt/project_shares.tt:35 ../tt/quotas_others.tt:119
 #: ../tt/quotas_others.tt:170 ../tt/quotas_teachers.tt:28
@@ -3592,7 +3735,7 @@ msgstr "Last name is empty"
 msgid "Name"
 msgstr "Name"
 
-#: ../tt/linbo_edit_data.inc.tt:28 ../tt/linbo_edit_oss.inc.tt:19
+#: ../tt/linbo_edit_data.inc.tt:30 ../tt/linbo_edit_oss.inc.tt:19
 msgid "Name der Partition"
 msgstr "name of the partition"
 
@@ -3600,7 +3743,7 @@ msgstr "name of the partition"
 msgid "Name des Betriebssystems"
 msgstr "Name of operating system"
 
-#: ../Schulkonsole/Linbo.pm:1113
+#: ../Schulkonsole/Linbo.pm:1283
 #, perl-format
 msgid "Name mit Version (\"%s\") muss bei Betriebssystemen eindeutig sein."
 msgstr "operating system name and version (\"%s\") needs to be unique."
@@ -3613,7 +3756,7 @@ msgstr "No"
 msgid "Neu anlegen"
 msgstr "Create new"
 
-#: ../tt/linbo_remote.tt:218
+#: ../tt/linbo_remote.tt:240
 msgid "Neu starten"
 msgstr "restart"
 
@@ -3621,31 +3764,46 @@ msgstr "restart"
 msgid "Neu+Start-Button für dieses Betriebssystem anzeigen"
 msgstr "Show new+start button for this operating system"
 
-#: ../tt/linbo_remote.tt:69
+#: ../tt/linbo_remote.tt:91
 msgid "Neue Aufgabe"
 msgstr "new task"
+
+#: ../tt/linbo_new.tt:29
+#, fuzzy
+msgid "Neue Gruppe"
+msgstr "Group"
+
+#: ../tt/linbo_new.tt:132
+#, fuzzy
+msgid "Neue Gruppe aus Beispiel"
+msgstr "No group selected"
+
+#: ../tt/linbo_new.tt:63
+#, fuzzy
+msgid "Neue Gruppe aus Templates"
+msgstr "No group selected"
 
 #: ../tt/project_addmembers.tt:134
 msgid "Neue Suche:"
 msgstr "New Search:"
 
-#: ../tt/start.tt:50
+#: ../tt/start.tt:67
 msgid "Neues Passwort"
 msgstr "New password"
 
-#: ../src/cgi-bin/start:268
+#: ../src/cgi-bin/start:290
 msgid "Neues Passwort eingeben"
 msgstr "Enter the new password"
 
-#: ../src/cgi-bin/start:298
+#: ../src/cgi-bin/start:320
 msgid "Neues Passwort ist zu schwach: "
 msgstr "New password is too weak:"
 
-#: ../src/cgi-bin/start:287
+#: ../src/cgi-bin/start:309
 msgid "Neues Passwort nicht richtig wiederholt"
 msgstr "New password not properly repeated"
 
-#: ../src/cgi-bin/start:275
+#: ../src/cgi-bin/start:297
 msgid "Neues Passwort zur Kontrolle zweimal eingeben"
 msgstr "Enter the new password twice to verify"
 
@@ -3653,7 +3811,7 @@ msgstr "Enter the new password twice to verify"
 msgid "Neues Projekt anlegen"
 msgstr "Create new project"
 
-#: ../tt/linbo_edit.tt:30 ../tt/linbo_edit.tt:92
+#: ../tt/linbo_edit.tt:30 ../tt/linbo_edit.tt:94
 msgid "Neues System hinzufügen"
 msgstr "Add new system"
 
@@ -3661,7 +3819,7 @@ msgstr "Add new system"
 msgid "Nicht alle Einhängepunkte(mount points) gefunden"
 msgstr ""
 
-#: ../src/cgi-bin/linbo_remote:151
+#: ../src/cgi-bin/linbo_remote:169
 msgid "Nicht alle angegebenen Befehle sind gültig."
 msgstr "not all supplied commands are valid."
 
@@ -3673,7 +3831,7 @@ msgstr "Unauthorized caller"
 msgid "Nicht autorisierter Aufrufer nach ID"
 msgstr "Unauthorized caller according to ID"
 
-#: ../src/cgi-bin/rooms:224
+#: ../src/cgi-bin/settings_rooms:258
 msgid "Nichts ausgewählt"
 msgstr "Nothing selected"
 
@@ -3697,15 +3855,15 @@ msgstr "no."
 #: ../tt/myroom_handedoutcopy.tt:18 ../tt/myroom_tocollect.tt:18
 #: ../tt/project.tt:42 ../tt/project_collect.tt:38 ../tt/project_handout.tt:40
 #: ../tt/project_handoutcopy.tt:40 ../tt/project_handoutcopy.tt:66
-#: ../tt/project_lesson.tt:93 ../tt/project_members.tt:101
-#: ../tt/project_members.tt:122 ../tt/project_members.tt:137
-#: ../tt/project_members.tt:159 ../tt/project_members.tt:177
-#: ../tt/project_members.tt:247 ../tt/project_members.tt:69
-#: ../tt/project_members.tt:87 ../tt/repair_permissions.tt:26
+#: ../tt/project_lesson.tt:93 ../tt/project_members.tt:111
+#: ../tt/project_members.tt:132 ../tt/project_members.tt:147
+#: ../tt/project_members.tt:169 ../tt/project_members.tt:187
+#: ../tt/project_members.tt:257 ../tt/project_members.tt:79
+#: ../tt/project_members.tt:97 ../tt/repair_permissions.tt:26
 #: ../tt/room_collect.tt:39 ../tt/room_handout.tt:37 ../tt/room_handout.tt:67
 #: ../tt/room_lesson.tt:94 ../tt/room_shares.tt:34
 #: ../tt/room_test_collect.tt:39 ../tt/room_test_handout.tt:37
-#: ../tt/room_test_handout.tt:60 ../tt/rooms_classrooms.tt:29
+#: ../tt/room_test_handout.tt:60 ../tt/settings_rooms.tt:175
 #: ../tt/user_commit.tt:107 ../tt/user_commit.tt:54 ../tt/user_commit.tt:78
 #: ../tt/user_print.tt:35 ../tt/user_print.tt:81
 msgid "Nr."
@@ -3720,37 +3878,37 @@ msgstr "no."
 msgid "Nutzung:"
 msgstr "Application:"
 
-#: ../tt/project.tt:45 ../tt/project_members.tt:103
-#: ../tt/project_members.tt:124
+#: ../tt/project.tt:45 ../tt/project_members.tt:113
+#: ../tt/project_members.tt:134
 msgid "Offenes Projekt"
 msgstr "Open project"
 
-#: ../src/cgi-bin/start:442
+#: ../src/cgi-bin/start:464
 msgid "OpenVPN-Passwort bestätigen"
 msgstr "Confirm open VPN password"
 
-#: ../src/cgi-bin/start:421
+#: ../src/cgi-bin/start:443
 #, fuzzy
 msgid "OpenVPN-Passwort eingeben"
 msgstr "Open VPN password entered"
 
-#: ../src/cgi-bin/start:433
+#: ../src/cgi-bin/start:455
 msgid "OpenVPN-Passwort muss mindestens sechs Zeichen haben"
 msgstr "Open VPN password must have at least six characters"
 
-#: ../src/cgi-bin/start:453
+#: ../src/cgi-bin/start:475
 msgid "OpenVPN-Passwort nicht richtig wiederholt"
 msgstr "Open VPN password not properly repeated"
 
-#: ../tt/start.tt:246
+#: ../tt/start.tt:263
 msgid "OpenVPN-Zertifikat"
 msgstr "Open VPN certificate"
 
-#: ../tt/start.tt:251
+#: ../tt/start.tt:268
 msgid "OpenVPN-Zertifikat erstellen"
 msgstr "Create open VPN certificate"
 
-#: ../tt/start.tt:249
+#: ../tt/start.tt:266
 msgid "OpenVPN-Zertifikat herunterladen"
 msgstr "Download open VPN certificate"
 
@@ -3787,33 +3945,33 @@ msgstr "pxe with opsi"
 msgid "PXE-Start-Dateien der Rechnergruppen editieren"
 msgstr "Edit PXE start files of computer groups"
 
-#: ../tt/linbo_remote.tt:187
+#: ../tt/linbo_remote.tt:209
 msgid "Parition formatieren"
 msgstr "format partition"
 
-#: ../tt/linbo_new.tt:63
+#: ../tt/linbo_new.tt:79
 msgid "Partition"
 msgstr "Partition"
 
-#: ../tt/linbo_edit_data.inc.tt:77 ../tt/linbo_edit_oss.inc.tt:52
+#: ../tt/linbo_edit_data.inc.tt:79 ../tt/linbo_edit_oss.inc.tt:52
 msgid "Partition bootbar:"
 msgstr "Partition bootable:"
 
-#: ../tt/linbo_edit_oss.inc.tt:83 ../Schulkonsole/Linbo.pm:1089
+#: ../tt/linbo_edit_oss.inc.tt:83 ../Schulkonsole/Linbo.pm:1259
 msgid "Partition, die Kernel und initrd enthält"
 msgstr "Partition that contains kernel and initrd"
 
-#: ../tt/linbo_remote.tt:171
+#: ../tt/linbo_remote.tt:193
 msgid "Partitionieren"
 msgstr "partition"
 
-#: ../tt/linbo_edit_data.inc.tt:36 ../tt/linbo_edit_oss.inc.tt:27
+#: ../tt/linbo_edit_data.inc.tt:38 ../tt/linbo_edit_oss.inc.tt:27
 msgid "Partitionsgröße"
 msgstr "partition size"
 
-#: ../tt/linbo_new.tt:65
+#: ../tt/linbo_new.tt:81
 #, fuzzy
-msgid "Partitionsgrößen in <b>kB</b>(,M,G,T)"
+msgid "Partitionsgrößen in <b>kB</b> (M,G,T)"
 msgstr "Size of partition in MB"
 
 #: ../tt/login.tt:17
@@ -3838,7 +3996,7 @@ msgstr "Set password and first password (random value)"
 msgid "Passwort und Ertspasswort setzen (Eingabewert)"
 msgstr "Set password and first password (input value)"
 
-#: ../tt/room_test_password.tt:34 ../tt/start.tt:57
+#: ../tt/room_test_password.tt:34 ../tt/start.tt:74
 msgid "Passwort ändern"
 msgstr "Change your password"
 
@@ -3858,11 +4016,11 @@ msgstr "Password list as PDF"
 msgid "Passwortlisten"
 msgstr "password lists"
 
-#: ../tt/start.tt:42
+#: ../tt/start.tt:59
 msgid "Passwortänderung"
 msgstr "Password change"
 
-#: ../src/cgi-bin/start:308
+#: ../src/cgi-bin/start:330
 msgid "Passwortänderung erfolgreich"
 msgstr "password successfully changed"
 
@@ -3885,19 +4043,29 @@ msgstr "passwords reset"
 msgid "Perl Kompilierungsfehler"
 msgstr ""
 
-#: ../tt/project_members.tt:260
+#: ../tt/repair_homes.tt:1 ../tt/repair_homes.tt:27
+#, fuzzy
+msgid "Persönliche Ordner"
+msgstr "The data of some users were changed."
+
+#: ../tt/project_members.tt:270
 msgid "Persönliche Ordner der Mitglieder"
 msgstr ""
 
-#: ../tt/class_list.tt:126
+#: ../tt/class_list.tt:136
 msgid "Persönliche Ordner der Schüler"
 msgstr ""
+
+#: ../tt/start.tt:51
+#, fuzzy
+msgid "Persönlicher Ordner"
+msgstr "The data of some users were changed."
 
 #: ../tt/settings_repair.tt:23
 msgid "Pfad"
 msgstr ""
 
-#: ../Schulkonsole/Linbo.pm:1090
+#: ../Schulkonsole/Linbo.pm:1260
 msgid "Pfad zum Kernel"
 msgstr "kernel path"
 
@@ -3905,7 +4073,6 @@ msgstr "kernel path"
 msgid "Pfad zum kernel"
 msgstr "Path to kernel"
 
-#: ../tt/repair_homes.tt:168 ../tt/repair_homes.tt:172
 #: ../tt/settings_users.tt:168 ../tt/settings_users.tt:172
 msgid "Platz"
 msgstr "room"
@@ -3914,7 +4081,7 @@ msgstr "room"
 msgid "Prepare fehlgeschlagen"
 msgstr "Prepare failed"
 
-#: ../tt/start.tt:61
+#: ../tt/start.tt:78
 #, fuzzy
 msgid "Private Mail-Adresse"
 msgstr "No MAC address"
@@ -3937,7 +4104,7 @@ msgid "Programme"
 msgstr "Program ID unknown"
 
 #: ../tt/myprojects_handedout.tt:17 ../tt/myprojects_handedoutcopy.tt:17
-#: ../tt/project_addmembers.tt:144 ../tt/project_members.tt:55
+#: ../tt/project_addmembers.tt:144 ../tt/project_members.tt:65
 #: ../tt/quotas_projects.tt:29
 msgid "Projekt"
 msgstr "Project"
@@ -3947,7 +4114,7 @@ msgstr "Project"
 msgid "Projekt %s angelegt"
 msgstr "Project %s created"
 
-#: ../src/cgi-bin/project:282
+#: ../src/cgi-bin/project:280
 #, perl-format
 msgid "Projekt %s gelöscht"
 msgstr "project %s deleted"
@@ -3957,7 +4124,7 @@ msgstr "project %s deleted"
 msgid "Projekt %s gibt es nicht."
 msgstr "Project %s does not exist."
 
-#: ../src/cgi-bin/project:121
+#: ../src/cgi-bin/project:124
 #, perl-format
 msgid "Projekt %s gibt es schon"
 msgstr "Project %s already exists."
@@ -3967,7 +4134,7 @@ msgstr "Project %s already exists."
 msgid "Projekt %s ist bereits Projektmitglied."
 msgstr "Project %s is already a project member."
 
-#: ../src/cgi-bin/project:294
+#: ../src/cgi-bin/project:292
 #, perl-format
 msgid "Projekt %s konnte nicht gelöscht werden"
 msgstr "project %s could not be deleted"
@@ -3990,7 +4157,7 @@ msgstr "Project file"
 msgid "Projekt-Lehrer-Datei "
 msgstr "Project Teacher File"
 
-#: ../tt/class_list.tt:121 ../tt/class_list.tt:39 ../tt/project.tt:1
+#: ../tt/class_list.tt:131 ../tt/class_list.tt:49 ../tt/project.tt:1
 #: ../tt/project.tt:28 ../tt/project_addmembers.tt:1
 #: ../tt/project_addmembers.tt:9 ../tt/project_collect.tt:1
 #: ../tt/project_collect.tt:26 ../tt/project_drop_verify.tt:1
@@ -3998,11 +4165,11 @@ msgstr "Project Teacher File"
 #: ../tt/project_handout.tt:26 ../tt/project_handoutcopy.tt:1
 #: ../tt/project_handoutcopy.tt:26 ../tt/project_lesson.tt:1
 #: ../tt/project_lesson.tt:25 ../tt/project_members.tt:1
-#: ../tt/project_members.tt:25 ../tt/project_passwords.tt:1
+#: ../tt/project_members.tt:35 ../tt/project_passwords.tt:1
 #: ../tt/project_passwords.tt:28 ../tt/project_shares.tt:1
 #: ../tt/project_shares.tt:26 ../tt/quotas_projects.tt:1
 #: ../tt/settings_projects.tt:1 ../tt/settings_projects.tt:9
-#: ../tt/start.tt:232
+#: ../tt/start.tt:249
 msgid "Projekte"
 msgstr "Projects"
 
@@ -4015,47 +4182,47 @@ msgid "Projektename"
 msgstr "Project name"
 
 #: ../tt/project_addmembers.tt:52 ../tt/project_addmembers.tt:67
-#: ../tt/project_members.tt:140 ../tt/project_members.tt:162
+#: ../tt/project_members.tt:150 ../tt/project_members.tt:172
 msgid "Projektleitung"
 msgstr "Project management"
 
-#: ../tt/myprojects.tt:14 ../tt/project_members.tt:102
-#: ../tt/project_members.tt:123 ../tt/settings_projects.tt:18
+#: ../tt/myprojects.tt:14 ../tt/project_members.tt:112
+#: ../tt/project_members.tt:133 ../tt/settings_projects.tt:18
 msgid "Projektname"
 msgstr "Project name"
 
 #: ../Schulkonsole/Error/SophomorixError.pm:180
-msgid "Prozess laeuft schon"
+#, fuzzy
+msgid "Prozess läuft schon"
 msgstr "Process is running already"
 
 #: ../tt/quotas_classes.tt:1 ../tt/quotas_classes.tt:10
 #: ../tt/quotas_others.tt:1 ../tt/quotas_others.tt:10
 #: ../tt/quotas_projects.tt:1 ../tt/quotas_projects.tt:10
-#: ../tt/quotas_teachers.tt:1 ../tt/quotas_teachers.tt:10 ../tt/start.tt:97
+#: ../tt/quotas_teachers.tt:1 ../tt/quotas_teachers.tt:10 ../tt/start.tt:114
 msgid "Quota"
 msgstr "Quota"
 
-#: ../tt/repair_homes.tt:53 ../tt/settings_users.tt:53
+#: ../tt/settings_users.tt:53
 msgid "Quota aktivieren"
 msgstr "Activate quota"
 
 #: ../tt/quotas_classes.tt:14 ../tt/quotas_others.tt:14
 #: ../tt/quotas_projects.tt:14 ../tt/quotas_teachers.tt:14
-#: ../tt/repair_homes.tt:14 ../tt/settings_users.tt:14
+#: ../tt/settings_users.tt:14
 #, fuzzy
 msgid "Quota aktivieren läuft..."
 msgstr "Activate quota"
 
-#: ../src/cgi-bin/repair_homes:163 ../src/cgi-bin/repair_permissions:163
 #: ../src/cgi-bin/settings_users:163
 msgid "Quota muss eine Zahl sein"
 msgstr "Quota must be a number"
 
-#: ../tt/hosts.tt:47 ../tt/linbo_remote.tt:82
+#: ../tt/hosts.tt:47 ../tt/linbo_remote.tt:104
 msgid "Raum"
 msgstr "Room"
 
-#: ../Schulkonsole/Error/LinboError.pm:88
+#: ../Schulkonsole/Error/LinboError.pm:97
 #, fuzzy
 msgid "Raum nicht gefunden"
 msgstr "Nothing found"
@@ -4064,7 +4231,7 @@ msgstr "Nothing found"
 msgid "Raum:"
 msgstr "Room:"
 
-#: ../tt/rooms_classrooms.tt:30
+#: ../tt/settings_rooms.tt:176
 msgid "Raumbezeichnung"
 msgstr "Room designation"
 
@@ -4076,11 +4243,11 @@ msgstr "Can not read room file"
 msgid "Raumdatei kann nicht geschrieben werden"
 msgstr "Can not write room file"
 
-#: ../tt/linbo_remote.tt:88 ../tt/printers.tt:25
+#: ../tt/linbo_remote.tt:110 ../tt/printers.tt:25
 msgid "Rechner"
 msgstr "Computer"
 
-#: ../tt/linbo_remote.tt:140
+#: ../tt/linbo_remote.tt:162
 msgid "Rechner aufwecken"
 msgstr "wakeup hosts"
 
@@ -4088,16 +4255,21 @@ msgstr "wakeup hosts"
 msgid "Rechner bearbeiten"
 msgstr "Edit hosts"
 
-#: ../Schulkonsole/Error/LinboError.pm:84
+#: ../src/cgi-bin/linbo_remote:91
+#, fuzzy
+msgid "Rechner entfernt."
+msgstr "Delete teacher"
+
+#: ../Schulkonsole/Error/LinboError.pm:93
 #, fuzzy
 msgid "Rechner nicht gefunden"
 msgstr "Directory not found"
 
-#: ../tt/linbo_remote.tt:72
+#: ../tt/linbo_remote.tt:94
 msgid "Rechnerauswahl"
 msgstr "hosts selection"
 
-#: ../tt/linbo_new.tt:34
+#: ../tt/linbo_new.tt:36
 msgid "Rechnergruppe"
 msgstr "Computer group"
 
@@ -4105,7 +4277,7 @@ msgstr "Computer group"
 msgid "Rechnergruppenname"
 msgstr "Computer group name"
 
-#: ../src/cgi-bin/linbo_new:131
+#: ../src/cgi-bin/linbo_new:135 ../src/cgi-bin/linbo_new:323
 msgid "Rechnergruppenname schon vergeben"
 msgstr "Computer group name already assigned"
 
@@ -4138,7 +4310,7 @@ msgstr "Create registry patch file from"
 msgid "Registrypatch-Dateien der Rechnergruppen editieren"
 msgstr "Edit registry patch files of the computer group"
 
-#: ../tt/linbo_edit_data.inc.tt:59 ../tt/linbo_edit_data.inc.tt:69
+#: ../tt/linbo_edit_data.inc.tt:61 ../tt/linbo_edit_data.inc.tt:71
 #: ../tt/linbo_edit_oss.inc.tt:47
 msgid "ReiserFS"
 msgstr "ReiserFS"
@@ -4147,12 +4319,35 @@ msgstr "ReiserFS"
 msgid "Relativer Pfad zur initrd"
 msgstr "Relative path to initrd"
 
+#: ../tt/repair_homes.tt:1 ../tt/repair_homes.tt:27
 #: ../tt/repair_permissions.tt:1 ../tt/repair_permissions.tt:10
 #: ../tt/settings_repair.tt:1 ../tt/settings_repair.tt:10
 msgid "Reparatur"
 msgstr ""
 
-#: ../tt/class_list.tt:128 ../tt/project_members.tt:262
+#: ../tt/repair_homes.tt:60 ../tt/repair_permissions.tt:59
+#, fuzzy
+msgid "Reparatur durchführen"
+msgstr "Implement changes"
+
+#: ../src/cgi-bin/repair_permissions:84
+#, fuzzy
+msgid "Reparatur gestartet."
+msgstr "Transfer was already started"
+
+#: ../src/cgi-bin/class_list:83 ../src/cgi-bin/project_members:101
+#: ../src/cgi-bin/repair_homes:86 ../src/cgi-bin/start:254
+#, fuzzy
+msgid "Reparatur gestartet..."
+msgstr "Transfer was already started"
+
+#: ../tt/class_list.tt:12 ../tt/project_members.tt:12 ../tt/repair_homes.tt:31
+#: ../tt/start.tt:23
+#, fuzzy
+msgid "Reparatur läuft..."
+msgstr "Move is running."
+
+#: ../tt/class_list.tt:138 ../tt/project_members.tt:272 ../tt/start.tt:54
 msgid "Reparieren"
 msgstr ""
 
@@ -4160,20 +4355,18 @@ msgstr ""
 msgid "Report für das Sekretariat"
 msgstr "Report for the secretary's office"
 
-#: ../tt/printers.tt:24 ../tt/rooms.tt:1 ../tt/rooms_classrooms.tt:1
-#: ../tt/rooms_classrooms.tt:19
+#: ../tt/printers.tt:24 ../tt/settings_rooms.tt:1 ../tt/settings_rooms.tt:9
 msgid "Räume"
 msgstr "EDV rooms"
 
-#: ../tt/linbo_new.tt:56
+#: ../tt/linbo_new.tt:43
 msgid "SATA"
 msgstr "SATA"
 
-#: ../tt/repair_homes.tt:284 ../tt/settings_users.tt:284
+#: ../tt/settings_users.tt:284
 msgid "Samba-Domäne"
 msgstr "samba domain"
 
-#: ../tt/repair_homes.tt:200 ../tt/repair_homes.tt:226
 #: ../tt/settings_users.tt:200 ../tt/settings_users.tt:226
 msgid "Sambapasswort bei Erstanmeldung ändern"
 msgstr "Change samba password during initial log in"
@@ -4191,13 +4384,13 @@ msgstr "Close"
 #: ../tt/class_shares.tt:59 ../tt/project_collect.tt:101
 #: ../tt/project_handoutcopy.tt:86 ../tt/project_lesson.tt:115
 #: ../tt/project_passwords.tt:77 ../tt/project_shares.tt:58
-#: ../tt/room_collect.tt:125 ../tt/room_handout.tt:102
-#: ../tt/room_lesson.tt:166 ../tt/room_lesson.tt:224 ../tt/room_shares.tt:61
-#: ../tt/user_teacherpasswords.tt:52
+#: ../tt/repair_permissions.tt:49 ../tt/room_collect.tt:125
+#: ../tt/room_handout.tt:102 ../tt/room_lesson.tt:166 ../tt/room_lesson.tt:224
+#: ../tt/room_shares.tt:61 ../tt/user_teacherpasswords.tt:52
 msgid "Schnellauswahl"
 msgstr "Quick selection"
 
-#: ../Schulkonsole/Session.pm.in:1488
+#: ../Schulkonsole/Session.pm:1488
 msgid "Schueler"
 msgstr "Student"
 
@@ -4226,10 +4419,10 @@ msgstr "Student"
 #: ../tt/room_end_lesson_verify.tt:1 ../tt/room_handout.tt:1
 #: ../tt/room_lesson.tt:1 ../tt/room_shares.tt:1 ../tt/room_test.tt:1
 #: ../tt/room_test_collect.tt:1 ../tt/room_test_end.tt:1
-#: ../tt/room_test_handout.tt:1 ../tt/room_test_password.tt:1 ../tt/rooms.tt:1
-#: ../tt/rooms_classrooms.tt:1 ../tt/settings_classs.tt:1
-#: ../tt/settings_program.tt:1 ../tt/settings_program.tt:9
-#: ../tt/settings_projects.tt:1 ../tt/settings_repair.tt:1
+#: ../tt/room_test_handout.tt:1 ../tt/room_test_password.tt:1
+#: ../tt/settings_classs.tt:1 ../tt/settings_program.tt:1
+#: ../tt/settings_program.tt:9 ../tt/settings_projects.tt:1
+#: ../tt/settings_repair.tt:1 ../tt/settings_rooms.tt:1
 #: ../tt/settings_users.tt:1 ../tt/showpassword.tt:1 ../tt/start.tt:1
 #: ../tt/user.tt:1 ../tt/user_check.tt:1 ../tt/user_commit.tt:1
 #: ../tt/user_extra.tt:1 ../tt/user_print.tt:1 ../tt/user_reports.tt:1
@@ -4250,15 +4443,15 @@ msgstr "School console for network consultants"
 msgid "Schulkonsole für Schüler/innen"
 msgstr "School console for students"
 
-#: ../tt/repair_homes.tt:272 ../tt/settings_users.tt:272
+#: ../tt/settings_users.tt:272
 msgid "Schulname"
 msgstr "school name"
 
-#: ../tt/repair_homes.tt:99 ../tt/settings_users.tt:99
+#: ../tt/settings_users.tt:99
 msgid "Schulweites Tauschen aktivieren"
 msgstr "Activate school-wide exchange"
 
-#: ../tt/project_addmembers.tt:138 ../tt/project_members.tt:49
+#: ../tt/project_addmembers.tt:138 ../tt/project_members.tt:59
 #: ../tt/quotas_others.tt:157
 msgid "Schüler"
 msgstr "Student"
@@ -4271,11 +4464,11 @@ msgstr "maintain student list"
 msgid "Seite"
 msgstr "page"
 
-#: ../tt/start.tt:202
+#: ../tt/start.tt:219
 msgid "Seiten"
 msgstr "Pages"
 
-#: ../tt/start.tt:208
+#: ../tt/start.tt:225
 msgid "Seiten:"
 msgstr "Pages:"
 
@@ -4283,7 +4476,6 @@ msgstr "Pages:"
 msgid "Sekunden"
 msgstr "seconds"
 
-#: ../tt/repair_homes.tt:196 ../tt/repair_homes.tt:222
 #: ../tt/settings_users.tt:196 ../tt/settings_users.tt:222
 msgid "Shell aktivieren"
 msgstr "Activate shell"
@@ -4326,7 +4518,7 @@ msgid ""
 "Sie können jetzt die <a href=\"user_commit\">Benutzerdaten übernehmen</a>."
 msgstr "You can apply the <a href=\"user_commit\">User data</a> now."
 
-#: ../src/cgi-bin/project:105
+#: ../src/cgi-bin/project:108
 msgid "Sie müssen einen Projektnamen angeben."
 msgstr "You must enter a project name."
 
@@ -4335,20 +4527,20 @@ msgstr "You must enter a project name."
 msgid "Sie sind bereits in Klasse %s"
 msgstr "You are already in class %s"
 
-#: ../src/cgi-bin/project:200 ../src/cgi-bin/project_members:191
+#: ../src/cgi-bin/project:200 ../src/cgi-bin/project_members:203
 #, perl-format
 msgid "Sie sind der letzte Projektleiter von %s"
 msgstr "You are the last project leader of %s"
 
-#: ../src/cgi-bin/project_members:97
+#: ../src/cgi-bin/project_members:109
 msgid "Sie sind kein Administrator dieser Klasse"
 msgstr "You are not an administrator for this class"
 
-#: ../src/cgi-bin/project_members:153
+#: ../src/cgi-bin/project_members:165
 msgid "Sie sind kein Mitglied dieser Klasse"
 msgstr "You are not a member of this class"
 
-#: ../src/cgi-bin/project_members:162
+#: ../src/cgi-bin/project_members:174
 msgid "Sie sind kein Mitglied dieses Projekts"
 msgstr "You are not a member of this project"
 
@@ -4358,7 +4550,7 @@ msgstr "You are not a member of this project"
 msgid "Sie sind kein Projektleiter"
 msgstr "You are not a project leader"
 
-#: ../src/cgi-bin/project:245 ../src/cgi-bin/project_members:264
+#: ../src/cgi-bin/project:245 ../src/cgi-bin/project_members:276
 #, perl-format
 msgid "Sie sind kein Projektleiter von %s"
 msgstr "You are not the project leader of %s"
@@ -4387,11 +4579,11 @@ msgstr "Should lessons really end?"
 msgid "Sonderquota"
 msgstr "Special quota"
 
-#: ../src/cgi-bin/start:632
+#: ../src/cgi-bin/start:654
 msgid "Speicherplatz"
 msgstr "Storage space"
 
-#: ../tt/class_list.tt:54 ../tt/project_members.tt:197 ../tt/start.tt:116
+#: ../tt/class_list.tt:64 ../tt/project_members.tt:207 ../tt/start.tt:133
 msgid "Speicherplatz/KB:"
 msgstr "Storage space/KB:"
 
@@ -4399,19 +4591,15 @@ msgstr "Storage space/KB:"
 msgid "Standard-Autostart-Aktion auswählen"
 msgstr "Select standard autostart action"
 
-#: ../tt/rooms.tt:1
+#: ../tt/settings_rooms.tt:11
 msgid "Standardeinstellungen"
 msgstr "Standard settings"
 
-#: ../tt/rooms.tt:9
-msgid "Standardeinstellungen für Räume"
-msgstr "Default settings for rooms"
-
-#: ../tt/repair_homes.tt:58 ../tt/settings_users.tt:58
+#: ../tt/settings_users.tt:58
 msgid "Standardquota Lehrer"
 msgstr "Standard quota teacher"
 
-#: ../tt/repair_homes.tt:78 ../tt/settings_users.tt:78
+#: ../tt/settings_users.tt:78
 msgid "Standardquota Schüler"
 msgstr "Default quota for students"
 
@@ -4419,7 +4607,7 @@ msgstr "Default quota for students"
 msgid "Start-Button für dieses Betriebssystem anzeigen"
 msgstr "Show start button for this operating system"
 
-#: ../tt/linbo_remote.tt:252
+#: ../tt/linbo_remote.tt:274
 msgid "Starten"
 msgstr "Start"
 
@@ -4431,11 +4619,11 @@ msgstr "Start page"
 msgid "Status"
 msgstr "Status"
 
-#: ../tt/repair_homes.tt:49 ../tt/settings_users.tt:49
+#: ../tt/settings_users.tt:49
 msgid "Sternchenklassen filtern"
 msgstr "Filter asterik classes"
 
-#: ../tt/class_list.tt:120 ../tt/class_list.tt:38
+#: ../tt/class_list.tt:130 ../tt/class_list.tt:48
 msgid "Subklasse"
 msgstr "Subclass"
 
@@ -4443,15 +4631,15 @@ msgstr "Subclass"
 msgid "Suchanfrage ist leer"
 msgstr "Search request is empty"
 
-#: ../tt/project_addmembers.tt:136 ../tt/project_members.tt:47
+#: ../tt/project_addmembers.tt:136 ../tt/project_members.tt:57
 msgid "Suche"
 msgstr "Search"
 
-#: ../tt/project_members.tt:45
+#: ../tt/project_members.tt:55
 msgid "Suche:"
 msgstr "Search:"
 
-#: ../tt/linbo_edit.tt:35 ../tt/linbo_edit.tt:68 ../tt/linbo_edit.tt:97
+#: ../tt/linbo_edit.tt:35 ../tt/linbo_edit.tt:69 ../tt/linbo_edit.tt:99
 #: ../tt/linbo_edit_data.inc.tt:16 ../tt/linbo_edit_oss.inc.tt:153
 msgid "Swap"
 msgstr "Swap"
@@ -4460,7 +4648,7 @@ msgstr "Swap"
 msgid "Sync+Start-Button für dieses Betriebssystem anzeigen"
 msgstr "Show sync+start button for this operating system"
 
-#: ../tt/linbo_remote.tt:234
+#: ../tt/linbo_remote.tt:256
 msgid "Synchronisieren"
 msgstr "synchronize"
 
@@ -4468,15 +4656,15 @@ msgstr "synchronize"
 msgid "System"
 msgstr "System"
 
-#: ../tt/linbo_edit.tt:63
+#: ../tt/linbo_edit.tt:64
 msgid "System löschen"
 msgstr "Delete system"
 
-#: ../tt/linbo_edit.tt:72 ../tt/linbo_edit_oss.inc.tt:157
+#: ../tt/linbo_edit.tt:74 ../tt/linbo_edit_oss.inc.tt:158
 msgid "System ändern"
 msgstr "Change system"
 
-#: ../tt/linbo_edit_global.inc.tt:25 ../tt/linbo_new.tt:38
+#: ../tt/linbo_edit_global.inc.tt:25 ../tt/linbo_new.tt:66
 msgid "System-Typ"
 msgstr "System type"
 
@@ -4484,7 +4672,7 @@ msgstr "System type"
 msgid "Systembenutzer"
 msgstr "System user"
 
-#: ../tt/linbo_edit.tt:42
+#: ../tt/linbo_edit.tt:43
 msgid "Systeme"
 msgstr "Systems"
 
@@ -4514,8 +4702,8 @@ msgstr "Teach in"
 msgid "Teach-In ist notwendig"
 msgstr "Teach-in is necessary"
 
-#: ../src/cgi-bin/linbo_new:165 ../src/cgi-bin/linbo_new:193
-#: ../src/cgi-bin/linbo_new:220 ../src/cgi-bin/linbo_new:247
+#: ../src/cgi-bin/linbo_new:169 ../src/cgi-bin/linbo_new:197
+#: ../src/cgi-bin/linbo_new:224 ../src/cgi-bin/linbo_new:251
 #, perl-format
 msgid "Template %s nicht vorhanden"
 msgstr "Template %s is not available"
@@ -4545,17 +4733,17 @@ msgstr "Unknown password encryption"
 msgid "Unbekannter Fehler "
 msgstr "Unknown Error"
 
-#: ../Schulkonsole/Linbo.pm:1169
+#: ../Schulkonsole/Linbo.pm:1339
 #, perl-format
 msgid "Unbekannter Fehler bei %s/%s"
 msgstr "Unknown Error at %s/%s"
 
-#: ../Schulkonsole/Linbo.pm:1116
+#: ../Schulkonsole/Linbo.pm:1286
 #, perl-format
 msgid "Unbekannter Fehler für %s bei %s auf %s"
 msgstr "Unknown Error for %s at %s on %s"
 
-#: ../src/cgi-bin/linbo_new:155
+#: ../src/cgi-bin/linbo_new:159 ../src/cgi-bin/linbo_new:339
 msgid "Unbekannter Festplattencontroller"
 msgstr "Unknown hard drive controller"
 
@@ -4569,7 +4757,7 @@ msgstr "Unexpected program output"
 msgid "Unbekannter Raum"
 msgstr "Unknown Error"
 
-#: ../src/cgi-bin/linbo_new:139
+#: ../src/cgi-bin/linbo_new:143
 #, fuzzy
 msgid "Unbekannter Systemtyp"
 msgstr "Unknown Error"
@@ -4584,74 +4772,19 @@ msgstr "Unknown Error"
 msgid "Unerwartete Programmausgabe"
 msgstr "Unexpected program output"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:134
-msgid "Ungueltige Benutzer-ID"
-msgstr "Invalid user ID"
-
-#: ../Schulkonsole/Error/SophomorixError.pm:152
-msgid "Ungueltige Klassen-GID"
-msgstr "Invalid class GID"
-
 #: ../Schulkonsole/Error/Error.pm:186
 msgid "Ungueltige Session-ID"
 msgstr "Invalid session ID"
 
-#: ../Schulkonsole/Error/SophomorixError.pm:154
-msgid "Ungueltige Subklasse"
-msgstr "Invalid subclass"
-
-#: ../Schulkonsole/Error/SophomorixError.pm:130
-msgid "Ungueltiger Benutzer"
-msgstr "Invalid user"
-
-#: ../Schulkonsole/Error/SophomorixError.pm:148
-msgid "Ungueltiger Raum"
-msgstr "Invalid room"
-
-#: ../Schulkonsole/Error/SophomorixError.pm:140
-msgid "Ungueltiger Raumbezeichner"
-msgstr "Invalid room designation"
-
-#: ../Schulkonsole/Error/SophomorixError.pm:196
-msgid "Ungueltiger Wert fuer Dateiname"
-msgstr "Invalid file name"
-
-#: ../Schulkonsole/Error/SophomorixError.pm:188
-msgid "Ungueltiger Wert fuer diskquota"
-msgstr "Invalid value for disk quota"
-
-#: ../Schulkonsole/Error/SophomorixError.pm:176
-msgid "Ungueltiger Wert fuer longname"
-msgstr "Invalid value for longname"
-
-#: ../Schulkonsole/Error/SophomorixError.pm:190
-msgid "Ungueltiger Wert fuer mailquota"
-msgstr "Invalid value for mail quota"
-
-#: ../Schulkonsole/Error/SophomorixError.pm:178
-msgid "Ungueltiger Wert fuer number"
-msgstr "Invalid value for number"
-
-#: ../Schulkonsole/Error/SophomorixError.pm:162
-msgid "Ungueltiger Wert fuer password"
-msgstr "Invalid value for password"
-
-#: ../Schulkonsole/Error/SophomorixError.pm:170
-msgid "Ungueltiger Wert fuer projectgid"
-msgstr "Invalid value for projectgid"
-
-#: ../Schulkonsole/Error/SophomorixError.pm:194
-msgid "Ungueltiger Wert, action sollte eine Zahl sein"
-msgstr "invalid value, action needs to be a number"
-
-#: ../Schulkonsole/Error/SophomorixError.pm:150
-msgid "Ungueltiges Projekt"
-msgstr "Invalid project"
-
-#: ../Schulkonsole/Error/LinboError.pm:92
+#: ../Schulkonsole/Error/LinboError.pm:101
 #, fuzzy
 msgid "Ungültige Befehle"
 msgstr "invalid characters"
+
+#: ../Schulkonsole/Error/SophomorixError.pm:134
+#, fuzzy
+msgid "Ungültige Benutzer-ID"
+msgstr "Invalid user ID"
 
 #: ../Schulkonsole/Error/PrinterError.pm:60
 #, fuzzy
@@ -4663,10 +4796,21 @@ msgstr "Invalid data for printing quota"
 msgid "Ungültige Daten für genutzte Druckquota"
 msgstr "Invalid data for used printing quota"
 
+#: ../Schulkonsole/Error/LinboError.pm:113
 #: ../Schulkonsole/Error/RadiusError.pm:44
 #, fuzzy
 msgid "Ungültige Gruppe"
 msgstr "Invalid groups"
+
+#: ../Schulkonsole/Error/LinboError.pm:111
+#, fuzzy
+msgid "Ungültige IP"
+msgstr "Invalid IP"
+
+#: ../Schulkonsole/Error/SophomorixError.pm:152
+#, fuzzy
+msgid "Ungültige Klassen-GID"
+msgstr "Invalid class GID"
 
 #: ../Schulkonsole/Error/FirewallError.pm:56
 #, fuzzy
@@ -4683,12 +4827,17 @@ msgstr "Invalid session ID"
 msgid "Ungültige Session-ID"
 msgstr "Invalid session ID"
 
+#: ../Schulkonsole/Error/SophomorixError.pm:154
+#, fuzzy
+msgid "Ungültige Subklasse"
+msgstr "Invalid subclass"
+
 #: ../Schulkonsole/Error/RadiusError.pm:50
 #, fuzzy
 msgid "Ungültige Unterrichtszeit"
 msgstr "invalid characters"
 
-#: ../Schulkonsole/Linbo.pm:1110
+#: ../Schulkonsole/Linbo.pm:1280
 #, perl-format
 msgid "Ungültige Zeichen für \"%s\" bei %s auf %s"
 msgstr "Invalid characters for \"%s\" at %s on %s"
@@ -4698,7 +4847,12 @@ msgstr "Invalid characters for \"%s\" at %s on %s"
 msgid "Ungültige Zeitangabe für Unterrichtsende"
 msgstr "Invalid time designation for end of lesson"
 
-#: ../Schulkonsole/Error/LinboError.pm:70
+#: ../Schulkonsole/Error/SophomorixError.pm:130
+#, fuzzy
+msgid "Ungültiger Benutzer"
+msgstr "Invalid user"
+
+#: ../Schulkonsole/Error/LinboError.pm:79
 #, fuzzy
 msgid "Ungültiger Dateiname"
 msgstr "Invalid file name"
@@ -4723,7 +4877,8 @@ msgstr "Invalid printer name"
 msgid "Ungültiger Druckernutzer"
 msgstr "Invalid printer user"
 
-#: ../Schulkonsole/Error/LinboError.pm:68 ../src/cgi-bin/linbo_new:127
+#: ../Schulkonsole/Error/LinboError.pm:77 ../src/cgi-bin/linbo_new:131
+#: ../src/cgi-bin/linbo_new:319
 msgid "Ungültiger Gruppenname"
 msgstr "Invalid group name"
 
@@ -4732,7 +4887,7 @@ msgstr "Invalid group name"
 msgid "Ungültiger Host"
 msgstr "Invalid host"
 
-#: ../Schulkonsole/Error/LinboError.pm:74
+#: ../Schulkonsole/Error/LinboError.pm:83
 #, fuzzy
 msgid "Ungültiger Image-Dateiname"
 msgstr "Invalid image file name"
@@ -4743,46 +4898,102 @@ msgstr "Invalid image file name"
 msgid "Ungültiger Modus für Unterricht"
 msgstr "Invalid mode for lesson"
 
-#: ../Schulkonsole/Error/LinboError.pm:90
+#: ../Schulkonsole/Error/LinboError.pm:99
 #, fuzzy
 msgid "Ungültiger Programmablauf"
 msgstr "Unexpected program output"
 
-#: ../Schulkonsole/Error/LinboError.pm:96
+#: ../Schulkonsole/Error/SophomorixError.pm:148
+#, fuzzy
+msgid "Ungültiger Raum"
+msgstr "Invalid room"
+
+#: ../Schulkonsole/Error/SophomorixError.pm:140
+#, fuzzy
+msgid "Ungültiger Raumbezeichner"
+msgstr "Invalid room designation"
+
+#: ../Schulkonsole/Error/LinboError.pm:105
 #, fuzzy
 msgid "Ungültiger Session-Name"
 msgstr "Invalid debconf name"
 
-#: ../src/cgi-bin/linbo_new:136
+#: ../src/cgi-bin/linbo_new:140
 #, fuzzy
 msgid "Ungültiger Systemtyp"
 msgstr "Invalid name"
 
-#: ../Schulkonsole/Error/LinboError.pm:80
+#: ../Schulkonsole/Error/LinboError.pm:89
 #, fuzzy
 msgid "Ungültiger Typ"
 msgstr "Invalid name"
 
+#: ../Schulkonsole/Error/SophomorixError.pm:196
+#, fuzzy
+msgid "Ungültiger Wert für Dateiname"
+msgstr "Invalid file name"
+
+#: ../Schulkonsole/Error/SophomorixError.pm:188
+#, fuzzy
+msgid "Ungültiger Wert für diskquota"
+msgstr "Invalid value for disk quota"
+
+#: ../Schulkonsole/Error/SophomorixError.pm:176
+#, fuzzy
+msgid "Ungültiger Wert für longname"
+msgstr "Invalid value for longname"
+
+#: ../Schulkonsole/Error/SophomorixError.pm:190
+#, fuzzy
+msgid "Ungültiger Wert für mailquota"
+msgstr "Invalid value for mail quota"
+
 #: ../Schulkonsole/Error/FilesError.pm:35
+#: ../Schulkonsole/Error/SophomorixError.pm:178
 #, fuzzy
 msgid "Ungültiger Wert für number"
 msgstr "Invalid value for number"
 
-#: ../src/cgi-bin/linbo_new:86
+#: ../Schulkonsole/Error/SophomorixError.pm:162
+#, fuzzy
+msgid "Ungültiger Wert für password"
+msgstr "Invalid value for password"
+
+#: ../Schulkonsole/Error/SophomorixError.pm:170
+#, fuzzy
+msgid "Ungültiger Wert für projectgid"
+msgstr "Invalid value for projectgid"
+
+#: ../Schulkonsole/Error/SophomorixError.pm:194
+#, fuzzy
+msgid "Ungültiger Wert, action sollte eine Zahl sein"
+msgstr "invalid value, action needs to be a number"
+
+#: ../src/cgi-bin/linbo_new:88
 msgid "Ungültiger Zielgruppenname"
 msgstr "Invalid target group name"
 
-#: ../Schulkonsole/Error/LinboError.pm:94
+#: ../Schulkonsole/Error/LinboError.pm:103
 #, fuzzy
 msgid "Ungültiges Argument"
 msgstr "Invalid groups"
+
+#: ../src/cgi-bin/linbo_new:315
+#, fuzzy
+msgid "Ungültiges Beispiel"
+msgstr "invalid characters"
 
 #: ../Schulkonsole/Error/OVPNError.pm:34
 #, fuzzy
 msgid "Ungültiges Passwort"
 msgstr "Old password"
 
-#: ../Schulkonsole/Error/LinboError.pm:82
+#: ../Schulkonsole/Error/SophomorixError.pm:150
+#, fuzzy
+msgid "Ungültiges Projekt"
+msgstr "Invalid project"
+
+#: ../Schulkonsole/Error/LinboError.pm:91
 #, fuzzy
 msgid "Ungültiges Ziel"
 msgstr "invalid characters"
@@ -4830,7 +5041,7 @@ msgstr "Lessons end at"
 msgid "Unterrichtsende um %H:%M"
 msgstr "Lesson ends at %H:%M"
 
-#: ../tt/linbo_edit_data.inc.tt:62 ../tt/linbo_edit_data.inc.tt:65
+#: ../tt/linbo_edit_data.inc.tt:64 ../tt/linbo_edit_data.inc.tt:67
 #: ../tt/linbo_edit_oss.inc.tt:42
 msgid "VFAT"
 msgstr "VFAT"
@@ -4852,7 +5063,7 @@ msgstr "Transfer was already started"
 msgid "Version"
 msgstr "Version"
 
-#: ../src/cgi-bin/start:475 ../src/cgi-bin/start:497
+#: ../src/cgi-bin/start:497 ../src/cgi-bin/start:519
 msgid "Verständigen Sie den Netzwerkadministrator"
 msgstr "Inform the network administrator"
 
@@ -4919,20 +5130,19 @@ msgstr "wlan"
 msgid "WLAN-LDAP-Gruppe"
 msgstr "wlan ldap group"
 
-#: ../tt/repair_homes.tt:167 ../tt/repair_homes.tt:171
 #: ../tt/settings_users.tt:167 ../tt/settings_users.tt:171
 msgid "Warnung bei weniger als"
 msgstr "warn for less than"
 
-#: ../tt/linbo_remote.tt:144
+#: ../tt/linbo_remote.tt:166
 msgid "Wartezeit nach jedem Rechner"
 msgstr "waiting time after each host"
 
-#: ../tt/linbo_remote.tt:148
+#: ../tt/linbo_remote.tt:170
 msgid "Wartezeit vor der Befehlsliste"
 msgstr "waiting time before processing commands"
 
-#: ../tt/room_lesson.tt:99 ../tt/rooms.tt:23
+#: ../tt/room_lesson.tt:99 ../tt/settings_rooms.tt:23
 msgid "Webfilter"
 msgstr "Web filter"
 
@@ -4956,20 +5166,20 @@ msgstr "Changes to this user not possible"
 
 #: ../tt/class.tt:21 ../tt/class_collect.tt:21 ../tt/class_handout.tt:20
 #: ../tt/class_handoutcopy.tt:21 ../tt/class_lesson.tt:20
-#: ../tt/class_list.tt:21 ../tt/class_passwords.tt:22 ../tt/class_shares.tt:21
+#: ../tt/class_list.tt:31 ../tt/class_passwords.tt:22 ../tt/class_shares.tt:21
 #: ../tt/myroom.tt:21 ../tt/project.tt:22 ../tt/project_collect.tt:20
 #: ../tt/project_handout.tt:20 ../tt/project_handoutcopy.tt:20
-#: ../tt/project_lesson.tt:20 ../tt/project_members.tt:19
+#: ../tt/project_lesson.tt:20 ../tt/project_members.tt:29
 #: ../tt/project_passwords.tt:22 ../tt/project_shares.tt:20 ../tt/room.tt:22
 #: ../tt/room_lesson.tt:22
 msgid "Wechseln"
 msgstr "Switch"
 
-#: ../tt/start.tt:81
+#: ../tt/start.tt:98
 msgid "Weiterleitung(en)"
 msgstr "mail forward(s)"
 
-#: ../tt/start.tt:91
+#: ../tt/start.tt:108
 #, fuzzy
 msgid "Weiterleitung(en) ändern"
 msgstr "mail forward(s)"
@@ -5010,32 +5220,30 @@ msgstr "Add Lines"
 msgid "Zeitpunkt"
 msgstr "time"
 
-#: ../tt/start.tt:264
+#: ../tt/start.tt:281
 msgid "Zertifikat erstellen und herunterladen"
 msgstr "Create and download certificate"
 
-#: ../src/cgi-bin/start:494
+#: ../src/cgi-bin/start:516
 msgid "Zertifikat konnte nicht heruntergeladen werden."
 msgstr "The certificate could not be downloaded."
 
-#: ../src/cgi-bin/start:463
+#: ../src/cgi-bin/start:485
 msgid "Zertifikat wurde erstellt."
 msgstr "Certificate was created."
 
-#: ../tt/start.tt:255
+#: ../tt/start.tt:272
 msgid "Zertifikatspasswort (mind. 6 Zeichen):"
 msgstr "Certificate password (at least 6 characters):"
 
-#: ../tt/start.tt:259
+#: ../tt/start.tt:276
 msgid "Zertifikatspasswort bestätigen:"
 msgstr "Confirm certificate password:"
 
-#: ../tt/repair_homes.tt:188 ../tt/repair_homes.tt:214
 #: ../tt/settings_users.tt:188 ../tt/settings_users.tt:214
 msgid "Zufallspasswort"
 msgstr "Random password"
 
-#: ../tt/repair_homes.tt:192 ../tt/repair_homes.tt:218
 #: ../tt/settings_users.tt:192 ../tt/settings_users.tt:218
 msgid "Zufallspasswortzeichen"
 msgstr "Random password characters"
@@ -5045,7 +5253,7 @@ msgstr "Random password characters"
 msgid "Zufallspasswörter gesetzt"
 msgstr "Random password changed"
 
-#: ../Schulkonsole/Session.pm.in:1482
+#: ../Schulkonsole/Session.pm:1482
 msgid "Zugriff verweigert"
 msgstr "Access denied"
 
@@ -5061,13 +5269,13 @@ msgstr "Additional quota"
 msgid "[LINBO] - globale Konfiguration"
 msgstr "[LINBO] - global configuration"
 
-#: ../src/cgi-bin/start:398
+#: ../src/cgi-bin/start:420
 msgid "abgebrochen"
 msgstr "cancelled"
 
-#: ../src/cgi-bin/class_list:154 ../src/cgi-bin/class_list:173
-#: ../src/cgi-bin/project_members:388 ../src/cgi-bin/project_members:407
-#: ../src/cgi-bin/start:568 ../src/cgi-bin/start:587
+#: ../src/cgi-bin/class_list:178 ../src/cgi-bin/class_list:197
+#: ../src/cgi-bin/project_members:400 ../src/cgi-bin/project_members:419
+#: ../src/cgi-bin/start:590 ../src/cgi-bin/start:609
 msgid "abgelaufen"
 msgstr "expired"
 
@@ -5075,7 +5283,7 @@ msgstr "expired"
 msgid "abgewählt"
 msgstr "Deselected"
 
-#: ../Schulkonsole/Error/LinboError.pm:76
+#: ../Schulkonsole/Error/LinboError.pm:85
 msgid "action muss 0, 1 oder 2 sein"
 msgstr "action must be 0, 1 or 2"
 
@@ -5116,7 +5324,7 @@ msgstr "Automatic root logout after"
 msgid "beenden lassen"
 msgstr "End"
 
-#: ../tt/linbo_remote.tt:108
+#: ../tt/linbo_remote.tt:130
 msgid "beim nächsten Start"
 msgstr "on next boot"
 
@@ -5129,15 +5337,15 @@ msgstr "supply"
 msgid "beschäftigt..."
 msgstr "Delete is running."
 
-#: ../tt/project_addmembers.tt:141 ../tt/project_members.tt:52
+#: ../tt/project_addmembers.tt:141 ../tt/project_members.tt:62
 msgid "class"
 msgstr "class"
 
-#: ../tt/rooms.tt:29
+#: ../tt/settings_rooms.tt:29
 msgid "default"
 msgstr "default"
 
-#: ../tt/linbo_remote.tt:107
+#: ../tt/linbo_remote.tt:129
 msgid "direkt"
 msgstr "immediately"
 
@@ -5146,7 +5354,7 @@ msgstr "immediately"
 msgid "entfernen"
 msgstr "Delete teacher"
 
-#: ../tt/linbo_edit.tt:37 ../tt/linbo_edit.tt:70 ../tt/linbo_edit.tt:99
+#: ../tt/linbo_edit.tt:101 ../tt/linbo_edit.tt:37 ../tt/linbo_edit.tt:71
 #: ../tt/linbo_edit_oss.inc.tt:155
 msgid "erweitert"
 msgstr "enhanced"
@@ -5184,7 +5392,7 @@ msgstr "is in room"
 msgid "ist in der Klasse"
 msgstr "is in the class"
 
-#: ../tt/linbo_edit.tt:86
+#: ../tt/linbo_edit.tt:88
 msgid "kein Betriebssystem automatisch starten"
 msgstr "Do not start any operating system automatically"
 
@@ -5196,7 +5404,7 @@ msgstr "No Error"
 msgid "kein Unterricht."
 msgstr "No Lessons."
 
-#: ../Schulkonsole/Linbo.pm:1182
+#: ../Schulkonsole/Linbo.pm:1352
 msgid "keine Cachepartition"
 msgstr "no cache partition"
 
@@ -5204,7 +5412,7 @@ msgstr "no cache partition"
 msgid "keine Lehrer"
 msgstr "No teacher"
 
-#: ../tt/start.tt:238
+#: ../tt/start.tt:255
 msgid "keine Projekte vorhanden"
 msgstr "no projects available"
 
@@ -5212,11 +5420,11 @@ msgstr "no projects available"
 msgid "kopieren nach"
 msgstr "copy to"
 
-#: ../Schulkonsole/Linbo.pm:1134
+#: ../Schulkonsole/Linbo.pm:1304
 msgid "leerer Devicename"
 msgstr "empty device name"
 
-#: ../Schulkonsole/Linbo.pm:1136 ../Schulkonsole/Linbo.pm:1178
+#: ../Schulkonsole/Linbo.pm:1306 ../Schulkonsole/Linbo.pm:1348
 msgid "leerer Wert"
 msgstr "empty value"
 
@@ -5224,7 +5432,7 @@ msgstr "empty value"
 msgid "lehrer.txt existiert bereits"
 msgstr "lehrer.txt already exists"
 
-#: ../tt/linbo_edit.tt:123 ../tt/linbo_grubedit.tt:62
+#: ../tt/linbo_edit.tt:126 ../tt/linbo_grubedit.tt:62
 #: ../tt/linbo_menuedit.tt:62 ../tt/linbo_postsyncedit.tt:61
 #: ../tt/linbo_pxeedit.tt:47 ../tt/linbo_regpatchedit.tt:46
 msgid "löschen"
@@ -5248,11 +5456,11 @@ msgstr "to"
 msgid "new"
 msgstr "new"
 
-#: ../tt/start.tt:53
+#: ../tt/start.tt:70
 msgid "nochmal"
 msgstr "again"
 
-#: ../tt/linbo_edit.tt:87
+#: ../tt/linbo_edit.tt:89
 msgid "none"
 msgstr "none"
 
@@ -5265,7 +5473,7 @@ msgstr "on must be 1 or 0"
 msgid "postsync-Dateien der Images editieren"
 msgstr "Edit postsync files of the images"
 
-#: ../tt/project_addmembers.tt:143 ../tt/project_members.tt:54
+#: ../tt/project_addmembers.tt:143 ../tt/project_members.tt:64
 msgid "project"
 msgstr "project"
 
@@ -5313,7 +5521,7 @@ msgstr "start.conf.%s deleted"
 msgid "start.conf.%s konnte nicht gelöscht werden"
 msgstr "start.conf.%s could not be deleted"
 
-#: ../tt/project_addmembers.tt:137 ../tt/project_members.tt:48
+#: ../tt/project_addmembers.tt:137 ../tt/project_members.tt:58
 msgid "student"
 msgstr "student"
 
@@ -5321,7 +5529,7 @@ msgstr "student"
 msgid "sync"
 msgstr "sync"
 
-#: ../tt/project_addmembers.tt:139 ../tt/project_members.tt:50
+#: ../tt/project_addmembers.tt:139 ../tt/project_members.tt:60
 msgid "teacher"
 msgstr "teacher"
 
@@ -5339,7 +5547,7 @@ msgstr "at"
 msgid "unbekannt"
 msgstr "unknown"
 
-#: ../Schulkonsole/Linbo.pm:1126
+#: ../Schulkonsole/Linbo.pm:1296
 msgid "unbenannt"
 msgstr "unnamed"
 
@@ -5359,7 +5567,7 @@ msgstr "Invalid MAC"
 msgid "ungültige Optionen"
 msgstr "Invalid options"
 
-#: ../Schulkonsole/Linbo.pm:1143 ../Schulkonsole/Linbo.pm:1180
+#: ../Schulkonsole/Linbo.pm:1313 ../Schulkonsole/Linbo.pm:1350
 msgid "ungültige Zeichen"
 msgstr "invalid characters"
 
@@ -5396,8 +5604,8 @@ msgstr "teaches in class"
 msgid "verbleibend:"
 msgstr "remaining:"
 
-#: ../tt/class_list.tt:59 ../tt/class_list.tt:65 ../tt/project_members.tt:202
-#: ../tt/project_members.tt:208 ../tt/start.tt:121 ../tt/start.tt:127
+#: ../tt/class_list.tt:69 ../tt/class_list.tt:75 ../tt/project_members.tt:212
+#: ../tt/project_members.tt:218 ../tt/start.tt:138 ../tt/start.tt:144
 msgid "verbleibende Zeit:"
 msgstr "remaining time:"
 
@@ -5451,11 +5659,11 @@ msgstr "Implement changes"
 msgid "Änderungen in Lehrerliste speichern"
 msgstr "Save changes to teacher list"
 
-#: ../tt/linbo_edit.tt:103 ../tt/linbo_edit.tt:29 ../tt/linbo_edit.tt:62
+#: ../tt/linbo_edit.tt:106 ../tt/linbo_edit.tt:29 ../tt/linbo_edit.tt:63
 #: ../tt/linbo_edit_oss.inc.tt:147 ../tt/linbo_grubedit.tt:31
 #: ../tt/linbo_images.tt:55 ../tt/linbo_menuedit.tt:31
 #: ../tt/linbo_postsyncedit.tt:30 ../tt/linbo_pxeedit.tt:31
-#: ../tt/linbo_regpatchedit.tt:30 ../tt/project_members.tt:37
+#: ../tt/linbo_regpatchedit.tt:30 ../tt/project_members.tt:47
 #: ../tt/user_extra.tt:19 ../tt/user_extra.tt:32 ../tt/user_students.tt:28
 msgid "Änderungen speichern"
 msgstr "Save changes"
@@ -5467,21 +5675,19 @@ msgstr "Save changes"
 #: ../tt/quotas_others.tt:198 ../tt/quotas_others.tt:248
 #: ../tt/quotas_others.tt:297 ../tt/quotas_others.tt:51
 #: ../tt/quotas_others.tt:95 ../tt/quotas_projects.tt:56
-#: ../tt/quotas_teachers.tt:56 ../tt/repair_homes.tt:297
-#: ../tt/repair_permissions.tt:47 ../tt/room_lesson.tt:188
-#: ../tt/room_lesson.tt:234 ../tt/room_shares.tt:65 ../tt/rooms.tt:153
-#: ../tt/rooms_classrooms.tt:48 ../tt/settings_classs.tt:58
-#: ../tt/settings_program.tt:37 ../tt/settings_projects.tt:52
-#: ../tt/settings_repair.tt:45 ../tt/settings_users.tt:297
-#: ../tt/user_teachin.tt:99
+#: ../tt/quotas_teachers.tt:56 ../tt/room_lesson.tt:188
+#: ../tt/room_lesson.tt:234 ../tt/room_shares.tt:65
+#: ../tt/settings_classs.tt:58 ../tt/settings_program.tt:37
+#: ../tt/settings_projects.tt:53 ../tt/settings_repair.tt:45
+#: ../tt/settings_rooms.tt:153 ../tt/settings_rooms.tt:194
+#: ../tt/settings_users.tt:297 ../tt/user_teachin.tt:99
 msgid "Änderungen übernehmen"
 msgstr "uImplement changes"
 
 #: ../src/cgi-bin/printers_edit:240 ../src/cgi-bin/printers_edit:272
-#: ../src/cgi-bin/repair_homes:262 ../src/cgi-bin/repair_permissions:262
-#: ../src/cgi-bin/rooms:174 ../src/cgi-bin/rooms_classrooms:91
 #: ../src/cgi-bin/settings_program:125 ../src/cgi-bin/settings_repair:79
-#: ../src/cgi-bin/settings_users:262 ../src/cgi-bin/user_teachers:225
+#: ../src/cgi-bin/settings_rooms:209 ../src/cgi-bin/settings_users:262
+#: ../src/cgi-bin/user_teachers:225
 msgid "Änderungen übernommen"
 msgstr "changes implemented"
 
@@ -5492,7 +5698,7 @@ msgstr "changes implemented"
 #: ../src/cgi-bin/quotas_projects:290 ../src/cgi-bin/quotas_teachers:134
 #: ../src/cgi-bin/room_lesson:241 ../src/cgi-bin/room_lesson:280
 #: ../src/cgi-bin/room_shares:104 ../src/cgi-bin/settings_classs:147
-#: ../src/cgi-bin/settings_projects:126
+#: ../src/cgi-bin/settings_projects:130 ../src/cgi-bin/settings_projects:157
 msgid "Änderungen übernommen."
 msgstr "changes implemented."
 
@@ -5528,7 +5734,7 @@ msgstr "Overview of classes"
 msgid "Übersicht der Projekte"
 msgstr "Overview of projects"
 
-#: ../tt/linbo_edit.tt:113
+#: ../tt/linbo_edit.tt:116
 msgid "Übersicht der Rechnergruppen"
 msgstr "host groups overview"
 
@@ -5663,6 +5869,14 @@ msgstr "overwrite?"
 
 #~ msgid "<p>Informationen über den aktuellen Raum.</p>"
 #~ msgstr "<p>Information for the current room.</p>"
+
+#~ msgid ""
+#~ "<p>Legen Sie hier fest, welche Räume von der Schulkonsole als "
+#~ "Computerraum unter &bdquo;aktueller Raum&ldquo; verwaltbar sein sollen.</"
+#~ "p>"
+#~ msgstr ""
+#~ "<p>Set which rooms should be administrated from the school console "
+#~ "ascomputer rooms under &ldquo;Current room&rdquo;.</p>"
 
 #~ msgid ""
 #~ "<p>Wählen Sie aus in welchem Bereich Sie Quota-Anpassungen vornehmen "
@@ -5931,6 +6145,13 @@ msgstr "overwrite?"
 #~ "In case not all students sign in at the beginning of the exam, you \n"
 #~ "can update the view with the button &#8222;Check login status &uuml;"
 #~ "berpr&uuml;fen&#8220;."
+
+#~ msgid "Festplattencontroller (ab LINBO 1.1.0 immer SATA (sda))"
+#~ msgstr "Hard drive controller (from LINBO 1.1.0 onwards, always SATA (sda))"
+
+#, fuzzy
+#~ msgid "Festplattengröße in <b>kB</b>(,M,G,T)"
+#~ msgstr "Size of hard drive in MB"
 
 #, fuzzy
 #~ msgid "Firewall-Einstellungen sichern?"
@@ -6413,6 +6634,9 @@ msgstr "overwrite?"
 #~ "&#8222;Change password&#8220; above on this page, and assign a new "
 #~ "password."
 
+#~ msgid "Standardeinstellungen für Räume"
+#~ msgstr "Default settings for rooms"
+
 #~ msgid ""
 #~ "Tragen Sie sich aus einem Projekt aus, wenn Sie darin nicht mehr\n"
 #~ "mitarbeiten."
@@ -6484,6 +6708,9 @@ msgstr "overwrite?"
 
 #~ msgid "Ungueltiger Gruppenname"
 #~ msgstr "Invalid group name"
+
+#~ msgid "Ungueltiger Wert fuer number"
+#~ msgstr "Invalid value for number"
 
 #~ msgid ""
 #~ "Unter &#8222;Administrator-Report&#8220; erhalten Sie ein Protokoll des "

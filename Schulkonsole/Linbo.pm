@@ -944,7 +944,6 @@ sub check_and_prepare_start_conf {
 	my %re;
 	my %errors;
 
-
 	my %windows_ignore = (
 		'boot' => 1,
 		'initrd' => 1,
