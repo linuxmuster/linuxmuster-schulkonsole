@@ -88,7 +88,7 @@ $q->param('delete') and do {
 		$sk_session->set_status(sprintf($sk_session->d()->get(
 			'%s konnte nicht gelöscht werden'), $image), 0);
 	}
-
+	
 	last SWITCHCOMMAND;
 };
 
@@ -146,6 +146,7 @@ $q->param('delete') and do {
 			  $sk_session->d()->get('%s nach %s umbenannt')
 			: $sk_session->d()->get('%s nach %s kopiert')),
 			$image, $new_image_filename), 0);
+		$q->delete("${image}_newimage");
 	} else {
 		$sk_session->set_status(sprintf(
 			($is_move ?
@@ -200,7 +201,7 @@ and <action> identifies what to do.
 
 foreach my $param ($q->param) {
 	if (my ($image, $action)
-	    	= $param =~ /^(.+)_(editdesc|info|list|move|copy|delete)$/) {
+	    	= $param =~ /^(.+)_(editdesc|info|move|copy|delete)$/) {
 		if (not $$images{$image}) {
 			$sk_session->set_status(sprintf($sk_session->d()->get(
 				'%s existiert nicht'), $image), 1);
@@ -291,50 +292,6 @@ Contents of the <image>.info file, if the action C<info> has been selected.
 
 			last SWITCHCOMMAND;
 		};
-		$action =~ /^l/ and do {	# list
-			if ($image =~ /p$/) {	# *.cloop
-				my $image_list = "$image.list";
-				my $image_list_full_path
-					= "$Schulkonsole::Config::_linbo_dir/$image_list";
-	
-				if (open LIST,
-				         "<$Schulkonsole::Config::_linbo_dir/$image_list") {
-					flock LIST, 1;
-	
-					my $lines;
-					{
-					local $/ = undef;
-					$lines = <LIST>;
-					}
-	
-					if ($lines) {
-
-=item C<imagelist>
-
-Contents of the <image>.list file, if the action C<list> has been selected.
-
-=cut
-
-						$sk_session->set_var('imagelist', $lines);
-					} else {
-						$sk_session->set_status(sprintf($sk_session->d()->get(
-							'Datei %s ist leer'), $image_list),
-							1);
-						last SWITCHCOMMAND;
-					}
-				} else {
-					$sk_session->set_status(sprintf($sk_session->d()->get(
-					 	'Kann Datei %s nicht öffnen'), $image_list),
-						1);
-	
-					last SWITCHCOMMAND;
-				}
-	
-				$is_action = 1;
-
-				last SWITCHCOMMAND;
-			}
-		};
 		(   $action =~ /^m/	# move
 		 or $action =~ /^c/) and do {	# copy
 			my $new_image = $q->param("${image}_newimage");
@@ -399,6 +356,7 @@ Name of image to overwrite, if the submit button C<copy> has been selected.
 					  $sk_session->d()->get('%s nach %s umbenannt')
 					: $sk_session->d()->get('%s nach %s kopiert')),
 					$image, $new_image_filename), 0);
+				$q->delete("${image}_newimage");
 			} else {
 				$sk_session->set_status(sprintf(
 					($is_move ?
@@ -530,10 +488,6 @@ Submit button to edit <image>.desc
 =item C<${image}_info>
 
 Submit button to display <image>.info
-
-=item C<${image}_list>
-
-Submit button to display <image>.list
 
 =item C<${image}_newimage>
 

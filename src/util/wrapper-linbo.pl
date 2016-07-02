@@ -485,6 +485,10 @@ sub linbo_manage_images {
 			foreach my $suffix (@suffixes) {
 				system Schulkonsole::Encode::to_cli(
 				       	"cp -p \Q$file$suffix\E \Q$new_file$suffix\E");
+				if ($suffix eq ".info" ) {
+					system Schulkonsole::Encode::to_cli(
+						"sed -i 's#$image.$image_suffix#$new_image.$image_suffix#' \Q$new_file$suffix\E");
+				}
 			}
 		}
                 system Schulkonsole::Encode::to_cli("service linbo-bittorrent restart \Q$new_file\E force");
@@ -530,9 +534,9 @@ sub linbo_write {
 	($tmpfilename) = $filename =~ /^(menu\.lst\.[a-z\d_]+)$/ unless defined $tmpfilename;
 	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_FILENAME
 	      )
-		unless defined $filename;
+		unless defined $tmpfilename;
 
-	my $file = Schulkonsole::Encode::to_fs("$Schulkonsole::Config::_linbo_dir/$filename");
+	my $file = Schulkonsole::Encode::to_fs("$Schulkonsole::Config::_linbo_dir/$tmpfilename");
 
 	$< = $>;
 	$) = 0;

@@ -51,7 +51,7 @@
     <h2>[% image %]: [% loc('Imagebeschreibung editieren') %]</h2>
 
     <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
-    <p><textarea wrap="off" name="imagedesc" rows="20" cols="70"></textarea></p>
+    <p><textarea wrap="off" name="imagedesc" rows="20" cols="70">[% imagedesc %]</textarea></p>
     <p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% loc('Änderungen speichern') %]">
     <input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
 
@@ -66,15 +66,7 @@
     <p><input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
 
     </form>
-[% ELSIF imagelist %]
 
-    <h2>[% image %]: [% loc('Image-Liste') %]</h2>
-
-    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
-    <pre id="imagelist">[% imagelist %]</pre>
-    <p><input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
-
-    </form>
 [% ELSE %]
 
     <h2>[% loc('Basisimages') %]</h2>
