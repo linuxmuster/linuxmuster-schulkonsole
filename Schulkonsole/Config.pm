@@ -1432,7 +1432,7 @@ $false= 'no';
 $on = 'on';
 $off = 'off';
 
-$_version = '0.35.1';
+$_version = '0.36.0';
 $_sysconfdir = '/etc/linuxmuster/schulkonsole';
 $_templatedir = '/usr/share/schulkonsole/tt';
 $_runtimedir = '/var/lib/schulkonsole';
