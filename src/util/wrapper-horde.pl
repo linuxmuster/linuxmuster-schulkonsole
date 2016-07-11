@@ -31,6 +31,8 @@ use open ':utf8';
 use open ':std';
 use Schulkonsole::Wrapper;
 use Schulkonsole::Config;
+use Schulkonsole::Error::Error;
+use Schulkonsole::Error::HordeError;
 use POSIX;
 
 
@@ -40,7 +42,6 @@ my $id = $$userdata{id};
 
 my $app_id = Schulkonsole::Wrapper::wrapper_authorize($userdata);
 
-my $opts;
 SWITCH: {
 
 	$app_id == Schulkonsole::Config::GETMAILFORWARDS and do {
@@ -53,7 +54,12 @@ SWITCH: {
 		last SWITCH;
 	};
 
-}		
+	$app_id == Schulkonsole::Config::REMOVEMAILFORWARDS and do {
+		remove_mailforwards();
+		last SWITCH;
+	};
+
+};	
 
 exit -2;	# program error
 
@@ -69,8 +75,16 @@ invokes C<horde-mail.php>
 
 sub get_mailforwards {
 
+	my ($uid) = $$userdata{uid} =~ /^(\w+)$/;
+	exit (Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED)
+	    unless $uid;
+	    
+	my ($password) = $$userdata{password} =~ /^(\w+)$/;
+	exit (Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED)
+	    unless $password;
+	
 	my $cmd = Schulkonsole::Encode::to_cli($Schulkonsole::Config::_cmd_horde_mail);
-	$cmd .= " --user=" . $$userdata{uid} . " --password=" . $$userdata{password};
+	$cmd .= " --user=" . $uid . " --password=" . $password;
 	$cmd .= " --get-forwards |";
 
 	$< = $>;
@@ -79,7 +93,7 @@ sub get_mailforwards {
 	umask(022);
 
 	open(CMDIN, $cmd) 
-	    or exit (	Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED);
+	    or exit (Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED);
 	while(<CMDIN>) {
 		print $_;
 	}
@@ -101,26 +115,78 @@ invokes C<horde-mail.php>
 
 sub set_mailforwards {
 	my $forwards = <>;
-	($forwards) = $forwards =~ /^(\w*)$/;
+	($forwards) = $forwards =~ /^([a-zA-Z0-9._%,@+-]+)$/;
+	exit (Schulkonsole::Error::HordeError::WRAPPER_INVALID_ADDRESSES)
+	    unless $forwards;
+
+	my @mailforwards = ();
+        foreach my $mailaddress (split(',',$forwards)) {
+            $mailaddress =~ s/^\s+|\s+$//g;
+            if($mailaddress !~ /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b/) {
+		    exit (Schulkonsole::Error::HordeError::WRAPPER_INVALID_ADDRESSES);
+            }
+            push @mailforwards, $mailaddress;
+	}
+	$forwards = join(",", @mailforwards);
+	
+	exit (Schulkonsole::Error::HordeError::WRAPPER_NO_ADDRESSES)
+	    unless $forwards;
 	
 	my $keep;
-	if ($forwards) {
-	    $keep = <>;
-	    ($keep) = $keep =~ /^[01]$/;
-	    exit (Schulkonsole::Error::HordeError::WRAPPER_INVALID_ADDRESSES)
-		unless $keep;
-	}
+	$keep = <>;
+	($keep) = $keep =~ /^([01])$/;
+	exit (Schulkonsole::Error::HordeError::WRAPPER_INVALID_ADDRESSES)
+	    unless defined $keep;
+	
+	my ($uid) = $$userdata{uid} =~ /^(\w+)$/;
+	exit (Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED)
+	    unless $uid;
+	    
+	my ($password) = $$userdata{password} =~ /^(\w+)$/;
+	exit (Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED)
+	    unless $password;
 	
 	my $cmd = Schulkonsole::Encode::to_cli($Schulkonsole::Config::_cmd_horde_mail);
-	$cmd .= " --user=" . $$userdata{uid} . " --password=" . $$userdata{password};
-	if (not $forwards) {
-	    $cmd .= " --remove-forwards";
-	} else {
-	    $cmd .= " --set-forwards=$forwards";
-	}
+	$cmd .= " --user=" . $uid . " --password=" . $password;
+	$cmd .= " --set-forwards=$forwards";
 	if ($keep) {
 	    $cmd .= " --keep";
+	}
+	
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
 
+	system $cmd
+	    or exit (Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED);
+	
+	exit 0;
+}
+
+=head3 remove_mailforwards
+
+numeric constant: C<Schulkonsole::Config::REMOVEMAILFORWARDS>
+
+=head4 Description
+
+invokes C<horde-mail.php>
+
+=cut
+
+sub remove_mailforwards {
+	my ($uid) = $$userdata{uid} =~ /^(\w+)$/;
+	exit (Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED)
+	    unless $uid;
+	    
+	my ($password) = $$userdata{password} =~ /^(\w+)$/;
+	exit (Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED)
+	    unless $password;
+	
+	my $cmd = Schulkonsole::Encode::to_cli($Schulkonsole::Config::_cmd_horde_mail);
+	$cmd .= " --user=" . $uid . " --password=" . $password;
+	$cmd .= " --remove-forwards |";
+	
 	$< = $>;
 	$) = 0;
 	$( = $);

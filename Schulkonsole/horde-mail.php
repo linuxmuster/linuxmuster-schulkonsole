@@ -28,7 +28,6 @@ session_start();
 
 @define('HORDE_BASE', '/usr/share/horde');
 @define('AUTH_HANDLER', true);
-$no_compress = true;
 
 // Do CLI checks and environment setup first.
 require_once HORDE_BASE . '/lib/core.php';
