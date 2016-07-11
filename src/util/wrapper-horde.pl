@@ -185,7 +185,7 @@ sub remove_mailforwards {
 	
 	my $cmd = Schulkonsole::Encode::to_cli($Schulkonsole::Config::_cmd_horde_mail);
 	$cmd .= " --user=" . $uid . " --password=" . $password;
-	$cmd .= " --remove-forwards |";
+	$cmd .= " --remove-forwards";
 	
 	$< = $>;
 	$) = 0;

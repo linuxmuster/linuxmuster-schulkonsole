@@ -1,5 +1,4 @@
 #! /usr/bin/perl
-
 =head1 NAME
 
 start - startpage of schulkonsole
@@ -381,6 +380,8 @@ defined $q->param('mailchange') and do {
         	$sk_session->set_status(
                     $sk_session->d()->get('Mailweiterleitung erfolgreich entfernt'), 0);
             }
+            $sk_session->clear('mailforwards');
+            $sk_session->clear('mailkeep');
         };
         if ($@) {
                 $sk_session->standard_error_handling($this_file, $@);
@@ -551,7 +552,7 @@ $sk_session->set_var('printjobs', \@array_printjobs) if @array_printjobs;
 eval {
 my ($mailforwards,$mailkeep) = Schulkonsole::Horde::get_mailforwards($id,$password);
 $sk_session->set_var('mailforwards', ($mailforwards? $mailforwards : ''));
-$sk_session->set_var('mailkeep', $mailkeep) if $mailkeep;
+$sk_session->set_var('mailkeep', $mailkeep);
 };
 if ($@) {
 	warn "$@\n";
