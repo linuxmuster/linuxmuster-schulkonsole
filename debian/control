@@ -12,7 +12,7 @@ Pre-Depends: cyrus-common | cyrus21-common | cyrus22-common | cyrus-common-2.2
 Depends: linuxmuster-schulkonsole-wrapper (>= ${source:Version}),
          linuxmuster-schulkonsole-wrapper (<< ${source:Version}.1~),
          sophomorix-base (>=2.4.59), sophomorix-pgldap (>=2.4.59),
-         linuxmuster-base (>=6.2.0),
+         linuxmuster-base (=6.2.0-horde5.1),
          libcgi-pm-perl, libcgi-session-perl, liblocale-gettext-perl, libhtml-parser-perl,
          libdbi-perl, libdbd-odbc-perl | libdbd-pg-perl, libcrypt-passwdmd5-perl,
          libcrypt-smbhash-perl, libnet-cups-perl (>= 0.55), libcrypt-rijndael-perl,
