@@ -2,6 +2,7 @@
         title   => loc('Schulkonsole') _ " - " _ loc('Startseite'),
         classes => "widecontent",
         autorefresh => isbusy,
+        disable_ednt => 1,
         menu    => 1,
         info    => loc('<p>Auf dieser Seite können Sie eigene Druckaufträge löschen und Ihr Passwort ändern.</p><p>Außerdem können Sie Ihren Persönlichen Ordner reparieren lassen.</p>'),
    }
@@ -57,46 +58,50 @@
 	<hr>
 
 	<h3>[% loc('Passwortänderung') %]</h3>
-	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()" autocomplete="off" >
 	<table>
 	<tr>
 	<td><label [% labelfor("oldpassword") %]>[% loc('Altes Passwort') %]</label>: </td>
-	<td><input id="oldpassword" name="oldpassword" type="password"></td>
+	<td><input id="oldpassword" name="oldpassword" type="password" autocomplete="off" ></td>
 	</tr>
 	<tr>
 	<td><label [% labelfor("newpassword") %]>[% loc('Neues Passwort') %]</label>: </td>
-	<td><input id="newpassword" name="newpassword" type="password"></td>
+	<td><input id="newpassword" name="newpassword" type="password" autocomplete="off" ></td>
 	<tr>
 	<td><label [% labelfor("newpasswordagain") %]>[% loc('nochmal') %]</label>: </td>
-	<td><input id="newpasswordagain" name="newpasswordagain" type="password"></td>
+	<td><input id="newpasswordagain" name="newpasswordagain" type="password" autocomplete="off" ></td>
 	</tr>
 	</table>
 	<p><input type="submit" value="[% loc('Passwort ändern') %]"></p>
+	<input type="text" style="display:none">
+	<input type="password" style="display:none">
 	</form>
 
 	[% IF link_start_mymail %]
 		<h3>[% loc('Private Mail-Adresse') %]</h3>
-		<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+		<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()" autocomplete="off" >
 		<table>
 		<tr>
 		<td><label [% labelfor("mymail") %]>[% loc('Mailadresse') %]</label>: </td>
-		<td><input id="mymail" name="mymail" value="[% mymail %]"></td>
+		<td><input id="mymail" name="mymail" value="[% mymail %]" autocomplete="off" ></td>
 		</tr>
 		<tr>
 		</table>
 		<p><input type="submit" name="set_mymail" value="[% loc('Mailadresse ändern') %]"></p>
+		<input type="text" style="display:none">
+		<input type="password" style="display:none">
 		</form>
 	[% END %]
 
 	[% IF has_smtprelay %]
 	    <h3>[% loc('Mail-Weiterleitung') %]</h3>
-	    <form meth="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+	    <form meth="post" accept-charset="UTF-8" onsubmit="return showBusy()" autocomplete="off" >
 	    <table id="mailforward">
 	    <col width="30%">
 	    <col width="70%">
 	    <tr>
 	    <td><label [% labelfor("mailforwards") %]>[% loc('Weiterleitung(en)') %]</label>: </td>
-	    <td><input id="mailforwards" name="mailforwards" value="[% mailforwards %]"></td>
+	    <td><input id="mailforwards" name="mailforwards" value="[% mailforwards %]" autocomplete="off" ></td>
 	    </tr>
 	    <tr>
 	    <td><label [% labelfor("mailkeep") %]>[% loc('Kopie behalten') %]</label>: </td>
@@ -106,6 +111,9 @@
 	    </tr>
 	    </table>
 	    <p><input type="submit" name="mailchange" value="[% loc('Weiterleitung(en) ändern') %]">
+	    <input type="text" style="display:none">
+	    <input type="password" style="display:none">
+	    </form>
 	[% END %]
 	<hr>
 
@@ -259,7 +267,7 @@
 	<hr>
 
 	[% IF link_start_openvpn %]
-		<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+		<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()" autocomplete="off" >
 		<h3>[% loc('OpenVPN-Zertifikat') %]</h3>
 		[% IF has_ovpn %]
 			<p>[% loc('Ein OpenVPN-Zertifikat wurde für Sie erstellt.') %]</p>
@@ -270,15 +278,17 @@
 			<table>
 			<tr>
 			<td><label [% labelfor("ovpnpassword") %]>[% loc('Zertifikatspasswort (mind. 6 Zeichen):') %]</label></td>
-			<td><input type="password" id="ovpnpassword" name="ovpnpassword"></td>
+			<td><input type="password" id="ovpnpassword" name="ovpnpassword" autocomplete="off" ></td>
 			</tr>
 			<tr>
 			<td><label [% labelfor("ovpnpasswordagain") %]>[% loc('Zertifikatspasswort bestätigen:') %]</label></td>
-			<td><input type="password" id="ovpnpasswordagain" name="ovpnpasswordagain"></td>
+			<td><input type="password" id="ovpnpasswordagain" name="ovpnpasswordagain" autocomplete="off" ></td>
 			</tr>
 			</table>
 			
 			<p><input type="submit" value="[% loc('Zertifikat erstellen und herunterladen') %]"></p>
+			<input type="text" style="display:none">
+			<input type="password" style="display:none">
 			
 		[% END %]
 		</form>
