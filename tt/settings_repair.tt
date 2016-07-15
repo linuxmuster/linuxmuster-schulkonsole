@@ -1,0 +1,48 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Einstellungen') _ " - " _ loc('Reparatur'),
+      menu     => 1,
+      submenu  => "settings",
+      script   => "settings_repair.js",
+      info     => loc('<p>Hier können Programm spezifische Reparatureinstellungen für den Persönlichen Ordner eines Benutzers festgelegt werden. Der Benutzer kann dann durch Auswahl der Option Reparatur das angegebene Verzeichnis aus seinem Persönlichen Ordner entfernen, um wieder mit Standardeinstellungen beginnen zu können.</p>'),
+   }
+%]
+
+<h2>[% loc('Einstellungen') %] :: [% loc('Reparatur') %]</h2>
+
+
+<h3>[% loc('Programme') %]</h3>
+
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+
+<input type="button" onclick="addProgram()" value="[% loc('+ Programm') %]"/>
+
+<table class="settings" id="programs">
+<col style="width:30%">
+<col style="width:50%">
+<tr><th align="left">[% loc('Programm') %]</th>
+<th align="left">[% loc('Pfad') %]</th>
+<th></th>
+<th></th>
+</tr>
+[% FOREACH p IN program.pairs %]
+	<tr class="even">
+		<td><input name="[% p.key %]_name" value="[% p.key %]"></td>
+		<td><input type="button" name="[% p.key %]" onclick="addPath(this)" value="[% loc('+ Pfad') %]"/></td>
+		<td><input type="button" name="[% p.key %]" onclick="deleteProgram(this)" value="[% loc('- Programm') %]"></td>
+	</tr>
+	[% lfdnr = 1 %]
+	[% FOREACH pf IN p.value %]
+		<tr class="odd">
+			<td></td>
+			<td><input name="[% p.key %]_value" value="[% pf %]"></td>
+			<td><input name="[% p.key %]" type="button" value="[% loc('- Pfad') %]" onclick="deletePath(this)"></td>
+		[% lfdnr = lfdnr + 1 %]</tr>
+	[% END %]
+[% END %]
+</table>
+
+<p>
+<input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
+</p>
+
+</form>

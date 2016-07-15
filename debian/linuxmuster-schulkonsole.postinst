@@ -95,6 +95,16 @@ case "$1" in
 
 }' -i $conf
  	fi
+	# fixes for /shtml/ -> /tt/
+	if grep -q '/shtml/' $conf; then
+    	if [ -z "$backed_up" ]; then
+        	echo "Backing up $conf to $conf.dpkg-bak."
+        	backed_up=yes
+        	cp $conf $conf.dpkg-bak
+    	fi
+    	echo "schulkonsole.js has moved from /shtml/ to /tt/."
+    	sed 's@/shtml/@/tt/@g' -i $conf
+ 	fi
 	apache2ctl graceful 2> /dev/null || true
 
 	# create wifi project
@@ -106,16 +116,20 @@ case "$1" in
 	fi
 	if ! ldapsearch -x "(cn=${wlan_ldap_group})"|grep -q 'posixGroup'; then
 	    echo -n "   creating non-existing project ${wlan_ldap_group}..."
-	    sophomorix-project -p ${wlan_ldap_group} --create --admins administrator --nojoin >/dev/null 2>/dev/null \
+	    sophomorix-project -p ${wlan_ldap_group} --caller administrator --create --admins administrator --nojoin >/dev/null 2>/dev/null \
 		&& echo "Done." || echo "Failed."
 	else
-	    admin="$(sophomorix-project -p p_wifi -i|cut -d\| -f3|grep administrator| tr -d '[[:space:]]')"
+	    admin="$(sophomorix-project -p p_wifi --tree|grep '\*\*\*'|cut -d\: -f2 |grep administrator| tr ',' ' '| tr -d '[[:space:]]')"
 	    nojoin="$(sophomorix-project -p p_wifi -i|cut -d\| -f2|grep '^Joinable'|cut -d\: -f2|grep '0' | tr -d '[[:space:]]')"
 	    if [ ! "${admin}" = "administrator" ]; then
-		echo "    --> Please add user administrator to wlan project ${wlan_ldap_group}! <--"
+		echo -n "    setting admin administrator for wlan project ${wlan_ldap_group}..."
+		sophomorix-project -p ${wlan_ldap_group} --caller administrator --admins administrator >/dev/null 2>/dev/null \
+		    && echo "Done." || echo "Failed."
 	    fi
 	    if [ ! "${nojoin}" = "0" ]; then
-		echo "    --> Please set flag --nojoin for wlan project ${wlan_ldap_group}! <--"
+		echo -n "    setting flag --nojoin for wlan project ${wlan_ldap_group}..."
+		sophomorix-project -p ${wlan_ldap_group} --caller administrator --nojoin >/dev/null 2>/dev/null \
+		    && echo "Done." || echo "Failed."
 	    fi
 	fi
 

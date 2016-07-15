@@ -1,0 +1,66 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('aktueller Raum') _ ":  $room - " _ loc('Tauschordner'),
+      menu     => 1,
+      submenu  => "room",
+      info     => loc('<p>Steuern Sie hier den Zugriff auf das globale Tauschverzeichnis, indem Sie entweder einzelne Arbeitsplätze über die Checkboxen auswählen oder über die &bdquo;Schnellauswahl&ldquo; für alle.<br>Mit &bdquo;Änderungen übernehmen&ldquo; aktivieren Sie Ihre Auswahl.</p>'),
+   }
+%]
+
+<h2>[% loc('Aktueller Raum') %]: [% room %]
+:: [% loc('Tauschordner') %]</h2>
+
+<p>
+[% loc('Nutzung:') %]
+
+[% editinguser %] [% loc('unterrichtet in Raum') %]
+[% room %].
+[% IF endedittime %]
+[% loc('Unterrichtsende um') %] [% endedittime %].
+[% END %]
+</p>
+
+[% IF exammode %]
+<p>[% loc('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
+[% ELSE %]
+<p>[% loc('Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.') %]</p>
+[% END %]
+
+
+<h3>[% loc('Übersicht Tauschverzeichnisse') %]</h3>
+
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+<table id="roomshares" class="liste">
+<tr>
+<th>[% loc('Nr.') %]</th>
+<th>[% loc('Hostname') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Tauschen<br>global') %]</th>
+</tr>
+[% lfdnr = 1 %]
+[% FOREACH w IN overview_workstations %]
+	<tr class="[% IF w.editing %]editing[% ELSIF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+	<td class="lfdnr">[% lfdnr %].</td>
+	<td>[% IF w.first %]
+	    [% w.name %]
+	[% END %]</td>
+	<td>[% IF w.login %]
+	    [% w.login %]
+	    [% ELSE %]-[% END %]
+	</td>
+	<td>
+	<input type="checkbox" name="[% w.login %];shares"[% IF w.editing %] disabled[% END %][% IF w.shares %] checked[% END %]>
+	</td>
+	</tr>
+	[% lfdnr = lfdnr + 1 %]
+[% END %]
+<tr>
+<td colspan="3"></td>
+<td>|</td>
+</tr>
+<tr class="quickselection">
+<td colspan="3">[% loc('Schnellauswahl') %]</td>
+<td><input class="button" type="button" value="[% loc('Aus') %]" name="shares" onClick="check_uncheck(this)"></td>
+</tr>
+</table>
+<p><input type="submit" name="acceptshares" value="[% loc('Änderungen übernehmen') %]"></p>
+</form>

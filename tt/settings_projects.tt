@@ -1,0 +1,56 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Einstellungen') _ " - " _ loc('Projekte'),
+      menu     => 1,
+      submenu  => "settings",
+      info     => loc('<p>Bearbeiten Sie hier die Projektstandardeinstellungen.</p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</p>'),
+   }
+%]
+
+<h2>[% loc('Einstellungen') %] :: [% loc('Projekte') %]</h2>
+
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+
+<h3>[% loc('Global') %]</h3>
+
+<table class="settings">
+<colgroup span="1" width="59%">
+</colgroup>
+<tr><th>[% loc('Projektname') %]</th>
+<th>[% loc('Liste') %]</th>
+<th>[% loc('Aliase') %]</th>
+<th>[% loc('WLAN') %]</th></tr>
+[% lfdnr = 1 %]
+[% FOREACH p IN projects %]
+	<tr class="[% IF lfdnr % 2 == 0 %]even[% ELSE %]odd[% END %]">
+	<td><label>[% p.name %]</label></td>
+	<td>
+	[% IF p.maillist %]
+	<input type="checkbox" name="[% p.gid %]_maillist" id="[% p.gid %]_maillist" checked>
+	[% ELSE %]
+	<input type="checkbox" name="[% p.gid %]_maillist" id="[% p.gid %]_maillist">
+	[% END %]
+	</td>
+	<td>
+	[% IF p.mailalias %]
+	<input type="checkbox" name="[% p.gid %]_mailalias" id="[% p.gid %]_mailalias" checked>
+	[% ELSE %]
+	<input type="checkbox" name="[% p.gid %]_mailalias" id="[% p.gid %]_mailalias">
+	[% END %]
+	</td>
+	<td>
+	<select name="[% p.gid %]_wlan">
+	[% IF p.name != 'default' %]<option value="-1"[% IF p.wlan == "-1" %] selected[% END %]>-</option>[% END %]
+	<option value="1"[% IF p.wlan == "1" %] selected[% END %]>[% loc('An') %]</option>
+	<option value="0"[% IF p.wlan == "0" %] selected[% END %]>[% loc('Aus') %]</option>
+	</select>
+	</td>
+	</tr>
+	[% lfdnr = lfdnr + 1 %]
+[% END %]
+</table>
+
+<p>
+<input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
+</p>
+
+</form>

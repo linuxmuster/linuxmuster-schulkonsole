@@ -1,0 +1,40 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Drucker'),
+      classes  => "widecontent",
+      menu     => 1,
+      info     => loc('<p>Legen Sie hier fest, welche Räume bzw. einzelne Rechner Zugriff auf welche Drucker haben.</p>'),
+   }
+%]
+
+<h2>[% loc('Drucker') %]</h2>
+
+<form method="post" accept-charset="UTF-8" action="printers_edit" onsubmit="return showBusy()">
+
+
+<table id="printers" class="liste">
+<colgroup span="5" width="20%">
+<col width="16%">
+<col width="27%">
+<col width="15%">
+<col width="27%">
+<col width="15%">
+</colgroup>
+<tr>
+<th>[% loc('Drucker') %]</th>
+<th colspan="2">[% loc('Räume') %]</th>
+<th colspan="2">[% loc('Rechner') %]</th>
+</tr>
+[% FOREACH p IN printers %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td>[% p.name %]</td>
+<td><label [% labelfor("${p.name_rooms") %]>[% p.rooms %]</label></td>
+<td><input type="submit" id="[% p.name %]_rooms" name="[% p.name %]_rooms" value="[% loc('Bearbeiten') %]"></td>
+<td><label [% labelfor("${p.name}_hosts") %]>[% p.hosts %]</label></td>
+<td><input type="submit" id="[% p.name %]_hosts" name="[% p.name %]_hosts" value="[% loc('Bearbeiten') %]"></td>
+</tr>
+[% END %]
+</table>
+
+
+</form>

@@ -1,0 +1,30 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Benutzer') _ " - " _ loc('Schülerliste pflegen'),
+      menu     => 1,
+      submenu  => "user",
+      info     => loc('<p>Hier können Sie die aus dem Schulverwaltungsprogramm exportierte Datei &bdquo;schueler.txt&ldquo; ins System hochladen.</p><p>Zudem haben Sie hier die Möglichkeit, Änderungen an den Schülerdaten von Hand einzupflegen.</p>'),
+   }
+%]
+
+<h2>[% loc('Benutzerverwaltung') %] :: [% loc('Schülerliste pflegen') %]</h2>
+
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return showBusy()">
+<h3><label [% labelfor("studentsfilename") %]>[% loc('Datei importieren') %]</label></h3>
+<p>
+<input type="file" id="studentsfilename" name="studentsfilename">
+<input type="submit" name="studentsupload" value="[% loc('Hochladen') %]">
+</p>
+</form>
+
+<hr>
+
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+<h3><label [% labelfor("students") %]>[% loc('Editieren') %]</label></h3>
+
+<p>
+<textarea id="students" name="students" rows="20" cols="70">[% students %]</textarea>
+</p>
+
+<p><input type="submit" name="studentsedit" value="[% loc('Änderungen speichern') %]"></p>
+
+</form>

@@ -193,6 +193,8 @@ use Schulkonsole::Info;
 use Schulkonsole::OVPN;
 use Schulkonsole::Printer;
 use Schulkonsole::Sophomorix;
+use Schulkonsole::Repair;
+use Proc::ProcessTable;
 use Sophomorix::SophomorixConfig;
 use Template;
 use Template::Constants qw ( :debug );
@@ -229,10 +231,30 @@ my $cups = new Net::CUPS;
 $cups->setUsername($uid);
 $cups->setPasswordCB(\&password_cb);
 
-
+my $process_table = new Proc::ProcessTable;
+my $app_repair = $Schulkonsole::Config::_cmd_sophomorix_repair;
+$app_repair =~ s:.*/::;
+my %running;
+foreach my $process (@{ $process_table->table }) {
+	if ($process->fname =~ /^soph/ and $process->cmndline =~ /$app_repair/) {
+			$running{repair} = $process->pid;
+	}
+}
 
 COMMANDS: {
 
+# repair my home
+defined $q->param('repair_myhome') and not $running{repair} and do {
+	eval {
+		Schulkonsole::Repair::repair_myhome($id, $password);
+	};
+	if($@){
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+	$sk_session->set_status($sk_session->d()->get('Reparatur gestartet...'), 0);
+	$running{repair} = 1;
+	last COMMANDS;
+};
 # password change
 (   defined $q->param('oldpassword')
  or defined $q->param('newpassword')
@@ -287,9 +309,11 @@ COMMANDS: {
 			'Neues Passwort nicht richtig wiederholt'), 1);
 	} else {
 		$MINLEN = $Schulkonsole::Config::_min_password_len;
-		$MAXLEN = $Schulkonsole::Config::_max_password_len;
+		$MAXLEN = 0;
+		$DICTIONARY = 0;
 		my $badpassword_error = Data::Password::IsBadPassword($newpassword);
-		if ($badpassword_error) {
+		if ($Schulkonsole::Config::_check_passwords and $badpassword_error) {
+			$badpassword_error = translate_passworderror($sk_session, $badpassword_error, $MINLEN, $MAXLEN);
 			$sk_session->mark_input_error('newpassword');
 			$sk_session->mark_input_error('newpasswordagain');
 			$sk_session->set_status($sk_session->d()->get(
@@ -328,7 +352,7 @@ defined $q->param('set_mymail') and do {
         last COMMANDS;
     }
     Schulkonsole::Sophomorix::set_user_mymail($id,$password,$mymail);
-    
+    $sk_session->set_status($sk_session->d()->get('Die Mailadresse wurde geändert.'),0);
     last COMMANDS;
 };
 
@@ -796,6 +820,35 @@ True if the user has an OpenVPN certificate
 $sk_session->set_var('has_ovpn', $has_ovpn);
 
 
+if($q->param('logrepair') or $running{repair}) {
+	eval {
+		my $logrepair =
+			Schulkonsole::Repair::read_repair_log_file($id, $password);
+
+=item C<logrepair>
+
+Output of C<sophomorix-repair ...>
+
+=cut
+
+		splice @$logrepair, 0, -30;
+		$sk_session->set_var('logrepair', join("", @$logrepair));
+	};
+	if ($@) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Kann Logdatei nicht öffnen'), 1);
+	}
+	
+}
+
+=item C<isbusy>
+
+True if C<sophomorix-repair> is running
+
+=cut
+
+$sk_session->set_var('isbusy', ($running{repair}? 1 : 0));
+
 $sk_session->print_page("$this_file.tt", $this_file);
 
 
@@ -865,3 +918,50 @@ The id of a user's print job to delete. May be used more than once, i.e.Z<>
 you can use C<< <select name="printjobs" multiple> >>.
 
 =back
+
+=cut
+
+=head3 translate_passworderror($text, $min, $max)
+
+Translates password error from Data::Password::IsBadPassword module
+from english.
+
+Is based on error messages in file /usr/share/perl5/Data/Password.pm
+in sub IsBadPassword.
+
+=cut
+
+sub translate_passworderror {
+	my $sk_session = shift;
+	my $text = shift;
+	my $min = shift;
+	my $max = shift;
+	
+	SWITCH: {
+		$text =~ /^Not between \d+ and \d+ characters$/ and do {
+			return $sk_session->d()->get(sprintf("Das Passwort ist nicht zwischen %d und %d Zeichen lang.", $min, $max));
+		};
+	    $text =~ /^Not \d+ characters or greater$/ and do {
+	    	return $sk_session->d()->get(sprintf("Das Passwort muss mindestens %d Zeichen lang sein.",$min));
+	    };
+	    $text =~ /^Not less than or equal to \d+ characters$/ and do {
+	    	return $sk_session->d()->get(sprintf("Das Passwort darf höchstens %d Zeichen lang sein.", $max));
+	    };
+	    $text =~ /^contains bad characters$/ and do {
+	    	return $sk_session->d()->get("Das Passwort enthält ungültige Zeichen.");
+	    };
+	    my $groups;
+	    ($groups) = $text =~ /^contains less than (\d+) character groups$/ and do {
+	    	return $sk_session->d()->get(sprintf("Das Passwort enthält weniger als %d unterschiedliche Zeichenklassen.", $groups));
+	    };
+	    my $following;
+	    ($following) = $text =~ /^contains over (\d+) leading characters in sequence$/ and do {
+	    	return $sk_session->d()->get(sprintf("Das Passwort enthält mehr als %d führende Buchstaben in alphabetischer Folge.", $following));
+	    };
+		my $word;
+		($word) = $text =~ /^contains the dictionary word '(.+)'$/ and do {
+			return $sk_session->d()->get(sprintf("Das Passwort enthält das Wörterbuchwort %s.", $word));
+		};
+	};
+	return $sk_session->d()->get("Das Passwort ist ungültig.");
+}

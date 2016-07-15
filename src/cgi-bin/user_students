@@ -84,11 +84,11 @@ $q->param('studentsupload') and do {
 		Schulkonsole::Sophomorix::write_students_file($id, $password, \@lines);
 
 		$sk_session->set_status($sk_session->d()->get(
-			'Datei hochgeladen'), 0);
+			'Die Datei wurde hochgeladen. Die Änderungen müssen noch in das System übernommen werden.'), 0);
 
 	} else {
 		$sk_session->set_status($sk_session->d()->get(
-			'Datei kann nicht gelesen werden'), 1);
+			'Die Datei kann nicht gelesen werden'), 1);
 	}
 
 	last COMMANDS;
@@ -104,7 +104,7 @@ $q->param('studentsedit') and do {
 	Schulkonsole::Sophomorix::write_students_file($id, $password, \@lines);
 
 	$sk_session->set_status($sk_session->d()->get(
-		'Datei wurde geschrieben'), 0);
+		'Die Datei wurde geschrieben. Die Änderungen müssen noch in das System übernommen werden.'), 0);
 
 	last COMMANDS;
 };

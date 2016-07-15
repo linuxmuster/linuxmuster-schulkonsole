@@ -1,0 +1,129 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Benutzer') _ " - " _ loc('Änderungen durchführen'),
+      autorefresh  => isbusy,
+      menu     => 1,
+      submenu  => "user",
+      info     => loc('<p>Auf dieser Seite bekommen Sie zunächst einen Überblick über die durchzuführenden Änderungen.</p><p>Sie können die anstehenden Aktionen entweder in einem Durchgang oder nacheinander ausführen lassen.</p><p>Beachten Sie, dass der Prozess des Benutzeranlegens im Hintergrund ausgeführt wird und auf der Schulkonsole keine Ausgabe erzeugt. Die aktuelle Ausgabe des jeweiligen Prozesses können Sie sich über die Schaltfläche &bdquo;Letzte Logdatei ansehen&ldquo; anzeigen lassen.</p>'),
+   }
+%]
+
+<h2>[% loc('Benutzerverwaltung') %] :: [% loc('Änderungen durchführen') %]</h2>
+
+<hr>
+
+[% IF isbusy %]
+	[% IF isalling %]
+		[% busy.msg=loc('Benutzer anlegen/versetzen/löschen läuft...') %]
+	[% ELSIF isadding %]
+		[% busy.msg=loc('Anlegen läuft...') %]
+	[% ELSIF ismoving %]
+		[% busy.msg=loc('Versetzen läuft...') %]
+	[% ELSE %]
+		[% busy.msg=loc('Löschen läuft...') %]
+	[% END %]
+	[% IF isadding %]
+		[% busy.log=logadd %]
+	[% ELSIF ismoving %]
+		[% busy.log=logmove %]
+	[% ELSE %]
+		[% busy.log=logkill %]
+	[% END %]
+
+	[% INCLUDE busy.inc.tt %]
+
+[% ELSE %]
+
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+
+	<p>
+	[% IF !(addlist && addlist.size > 0 || movelist && movelist.size > 0 || killlist && killlist.size > 0) %][% loc('Es sind keine Vormerkungen vorhanden.') %][% END %]
+	</p>
+	
+	<hr>
+	
+	<p>
+	<input type="submit" name="all" value="[% loc('Benutzer anlegen/versetzen/löschen') %]"
+  	[% IF !(addlist && addlist.size > 0 || movelist && movelist.size > 0 || killlist && killlist.size > 0) %] disabled[% END %]>
+	</p>
+
+	<hr>
+	
+	[% IF addlist && addlist.size > 0 %]
+	<table id="commitadd" class="liste">
+	<tr>
+	<th>[% loc('Nr.') %]</th>
+	<th>[% loc('Bezeichner') %]</th>
+	<th>[% loc('Gruppe') %]</th>
+	</tr>
+	  [% lfdnr = 1 %]
+	  [% FOREACH al IN addlist %]
+	  <tr>
+	  <td class="lfdnr">[% lfdnr %].</td>
+	  <td>[% al.identifier %]</td>
+	  <td>[% al.group %]</td>
+	  [% lfdnr = lfdnr + 1 %]</tr>
+	  [% END %]
+	</table>
+	[% END %]
+	<p>
+	<input type="submit" name="add" value="[% loc('Benutzer anlegen') %]"
+	[% IF !(addlist && addlist.size > 0) %] disabled[% END %]>
+	</p>
+
+	<hr>
+
+	[% IF movelist && movelist.size > 0 %]
+	<table id="commitmove" class="liste">
+	<tr>
+	<th>[% loc('Nr.') %]</th>
+	<th>[% loc('Benutzer') %]</th>
+	<th>[% loc('von') %]</th>
+	<th>[% loc('nach') %]</th>
+	<th>[% loc('Status') %]</th>
+	</tr>
+	[% lfdnr = 1 %]
+	[% FOREACH ml IN movelist %]
+	<tr>
+	<td class="lfdnr">[% lfdnr %].</td>
+	<td>[% ml.login %]</td>
+	<td>[% ml.from %]</td>
+	<td>[% ml.to %]</td>
+	<td>[% ml.status %]</td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	[% END %]
+	</table>
+	[% END %]
+
+	<p>
+	<input type="submit" name="move" value="[% loc('Benutzer versetzen') %]"
+	[% IF !(movelist && movelist.size > 0) %] disabled[% END %]>
+	</p>
+
+	<hr>
+
+	[% IF killlist && killlist.size > 0 %]
+	<table id="commitkill" class="liste">
+	<tr>
+	<th>[% loc('Nr.') %]</th>
+	<th>[% loc('Benutzer') %]</th>
+	<th>[% loc('Bezeichner') %]</th>
+	</tr>
+	[% lfdnr = 1 %]
+	[% FOREACH kl IN killlist %]
+	<tr>
+	<td class="lfdnr">[% lfdnr %].</td>
+	<td>[% kl.login %]</td>
+	<td>[% kl.identifier %]</td>
+	[% lfdnr = lfdnr + 1 %]</tr>
+	[% END %]
+	</table>
+	[% END %]
+
+	<p>
+	<input type="submit" name="kill" value="[% loc('Benutzer löschen') %]"
+	[% IF !(killlist && killlist.size > 0) %] disabled[% END %]>
+	</p>
+
+	</form>
+
+[% END %]

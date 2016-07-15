@@ -24,6 +24,8 @@ use Schulkonsole::DB;
 use Schulkonsole::Info;
 use Schulkonsole::Printer;
 use Schulkonsole::Session;
+use Schulkonsole::Repair;
+use Proc::ProcessTable;
 
 my $this_file = 'class_list';
 
@@ -43,6 +45,9 @@ if (not $sk_session->get_password()) {
 
 my $q = $sk_session->query();
 
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
 my $classs = Schulkonsole::Info::groups_classes($sk_session->groups());
 my $class = $q->param('classes');
 if (    $class
@@ -58,6 +63,26 @@ if (   not $class
 	$sk_session->redirect($url);
 }
 
+my $process_table = new Proc::ProcessTable;
+my $app_repair = $Schulkonsole::Config::_cmd_sophomorix_repair;
+$app_repair =~ s:.*/::;
+my %running;
+foreach my $process (@{ $process_table->table }) {
+	if ($process->fname =~ /^soph/ and $process->cmndline =~ /$app_repair/) {
+			$running{repair} = $process->pid;
+	}
+}
+
+if ($q->param('repair_classhomes;' . $class) and $class) {
+	eval {
+		Schulkonsole::Repair::repair_classhomes($id, $password, $class);
+	};
+	if($@){
+		$sk_session->standard_error_handling($this_file, $@);
+	}
+	$sk_session->set_status($sk_session->d()->get('Reparatur gestartet...'),0);
+	$running{repair} = 1;
+}
 
 =head2 Form fields
 
@@ -76,6 +101,12 @@ provides the following variables:
 
 my $id = $sk_session->userdata('id');
 my $password = $sk_session->get_password();
+
+if( $sk_session->param('repair_classhomes;'.$class) ){
+    Schulkonsole::Repair::repair_classhomes($id, $password, $class);
+  $sk_session->set_status($sk_session->d()->get(
+			'Die Persönlichen Ordner wurden repariert.'), 0);
+}
 
 my $all_classs = Schulkonsole::DB::classes();
 delete $$all_classs{'attic'};
@@ -483,6 +514,35 @@ The name of the selected class (if a class is selected)
 
 	$sk_session->set_var('class_name', $$classs{$class}{displayname});
 }
+
+if($q->param('logrepair') or $running{repair}) {
+	eval {
+		my $logrepair =
+			Schulkonsole::Repair::read_repair_log_file($id, $password);
+
+=item C<logrepair>
+
+Output of C<sophomorix-repair ...>
+
+=cut
+
+		splice @$logrepair, 0, -30;
+		$sk_session->set_var('logrepair', join("", @$logrepair));
+	};
+	if ($@) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Kann Logdatei nicht öffnen'), 1);
+	}
+	
+}
+
+=item C<isbusy>
+
+True if C<sophomorix-repair> is running
+
+=cut
+
+$sk_session->set_var('isbusy', ($running{repair}? 1 : 0));
 
 $sk_session->print_page("$this_file.tt", $this_file);
 

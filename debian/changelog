@@ -1,3 +1,146 @@
+linuxmuster-schulkonsole (0.36.0-6) babo62; urgency=low
+
+  * fix for no autostart not shown for autostart selected
+
+ -- root <root@linuxmuster.local>  Fri, 15 Jul 2016 16:42:08 +0200
+
+linuxmuster-schulkonsole (0.36.0-5) babo62; urgency=low
+
+  * fix start page template to turn autocomplete off, enter off
+
+ -- root <root@linuxmuster.local>  Mon, 11 Jul 2016 17:03:35 +0200
+
+linuxmuster-schulkonsole (0.36.0-4) babo62; urgency=low
+
+  * rename apache2 link to 200-schulkonsole.conf
+
+ -- root <root@linuxmuster.local>  Wed, 06 Jul 2016 19:46:40 +0200
+
+linuxmuster-schulkonsole (0.36.0-3) babo62; urgency=low
+
+  * p_wifi: set administrator as only admin
+
+ -- root <root@linuxmuster.local>  Mon, 04 Jul 2016 13:08:47 +0200
+
+linuxmuster-schulkonsole (0.36.0-2) babo62; urgency=low
+
+  * p_wifi: addadmin administrator, set flag nojoin
+
+ -- Frank Schütte <fschuett@gymhim.de>  Sat, 02 Jul 2016 12:22:20 +0200
+
+linuxmuster-schulkonsole (0.36.0-1) babo62; urgency=low
+
+  * require linuxmuster-base 6.2.0, sophomorix 2.4.59 to reflect linuxmuster.net 6.2
+
+ -- Frank Schütte <fschuett@gymhim.de>  Sat, 02 Jul 2016 10:08:16 +0200
+
+linuxmuster-schulkonsole (0.35.1-2) babo62; urgency=low
+
+  * fix info on image copy (#504)
+  * fix some minor problems on page linbo_images
+
+ -- Frank Schütte <fschuett@gymhim.de>  Sat, 02 Jul 2016 09:07:04 +0200
+
+linuxmuster-schulkonsole (0.35.1-1) babo62; urgency=low
+
+  * readd old templates
+  * fix some errors related to start.conf checking
+  * fix some linbo_new errors
+
+ -- Frank Schütte <fschuett@gymhim.de>  Mon, 20 Jun 2016 13:44:27 +0200
+
+linuxmuster-schulkonsole (0.35.1-0) babo62; urgency=low
+
+  * add missing msr partition type
+  * Session.pm.in -> Session.pm, Config.pm.in -> Config.pm
+
+ -- Frank Schütte <fschuett@gymhim.de>  Thu, 16 Jun 2016 12:44:47 +0200
+
+linuxmuster-schulkonsole (0.35.0-1) babo-testing; urgency=low
+
+  * move rooms menu to settings_rooms #590
+
+ -- Frank Schütte <fschuett@gymhim.de>  Fri, 27 May 2016 16:50:46 +0200
+
+linuxmuster-schulkonsole (0.34.0-1) babo-testing; urgency=low
+
+  * fix for linbo-remote
+  * add default settings for project creation
+  * use wlan settings in project creation
+
+ -- Frank Schütte <fschuett@gymhim.de>  Tue, 17 May 2016 19:15:50 +0200
+
+linuxmuster-schulkonsole (0.33.0-5) babo-testing; urgency=low
+
+  * fixed #583
+  * add planned tasks managing to linbo-remote
+
+ -- Frank Schütte <fschuett@gymhim.de>  Mon, 16 May 2016 14:10:20 +0200
+
+linuxmuster-schulkonsole (0.33.0-4) babo-testing; urgency=low
+
+  * add busy to start
+  * fix project_members, class_list
+
+ -- Frank Schütte <fschuett@gymhim.de>  Mon, 16 May 2016 13:50:43 +0200
+
+linuxmuster-schulkonsole (0.33.0-3) babo-testing; urgency=low
+
+  * add repair to start, class_list, project_members
+  * completed administrator repair menu
+  * removed debug libs
+
+ -- Frank Schütte <fschuett@gymhim.de>  Mon, 16 May 2016 09:56:20 +0200
+
+linuxmuster-schulkonsole (0.33.0-2) babo-testing; urgency=low
+
+  * add preferences.conf to install files
+  * add buildpackage.sh script to ignore .git to reduce tar.gz size
+
+ -- Frank Schütte <fschuett@gymhim.de>  Tue, 10 May 2016 17:01:57 +0200
+
+linuxmuster-schulkonsole (0.33.0-1) babo-testing; urgency=low
+
+  * add showBusy to each page
+  * fix password checking, dictionary=0,max_len=0
+  * automate version nr, fix build scripts
+
+ -- Frank Schütte <fschuett@gymhim.de>  Sun, 08 May 2016 11:11:20 +0200
+
+linuxmuster-schulkonsole (0.32.1-1) babo-testing; urgency=low
+
+  * add page settings_repair
+  * add script settings_repair.js
+  * add page.script and page.debug options for loading of js files
+
+ -- Frank Schütte <fschuett@gymhim.de>  Thu, 31 Mar 2016 15:01:54 +0200
+
+linuxmuster-schulkonsole (0.31.2-1) babo-testing; urgency=low
+
+  * add busy and log to quotas_* (#569)
+  * fix boolean settings in settings_users
+
+ -- Frank Schütte <fschuett@gymhim.de>  Sat, 12 Mar 2016 17:54:02 +0100
+
+linuxmuster-schulkonsole (0.31.1-2) babo-testing; urgency=low
+
+  * fix for writing wrong file encodings to sophomorix.conf
+  * created SophomorixConfig module for better type handling
+
+ -- Frank Schütte <fschuett@gymhim.de>  Sat, 12 Mar 2016 08:43:44 +0100
+
+linuxmuster-schulkonsole (0.31.1-1) babo-testing; urgency=low
+
+  * make info green and self hiding (#531)
+
+ -- Frank Schütte <fschuett@gymhim.de>  Sat, 12 Mar 2016 08:40:31 +0100
+
+linuxmuster-schulkonsole (0.31.0-1) babo-testing; urgency=low
+
+  * simplified build system (got rid of autotools)
+
+ -- Frank Schütte <fschuett@gymhim.de>  Mon, 07 Mar 2016 22:35:03 +0100
+
 linuxmuster-schulkonsole (0.30.0-1) babo-testing; urgency=low
 
   * add muster for extending schulkonsole/plugin simplification

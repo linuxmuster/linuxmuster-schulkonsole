@@ -12,7 +12,7 @@
 #endif
 
 #ifndef WRAPPEROVPNPERLAPP
-# define WRAPPEROVPNPERLAPP "/usr/libexec/schulkonsole/bin/wrapper-ovpn.pl"
+# define WRAPPEROVPNPERLAPP "/usr/lib/schulkonsole/bin/wrapper-ovpn.pl"
 #endif
 
 

@@ -27,10 +27,10 @@ use utf8;
 use lib '/usr/share/schulkonsole';
 use Schulkonsole::Session;
 use Schulkonsole::Sophomorix;
+use Schulkonsole::SophomorixConfig;
 use Schulkonsole::SophomorixQuotas;
-use Sophomorix::SophomorixAPI;
-use Sophomorix::SophomorixConfig;
 
+use Proc::ProcessTable;
 
 my $this_file = 'quotas_teachers';
 
@@ -49,7 +49,7 @@ if (not $sk_session->get_password()) {
 		$sk_session->exit_with_login_page($this_file);
 	}
 }
-if ($Conf::use_quota ne $Schulkonsole::Config::_sophomorix_conf_true) {
+if (not $Schulkonsole::SophomorixConfig::quotaactivated) {
 	my $q = new CGI;
 	my $url = $q->url( -full => 1 );
 
@@ -66,6 +66,15 @@ my $password = $sk_session->get_password();
 
 my @mountpoints = Schulkonsole::SophomorixQuotas::mountpoints();
 
+my $process_table = new Proc::ProcessTable;
+my $app_quota = $Schulkonsole::Config::_cmd_sophomorix_quota;
+$app_quota =~ s:.*/::;
+my %running;
+foreach my $process (@{ $process_table->table }) {
+	if ($process->fname =~ /^soph/ and $process->cmndline =~ /$app_quota/) {
+			$running{quota} = $process->pid;
+	}
+}
 
 
 eval {
@@ -117,7 +126,9 @@ $q->param('acceptteachers') and do {
 	} elsif ($is_changed) {
 		put_teachers($teachers);
 
-		Schulkonsole::Sophomorix::process_quota($id, $password, 2);
+		Schulkonsole::SophomorixQuotas::process_quota($id, $password, 2);
+
+		$running{quota} = 1;
 
 		$sk_session->set_status($sk_session->d()->get(
 			'Änderungen übernommen.'), 0);
@@ -131,6 +142,26 @@ $q->param('acceptteachers') and do {
 	last COMMANDS;
 };	# end acceptteachers
 
+($q->param('logquota') or $running{quota}) and do {
+	eval {
+		my $logquota =
+			Schulkonsole::SophomorixQuotas::read_quota_log_file($id, $password);
+
+=item C<logquota>
+
+Output of C<sophomorix-quota --set>
+
+=cut
+
+		splice @$logquota, 0, -30;
+		$sk_session->set_var('logquota', join("", @$logquota));
+	};
+	if ($@) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Kann Logdatei nicht öffnen'), 1);
+	}
+	last COMMANDS;
+};
 } # end COMMANDS
 };
 if ($@) {
@@ -223,6 +254,14 @@ The number of mountpoints
 
 $sk_session->set_var('mountpoints_cnt', scalar(@mountpoints));
 
+
+=item C<isbusy>
+
+True if C<sophomorix-quota> is running
+
+=cut
+
+$sk_session->set_var('isbusy', ($running{quota}? 1 : 0));
 
 $sk_session->print_page("$this_file.tt", $this_file);
 

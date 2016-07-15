@@ -1,0 +1,197 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Einstellungen') _ " - " _ loc('Räume'),
+      menu     => 1,
+      submenu  => "settings",
+      info     => loc('<p>Legen Sie hier die Standardeinstellungen für die Workstations in den Räumen fest.</p><p>Um eine Ausnahme für eine Workstation anzulegen, muss ein Eintrag für den Raum hinzugefügt worden sein.</p><p>Um einen Eintrag zu löschen, setzen Sie das Häkchen in der entsprechenden Checkbox am Zeilenende.</p><p>Schliessen Sie die Aktion mit &bdquo;Änderungen übernehmen&ldquo; ab.</p><p>Um die Rechner in einem Raum oder einzelne Rechner zurückzusetzen, setzen Sie das Häkchen in der entsprechenden Checkbox und wählen die Aktion &bdquo;Auswahl zurücksetzen&ldquo;.</p><p>Legen Sie außerdem fest, welche Räume von der Schulkonsole als Computerraum unter &bdquo;aktueller Raum&ldquo; verwaltbar sein sollen.</p>'),
+   }
+%]
+
+<h2>[% loc('Einstellungen') %] :: [% loc('Räume') %]</h2>
+
+<h3>[% loc('Standardeinstellungen') %]</h3>
+
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+<table id="roomsdefaults" class="liste">
+<colgroup width="20%"></colgroup>
+<colgroup span="3" width="11%"></colgroup>
+<colgroup span="2"></colgroup>
+<colgroup span="2" width="3%"></colgroup>
+<tr>
+<th></th>
+<th>[% loc('Internet') %]</th>
+<th>[% loc('Intranet') %]</th>
+<th>[% loc('Webfilter') %]</th>
+<th colspan="2"></th>
+<th><img title="zurücksetzen" src="img/reset.png" alt="0"></th>
+<th><img title="löschen" src="img/trash.png" alt="X"></th>
+</tr>
+<tr>
+<td>[% loc('default') %]</td>
+<td>
+<select name="default_internet">
+<option value="-1"[% IF default_internet == "-1" %] selected[% END %]>-</option>
+<option value="1"[% IF default_internet == "1" %] selected[% END %]>[% loc('An') %]</option>
+<option value="0"[% IF default_internet == "0" %] selected[% END %]>[% loc('Aus') %]</option>
+</select>
+</td>
+<td>
+<select name="default_intranet">
+<option value="-1"[% IF default_intranet == "-1" %] selected[% END %]>-</option>
+<option value="1"[% IF default_intranet == "1" %] selected[% END %]>[% loc('An') %]</option>
+<option value="0"[% IF default_intranet == "0" %] selected[% END %]>[% loc('Aus') %]</option>
+</select>
+</td>
+<td>
+<select name="default_webfilter">
+<option value="-1"[% IF default_webfilter == "-1" %] selected[% END %]>-</option>
+<option value="1"[% IF default_webfilter == "1" %] selected[% END %]>[% loc('An') %]</option>
+<option value="0"[% IF default_webfilter == "0" %] selected[% END %]>[% loc('Aus') %]</option>
+</select>
+</td>
+[% IF defaultrooms %]<td><select name="default_add">
+[% FOREACH dr IN defaultrooms %]	<option value="[% dr %]">[% dr %]</option>
+[% END %]
+</select></td>
+<td><input type="submit" name="add_room" value="[% loc('Ausnahme hinzufügen') %]"></td>
+[% ELSE %]
+<td colspan="2"></td>
+[% END %]
+[% IF nondefaults %]
+<td><input type="checkbox" name="reset_all"></td>
+[% ELSE %]
+<td><input type="checkbox" disabled></td>
+[% END %]
+<td></td>
+</tr>
+<tr><td colspan="7">&nbsp;</td></tr>
+
+[% FOREACH nd IN nondefaults %]
+
+[% IF odd %][% odd=0 %]
+[% ELSE %][% odd=1 %][% END %]
+
+	[% IF nd.isroom %]
+	[% IF nd.isset %]
+	[% IF odd %]<tr class="odd">[% ELSE %]<tr class="even">[% END %]
+	[% ELSE %]
+	<tr class="unset">
+	[% END %]
+	<td>[% nd.name %]</td>
+	<td>
+		<select name="[% nd.name %]_room_internet">
+		<option value="-1"[% IF valueof("${nd.name}_room_internet")=="-1" %] selected[% END %]>-</option>
+		<option value="1"[% IF valueof("${nd.name}_room_internet")=="1" %] selected[% END %]>[% loc('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_room_internet")=="0" %] selected[% END %]>[% loc('Aus') %]</option>
+		</select>
+	</td>
+	<td>
+		<select name="[% nd.name %]_room_intranet">
+		<option value="-1"[% IF valueof("${nd.name}_room_intranet")=="-1" %] selected[% END %]>-</option>
+		<option value="1"[% IF valueof("${nd.name}_room_intranet")=="1" %] selected[% END %]>[% loc('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_room_intranet")=="0" %] selected[% END %]>[% loc('Aus') %]</option>
+		</select>
+	</td>
+	<td>
+		<select name="[% nd.name %]_room_webfilter">
+		<option value="-1"[% IF valueof("${nd.name}_room_webfilter")=="-1" %] selected[% END %]>-</option>
+		<option value="1"[% IF valueof("${nd.name}_room_webfilter")=="1" %] selected[% END %]>[% loc('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_room_webfilter")=="0" %] selected[% END %]>[% loc('Aus') %]</option>
+		</select>
+	</td>
+	[% IF nd.hosts %]
+	    <td><select name="[% nd.name %]_add">
+		[% FOREACH h IN nd.hosts %]
+			<option value="[% h %]">[% h %]</option>
+		[% END %]
+	    </select></td>
+	    <td><input type="submit" name="[% nd.name %]_add_host" value="[% loc('Ausnahme hinzufügen') %]"></td>
+	[% ELSE %]
+	<td colspan="2"></td>
+	[% END %]
+	<td><input type="checkbox" name="[% nd.name %]_room_reset"></td>
+	<td><input type="checkbox" name="[% nd.name %]_room_delete"></td>
+	</tr>
+	[% ELSE %]
+	[% IF odd %]<tr class="hostodd">[% ELSE %]<tr class="hosteven">[% END %]
+	<td>[% nd.name %]</td>
+	<td>
+		<select name="[% nd.name %]_internet">
+		<option value="-1"[% IF valueof("${nd.name}_internet")=="-1" %] selected[% END %]>-</option>
+		<option value="1"[% IF valueof("${nd.name}_internet")=="1" %] selected[% END %]>[% loc('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_internet")=="0" %] selected[% END %]>[% loc('Aus') %]</option>
+		</select>
+	</td>
+	<td>
+		<select name="[% nd.name %]_intranet">
+		<option value="-1"[% IF valueof("${nd.name}_intranet")=="-1" %] selected[% END %]>-</option>
+		<option value="1"[% IF valueof("${nd.name}_intranet")=="1" %] selected[% END %]>[% loc('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_intranet")=="0" %] selected[% END %]>[% loc('Aus') %]</option>
+		</select>
+	</td>
+	<td>
+		<select name="[% nd.name %]_webfilter">
+		<option value="-1"[% IF valueof("${nd.name}_webfilter")=="-1" %] selected[% END %]>-</option>
+		<option value="1"[% IF valueof("${nd.name}_webfilter")=="1" %] selected[% END %]>[% loc('An') %]</option>
+		<option value="0"[% IF valueof("${nd.name}_webfilter")=="0" %] selected[% END %]>[% loc('Aus') %]</option>
+		</select>
+	</td>
+	<td colspan="2"></td>
+	<td><input type="checkbox" name="[% nd.name %]_reset"></td>
+	<td><input type="checkbox" name="[% nd.name %]_delete"></td>
+	</tr>
+	[% END %]
+[% END %]
+</table>
+
+
+<p>
+[% IF nondefaults %]
+<input type="submit" name="reset_nondefaults" value="[% loc('Auswahl zurücksetzen') %]">
+[% ELSE %]
+<input type="submit" name="reset_nondefaults" value="[% loc('Auswahl zurücksetzen') %]" disabled>
+[% END %]
+<input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
+</p>
+
+<hr>
+
+[% IF unconfigured %]
+<p class="important">
+[% loc('Die Liste der konfigurierten Hosts und ihrer Räme stimmt nicht mit den tatsächlich im System vorhandenen Hosts überein. Bitte überprüfen Sie die <a href="hosts">Hosts-Liste</a>.') %]
+</p>
+[% ELSIF unimported %]
+<p class="important">
+[% loc('Es wurden noch nicht alle Hosts mit ihren Rämen in das System übernommen. Bitte überprüfen Sie die <a href="hosts">Hosts-Liste</a>.') %]
+</p>
+[% END %]
+
+<h3>[% loc('EDV-Räume') %]</h3>
+
+<table id="rooms" class="liste">
+<col width="10%">
+<col width="70%">
+<col width="20%">
+<tr>
+<th>[% loc('Nr.') %]</th>
+<th>[% loc('Raumbezeichnung') %]</th>
+<th>[% loc('Computerraum') %]</th>
+</tr>
+[% lfdnr=1 %]
+[% FOREACH r IN rooms %]
+    <tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+        <td class="lfdnr">[% lfdnr %].</td>
+        <td><label [% labelfor("${r.name}_classroom") %]>[% r.name %]</label></td>
+        <td><input type="checkbox" id="[% r.name %]_classroom" name="[% r.name %]_classroom"
+        [% IF r.selected %] checked[% END %]></td>
+    </tr>
+    [% lfdnr=lfdnr+1 %]
+[% END %]
+</table>
+
+
+
+<p>
+<input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
+</p>
+
+</form>

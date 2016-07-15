@@ -34,6 +34,10 @@ use Schulkonsole::Sophomorix;
 
 my $this_file = 'settings_projects';
 
+my %yesno = (
+	1 => 'yes',
+	0 => 'no',
+);
 
 my $sk_session = new Schulkonsole::Session($this_file);
 if (not $sk_session->get_password()) {
@@ -128,6 +132,30 @@ if ($q->param('accept')) {
 		$sk_session->set_status($sk_session->d()->get(
 			'Keine Änderungen.'), 0);
 	}
+	# write defaults
+	my %preferences_new;
+	$changes = 0;
+	my $value = ($q->param('default_mailalias')? 'on' : 'off');
+	if($Schulkonsole::Config::_project_mailalias ne $value){
+		$preferences_new{'mailalias'} = $value;
+		$changes = 1;
+	}
+	$value = ($q->param('default_maillist')? 'on' : 'off');
+	if($Schulkonsole::Config::_project_maillist ne $value){
+		$preferences_new{'maillist'} = $value;
+		$changes = 1;
+	}
+	$value = ($q->param('default_wlan')? 'on' : 'off');
+	if($Schulkonsole::Config::_project_wlan ne $value){
+		$preferences_new{'wlan'} = $value;
+		$changes = 1;
+	}
+	if ($changes) {
+		my $lines = Schulkonsole::Config::new_preferences_lines($Schulkonsole::Config::PROJECTPREFS, \%preferences_new);
+		Schulkonsole::Files::write_preferences_conf_file($id, $password, $lines);
+		$sk_session->set_status($sk_session->d()->get(
+			'Änderungen übernommen.'), 0);
+	}
 }
 };
 } # COMMANDS
@@ -145,6 +173,14 @@ my %on_off = (
 );
 
 my @projects;
+push @projects, 
+{ gid => 'default',
+  name => 'default',
+  mailalias => $on_off{$Schulkonsole::Config::_project_mailalias},
+  maillist => $on_off{$Schulkonsole::Config::_project_maillist},
+  wlan => $on_off{$Schulkonsole::Config::_project_wlan},
+};
+
 foreach my $project (sort {
 	my ($A) = $$projects{$a}{displayname} =~ /^(\d+)/;
 	my ($B) = $$projects{$b}{displayname} =~ /^(\d+)/;
@@ -163,15 +199,11 @@ foreach my $project (sort {
 	                mailalias => $$projects{$project}{mailalias},
 	                wlan => $wlan,
 	              };
-        if (not defined($q->param("${project}_wlan"))) {
-                        $q->param("${project}_wlan",$wlan);
-        }
 }
 
 =item C<projects>
 
-An array of hashes of the projects of which the current user is a member
-with the keys
+An array of hashes of the projects with the keys
 
 =over
 
@@ -196,6 +228,9 @@ The project students have a mailalias
 The default state of wlan access 0: off, 1: on
 
 =back
+
+The first project in the array has the name default and contains
+the default settings for newly created projects
 
 =cut
 

@@ -1,0 +1,73 @@
+[% page = {
+      title   => loc('Schulkonsole') _ " - " _ loc('Linbo'),
+      menu     => 1,
+      submenu  => "linbo",
+      info     => loc('.'),
+   }
+%]
+
+
+[% IF deletefilename %]
+
+<h2>[% loc('menu.lst-Dateien der Rechnergruppen editieren') %]</h2>
+
+<h3>[% loc('Bitte bestätigen') %]</h3>
+
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+<p>[% deletefilename %] [% loc('wirklich löschen?') %]</p>
+
+<p><input type="hidden" name="filename" value="[% deletefilename %]"><input type="submit" name="delete" value="[% loc('Bestätigen') %]">
+<input type="submit" name="abort" value="[% loc('Abbrechen') %]"></p>
+
+</form>
+
+[% ELSE %]
+[% IF editfilename %]
+
+<h2>[% loc('menu.lst-Dateien der Rechnergruppen editieren') %]: [% editfilename %]</h2>
+
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+<p><textarea wrap="off" name="menulst" rows="20" cols="70"></textarea></p>
+<p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% loc('Änderungen speichern') %]">
+<input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
+
+</form>
+
+[% ELSE %]
+
+<h2>[% loc('menu.lst-Dateien der Rechnergruppen editieren') %]</h2>
+
+[% IF nomenulsts %]
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+<p>
+<select name="filename">
+[% FOREACH nm IN nomenulsts %] <option value="[% nm %]">[% nm %]</option>
+[% END %]
+<option value="" selected></option>
+</select>
+</p>
+<p>
+<input type="submit" name="add" value="[% loc('Hinzufügen') %]">
+</p>
+</form>
+[% END %]
+
+[% IF menulsts %]
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+<table id="linbomenulstsoverview" class="liste">
+[% FOREACH ml IN menulsts %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td><input type="submit" name="[% ml %]_edit" value="[% ml %]"></td>
+<td><input type="submit" name="[% ml %]_delete" value="[% loc('löschen') %]"></td>
+</tr>
+[% END %]
+</table>
+</form>
+[% ELSE %]
+<p>[% loc('Es sind keine menu.lst-Dateien vorhanden.') %]</p>
+[% END %]
+
+
+[% END %]
+[% END %]

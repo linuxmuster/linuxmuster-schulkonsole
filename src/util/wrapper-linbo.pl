@@ -36,6 +36,8 @@ use Schulkonsole::DB;
 use Schulkonsole::Encode;
 use Schulkonsole::Error::Error;
 use Schulkonsole::Error::LinboError;
+use Schulkonsole::Linbo;
+use Data::Dumper;
 use POSIX;
 
 
@@ -63,6 +65,15 @@ SWITCH: {
 		last SWITCH;
 	};
 
+	$app_id == Schulkonsole::Config::LINBOREMOTEPLANNEDAPP and do {
+		linbo_remote_planned();
+		last SWITCH;
+	};
+	
+	$app_id == Schulkonsole::Config::LINBOREMOTEREMOVEAPP and do {
+		linbo_remote_remove();
+		last SWITCH;
+	};
 	$app_id == Schulkonsole::Config::UPDATELINBOFSAPP and do {
 		update_linbofs();
 		last SWITCH;
@@ -474,6 +485,10 @@ sub linbo_manage_images {
 			foreach my $suffix (@suffixes) {
 				system Schulkonsole::Encode::to_cli(
 				       	"cp -p \Q$file$suffix\E \Q$new_file$suffix\E");
+				if ($suffix eq ".info" ) {
+					system Schulkonsole::Encode::to_cli(
+						"sed -i 's#$image.$image_suffix#$new_image.$image_suffix#' \Q$new_file$suffix\E");
+				}
 			}
 		}
                 system Schulkonsole::Encode::to_cli("service linbo-bittorrent restart \Q$new_file\E force");
@@ -519,9 +534,9 @@ sub linbo_write {
 	($tmpfilename) = $filename =~ /^(menu\.lst\.[a-z\d_]+)$/ unless defined $tmpfilename;
 	exit (  Schulkonsole::Error::LinboError::WRAPPER_INVALID_FILENAME
 	      )
-		unless defined $filename;
+		unless defined $tmpfilename;
 
-	my $file = Schulkonsole::Encode::to_fs("$Schulkonsole::Config::_linbo_dir/$filename");
+	my $file = Schulkonsole::Encode::to_fs("$Schulkonsole::Config::_linbo_dir/$tmpfilename");
 
 	$< = $>;
 	$) = 0;
@@ -833,6 +848,79 @@ sub linbo_remote() {
 		exit (	Schulkonsole::Error::LinboError::WRAPPER_CANNOT_RUN_COMMAND
 				);
 	
+	exit 0;
+}
+
+
+=head3 linbo_remote_planned
+
+numeric constant: C<Schulkonsole::Config::LINBOREMOTEPLANNEDAPP>
+
+=head4 Description
+
+Reads planned linbo-remote tasks from linbocmd directory.
+
+=cut
+
+sub linbo_remote_planned() {
+	
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+
+	my @files = glob(Schulkonsole::Linbo::LINBOCMDDIR ."/*.cmd");
+	my %planned;
+	foreach my $file (@files) {
+		my ($host) = $file =~ /^.*\/(.+?)\.cmd$/;
+		exit ( Schulkonsole::Error::LinboError::WRAPPER_INVALID_FILENAME) unless $host;
+		open(INFILE,'<', $file) || 
+			exit ( Schulkonsole::Error::LinboError::WRAPPER_CANNOT_OPEN_FILE );
+		$planned{$host} = <INFILE>;
+		close(INFILE) or exit (Schulkonsole::Error::Error::WRAPPER_SCRIPT_EXEC_FAILED);
+	}
+	my $data = Data::Dumper->new( [ \%planned ]);
+	$data->Terse(1);
+	$data->Indent(0);
+	print $data->Dump();
+	
+	exit 0;
+}
+
+=head3 linbo_remote_remove
+
+numeric constant: C<Schulkonsole::Config::LINBOREMOTEREMOVEAPP>
+
+=head4 Description
+
+Removes planned linbo-remote tasks.
+
+=head4 Parameters from standard input
+
+=over
+
+=item C<host1,host2, ... , hostn>
+
+Comma separated list of host IPs
+
+=cut
+
+sub linbo_remote_remove() {
+	my @hosts = split(',',<>);
+	foreach my $host (@hosts){
+		($host) = $host =~ /^(\d+\.\d+\.\d+\.\d+)$/;
+		exit ( Schulkonsole::Error::LinboError::WRAPPER_INVALID_IP) unless $host;
+	}
+
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(022);
+
+	foreach my $host (@hosts){
+		my $file = Schulkonsole::Linbo::LINBOCMDDIR . "/" . $host . ".cmd";
+		system("rm -f ".$file);
+	}
 	exit 0;
 }
 

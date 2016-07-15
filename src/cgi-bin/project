@@ -30,7 +30,8 @@ use Schulkonsole::Sophomorix;
 use Schulkonsole::Config;
 use Sophomorix::SophomorixAPI;
 use Sophomorix::SophomorixConfig;
-
+use Schulkonsole::Radius;
+use Schulkonsole::Files;
 
 my $this_file = 'project';
 
@@ -49,6 +50,8 @@ if (not $sk_session->get_password()) {
 }
 
 my $q = $sk_session->query();
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
 
 if($sk_session->param('requested_page')) {
 	$q->param('requested_page',$sk_session->param('requested_page'));
@@ -125,11 +128,8 @@ if ($q->param('createproject')) {
 	}
 
 
-	Schulkonsole::Sophomorix::create_project(
-		$sk_session->userdata('id'),
-		$sk_session->get_password(),
-		$projectname,
-		$q->param('projectisopen'));
+	Schulkonsole::Sophomorix::create_project($id, $password, $projectname, $q->param('projectisopen'));
+	Schulkonsole::Sophomorix::project_wlan_defaults($id, $password, $projectname, 1);
 
 	$all_projects = Schulkonsole::DB::projects();
 	if ($$all_projects{$projectname}) {
@@ -271,11 +271,9 @@ project_drop_verify.tt)
 			}
 
 
-			Schulkonsole::Sophomorix::drop_project(
-				$sk_session->userdata('id'),
-				$sk_session->get_password(),
-				$old_project);
-
+			Schulkonsole::Sophomorix::drop_project($id, $password, $old_project);
+			Schulkonsole::Sophomorix::project_wlan_defaults($id, $password, $old_project, 0);
+			
 			$all_projects = Schulkonsole::DB::projects();
 			if (not $$all_projects{$old_project}) {
 				$sk_session->set_status(

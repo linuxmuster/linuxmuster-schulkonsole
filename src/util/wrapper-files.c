@@ -12,7 +12,7 @@
 #endif
 
 #ifndef WRAPPERFILESPERLAPP
-# define WRAPPERFILESPERLAPP "/usr/libexec/schulkonsole/bin/wrapper-files.pl"
+# define WRAPPERFILESPERLAPP "/usr/lib/schulkonsole/bin/wrapper-files.pl"
 #endif
 
 

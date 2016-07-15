@@ -116,6 +116,11 @@ $app_id == Schulkonsole::Config::PROJECTCREATEDROPAPP and do {
 	last SWITCH;
 };
 
+$app_id == Schulkonsole::Config::PROJECTWLANDEFAULTSAPP and do {
+	project_wlan_defaults();
+	last SWITCH;
+};
+
 $app_id == Schulkonsole::Config::PRINTCLASSAPP and do {
 	printclassapp();
 	last SWITCH;
@@ -1443,18 +1448,20 @@ sub projectcreatedropapp() {
 		unless defined $do_create;
 
 
-	my $opts = "--caller \Q$$userdata{uid}\E --project \Q$project_gid\E ";
+	my $opts = " --caller \Q$$userdata{uid}\E --project \Q$project_gid\E ";
 	if ($do_create) {
 		my $is_open = <>;
 		($is_open) = $is_open =~ /^([01])$/;
 		exit (  Schulkonsole::Error::SophomorixError::WRAPPER_INVALID_IS_JOIN )
 			unless defined $is_open;
 
-		$opts .= '--create '
-		         . ($is_open ? '--join' : '--nojoin')
+		$opts .= ' --create'
+		         . ($is_open ? ' --join' : ' --nojoin')
+		         . ($Schulkonsole::Config::_project_mailalias eq $Schulkonsole::Config::on? ' --mailalias' : ' --nomailalias')
+		         . ($Schulkonsole::Config::_project_maillist eq $Schulkonsole::Config::on? ' --maillist' : ' --nomaillist' )
 		         . " --admins \Q$$userdata{uid}";
 	} else {
-		$opts .= '--kill';
+		$opts .= ' --kill';
 	}
 
 	# sophomorix-project cannot be invoked with taint checks enabled
@@ -1465,6 +1472,50 @@ sub projectcreatedropapp() {
 	exec Schulkonsole::Encode::to_cli(
 	     	"$Schulkonsole::Config::_cmd_sophomorix_project $opts")
 		or return;
+}
+
+=head3 project_wlan_defaults
+
+numeric constant: C<Schulkonsole::Config::PROJECTWLANDEFAULTSAPP>
+
+=head4 Parameters from standard input
+
+=over
+
+=item project_gid
+
+=item add = 1, remove = 0
+
+=back
+
+=cut
+
+sub project_wlan_defaults() {
+	my $project_gid = <>;
+	($project_gid) = $project_gid =~ /^((?:p_)?[a-z0-9_-]{3,14})$/;
+	exit (  Schulkonsole::Error::SophomorixError::WRAPPER_INVALID_PROJECTGID )
+		unless defined $project_gid;
+
+	my $do_add = <>;
+	($do_add) = $do_add =~ /^([01])$/;
+	exit (  Schulkonsole::Error::SophomorixError::WRAPPER_INVALID_ACTION )
+		unless defined $do_add;
+
+
+	# sophomorix-project cannot be invoked with taint checks enabled
+	$< = $>;
+	$) = 0;	# sophomorix-project will re-create /etc/aliases
+	$( = $);
+	umask(022);
+	if($do_add){
+		exec Schulkonsole::Encode::to_cli("echo 'g:" . $project_gid) . "\t\t" 
+				. Schulkonsole::Encode::to_cli($Schulkonsole::Config::_project_wlan 
+				. "' >>$Schulkonsole::Config::_wlan_defaults_file")
+			or return;
+	} else {
+		exec Schulkonsole::Encode::to_cli("sed -i '/^g:" . $project_gid . "[[:space:]]/d' " . $Schulkonsole::Config::_wlan_defaults_file)
+			or return;
+	}
 }
 
 =head3 print_class
@@ -2073,8 +2124,10 @@ numeric constant: C<Schulkonsole::Config::READSOPHOMORIXFILEAPP>
 
 number of the file to read (0 = lehrer.txt, 1 = schueler.txt,
 2 = sophomorix.add, 3 = sophomorix.move, 4 = sophomorix.kill,
-5 = report.admin, 6 = report.office, 7 = last of sophomorix.add.txt.*,
-8 = last of sophomorix.move.txt.*, 9 = last of sophomorix.kill.txt.*)
+5 = report.admin, 6 = report.office, 10 = extraschueler.txt,
+11 = extrakurse.txt, 7 = last of sophomorix-add.txt.*,
+8 = last of sophomorix-move.txt.*, 9 = last of sophomorix-kill.txt.*,
+12 = last of sophomorix-quota.txt.*)
 
 =back
 
@@ -2082,7 +2135,7 @@ number of the file to read (0 = lehrer.txt, 1 = schueler.txt,
 
 sub readsophomorixfileapp(){
 	my $number = <>;
-	($number) = $number =~ /^([0-9]|1[01])$/;
+	($number) = $number =~ /^([0-9]|1[0-2])$/;
 	exit (  Schulkonsole::Error::SophomorixError::WRAPPER_INVALID_FILENUMBER )
 		unless defined $number;
 
@@ -2171,6 +2224,11 @@ sub readsophomorixfileapp(){
 			                 	"$DevelConf::log_files/sophomorix-kill.txt.");
 			last BASENAME;
 		};
+		$number == 12 and do {
+			$filename_base = Schulkonsole::Encode::to_fs(
+			                 	"$DevelConf::log_files/sophomorix-quota.txt.");
+			last BASENAME;
+		};
 	}
 	my @filenames = sort glob "$filename_base*";
 	($filename) = $filenames[-1] =~ /^(.*)$/;
@@ -2183,7 +2241,6 @@ sub readsophomorixfileapp(){
 	else {
 		$encoding = $supported_encodings{$encoding};
 	}
-
 	open FILE, "<:encoding($encoding)", $filename
 		or exit (  Schulkonsole::Error::SophomorixError::WRAPPER_CANNOT_OPEN_FILE );
 

@@ -25,23 +25,20 @@ provides the following variables:
 use strict;
 use utf8;
 use lib '/usr/share/schulkonsole';
-use open ':utf8';
 use Env::Bash;
 use Schulkonsole::Encode;
 use Schulkonsole::Files;
 use Schulkonsole::Session;
 use Schulkonsole::Error::Error;
 use Schulkonsole::Sophomorix;
-use Sophomorix::SophomorixAPI;
+use Schulkonsole::SophomorixConfig;
+use Schulkonsole::SophomorixQuotas qw(process_quota);
+
 use Sophomorix::SophomorixConfig;
-use LaTeX::Encode;
-use LaTeX::Decode;
+
+use Proc::ProcessTable;
 
 my $this_file = 'settings_users';
-
-my $true = $Schulkonsole::Config::_sophomorix_conf_true;
-my $false = $Schulkonsole::Config::_sophomorix_conf_false;
-
 
 my $sk_session = new Schulkonsole::Session($this_file);
 if (not $sk_session->get_password()) {
@@ -87,29 +84,8 @@ if (    @Conf::quota_filesystems
 
 
 
-# boolean values in sophomorix.conf are only defined if true in query
-# and are represented with $true and $false in sophomorix.conf
-my %sophomorix_conf_bool_in_form = (
-	splan_sternchenklassen_filtern => 1,
-	schueler_zufall_passwort => 1,
-	lehrer_zufall_passwort => 1,
-	student_samba_pw_must_change => 1,
-	teacher_samba_pw_must_change => 1,
-	use_quota => 1,
-	schueler_per_ssh => 1,
-	lehrer_per_ssh => 1,
-	mailquota_warnings => 1,
-	mailquota_warnings_root => 1,
-);
 
-# strings for latex need to be converted
-my %latex_string = (
-	admins_print => 1,
-	schul_name => 1,
-);
-
-
-my %sophomorix_conf = read_sophomorix_conf();
+my %sophomorix_conf = Schulkonsole::SophomorixConfig::read_sophomorix_conf();
 my %quota_conf = read_quota_conf();
 my %mailquota_conf = read_mailquota_conf();
 my %filesystem_conf = read_filesystem_conf();
@@ -118,12 +94,22 @@ my %quota_conf_new;
 my %mailquota_conf_new;
 my %filesystem_conf_new;
 
+my $process_table = new Proc::ProcessTable;
+my $app_quota = $Schulkonsole::Config::_cmd_sophomorix_quota;
+$app_quota =~ s:.*/::;
+my %running;
+foreach my $process (@{ $process_table->table }) {
+	if ($process->fname =~ /^soph/ and $process->cmndline =~ /$app_quota/) {
+			$running{quota} = $process->pid;
+	}
+}
+
 if ($q->param('accept')) {
 	eval {
 	my @errors;
 	foreach my $param ($q->param) {
 		if (exists $sophomorix_conf{$param}) {
-			if ($sophomorix_conf_bool_in_form{$param}) {
+			if (Schulkonsole::SophomorixConfig::is_boolean($param)) {
 				if (not $sophomorix_conf{$param}) {
 					$sophomorix_conf_new{$param} = 1;
 				}
@@ -196,9 +182,8 @@ if ($q->param('accept')) {
 	}
 
 	# set undefined boolean values to false
-	foreach my $param (keys %sophomorix_conf_bool_in_form) {
-		if (    not defined $q->param($param)
-		    and $sophomorix_conf{$param}) {
+	foreach my $param (keys %sophomorix_conf) {
+		if (not defined $q->param($param) and Schulkonsole::SophomorixConfig::is_boolean($param)) {
 			$sophomorix_conf_new{$param} = 0;
 		}
 	}
@@ -219,9 +204,8 @@ if ($q->param('accept')) {
 		my $do_quota_student = 0;
 		my $do_quota_teacher = 0;
 		if (%sophomorix_conf_new) {
-			my $lines = new_sophomorix_lines(\%sophomorix_conf_new);
-			Schulkonsole::Sophomorix::write_sophomorix_conf(
-				$id, $password, $lines);
+			my $lines = Schulkonsole::SophomorixConfig::new_sophomorix_lines(\%sophomorix_conf_new);
+			Schulkonsole::SophomorixConfig::write_sophomorix_conf($id, $password, $lines);
 
 			$do_quota_set = 1 if exists $sophomorix_conf_new{use_quota};
 
@@ -269,11 +253,11 @@ if ($q->param('accept')) {
 		}
 
 		if ($is_changed) {
-			Schulkonsole::Sophomorix::process_quota($id, $password,
+			Schulkonsole::SophomorixQuotas::process_quota($id, $password,
 				  ($do_quota_set)
 				| ($do_quota_teacher << 1)
 				| ($do_quota_student << 2));
-
+			$running{quota} = 1;
 			$sk_session->set_status(
 				$sk_session->d()->get('Änderungen übernommen'), 0);
 		}
@@ -284,19 +268,40 @@ if ($q->param('accept')) {
 	}
 }
 
+if($q->param('logquota') or $running{quota}) {
+	eval {
+		my $logquota =
+			Schulkonsole::SophomorixQuotas::read_quota_log_file($id, $password);
 
+=item C<logquota>
+
+Output of C<sophomorix-quota --set>
+
+=cut
+
+		splice @$logquota, 0, -30;
+		$sk_session->set_var('logquota', join("", @$logquota));
+	};
+	if ($@) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Kann Logdatei nicht öffnen'), 1);
+	}
+	
+}
 
 # pre-set values for <form>
 foreach my $key (keys %sophomorix_conf) {
 	if (defined $sophomorix_conf_new{$key}) {
-		if ($sophomorix_conf_bool_in_form{$key}) {
-			$sk_session->set_var($key, $sophomorix_conf_new{$key});
+		if (Schulkonsole::SophomorixConfig::is_boolean($key)) {
+			#$sk_session->set_var($key, $sophomorix_conf_new{$key});
+			$q->param($key, $sophomorix_conf_new{$key});
 		} else {
 			$q->param($key, $sophomorix_conf_new{$key});
 		}
 	} else {
-		if ($sophomorix_conf_bool_in_form{$key}) {
-			$sk_session->set_var($key, $sophomorix_conf{$key});
+		if (Schulkonsole::SophomorixConfig::is_boolean($key)) {
+			#$sk_session->set_var($key, $sophomorix_conf{$key});
+			$q->param($key, $sophomorix_conf{$key});
 		} else {
 			$q->param($key, $sophomorix_conf{$key});
 		}
@@ -317,8 +322,6 @@ foreach my $key (keys %mailquota_conf) {
 		$q->param($key, $mailquota_conf{$key});
 	}
 }
-
-
 
 =item C<mountpoints>
 
@@ -343,6 +346,14 @@ An array with the supported encodings
 
 $sk_session->set_var('encodings', ['ascii','8859-1','8859-15','win1252','utf8']);
 
+=item C<isbusy>
+
+True if C<sophomorix-quota> is running
+
+=cut
+
+$sk_session->set_var('isbusy', ($running{quota}? 1 : 0));
+
 
 $sk_session->print_page("$this_file.tt", $this_file);
 
@@ -360,61 +371,6 @@ $sk_session->print_page("$this_file.tt", $this_file);
 Write the changes
 
 =cut
-
-
-
-sub read_sophomorix_conf {
-
-	my %ret = (
-		schul_name => $Conf::schul_name,
-		server_fqdn_internal_print => $Conf::server_fqdn_internal_print,
-		server_fqdn_external_print => $Conf::server_fqdn_external_print,
-		smb_domain_print => $Conf::smb_domain_print,
-		moodle_url => $Conf::moodle_url,
-		admins_print => $Conf::admins_print,
-		geburts_jahreszahl_start => $Conf::geburts_jahreszahl_start,
-		geburts_jahreszahl_stop => $Conf::geburts_jahreszahl_stop,
-		vorname_nachname_tausch => $Conf::vorname_nachname_tausch,
-		mindest_schueler_anzahl_pro_klasse => $Conf::mindest_schueler_anzahl_pro_klasse,
-		maximale_schueler_anzahl_pro_klasse => $Conf::maximale_schueler_anzahl_pro_klasse,
-		splan_sternchenklassen_filtern => ($Conf::splan_sternchenklassen_filtern eq $true),
-		schueler_login_nachname_zeichen => $Conf::schueler_login_nachname_zeichen,
-		schueler_login_vorname_zeichen => $Conf::schueler_login_vorname_zeichen,
-		schueler_zufall_passwort => ($Conf::schueler_zufall_passwort eq $true),
-		zufall_passwort_anzahl_schueler => $Conf::zufall_passwort_anzahl_schueler,
-		schueler_per_ssh => ($Conf::schueler_per_ssh eq $true),
-		student_samba_pw_must_change => ($Conf::student_samba_pw_must_change eq $true),
-		lehrer_zufall_passwort => ($Conf::lehrer_zufall_passwort eq $true),
-		zufall_passwort_anzahl_lehrer => $Conf::zufall_passwort_anzahl_lehrer,
-		lehrer_per_ssh => ($Conf::lehrer_per_ssh eq $true),
-		teacher_samba_pw_must_change => ($Conf::teacher_samba_pw_must_change eq $true),
-		schueler_duldung_tage => $Conf::schueler_duldung_tage,
-		lehrer_duldung_tage => $Conf::lehrer_duldung_tage,
-		schueler_deaktivierung_tage => $Conf::schueler_deaktivierung_tage,
-		lehrer_deaktivierung_tage => $Conf::lehrer_deaktivierung_tage,
-		mail_aliases => $Conf::mail_aliases,
-		mailquota_warnings => ($Conf::mailquota_warnings eq $true),
-		mailquota_warn_percentage => $Conf::mailquota_warn_percentage,
-		mailquota_warn_kb => $Conf::mailquota_warn_kb,
-		mailquota_warnings_root => ($Conf::mailquota_warnings_root eq $true),
-		log_level => $Conf::log_level,
-		use_quota => ($Conf::use_quota eq $true),
-		encoding_students => $Conf::encoding_students,
-		encoding_students_extra => $Conf::encoding_students_extra,
-		encoding_courses_extra => $Conf::encoding_courses_extra,
-		encoding_teachers => $Conf::encoding_teachers,
-		lang => $Conf::lang,
-		teacher_group_name => $Conf::teacher_group_name,
-		teachers_alias_name => $Conf::teacher_alias_name,
-		teachers_alias_additions => $Conf::teachers_alias_additions,
-		alumni_alias_additions => $Conf::alumni_alias_additions,
-	);
-	foreach my $key (keys %latex_string) {
-		$ret{$key} = from_latex($ret{$key}) if defined $ret{$key};
-	}
-	return %ret;
-}
-
 
 
 
@@ -565,82 +521,6 @@ True if shares are accessible
 
 
 
-
-sub new_sophomorix_lines {
-	my $new = shift;
-
-	if (open SOPHOMORIXCONF, '<',
-	         Schulkonsole::Encode::to_fs(
-	         	"$DevelConf::config_pfad/sophomorix.conf")) {
-		my @lines;
-		my %new = %$new;
-
-		while (my $line = <SOPHOMORIXCONF>) {
-			foreach my $key (keys %new) {
-				
-				if ($line =~ /^\s*\$$key\s*=/) {
-					my $value = $new{$key};
-					$value = to_latex($value) if defined $latex_string{$key};
-					if ($sophomorix_conf_bool_in_form{$key}) {
-						$line =
-							"\$$key = '" . ($value ? $true : $false) . "';\n";
-					} else {
-						if ($value =~ /^\d+$/) {
-							$line = "\$$key = $value;\n";
-						} else {
-							$line = "\$$key = '$value';\n";
-						}
-					}
-					delete $new{$key};
-
-					last;
-				}
-			}
-			push @lines, $line;
-		}
-
-		if (%new) {
-			push @lines, "# schulkonsole\n";
-
-			my $line;
-			foreach my $key (keys %new) {
-				my $value = $new{$key};
-				$value = to_latex($value) if defined $latex_string{$key};
-				if ($value =~ /^\d+$/) {
-					$line = "\$$key = $value;\n";
-				} else {
-					$line = "\$$key = '$value';\n";
-				}
-				push @lines, $line;
-			}
-		}
-
-
-		return \@lines;
-	} else {
-		die new Schulkonsole::Error::Error(Schulkonsole::Error::Error::CANNOT_OPEN_FILE,
-			"$DevelConf::config_pfad/sophomorix.conf");
-	}
-}
-
-sub to_latex {
-	my $string = shift;
-	# FIXME: conversion inserts spaces
-	$string = latex_encode($string);
-	$string =~ s/@/\\@/g;
-	return $string;
-}
-
-sub from_latex {
-	my $string = shift;
-	# FIXME: conversion with spaces
-	$string = latex_decode($string);
-	$string =~ s/\\\@/@/g;
-	# überflüssige Leerzeichen und geschweifte Klammern entfernen
-	$string =~ s/([ÄÖÜäöüß])\s/$1/g;
-	$string =~ s/\{\}//g;
-	return $string;
-}
 
 sub new_quota_lines {
 	my $new = shift;

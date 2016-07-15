@@ -1,0 +1,396 @@
+[% page = {
+      title   => loc('Schulkonsole') _ " - " _ loc('Linbo') _ " - " _ loc('Fernsteuerung'),
+      menu     => 1,
+      info     => loc('<p>Beobachten Sie laufende Fernsteuerungsbefehle oder erstellen Sie neue Befehle.</p>'),
+   }
+%]
+
+
+<h2>[% loc('Linbo') %] :: [% loc('Fernsteuerung')%]</h2>
+
+[% IF ! linbo_remote_new %]
+	<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+	<p>
+	<input type="submit" name="task_new" value="[% loc('Aufgabe hinzufügen')%]">
+	</p>
+
+	<h3>[% loc('Linbo') %] - [% loc('Fernsteuerung') %] - [% loc('Status') %]</h3>
+
+	<p><input type="submit" name="task_refresh" value="[% loc('Aktualisieren') %]"></p>
+	[% IF linbo_remote_status and linbo_remote_status.size > 0 %]
+		<table>
+		[% FOREACH line IN linbo_remote_status %]
+			<tr>
+			<th>[% line.host %]</th>
+			<td valign="top"><input type="button" id="[% line.host %]_toggle" name="[% line.host %]_toggle" value="[% IF line.show %]-[% ELSE %]+[% END %]"></td>
+			<td>
+				<input type="hidden" id="[% line.host %]_showlong" name="[% line.host %]_showlong" value="[% line.show %]">
+				<div id="[% line.host %]_long"[% IF ! line.show %] hidden[% END %]>
+				<fieldset>
+				[% FOREACH wline IN line.long %]
+					[% wline %]<br>
+				[% END %]
+				</fieldset>
+				</div>
+				<div id="[% line.host %]_short"[% IF line.show %] hidden[% END %]>
+				[% line.short %]
+				</div>
+			</td></tr>
+		[% END %]
+		</table>
+		<script>
+		$(document).ready(function () {
+		[% FOREACH line IN linbo_remote_status %]
+			$("#[% line.host %]_toggle").click( function () {
+				if(this.value == "+") {
+					this.value = '-';
+					$("#[% line.host %]_long").show();
+					$("#[% line.host %]_short").hide();
+					$("#[% line.host %]_showlong").val(1);
+				} else {
+					this.value = '+';
+					$("#[% line.host %]_long").hide();
+					$("#[% line.host %]_short").show();
+					$("#[% line.host %]_showlong").val(0);
+				}
+			});
+		[% END %]
+		});
+		</script>
+		<p><input type="submit" name="task_refresh" value="[% loc('Aktualisieren') %]"></p>
+	[% ELSE %]
+		<p>[% loc('Keine laufenden Aufgaben.') %]</p>
+	[% END %]
+
+	<h3>[% loc('Linbo') %] - [% loc('Fernsteuerung') %] - [% loc('Geplante Aufgaben') %]</h3>
+	[% IF linbo_remote_planned and linbo_remote_planned.size > 0 %]
+		<table>
+		<tr>
+		<th>Rechner</th>
+		<th>Befehle</th>
+		<th>Auswahl</th>
+		</tr>
+		[% FOREACH key IN linbo_remote_planned.keys %]
+			<tr>
+			<th>[% key %]</th>
+			<td>[% linbo_remote_planned.$key %]</td>
+			<td><input type="checkbox" name="delete;[% key %]"></td>
+			</tr>
+		[% END %]
+		</table>
+		<p><input type="submit" name="task_refresh" value="[% loc('Aktualisieren') %]">
+		<input type="submit" name="accept" value="[% loc('Ausgewählte entfernen') %]"></p>
+	[% ELSE %]
+		<p>[% loc('Keine geplanten Aufgaben.') %]</p>
+	[% END %]
+	</form>
+[% END %]
+
+[% IF linbo_remote_new %]
+
+<h3>[% loc('Linbo') %] - [% loc('Fernsteuerung') %] - [% loc('Neue Aufgabe') %]</h3>
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+
+<h4>[% loc('Rechnerauswahl') %]</h4>
+<table class="liste">
+<tr>
+<td>
+<input type="radio" name="category" value="group" [% IF isgroup %] checked[% END %]>[% loc('Gruppe') %]</input><br>
+<select name="group" id="group" [% IF ! isgroup %] disabled[% END %]>
+[% FOREACH g IN groups %]<option value="[% g %]"[% IF group == g %] selected[% END %]>[% g %]</option>[% END %]
+</select>
+</td>
+<td>
+<input type="radio" name="category" value="room" [% IF isroom %] checked[% END %]>[% loc('Raum') %]</input><br>
+<select name="room" id="room" [% IF ! isroom %] disabled[% END %]>
+[% FOREACH r IN rooms %]<option value="[% r %]"[% IF room == r %] selected[% END %]>[% r %]</option>[% END %]
+</select>
+</td>
+<td>
+<input type="radio" name="category" value="host" [% IF ishost %] checked[% END %]>[% loc('Rechner') %]</input><br>
+<select name="host" id="host" [% IF ! ishost %] disabled[% END %]>
+[% FOREACH h IN hosts %]<option value="[% h %]"[% IF host == h %] selected[% END %]>[% h %]</option>[% END %]
+</select>
+</td>
+</tr>
+</table>
+<script>
+$(document).ready(function(){
+	$('input[type=radio][name=category]').change(function(){
+		$("#group").prop("disabled",this.value != 'group');
+		$("#room").prop("disabled",this.value != 'room');
+		$("#host").prop("disabled",this.value != 'host');
+	});
+});
+</script>
+<h4>[% loc('Ausführung') %]</h4>
+<table class="liste">
+<tr>
+<th colspan="2" align="left"><input type="radio" name="exectime" value="donow" checked>[% loc('direkt') %]</th>
+<th colspan="2" align="left"><input type="radio" name="exectime" value="donextboot">[% loc('beim nächsten Start') %]</th>
+</tr>
+<tr>
+<td colspan="2">
+</td>
+<td colspan="2">
+<input type="checkbox" name="disable_buttons" id="disable_buttons" value="disable_buttons" checked disabled>
+<label>[% loc('Knöpfe deaktivieren') %]</label>
+</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td colspan="2"><input type="checkbox" name="bypass_auto" id="bypass_auto" checked disabled>[% loc('Automatische Auswahl übergehen') %]</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td colspan="2"></td>
+</tr>
+</table>
+<script>
+$(document).ready(function(){
+	$('input[type=radio][name=exectime]').change(function(){
+		$("#disable_buttons").prop("disabled",this.value != 'donextboot');
+		$("#bypass_auto").prop("disabled",this.value != 'donextboot');
+	});
+});
+</script>
+<h4>[% loc('Anstoß') %]</h4>
+<p>
+<input type="checkbox" name="dowakeup" id="dowakeup" value="dowakeup" [% IF dowakeup %] selected[% END %]>
+<label labelfor="dowakeup">[% loc('Rechner aufwecken') %]</label>
+</p>
+<table>
+<tr>
+  <td><label labelfor="wait_host">[% loc('Wartezeit nach jedem Rechner') %] : </label></td>
+  <td><input name="wait_host" id="wait_host" value="0" size="3"[% IF ! dowakeup %] disabled[% END %]>s</td>
+</tr>
+<tr>
+  <td><label labelfor="wait_orders">[% loc('Wartezeit vor der Befehlsliste') %] : </label></td>
+  <td><input name="wait_orders" id="wait_orders" value="0" size="3"[% IF ! dowakeup %] disabled[% END %]>s</td>
+</tr>
+</table>
+<script>
+$(document).ready(function(){
+	$('input[type=checkbox][name=dowakeup]').change(function(){
+		$("#wait_host").prop("disabled", !$("#dowakeup").is(':checked'));
+		$("#wait_orders").prop("disabled", !$("#dowakeup").is(':checked'));
+	});
+});
+</script>
+<h4>[%loc('Befehle') %]</h4>
+<table class="orderlist">
+<tr>
+<td>
+<textarea name="orders" id="orders" rows="40" cols="50"></textarea>
+</td>
+<td style="vertical-align:middle;">
+
+</td>
+<td>
+<fieldset>
+<input type="button" name="append_partition" onclick="do_append_partition()" value="&larr; [% loc('Partitionieren') %]">
+<script>
+function do_append_partition(){
+	$("#orders").text($("#orders").text()+"partition\n");
+}
+</script>
+<br>
+
+<input type="button" name="append_formatall" onclick="do_append_formatall()" value="&larr; [% loc('Alle formatieren') %]">
+<script>
+function do_append_formatall(){
+	$("#orders").text($("#orders").text()+"format\n");
+}
+</script>
+<br>
+
+<input type="button" name="append_formatpartition" onclick="do_append_formatpartition()" value="&larr; [% loc('Parition formatieren') %]: "[% IF ! isgroup %] disabled[% END %]>
+<select name="formatpartition_nr" [% IF ! isgroup %] disabled[% END %]>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+</select>
+<script>
+function do_append_formatpartition(){
+	$("#orders").text($("#orders").text()+"format:"+$("select[name=formatpartition_nr]").val()+"\n");
+}
+</script>
+<br>
+
+<input type="button" name="append_initcache" onclick="do_append_initcache()" value="&larr; [% loc('Cache aktualisieren') %]: ">
+<select name="initcache_type">
+<option value="rsync">rsync</option>
+<option value="multicast">multicast</option>
+<option value="torrent" selected>torrent</option>
+</select>
+<script>
+function do_append_initcache(){
+	$("#orders").text($("#orders").text()+"initcache:"+$("select[name=initcache_type]").val()+"\n");
+}
+</script>
+<br>
+
+<input type="button" name="append_reboot" onclick="do_append_reboot()" value="&larr; [% loc('Neu starten') %]">
+<script>
+function do_append_reboot(){
+	$("#orders").text($("#orders").text()+"reboot\n");
+}
+</script>
+<br>
+
+<input type="button" name="append_halt" onclick="do_append_halt()" value="&larr; [% loc('Herunterfahren') %]">
+<script>
+function do_append_halt(){
+	$("#orders").text($("#orders").text()+"halt\n");
+}
+</script>
+<br>
+
+<input type="button" name="append_sync" onclick="do_append_sync()" value="&larr; [% loc('Synchronisieren') %]">
+<select name="sync_nr">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+</select>
+<script>
+function do_append_sync(){
+	$("#orders").text($("#orders").text()+"sync:"+$("select[name=sync_nr]").val()+"\n");
+}
+</script>
+<br>
+
+<input type="button" name="append_start" onclick="do_append_start()" value="&larr; [% loc('Starten') %]">
+<select name="start_nr">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+</select>
+<script>
+function do_append_start(){
+	$("#orders").text($("#orders").text()+"start:"+$("select[name=start_nr]").val()+"\n");
+}
+</script>
+<br>
+
+<input type="button" name="append_createcloop" onclick="do_append_createcloop()" value="&larr; [% loc('Image erstellen') %]: "
+[% IF ! isgroup %] disabled[% END %]>
+<select name="createcloop_nr"
+[% IF ! isgroup %] disabled[% END %]>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+</select><br>
+<label labelfor="createcloop_msg">[% loc('Hinweis')%]: </label>
+<input name="createcloop_msg" id="createcloop_msg">
+<script>
+function do_append_createcloop(){
+	$("#orders").text($("#orders").text()+"create_cloop:"+$("select[name=createcloop_nr]").val()+
+		    ":\""+$("input[name=createcloop_msg]").val()+"\"\n");
+}
+</script>
+<br>
+
+<input type="button" name="append_creatersync" onclick="do_append_creatersync()" value="&larr; [% loc('Diff. Image erstellen') %]: "
+[% IF ! isgroup %] disabled[% END %]>
+<select name="creatersync_nr"
+[% IF ! isgroup %] disabled[% END %]>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+</select><br>
+<label labelfor="creatersync_msg">[% loc('Hinweis')%]: </label>
+<input name="creatersync_msg" id="creatersync_msg">
+<script>
+function do_append_creatersync(){
+	$("#orders").text($("#orders").text()+"create_rsync:"+$("select[name=creatersync_nr]").val()+
+		    ":\""+$("input[name=creatersync_msg]").val()+"\"\n");
+}
+</script>
+<br>
+
+<input type="button" name="append_uploadcloop" onclick="do_append_uploadcloop()" value="&larr; [% loc('Image hochladen') %]: "
+[% IF ! isgroup %] disabled[% END %]>
+<select name="uploadcloop_nr"
+[% IF ! isgroup %] disabled[% END %]>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+</select>
+<script>
+function do_append_uploadcloop(){
+	$("#orders").text($("#orders").text()+"upload_cloop:"+$("select[name=uploadcloop_nr]").val()+"\n");
+}
+</script>
+<br>
+
+<input type="button" name="append_uploadrsync" onclick="do_append_uploadrsync()" value="&larr; [% loc('Diff. Image hochladen') %]: "
+[% IF ! isgroup %] disabled[% END %]>
+<select name="uploadrsync_nr"
+[% IF ! isgroup %] disabled[% END %]>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+</select>
+<script>
+function do_append_uploadrsync(){
+	$("#orders").text($("#orders").text()+"upload_rsync:"+$("select[name=uploadrsync_nr]").val()+"\n");
+}
+</script>
+<br>
+
+<input type="button" name="append_update" onclick="do_append_update()" value="&larr; [% loc('Aktualisieren') %]">
+<script>
+function do_append_update(){
+	$("#orders").text($("#orders").text()+"update\n");
+}
+</script>
+<br>
+
+</fieldset>
+</td>
+</tr>
+</table>
+<p>
+<input type="submit" name="task_add" value="[% loc('Hinzufügen') %]">
+<input type="submit" name="task_abort" value="[% loc('Abbrechen') %]">
+</p>
+</form>
+[% END %]
+

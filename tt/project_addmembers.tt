@@ -1,0 +1,145 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Projekte') _ ":  $project - " _ loc('Mitglieder hinzufügen'),
+      menu     => 1,
+      submenu  => "project",
+      info     => loc('<p>Wählen Sie die Mitglieder aus, die Sie neu ins Projekt aufnehmen wollen und klicken Sie dann auf die Schaltfläche &bdquo;Aufnehmen&ldquo;.</p><p>Falls das Suchergebnis nicht Ihren Erwartungen entspricht, können Sie unten eine neue Suche starten.</p>'),
+   }
+%]
+
+<h2>[% loc('Projekte') %] :: [% loc('Mitglieder hinzufügen') %]</h2>
+
+<h3>[% loc('Ausgewähltes Projekt:') %] [% project %]</h3>
+
+
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+
+[% IF students %]
+<table id="searchstudents" class="liste">
+<tr>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Klasse') %]</th>
+<th>[% loc('Mitgliedschaft') %]</th>
+</tr>
+[% FOREACH s IN students %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td>[% s.login %]</td>
+<td>[% s.firstname %] [% s.surname %]</td>
+<td>[% s.class %]</td>
+<td><input type="checkbox" name="[% s.login %]_member"></td>
+</tr>
+[% END %]
+<tr>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Klasse') %]</th>
+<th>[% loc('Mitgliedschaft') %]</th>
+</tr>
+</table>
+
+<p><input type="submit" name="add" value="[% loc('Aufnehmen') %]"></p>
+
+[% END %]
+
+
+[% IF teachers %]
+<table id="searchteachers" class="liste">
+<tr>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Mitgliedschaft') %]</th>
+<th>[% loc('Projektleitung') %]</th>
+</tr>
+[% FOREACH t IN teachers %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td>[% t.login %]</td>
+<td>[% t.firstname %] [% t.surname %]</td>
+<td><input type="checkbox" name="[% t.login %]_member"></td>
+<td><input type="checkbox" name="[% t.login %]_admin"></td>
+</tr>
+[% END %]
+<tr>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Mitgliedschaft') %]</th>
+<th>[% loc('Projektleitung') %]</th>
+</tr>
+</table>
+
+<p><input type="submit" name="add" value="[% loc('Aufnehmen') %]"></p>
+
+[% END %]
+
+
+
+[% IF classes %]
+<table id="searchclasses" class="liste">
+<tr>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Mitgliedschaft') %]</th>
+</tr>
+[% FOREACH c IN classes %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td><input type="submit" name="[% c.gid %]_showclass" value="[% c.name %]"></td>
+<td><input type="checkbox" name="[% c.gid %]_class"></td>
+</tr>
+[% END %]
+<tr>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Mitgliedschaft') %]</th>
+</tr>
+</table>
+
+<p><input type="submit" name="add" value="[% loc('Aufnehmen') %]"></p>
+
+[% END %]
+
+
+
+[% IF projects %]
+<table id="searchprojects" class="liste">
+<tr>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Mitgliedschaft') %]</th>
+</tr>
+[% FOREACH p IN projects %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td>[% p.name %]</td>
+<td><input type="checkbox" name="[% p.gid %]_project"></td>
+</tr>
+[% END %]
+<tr>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Mitgliedschaft') %]</th>
+</tr>
+</table>
+
+<p><input type="submit" name="add" value="[% loc('Aufnehmen') %]"></p>
+
+[% END %]
+
+<input type="hidden" name="query">
+<input type="hidden" name="scope">
+
+</form>
+
+
+
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+<p>
+<label [% labelfor("query") %]>[% loc('Neue Suche:') %]</label>
+<input id="query" name="query">
+<input type="submit" name="search" value="[% loc('Suche') %]"></p>
+<p><input type="radio" name="scope" id="radiostudent" value="[% loc('student') %]" checked>
+   <label [% labelfor("radiostudent") %]>[% loc('Schüler') %]</label>
+   <input type="radio" name="scope" id="radioteacher" value="[% loc('teacher') %]">
+   <label [% labelfor("radioteacher") %]>[% loc('Lehrer') %]</label>
+   <input type="radio" name="scope" id="radioclass" value="[% loc('class') %]">
+   <label [% labelfor("radioclass") %]>[% loc('Klasse') %]</label>
+   <input type="radio" name="scope" id="radioproject" value="[% loc('project') %]">
+   <label [% labelfor("radioproject") %]>[% loc('Projekt') %]</label></p>
+</form>

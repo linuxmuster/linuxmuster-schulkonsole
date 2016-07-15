@@ -1,0 +1,147 @@
+[% page = {
+      title   => loc('Schulkonsole') _ " - " _ loc('Linbo'),
+      menu    => 1,
+      submenu => 'linbo',
+      info    => loc('<p>Wenn Sie die Maus auf die Symbole bewegen, werden Hilfetexte angezeigt.</p><p>Zum Umbennenen und Kopieren von Images, müssen Sie einen neuen Dateinamen eingeben. Dateierweiterungen (.cloop/.rsync) können weggelassen werden.</p>'),
+}
+%]
+
+[% IF deleteimage %]
+
+    <h2>[% loc('Imagedatei löschen') %]</h2>
+
+    <h3>[% loc('Bitte bestätigen') %]</h3>
+
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+    <p>[% deleteimage %] [% loc('wirklich löschen?') %]</p>
+
+    <p><input type="hidden" name="image" value="[% deleteimage %]"><input type="submit" name="delete" value="[% loc('Bestätigen') %]">
+    <input type="submit" name="abort" value="[% loc('Abbrechen') %]"></p>
+
+    </form>
+
+[% ELSIF moveimage %]
+    <h2>[% loc('Imagedatei umbenennen') %]</h2>
+
+    <h3>[% loc('Bitte bestätigen') %]</h3>
+
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+    <p>[% moveimage %] [% loc('überschreiben?') %]</p>
+
+    <p><input type="hidden" name="src" value="[% src %]"><input type="hidden" name="dst" value="[% moveimage %]"><input type="submit" name="move" value="[% loc('Überschreiben') %]">
+    <input type="submit" name="abort" value="[% loc('Abbrechen') %]"></p>
+
+    </form>
+
+[% ELSIF copyimage %]
+    <h2>[% loc('Imagedatei kopieren') %]</h2>
+
+    <h3>[% loc('Bitte bestätigen') %]</h3>
+
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+    <p>[% copyimage %] [% loc('überschreiben?') %]</p>
+
+    <p><input type="hidden" name="src" value="[% src %]"><input type="hidden" name="dst" value="[% copyimage %]"><input type="submit" name="copy" value="[% loc('Überschreiben') %]">
+    <input type="submit" name="abort" value="[% loc('Abbrechen') %]"></p>
+
+    </form>
+
+[% ELSIF editfilename %]
+
+    <h2>[% image %]: [% loc('Imagebeschreibung editieren') %]</h2>
+
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+    <p><textarea wrap="off" name="imagedesc" rows="20" cols="70">[% imagedesc %]</textarea></p>
+    <p><input type="hidden" name="filename" value="[% editfilename %]"><input type="submit" name="edit" value="[% loc('Änderungen speichern') %]">
+    <input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
+
+    </form>
+
+[% ELSIF imageinfo %]
+
+    <h2>[% image %]: [% loc('Image-Informationen') %]</h2>
+
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+    <pre id="imageinfo">[% imageinfo %]</pre>
+    <p><input type="submit" name="abort" value="[% loc('Schließen') %]"></p>
+
+    </form>
+
+[% ELSE %]
+
+    <h2>[% loc('Basisimages') %]</h2>
+
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+    [% lfdnr=1 %]
+    <table id="linbobaseimages" class="liste">
+
+    <colgroup width="5%"></colgroup>
+    <colgroup width="50%"></colgroup>
+    <colgroup span="2" width="3%"></colgroup>
+    <colgroup width="32%"></colgroup>
+    <colgroup span="3" width="3%"></colgroup>
+
+    <tr>
+    <th>Nr.</th>
+    <th>Imagename</th>
+    <th></th>
+    <th></th>
+    <th colspan="3">Umbenennen/Kopieren</th>
+    <th></th>
+    </tr>
+    [% FOREACH image_base IN images_base %]
+        <tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+        <td class="lfdnr">[% lfdnr %].</td>
+        <td><label [% labelfor("${image_base}_newimage") %]>[% image_base %]</label></td>
+        <td><input title="Beschreibung anzeigen/editieren" type="submit" class="btn-linbo-edit" alt="Beschreibung" name="[% image_base %]_editdesc" value="[% loc('E') %]"></td>
+        <td><input title="Information anzeigen" type="submit" class="btn-linbo-showinfo" alt="Info" name="[% image_base %]_info" value="[% loc('I') %]"></td>
+        <td><input id="[% image_base %]_newimage" name="[% image_base %]_newimage" [% dovalue("${image_base}_newimage") %]></td>
+        <td><input title="Image umbenennen" type="submit" class="btn-linbo-move" alt="Umbenennen" name="[% image_base %]_move" value="[% loc('U') %]"></td>
+        <td><input title="Image kopieren" type="submit" class="btn-linbo-copy" alt="Kopieren" name="[% image_base %]_copy" value="[% loc('K') %]"></td>
+        <td><input title="Image löschen" type="submit" class="btn-linbo-trash" alt="Löschen" name="[% image_base %]_delete" value="[% loc('L') %]"></td>
+        [% lfdnr=lfdnr+1 %]
+        </tr>
+    [% END %]
+    </table>
+
+    </form>
+
+    <hr>
+
+    <h2>Differenzielle Images</h2>
+
+    <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+    [% lfdnr=1 %]
+    <table id="linboimages" class="liste">
+    
+    <colgroup width="5%"></colgroup>
+    <colgroup width="50%"></colgroup>
+    <colgroup span="2" width="3%"></colgroup>
+    <colgroup width="32%"></colgroup>
+    <colgroup span="3" width="3%"></colgroup>
+
+    <tr>
+    <th>Nr.</th>
+    <th>Imagename</th>
+    <th></th>
+    <th></th>
+    <th colspan="3">Umbenennen/Kopieren</th>
+    <th></th>
+    </tr>
+    [% FOREACH image_diff IN images_diff %]
+        <tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+        <td><label [% labelfor("${image_diff}_newimage") %]>[% image_diff %]</label></td>
+        <td><input title="Beschreibung anzeigen/editieren" type="submit" class="btn-linbo-edit" alt="Beschreibung" name="[% image_diff %]_editdesc" value="[% loc('E') %]"></td>
+        <td><input title="Information anzeigen" type="submit" class="btn-linbo-showinfo" alt="Info" name="[% image_diff %]_info" value="[% loc('I') %]"></td>
+        <td><input id="[% image_diff %]_newimage" name="[% image_diff %]_newimage" [% dovalue("${image_diff}_newimage") %]></td>
+        <td><input title="Image umbenennen" type="submit" class="btn-linbo-move" alt="Umbenennen" name="[% image_diff %]_move" value="[% loc('U') %]"></td>
+        <td><input title="Image kopieren" type="submit" class="btn-linbo-copy" alt="Kopieren" name="[% image_diff %]_copy" value="[% loc('K') %]"></td>
+        <td><input title="Image löschen" type="submit" class="btn-linbo-trash alt="Löschen" name="[% image_diff %]_delete" value="[% loc('L') %]"></td>
+        [% lfdnr=lfdnr+1 %]
+        </tr>
+    [% END %]
+    </table>
+
+    </form>
+
+[% END %]

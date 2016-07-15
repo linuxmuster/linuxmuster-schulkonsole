@@ -1,0 +1,144 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('aktueller Raum') _ ":  $room - " _ loc('Einsammeln'),
+      menu     => 1,
+      submenu  => "room",
+      info     => loc('<p>Einzusammelnde Dateien müssen im Heimatverzeichnis der Schüler/innen im Ordner &bdquo;__einsammeln&ldquo; abgelegt sein, damit sie hier aufgelistet werden.<br>Nachträglich von den Schüler/innen dorthin abgelegte Dateien können Sie über &bdquo;Ansicht aktualisieren&ldquo; sichtbar machen.</p><p>Wählen Sie aus, ob die Originaldateien auf Schülerseite gelöscht werden oder erhalten bleiben sollen.</p><p>Sie finden die eingesammelten Dateien in Ihrem Heimatverzeichnis unter &bdquo;_eingesammelt -&gt; eingesammelt-aktueller_raum&ldquo;.</p>'),
+   }
+%]
+
+<h2>[% loc('Aktueller Raum') %]: [% room %]
+:: [% loc('Einsammeln') %]</h2>
+
+<p>
+[% loc('Nutzung:') %]
+
+[% editinguser %] [% loc('unterrichtet in Raum') %]
+[% room %].
+[% IF endedittime %]
+[% loc('Unterrichtsende um') %] [% endedittime %].
+[% END %]
+</p>
+
+[% IF exammode %]
+<p>[% loc('Klassenarbeitsmodus ist <strong>aktiv</strong>.') %]</p>
+[% ELSE %]
+<p>[% loc('Klassenarbeitsmodus ist <strong>nicht aktiv</strong>.') %]</p>
+[% END %]
+
+
+<hr>
+
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+
+<h3>[% loc('Bisher eingesammelte Dateien') %]</h3>
+
+[% IF room_collected_files %]
+    <table id="roomcollectedfiles" class="liste">
+    [% lfdnr = 1 %]
+    <tr>
+        <th>[% loc('Nr.') %]</th>
+        <th>[% loc('Dateiname') %]<th>
+        <th colspan=2 ></th>
+    </tr>
+    [% FOREACH rcf IN room_collected_files %]
+    	<tr class="[% IF lfdnr % 2 == 1 %]odd[% ELSE %]even[% END %]">
+        <td class="lfdnr">[% lfdnr %]</td>
+        <td>[% IF rcf.isdir %]*[% END %][% rcf.name %]</td>
+        <td><input title="[% loc('Herunterladen') %]" type="submit" class="btn-download" alt="[% loc('Herunterladen') %]" 
+            name="[% rcf.name %];download" value="[% loc('H') %]"></td>
+        <td><input title="[% loc('Löschen') %]" type="submit" class="btn-delete" alt="[% loc('Löschen') %]" 
+            name="[% rcf.name %];delete" value="[% loc('L') %]"></td>
+        [% lfdnr=lfdnr+1 %]
+        </tr>
+    [% END %]
+    </table>
+[% END %]
+
+<h3>[% loc('Einsammeln') %]</h3>
+
+<p><input type="submit" value="[% loc('Ansicht aktualisieren') %]"></p>
+
+<table>
+<tr>
+    <td><input type="radio" id="deletetop" name="deletetop" value="1"></td>
+	<td><label [% labelfor("deletetop") %]>[% loc('Original wird gelöscht') %]</label></td>
+</tr>
+<tr>
+	<td><input type="radio" id="copytop" name="deletetop" value="0" checked></td>
+	<td><label [% labelfor("copytop") %]>[% loc('Original bleibt erhalten') %]</label></td>
+</tr>
+</table>
+<p><input type="submit" name="collecttop" value="[% loc('Einsammeln') %]"></p>
+
+
+<table id="roomcollect" class="liste">
+<colgroup span="4"></colgroup>
+<colgroup width="40%"></colgroup>
+<tr>
+<th>[% loc('Hostname') %]</th>
+<th>[% loc('Login') %]</th>
+<th>[% loc('Name') %]</th>
+<th>[% loc('Auswahl') %]</th>
+<th>[% loc('Dateien') %]</th>
+</tr>
+[% FOREACH w IN overview_workstations %]
+[% IF w.editing %]
+<tr class="editing">
+[% IF odd %][% odd=0 %]
+[% ELSE %][% odd=1 %][% END %]
+[% ELSE %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+[% END %]
+	<td>[% IF w.first %]
+	    [% w.name %]
+	    [% END %]</td>
+	[% IF w.login %]
+	<td>
+	    [% w.login %]
+	</td>
+	<td>
+	    [% w.firstname %] [% w.surname %]
+	</td>
+	<td>[% IF w.editing %]
+		<input type="checkbox" disabled>[% ELSE %]
+		<input type="checkbox" name="[% w.login %];collect" checked>
+	[% END %]</td>
+	<td>[% FOREACH wf IN w.files %]
+	[% IF wf.isdir %]
+	*[% END %][% wf.name %]<br>
+	[% END %]
+	</td>
+	[% ELSE %]
+	<td>-</td>
+	<td></td>
+	<td>-</td>
+	[% END %]
+</tr>
+[% END %]
+<tr>
+<td colspan="3"></td>
+<td>|</td>
+<td></td>
+</tr>
+<tr class="quickselection">
+<td colspan="3">[% loc('Schnellauswahl') %]</td>
+<td><input class="button" type="button" value="[% loc('Aus') %]" name="collect" onClick="check_uncheck(this)" checked></td>
+<td></td>
+</tr>
+</table>
+
+
+<table>
+<tr>
+	<td><input type="radio" id="deletebottom" name="deletebottom" value="1"></td>
+	<td><label [% labelfor("deletebottom") %]>[% loc('Original wird gelöscht') %]</label></td>
+</tr>
+<tr>
+	<td><input type="radio" id="copybottom" name="deletebottom" value="0" checked></td>
+	<td><label [% labelfor("copybottom") %]>[% loc('Original bleibt erhalten') %]</label></td>
+</tr>
+</table>
+<p><input type="submit" name="collectbottom" value="[% loc('Einsammeln') %]"></p>
+
+</form>

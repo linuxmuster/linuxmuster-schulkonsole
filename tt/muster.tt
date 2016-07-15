@@ -1,0 +1,29 @@
+[% page = {
+      title   => loc('Schulkonsole') _ " - " _ loc('Muster'),
+      menu     => 1,
+      submenu  => "",
+      textdomain => "muster",
+      disable_enter => 1,
+      info     => loc('.'),
+   }
+%]
+<<Die "page"-hash-Variable steuert Ausgabedetails, die außerhalb dieser Datei bearbeitet werden.>>
+<<Die Hauptausgabedatei heißt page.tt.>>
+
+<<Die Syntax in der Datei beruht auf Template Toolkit>>
+
+[% IF muster %]
+
+<<Übersetzungen werden durch die Funktion loc('Text') ausgelöst.>>
+
+<form method="POST" accept-charset=UTF-8" onsubmit="return showBusy()">
+<h2>[% loc('Muster-Überschrift') %]</h2>
+
+<p>Musterabsatz</p>
+
+<input name="eingabe" id="eingabe" value="[% eingabe %]">
+
+<input type="submit" name="send" value="[% loc('senden') %]>
+
+</form>
+[% END %]

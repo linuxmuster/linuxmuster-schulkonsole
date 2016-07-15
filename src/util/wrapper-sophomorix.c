@@ -12,7 +12,7 @@
 #endif
 
 #ifndef WRAPPERSOPHOMORIXPERLAPP
-# define WRAPPERSOPHOMORIXPERLAPP "/usr/libexec/schulkonsole/bin/wrapper-sophomorix.pl"
+# define WRAPPERSOPHOMORIXPERLAPP "/usr/lib/schulkonsole/bin/wrapper-sophomorix.pl"
 #endif
 
 

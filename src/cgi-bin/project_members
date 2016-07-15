@@ -30,6 +30,8 @@ use Schulkonsole::Session;
 use Schulkonsole::Info;
 use Schulkonsole::Sophomorix;
 use Schulkonsole::Cyrus;
+use Schulkonsole::Repair;
+use Proc::ProcessTable;
 
 my $this_file = 'project_members';
 
@@ -69,12 +71,37 @@ if (   not $project
 
 
 
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
 my $admins = Schulkonsole::DB::project_admins($$projects{$project}{id});
 my $is_admin = $$admins{$sk_session->userdata('uidnumber')};
 my $is_joinable = $$projects{$project}{joinable};
 
+my $process_table = new Proc::ProcessTable;
+my $app_repair = $Schulkonsole::Config::_cmd_sophomorix_repair;
+$app_repair =~ s:.*/::;
+my %running;
+foreach my $process (@{ $process_table->table }) {
+	if ($process->fname =~ /^soph/ and $process->cmndline =~ /$app_repair/) {
+			$running{repair} = $process->pid;
+	}
+}
+
 eval {
 COMMANDS: {
+
+$q->param('repair_projecthomes;'.$project) and do {
+	if (not $is_admin) {
+		$sk_session->set_status($sk_session->d()-get(
+				'Sie sind kein Administrator dieses Projekts'), 1);
+		last COMMANDS;
+	}
+	Schulkonsole::Repair::repair_projecthomes($id, $password, $project);
+	$sk_session->set_status($sk_session->d()->get(
+				'Reparatur gestartet...'), 0);
+	$running{repair} = 1;
+	last COMMANDS;
+};
 
 $q->param('projectisopenaccept') and do {
 	if (not $is_admin) {
@@ -748,6 +775,35 @@ Name of the selected project
 	$sk_session->set_var('project', $$projects{$project}{displayname});
 
 }
+
+if($q->param('logrepair') or $running{repair}) {
+	eval {
+		my $logrepair =
+			Schulkonsole::Repair::read_repair_log_file($id, $password);
+
+=item C<logrepair>
+
+Output of C<sophomorix-repair ...>
+
+=cut
+
+		splice @$logrepair, 0, -30;
+		$sk_session->set_var('logrepair', join("", @$logrepair));
+	};
+	if ($@) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Kann Logdatei nicht öffnen'), 1);
+	}
+	
+}
+
+=item C<isbusy>
+
+True if C<sophomorix-repair> is running
+
+=cut
+
+$sk_session->set_var('isbusy', ($running{repair}? 1 : 0));
 
 $sk_session->print_page("$this_file.tt", $this_file);
 

@@ -1,0 +1,61 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Einstellungen') _ " - " _ loc('Klassen'),
+      menu     => 1,
+      submenu  => "settings",
+      info     => loc('<p>Bearbeiten Sie hier die sichtbaren Klassen.</p><p>Für eine detaillierte Beschreibung der einzelnen Punkte konsultieren Sie bitte die Dokumentation.</p>'),
+   }
+%]
+
+<h2>[% loc('Einstellungen') %] :: [% loc('Klassen') %]</h2>
+
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+
+<h3>[% loc('Global') %]</h3>
+
+<table class="settings">
+<colgroup span="1" width="40%">
+</colgroup>
+<tr><th>[% loc('Klassenname') %]</th><th>[% loc('sichtbar') %]</th>
+<th>[% loc('Liste') %]</th>
+<th>[% loc('Aliase') %]</th>
+<th>[% loc('WLAN') %]</th></tr>
+[% FOREACH c IN classes %]
+[% IF odd %][% odd=0 %]<tr class="odd">
+[% ELSE %][% odd=1 %]<tr class="even">[% END %]
+<td><label [% labelfor("${c.gid}_visible") %]>[% c.name %]</label></td><td>
+[% IF c.visible %]
+<input type="checkbox" name="[% c.gid %]_visible" id="[% c.gid %]_visible" checked>
+[% ELSE %]
+<input type="checkbox" name="[% c.gid %]_visible" id="[% c.gid %]_visible">
+[% END %]
+</td>
+<td>
+[% IF c.maillist %]
+<input type="checkbox" name="[% c.gid %]_maillist" id="[% c.gid %]_maillist" checked>
+[% ELSE %]
+<input type="checkbox" name="[% c.gid %]_maillist" id="[% c.gid %]_maillist">
+[% END %]
+</td>
+<td>
+[% IF c.mailalias %]
+<input type="checkbox" name="[% c.gid %]_mailalias" id="[% c.gid %]_mailalias" checked>
+[% ELSE %]
+<input type="checkbox" name="[% c.gid %]_mailalias" id="[% c.gid %]_mailalias">
+[% END %]
+</td>
+<td>
+<select name="[% c.gid %]_wlan">
+<option value="-1"[% IF valueof("${c.gid}_wlan") == "-1" %] selected[% END %]>-</option>
+<option value="1"[% IF valueof("${c.gid}_wlan") == "1" %] selected[% END %]>[% loc('An') %]</option>
+<option value="0"[% IF valueof("${c.gid}_wlan") == "0" %] selected[% END %]>[% loc('Aus') %]</option>
+</select>
+</td>
+</tr>
+[% END %]
+</table>
+
+<p>
+<input type="submit" name="accept" value="[% loc('Änderungen übernehmen') %]">
+</p>
+
+</form>

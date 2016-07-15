@@ -1,0 +1,18 @@
+[% IF link_settings_program %]
+	<li><a [% dohref("settings_program") %]>[% loc('Schulkonsole') %]</a></li>
+[% END %]
+[% IF link_settings_users %]
+	<li><a [% dohref("settings_users") %]>[% loc('Benutzerverwaltung') %]</a></li>
+[% END %]
+[% IF link_settings_rooms %]
+	<li><a class="separator" [% dohref("settings_rooms") %]>[% loc('Räume') %]</a></li>
+[% END %]
+[% IF link_settings_classs %]
+	<li><a [% dohref("settings_classs") %]>[% loc('Klassen') %]</a></li>
+[% END %]
+[% IF link_settings_projects %]
+        <li><a [% dohref("settings_projects") %]>[% loc('Projekte') %]</a></li>
+[% END %]
+[% IF link_settings_repair %]
+        <li><a [% dohref("settings_repair") %]>[% loc('Reparaturen') %]</a></li>
+[% END %]

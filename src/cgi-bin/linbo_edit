@@ -293,6 +293,17 @@ Name of the selected group
 
                                 last SWITCHNEWSYSTEM;
                         };
+                        $new_system eq 'msr' and do {
+                                undef $$conf{linbo}{cache}
+                                        if $$conf{linbo}{cache} eq $$partition{dev};
+                                delete $$partition{oss} if $$partition{oss};
+                                $$partition{type} = 'msr';
+                                $$partition{id} = 0x0c01;
+                                $$partition{fstype} = '';
+                                $q->param("${np}_fstype", $$partition{fstype}) if defined $np;
+
+                                last SWITCHNEWSYSTEM;
+                        };
                         }
 
                         last SWITCHCOMMAND;
@@ -378,6 +389,13 @@ Name of the selected group
 
                                 last SWITCHNEWDEV;
                         };
+                        $new_system eq 'msr' and do {
+                                $partition{type} = 'msr';
+                                $partition{id} = 0x0c01;
+                                $partition{fstype} = '';
+
+                                last SWITCHNEWDEV;
+                        };
 
                         die;
                         }
@@ -431,6 +449,8 @@ Name of the selected group
         my $partitions = $$conf{partitions};
         my $cache = $$conf{linbo}{cache};
         my $is_cached = 0;
+        my $has_efi = 0;
+        my $has_msr = 0;
         foreach my $partition (sort {
                         my ($name_a, $number_a) = $$partitions{$a}{dev} =~ /^(.*?)(\d*)$/;
                         my ($name_b, $number_b) = $$partitions{$b}{dev} =~ /^(.*?)(\d*)$/;
@@ -441,6 +461,9 @@ Name of the selected group
                 keys %$partitions) {
 
                 $is_cached = 1 if(not $is_cached and ($cache eq $$partitions{$partition}{dev}));
+                $has_efi = 1 if $$partitions{$partition}{id} == 0xef;
+                $has_msr = 1 if $$partitions{$partition}{id} == 0x0c01;
+                
                 push @devs, $$partitions{$partition};
 
         } # end foreach my $partition
@@ -464,6 +487,22 @@ True if a partition is selected as cache
 
         $sk_session->set_var('iscached', $is_cached);
 
+
+=item C<has_efi>
+
+True if a efi partition is existing
+
+=cut
+
+	$sk_session->set_var('has_efi', $has_efi);
+	
+=item C<has_msr>
+
+True if a msr partition is existing
+
+=cut
+
+	$sk_session->set_var('has_msr', $has_msr);
 
 =item C<devs>
 
@@ -577,7 +616,8 @@ C<data> for a data partition,
 C<swap> for a swap partition,
 C<cache> for the cache partition,
 C<ext> for an extended parition,
-C<efi> for an EFI partition.
+C<efi> for an EFI partition,
+C<msr> for an MSR partition.
 
 =item C<${devs{n}}_label>
 
@@ -597,7 +637,7 @@ Value for key C<sizeunit> number without unit
 
 =item C<${devs{n}_sizeunit>
 
-Value for unit of key C<sizeunit> kB,M,G,T, (default kB)
+Value for unit of key C<sizeunit> k,M,G,T, (default k)
 
 =item C<${devs{n}}_fstype>
 
@@ -605,7 +645,7 @@ Value of key C<FSType>.
 
 If a Windows OS is installed on this partition, possible values are
 C<vfat> and C<ntfs>.
-For a GNU/Linux OS and Cache C<ext2>, C<ext3> and C<reiserfs>.
+For a GNU/Linux OS and Cache C<ext2>, C<ext3>, C<ext4> and C<reiserfs>.
 If no OS is installed all five types are possible.
 For extended permissions the value is empty.
 
@@ -720,7 +760,8 @@ C<data> for a data partition,
 C<swap> for a swap partition,
 C<cache> for the cache partition,
 C<ext> for an extended parition,
-C<efi> for an EFI partition.
+C<efi> for an EFI partition,
+C<msr> for an MSR partition.
 
 =item C<${devs{os}{n}}_deleteos>
 
@@ -746,7 +787,8 @@ C<data> for a data partition,
 C<swap> for a swap partition,
 C<cache> for the cache partition,
 C<ext> for an extended parition,
-C<efi> for an EFI partition.
+C<efi> for an EFI partition,
+C<msr> for an MSR partition.
 
 =item C<accept>
 

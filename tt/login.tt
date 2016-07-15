@@ -1,0 +1,21 @@
+[% page = {
+      title   => loc('Schulkonsole') _ " - " _ loc('Login'),
+      info    => loc('<p>Die Schulkonsole kann erst nach erfolgter Anmeldung genutzt werden.</p><p>Bitte melden Sie sich daher mit Benutzername und Passwort an.</p>'),
+      special => 1,
+   }
+%]
+
+<h2>[% loc('Anmeldung') %]</h2>
+<p>
+<form method="post" accept-charset="UTF-8" action="" onsubmit="return showBusy()">
+<table>
+<tr>
+<td><label [% labelfor("username") %]>[% loc('Benutzername') %]</label>: </td>
+<td><input id="username" name="username"></td>
+</tr>
+<tr>
+<td><label [% labelfor("password") %]>[% loc('Passwort') %]</label>: </td>
+<td><input id="password" name="password" type="password"></td>
+</table>
+<p><input type="submit" value="[% loc('Anmelden') %]"></p>
+</form>

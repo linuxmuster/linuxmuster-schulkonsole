@@ -11,7 +11,7 @@ $CFG->varbase      = '/var/lib/schulkonsole/';
 $CFG->cgidir       = $CFG->cgibase . 'cgi-bin/';
 $CFG->wrapperdir   = $CFG->cgibase . 'bin/';
 $CFG->libdir       = $CFG->libbase . 'Schulkonsole/';
-$CFG->shtmldir     = $CFG->libbase . 'shtml/';
+$CFG->ttdir     = $CFG->libbase . 'tt/';
 
 $CFG->SESSION_FILE = $CFG->varbase . '/cgisess_';
 

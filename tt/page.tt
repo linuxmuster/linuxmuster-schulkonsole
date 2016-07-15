@@ -1,0 +1,127 @@
+[% page.default = '1' %]
+<!DOCTYPE  HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
+<html lang="[% IF lang %][% lang %][% ELSE %]de[% END %]">
+<head>
+    <title>[% page.title %]</title>
+    <link rel="stylesheet" title="linuxmuster.net::Schulkonsole" href="css/linuxmuster.css" type="text/css">
+    <link type="text/css" href="/javascript/jquery-ui/css/smoothness/jquery-ui.css" rel="stylesheet" />
+    <script language="javascript" type="text/javascript" src="/javascript/jquery/jquery.js"></script>
+    <script language="javascript" type="text/javascript" src="/javascript/jquery-ui/jquery-ui.js"></script>
+    <script language="javascript" type="text/javascript" src="/jquery/jquery.isloading.js"></script>
+    <script language="javascript" type="text/javascript" src="/jquery/jMenu.jquery.js"></script>
+    <!--[if lt IE 7]>
+    <style type="text/css">@import url(css/linuxmuster_IE.css);</style>
+    </style>
+    <![endif]-->
+    <script type="text/javascript" src="schulkonsole.js"></script>
+[% IF page.script %]
+    [% IF page.debug %]
+        <script type="text/javascript" src="/jquery/[% page.script %]"></script>
+    [% ELSE %]
+        <script type="text/javascript">
+	[% INCLUDE $page.script %]
+	</script>
+    [% END %]
+[% END %]
+[% IF page.disable_enter %]
+<script type="text/javascript">
+$('html').bind('keypress', function(e)
+{
+   if(e.keyCode == 13)
+   {
+      return false;
+   }
+});
+</script>
+[% END %]
+
+    [% IF page.autorefresh %]<meta http-equiv='refresh' content='5;'>[% END %]
+</head>
+<body[% IF action %] class="[% action %]"[% END %]>
+
+<!-- Kopf -->
+    <div id="container">
+        <div id="header">
+            [% IF link_settings %]
+                <h1>[% loc('Schulkonsole für Netzwerkberater/innen') %]</h1>
+            [% ELSIF link_class %]
+                <h1>[% loc('Schulkonsole für Lehrer/innen') %]</h1>
+            [% ELSIF link_start %]
+                <h1>[% loc('Schulkonsole für Schüler/innen') %]</h1>
+            [% ELSE %]
+                <h1>[% loc('Schulkonsole') %]</h1>
+            [% END %]
+            [% loc('Version') %] [% version %] [% action %]
+        </div>
+    <div id="status">
+        [% IF REMOTE_ADDR %]
+            <p class="info">
+            [% loc('Sitzungsdauer:') %]&nbsp;[% session_time %] 
+            [% loc('verbleibend:') %]&nbsp;<span id="timer">[% max_idle_hh_mm_ss %]</span> 
+            [% loc('Benutzer:') %]&nbsp;<strong>[% firstname %]&nbsp;[% surname %]</strong> 
+            [% loc('Raum:') %][% IF remote_room %]
+                <strong>[% remote_room %]</strong> 
+            [% ELSE %]
+                <strong>[% loc('unbekannt') %]</strong> 
+            [% END %]
+            [% loc('Workstation:') %]&nbsp;<strong>[% remote_workstation %]</strong> 
+            [% loc('IP:') %]&nbsp;<strong>[% REMOTE_ADDR %]</strong> 
+            [% IF class_name %]
+                [% loc('aktive Klasse:') %]&nbsp;<strong>[% class_name %]</strong> 
+            [% ELSIF project %]
+                [% loc('aktives Projekt:') %]&nbsp;<strong>[% project %]</strong>
+            [% END %]
+        [% END %]
+    </div>
+    </div>
+
+    [% IF page.special %]
+        <div id="special"> </div>
+    [% END %]
+
+<!-- Menue -->
+    [% IF page.menu %]
+        <div id="menu">
+            [% INCLUDE menu.inc.tt %]
+        </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    // simple jMenu plugin called
+    $("#jMenu").jMenu({absoluteTop:24});
+  });
+</script>
+    [% END %]
+    [% IF is_error == 0 %]
+	<div class="messageok"><p>[% status %]</p></div>
+    [% END %]
+
+[% IF ! page.noinfo && ! page.autorefresh %]
+<!-- Info -->
+<div id="block-info-link">
+  <span class="info-button">
+    <a id="info-einblenden"><img class="info-icon" src="css/img/info-einblenden.png" alt="Informationen anzeigen" title="Informationen anzeigen" onclick="info_on();"></a>
+    <a id="info-ausblenden"><img class="info-icon" src="css/img/info-ausblenden.png" alt="Informationen ausblenden" title="Informationen ausblenden" onclick="info_off();"></a>
+  </span>
+</div>
+<div id="info" style="display: block;">
+    <h2>[% loc('Info') %]</h2>
+    [% page.default = '' %]
+    [% page.info %]
+    [% page.default = '1' %]
+    [% INCLUDE "footer_info.inc.tt" %]
+</div>
+[% END %]
+
+<!-- Inhalt -->
+    <div id="content" class="content[% IF action %] [% action %][% END %][% IF page.classes %] [% page.classes %][% END %]">
+        [% INCLUDE dialog.inc.tt %]
+
+        [% page.default = '' %]
+        [% content %]
+        [% page.default = '1' %]
+    </div>
+
+    <div id="authors">
+    </div>
+</body>
+</html>

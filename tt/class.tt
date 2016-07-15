@@ -1,0 +1,74 @@
+[% page = {
+      title    => loc('Schulkonsole') _ " - " _ loc('Klassen'),
+      menu     => 1,
+      submenu  => "class",
+      info     => loc('<p>Um Zugriff zu den Klassenfunktionen zu bekommen, müssen Sie sich unter &bdquo;Eintragen in Klassen&ldquo; in die Klasse eintragen.</p><p>Wählen Sie eine Klasse aus dem Pull-Down-Menü und betätigen dann die Schaltfläche &bdquo;Wechseln&ldquo;, oder klicken Sie eine Klasse aus der Liste unter &bdquo;Klassenname&ldquo; an.</p><p>Über den Button &bdquo;Austragen&ldquo; können Sie sich aus einer Klasse austragen, wenn Sie nicht mehr in ihr unterrichten.</p>'),
+   }
+%]
+
+[% IF classes %]
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+<p class="selectdomain">
+<select name="classes">
+<optgroup label="Klassen">
+[% FOREACH c IN classes %] <option value="[% c.gid %]">[% c.name %]</option>
+[% END %]
+</optgroup>
+<optgroup label="aktuelle Klasse">
+<option value="[% class_gid %]" selected>[% class_name %]</option>
+</optgroup>
+</select>
+<input type="submit" value="[% loc('Wechseln') %]">
+</p>
+</form>
+[% END %]
+
+
+<h2>[% loc('Klassen') %]</h2>
+
+[% IF class_name %]
+<h3>[% loc('Ausgewählte Klasse') %]: [% class_name %]</h3>
+[% ELSE %]
+<h3>[% loc('Bitte Klasse auswählen') %]</h3>
+[% END %]
+
+
+[% IF classes %]
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+
+<h4>[% loc('Übersicht der Klassen') %]</h4>
+
+<table id="classesoverview" class="liste">
+<tr>
+<th>[% loc('Klassenname') %]</th>
+<th></th>
+</tr>
+[% FOREACH c IN classes %]
+    [% IF odd %][% odd=0 %]<tr class="odd">
+    [% ELSE %][% odd=1 %]<tr class="even">[% END %]
+    <td><input type="submit" name="[% c.gid %]_list" value="[% c.name %]"></td>
+    <td><input type="submit" name="[% c.gid %]_remove" value="[% loc('Austragen') %]"></td>
+    </tr>
+[% END %]
+</table>
+[% IF requested_page %]<input type="hidden" name="requested_page" value="[% requested_page %]">[% END %]
+</form>
+[% END %]
+
+
+[% IF other_classes %]
+<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+
+<h4>[% loc('Eintragen in Klassen') %]</h4>
+
+<p>
+<select name="class_add">
+[% FOREACH c IN other_classes %]
+    <option value="[% c.gid %]">[% c.name %]</option>
+[% END %]
+</select>
+<input type="submit" value="[% loc('Eintragen') %]">
+</p>
+[% IF requested_page %]<input type="hidden" name="requested_page" value="[% requested_page %]">[% END %]
+</form>
+[% END %]

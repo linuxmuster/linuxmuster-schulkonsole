@@ -12,7 +12,7 @@
 #endif
 
 #ifndef WRAPPERDEBCONFPERLAPP
-# define WRAPPERDEBCONFPERLAPP "/usr/libexec/schulkonsole/bin/wrapper-debconf.pl"
+# define WRAPPERDEBCONFPERLAPP "/usr/lib/schulkonsole/bin/wrapper-debconf.pl"
 #endif
 
 

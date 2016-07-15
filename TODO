@@ -8,13 +8,16 @@ linbo
 =====
  x Partitionsnamen
  x EFI-Partitionen
+ x MSR-Partitionen
+ x ext4-Partitionen
  o GPT
  x detect and use linbo 2.2/2.3 (Einstellungen->UEFI verwenden)
 
 uefi
 ====
  x Integration in Linbo
- o Grub2, Bootmenü-Absicherung ( -> Linbo )
+ x Grub2
+ o Bootmenü-Absicherung ( -> Linbo )
 
 Schüler-Netbooks
 ================
@@ -36,8 +39,7 @@ Optik
  x Dynamisch aufklappende Menüs
  x Dateien hochladen / herunterladen
  o graues Fenster für Status beschäftigt
- o Bestätigungsdialog
- o Rückmeldung über beim Klicken verschwindenden Dialog
+ x Bestätigungsleiste in grün
 
 Printquota
 =====
@@ -75,7 +77,7 @@ Wrapper
 
 Vereinfachung
 =============
- o build Umgebung ohne configure
+ x build Umgebung ohne configure
  o Fehler abfangen ohne eval, sondern mit $SIG{__DIE__}-Routine
 
 Kompatibilität zu 6.1

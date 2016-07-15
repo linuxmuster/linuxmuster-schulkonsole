@@ -1,0 +1,139 @@
+#! /usr/bin/perl
+
+=head1 NAME
+
+repair_homes - repair selected home directories
+
+=head1 SYNOPSIS
+
+ https://server/schulkonsole/repair_homes
+
+=head1 DESCRIPTION
+
+C<repair_homes> lets you repair selected home directories.
+The HTML template is repair_homes.tt.
+
+=head2 Template variables
+
+Additionally to the variables of Schulkonsole::Session C<repair_homes>
+provides the following variables:
+
+=over
+
+=cut
+
+use strict;
+use utf8;
+use lib '/usr/share/schulkonsole';
+use Schulkonsole::Session;
+use Schulkonsole::Repair;
+use Proc::ProcessTable;
+
+my $this_file = 'repair_homes';
+
+my $sk_session = new Schulkonsole::Session($this_file);
+if (not $sk_session->get_password()) {
+	my $q = new CGI;
+	my $url = $q->url( -full => 1 );
+
+	# we send cookies over secure connections only
+	if ($url =~ s/^http:/https:/g) {
+		$sk_session->redirect($url);
+	} else {
+		$sk_session->exit_with_login_page($this_file);
+	}
+}
+
+my $q = $sk_session->query();
+
+
+my $id = $sk_session->userdata('id');
+my $password = $sk_session->get_password();
+
+my $process_table = new Proc::ProcessTable;
+my $app_repair = $Schulkonsole::Config::_cmd_sophomorix_repair;
+$app_repair =~ s:.*/::;
+my %running;
+foreach my $process (@{ $process_table->table }) {
+	if ($process->fname =~ /^soph/ and $process->cmndline =~ /$app_repair/) {
+			$running{repair} = $process->pid;
+	}
+}
+
+if ($q->param('accept')) {
+	my $argusers = 0;
+	if($q->param('teachers_group')) {
+		$argusers |= Schulkonsole::Repair::TEACHERS;
+	}
+	if($q->param('students_group')) {
+		$argusers |= Schulkonsole::Repair::STUDENTS;	
+	}
+	if($q->param('workstations_group')) {
+		$argusers |= Schulkonsole::Repair::WORKSTATIONS;
+	}
+	if($q->param('allusers_group')) {
+		$argusers |= Schulkonsole::Repair::ALL;
+	}
+	if(not $argusers){
+		$sk_session->set_status($sk_session->d()->get('Es wurden keine Einträge zur Reparatur gewählt.'),1);
+	} else {
+		eval {
+			Schulkonsole::Repair::repair_homes($id, $password, $argusers);
+		};
+		if($@){
+			$sk_session->standard_error_handling($this_file, $@);
+		}
+		$sk_session->set_status($sk_session->d()->get('Reparatur gestartet...'),0);
+		$running{repair} = 1;
+	}
+}
+
+if($q->param('logrepair') or $running{repair}) {
+	eval {
+		my $logrepair =
+			Schulkonsole::Repair::read_repair_log_file($id, $password);
+
+=item C<logrepair>
+
+Output of C<sophomorix-repair ...>
+
+=cut
+
+		splice @$logrepair, 0, -30;
+		$sk_session->set_var('logrepair', join("", @$logrepair));
+	};
+	if ($@) {
+		$sk_session->set_status(
+			$sk_session->d()->get('Kann Logdatei nicht öffnen'), 1);
+	}
+	
+}
+
+=item C<isbusy>
+
+True if C<sophomorix-repair> is running
+
+=cut
+
+$sk_session->set_var('isbusy', ($running{repair}? 1 : 0));
+
+
+$sk_session->print_page("$this_file.tt", $this_file);
+
+
+
+
+=back
+
+=head2 Form fields
+
+=over
+
+=item C<accept>
+
+Write the changes
+
+=cut
+
+
+=back
