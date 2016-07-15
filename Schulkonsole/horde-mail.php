@@ -26,31 +26,40 @@ session_start();
  * no_compress  - output is not compressed
  */
 
-@define('HORDE_BASE', '/usr/share/horde3');
+@define('HORDE_BASE', '/usr/share/horde');
 @define('AUTH_HANDLER', true);
-$no_compress = true;
 
 // Do CLI checks and environment setup first.
 require_once HORDE_BASE . '/lib/core.php';
-require_once 'Horde/CLI.php';
+require_once 'Horde/Cli.php';
 
 // Make sure no one runs this from the web.
-if (!Horde_CLI::runningFromCLI()) {
+if (!Horde_Cli::runningFromCLI()) {
     session_destroy();
     exit("Must be run from the command line\n");
 }
 
 // Load the CLI environment - make sure there's no time limit, init some
 // variables, etc.
-Horde_CLI::init();
-$cli = &Horde_CLI::singleton();
+$cli = Horde_Cli::init();
 
-// Include needed libraries.
-require_once HORDE_BASE . '/lib/base.php';
-require_once 'Horde/Secret.php';
+/* Try to login - if we are doing auth to an app, we need to auth to
+ * Horde first or else we will lose the session. Ignore any auth errors.
+ * Transparent authentication is handled by the Horde_Application::
+ * constructor. */
+require_once HORDE_BASE . '/lib/Application.php';
+try {
+    Horde_Registry::appInit('horde', array(
+        'authentication' => 'none',
+        'nologintasks' => true
+    ));
+} catch (Horde_Exception_AuthenticationFailure $e) {}
+
+$is_auth = $registry->isAuthenticated();
+$vars = $injector->getInstance('Horde_Variables');
 
 /* Get an Auth object. */
-$auth = &Auth::singleton($conf['auth']['driver']);
+$auth = $injector->getInstance('Horde_Core_Factory_Auth')->create(($is_auth && $vars->app) ? $vars->app : null);
 if (is_a($auth, 'PEAR_Error')) {
    Horde::fatal($auth, __FILE__, __LINE__);
 }
@@ -149,6 +158,7 @@ EOF;
 session_destroy();
 exit;
 }
+
 $auth_success = $auth->authenticate($options['user'], array('password' => $options['password']), true);
 if (is_a($auth, 'PEAR_Error')) {
 	$cli->message(_("Authentication error."), 'cli.error');
@@ -161,16 +171,10 @@ if(! $auth_success) {
 	exit(1);
 }
 
-@define('INGO_BASE', '/usr/share/horde3/ingo');
-require_once INGO_BASE . '/lib/base.php';
+require_once HORDE_BASE . '/ingo/lib/Application.php';
+Horde_Registry::appInit('ingo');
 
-/* Redirect if forward is not available. */
-if (!in_array(INGO_STORAGE_ACTION_FORWARD, $_SESSION['ingo']['script_categories'])) {
-    $cli->message("Forward is not supported in the current filtering driver.", 'cli.error');
-    exit(1);
-}
-
-if (is_a(($pushed = $registry->pushApp('ingo', !defined('AUTH_HANDLER'))), 'PEAR_Error')) {
+if (is_a($pushed = $registry->pushApp('ingo'), 'PEAR_Error')) {
     $cli->message('Cannot switch to ingo registry.','cli.error');
     session_destroy();
     exit(1);
@@ -213,22 +217,26 @@ exit(0);
 */
 function getForwards()
 {
-    global $ingo_storage,$cli;
+    global $injector,$cli;
     
-    /* Redirect if forward is not available. */
-    if (!in_array(INGO_STORAGE_ACTION_FORWARD, $_SESSION['ingo']['script_categories'])) {
+    /* exit if forward is not available. */
+    $driver = $injector->getInstance('Ingo_Factory_Script')->create(Ingo::RULE_FORWARD);
+    if (!in_array(Ingo_Storage::ACTION_FORWARD, $driver->availableCategories())) {
         $cli->message(_("Forward is not supported in the current filtering driver."), 'cli.error');
 	session_destroy();
         exit;
     }
+
     /* Get the forward object and rule. */
-    $forward = &$ingo_storage->retrieve(INGO_STORAGE_ACTION_FORWARD);
-    $filters = &$ingo_storage->retrieve(INGO_STORAGE_ACTION_FILTERS);
-    $fwd_id = $filters->findRuleId(INGO_STORAGE_ACTION_FORWARD);
-    $fwd_rule = $filters->getRule($fwd_id);
-    $params = array();
-    if(isset($fwd_rule['disable'])) {
-      $params['enabled'] = ! $fwd_rule['disable'];
+    $is = $injector->getInstance('Ingo_Factory_Storage')->create();
+    $forward = $is->retrieve(Ingo_Storage::ACTION_FORWARD);
+    $filters = $is->retrieve(Ingo_Storage::ACTION_FILTERS);
+    $fwd_id = $filters->findRuleId(Ingo_Storage::ACTION_FORWARD);
+    if(isset($forward_id)) {
+      $fwd_rule = $filters->getRule($fwd_id);
+      if(isset($fwd_rule['disable'])) {
+	$params['enabled'] = ! $fwd_rule['disable'];
+      }
     } else {
       $params['enabled'] = true;
     }
@@ -245,32 +253,34 @@ function getForwards()
 */
 function setForwards($addresses = array(),$keep = false)
 {
-    /* Redirect if forward is not available. */
-    if (!in_array(INGO_STORAGE_ACTION_FORWARD, $_SESSION['ingo']['script_categories'])) {
+    global $injector,$cli;
+    /* exit if forward is not available. */
+    $driver = $injector->getInstance('Ingo_Factory_Script')->create(Ingo::RULE_FORWARD);
+    if (!in_array(Ingo_Storage::ACTION_FORWARD, $driver->availableCategories())) {
         $cli->message(_("Forward is not supported in the current filtering driver."), 'cli.error');
 	session_destroy();
         exit;
     }
-
-    global $ingo_storage,$cli;
+    
     /* Get the forward object and rule. */
-    $forward = &$ingo_storage->retrieve(INGO_STORAGE_ACTION_FORWARD);
-    $filters = &$ingo_storage->retrieve(INGO_STORAGE_ACTION_FILTERS);
-    $fwd_id = $filters->findRuleId(INGO_STORAGE_ACTION_FORWARD);
+    $is = $injector->getInstance('Ingo_Factory_Storage')->create();
+    $forward = $is->retrieve(Ingo_Storage::ACTION_FORWARD);
+    $filters = $is->retrieve(Ingo_Storage::ACTION_FILTERS);
+    $fwd_id = $filters->findRuleId(Ingo_Storage::ACTION_FORWARD);
     $fwd_rule = $filters->getRule($fwd_id);
 
     $forward->setForwardAddresses($addresses);
     $forward->setForwardKeep($keep);
     $success = true;
 
-    if (is_a($result = $ingo_storage->store($forward), 'PEAR_Error')) {
+    if (is_a($result = $is->store($forward), 'PEAR_Error')) {
         $cli->message($result,'cli.error');
         $success = false;
     } else {
         $cli->message(_("Changes saved."), 'cli.success');
         if (!empty($addresses)) {
             $filters->ruleEnable($fwd_id);
-            if (is_a($result = $ingo_storage->store($filters), 'PEAR_Error')) {
+            if (is_a($result = $is->store($filters), 'PEAR_Error')) {
                 $cli->message($result,'cli.error');
                 $success = false;
             } else {
@@ -279,7 +289,7 @@ function setForwards($addresses = array(),$keep = false)
             }
         } else {
             $filters->ruleDisable($fwd_id);
-            if (is_a($result = $ingo_storage->store($filters), 'PEAR_Error')) {
+            if (is_a($result = $is->store($filters), 'PEAR_Error')) {
                 $cli->message($result,'cli.error');
                 $success = false;
             } else {
@@ -289,6 +299,6 @@ function setForwards($addresses = array(),$keep = false)
         }
     }
     if ($success) {
-        Ingo::updateScript();
+        Ingo_Script_Util::update(false);
     }
 }

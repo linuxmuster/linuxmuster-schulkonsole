@@ -110,6 +110,7 @@ $VERSION = 0.06;
 	$_wrapper_radius
 	$_wrapper_debconf
 	$_wrapper_repair
+	$_wrapper_horde
 
 	%_id_root_app_names
 	$_cmd_internet_on_off
@@ -232,6 +233,10 @@ $VERSION = 0.06;
 	REPAIRPROJECTHOMESAPP
 	REPAIRHOMESAPP
 	REPAIRGETINFOAPP
+	
+	GETMAILFORWARDS
+	SETMAILFORWARDS
+	REMOVEMAILFORWARDS
 );
 
 use Env::Bash;
@@ -822,6 +827,25 @@ use constant {
 };
 
 
+=head3 Constants for wrapper-horde
+
+=over
+
+=item C<GETMAILFORWARDS>
+
+=item C<SETMAILFORWARDS>
+
+=item C<REMOVEMAILFORWARDS>
+=back
+
+=cut
+
+use constant {
+      GETMAILFORWARDS => 17001,
+      SETMAILFORWARDS => 17002,
+      REMOVEMAILFORWARDS => 17003,
+};
+
 =head2 Predefined variables
 
 =over
@@ -1217,12 +1241,18 @@ Path to wrapper to repair directories / permissions
 
 =back
 
+=item C<$_wrapper_horde>
+
+Path to wrapper to get/set mail forwards
+
+=back
+
 =cut
 
 use vars qw($_wrapper_user $_wrapper_firewall $_wrapper_ovpn $_wrapper_printer
             $_wrapper_sophomorix $_wrapper_cyrus $_wrapper_collab
             $_wrapper_files $_wrapper_linbo $_wrapper_radius
-	    $_wrapper_debconf $_wrapper_repair);
+	    $_wrapper_debconf $_wrapper_repair $_wrapper_horde);
 
 
 =head3 Variables used by wrappers
@@ -1432,7 +1462,7 @@ $false= 'no';
 $on = 'on';
 $off = 'off';
 
-$_version = '0.36.0';
+$_version = '0.40.0';
 $_sysconfdir = '/etc/linuxmuster/schulkonsole';
 $_templatedir = '/usr/share/schulkonsole/tt';
 $_runtimedir = '/var/lib/schulkonsole';
@@ -1516,7 +1546,7 @@ $_wrapper_linbo = '/usr/lib/schulkonsole/bin/wrapper-linbo';
 $_wrapper_radius = '/usr/lib/schulkonsole/bin/wrapper-radius';
 $_wrapper_debconf = '/usr/lib/schulkonsole/bin/wrapper-debconf';
 $_wrapper_repair = '/usr/lib/schulkonsole/bin/wrapper-repair';
-
+$_wrapper_horde = '/usr/lib/schulkonsole/bin/wrapper-horde';
 
 
 
@@ -1605,6 +1635,9 @@ $_wrapper_repair = '/usr/lib/schulkonsole/bin/wrapper-repair';
 	REPAIRPROJECTHOMESAPP() => 'repair_projecthomes',
 	REPAIRHOMESAPP() => 'repair_homes',
 	REPAIRGETINFOAPP() => 'repair_get_info',
+	GETMAILFORWARDS() => 'get_mailforwards',
+	SETMAILFORWARDS() => 'set_mailforwards',
+	REMOVEMAILFORWARDS() => 'remove_mailforwards',
 );
 
 

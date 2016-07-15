@@ -1,5 +1,4 @@
 #! /usr/bin/perl
-
 =head1 NAME
 
 start - startpage of schulkonsole
@@ -372,13 +371,17 @@ defined $q->param('mailchange') and do {
         }
         eval {
             if(@mailforwards) {
-                Schulkonsole::Horde::set_mailforwards($uid,$password,join(',', @mailforwards),
+                Schulkonsole::Horde::set_mailforwards($id,$password,join(',', @mailforwards),
                         ($q->param('mailkeep') ? 1 : 0));
-            } else {
-                Schulkonsole::Horde::remove_mailforwards($uid,$password);
-            }
-            $sk_session->set_status(
+        	$sk_session->set_status(
                     $sk_session->d()->get('Mailweiterleitung erfolgreich geändert'), 0);
+            } else {
+                Schulkonsole::Horde::remove_mailforwards($id,$password);
+        	$sk_session->set_status(
+                    $sk_session->d()->get('Mailweiterleitung erfolgreich entfernt'), 0);
+            }
+            $sk_session->clear('mailforwards');
+            $sk_session->clear('mailkeep');
         };
         if ($@) {
                 $sk_session->standard_error_handling($this_file, $@);
@@ -547,9 +550,9 @@ foreach my $destination ($cups->getDestinations) {
 $sk_session->set_var('printjobs', \@array_printjobs) if @array_printjobs;
 
 eval {
-my ($mailforwards,$mailkeep) = Schulkonsole::Horde::get_mailforwards($uid,$password);
-$sk_session->set_var('mailforwards', $mailforwards) if $mailforwards;
-$sk_session->set_var('mailkeep', $mailkeep) if $mailkeep;
+my ($mailforwards,$mailkeep) = Schulkonsole::Horde::get_mailforwards($id,$password);
+$sk_session->set_var('mailforwards', ($mailforwards? $mailforwards : ''));
+$sk_session->set_var('mailkeep', $mailkeep);
 };
 if ($@) {
 	warn "$@\n";

@@ -228,6 +228,7 @@ sub verify_password_by_userdata {
 		SWITCH: {
 		$userpassword =~ s/^\{CRYPT\}//i and do {
 			if (crypt($password, $userpassword) eq $userpassword) {
+			$$userdata{password} = $password;
 				return $userdata;
 			}
 			last SWITCH;
@@ -237,12 +238,14 @@ sub verify_password_by_userdata {
 
 			if (Crypt::PasswdMD5::unix_md5_crypt($password, $salt)
 			    	eq $userpassword) {
+			    	$$userdata{password} = $password;
 				return $userdata;
 			}
 			last SWITCH;
 		};
 		$userpassword =~ s/^\{MD5\}//i and do {
 			if (Digest::MD5::md5_base64($password) eq $userpassword) {
+				$$userdata{password} = $password;
 				return $userdata;
 			}
 			last SWITCH;
@@ -256,6 +259,7 @@ sub verify_password_by_userdata {
 			my $b64hash = MIME::Base64::encode_base64($sha1digest->digest . $salt);
 			chomp($b64hash);
 			if ( $b64hash eq $userpassword ) {
+				$$userdata{password} = $password;
 				return $userdata;
 			}
 			last SWITCH;
