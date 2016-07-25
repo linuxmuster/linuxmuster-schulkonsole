@@ -32,7 +32,7 @@ use Schulkonsole::Session;
 use Schulkonsole::Error::Error;
 use Schulkonsole::Sophomorix;
 use Schulkonsole::SophomorixConfig;
-use Schulkonsole::SophomorixQuotas qw(process_quota);
+use Schulkonsole::SophomorixQuotas qw(process_quota write_quota_conf write_mailquota_conf);
 
 use Sophomorix::SophomorixConfig;
 
@@ -213,7 +213,7 @@ if ($q->param('accept')) {
 		}
 		if (%quota_conf_new) {
 			my $lines = new_quota_lines(\%quota_conf_new, \%quota_conf);
-			Schulkonsole::Sophomorix::write_quota_conf(
+			Schulkonsole::SophomorixQuotas::write_quota_conf(
 				$id, $password, $lines);
 
 			foreach my $key (keys %quota_conf_new) {
@@ -228,7 +228,7 @@ if ($q->param('accept')) {
 		}
 		if (%mailquota_conf_new) {
 			my $lines = new_mailquota_lines(\%mailquota_conf_new, \%mailquota_conf);
-			Schulkonsole::Sophomorix::write_mailquota_conf(
+			Schulkonsole::SophomorixQuotas::write_mailquota_conf(
 				$id, $password, $lines);
 
 			foreach my $key (keys %mailquota_conf_new) {

@@ -4,6 +4,31 @@ linuxmuster-schulkonsole (0.40.0-horde5.1) babo62; urgency=low
 
  -- root <root@linuxmuster.local>  Mon, 11 Jul 2016 08:15:50 +0200
 
+linuxmuster-schulkonsole (0.36.0-8) babo62; urgency=low
+
+  * fix permissions of var/lib/schulkonsole
+
+ -- Frank Schütte <fschuett@gymhim.de>  Mon, 25 Jul 2016 08:45:36 +0200
+
+linuxmuster-schulkonsole (0.36.0-7) babo62; urgency=low
+
+  * fix quota not showing, settings_users quota
+
+ -- root <root@linuxmuster.local>  Sat, 16 Jul 2016 09:48:12 +0200
+
+linuxmuster-schulkonsole (0.36.0-6) babo62; urgency=low
+
+  * fix for no autostart not shown for autostart selected
+
+ -- root <root@linuxmuster.local>  Fri, 15 Jul 2016 16:42:08 +0200
+
+linuxmuster-schulkonsole (0.36.0-5) babo62; urgency=low
+
+  * fix start page template to turn autocomplete off, enter off
+
+ -- root <root@linuxmuster.local>  Mon, 11 Jul 2016 17:03:35 +0200
+>>>>>>> 6.2
+
 linuxmuster-schulkonsole (0.36.0-4) babo62; urgency=low
 
   * rename apache2 link to 200-schulkonsole.conf
