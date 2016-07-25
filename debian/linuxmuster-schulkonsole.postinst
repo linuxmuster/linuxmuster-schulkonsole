@@ -21,12 +21,10 @@ case "$1" in
 	configure)
 	 # read linuxmuster.net environment
 	 . /usr/share/linuxmuster/config/dist.conf
-	 # check for runtimedir and create it if necessary
-	 if [ ! -d "$rtdir" ]; then
-	  mkdir -p $rtdir
-	  chown www-data $rtdir
-	  chmod 700 $rtdir
-	 fi
+	# fix permissions
+	chmod 700 $rtdir
+	chown www-data:root $rtdir
+	
 	 # update permissions.conf
 	 PERMSCRIPT="/usr/share/schulkonsole/scripts/update-permissions.sh"
 	 if [ -e $PERMSCRIPT ]; then

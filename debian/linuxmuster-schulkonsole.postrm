@@ -6,11 +6,9 @@
 set -e
 
 confdir="/etc/linuxmuster/schulkonsole"
-rtdir="/var/lib/schulkonsole"
 
 if [ "$1" = "purge" ]; then
  [ -d "$confdir" ] && rm -rf "$confdir"
- [ -d "$rtdir" ] && rm -rf "$rtdir"
 fi
 
 
