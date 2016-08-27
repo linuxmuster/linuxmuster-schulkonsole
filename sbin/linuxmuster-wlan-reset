@@ -124,32 +124,64 @@ my @groups_to_add;
 my @groups_to_remove;
 
 if ($user_default eq 'on') {
-	# add all users not in defaults
+	# add all users not in defaults and remove explicitly mentioned users
 	foreach my $user (@users) {
-		if(not exists $$status{'users'}{$user} and exists $$defaults{'users'}{$user} and $$defaults{'users'}{$user} ne 'off') {
+		if(not exists $$status{'users'}{$user} and ( not exists $$defaults{'users'}{$user} or $$defaults{'users'}{$user} eq 'on')) {
 			push(@users_to_add, $user);
+		} elsif (exists $$defaults{'users'}{$user} and $$defaults{'users'}{$user} eq 'off') {
+			push(@users_to_remove, $user);
 		}
 	}
 } elsif($user_default eq 'off') {
-	# remove all users not in defaults
+	# remove all users not in defaults and add those explicitly mentioned
+	foreach my $user (keys $$defaults{'users'}) {
+		if(not exists $$status{'users'}{$user} and $$defaults{'users'}{$user} eq 'on') {
+			push @users_to_add, $user;
+		}
+	}
 	foreach my $user (keys $$status{'users'}) {
-		if(not $$defaults{'users'}{$user} or $$defaults{'users'}{$user} ne 'on') {
+		if(not exists $$defaults{'users'}{$user} or $$defaults{'users'}{$user} eq 'off') {
+			push @users_to_remove, $user;
+		}
+	}
+} elsif($user_default eq '-') {
+	# add all users with defaults on and remove users with defaults off
+	foreach my $user (keys $$defaults{'users'}) {
+		if (not exists $$status{'users'}{$user} and $$defaults{'users'}{$user} eq 'on') {
+			push @users_to_add, $user;
+		} elsif (exists $$status{'users'}{$user} and $$defaults{'users'}{$user} eq 'off') {
 			push @users_to_remove, $user;
 		}
 	}
 }
 
 if ($group_default eq 'on') {
-	# add all groups not in defaults
+	# add all groups not in defaults and remove explicitly mentioned groups
 	foreach my $group (@groups) {
-		if(not $$status{'groups'}{$group} and $$defaults{'groups'}{$group} and $$defaults{'groups'}{$group} ne 'off') {
+		if(not exists $$status{'groups'}{$group} and ( not exists $$defaults{'groups'}{$group} or $$defaults{'groups'}{$group} eq 'on')) {
 			push @groups_to_add, $group;
+		} elsif (exists $$defaults{'groups'}{$group} and $$defaults{'groups'}{$group} eq 'off') {
+			push @groups_to_remove, $group;
 		}
 	}
 } elsif($group_default eq 'off') {
-	# remove all groups not in defaults
+	# remove all groups not in defaults and add those explicitly mentioned
+	foreach my $group (keys $$defaults{'groups'}) {
+		if(not exists $$status{'groups'}{$group} and $$defaults{'groups'}{$group} eq 'on') {
+			push @groups_to_add, $group;
+		}
+	}
 	foreach my $group (keys $$status{'groups'}) {
-		if(not $$defaults{'groups'}{$group} or $$defaults{'groups'}{$group} ne 'on') {
+		if(not exists $$defaults{'groups'}{$group} or $$defaults{'groups'}{$group} eq 'off') {
+			push @groups_to_remove, $group;
+		}
+	}
+} elsif($group_default eq '-') {
+	# add all groups with defaults on and remove groups with defaults off
+	foreach my $group (keys $$defaults{'groups'}) {
+		if (not exists $$status{'groups'}{$group} and $$defaults{'groups'}{$group} eq 'on') {
+			push @groups_to_add, $group;
+		} elsif (exists $$status{'groups'}{$group} and $$defaults{'groups'}{$group} eq 'off') {
 			push @groups_to_remove, $group;
 		}
 	}
