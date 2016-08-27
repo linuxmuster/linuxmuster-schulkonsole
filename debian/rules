@@ -53,6 +53,7 @@ install:
 	# Add here commands to install the package into DESTDIR
 	mkdir -p $(CURDIR)/debian/tmp
 	make install DESTDIR=$(CURDIR)/debian/tmp
+	install -d -o www-data -g root -m 700 debian/linuxmuster-schulkonsole/var/lib/schulkonsole
 
 # Build architecture-independent files here.
 binary-indep: install
@@ -66,7 +67,7 @@ binary-indep: install
 	dh_lintian -i
 	dh_link -i
 	dh_compress -i
-	dh_fixperms -i
+	dh_fixperms -i -X/var/lib/schulkonsole -X/usr/lib
 	dh_perl -i /usr/share/schulkonsole /usr/lib/schulkonsole
 	dh_installdeb -i
 	dh_gencontrol -i
@@ -85,9 +86,9 @@ binary-arch: install
 	dh_link -a
 	dh_strip -a
 	dh_compress -a
-	dh_fixperms -a -X/var/lib/schulkonsole -X/usr/lib
+	dh_fixperms -a -X/usr/lib $(WRAPPER_PERMS)
 	dh_compress -a
-	dh_fixperms -a -X/var/lib/schulkonsole $(WRAPPER_PERMS)
+	dh_fixperms -a -X/usr/lib $(WRAPPER_PERMS)
 	dh_installdeb -a
 	dh_shlibdeps -a
 	dh_gencontrol -a
