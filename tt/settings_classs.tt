@@ -45,9 +45,9 @@
 </td>
 <td>
 <select name="[% c.gid %]_wlan">
-<option value="-1"[% IF valueof("${c.gid}_wlan") == "-1" %] selected[% END %]>-</option>
-<option value="1"[% IF valueof("${c.gid}_wlan") == "1" %] selected[% END %]>[% loc('An') %]</option>
-<option value="0"[% IF valueof("${c.gid}_wlan") == "0" %] selected[% END %]>[% loc('Aus') %]</option>
+<option value="-1"[% IF c.wlan == "-1" %] selected[% END %]>-</option>
+<option value="1"[% IF c.wlan == "1" %] selected[% END %]>[% loc('An') %]</option>
+<option value="0"[% IF c.wlan == "0" %] selected[% END %]>[% loc('Aus') %]</option>
 </select>
 </td>
 </tr>

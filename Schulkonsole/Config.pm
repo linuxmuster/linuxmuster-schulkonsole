@@ -35,6 +35,7 @@ $VERSION = 0.06;
 	SKPREFS
 	PATHPREFS
 	PROJECTPREFS
+	CLASSPREFS
 	
 	db
 	ldap
@@ -67,6 +68,9 @@ $VERSION = 0.06;
 	$_project_mailalias
 	$_project_maillist
 	$_project_wlan
+	$_class_mailalias
+	$_class_maillist
+	$_class_wlan
 	
 	$_preferences_conf_file
 	$_permissions_conf_file
@@ -267,9 +271,13 @@ Section name for DB preferences to access in db.conf (used only internal)
 
 Section name for project creating preferences
 
+=item C<CLASSPREFS>
+
+Section name for class creating preferences
+
 =cut
 
-use vars qw($SKPREFS $PATHPREFS $PROJECTPREFS);
+use vars qw($SKPREFS $PATHPREFS $PROJECTPREFS $CLASSPREFS);
 	
 =head3 Constants for wrapper-user
 
@@ -1117,11 +1125,25 @@ Create project with maillist (on,off)
 
 =item C<$_project_wlan>
 
-Create project with wlan enabled (on,off)
+Create project with wlan (on,off,-)
+
+=head3 Class preferences
+
+=item C<$_class_mailalias>
+
+Create class with mailalias (on,off)
+
+=item C<$_class_maillist>
+
+Create class with maillist (on,off)
+
+=item C<$_class_wlan>
+
+Create class with wlan (on,off,-)
 
 =cut
 
-use vars qw($_project_mailalias $_project_maillist $_project_wlan);
+use vars qw($_project_mailalias $_project_maillist $_project_wlan $_class_mailalias $_class_maillist $_class_wlan);
 
 =head3 Web server settings
 
@@ -1442,6 +1464,7 @@ $_preferences_conf_file = "$_sysconfdir/preferences.conf";
 $SKPREFS = 'Schulkonsole Preferences';
 $PATHPREFS = 'Program Paths';
 $PROJECTPREFS = 'Project';
+$CLASSPREFS = 'Class';
 
 $_permissions_conf_file = "$_sysconfdir/permissions.conf";
 
@@ -2444,6 +2467,7 @@ my %_preferences_conf_section = (
 	$PATHPREFS => 1,
 	$DBPREFS => 1,
 	$PROJECTPREFS => 1,
+	$CLASSPREFS => 1,
 );
 
 sub read_conf {
@@ -2563,6 +2587,13 @@ sub init_preferences {
 		if exists $preferences{$PROJECTPREFS}{maillist};
 	$_project_wlan = $preferences{$PROJECTPREFS}{wlan}
 		if exists $preferences{$PROJECTPREFS}{wlan};
+	#project prefs
+	$_class_mailalias = $preferences{$CLASSPREFS}{mailalias}
+		if exists $preferences{$CLASSPREFS}{mailalias};
+	$_class_maillist = $preferences{$CLASSPREFS}{maillist}
+		if exists $preferences{$CLASSPREFS}{maillist};
+	$_class_wlan = $preferences{$CLASSPREFS}{wlan}
+		if exists $preferences{$CLASSPREFS}{wlan};
 }
 
 # compare new values to values from conf file and create new file lines to
@@ -2607,7 +2638,7 @@ sub new_preferences_lines {
 					push @lines, "$conf_key=$value\n";
 
 					delete $$new{$key};
-				} elsif ($current eq $PATHPREFS || $current eq $PROJECTPREFS) {
+				} elsif ($current eq $PATHPREFS || $current eq $PROJECTPREFS || $current eq $CLASSPREFS) {
 					if (defined $$new{$conf_key}) {
 						push @lines, "$conf_key=$$new{$conf_key}\n";
 						
@@ -2689,6 +2720,9 @@ INIT {
 	$_project_mailalias = 'off';
 	$_project_maillist = 'off';
 	$_project_wlan = 'off';
+	$_class_mailalias = 'off';
+	$_class_maillist = 'off';
+	$_class_wlan = 'off';
 	
 	init_preferences();
 }
