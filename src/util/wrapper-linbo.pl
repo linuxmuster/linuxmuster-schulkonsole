@@ -548,7 +548,8 @@ sub linbo_write {
 	seek FILE, 0, 0;
 
 	while (<>) {
-		print FILE;
+		$_ =~ s/\R//g;
+		print FILE "$_\n";
 	}
 
 	close FILE;
