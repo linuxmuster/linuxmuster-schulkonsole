@@ -20,7 +20,6 @@ Additionally to the variables of Schulkonsole::Session C<project>
 provides the following variables:
 
 =cut
-
 use strict;
 use utf8;
 use lib '/usr/share/schulkonsole';
@@ -95,7 +94,6 @@ $project = $sk_session->param('project');
 
 
 my $all_projects = Schulkonsole::DB::projects();
-delete $$all_projects{$Schulkonsole::Config::_wlan_ldap_group};
 
 eval {
 COMMANDS: {
@@ -126,7 +124,14 @@ if ($q->param('createproject')) {
 			1);
 		last COMMANDS;
 	}
-
+	if ($projectname eq $Schulkonsole::Config::_wlan_ldap_group) {
+		$sk_session->mark_input_error('projectname');
+		$sk_session->set_status(
+			sprintf($sk_session->d()->get('Projekt %s stimmt mit der WLAN-LDAP-Gruppe %s überein und ist daher ungültig.'),
+				$projectname, $Schulkonsole::Config::_wlan_ldap_group),
+			1);
+		last COMMANDS;
+	}
 
 	Schulkonsole::Sophomorix::create_project($id, $password, $projectname, $q->param('projectisopen'));
 	Schulkonsole::Sophomorix::project_wlan_defaults($id, $password, $projectname, 1);

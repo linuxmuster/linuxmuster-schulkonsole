@@ -21,7 +21,6 @@ provides the following variables:
 =over
 
 =cut
-
 use strict;
 use utf8;
 use lib '/usr/share/schulkonsole';
@@ -65,7 +64,6 @@ my $wlanprojects;
 COMMANDS: { eval {
 
 $projects = Schulkonsole::DB::projects();
-delete $$projects{$Schulkonsole::Config::_wlan_ldap_group};
 
 $wlanprojects = Schulkonsole::Radius::wlan_defaults();
 
@@ -76,6 +74,7 @@ if ($q->param('accept')) {
 	my @remove_mailalias = ();
 	my @enable_wlan = ();
 	my @disable_wlan = ();
+	my @ignore_wlan = ();
 	my $changes = 0;
 	foreach my $project (keys %$projects) {
 		if ($q->param("${project}_maillist")) {
@@ -88,12 +87,16 @@ if ($q->param('accept')) {
 		} else {
 			push @remove_mailalias, $project if $$projects{$project}{mailalias};
 		}
-		if ($q->param("${project}_wlan")) {
-			push @enable_wlan, $project unless $$wlanprojects{'groups'}{$project};
+		if ($q->param("${project}_wlan") == 1) {
+			push @enable_wlan, $project unless exists $$wlanprojects{'groups'}{$project} 
+							and $$wlanprojects{'groups'}{$project} eq 'on';
+		} elsif ($q->param("${project}_wlan") == -1) {
+			push @ignore_wlan, $project unless exists $$wlanprojects{'groups'}{$project}
+							and $$wlanprojects{'groups'}{$project} eq '-';
 		} else {
-			push @disable_wlan, $project if $$wlanprojects{'groups'}{$project};
+			push @disable_wlan, $project unless exists $$wlanprojects{'groups'}{$project}
+							and $$wlanprojects{'groups'}{$project} eq 'off';
 		}
-		
 	}
 
 	if (@create_maillist
@@ -112,19 +115,18 @@ if ($q->param('accept')) {
 		$changes = 1;
 	}
 
-	if (@enable_wlan or @disable_wlan) {
-    	Schulkonsole::Radius::wlan_on($id, $password, \@enable_wlan,[]) if @enable_wlan;
-    	Schulkonsole::Radius::wlan_off($id, $password, \@disable_wlan,[]) if @disable_wlan;
-        my $lines = Schulkonsole::Radius::new_wlan_defaults_lines(
-                        \%$wlanprojects, \@enable_wlan, \@disable_wlan, [], []);
+	if (@enable_wlan or @disable_wlan or @ignore_wlan) {
+		Schulkonsole::Radius::wlan_on($id, $password, \@enable_wlan,[]) if @enable_wlan;
+		Schulkonsole::Radius::wlan_off($id, $password, \@disable_wlan,[]) if @disable_wlan;
+		my $lines = Schulkonsole::Radius::new_wlan_defaults_lines(
+                        \%$wlanprojects, \@enable_wlan, \@disable_wlan, \@ignore_wlan, [], [], []);
 		Schulkonsole::Files::write_wlan_defaults_file($id, $password, $lines);
-        $changes = 1;
+		$changes = 1;
 	}
 
 	if ($changes) {
 		$projects = Schulkonsole::DB::projects();
 		$wlanprojects = Schulkonsole::Radius::wlan_defaults();
-		delete $$projects{$Schulkonsole::Config::_wlan_ldap_group};
 		
 		$sk_session->set_status($sk_session->d()->get(
 			'Änderungen übernommen.'), 0);
@@ -145,7 +147,7 @@ if ($q->param('accept')) {
 		$preferences_new{'maillist'} = $value;
 		$changes = 1;
 	}
-	$value = ($q->param('default_wlan')? 'on' : 'off');
+	$value = ($q->param('default_wlan') == 1 ? 'on' : ($q->param('default_wlan') == -1 ? '-' : 'off'));
 	if($Schulkonsole::Config::_project_wlan ne $value){
 		$preferences_new{'wlan'} = $value;
 		$changes = 1;
@@ -188,7 +190,7 @@ foreach my $project (sort {
 	or $$projects{$a}{displayname} cmp $$projects{$b}{displayname} }
                    keys %$projects) {
         my $wlan;
-        if ($$wlanprojects{'groups'}{$project}) {
+        if (exists $$wlanprojects{'groups'}{$project}) {
                         $wlan = $on_off{$$wlanprojects{'groups'}{$project}};
         } else {
                         $wlan = $on_off{$$wlanprojects{'groups'}{default}};

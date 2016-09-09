@@ -29,7 +29,7 @@ Schulkonsole::Radius - interface to Linuxmusterloesung Radius related commands
  my @users = ('test1', 'test2');
  Schulkonsole::Radius::wlan_on($id, $password, @groups, @users);
  Schulkonsole::Radius::wlan_off($id, $password, @groups, @users);
-
+ 
  Schulkonsole::Radius::wlan_reset_at($id, $password, @groups, @users, $time);
  Schulkonsole::Radius::wlan_reset_all($id, $password);
 
@@ -393,7 +393,8 @@ sub wlan_reset {
 
 
 
-=head3 C<new_wlan_defaults_lines($defaults, $enable_groups, $disable_groups, $enable_users, $disable_users)>
+=head3 C<new_wlan_defaults_lines($defaults, $enable_groups, $disable_groups, $ignore_groups,
+					$enable_users, $disable_users, $ignore_users)>
 
 Creates new wlan_defaults lines from old lines and changes.
 
@@ -413,6 +414,10 @@ Array reference with groups names to enable wlan.
 
 Array reference with groups to disable wlan.
 
+=item C<$ignore_groups>
+
+Array reference with groups to ignore wlan
+
 =item C<$enable_users>
 
 Array reference with users names to enble wlan.
@@ -420,6 +425,10 @@ Array reference with users names to enble wlan.
 =item C<$disable_users>
 
 Array reference with users names to disable wlan.
+
+=item C<$ignore_users>
+
+Array reference with users names to ignore wlan
 
 =back
 
@@ -433,8 +442,10 @@ sub new_wlan_defaults_lines {
     my $defaults = shift;
     my $enable_groups = shift;
     my $disable_groups = shift;
+    my $ignore_groups = shift;
     my $enable_users = shift;
     my $disable_users = shift;
+    my $ignore_users = shift;
     my %wlan_default;
     $wlan_default{'groups'} = $$defaults{'groups'}{default};
     $wlan_default{'users'} = $$defaults{'users'}{default};
@@ -447,20 +458,25 @@ sub new_wlan_defaults_lines {
     foreach my $group (@$disable_groups) {
 		$$defaults{'groups'}{$group} = 'off';
     }
-
-	foreach my $user (@$enable_users) {
-		$$defaults{'users'}{$user} = 'on';
-	}
-	foreach my $user (@$disable_users) {
-		$$defaults{'users'}{$user} = 'off';
-	}
+    foreach my $group (@$ignore_groups) {
+		$$defaults{'groups'}{$group} = '-';
+    }
+     foreach my $user (@$enable_users) {
+	    $$defaults{'users'}{$user} = 'on';
+    }
+    foreach my $user (@$disable_users) {
+	    $$defaults{'users'}{$user} = 'off';
+    }
+    foreach my $user (@$ignore_users) {
+	    $$defaults{'users'}{$user} = '-';
+    }
 	
     if (open WLANFILE, "<$Schulkonsole::Config::_wlan_defaults_file") {
             flock WLANFILE, 1;
     
         while (my $line = <WLANFILE>) {
 		    my ($spaces_0, $kind, $key, $spaces_1, $wlan, $remainder)
-		    = $line =~ /^(\s*)([u|g]):([A-z\d\.\-]+)(\s+)(on|off|-)(.*)/;
+		    = $line =~ /^(\s*)([u|g]):([A-z\d_\.\-]+)(\s+)(on|off|-)(.*)/;
 		    if ($key) {
 		    	$kind = ($kind eq 'u'?'users':'groups');
 				if ($key eq 'default') {
@@ -500,7 +516,7 @@ sub new_wlan_defaults_lines {
             delete $$defaults{'users'}{default};
     }
 
-	my $default_groups = $$defaults{'groups'};
+    my $default_groups = $$defaults{'groups'};
     foreach my $group (sort keys %$default_groups) {
 	    if ($$defaults{'groups'}{$group} ne $wlan_default{'groups'}) {
 		push @re,

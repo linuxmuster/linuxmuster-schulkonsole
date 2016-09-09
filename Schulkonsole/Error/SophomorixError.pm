@@ -59,6 +59,10 @@ $VERSION = 0.16;
 	QUOTA_NOT_ALL_MOUNTPOINTS
 	INVALID_SOPHOMORIX_CONF_KEY
 	INVALID_SOPHOMORIX_CONF_VALUE
+	WRAPPER_CANNOT_CREATE_PROJECT
+	WRAPPER_CANNOT_KILL_PROJECT
+	WRAPPER_CANNOT_ADD_PROJECT_TO_WLAN_DEFAULTS
+	WRAPPER_CANNOT_REMOVE_PROJECT_FROM_WLAN_DEFAULTS
 );
 
 # package constants
@@ -111,6 +115,10 @@ use constant {
 	QUOTA_NOT_ALL_MOUNTPOINTS => Schulkonsole::Error::Error::NEXT_ERROR - 45,
 	INVALID_SOPHOMORIX_CONF_KEY => Schulkonsole::Error::Error::NEXT_ERROR - 46,
 	INVALID_SOPHOMORIX_CONF_VALUE => Schulkonsole::Error::Error::NEXT_ERROR - 47,
+	WRAPPER_CANNOT_CREATE_PROJECT => Schulkonsole::Error::Error::NEXT_ERROR - 48,
+	WRAPPER_CANNOT_KILL_PROJECT => Schulkonsole::Error::Error::NEXT_ERROR - 49,
+	WRAPPER_CANNOT_ADD_PROJECT_TO_WLAN_DEFAULTS => Schulkonsole::Error::Error::NEXT_ERROR - 50,
+	WRAPPER_CANNOT_REMOVE_PROJECT_FROM_WLAN_DEFAULTS => Schulkonsole::Error::Error::NEXT_ERROR - 51,
 };
 
 sub new {
@@ -206,10 +214,18 @@ sub what {
 		and return $this->{d}->get('Die Mailadresse konnte nicht gespeichert werden.');
 	$this->{code} == QUOTA_NOT_ALL_MOUNTPOINTS
 		and return $this->{d}->get('Nicht alle Einhängepunkte(mount points) gefunden');
-	$this->{code} = INVALID_SOPHOMORIX_CONF_KEY
+	$this->{code} == INVALID_SOPHOMORIX_CONF_KEY
 		and return $this->{d}->get('Der Name ist ungültig für die Datei sophomorix.conf.');
-	$this->{code} = INVALID_SOPHOMORIX_CONF_VALUE
+	$this->{code} == INVALID_SOPHOMORIX_CONF_VALUE
 		and return $this->{d}->get('Der Wert für diese Einstellung ungültig für die Datei sophomorix.conf.');
+	$this->{code} == WRAPPER_CANNOT_CREATE_PROJECT
+		and return $this->{d}->get('Das Projekt konnte nicht erstellt werden.');
+	$this->{code} == WRAPPER_CANNOT_KILL_PROJECT
+		and return $this->{d}->get('Das Projekt konnte nicht entfernt werden.');
+	$this->{code} == WRAPPER_CANNOT_ADD_PROJECT_TO_WLAN_DEFAULTS
+		and return $this->{d}->get('Das Projekt konnte nicht zu den WLAN-Standardeinstellungen hinzugefügt werden.');
+	$this->{code} == WRAPPER_CANNOT_REMOVE_PROJECT_FROM_WLAN_DEFAULTS
+		and return $this->{d}->get('Das Projekt konnte nicht von den WLAN-Standardeinstellungen entfernt werden.');
 	};
 	
 	return $this->SUPER::what();

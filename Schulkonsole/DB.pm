@@ -712,6 +712,8 @@ Returns all projects as a
 reference to a hash with the project names as keys and the project data as
 values.
 
+The WLAN project is excluded.
+
 =cut
 
 sub projects {
@@ -732,7 +734,7 @@ sub projects {
 		utf8::decode($$row{longname});
 		$projects{$$row{gid}} = $row;
 	}
-
+	delete $projects{$Schulkonsole::Config::_wlan_ldap_group};
 
 	return \%projects;
 }
