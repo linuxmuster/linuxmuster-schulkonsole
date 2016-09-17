@@ -340,25 +340,9 @@ sub import_workstations {
 	my $password = shift;
 	my $sk_session = shift;
 
-	$sk_session->put_aside_session();
-
 	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::IMPORTWORKSTATIONSAPP,
 					      $id, $password,
 					      $sk_session->session_id() . "\n");
-
-	sleep 1;
-
-
-	$sk_session->get_back_session();
-	my $cgi_session = $sk_session->{session};
-	if ($cgi_session->param('statusbgiserror')) {
-		my $statusbg = $cgi_session->param('statusbg');
-
-		$cgi_session->clear('statusbg');
-		$cgi_session->clear('statusbgiserror');
-
-		die new $errorclass(Schulkonsole::Error::Error::PUBLIC_BG_ERROR, $statusbg);
-	}
 }
 
 

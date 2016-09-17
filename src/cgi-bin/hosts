@@ -26,6 +26,7 @@ use strict;
 use utf8;
 use lib '/usr/share/schulkonsole';
 use open ':utf8';
+use Schulkonsole::Config;
 use Schulkonsole::Encode;
 use Schulkonsole::Files;
 use Schulkonsole::Session;
@@ -34,6 +35,7 @@ use Env::Bash;
 
 
 my $this_file = 'hosts';
+my $logfile = $Schulkonsole::Config::_workstations_log_file;
 
 my $sk_session = new Schulkonsole::Session($this_file);
 if (not $sk_session->get_password()) {
@@ -62,8 +64,30 @@ foreach my $process (@{ $process_table->table }) {
         }
 }
 
+my $is_show_last_log = 0;
+my $last_log = "";
+
 eval {
 COMMANDS: {
+$q->param('show_last_log') and do {
+    if ($running{wsimport}) {
+	    $sk_session->set_status(
+		    $sk_session->d()->get('Es läuft gerade ein Import'), 1);
+    } else {
+	open my $handle, '<', $logfile;
+	chomp(my @lines = <$handle>);
+	close $handle;
+	foreach my $line (@lines) {
+	    if ( $line =~ /^Starting import workstations session/ ) {
+		$last_log = $line;
+	    } else {
+		$last_log .= "\n$line";
+	    }
+	}
+	$is_show_last_log = 1;
+    }
+    last COMMANDS;
+};
 $q->param('accept') and do {
     if ($running{wsimport}) {
             $sk_session->set_status(
@@ -166,13 +190,8 @@ $q->param('accept') and do {
 
                 # process host to comment line changes
                 if ($room =~ /^#/) {
-                    my %network_settings_env;
-                    tie %network_settings_env, 'Env::Bash',
-                        Source => $Schulkonsole::Config::_network_settings_file;
-                    my $mask = $network_settings_env{internmask} || '255.240.0.0';
-
-                    my $default_mask_and_dummy = "$mask;1;1;1;1;";
-                    my $newcomment = "$room;$name;$groups;$mac;$ip;$default_mask_and_dummy$pxe;$opts\n";
+                    my $dummy = ";1;1;1;1";
+                    my $newcomment = "$room;$name;$groups;$mac;$ip;$dummy;$pxe;$opts\n";
                     push @new_comment_array,$newcomment;
                     $new{$host} = undef;
                     next;
@@ -222,12 +241,8 @@ $q->param('accept') and do {
                 if($hosts_changed){
                     Schulkonsole::Files::import_workstations($id, $password,
                         $sk_session);
-
-                    foreach my $process (@{ $process_table->table }) {
-                            if ($process->fname =~ /^import_workst/) {
-                                    $running{wsimport} = $process->pid;
-                            }
-                    }
+                        
+                    $running{wsimport} = 1;
                 }
                 $status .=
                     $sk_session->d()->get('Änderungen übernommen.');
@@ -270,13 +285,9 @@ $q->param('import') and do {
             my $password = $sk_session->get_password();
 
             Schulkonsole::Files::import_workstations($id, $password, $sk_session);
-
-            foreach my $process (@{ $process_table->table }) {
-                    if ($process->fname =~ /^import_workst/) {
-                            $running{wsimport} = $process->pid;
-                    }
-            }
-
+	    
+	    $running{wsimport} = 1;
+	    
             $sk_session->set_status(
                 $sk_session->d()->get('Workstations werden importiert'), 0);
         } else {
@@ -286,6 +297,7 @@ $q->param('import') and do {
     }
     last COMMANDS;
 };
+
 ($running{wsimport} or $q->param('showlogimport')) and do {
         eval {
             my $id = $sk_session->userdata('id');
@@ -441,6 +453,43 @@ String containing workstation comments
 
 $q->param('commentlines',$commentlines);
 
+=item C<has_last_log>
+
+True if last_log is existing
+
+=cut
+
+if (-e $Schulkonsole::Config::_workstations_log_file) {
+    $q->param('has_last_log', 1);
+    
+=item C<last_finished_with_errors>
+
+True if last run finished with errors
+
+=cut
+
+    my $lastline = `tail -n 1 /var/log/linuxmuster/import_workstations.log`;
+    $q->param('last_finished_with_errors', ($lastline =~ /^Finished with error/ ? 1 : 0));
+}
+
+=item C<is_show_last_log>
+
+True if show_last_log was selected
+
+=cut
+
+if ($is_show_last_log) {
+    $q->param('is_show_last_log',1);
+
+=item C<last_log>
+
+Contains last log lines as String with line separators
+
+=cut
+    
+    $q->param('last_log', $last_log);
+    
+}
 
 $sk_session->print_page("$this_file.tt", $this_file);
 
@@ -508,7 +557,7 @@ sub new_workstations_lines {
             next if /^#/ || /^\s*$/;
 
             my ($room, $host, $group, $mac, $ip,
-                $mask, $dummy1, $dummy2, $dummy3, $dummy4) = split ';';
+                $dummy0, $dummy1, $dummy2, $dummy3, $dummy4) = split ';';
 
             $cnt{$host}++;
             my $key = "$host!$cnt{$host}";
@@ -518,7 +567,7 @@ sub new_workstations_lines {
                       "$changes{$key}{room};$changes{$key}{name};"
                     . "$changes{$key}{groups};"
                     . "$changes{$key}{mac};$changes{$key}{ip};"
-                    . "$mask;$dummy1;$dummy2;$dummy3;$dummy4;"
+                    . "$dummy0;$dummy1;$dummy2;$dummy3;$dummy4;"
                     . "$changes{$key}{pxe};$changes{$key}{opts}\n"
                     if defined $changes{$key};
 
@@ -533,12 +582,7 @@ sub new_workstations_lines {
 
 
     if (%changes) {
-        my %network_settings_env;
-        tie %network_settings_env, 'Env::Bash',
-            Source => $Schulkonsole::Config::_network_settings_file;
-        my $mask = $network_settings_env{internmask} || '255.240.0.0';
-
-        my $default_mask_and_dummy = "$mask;1;1;1;1;";
+        my $dummy = ";1;1;1;1";
         foreach my $host (sort keys %changes) {
             next unless defined $changes{$host};
 
@@ -546,7 +590,7 @@ sub new_workstations_lines {
                   "$changes{$host}{room};$changes{$host}{name};"
                 . "$changes{$host}{groups};"
                 . "$changes{$host}{mac};$changes{$host}{ip};"
-                . $default_mask_and_dummy
+                . "$dummy;"
                 . "$changes{$host}{pxe};$changes{$host}{opts}\n";
         }
     }
