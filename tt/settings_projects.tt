@@ -39,7 +39,7 @@
 	</td>
 	<td>
 	<select name="[% p.gid %]_wlan">
-	[% IF p.name != 'default' %]<option value="-1"[% IF p.wlan == "-1" %] selected[% END %]>-</option>[% END %]
+	<option value="-1"[% IF p.wlan == "-1" %] selected[% END %]>-</option>
 	<option value="1"[% IF p.wlan == "1" %] selected[% END %]>[% loc('An') %]</option>
 	<option value="0"[% IF p.wlan == "0" %] selected[% END %]>[% loc('Aus') %]</option>
 	</select>

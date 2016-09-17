@@ -75,6 +75,7 @@ if ($q->param('accept')) {
 	my @remove_mailalias = ();
 	my @enable_wlan = ();
 	my @disable_wlan = ();
+	my @ignore_wlan = ();
 	my $changes = 0;
 	foreach my $class (keys %$classs) {
 		if ($q->param("${class}_visible")) {
@@ -95,10 +96,15 @@ if ($q->param('accept')) {
 		} else {
 			push @remove_mailalias, $class if $$classs{$class}{mailalias};
 		}
-		if ($q->param("${class}_wlan")) {
-			push @enable_wlan, $class unless $$wlanclasss{'groups'}{$class};
+		if ($q->param("${class}_wlan") == 1) {
+			push @enable_wlan, $class unless exists $$wlanclasss{'groups'}{$class} 
+							and $$wlanclasss{'groups'}{$class} eq 'on';
+		} elsif ($q->param("${class}_wlan") == -1) {
+			push @ignore_wlan, $class unless exists $$wlanclasss{'groups'}{$class}
+							and $$wlanclasss{'groups'}{$class} eq '-';
 		} else {
-			push @disable_wlan, $class if $$wlanclasss{'groups'}{$class};
+			push @disable_wlan, $class unless exists $$wlanclasss{'groups'}{$class}
+							and $$wlanclasss{'groups'}{$class} eq 'off';
 		}
 		
 	}
@@ -129,10 +135,11 @@ if ($q->param('accept')) {
 		$changes = 1;
 	}
 
-	if (@enable_wlan or @disable_wlan) {
+	if (@enable_wlan or @disable_wlan or @ignore_wlan) {
         Schulkonsole::Radius::wlan_on($id, $password, \@enable_wlan, []) if @enable_wlan;
         Schulkonsole::Radius::wlan_off($id, $password, \@disable_wlan, []) if @disable_wlan;
-        my $lines = Schulkonsole::Radius::new_wlan_defaults_lines(\%$wlanclasss, \@enable_wlan, \@disable_wlan, [], []);
+        my $lines = Schulkonsole::Radius::new_wlan_defaults_lines(\%$wlanclasss, \@enable_wlan, \@disable_wlan, 
+							\@ignore_wlan, [], [], []);
 		Schulkonsole::Files::write_wlan_defaults_file($id, $password, $lines);
         $changes = 1;
 	}
@@ -148,6 +155,30 @@ if ($q->param('accept')) {
 	} else {
 		$sk_session->set_status($sk_session->d()->get(
 			'Keine Änderungen.'), 0);
+	}
+	# write defaults
+	my %preferences_new;
+	$changes = 0;
+	my $value = ($q->param('default_mailalias')? 'on' : 'off');
+	if($Schulkonsole::Config::_class_mailalias ne $value){
+		$preferences_new{'mailalias'} = $value;
+		$changes = 1;
+	}
+	$value = ($q->param('default_maillist')? 'on' : 'off');
+	if($Schulkonsole::Config::_class_maillist ne $value){
+		$preferences_new{'maillist'} = $value;
+		$changes = 1;
+	}
+	$value = ($q->param('default_wlan') == 1 ? 'on' : ($q->param('default_wlan') == -1 ? '-' : 'off'));
+	if($Schulkonsole::Config::_class_wlan ne $value){
+		$preferences_new{'wlan'} = $value;
+		$changes = 1;
+	}
+	if ($changes) {
+		my $lines = Schulkonsole::Config::new_preferences_lines($Schulkonsole::Config::CLASSPREFS, \%preferences_new);
+		Schulkonsole::Files::write_preferences_conf_file($id, $password, $lines);
+		$sk_session->set_status($sk_session->d()->get(
+			'Änderungen übernommen.'), 0);
 	}
 
 }
@@ -165,6 +196,14 @@ my %on_off = (
 );
 
 my @classs;
+push @classs, 
+{ gid => 'default',
+  name => 'default',
+  mailalias => $on_off{$Schulkonsole::Config::_class_mailalias},
+  maillist => $on_off{$Schulkonsole::Config::_class_maillist},
+  wlan => $on_off{$Schulkonsole::Config::_class_wlan},
+};
+
 foreach my $class (sort {
 	my ($A) = $$classs{$a}{displayname} =~ /^(\d+)/;
 	my ($B) = $$classs{$b}{displayname} =~ /^(\d+)/;
@@ -172,7 +211,7 @@ foreach my $class (sort {
 	or $$classs{$a}{displayname} cmp $$classs{$b}{displayname} }
                    keys %$classs) {
         my $wlan;
-        if ($$wlanclasss{'groups'}{$class}) {
+        if (exists $$wlanclasss{'groups'}{$class}) {
                         $wlan = $on_off{$$wlanclasss{'groups'}{$class}};
         } else {
                         $wlan = $on_off{$$wlanclasss{'groups'}{default}};

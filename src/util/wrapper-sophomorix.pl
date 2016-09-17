@@ -21,7 +21,6 @@ wrapper-sophomorix.pl - wrapper for sophomorix access
 =head1 DESCRIPTION
 
 =cut
-
 use strict;
 use lib '/usr/share/schulkonsole';
 use open ':utf8';
@@ -1469,8 +1468,7 @@ sub projectcreatedropapp() {
 	$) = 0;	# sophomorix-project will re-create /etc/aliases
 	$( = $);
 	umask(022);
-	exec Schulkonsole::Encode::to_cli(
-	     	"$Schulkonsole::Config::_cmd_sophomorix_project $opts")
+	exec Schulkonsole::Encode::to_cli("$Schulkonsole::Config::_cmd_sophomorix_project $opts")
 		or return;
 }
 
