@@ -159,18 +159,19 @@ sub import_workstations {
 		unless defined $sid;
 
 	my $pid = fork;
-	exit (  Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK)
+	exit (  Schulkonsole::Error::Error::WRAPPER_CANNOT_FORK )
 		unless defined $pid;
 
 	if (not $pid) {
 		close STDIN;
-		close STDOUT;
-		close STDERR;
-		open STDOUT, ">>/dev/null" or die;
-		open STDERR, ">>&STDOUT" or die;
 
+		$< = $>;
+		$) = 0;
+		$( = $);
+		umask(022);
+		open STDOUT, ">>", "/dev/null";
+		open STDERR, ">>&", *STDOUT;
 
-		umask(027);
 		my $lockfile = Schulkonsole::Config::lockfile('import_workstations');
 		open LOCK, '>>', Schulkonsole::Encode::to_fs($lockfile)
 			or exit(  Schulkonsole::Error::FilesError::WRAPPER_CANNOT_OPEN_FILE);
@@ -179,47 +180,13 @@ sub import_workstations {
 		truncate LOCK, 0;
 		print LOCK "$$\n";
 
-		$< = $>;
-		$) = 0;
-		$( = $);
-		umask(022);
-		open APP, '|-',
-		     Schulkonsole::Encode::to_fs(
-		     	$Schulkonsole::Config::_cmd_import_workstations)
-			or last SWITCH;
-		my $line;
-		while (<APP>) {
-			$line = $_;
-		}
-		close APP;
-		if ($?) {
-			my $error_code = $?;
-			use CGI::Session;
-
-			my $session_lockfile
-				= Schulkonsole::Config::lockfile("cgisession_$sid");
-			open SESSIONLOCK, '>>', $session_lockfile
-				or exit (  Schulkonsole::Error::FilesError::WRAPPER_CANNOT_OPEN_FILE);
-			flock SESSIONLOCK, 2;
-
-			my $session = new CGI::Session("driver:File", $sid,
-			              	{
-			                	Directory => Schulkonsole::Encode::to_fs(
-			              			$Schulkonsole::Config::_runtimedir)
-			              	});
-			if ($session->param('username')) {
-				chomp $line;
-				$session->param('statusbg', $line);
-				$session->param('statusbgiserror', $error_code);
-				$session->close;
-			} else {
-				$session->delete();
-			}
-		}
-		exit $?;
-	} else {
+		system Schulkonsole::Encode::to_fs(
+		     	$Schulkonsole::Config::_cmd_import_workstations);
+		close LOCK;
+		
 		exit 0;
 	}
+	exit 0;
 }
 
 =head3 import_printers
@@ -234,5 +201,6 @@ sub import_printers {
 	$( = $);
 	umask(022);
 	exec Schulkonsole::Encode::to_cli(
-	     	$Schulkonsole::Config::_cmd_import_printers);
+	     	$Schulkonsole::Config::_cmd_import_printers)
+	     	or exit ( Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED );
 }

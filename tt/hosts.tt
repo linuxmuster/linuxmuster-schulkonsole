@@ -10,24 +10,29 @@
 <h1>[% loc('Hosts') %]</h1>
 
 <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
-
 [% IF isimporting %]
     [% busy.msg=loc('Importieren läuft') %]
     [% busy.log=logimport %]
     
     [% INCLUDE busy.inc.tt %]
 
+[% ELSIF is_show_last_log %]
+    <h2>[% loc('Letzter Import') %]</h2>
+    <p><textarea readonly name="last_log" rows="30" cols="100">[% last_log %]</textarea></p>
+    <p><input type="submit" name="hosts" value="[% loc('Zurück') %]"></p>
 [% ELSE %]
+    [% IF last_finished_with_errors %]
+	    <p class="important">[% loc('Der letzte Import endete mit einer Fehlermeldung.') %]</p>
+    [% END %]
+
+    <p><input type="submit" name="show_last_log" value="[% loc('Letzten Import anzeigen') %]" 
+    [% IF !has_last_log %] disabled[% END %]></p>
     [% IF unconfigured %]
-        <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
         <p class="important">[% loc('Die Liste der konfigurierten Hosts stimmt nicht mit den tatsächlich im System vorhandenen Hosts überein.') %]</p>
         <p><input type="submit" name="import" value="[% loc('Hosts jetzt übernehmen') %]"></p>
-        </form>
     [% ELSIF unimported %]
-        <form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
         <p class="important">[% loc('Es wurden noch nicht alle Hosts in das System übernommen.') %]</p>
         <p><input type="submit" name="import" value="[% loc('Hosts jetzt übernehmen') %]"></p>
-        </form>
     [% END %]
 
     <p></p>

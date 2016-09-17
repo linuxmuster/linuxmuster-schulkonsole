@@ -1,3 +1,4 @@
+use CGI::Inspect;
 use strict;
 use Socket;
 use POSIX;
