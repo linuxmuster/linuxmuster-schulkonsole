@@ -155,21 +155,30 @@ sub wlan_on_off {
 	my $trigger = <>;
 	$trigger = int($trigger) ? 'on' : 'off';
 	
-	my $grouplist = <>;
-	($grouplist) = $grouplist =~ /^([a-z0-9\_,]+)$/;
-	my @lessongroups = split(",",$grouplist);
-	@lessongroups = grep { $_ =~ /^[a-z0-9\_]+$/ } @lessongroups;
-	$grouplist = join(",", @lessongroups);
+	my @lessongroups = ();
+	my @lessonusers = ();
+	my $mode;
+	my $line = <>;
+	($line) = $line =~ /^(groups:|users:|[a-z0-9\_]+)$/;
+	while($line) {
+		if( $line eq "groups:" ){
+			$mode = \@lessongroups;
+		} elsif( $line eq "users:" ){
+			$mode = \@lessonusers;
+		} elsif( not $mode ){
+			exit ( Schulkonsole::Error::RadiusError::WRAPPER_NO_GROUPS );
+		} else {
+			push @$mode, $line;
+		}
+		$line = <>;
+		($line) = $line =~ /^(groups:|users:|[a-z0-9\_]+)$/;
+	}
 	
-	my $userlist = <>;
-	($userlist) = $userlist =~ /^([a-z0-9,]+)$/;
-	my @lessonusers = split(",",$userlist);
-	@lessonusers = grep { $_ =~ /^[a-z0-9]+$/ } @lessonusers;
-	$userlist = join(",", @lessonusers);
-	
+	my $userlist = join(",", @lessonusers);
+	my $grouplist = join(",", @lessongroups);
+
 	exit (  Schulkonsole::Error::RadiusError::WRAPPER_NO_GROUPS )
 		unless $userlist or $grouplist;
-
 
 	my $cmd =  $Schulkonsole::Config::_cmd_wlan_on_off;
 
@@ -177,7 +186,6 @@ sub wlan_on_off {
 	$opts = "--trigger=$trigger";
 	$opts .= " --grouplist=$grouplist" if $grouplist;
 	$opts .= " --userlist=$userlist" if $userlist;
-	$opts .= " --caller administrator";
 
 	# set ruid, so that ssh searches for .ssh/ in /root
 	local $< = $>;

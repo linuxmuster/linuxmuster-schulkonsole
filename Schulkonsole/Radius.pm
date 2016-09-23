@@ -107,7 +107,9 @@ sub wlan_on {
 
 	my $umask = umask(022);
 	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::WLANONOFFAPP,
-		$id, $password, "1\n" . join(",", @groups) . "\n" . join("," ,@users) . "\n");
+		$id, $password, "1\n"
+			. "groups:\n" . (@groups ? join("\n", @groups) . "\n" : "")
+			. "users:\n" . (@users ? join("\n", @users) . "\n" : "") );
 	umask($umask);
 }
 
@@ -158,7 +160,9 @@ sub wlan_off {
 #FIXME umask kann im Wrapper gesetzt werden.
 	my $umask = umask(022);
 	Schulkonsole::Wrapper::wrapcommand($wrapcmd, $errorclass, Schulkonsole::Config::WLANONOFFAPP,
-		$id, $password, "0\n" . join(",", @groups) . "\n" . join(",", @users) . "\n");
+		$id, $password, "0\n"
+			. "groups:\n" . (@groups ? join("\n", @groups) . "\n" : "")
+			. "users:\n" . (@users ? join("\n", @users) . "\n" : "") );
 	umask($umask);
 
 }
