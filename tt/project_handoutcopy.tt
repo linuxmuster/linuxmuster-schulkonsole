@@ -7,7 +7,7 @@
 %]
 
 [% IF projects %]
-<form method="post" accept-charset="UTF-8" onsubmit="return showBusy()">
+<form method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return showBusy()">
 <p class="selectdomain"> <select name="projects">
 <optgroup label="Projekte">
 [% FOREACH p IN projects %] <option value="[% p.gid %]">[% p.name %]</option>
