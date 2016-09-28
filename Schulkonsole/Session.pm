@@ -1,5 +1,4 @@
 use strict;
-use CGI::Inspect;
 use Socket;
 use POSIX;
 eval {
