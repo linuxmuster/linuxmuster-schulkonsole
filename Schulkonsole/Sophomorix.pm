@@ -274,7 +274,7 @@ sub shares_on {
 
 	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SHARESONOFFAPP,
 						$id, $password,
-						"1\n", join("\n", @users), "\n\n");
+						"1\n" . join("\n", @users) . "\n\n");
 }
 
 
@@ -315,7 +315,7 @@ sub shares_off {
 
 	Schulkonsole::Wrapper::wrapcommand($wrapcmd,$errorclass,Schulkonsole::Config::SHARESONOFFAPP,
 						$id, $password,
-						"0\n", join("\n", @users), "\n\n");
+						"0\n" . join("\n", @users) . "\n\n");
 }
 
 
