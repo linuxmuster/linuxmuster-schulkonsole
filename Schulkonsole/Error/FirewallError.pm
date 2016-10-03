@@ -68,7 +68,7 @@ sub what {
 	        and return $this->{d}->get('Kann printers.conf nicht öffnen');
 	$this->{code} == UNKNOWN_ROOM
 		and return $this->{d}->get('Unbekannter Raum');
-	$this->{code} and INVALID_SESSION
+	$this->{code} == INVALID_SESSION
 		and return $this->{d}->get('Ungültige Session');
 	};
 	return $this->SUPER::what();
