@@ -158,7 +158,7 @@ sub set_mailforwards {
 	$( = $);
 	umask(022);
 
-	system $cmd
+	system($cmd) == 0
 	    or exit (Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED);
 	
 	exit 0;
@@ -192,7 +192,7 @@ sub remove_mailforwards {
 	$( = $);
 	umask(022);
 
-	system $cmd
+	system($cmd) == 0
 	    or exit (Schulkonsole::Error::Error::WRAPPER_EXEC_FAILED);
 	
 	exit 0;
