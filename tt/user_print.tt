@@ -11,13 +11,13 @@
 <table>
 <tr>
 <td style="padding-right: 20px;">
-<form class="singleton" method="post" accept-charset="UTF-8" action="[% "user_print/all.pdf" %]" onsubmit="return showBusy()">
+<form class="singleton" method="post" accept-charset="UTF-8" action="[% "user_print/all.pdf" %]">
 	<input type="checkbox" name="one_per_page"><label>[% loc('Ein Eintrag pro Seite') %]</label><br>
 	<input type="submit" id="all_printpdf" name="all_printpdf" value="[% loc('Passwortliste als PDF') %]">
 </form>
 </td>
 <td valign="bottom">
-<form class="singleton" method="post" accept-charset="UTF-8" action="[% "user_print/all.csv" %]" onsubmit="return showBusy()">
+<form class="singleton" method="post" accept-charset="UTF-8" action="[% "user_print/all.csv" %]">
 	<input type="submit" id="all_printcsv" name="all_printcsv" value="[% loc('Passwortliste als CSV') %]">
 </form>
 </td>
@@ -46,13 +46,13 @@
 	<table>
 	<tr>
 	<td style="padding-right: 20px;">
-	<form class="singleton" method="post" accept-charset="UTF-8" action="[% "user_print/add-${file}.pdf" %]" onsubmit="return showBusy()">
+	<form class="singleton" method="post" accept-charset="UTF-8" action="[% "user_print/add-${file}.pdf" %]">
 		<input type="checkbox" name="one_per_page"><label>[% loc('Ein Eintrag pro Seite') %]</label><br>
 		<input type="submit" id="[% commit %]_printpdf" name="[% commit %]_printpdf" value="[% loc('Passwortliste als PDF') %]">
 	</form>
 	</td>
 	<td valign="bottom">
-	<form class="singleton" method="post" accept-charset="UTF-8" action="[% "user_print/add-${file}.csv" %]" onsubmit="return showBusy()">
+	<form class="singleton" method="post" accept-charset="UTF-8" action="[% "user_print/add-${file}.csv" %]">
 		<input type="submit" id="[% commit %]_printcsv" name="[% commit %]_printcsv" value="[% loc('Passwortliste als CSV') %]">
 	</form>
 	</td>
@@ -92,12 +92,12 @@
 				<input type="submit" id="[% lfdnr - 1 %]_show" name="[% lfdnr - 1 %]_show" value="[% loc('Anzeigen') %]">
 			</form></td>
 			<td style="padding-right: 20px;">
-				<form class="singleton" method="post" accept-charset="UTF-8" action="[% "user_print/add-${file}.pdf" %]" onsubmit="return showBusy()">
+				<form class="singleton" method="post" accept-charset="UTF-8" action="[% "user_print/add-${file}.pdf" %]">
 				<input type="checkbox" name="one_per_page"><label>[% loc('Ein Eintrag pro Seite') %]</label><br>
 				<input type="submit" id="[% lfdnr - 1 %]_printpdf" name="[% lfdnr - 1 %]_printpdf" value="[% loc('Passwortliste als PDF') %]">
 			</form></td>
 			<td valign="bottom">
-				<form class="singleton" method="post" accept-charset="UTF-8" action="[% "user_print/add-${file}.csv" %]" onsubmit="return showBusy()">
+				<form class="singleton" method="post" accept-charset="UTF-8" action="[% "user_print/add-${file}.csv" %]">
 				<input type="submit" id="[% lfdnr - 1 %]_printcsv" name="[% lfdnr - 1 %]_printcsv" value="[% loc('Passwortliste als CSV') %]">
 			</form></td>
 			</tr>
