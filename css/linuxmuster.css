@@ -38,8 +38,8 @@ body {
 
 #menu {
     border: none;
-    height: 23px;
-    background-color: #83a5d2;
+    height: 2.7em;
+    background-color: #233c4c;
     margin: 0;
     margin-bottom: 1px;
     margin-right: 1px;
@@ -48,79 +48,94 @@ body {
 .jMenu {
     display: table;
     border: none;
-    height: 20px;
+    height: 2.7em;
     margin: 0;
     margin-bottom: 1px;
     margin-right: 1px;
-    background-color: #83a5d2;
+    background-color: #233c4c;
     padding: 0;
     list-style: none;
+    font-weight: bold;
 }
 
 .jMenu li {
-	display: table-cell;
-	background-color: #83a5d2;
+    display: table-cell;
+    background-color: #233c4c;
     margin: 0;
-	list-style: none
+    list-style: none
 }
 
-.jMenu li a {
-	display: block;
-	background-color: transparent;
-	color: #fff;
-	text-decoration: none;
-	cursor: pointer;
-    height: 20px;
-    padding-top: 3px;
-    padding-left: 10px;
+.jMenu li a, 
+.jMenu li span.disabled, 
+.jMenu li span.disabledseparator,
+.jMenu li span.disabledend {
+    display: block;
+    background-color: transparent;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    height: 2em;
+    padding-top: 0.7em;
+    padding-left: 1em;
     padding-right: 10px;
-	font-size: 12px
+    font-size: 12px
 }
+
+.jMenu li span.disabled, 
+.jMenu li span.disabledseparator,
+.jMenu li span.disabledend {
+    color: #888;
+    text-decoration: none;
+    cursor: not-allowed;
+    font-weight: normal;
+}
+
+
 
 .jMenu li a:hover {
-	background-color: #3465A4;
+    background-color: #ff8f00;
 }
 
 .jMenu li:hover>a {
-	background-color: #3465A4;
+    background-color: #ff8f00;
 }
 
 .jMenu li ul {
-	display: none;
-	font-size: 11px;
-	position: absolute;
-	z-index: 9999;
-	padding: 0;
-	margin: 0;
-	list-style: none
+    display: none;
+    font-size: 11px;
+    position: absolute;
+    z-index: 9999;
+    padding: 0;
+    margin: 0;
+    list-style: none
 }
 
 .jMenu li ul li {
-	background-color: #83a5d2;
-	display: block;
-	border-bottom: 1px solid transparent;
-	list-style: none;
-	position: relative
+    background-color: #233c4c;
+    display: block;
+    border-bottom: 1px solid transparent;
+    list-style: none;
+    position: relative
 }
 
 .jMenu li ul li a {
-	font-size: 11px;
-	background-color: #3465A4;
-  	text-transform: none;
-	display: block;
-	border-top: 1px solid transparent;
-	border-bottom: 1px solid transparent
+    font-size: 11px;
+    background-color: #233c4c;
+    text-transform: none;
+    display: block;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent
 }
 
 .jMenu li ul li a.isParent {
-	background-color: #3a3a3a
+    background-color: #3a3a3a
 }
 
 .jMenu li ul li a:hover {
-	color: #000;
-    background-color: #3C587B;
+    color: #333;
+    background-color: #ff8f00;
     border-top: 1px solid transparent;
-	border-bottom: 1px solid transparent
+    border-bottom: 1px solid transparent
 }
 
 .content, .widecontent {
@@ -133,8 +148,6 @@ body {
     top: 120px;
     left: 0px;
     bottom: 36px;
-
-
     font-weight: normal;
 }
 
@@ -199,7 +212,7 @@ table#classesoverview input {
     padding: 3px;
     width: 240px;
     background-color: #FBFAF9;
-    border: 1px solid #dbdbe3;
+    border: 1px solid #ff8f00;
     z-index:4;
     display: block;
 }
@@ -246,7 +259,7 @@ table#classesoverview input {
   }
 
 #status {
-    background-color: #dbdbe3;
+    background-color: #b9c1c6;
     min-height: 150px;
 }
 
@@ -281,6 +294,7 @@ p.selectdomain {
 
 form.singleton {
     float: left;
+    margin-bottom:0.4em;
 }
 
 
@@ -307,6 +321,11 @@ td.lfdnr {
     text-align: right;
 }
 
+table.liste {
+    border: 1px solid #ff8f00;
+    margin-top: 0.5em;
+}
+
 table.liste td {
     vertical-align: top;
 }
@@ -322,27 +341,27 @@ table.liste th {
     background-color: #f3f3f3;
 }
 
-
-
 table.liste tr {
-    border-top-width: 1px;
-    border-top-style: solid;
-    border-top-color: #999999;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: #999999;
+    height: 2.4em;
+}
+table.liste tr td {
+    padding-top: 0.4em;
+}
+
+table.liste tr td select {
+    min-width: 9em;
 }
 
 table.liste tr.even,
 table.liste tr.hosteven,
 table.settings tr.even {
-    background-color: #dbdbe3;
+    background-color: #b9c1c6;
 }
 
 table.liste tr.odd,
 table.liste tr.hostodd,
 table.settings tr.odd {
-    background-color: #ffffff;
+    background-color: #dce0e3;
 }
 
 table.liste tr.hostodd > td:first-child,
@@ -507,7 +526,7 @@ td:hover p {
     display: block;
     position: absolute;
     border: 1px solid black;
-    background: #dbdbe3 ;
+    background: #b9c1c6 ;
     padding: .4ex;
     z-index: 1000;
 }
@@ -557,6 +576,7 @@ input.btn-linbo-list {
 }
 .wsdel {
     width: 1.2em;
+    text-align: center;
 }
 
 # file upload
