@@ -5,6 +5,7 @@
    }
 %]
 
+<div id="loginform">
 <h2>[% loc('Anmeldung') %]</h2>
 <p>
 <form method="post" accept-charset="UTF-8" action="" onsubmit="return showBusy()">
@@ -17,5 +18,6 @@
 <td><label [% labelfor("password") %]>[% loc('Passwort') %]</label>: </td>
 <td><input id="password" name="password" type="password"></td>
 </table>
-<p><input type="submit" value="[% loc('Anmelden') %]"></p>
+<p><input class="loginbutton" type="submit" value="[% loc('Anmelden') %]"></p>
 </form>
+</div>
