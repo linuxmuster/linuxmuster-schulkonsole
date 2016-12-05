@@ -51,25 +51,25 @@ $('html').bind('keypress', function(e)
             [% ELSE %]
                 <h1>[% loc('Schulkonsole') %]</h1>
             [% END %]
-            [% loc('Version') %] [% version %] [% action %]
         </div>
     <div id="status">
         [% IF REMOTE_ADDR %]
             <p class="info">
-            [% loc('Sitzungsdauer:') %]&nbsp;[% session_time %] 
-            [% loc('verbleibend:') %]&nbsp;<span id="timer">[% max_idle_hh_mm_ss %]</span> 
-            [% loc('Benutzer:') %]&nbsp;<strong>[% firstname %]&nbsp;[% surname %]</strong> 
-            [% loc('Raum:') %][% IF remote_room %]
-                <strong>[% remote_room %]</strong> 
+            <span id="sessiontime">[% loc('Sitzungsdauer:') %]&nbsp;[% session_time %]</span> 
+            <span id="sessionremaining">[% loc('verbleibend:') %]&nbsp;<span id="timer">[% max_idle_hh_mm_ss %]</span></span> 
+            <span id="userinfo"><strong>[% firstname %]&nbsp;[% surname %]</strong></span> 
+            <span id="roominfo">[% IF remote_room %]
+                <strong>[% remote_room %]</strong>
             [% ELSE %]
                 <strong>[% loc('unbekannt') %]</strong> 
             [% END %]
-            [% loc('Workstation:') %]&nbsp;<strong>[% remote_workstation %]</strong> 
-            [% loc('IP:') %]&nbsp;<strong>[% REMOTE_ADDR %]</strong> 
+	    </span>
+            <span id="wsinfo"><strong>[% remote_workstation %]</strong> 
+            [% loc('IP:') %]&nbsp;<strong>[% REMOTE_ADDR %]</strong></span> 
             [% IF class_name %]
-                [% loc('aktive Klasse:') %]&nbsp;<strong>[% class_name %]</strong> 
+	    <span id="groupinfo">[% loc('aktive Klasse:') %]&nbsp;<strong>[% class_name %]</strong></span> 
             [% ELSIF project %]
-                [% loc('aktives Projekt:') %]&nbsp;<strong>[% project %]</strong>
+	    <span id="groupinfo">[% loc('aktives Projekt:') %]&nbsp;<strong>[% project %]</strong></span>
             [% END %]
         [% END %]
     </div>
@@ -83,11 +83,12 @@ $('html').bind('keypress', function(e)
     [% IF page.menu %]
         <div id="menu">
             [% INCLUDE menu.inc.tt %]
+            <span id="statusversion">[% loc('Version') %] [% version %] [% action %]</span>
         </div>
 <script type="text/javascript">
   $(document).ready(function(){
     // simple jMenu plugin called
-    $("#jMenu").jMenu({absoluteTop:24});
+    $("#jMenu").jMenu({absoluteTop:34});
   });
 </script>
     [% END %]

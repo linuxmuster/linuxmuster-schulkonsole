@@ -6,12 +6,12 @@
 # Frank Schütte <fschuett@gymnasium-himmelsthuer.de>, 2015.
 # Stephan Tetzel <npm@zefanjas.de>, 2016.
 #
-#: ../Schulkonsole/Session.pm:1542
+#: ../Schulkonsole/Session.pm:1543
 msgid ""
 msgstr ""
 "Project-Id-Version: schulkonsole\n"
 "Report-Msgid-Bugs-To: fschuett@gymnasium-himmelsthuer.de\n"
-"POT-Creation-Date: 2016-11-25 10:48+0100\n"
+"POT-Creation-Date: 2016-12-03 14:48+0100\n"
 "PO-Revision-Date: 2016-11-05 20:11+0700\n"
 "Last-Translator: Stephan Tetzel <npm@zefanjas.de>\n"
 "Language-Team: Deutsch <>\n"
@@ -70,21 +70,21 @@ msgstr " not existing as collected file."
 
 #: ../src/cgi-bin/class_list:175 ../src/cgi-bin/class_list:194
 #: ../src/cgi-bin/project_members:397 ../src/cgi-bin/project_members:416
-#: ../src/cgi-bin/start:587 ../src/cgi-bin/start:606
+#: ../src/cgi-bin/start:590 ../src/cgi-bin/start:609
 #, perl-format
 msgid "%d Minuten"
 msgstr "%d minutes"
 
 #: ../src/cgi-bin/class_list:172 ../src/cgi-bin/class_list:191
 #: ../src/cgi-bin/project_members:394 ../src/cgi-bin/project_members:413
-#: ../src/cgi-bin/start:584 ../src/cgi-bin/start:603
+#: ../src/cgi-bin/start:587 ../src/cgi-bin/start:606
 #, perl-format
 msgid "%d Stunden"
 msgstr "%d hours"
 
 #: ../src/cgi-bin/class_list:169 ../src/cgi-bin/class_list:188
 #: ../src/cgi-bin/project_members:391 ../src/cgi-bin/project_members:410
-#: ../src/cgi-bin/start:581 ../src/cgi-bin/start:600
+#: ../src/cgi-bin/start:584 ../src/cgi-bin/start:603
 #, perl-format
 msgid "%d Tage"
 msgstr "%d days"
@@ -1249,11 +1249,11 @@ msgstr "General error"
 msgid "Altes Passwort"
 msgstr "Old password"
 
-#: ../src/cgi-bin/start:278
+#: ../src/cgi-bin/start:277
 msgid "Altes Passwort eingeben"
 msgstr "Enter the old password"
 
-#: ../src/cgi-bin/start:283
+#: ../src/cgi-bin/start:282
 msgid "Altes Passwort stimmt nicht"
 msgstr "Old password is not correct"
 
@@ -1275,7 +1275,7 @@ msgstr "On"
 msgid "Angelegte Benutzer"
 msgstr "added users"
 
-#: ../Schulkonsole/Session.pm:1449
+#: ../Schulkonsole/Session.pm:1450
 msgid "Angemeldet"
 msgstr "Signed in"
 
@@ -1307,11 +1307,11 @@ msgstr "Creation, deletion and transfer were started"
 msgid "Anlegezeitpunkte"
 msgstr "Creation time stamp"
 
-#: ../tt/login.tt:20
+#: ../tt/login.tt:21
 msgid "Anmelden"
 msgstr "Login"
 
-#: ../tt/login.tt:8
+#: ../tt/login.tt:9
 msgid "Anmeldung"
 msgstr "Login"
 
@@ -1399,7 +1399,7 @@ msgstr "Prints"
 msgid "Ausführung"
 msgstr "run"
 
-#: ../Schulkonsole/Session.pm:1333
+#: ../Schulkonsole/Session.pm:1334
 msgid "Ausgabe des Hintergrundprozess: "
 msgstr "Output of background process: "
 
@@ -1631,7 +1631,7 @@ msgstr "User per page:"
 msgid "Benutzer versetzen"
 msgstr "Move user"
 
-#: ../tt/page.tt:61 ../tt/status.inc.tt:11
+#: ../tt/status.inc.tt:11
 msgid "Benutzer:"
 msgstr "User:"
 
@@ -1647,7 +1647,7 @@ msgstr "Check user lists"
 msgid "Benutzerlisten überprüfen"
 msgstr "Check user lists"
 
-#: ../tt/login.tt:13 ../tt/showpassword.tt:20 ../tt/user_check.tt:27
+#: ../tt/login.tt:14 ../tt/showpassword.tt:20 ../tt/user_check.tt:27
 #: ../tt/user_teachin.tt:53
 msgid "Benutzername"
 msgstr "Username"
@@ -1823,11 +1823,11 @@ msgstr "The EFI system requires an EFI partition"
 msgid "Das EFI-System mit Windows benötigt eine MSR-Partition"
 msgstr "The EFI system with Windows requires an MSR partition"
 
-#: ../src/cgi-bin/start:951
+#: ../src/cgi-bin/start:954
 msgid "Das Passwort enthält ungültige Zeichen."
 msgstr "Password contains invalid characters."
 
-#: ../src/cgi-bin/start:966
+#: ../src/cgi-bin/start:969
 msgid "Das Passwort ist ungültig."
 msgstr "The password is invalid."
 
@@ -1990,7 +1990,7 @@ msgstr "File system"
 msgid "Daten"
 msgstr "Data"
 
-#: ../src/cgi-bin/start:303
+#: ../src/cgi-bin/start:302
 msgid "Daten zur Passwortänderung unvollständig"
 msgstr "Data for password change incomplete"
 
@@ -2104,7 +2104,7 @@ msgstr ""
 "Edit the <a href=\"user_teachin\">Connections</a>of old users with new users "
 "for the <a href=\"user_teachin\">Teach in</a>."
 
-#: ../src/cgi-bin/muster:60
+#: ../src/cgi-bin/muster:51
 #, perl-format
 msgid "Die Eingabe muss test lauten, lautet aber: %s"
 msgstr "The entry should be test, but is %s"
@@ -2134,7 +2134,7 @@ msgstr "The log file can not be reset."
 msgid "Die Mailadresse konnte nicht gespeichert werden."
 msgstr "The mail address could not be saved."
 
-#: ../src/cgi-bin/start:355
+#: ../src/cgi-bin/start:354
 msgid "Die Mailadresse wurde geändert."
 msgstr "The mail address has been changed."
 
@@ -2170,7 +2170,7 @@ msgstr "The group does not exist"
 msgid "Die angegebene Mailadresse ist ungültig"
 msgstr "The specified mail address is invalid"
 
-#: ../src/cgi-bin/start:351
+#: ../src/cgi-bin/start:350
 msgid "Die eingegebene Mail-Adresse ist ungültig."
 msgstr "The entered mail address is invalid."
 
@@ -2325,7 +2325,7 @@ msgstr "One entry per page"
 msgid "Ein OpenVPN-Zertifikat wurde für Sie erstellt."
 msgstr "An open VPN certificate was created for you."
 
-#: ../src/cgi-bin/start:368
+#: ../src/cgi-bin/start:367
 msgid "Eine oder mehrere Mail-Adressen sind ungültig."
 msgstr "At least one of the supplied mail addresses contains errors."
 
@@ -2566,7 +2566,7 @@ msgstr "There are no postsync files available."
 msgid "Es sind noch nicht alle Verknüpfungen eindeutig festgelegt"
 msgstr "Not all connections are clearly defined."
 
-#: ../src/cgi-bin/start:434
+#: ../src/cgi-bin/start:437
 msgid "Es wurde bereits ein OpenVPN-Zertifikat erstellt"
 msgstr "An open VPN certificate was already created"
 
@@ -2582,7 +2582,7 @@ msgstr "Es creation time stamp is invalid."
 msgid "Es wurde eine ungültige Kategorie für die Rechnerauswahl angegeben."
 msgstr "The hosts selected category is invalid."
 
-#: ../src/cgi-bin/start:488
+#: ../src/cgi-bin/start:491
 msgid "Es wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> abgelegt"
 msgstr "It was filed away in your home directory in the folder <q>OpenVPN</q>"
 
@@ -2665,7 +2665,7 @@ msgstr "Unexpected program output"
 msgid "Fehler bei der Erzeugung des Dokuments"
 msgstr "Error in the production of the document"
 
-#: ../src/cgi-bin/start:494
+#: ../src/cgi-bin/start:497
 msgid "Fehler bei der Zertifikatserstellung."
 msgstr "Error during the creation of the certificate."
 
@@ -2902,7 +2902,7 @@ msgstr "IP of the TFTP Server, that provides images"
 msgid "IP:"
 msgstr "IP:"
 
-#: ../src/cgi-bin/start:512
+#: ../src/cgi-bin/start:515
 msgid ""
 "Ihr Zertifikat wurde in Ihrem Homeverzeichnis im Ordner <q>OpenVPN</q> "
 "abgelegt"
@@ -2995,11 +2995,11 @@ msgstr "No lesson is active in this class."
 msgid "In dieser Klasse wird bereits unterrichtet."
 msgstr "In this class a lesson is already active."
 
-#: ../tt/page.tt:107 ../tt/start.tt:120
+#: ../tt/page.tt:108 ../tt/start.tt:120
 msgid "Info"
 msgstr "Info"
 
-#: ../Schulkonsole/Session.pm:1188
+#: ../Schulkonsole/Session.pm:1193
 msgid "Interner Fehler"
 msgstr "Internal error"
 
@@ -3048,7 +3048,7 @@ msgstr "Can't open file"
 #: ../src/cgi-bin/quotas_others:230 ../src/cgi-bin/quotas_projects:317
 #: ../src/cgi-bin/quotas_teachers:161 ../src/cgi-bin/repair_homes:107
 #: ../src/cgi-bin/repair_permissions:106 ../src/cgi-bin/settings_users:287
-#: ../src/cgi-bin/start:839 ../src/cgi-bin/user_commit:132
+#: ../src/cgi-bin/start:842 ../src/cgi-bin/user_commit:132
 #: ../src/cgi-bin/user_commit:168 ../src/cgi-bin/user_commit:204
 msgid "Kann Logdatei nicht öffnen"
 msgstr "Can't open log file"
@@ -3113,6 +3113,10 @@ msgstr "No print jobs"
 #: ../Schulkonsole/Error/PrinterError.pm:52
 msgid "Keine Drucker"
 msgstr "No Printers"
+
+#: ../Schulkonsole/Error/HordeError.pm:42
+msgid "Keine E-Mail-Adressen angegeben"
+msgstr "No eMail-addresses entered"
 
 #: ../src/cgi-bin/linbo_new:149 ../src/cgi-bin/linbo_new:313
 msgid "Keine Festplattengröße angegeben"
@@ -3293,7 +3297,7 @@ msgstr "Edit coment lines"
 msgid "Konfigurationsdatei erstellt"
 msgstr "Configuration file created"
 
-#: ../src/cgi-bin/linbo_edit:423
+#: ../src/cgi-bin/linbo_edit:422
 msgid "Konfigurationsdatei geschrieben"
 msgstr "Configuration file written"
 
@@ -3458,7 +3462,7 @@ msgstr "Login"
 msgid "Login %s schon vorhanden"
 msgstr "Login %s already available"
 
-#: ../Schulkonsole/Session.pm:1452
+#: ../Schulkonsole/Session.pm:1453
 msgid "Login fehlgeschlagen"
 msgstr "Login failed"
 
@@ -3554,6 +3558,10 @@ msgid "Mailquota-Überschreitung an root melden"
 msgstr "report mail over quota to root"
 
 #: ../src/cgi-bin/start:381
+msgid "Mailweiterleitung erfolgreich entfernt"
+msgstr "mail forwarder(s) successful removed"
+
+#: ../src/cgi-bin/start:377
 msgid "Mailweiterleitung erfolgreich geändert"
 msgstr "mail forwarder(s) successful changed"
 
@@ -3662,7 +3670,7 @@ msgstr "moodle url"
 msgid "Muster"
 msgstr "Example"
 
-#: ../tt/muster.tt:19
+#: ../tt/muster.tt:20
 msgid "Muster-Überschrift"
 msgstr "Example-Heading"
 
@@ -3670,7 +3678,7 @@ msgstr "Example-Heading"
 msgid "Möchten Sie das Projekt wirklich löschen?"
 msgstr "Are you sure that you want to delete the project?"
 
-#: ../src/cgi-bin/linbo_edit:160 ../src/cgi-bin/linbo_edit:162
+#: ../src/cgi-bin/linbo_edit:159 ../src/cgi-bin/linbo_edit:161
 msgid "NEU"
 msgstr "NEW"
 
@@ -3759,19 +3767,19 @@ msgstr "New Search:"
 msgid "Neues Passwort"
 msgstr "New password"
 
-#: ../src/cgi-bin/start:290
+#: ../src/cgi-bin/start:289
 msgid "Neues Passwort eingeben"
 msgstr "Enter the new password"
 
-#: ../src/cgi-bin/start:320
+#: ../src/cgi-bin/start:319
 msgid "Neues Passwort ist zu schwach: "
 msgstr "New password is too weak:"
 
-#: ../src/cgi-bin/start:309
+#: ../src/cgi-bin/start:308
 msgid "Neues Passwort nicht richtig wiederholt"
 msgstr "New password not properly repeated"
 
-#: ../src/cgi-bin/start:297
+#: ../src/cgi-bin/start:296
 msgid "Neues Passwort zur Kontrolle zweimal eingeben"
 msgstr "Enter the new password twice to verify"
 
@@ -3851,19 +3859,19 @@ msgstr "Application:"
 msgid "Offenes Projekt"
 msgstr "Open project"
 
-#: ../src/cgi-bin/start:464
+#: ../src/cgi-bin/start:467
 msgid "OpenVPN-Passwort bestätigen"
 msgstr "Confirm OpenVPN password"
 
-#: ../src/cgi-bin/start:443
+#: ../src/cgi-bin/start:446
 msgid "OpenVPN-Passwort eingeben"
 msgstr "Enter OpenVPN password"
 
-#: ../src/cgi-bin/start:455
+#: ../src/cgi-bin/start:458
 msgid "OpenVPN-Passwort muss mindestens sechs Zeichen haben"
 msgstr "Open VPN password must have at least six characters"
 
-#: ../src/cgi-bin/start:475
+#: ../src/cgi-bin/start:478
 msgid "OpenVPN-Passwort nicht richtig wiederholt"
 msgstr "Open VPN password not properly repeated"
 
@@ -3940,7 +3948,7 @@ msgstr "partition size"
 msgid "Partitionsgrößen in <b>k</b> (M,G,T)"
 msgstr "Size of partition in in <b>k</b> (M,G,T)"
 
-#: ../tt/login.tt:17
+#: ../tt/login.tt:18
 msgid "Passwort"
 msgstr "Password"
 
@@ -3986,7 +3994,7 @@ msgstr "password lists"
 msgid "Passwortänderung"
 msgstr "Password change"
 
-#: ../src/cgi-bin/start:330
+#: ../src/cgi-bin/start:329
 msgid "Passwortänderung erfolgreich"
 msgstr "password successfully changed"
 
@@ -4193,7 +4201,7 @@ msgstr "Room"
 msgid "Raum nicht gefunden"
 msgstr "room not found"
 
-#: ../tt/page.tt:62 ../tt/status.inc.tt:13
+#: ../tt/status.inc.tt:13
 msgid "Raum:"
 msgstr "Room:"
 
@@ -4296,7 +4304,7 @@ msgid "Reparatur gestartet."
 msgstr "Repair started."
 
 #: ../src/cgi-bin/class_list:83 ../src/cgi-bin/project_members:101
-#: ../src/cgi-bin/repair_homes:86 ../src/cgi-bin/start:254
+#: ../src/cgi-bin/repair_homes:86 ../src/cgi-bin/start:253
 msgid "Reparatur gestartet..."
 msgstr "Repair started..."
 
@@ -4347,7 +4355,7 @@ msgstr "Close"
 msgid "Schnellauswahl"
 msgstr "Quick selection"
 
-#: ../Schulkonsole/Session.pm:1488
+#: ../Schulkonsole/Session.pm:1489
 msgid "Schueler"
 msgstr "Student"
 
@@ -4516,7 +4524,7 @@ msgstr "You are not the project leader of %s"
 msgid "Sitzungsdauer"
 msgstr "Duration of session"
 
-#: ../tt/page.tt:59 ../tt/status.inc.tt:9
+#: ../tt/page.tt:58 ../tt/status.inc.tt:9
 msgid "Sitzungsdauer:"
 msgstr "Duration of session:"
 
@@ -4536,7 +4544,7 @@ msgstr "Do you really want to end the lesson?"
 msgid "Sonderquota"
 msgstr "Special quota"
 
-#: ../src/cgi-bin/start:654
+#: ../src/cgi-bin/start:657
 msgid "Speicherplatz"
 msgstr "Storage space"
 
@@ -4742,6 +4750,10 @@ msgstr "Invalid data for printing quota"
 #: ../Schulkonsole/Error/PrinterError.pm:58
 msgid "Ungültige Daten für genutzte Druckquota"
 msgstr "Invalid data for used printing quota"
+
+#: ../Schulkonsole/Error/HordeError.pm:40
+msgid "Ungültige E-Mail-Adressen angegeben"
+msgstr "Invalid eMail address"
 
 #: ../Schulkonsole/Error/LinboError.pm:113
 #: ../Schulkonsole/Error/RadiusError.pm:44
@@ -4968,11 +4980,11 @@ msgstr "Transfer is running..."
 msgid "Versetzen wurde gestartet"
 msgstr "Transfer was already started"
 
-#: ../tt/header.inc.tt:12 ../tt/page.tt:54
+#: ../tt/header.inc.tt:12 ../tt/page.tt:86
 msgid "Version"
 msgstr "Version"
 
-#: ../src/cgi-bin/start:497 ../src/cgi-bin/start:519
+#: ../src/cgi-bin/start:500 ../src/cgi-bin/start:522
 msgid "Verständigen Sie den Netzwerkadministrator"
 msgstr "Inform the network administrator"
 
@@ -5066,7 +5078,7 @@ msgstr "Switch to this user not allowed"
 msgid "Wechsel zu diesem Benutzer nicht moeglich"
 msgstr "Switch to this user not possible"
 
-#: ../Schulkonsole/Error/HordeError.pm:34
+#: ../Schulkonsole/Error/HordeError.pm:38
 #: ../Schulkonsole/Error/UserError.pm:34
 msgid "Wechsel zu diesem Benutzer nicht möglich"
 msgstr "Switch to this user not possible"
@@ -5090,7 +5102,7 @@ msgstr "Forwarder(s)"
 msgid "Weiterleitung(en) ändern"
 msgstr "mail forwarder(s)"
 
-#: ../tt/page.tt:67 ../tt/status.inc.tt:19
+#: ../tt/status.inc.tt:19
 msgid "Workstation:"
 msgstr "Workstation:"
 
@@ -5130,11 +5142,11 @@ msgstr "time"
 msgid "Zertifikat erstellen und herunterladen"
 msgstr "Create and download certificate"
 
-#: ../src/cgi-bin/start:516
+#: ../src/cgi-bin/start:519
 msgid "Zertifikat konnte nicht heruntergeladen werden."
 msgstr "The certificate could not be downloaded."
 
-#: ../src/cgi-bin/start:485
+#: ../src/cgi-bin/start:488
 msgid "Zertifikat wurde erstellt."
 msgstr "Certificate was created."
 
@@ -5159,7 +5171,7 @@ msgstr "Random password characters"
 msgid "Zufallspasswörter gesetzt"
 msgstr "Random password set"
 
-#: ../Schulkonsole/Session.pm:1482
+#: ../Schulkonsole/Session.pm:1483
 msgid "Zugriff verweigert"
 msgstr "Access denied"
 
@@ -5179,13 +5191,13 @@ msgstr "Additional quota"
 msgid "[LINBO] - globale Konfiguration"
 msgstr "[LINBO] - global configuration"
 
-#: ../src/cgi-bin/start:420
+#: ../src/cgi-bin/start:423
 msgid "abgebrochen"
 msgstr "cancelled"
 
 #: ../src/cgi-bin/class_list:178 ../src/cgi-bin/class_list:197
 #: ../src/cgi-bin/project_members:400 ../src/cgi-bin/project_members:419
-#: ../src/cgi-bin/start:590 ../src/cgi-bin/start:609
+#: ../src/cgi-bin/start:593 ../src/cgi-bin/start:612
 msgid "abgelaufen"
 msgstr "expired"
 
@@ -5395,7 +5407,7 @@ msgstr "red"
 msgid "rsync"
 msgstr "rsync"
 
-#: ../tt/muster.tt:25
+#: ../tt/muster.tt:26
 msgid "senden"
 msgstr "send"
 
@@ -5411,17 +5423,17 @@ msgstr "end immediately"
 msgid "start"
 msgstr "start"
 
-#: ../src/cgi-bin/linbo_edit:77
+#: ../src/cgi-bin/linbo_edit:76
 #, perl-format
 msgid "start.conf.%s existiert nicht"
 msgstr "start.conf.%s does not exist"
 
-#: ../src/cgi-bin/linbo_edit:90
+#: ../src/cgi-bin/linbo_edit:89
 #, perl-format
 msgid "start.conf.%s gelöscht"
 msgstr "start.conf.%s deleted"
 
-#: ../src/cgi-bin/linbo_edit:93
+#: ../src/cgi-bin/linbo_edit:92
 #, perl-format
 msgid "start.conf.%s konnte nicht gelöscht werden"
 msgstr "start.conf.%s could not be deleted"
@@ -5447,7 +5459,7 @@ msgid "um"
 msgstr "at"
 
 #: ../tt/myroom.tt:1 ../tt/myroom.tt:26 ../tt/myroom_handedoutcopy.tt:8
-#: ../tt/myroom_tocollect.tt:8 ../tt/page.tt:65 ../tt/room.tt:27
+#: ../tt/myroom_tocollect.tt:8 ../tt/page.tt:64 ../tt/room.tt:27
 #: ../tt/room_lesson.tt:27 ../tt/status.inc.tt:17
 msgid "unbekannt"
 msgstr "unknown"
@@ -5505,7 +5517,7 @@ msgstr "teaches in project"
 msgid "unterrichtet in der Klasse"
 msgstr "teaches in class"
 
-#: ../tt/page.tt:60 ../tt/status.inc.tt:10
+#: ../tt/page.tt:59 ../tt/status.inc.tt:10
 msgid "verbleibend:"
 msgstr "remaining:"
 
@@ -5550,7 +5562,7 @@ msgstr "wrapper-cyrus does not belong to \"cyrus\" or SUID not set"
 msgid "zurück"
 msgstr "Back"
 
-#: ../src/cgi-bin/muster:67
+#: ../src/cgi-bin/muster:63
 #, perl-format
 msgid "Änderungen ausgeführt: %s"
 msgstr "Changes applied: %s"
@@ -5667,9 +5679,6 @@ msgstr "overwrite?"
 #~ msgid "Imageverwaltung"
 #~ msgstr "Image administration"
 
-#~ msgid "Keine E-Mail-Adressen angegeben"
-#~ msgstr "No eMail-addresses entered"
-
 #~ msgid "Klassenarbeit"
 #~ msgstr "Exam"
 
@@ -5678,9 +5687,6 @@ msgstr "overwrite?"
 
 #~ msgid "LINBO"
 #~ msgstr "LINBO"
-
-#~ msgid "Mailweiterleitung erfolgreich entfernt"
-#~ msgstr "mail forwarder(s) successful removed"
 
 #~ msgid "Mein Konto"
 #~ msgstr "My Account"
@@ -5696,9 +5702,6 @@ msgstr "overwrite?"
 
 #~ msgid "Reparaturen"
 #~ msgstr "Repairs"
-
-#~ msgid "Ungültige E-Mail-Adressen angegeben"
-#~ msgstr "Invalid eMail address"
 
 #~ msgid "menu.lst-Startdatei"
 #~ msgstr "menu.lst start file"
