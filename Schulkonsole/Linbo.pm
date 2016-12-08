@@ -1650,7 +1650,7 @@ sub write_start_conf {
 		$lines .= "[LINBO]\n";
 	}
 	foreach my $key (('Cache', 'Server', 'Group', 'SystemType', 'RootTimeout',
-	                  'Autopartition', 'AutoFormat', 'AutoInitCache',
+	                  'AutoPartition', 'AutoFormat', 'AutoInitCache',
 	                  'DownloadType', 'BackgroundFontColor',
                       'ConsoleFontColorStdout', 'ConsoleFontColorStderr', 'KernelOptions')) {
 		my $key_data = $$linbo{Keys}{lc $key};
