@@ -159,7 +159,7 @@ sub wlan_on_off {
 	my @lessonusers = ();
 	my $mode;
 	my $line = <>;
-	($line) = $line =~ /^(groups:|users:|[a-z0-9\_-]+)$/;
+	($line) = $line =~ /^(groups:|users:|[a-z0-9\_\-]+)$/;
 	while($line) {
 		if( $line eq "groups:" ){
 			$mode = \@lessongroups;
@@ -171,7 +171,7 @@ sub wlan_on_off {
 			push @$mode, $line;
 		}
 		$line = <>;
-		($line) = $line =~ /^(groups:|users:|[a-z0-9\_-]+)$/;
+		($line) = $line =~ /^(groups:|users:|[a-z0-9\_\-]+)$/;
 	}
 	
 	my $userlist = join(",", @lessonusers);
@@ -233,9 +233,9 @@ sub wlan_reset {
 	exit (  Schulkonsole::Error::RadiusError::WRAPPER_INVALID_GROUP )
 		unless $all;
 	my $grouplist = <>;
-	($grouplist) = $grouplist =~ /^([a-z0-9\_-,]+)$/;
+	($grouplist) = $grouplist =~ /^([a-z0-9\_\-,]+)$/;
 	my @lessongroups = split(",",$grouplist);
-	@lessongroups = grep { $_ =~ /^[a-z0-9\_-]+$/ } @lessongroups;
+	@lessongroups = grep { $_ =~ /^[a-z0-9\_\-]+$/ } @lessongroups;
 	$grouplist = join(",", @lessongroups);
 	
 	my $userlist = <>;
@@ -283,9 +283,9 @@ Absolute time in seconds since the Epoch
 
 sub wlan_reset_at {
 	my $grouplist = <>;
-	($grouplist) = $grouplist =~ /^([a-z0-9\_-,]+)$/;
+	($grouplist) = $grouplist =~ /^([a-z0-9\_\-,]+)$/;
 	my @lessongroups = split(",",$grouplist);
-	@lessongroups = grep { $_ =~ /^[a-z0-9\_-]+$/ } @lessongroups;
+	@lessongroups = grep { $_ =~ /^[a-z0-9\_\-]+$/ } @lessongroups;
 	$grouplist = join(",", @lessongroups);
 	
 	my $userlist = <>;
