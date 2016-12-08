@@ -1122,9 +1122,9 @@ sub handoutapp() {
 
 	# sophomorix-teacher cannot be invoked with taint checks enabled
 	$< = $>;
-	$( = $);
 	$) = 0;
-	umask(022);
+	$( = $);
+	umask(002);
 	exec Schulkonsole::Encode::to_cli(
 	     	"$Schulkonsole::Config::_cmd_sophomorix_teacher $opts")
 		or return;
