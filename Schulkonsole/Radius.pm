@@ -56,6 +56,8 @@ $VERSION = 0.03;
 	wlan_off
 	wlan_reset_at
 	wlan_reset_all
+	wlan_reset
+	new_wlan_defaults_lines
 );
 
 my $wrapcmd = $Schulkonsole::Config::_wrapper_radius;
