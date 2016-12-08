@@ -309,6 +309,15 @@ sub wrapper_authorize {
 	exit (  Schulkonsole::Error::Error::WRAPPER_UNAUTHORIZED_ID  )
 		unless $is_permission_found;
 
+	# prepare environment for wrapper commands
+	$< = $>;
+	$) = 0;
+	$( = $);
+	umask(002);
+	$ENV{HOME}="/root" if not defined $ENV{HOME};
+	$ENV{PATH} = '/bin:/sbin:/usr/sbin:/usr/bin' if not defined $ENV{PATH};
+	$ENV{DEBIAN_FRONTEND} = 'teletype' if not defined $ENV{DEBIAN_FRONTEND};
+
 	return $app_id;
 }
 
