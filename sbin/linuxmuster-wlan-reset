@@ -71,7 +71,12 @@ users/groups to work on:
 # ===========================================================================
 # Check for locking
 # ===========================================================================
-my $locker='/tmp/.linuxmuster-wlan-reset';
+my $lockerdir='/tmp';
+my $lockerfile='.linuxmuster-wlan-reset';
+my $locker=$lockerdir . '/' . $lockerfile;
+# remove exceptionally old lock files
+system('find ' . $lockerdir . ' -type f -name ' . $lockerfile . ' -not -mmin -180 -exec rm -f {} \;');
+
 if(-e $locker) {
         print('
 Caution! Lockfile $locker detected!
