@@ -134,7 +134,8 @@ sub write_file {
 	seek FILE, 0, 0;
 
 	while (<>) {
-		print FILE;
+		$_ =~ s/\R//;
+		print FILE "$_\n";
 	}
 
 	if (defined $perm) {

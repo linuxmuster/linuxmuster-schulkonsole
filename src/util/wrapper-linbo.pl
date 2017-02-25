@@ -199,7 +199,7 @@ sub write_start_conf {
 	seek FILE, 0, 0;
 
 	while (<>) {
-		print FILE;
+	    print FILE;
 	}
 
 	close FILE;
