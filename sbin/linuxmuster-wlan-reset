@@ -238,7 +238,7 @@ sub wlan_defaults {
                 s/\s*#.*$//;
 
                 my ($kind,$key, $status)
-                        = /^\s*([u|g]):([a-z\d_]+)\s+(on|off|-)/;
+                        = /^\s*([u|g]):([a-z\d_-]+)\s+(on|off|-)/;
                 if ($kind eq 'u' and $key) {
                 	$users{$key} = $status;
                 } elsif ($kind eq 'g' and $key) {
